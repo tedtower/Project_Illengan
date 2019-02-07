@@ -21,7 +21,7 @@ class Login extends CI_Controller{
         $uname = $this->input->post('username');
         $pword = $this->input->post('password');
         $this->load->model('adminmodule');
-        $loginAttempt = $this->adminmodule->check_acct($uname,$pword);
+        $loginAttempt = $this->adminmodule->validate($uname,$pword);
         if($loginAttempt === true){
             $this->load->view('admin_module/index');
         }else{

@@ -3,7 +3,7 @@ class AdminModule extends CI_Model{
     
     private $err = array('Username does not exist!', 'Incorrect password');
 
-    function check_acct($username, $password){
+    function validate($username, $password){
         $query = "select * from accounts where BINARY account_username = '?' and account_type='admin'";
         $qresult = $this->db->query($query, array($username));
         if($qresult->num_rows() ==1){
