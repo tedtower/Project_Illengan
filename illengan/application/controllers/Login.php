@@ -20,15 +20,29 @@ class Login extends CI_Controller{
     function check_cred(){
         $uname = $this->input->post('username');
         $pword = $this->input->post('password');
-        $this->load->model('adminmodel');
-        $loginAttempt = $this->adminmodel->validate($uname,$pword);
-        if($loginAttempt === true){
-            $this->load->view('admin_module/index');
+        $this->load->model('loginmodel');
+        $loginAttempt = $this->loginmodel->validate($uname,$pword);
+        if(is_array($loginAttempt)){
+            $user_data = array(
+                'userid' => $loginAttempt[0]['account_id'],
+                'user_name' => ucfirst($loginAttempt[0]['account_username']),
+                'user_type' => $loginAttempt[0]['account_type']
+            );
+            $this->session->set_userdata($user_data);
+            switch ($this->session->userdata('user_type')){
+                case 'Admin':
+                    redirect('');
+                    break;
+                case 'Barista':
+                    redirect('');
+                    break;
+                case 'Chef':
+                    redirect('');
+                    break;
+            }
         }else{
-            echo $loginAttempt;
             $data['err'] = $loginAttempt;
-
-            //$this->load->view('admin_module/login',$data);
+            $this->load->view('admin_module/login',$data);
         }
     }
 
