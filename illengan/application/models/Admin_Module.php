@@ -1,5 +1,5 @@
 <?php
-class AdminModel extends CI_Model{
+class Admin_Module extends CI_Model{
     
     private $err = array('Username does not exist!', 'Incorrect password');
 
@@ -20,6 +20,10 @@ class AdminModel extends CI_Model{
             echo $this->err[0];
             //return $err[0];
         }
+    }
+    function add_damages($data){
+        $this->load->database();
+        $this->db->insert("spoilages", $data);
     }
 
 
