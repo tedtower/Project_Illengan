@@ -1,3 +1,5 @@
+@charset "UTF-8"
+
 *,
 :before,
 :after {
@@ -45,7 +47,7 @@ body {
 .content:before,
 .content:after {
     display: table;
-    content: " ";
+    content: "";
 }
 
 .content:after {
@@ -186,14 +188,16 @@ button.dashboard:hover {
 /* Side Bar */
 
 #cssmenu {
+    position: fixed;
     background: #504338;
-    width: 10em;
-    height: 850px;
+    width: 164px;
+    height: 100%;
     margin-top: -1em;
     margin-left: -1em;
     list-style: none;
     color: white;
     padding-top: 1em;
+    overflow: auto;
 }
 
 #cssmenu ul li {
@@ -218,35 +222,4 @@ button.dashboard:hover {
     background: url("../images/hover.png") right center no-repeat;
     background-position: 107% 50%;
     z-index: 1;
-}
-
-
-/* Landing Page */
-
-img.up {
-    margin-top: -6em;
-    margin-bottom: 3em;
-}
-
-ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-ul li {
-    text-align: center;
-    padding-bottom: 1em;
-}
-
-ul li a {
-    text-decoration: none;
-    font-size: 20px;
-    color: #607d8b;
-}
-
-ul li a:hover {
-    letter-spacing: 2px;
-    font-size: 23px;
-    color: #39312a;
-
 }
