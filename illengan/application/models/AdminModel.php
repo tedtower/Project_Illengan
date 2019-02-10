@@ -1,19 +1,24 @@
 <?php
-class AdminModule extends CI_Model{
+class AdminModel extends CI_Model{
     
     private $err = array('Username does not exist!', 'Incorrect password');
 
     function validate($username, $password){
-        $query = "select * from accounts where BINARY account_username = '?' and account_type='admin'";
+        $query = "select * from accounts where account_username = ? and account_type='Admin';";
         $qresult = $this->db->query($query, array($username));
-        if($qresult->num_rows() ==1){
-            if($qresult->password === $password){
-                return true;
+        echo $qresult->num_rows();
+        if($qresult->num_rows() === 1){
+            echo $qresult->result_array();
+            if($qresult->result_array() === $password){
+                echo 'yehey';
             }else{
-                return $err[1];
+                echo $this->err[1];  
+                //return $err[1];
             }
         }else{
-            return $err[0];
+            echo $qresult->row->account_username;
+            echo $this->err[0];
+            //return $err[0];
         }
     }
 
