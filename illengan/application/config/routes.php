@@ -55,3 +55,4 @@ $route['translate_uri_dashes'] = FALSE;
 $route['tatum'] = 'login/load_adminlogin';
 $route['baristalogin'] = "login/load_baristalogin";
 $route['cheflogin'] = "login/load_cheflogin";
+$route['Add_Damages/form_validation'] = 'Add_Damages/form_validation';
