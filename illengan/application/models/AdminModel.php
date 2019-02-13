@@ -12,7 +12,7 @@ class Admin_Model extends CI_Model{
     }
 
     function get_spoilages(){
-        $query = "Select * from spoilages inner join stockitems using (stock_id) inner join using (menu_id)";
+        $query = "Select stype, sqty, sdate, remarks, stock_unit, stock_name, menu_name, date_recorded from spoilages inner join stockitems using (stock_id) inner join using (menu_id)";
         return $this->db->query($query)->result_array();
     }
     function get_transactions(){
@@ -20,7 +20,7 @@ class Admin_Model extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_sources(){
-        $query = "Select source_name, contact_num, status from sources";
+        $query = "Select source_name, contact_num, status from sources order by source_name asc";
         return $this->db->query($query)->result_array();
     }
     function get_sales(){
@@ -40,7 +40,7 @@ class Admin_Model extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_menu(){
-        $query = "Select menu_name, menu_description, menu_price, menu_availability, menu_image, size, category_name from menu inner join categories using (category_id)";
+        $query = "Select menu_name, menu_description, menu_price, menu_availability, menu_image, size, category_name from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
         return $this->db->query($query)->result_array();
     }
     function get_categories(){
