@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="assets/others/bootstrap/css/bootstrap.min.css">
-    <link href="assets/others/fonts/circular-std/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/libs/css/style.css">
-    <link rel="stylesheet" href="assets/others/fonts/fontawesome/css/fontawesome-all.css">
-    <link rel="stylesheet" href="assets/others/charts/chartist-bundle/chartist.css">
-    <link rel="stylesheet" href="assets/others/charts/morris-bundle/morris.css">
-    <link rel="stylesheet" href="assets/others/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="assets/others/charts/c3charts/c3.css">
-    <link rel="stylesheet" href="assets/others/fonts/flag-icon-css/flag-icon.min.css">
+    <link rel="stylesheet" href="<?php echo base_url('css/frameworks/bootstrap.min.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('others/fonts/circular-std/style.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('css/admin/style.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('others/fonts/fontawesome/css/fontawesome-all.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('others/charts/chartist-bundle/chartist.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('others/charts/morris-bundle/morris.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('others/material-design-iconic-font/css/materialdesignicons.min.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('others/charts/c3charts/c3.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('others/fonts/flag-icon-css/flag-icon.min.css')?>">
     <title>Il-Lengan</title>
 </head>
 
@@ -21,7 +21,7 @@
        <!--Navigation Bar-->
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="index.html">Il-Lengan</a>
+                <a class="navbar-brand" href="dashboard.html">Il-Lengan</a>
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto navbar-right-top">
         
@@ -46,7 +46,7 @@
         <div class="nav-left-sidebar sidebar-dark">
             <div class="menu-list">
                 <nav class="navbar navbar-expand-lg navbar-light">
-                    <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+                    <a class="d-xl-none d-lg-none" href="dashboard.html">Dashboard</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -54,12 +54,12 @@
                         <ul class="navbar-nav flex-column">
                     <br>
                             <li class="nav-item ">
-                                <a class="nav-link active" href="#" aria-controls="submenu-1">
+                                <a class="nav-link active" href="<?php echo site_url('admin/dashboard')?>" aria-controls="submenu-1">
                                     <i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
                             </li>
 
                             <li class="nav-item ">
-                            <a class="nav-link active" href="menuitems.html" aria-controls="submenu-1"><i class=""></i>Menu Items</a>
+                            <a class="nav-link active" href="<?php echo site_url('admin/menu')?>" aria-controls="submenu-1"><i class=""></i>Menu Items</a>
                             </li>
 
                             <li class="nav-item ">
@@ -170,40 +170,31 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>1</td>
-                                                        <td>
-                                                            <div class="m-r-10"><img src="assets/images/product-pic.jpg" alt="user" class="rounded" width="45"></div>
-                                                        </td>
-                                                        <td>Product #1 </td>
-                                                        <td>id000001 </td>
-                                                        <td>20</td>
+                                                        <td>Baby Back Ribs</td>
+                                                        <td>Meals</td>
+                                                        <td>&#8369; 15,780</td>
+                                                        <td>&#8369; 15,780</td>
                                                     </tr>
                                                     <tr>
                                                         <td>2</td>
-                                                        <td>
-                                                            <div class="m-r-10"><img src="assets/images/product-pic-2.jpg" alt="user" class="rounded" width="45"></div>
-                                                        </td>
-                                                        <td>Product #2 </td>
-                                                        <td>id000002 </td>
-                                                        <td>12</td>
+                                                        <td>Americano</td>
+                                                        <td>Drinks</td>
+                                                        <td>&#8369; 9,800</td>
+                                                        <td>&#8369; 9,800</td>
                                                     </tr>
                                                     <tr>
                                                         <td>3</td>
-                                                        <td>
-                                                            <div class="m-r-10"><img src="assets/images/product-pic-3.jpg" alt="user" class="rounded" width="45"></div>
-                                                        </td>
-                                                        <td>Product #3 </td>
-                                                        <td>id000003 </td>
-                                                        <td>25</td>
-                                                        </td>
+                                                        <td>Matcha Frappe</td>
+                                                        <td>Drinks</td>
+                                                        <td>&#8369; 7,820</td>
+                                                        <td>&#8369; 7,820</td>
                                                     </tr>
                                                     <tr>
                                                         <td>4</td>
-                                                        <td>
-                                                            <div class="m-r-10"><img src="assets/images/product-pic-4.jpg" alt="user" class="rounded" width="45"></div>
-                                                        </td>
-                                                        <td>Product #4 </td>
-                                                        <td>id000004 </td>
-                                                        <td>34</td>
+                                                        <td>Waffles & Bacon</td>
+                                                        <td>Meal</td>
+                                                        <td>&#8369; 5,960</td>
+                                                        <td>&#8369; 5,960</td>
                                                     </tr>
 
                                                 </tbody>
@@ -236,7 +227,7 @@
                                 </div>
                             </div>
                             <!-- ============================================================== -->
-                            <!-- end customer acquistion  -->
+                            <!-- end customer -->
                         
                             
                         </div>
@@ -250,18 +241,18 @@
     <!-- ============================================================== -->
     <!-- Optional JavaScript -->
     <!-- jquery 3.3.1 -->
-    <script src="assets/others/jquery/jquery-3.3.1.min.js"></script>
+    <script src="../../others/jquery/jquery-3.3.1.min.js"></script>
     <!-- bootstap bundle js -->
-    <script src="assets/others/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="../../others/bootstrap/js/bootstrap.bundle.js"></script>
     <!-- main js -->
-    <script src="assets/libs/js/main-js.js"></script>
+    <script src="../../js/admin/main-js.js"></script>
     <!-- chart chartist js -->
-    <script src="assets/others/charts/chartist-bundle/chartist.min.js"></script>
+    <script src="../../others/charts/chartist-bundle/chartist.min.js"></script>
     <!-- chart c3 js -->
-    <script src="assets/others/charts/c3charts/c3.min.js"></script>
-    <script src="assets/others/charts/c3charts/d3-5.4.0.min.js"></script>
-    <script src="assets/others/charts/c3charts/C3chartjs.js"></script>
-    <script src="assets/libs/js/dashboard.js"></script>
+    <script src="../../others/charts/c3charts/c3.min.js"></script>
+    <script src="../../others/charts/c3charts/d3-5.4.0.min.js"></script>
+    <script src="../../others/charts/c3charts/C3chartjs.js"></script>
+    <script src="../../js/admin/dashboard.js"></script>
 </body>
  
 </html>
