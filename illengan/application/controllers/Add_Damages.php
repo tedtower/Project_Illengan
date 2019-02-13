@@ -17,13 +17,13 @@
              $this->form_validation->set_rules('sdate', 'Date', 'required');
              $this->form_validation->set_rules('remarks', 'Remarks', 'required');
 
-             if($this->form_validation->run()==FALSE){
+             if($this->form_validation->run()){
                 $this->load->model("Admin_Module");
                 $data =array(
-                    "damage_type" =>$this->input->post("Inventory"),
-                    "damage_quantity" =>$this->input->post("quantity"),          
-                    "date_recorded" =>$this->input->post("date"),           
-                    "damage_reason" =>$this->input->post("remarks"),
+                    "stype" =>$this->input->post("stype"),
+                    "sqty" =>$this->input->post("sqty"),          
+                    "sdate" =>$this->input->post("sdate"),           
+                    "remarks" =>$this->input->post("remarks"),
                 );
                 $this->Admin_Module->add_damages($data); 
 
