@@ -1,7 +1,7 @@
 <?php
 class Admin extends CI_Controller{
-    function dashboard(){
-
+    function viewDashboard(){
+        $this->load->view('admin_module/dashboard.html');
     }
 
     function viewAccounts(){

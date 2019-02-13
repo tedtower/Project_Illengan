@@ -11,6 +11,21 @@
 </head>
 <body>
     <table>
+        <tr>
+            <th>Table Number</th>
+            <th>Actions</th>
+        </tr>
+        <?php
+            if(isset($table)){
+                foreach($table as $table){
+        ?> 
+        <tr>
+            <td><?php echo $table['table_no']?></td>
+        </tr>
+        <?php            
+                }
+            } 
+        ?>
     </table>
 </body>
 </html>

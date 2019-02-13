@@ -1,5 +1,5 @@
 <?php
-class Admin_Model extends CI_Model{
+class AdminModel extends CI_Model{
     
     private $err = array('Username does not exist!', 'Incorrect password');
 

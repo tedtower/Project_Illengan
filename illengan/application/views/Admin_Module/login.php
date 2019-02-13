@@ -8,6 +8,7 @@
         <div class="form-box">
             <span><?php 
             if(isset($err)){
+                echo $err;
             }?></span>
             <img src="images/il-lengan_logo.png" class="logo">
             <form method="post" action="<?php echo site_url("verifylogin")?>">

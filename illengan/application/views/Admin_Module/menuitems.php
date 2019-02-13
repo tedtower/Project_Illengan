@@ -40,7 +40,7 @@
                     <ul class="navbar-nav flex-column"><br>
                         
                         <li class="nav-item">
-                            <a class="nav-item" href="index.html"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
+                            <a class="nav-item" href="<?php echo site_url('admin/dashboard')?>"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
                         </li>
 
                         <li class="nav-item">
@@ -99,7 +99,7 @@
                       <!-- <th scope="row">1</th> -->
                       <td><?php echo $item['menu_name'] ?></td>
                       <td><?php echo $item['menu_description']?></td>
-                      <td><?php echo isset($item['size']) ? 'N/A':'$item['size']'?></td>
+                      <td><?php echo isset($item['size']) ? 'N/A': $item['size']?></td>
                       <td><?php echo $item['category_name']?></td>
                       <td>&#8369;<?php echo $item['menu_price']?></td>
                       <td><?php echo $item['menu_availability']?></td>
