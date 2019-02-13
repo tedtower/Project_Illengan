@@ -58,3 +58,4 @@ $route['cheflogin'] = "login/load_cheflogin";
 $route['Add_Damages/form_validation'] = 'Add_damages/form_validation';
 $route['Add_Damages/added'] = 'Add_damages/added';
 $route['verifylogin'] = "login/check_cred";
+$route['admin/menu'] = "admin/viewmenu";

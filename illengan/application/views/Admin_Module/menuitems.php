@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width= device-width, initial-scale= 1 shrink-to-fit= no">
     <link rel="icon" type="image/ico" href="images/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    <link rel="stylesheet" type="text/css" href="../../css/admin/styles.css">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
-    <link href="assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/libs/css/style.css">
-    <link rel="stylesheet" href="assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
-    <link rel="stylesheet" href="assets/vendor/charts/chartist-bundle/chartist.css">
-    <link rel="stylesheet" href="assets/vendor/charts/morris-bundle/morris.css">
-    <link rel="stylesheet" href="assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
-    <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
+    <link rel="stylesheet" href="../../others/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../others/fonts/circular-std/style.css">
+    <link rel="stylesheet" href="../../css/admin/style.css">
+    <link rel="stylesheet" href="../../others/fonts/fontawesome/css/fontawesome-all.css">
+    <link rel="stylesheet" href="../../others/charts/chartist-bundle/chartist.css">
+    <link rel="stylesheet" href="../../others/charts/morris-bundle/morris.css">
+    <link rel="stylesheet" href="../../others/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../others/charts/c3charts/c3.css">
+    <link rel="stylesheet" href=../../others/fonts/flag-icon-css/flag-icon.min.css">
     <title>Il-Lengan</title>
 </head>
 
@@ -23,7 +23,7 @@
         <!-- Navigation Bar -->
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg">
-                <a class="navbar-logo" href="index.html">Il-Lengan</a>
+                <a class="navbar-logo" href="dashboard.html">Il-Lengan</a>
             </nav>
         </div>
     </div>
@@ -32,7 +32,7 @@
     <div class="nav-left-sidebar dark-sidebar">
         <div class="menu-list">
             <nav class="navbar navbar-expand-lg navbar-light">
-                <a class="d-xl-none d-lg-none" href="index.html">Dashboard</a>
+                <a class="d-xl-none d-lg-none" href="dashboard.html">Dashboard</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>  
                 </button>
@@ -40,7 +40,7 @@
                     <ul class="navbar-nav flex-column"><br>
                         
                         <li class="nav-item">
-                            <a class="nav-item" href="index.html"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
+                            <a class="nav-item" href="dashboard.html"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
                         </li>
 
                         <li class="nav-item">
@@ -79,8 +79,10 @@
         <table id="table" class="display">
                   <thead>
                     <tr>
-                      <th scope="col">Code</th>
+                      <!-- <th scope="col">Code</th> -->
                       <th scope="col">Menu Item</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Size</th>
                       <th scope="col">Category</th>
                       <th scope="col">Price</th>
                       <th scope="col">Status</th>
@@ -89,12 +91,18 @@
                   </thead>
     
                   <tbody>
+                    <?php 
+                    if (isset($menu)){
+                      foreach ($menu as $item){
+                    ?>
                     <tr>
-                      <th scope="row">1</th>
-                      <td>Hazelnut Frappe</td>
-                      <td>Drinks</td>
-                      <td>&#8369;75</td>
-                      <td>Availble</td>
+                      <!-- <th scope="row">1</th> -->
+                      <td><?php echo $item['menu_name'] ?></td>
+                      <td><?php echo $item['menu_description']?></td>
+                      <td><?php echo isset($item['size']) ? 'N/A':'$item['size']'?></td>
+                      <td><?php echo $item['category_name']?></td>
+                      <td>&#8369;<?php echo $item['menu_price']?></td>
+                      <td><?php echo $item['menu_availability']?></td>
                       <td>
                         <div class="text-left mt-2">
                           <button class="btn btn-primary btn-xs mb-2">Edit</button>
@@ -102,9 +110,12 @@
                         </div>
                       </td>
                     </tr>
+                    <?php  }
+                    }
+                    ?>
+                    
 
-                    <tr>
-                      <th scope="row">2</th>
+                    <!-- <tr>
                       <td>Caramel Frappe</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -118,7 +129,6 @@
                     </tr>
 
                     <tr>
-                      <th scope="row">3</th>
                       <td>Ligth Mocha Frappe</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -132,7 +142,6 @@
                     </tr>
 
                     <tr>
-                      <th scope="row">4</th>
                       <td>Strawberry Frappe</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -146,7 +155,6 @@
                     </tr>
 
                     <tr>
-                      <th scope="row">5</th>
                       <td>Chocolate Frappe</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -160,7 +168,6 @@
                     </tr>
 
                     <tr>
-                      <th scope="row">6</th>
                       <td>Mocha Frappe</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -174,7 +181,6 @@
                     </tr>
 
                     <tr>
-                      <th scope="row">7</th>
                       <td>Cappucino</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -188,7 +194,6 @@
                     </tr>
 
                     <tr>
-                      <th scope="row">8</th>
                       <td>Benguet French Pressed</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -202,7 +207,6 @@
                     </tr>
 
                     <tr>
-                      <th scope="row">9</th>
                       <td>Hazelnut Espresso</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -216,7 +220,6 @@
                     </tr>
                     
                     <tr>
-                      <th scope="row">10</th>
                       <td>Cafe Late</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -227,7 +230,7 @@
                           <button class="btn btn-success btn-xs mb-2">Delete</button>
                         </div>
                       </td>
-                    </tr>
+                    </tr> -->
                   </tbody>
               
             </table>
