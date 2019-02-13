@@ -1,6 +1,8 @@
 <?php
 class Admin_Model extends CI_Model{
-    
+    function __construct() {
+        parent::__construct();
+    }
     private $err = array('Username does not exist!', 'Incorrect password');
 
     function get_inventory(){

@@ -17,25 +17,24 @@
              $this->form_validation->set_rules('sdate', 'Date', 'required');
              $this->form_validation->set_rules('remarks', 'Remarks', 'required');
 
-             if($this->form_validation->run()){
-                $this->load->model("Admin_Module");
+             if($this->form_validation->run()==FALSE){
+                
+
+                redirect(base_url()."Add_Damages/added");
+
+             }else{
+                $this->load->model("AdminModel");
                 $data =array(
                     "stype" =>$this->input->post("stype"),
                     "sqty" =>$this->input->post("sqty"),          
                     "sdate" =>$this->input->post("sdate"),           
                     "remarks" =>$this->input->post("remarks"),
                 );
-                $this->Admin_Module->add_damages($data); 
+                $this->AdminModel->add_damages($data); 
+                $data['message']= "Data inserted successfully.";
 
-                redirect(base_url()."Add_Damages/added");
-
-             }else{
-                 echo "Error form validation not running";
+                $this->load->view('add damages',$data);
              }
-        }
-
-        public function added(){
-            $this->index();
         }
     }
     ?>
