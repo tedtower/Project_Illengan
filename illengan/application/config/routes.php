@@ -55,5 +55,5 @@ $route['translate_uri_dashes'] = FALSE;
 $route['adminlogin'] = 'login/load_adminlogin';
 $route['baristalogin'] = "login/load_baristalogin";
 $route['cheflogin'] = "login/load_cheflogin";
-$route['Add_Damages/form_validation'] = 'add_damages/form_validation';
+$route['add_Damages/form_validation'] = 'add_damages/form_validation';
 $route['verifylogin'] = "login/check_cred";
