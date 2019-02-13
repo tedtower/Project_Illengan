@@ -79,8 +79,10 @@
         <table id="table" class="display">
                   <thead>
                     <tr>
-                      <th scope="col">Code</th>
+                      <!-- <th scope="col">Code</th> -->
                       <th scope="col">Menu Item</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Size</th>
                       <th scope="col">Category</th>
                       <th scope="col">Price</th>
                       <th scope="col">Status</th>
@@ -89,12 +91,18 @@
                   </thead>
     
                   <tbody>
+                    <?php 
+                    if (isset($menu)){
+                      foreach ($menu as $item){
+                    ?>
                     <tr>
-                      <th scope="row">1</th>
-                      <td>Hazelnut Frappe</td>
-                      <td>Drinks</td>
-                      <td>&#8369;75</td>
-                      <td>Availble</td>
+                      <!-- <th scope="row">1</th> -->
+                      <td><?php echo $item['menu_name'] ?></td>
+                      <td><?php echo $item['menu_description']?></td>
+                      <td><?php echo isset($item['size']) ? 'N/A':'$item['size']'?></td>
+                      <td><?php echo $item['category_name']?></td>
+                      <td>&#8369;<?php echo $item['menu_price']?></td>
+                      <td><?php echo $item['menu_availability']?></td>
                       <td>
                         <div class="text-left mt-2">
                           <button class="btn btn-primary btn-xs mb-2">Edit</button>
@@ -102,9 +110,12 @@
                         </div>
                       </td>
                     </tr>
+                    <?php  }
+                    }
+                    ?>
+                    
 
-                    <tr>
-                      <th scope="row">2</th>
+                    <!-- <tr>
                       <td>Caramel Frappe</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -118,7 +129,6 @@
                     </tr>
 
                     <tr>
-                      <th scope="row">3</th>
                       <td>Ligth Mocha Frappe</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -132,7 +142,6 @@
                     </tr>
 
                     <tr>
-                      <th scope="row">4</th>
                       <td>Strawberry Frappe</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -146,7 +155,6 @@
                     </tr>
 
                     <tr>
-                      <th scope="row">5</th>
                       <td>Chocolate Frappe</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -160,7 +168,6 @@
                     </tr>
 
                     <tr>
-                      <th scope="row">6</th>
                       <td>Mocha Frappe</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -174,7 +181,6 @@
                     </tr>
 
                     <tr>
-                      <th scope="row">7</th>
                       <td>Cappucino</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -188,7 +194,6 @@
                     </tr>
 
                     <tr>
-                      <th scope="row">8</th>
                       <td>Benguet French Pressed</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -202,7 +207,6 @@
                     </tr>
 
                     <tr>
-                      <th scope="row">9</th>
                       <td>Hazelnut Espresso</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -216,7 +220,6 @@
                     </tr>
                     
                     <tr>
-                      <th scope="row">10</th>
                       <td>Cafe Late</td>
                       <td>Drinks</td>
                       <td>&#8369;75</td>
@@ -227,7 +230,7 @@
                           <button class="btn btn-success btn-xs mb-2">Delete</button>
                         </div>
                       </td>
-                    </tr>
+                    </tr> -->
                   </tbody>
               
             </table>

@@ -31,7 +31,7 @@ class Admin extends CI_Controller{
     function viewMenu(){
         $this->load->model('adminmodel');
         $data['menu'] = $this->adminmodel->get_menu();
-        $this->load->view('admin_module/',$data);
+        $this->load->view('admin_module/menuitems',$data);
     }
 
     function viewSales(){

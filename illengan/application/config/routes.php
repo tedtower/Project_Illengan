@@ -55,10 +55,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['adminlogin'] = 'login/load_adminlogin';
 $route['baristalogin'] = "login/load_baristalogin";
 $route['cheflogin'] = "login/load_cheflogin";
-<<<<<<< HEAD
 $route['Add_Damages/form_validation'] = 'Add_damages/form_validation';
 $route['Add_Damages/added'] = 'Add_damages/added';
-=======
-$route['add_Damages/form_validation'] = 'add_damages/form_validation';
->>>>>>> 6acabc58cad98ec8f5fb0ae51ec3f8fee5870722
 $route['verifylogin'] = "login/check_cred";
+$route['admin/menu'] = "admin/viewmenu";
