@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
-<form method="POST" action="<?php echo base_url()?>index.php/Add_Damages/form_validation">
+<form method="POST" action="<?php echo site_url('add_damages/form_validation')?>">
 
   <?php 
     if($this->uri->segment(2)=="added"){
