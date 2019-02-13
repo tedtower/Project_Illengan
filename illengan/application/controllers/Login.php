@@ -31,7 +31,7 @@ class Login extends CI_Controller{
             $this->session->set_userdata($user_data);
             switch ($this->session->userdata('user_type')){
                 case 'Admin':
-                    redirect('');
+                    redirect('admin/menu');
                     break;
                 case 'Barista':
                     redirect('');
