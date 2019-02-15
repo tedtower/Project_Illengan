@@ -11,8 +11,12 @@ class AdminModel extends CI_Model{
         $query = "Select * from accounts";
         return $this->db->query($query)->result_array();
     }
-    function get_categories(){
-        $query = "Select category_name, category_type from categories order by category_name asc";
+    function get_menucategories(){
+        $query = "Select category_name, category_type, COUNT(menu_id) as menu_no from categories inner join stockitems using (stock_id) where category_type = 'inventory' group by category_name order by category_name asc";
+        return $this->db->query($query)->result_array();
+    }
+    function get_stockcategories(){
+        $query = "Select category_name, category_type, COUNT(stock_id) as stock_no from categories inner join menu using (menu_id) where category_type = 'menu' group by category_name order by category_name asc";
         return $this->db->query($query)->result_array();
     }
     function get_inventory(){
@@ -20,7 +24,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_logs(){
-        $query = "Select log_id, stock_name, quantity, log_date, log_type from log inner join stockitems using (stock_id)";
+        $query = "Select log_id, stock_name, quantity, log_date, log_type, date_recorded from log inner join stockitems using (stock_id)";
         return $this->db->query($query)->result_array();
     }
     function get_menu(){

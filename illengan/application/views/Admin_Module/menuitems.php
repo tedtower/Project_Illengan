@@ -6,15 +6,12 @@
     <link rel="icon" type="image/ico" href="images/favicon.ico">
     <link rel="stylesheet" type="text/css" href="../../css/admin/styles.css">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="<?php echo base_url('css/frameworks/bootstrap.min.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('others/fonts/circular-std/style.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('css/admin/style.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('others/fonts/fontawesome/css/fontawesome-all.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('others/charts/chartist-bundle/chartist.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('others/charts/morris-bundle/morris.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('others/fonts/material-design-iconic-font/css/materialdesignicons.min.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('others/charts/c3charts/c3.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('others/fonts/flag-icon-css/flag-icon.min.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('application/css/frameworks/bootstrap.min.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('application/others/fonts/circular-std/style.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('application/css/admin/style.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('application/others/fonts/fontawesome/css/fontawesome-all.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('application/others/fonts/material-design-iconic-font/css/materialdesignicons.min.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('application/others/fonts/flag-icon-css/flag-icon.min.css')?>">
     <title>Il-Lengan</title>
 </head>
 
@@ -48,23 +45,23 @@
                         </li>
 
                         <li class="nav-item">
-                                <a class="nav-item"><i class=""></i>Billings</a>
+                                <a class="nav-item" href="<?php echo site_url('admin/sales')?>"><i class=""></i>Sales</a>
                            </li>
 
                         <li class="nav-item">
-                                <a class="nav-item"><i class=""></i>Inventory</a>
+                                <a class="nav-item" href="<?php echo site_url('admin/inventory')?>"><i class=""></i>Inventory</a>
                         </li>
 
                         <li class="nav-item">
-                                <a class="nav-item"><i class=""></i>Tables</a>
+                                <a class="nav-item" href="<?php echo site_url('admin/tables')?>"><i class=""></i>Tables</a>
                         </li>
 
                         <li class="nav-item">
-                                <a class="nav-item"><i class=""></i>Reports</a>
+                                <a class="nav-item" href="<?php echo site_url('')?>"><i class=""></i>Reports</a>
                         </li>
 
                         <li class="nav-item">
-                                <a class="nav-item"><i class=""></i>Accounts</a>
+                                <a class="nav-item" href="<?php echo site_url('admin/accounts')?>"><i class=""></i>Accounts</a>
                         </li>
                     </ul>
                 </div>

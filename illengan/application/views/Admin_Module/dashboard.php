@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="<?php echo base_url('css/frameworks/bootstrap.min.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('others/fonts/circular-std/style.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('css/admin/style.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('others/fonts/fontawesome/css/fontawesome-all.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('others/charts/chartist-bundle/chartist.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('others/charts/morris-bundle/morris.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('others/material-design-iconic-font/css/materialdesignicons.min.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('others/charts/c3charts/c3.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('others/fonts/flag-icon-css/flag-icon.min.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('application/css/frameworks/bootstrap.min.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('application/others/fonts/circular-std/style.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('application/css/admin/style.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('application/others/fonts/fontawesome/css/fontawesome-all.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('application/others/charts/chartist-bundle/chartist.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('application/others/charts/morris-bundle/morris.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('application/others/material-design-iconic-font/css/materialdesignicons.min.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('application/others/charts/c3charts/c3.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('application/others/fonts/flag-icon-css/flag-icon.min.css')?>">
     <title>Il-Lengan</title>
 </head>
 
@@ -43,50 +43,48 @@
         <!-- ============================================================== -->
         <!-- left sidebar -->
         <!-- ============================================================== -->
-        <div class="nav-left-sidebar sidebar-dark">
-            <div class="menu-list">
-                <nav class="navbar navbar-expand-lg navbar-light">
-                    <a class="d-xl-none d-lg-none" href="dashboard.html">Dashboard</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav flex-column">
-                    <br>
-                            <li class="nav-item ">
-                                <a class="nav-link active" href="<?php echo site_url('admin/dashboard')?>" aria-controls="submenu-1">
-                                    <i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
-                            </li>
+        <div class="nav-left-sidebar dark-sidebar">
+        <div class="menu-list">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="d-xl-none d-lg-none" href="dashboard.html">Dashboard</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>  
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav flex-column"><br>
+                        
+                        <li class="nav-item">
+                            <a class="nav-item" href="<?php echo site_url('admin/dashboard')?>"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
+                        </li>
 
-                            <li class="nav-item ">
-                            <a class="nav-link active" href="<?php echo site_url('admin/menu')?>" aria-controls="submenu-1"><i class=""></i>Menu Items</a>
-                            </li>
+                        <li class="nav-item">
+                                <a class="nav-item" href="<?php echo site_url('admin/menu')?>"><i class=""></i>Menu Items</a>
+                        </li>
 
-                            <li class="nav-item ">
-                            <a class="nav-link active" href="#" aria-controls="submenu-1"><i class=""></i>Billings</a>
-                            </li>
+                        <li class="nav-item">
+                                <a class="nav-item" href="<?php echo site_url('admin/sales')?>"><i class=""></i>Sales</a>
+                           </li>
 
-                            <li class="nav-item ">
-                            <a class="nav-link active" href="#" aria-controls="submenu-1"><i class=""></i>Inventory</a>
-                            </li>
+                        <li class="nav-item">
+                                <a class="nav-item" href="<?php echo site_url('admin/inventory')?>"><i class=""></i>Inventory</a>
+                        </li>
 
-                            <li class="nav-item ">
-                            <a class="nav-link active" href="#" aria-controls="submenu-1"><i class=""></i>Tables</a>
-                            </li>
-                            
-                            <li class="nav-item ">
-                            <a class="nav-link active" href="#" aria-controls="submenu-1"><i class=""></i>Reports</a>
-                            </li>
-                            
-                            <li class="nav-item ">
-                            <a class="nav-link active" href="#" aria-controls="submenu-1"><i class=""></i>Accounts</a>
-                            </li>
-                   
-                        </ul>
-                    </div>
-                </nav>
-            </div>
+                        <li class="nav-item">
+                                <a class="nav-item" href="<?php echo site_url('admin/tables')?>"><i class=""></i>Tables</a>
+                        </li>
+
+                        <li class="nav-item">
+                                <a class="nav-item" href="<?php echo site_url('')?>"><i class=""></i>Reports</a>
+                        </li>
+
+                        <li class="nav-item">
+                                <a class="nav-item" href="<?php echo site_url('admin/accounts')?>"><i class=""></i>Accounts</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </div>
+    </div>
         <!-- ============================================================== -->
         <!-- end left sidebar -->
         <!-- ============================================================== -->
@@ -241,18 +239,18 @@
     <!-- ============================================================== -->
     <!-- Optional JavaScript -->
     <!-- jquery 3.3.1 -->
-    <script src="../../others/jquery/jquery-3.3.1.min.js"></script>
+    <script src="application/js/frameworks/jquery-3.3.1.min.js"></script>
     <!-- bootstap bundle js -->
-    <script src="../../others/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="application/js/frameworks/bootstrap.bundle.js"></script>
     <!-- main js -->
-    <script src="../../js/admin/main-js.js"></script>
+    <script src="application/js/admin/main-js.js"></script>
     <!-- chart chartist js -->
-    <script src="../../others/charts/chartist-bundle/chartist.min.js"></script>
+    <script src="application/others/charts/chartist-bundle/chartist.min.js"></script>
     <!-- chart c3 js -->
-    <script src="../../others/charts/c3charts/c3.min.js"></script>
-    <script src="../../others/charts/c3charts/d3-5.4.0.min.js"></script>
-    <script src="../../others/charts/c3charts/C3chartjs.js"></script>
-    <script src="../../js/admin/dashboard.js"></script>
+    <script src="application/others/charts/c3charts/c3.min.js"></script>
+    <script src="application/others/charts/c3charts/d3-5.4.0.min.js"></script>
+    <script src="application/others/charts/c3charts/C3chartjs.js"></script>
+    <script src="application/js/admin/dashboard.js"></script>
 </body>
  
 </html>

@@ -10,7 +10,7 @@
     <!-- <script src="main.js"></script> -->
 </head>
 <body>
-<div class="nav-left-sidebar dark-sidebar">
+    <div class="nav-left-sidebar dark-sidebar">
         <div class="menu-list">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <a class="d-xl-none d-lg-none" href="dashboard.html">Dashboard</a>
@@ -29,23 +29,23 @@
                         </li>
 
                         <li class="nav-item">
-                                <a class="nav-item"><i class=""></i>Billings</a>
+                                <a class="nav-item" href="<?php echo site_url('admin/sales')?>"><i class=""></i>Sales</a>
                            </li>
 
                         <li class="nav-item">
-                                <a class="nav-item"><i class=""></i>Inventory</a>
+                                <a class="nav-item" href="<?php echo site_url('admin/inventory')?>"><i class=""></i>Inventory</a>
                         </li>
 
                         <li class="nav-item">
-                                <a class="nav-item"><i class=""></i>Tables</a>
+                                <a class="nav-item" href="<?php echo site_url('admin/tables')?>"><i class=""></i>Tables</a>
                         </li>
 
                         <li class="nav-item">
-                                <a class="nav-item"><i class=""></i>Reports</a>
+                                <a class="nav-item" href="<?php echo site_url('')?>"><i class=""></i>Reports</a>
                         </li>
 
                         <li class="nav-item">
-                                <a class="nav-item"><i class=""></i>Accounts</a>
+                                <a class="nav-item" href="<?php echo site_url('admin/accounts')?>"><i class=""></i>Accounts</a>
                         </li>
                     </ul>
                 </div>

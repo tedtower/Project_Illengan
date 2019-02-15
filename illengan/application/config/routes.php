@@ -60,3 +60,4 @@ $route['Add_Damages/added'] = 'Add_damages/added';
 $route['verifylogin'] = "login/check_cred";
 $route['admin/menu'] = "admin/viewmenu";
 $route['admin/dashboard'] = "admin/viewdashboard";
+$route['admin/tables'] = "admin/viewtables";
