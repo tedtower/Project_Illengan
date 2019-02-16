@@ -52,6 +52,9 @@
             </nav>
         </div>
     </div>
+    <div>
+        <a href="<?php echo site_url('admin/tables/add')?>">Add Table</a>
+    </div>
     <div class="container">
         <table id="table" class="display">
             <tr>
@@ -65,7 +68,7 @@
             <tr>
                 <td><?php echo $table['table_no']?></td>
                 <td>
-                    <button formaction="<?php echo site_url('admin/tables/delete/'. $table['table_no'])?>"></button>
+                    <a href="<?php echo site_url('admin/tables/delete/'. $table['table_no'])?>">Delete</a>
                 </td>
             </tr>
             <?php            

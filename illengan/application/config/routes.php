@@ -61,3 +61,5 @@ $route['verifylogin'] = "login/check_cred";
 $route['admin/menu'] = "admin/viewmenu";
 $route['admin/dashboard'] = "admin/viewdashboard";
 $route['admin/tables'] = "admin/viewtables";
+$route['admin/tables/add'] = "admin/addtable";
+$route['admin/tables/delete/(:num)'] = "admin/deletetable/$1";

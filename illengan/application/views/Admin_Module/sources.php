@@ -158,7 +158,7 @@ for(var x = 0; x < tupleNo;x++){
         var row_id = row.getAttribute("data-id");
         okbutton.setAttribute("formaction",okbutton.getAttribute("formaction")+row_id);
         for(var index = 0 ; index<model.getElementsByTagName("input")){
-            modal.getElementsByTagName("input");
+            modal.getElementsByTagName("input")[index].value = ;
         }
         modal.style.display = "block";
         

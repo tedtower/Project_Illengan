@@ -51,5 +51,14 @@ class AdminModel extends CI_Model{
         $query = "Select * from transactions inner join transitems using (trans_id)";
         return $this->db->query($query)->result_array();
     }
+    function add_table(){
+        $query = "Insert into tables (table_no) values ('');";
+        $this->db->query($query);
+    }
+    function delete_table($table_no){
+        $query = "Delete from tables where table_no= ?";
+        $attempt = $this->db->query($query, array($table_no));
+        return $attempt;
+    }
 }
 ?>

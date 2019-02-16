@@ -103,7 +103,7 @@
                       <td>
                         <div class="text-left mt-2">
                           <button class="btn btn-primary btn-xs mb-2">Edit</button>
-                          <button class="btn btn-success btn-xs mb-2" formaction="<?php echo site_url('admin/menu/delete/'. $item[menu_id])?>">Delete</button>
+                          <button class="btn btn-success btn-xs mb-2" formaction="<?php echo site_url('admin/menu/delete/'. $item['menu_id'])?>">Delete</button>
                         </div>
                       </td>
                     </tr>
