@@ -49,7 +49,7 @@
         </div>
     <!-- END OF SIDEBAR-->
         <div>
-            <table>
+            <table id="tablevalues">
                 <thead>
                     <tr>
                         <th>Category Name</th>
@@ -62,10 +62,13 @@
                     if(isset($category)){
                         foreach($category as $category){
                     ?>
-                    <tr>
+                    <tr id="category<?echo $category['category_id']?>">
                         <td><?php echo $category['category_name']?></td>
                         <td><?php echo $category['stock_no']?></td>
-                        <td><?php echo 'action'?></td>
+                        <td>
+                            <button>Edit</button>
+                            <button>Delete</button>
+                        </td>
                     </tr>
                     <?php
                         }
@@ -75,4 +78,36 @@
             </table>
         </div>
     </body>
+    <!-- <div id="editModal"> 
+        <div>
+        <div>
+        <div>
+            <form method="get" action="<?php echo site_url('admin/category/edit/')?>">
+                <input type="hidden" value="<??>">
+                <span>CategoryName</span><input id="modalNameInput" type="text" value="">
+            </form>
+        </div>
+        <div>
+            <button>Cancel</button>
+            <button formaction="<?php echo site_url('admin/category/edit/')?>">OK</button>
+        </div>
+    </div> -->
 </html>
+<script>
+var tuples = ((document.getElementByID('tablevalues')).getElementsByTagName('tbody'))[0].getElementsByTagName('tr');
+var tupleNo = tuples.length;
+for(var x = 0; x < tupleNo;x++){
+    tuples.lastChild.firstChild.addEventListener("click", showEditModal);
+    tuples.lastChild.lastChild.addEventListener("click", showDeleteModal);
+}   
+    function editModal(event){
+        var row = event.target.parentElement.parentElement;
+        
+
+        var arrayValues;
+        for(var y = 0; y < array.length -1){
+            arrayValues.push(escape(array[y].innerHTML));
+        }
+        event.target.parentElement.parentElement
+    }
+</script>

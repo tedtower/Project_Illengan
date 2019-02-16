@@ -64,7 +64,9 @@
             ?> 
             <tr>
                 <td><?php echo $table['table_no']?></td>
-                <td><?php echo 'Action'?></td>
+                <td>
+                    <button formaction="<?php echo site_url('admin/tables/delete/'. $table['table_no'])?>"></button>
+                </td>
             </tr>
             <?php            
                     }

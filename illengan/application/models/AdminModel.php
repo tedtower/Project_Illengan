@@ -12,15 +12,15 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_menucategories(){
-        $query = "Select category_name, category_type, COUNT(menu_id) as menu_no from categories inner join stockitems using (stock_id) where category_type = 'inventory' group by category_name order by category_name asc";
+        $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories inner join stockitems using (stock_id) where category_type = 'inventory' group by category_name order by category_name asc";
         return $this->db->query($query)->result_array();
     }
     function get_stockcategories(){
-        $query = "Select category_name, category_type, COUNT(stock_id) as stock_no from categories inner join menu using (menu_id) where category_type = 'menu' group by category_name order by category_name asc";
+        $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories inner join menu using (menu_id) where category_type = 'menu' group by category_name order by category_name asc";
         return $this->db->query($query)->result_array();
     }
     function get_inventory(){
-        $query = "Select * from stockitems";
+        $query = "Select stock_id, stock_name, stock_quantity, stock_unit, stock_minimum, stock_status, category_name from stockitems inner join categories using (category_id)";
         return $this->db->query($query)->result_array();
     }
     function get_logs(){
@@ -28,7 +28,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_menu(){
-        $query = "Select menu_name, menu_description, menu_price, menu_availability, menu_image, size, category_name from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
+        $query = "Select menu_id, menu_name, menu_description, menu_price, menu_availability, menu_image, size, category_name from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
         return $this->db->query($query)->result_array();
     }
     function get_sales(){
@@ -36,11 +36,11 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_sources(){
-        $query = "Select source_name, contact_num, status from sources order by source_name asc";
+        $query = "Select source_id, source_name, contact_num, status from sources order by source_name asc";
         return $this->db->query($query)->result_array();
     }
     function get_spoilages(){
-        $query = "Select stype, sqty, sdate, remarks, stock_unit, stock_name, menu_name, date_recorded from spoilages inner join stockitems using (stock_id) inner join using (menu_id)";
+        $query = "Select sid, stype, sqty, sdate, remarks, stock_unit, stock_name, menu_name, date_recorded from spoilages inner join stockitems using (stock_id) inner join using (menu_id)";
         return $this->db->query($query)->result_array();
     }
     function get_tables(){

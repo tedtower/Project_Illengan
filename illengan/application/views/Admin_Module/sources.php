@@ -76,12 +76,8 @@
         <table id="table" class="display">
                   <thead>
                     <tr>
-                      <!-- <th scope="col">Code</th> -->
-                      <th scope="col">Menu Item</th>
-                      <th scope="col">Description</th>
-                      <th scope="col">Size</th>
-                      <th scope="col">Category</th>
-                      <th scope="col">Price</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Contact</th>
                       <th scope="col">Status</th>
                       <th scope="col">Actions</th>
                     </tr>
@@ -89,17 +85,13 @@
     
                   <tbody>
                     <?php 
-                    if (isset($menu)){
-                      foreach ($menu as $item){
+                    if (isset($source)){
+                      foreach ($source as $source){
                     ?>
                     <tr>
-                      <!-- <th scope="row">1</th> -->
-                      <td><?php echo $item['menu_name'] ?></td>
-                      <td><?php echo $item['menu_description']?></td>
-                      <td><?php echo isset($item['size']) ? 'N/A': $item['size']?></td>
-                      <td><?php echo $item['category_name']?></td>
-                      <td>&#8369;<?php echo $item['menu_price']?></td>
-                      <td><?php echo $item['menu_availability']?></td>
+                      <td><?php echo $source['source_name'] ?></td>
+                      <td><?php echo $source['source_description']?></td>
+                      <td><?php echo $source['status']?></td>
                       <td>
                         <div class="text-left mt-2">
                           <button class="btn btn-primary btn-xs mb-2">Edit</button>
@@ -114,4 +106,5 @@
               
             </table>
         </div>
-    
+    </body>
+</html>

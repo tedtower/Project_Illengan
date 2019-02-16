@@ -7,7 +7,7 @@ class Admin extends CI_Controller{
     function viewAccounts(){
         $this->load->model('adminmodel');
         $data['account'] = $this->adminmodel->get_accounts();
-        $this->load->view('admin_module/',$data);
+        $this->load->view('admin_module/accounts',$data);
     }
 
     function viewCategories(){
@@ -19,13 +19,13 @@ class Admin extends CI_Controller{
     function viewInventory(){
         $this->load->model('adminmodel');
         $data['stock'] = $this->adminmodel->get_inventory();
-        $this->load->view('admin_module/',$data);
+        $this->load->view('admin_module/inventory',$data);
     }
 
     function viewLogs(){
         $this->load->model('adminmodel');
         $data['log'] = $this->adminmodel->get_logs();
-        $this->load->view('admin_module/',$data);
+        $this->load->view('admin_module/logs',$data);
     }
 
     function viewMenu(){
@@ -37,25 +37,25 @@ class Admin extends CI_Controller{
     function viewSales(){
         $this->load->model('adminmodel');
         $data['sales'] = $this->adminmodel->get_sales();
-        $this->load->view('admin_module/',$data);
+        $this->load->view('admin_module/sales',$data);
     }
 
     function viewSources(){
         $this->load->model('adminmodel');
         $data['source'] = $this->adminmodel->get_sources();
-        $this->load->view('admin_module/',$data);
+        $this->load->view('admin_module/sources',$data);
     }
 
     function viewSpoilages(){
         $this->load->model('adminmodel');
         $data['spoilage'] = $this->adminmodel->get_spoilages();
-        $this->load->view('admin_module/',$data);
+        $this->load->view('admin_module/spoilages',$data);
     }
 
     function viewTables(){
         $this->load->model('adminmodel');
         $data['table'] = $this->adminmodel->get_tables();
-        $this->load->view('admin_module/',$data);
+        $this->load->view('admin_module/tables',$data);
     }
 
     function viewTrans(){
