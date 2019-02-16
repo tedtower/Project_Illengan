@@ -26,7 +26,7 @@
     </div>
 
     <!-- Left Sidebar-->
-    <div class="nav-left-sidebar dark-sidebar">
+    <!-- <div class="nav-left-sidebar dark-sidebar">
         <div class="menu-list">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <a class="d-xl-none d-lg-none" href="dashboard.html">Dashboard</a>
@@ -67,7 +67,7 @@
                 </div>
             </nav>
         </div>
-    </div>
+    </div> -->
     <!-- End of Left Sidebar -->
 
     <!-- Content -->

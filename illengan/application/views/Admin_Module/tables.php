@@ -53,7 +53,10 @@
         </div>
     </div>
     <div>
-        <a href="<?php echo site_url('admin/tables/add')?>">Add Table</a>
+        <form method="get" action="<?php echo site_url('admin/tables/add')?>">
+            <span>Table Number: </span> <input name="table_no" type="number" value="">
+            <input type="submit" value="Submit">
+        </form>
     </div>
     <div class="container">
         <table id="table" class="display">

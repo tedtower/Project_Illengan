@@ -16,7 +16,7 @@ class Admin extends CI_Controller{
 
     function viewCategories(){
         $data['category'] = $this->adminmodel->get_categories();
-        $this->load->view('admin_module/',$data);
+        $this->load->view('admin_module/categories',$data);
     }
 
     function viewInventory(){
@@ -60,13 +60,21 @@ class Admin extends CI_Controller{
     }
 
     function addTable(){
-        $this->adminmodel->add_table();
-        $this->viewTables();
+        $table_no = $this->input->get('table_no');
+        if($this->adminmodel->add_table($table_no)){
+            $this->viewTables();
+        }else{
+            echo "There was an error!!!!";
+        }
+        
     }
 
     function deleteTable($table_no){
-        $this->adminmodel->delete_table($table_no);
-        $this->viewTables();
+        if($this->adminmodel->delete_table($table_no)){
+            $this->viewTables();
+        }else{
+            echo "There was an error";
+        }
     }
 
 }
