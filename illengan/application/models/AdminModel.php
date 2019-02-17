@@ -19,7 +19,7 @@ class AdminModel extends CI_Model{
         $query = "Insert into categories (category_id, category_name, category_type) values (NULL, ? ,'Menu')";
         return $this->db->query($query,array($category_name));
     }
-    function edit_menucategory($category_name,$category_id){
+    function edit_menucategory($category_id,$category_name){
         $query = "update categories set category_name = ?  where category_id = ? and category_type='menu'";
         return $this->db->query($query,array($category_name,$category_id));
     }
@@ -35,7 +35,7 @@ class AdminModel extends CI_Model{
         $query = "Insert into categories (category_id, category_name, category_type) values (NULL, ? ,'Inventory')";
         return $this->db->query($query,array($category_name));
     }
-    function edit_stockcategory($category_name,$category_id){
+    function edit_stockcategory($category_id,$category_name){
         $query = "update categories set category_name = ?  where category_id = ? and category_type='inventory'";
         return $this->db->query($query,array($category_name,$category_id));
     }

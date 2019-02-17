@@ -70,9 +70,9 @@
                 <span>Edit Menu Category</span>
             </div>
             <div>
-                <form method="get" action="<?php echo site_url('admin/category/edit/')?>">
-                    <input type="hidden" name="category_id" value="">
-                    <span>CategoryName</span><input name="new_name" type="text" value="">
+                <form method="get" action="<?php echo site_url('admin/menucategories/edit')?>">
+                    <input id="category_id" type="hidden" name="category_id" value="">
+                    <span>CategoryName</span><input id="new_name" name="new_name" type="text" value="">
                     <div>
                         <button>Cancel</button>
                         <button type="submit">OK</button>
@@ -116,17 +116,17 @@
 var tuples = ((document.getElementById('tablevalues')).getElementsByTagName('tbody'))[0].getElementsByTagName('tr');
 var tupleNo = tuples.length;
 var editButtons = document.getElementsByName('editCategory');
-var deleteButtons = document.getElementsByName('deleteCategory');
+// var deleteButtons = document.getElementsByName('deleteCategory');
 var editModal = document.getElementById('editModal');
 for(var x = 0; x < tupleNo;x++){
     editButtons[x].addEventListener("click", showEditModal);
-    deleteButtons[x].addEventListener("click", showDeleteModal);
+    // deleteButtons[x].addEventListener("click", showDeleteModal);
 }   
 
     function showEditModal(event){
         var row = event.target.parentElement.parentElement;
-        editModal.getElementsByName('new_name')[0].value = row.firstChild.innerHTML;
-        editModal.getElementsByTagname('category_id')[0].value += event.target.getAttribute('data-id');
+        document.getElementById('new_name').value = row.firstElementChild.innerHTML;
+        document.getElementById('category_id').value = event.target.getAttribute('data-id');
     }
     function showDeleteModal(){
         

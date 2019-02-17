@@ -27,7 +27,7 @@ class Admin extends CI_Controller{
 
     function editStockCategory(){
         $category_id = $this->input->get('category_id');
-        $category_name = $this->input->get('category_name');
+        $category_name = $this->input->get('new_name');
         $data['category'] = $this->adminmodel->edit_stockcategory($category_id, $category_name);
         $this->viewStockCategories();
     }
@@ -53,7 +53,7 @@ class Admin extends CI_Controller{
 
     function editMenuCategory(){
         $category_id = $this->input->get('category_id');
-        $category_name = $this->input->get('category_name');
+        $category_name = $this->input->get('new_name');
         $data['category'] = $this->adminmodel->edit_menucategory($category_id, $category_name);
         $this->viewMenuCategories();
     }
