@@ -62,7 +62,7 @@
       <div class="card cd-mw">
         <!-- Card image -->
         <a data-toggle="modal" href="#menu_modal_sizable">
-          <img class="card-img-top" src="<?php echo base_url(); ?>application//images/customer/card.jpeg" alt="Name of the Product">
+          <img class="card-img-top" src="<?php echo base_url(); ?>application/images/customer/card.jpeg" alt="Name of the Product">
         </a>
         <!-- Card content -->
         <div class="card-body p-0 m-0 gabriola">
@@ -75,7 +75,7 @@
       <div class="card cd-mw">
         <!-- Card image -->
         <a data-toggle="modal" href="#menu_modal_unsizable">
-          <img class="card-img-top" src="/images/customer/card.jpeg" alt="Name of the Product">
+          <img class="card-img-top" src="<?php echo base_url(); ?>application/images/customer/card.jpeg" alt="Name of the Product">
         </a>
         <!-- Card content -->
         <div class="card-body p-0 m-0 gabriola">
