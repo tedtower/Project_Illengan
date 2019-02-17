@@ -63,9 +63,26 @@
                 </div>
             </form>
         </div>
-        <!-- END ADD CATEGORY-->   
+        <!-- END ADD CATEGORY-->
+        <!-- EDIT CATEGORY -->
+        <div id="editModal" > 
+            <div>
+                <span>Edit Menu Category</span>
+            </div>
+            <div>
+                <form method="get" action="<?php echo site_url('admin/category/edit/')?>">
+                    <input type="hidden" name="category_id" value="">
+                    <span>CategoryName</span><input name="new_name" type="text" value="">
+                    <div>
+                        <button>Cancel</button>
+                        <button type="submit">OK</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- END EDIT CATEGORY -->  
         <div>
-            <table>
+            <table id="tablevalues">
                 <thead>
                     <tr>
                         <th>Category Name</th>
@@ -81,7 +98,10 @@
                     <tr>
                         <td><?php echo $category['category_name']?></td>
                         <td><?php echo $category['menu_no']?></td>
-                        <td><?php echo 'action'?></td>
+                        <td>
+                            <button name="editCategory" data-id="<?php echo $category['category_id']?>">Edit</button>
+                            <a href="<?php echo site_url('admin/menucategories/delete/'.$category['category_id'])?>">Delete</a>
+                        </td>
                     </tr>
                     <?php
                         }
@@ -92,3 +112,23 @@
         </div>
     </body>
 </html>
+<script>
+var tuples = ((document.getElementById('tablevalues')).getElementsByTagName('tbody'))[0].getElementsByTagName('tr');
+var tupleNo = tuples.length;
+var editButtons = document.getElementsByName('editCategory');
+var deleteButtons = document.getElementsByName('deleteCategory');
+var editModal = document.getElementById('editModal');
+for(var x = 0; x < tupleNo;x++){
+    editButtons[x].addEventListener("click", showEditModal);
+    deleteButtons[x].addEventListener("click", showDeleteModal);
+}   
+
+    function showEditModal(event){
+        var row = event.target.parentElement.parentElement;
+        editModal.getElementsByName('new_name')[0].value = row.firstChild.innerHTML;
+        editModal.getElementsByTagname('category_id')[0].value += event.target.getAttribute('data-id');
+    }
+    function showDeleteModal(){
+        
+    }
+</script>

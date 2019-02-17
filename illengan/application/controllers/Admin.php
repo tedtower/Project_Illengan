@@ -25,6 +25,21 @@ class Admin extends CI_Controller{
         $this->viewStockCategories();
     }
 
+    function editStockCategory(){
+        $category_id = $this->input->get('category_id');
+        $category_name = $this->input->get('category_name');
+        $data['category'] = $this->adminmodel->edit_stockcategory($category_id, $category_name);
+        $this->viewStockCategories();
+    }
+
+    function deleteStockCategory($category_id){
+        if($this->adminmodel->delete_stockcategory($category_id)){
+            $this->viewStockCategories();
+        }else{
+            //error
+        }
+    }
+
     function viewMenuCategories(){
         $data['category'] = $this->adminmodel->get_menucategories();
         $this->load->view('admin_module/menucategories',$data);
@@ -34,6 +49,21 @@ class Admin extends CI_Controller{
         $category_name = $this->input->get('category_name');
         $this->adminmodel->add_menucategory($category_name);
         $this->viewMenuCategories();
+    }
+
+    function editMenuCategory(){
+        $category_id = $this->input->get('category_id');
+        $category_name = $this->input->get('category_name');
+        $data['category'] = $this->adminmodel->edit_menucategory($category_id, $category_name);
+        $this->viewMenuCategories();
+    }
+
+    function deleteMenuCategory($category_id){
+        if($this->adminmodel->delete_menucategory($category_id)){
+            $this->viewMenuCategories();
+        }else{
+            //error
+        }
     }
 
     function viewInventory(){

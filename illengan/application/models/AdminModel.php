@@ -19,6 +19,14 @@ class AdminModel extends CI_Model{
         $query = "Insert into categories (category_id, category_name, category_type) values (NULL, ? ,'Menu')";
         return $this->db->query($query,array($category_name));
     }
+    function edit_menucategory($category_name,$category_id){
+        $query = "update categories set category_name = ?  where category_id = ? and category_type='menu'";
+        return $this->db->query($query,array($category_name,$category_id));
+    }
+    function delete_menucategory($category_id){
+        $query = "delete from categories where category_id = ? and category_type= 'menu'";
+        return $this->db->query($query,array($category_id));
+    }
     function get_stockcategories(){
         $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
@@ -26,6 +34,14 @@ class AdminModel extends CI_Model{
     function add_stockcategory($category_name){
         $query = "Insert into categories (category_id, category_name, category_type) values (NULL, ? ,'Inventory')";
         return $this->db->query($query,array($category_name));
+    }
+    function edit_stockcategory($category_name,$category_id){
+        $query = "update categories set category_name = ?  where category_id = ? and category_type='inventory'";
+        return $this->db->query($query,array($category_name,$category_id));
+    }
+    function delete_stockcategory($category_id){
+        $query = "delete from categories where category_id = ? and category_type= 'inventory'";
+        return $this->db->query($query,array($category_id));
     }
     function get_inventory(){
         $query = "Select stock_id, stock_name, stock_quantity, stock_unit, stock_minimum, stock_status, category_name from stockitems inner join categories using (category_id)";
