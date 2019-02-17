@@ -48,9 +48,22 @@
             </div>
         </div>
     <!-- END OF SIDEBAR-->
+        <!-- ADD CATEGORY-->
         <div>
-            
-        </div>    
+            <div>
+            <span>Add Menu Category</span>
+            </div>
+            <form method="get">
+                <div>
+                    <span>Category Name: </span><input type="text" name="category_name" value="">
+                </div>
+                <div>
+                    <button onclick="">Cancel</button>
+                    <button type="submit" formaction="<?php echo site_url('admin/menucategories/add')?>">Add</button>
+                </div>
+            </form>
+        </div>
+        <!-- END ADD CATEGORY-->   
         <div>
             <table>
                 <thead>

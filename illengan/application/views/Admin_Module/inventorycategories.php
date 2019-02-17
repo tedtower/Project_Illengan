@@ -48,8 +48,25 @@
             </div>
         </div>
     <!-- END OF SIDEBAR-->
+    <!-- ADD CATEGORY-->
         <div>
-            <table id="tablevalues">
+            <div>
+            <span>Add Inventory Category</span>
+            </div>
+            <form method="get">
+                <div>
+                    <span>Category Name</span><input type="text" name="category_name" value="">
+                </div>
+                <div>
+                    <button onclick="">Cancel</button>
+                    <button type="submit" formaction="<?php echo site_url('admin/stockcategories/add')?>" value="Add">Add</button>
+                </div>
+            </form>
+        </div>
+        <!-- END ADD CATEGORY-->
+        <!-- TABLE OF VALUES-->
+        <div>
+            <table>
                 <thead>
                     <tr>
                         <th>Category Name</th>
@@ -77,6 +94,7 @@
                 </tbody>
             </table>
         </div>
+        <!-- END TABLE OF VALUES-->
     </body>
     <!-- <div id="editModal"> 
         <div>
@@ -109,5 +127,8 @@ for(var x = 0; x < tupleNo;x++){
             arrayValues.push(escape(array[y].innerHTML));
         }
         event.target.parentElement.parentElement
+    }
+    function closeModal(){
+        
     }
 </script>

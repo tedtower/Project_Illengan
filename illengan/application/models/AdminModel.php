@@ -12,12 +12,20 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_menucategories(){
-        $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories inner join stockitems using (stock_id) where category_type = 'inventory' group by category_name order by category_name asc";
+        $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories left join menu using (category_id) where category_type = 'menu' group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
     }
+    function add_menucategory($category_name){
+        $query = "Insert into categories (category_id, category_name, category_type) values (NULL, ? ,'Menu')";
+        return $this->db->query($query,array($category_name));
+    }
     function get_stockcategories(){
-        $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories inner join menu using (menu_id) where category_type = 'menu' group by category_name order by category_name asc";
+        $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
+    }
+    function add_stockcategory($category_name){
+        $query = "Insert into categories (category_id, category_name, category_type) values (NULL, ? ,'Inventory')";
+        return $this->db->query($query,array($category_name));
     }
     function get_inventory(){
         $query = "Select stock_id, stock_name, stock_quantity, stock_unit, stock_minimum, stock_status, category_name from stockitems inner join categories using (category_id)";

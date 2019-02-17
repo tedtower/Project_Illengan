@@ -14,9 +14,26 @@ class Admin extends CI_Controller{
         $this->load->view('admin_module/accounts',$data);
     }
 
-    function viewCategories(){
-        $data['category'] = $this->adminmodel->get_categories();
-        $this->load->view('admin_module/categories',$data);
+    function viewStockCategories(){
+        $data['category'] = $this->adminmodel->get_stockcategories();
+        $this->load->view('admin_module/inventorycategories',$data);
+    }
+
+    function addStockCategory(){
+        $category_name = $this->input->get('category_name');
+        $data['category'] = $this->adminmodel->add_stockcategory($category_name);
+        $this->viewStockCategories();
+    }
+
+    function viewMenuCategories(){
+        $data['category'] = $this->adminmodel->get_menucategories();
+        $this->load->view('admin_module/menucategories',$data);
+    }
+
+    function addMenuCategory(){
+        $category_name = $this->input->get('category_name');
+        $this->adminmodel->add_menucategory($category_name);
+        $this->viewMenuCategories();
     }
 
     function viewInventory(){
