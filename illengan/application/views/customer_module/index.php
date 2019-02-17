@@ -7,19 +7,19 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>Menu Card</title>
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="<?php echo base_url('application/css/frameworks/all.min.css')?>">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>application/css/frameworks/all.min.css">
   <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="<?php echo base_url('application/css/frameworks/bootstrap.min.css')?>">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>application/css/frameworks/bootstrap.min.css">
   <!-- Material Design Bootstrap -->
-  <link rel="stylesheet" href="<?php echo base_url('application/css/frameworks/mdb.min.css')?>">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>application/css/frameworks/mdb.min.css">
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="<?php echo base_url('application/css/customer/style.css')?>">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>application/css/customer/style.css">
 </head>
 
 <!--Main Navigation-->
 <header>
   <nav class="navbar navbar-expand-sm fixed-top navbar-dark brown darken-2 scrolling-navbar py-0 my-0">
-    <img class="img-logo mr-3" src="../../images/customer/logo.png">
+    <img class="img-logo mr-3" src="<?php echo base_url(); ?>application//images/customer/logo.png">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -62,7 +62,7 @@
       <div class="card cd-mw">
         <!-- Card image -->
         <a data-toggle="modal" href="#menu_modal_sizable">
-          <img class="card-img-top" src="media/card.jpeg" alt="Name of the Product">
+          <img class="card-img-top" src="<?php echo base_url(); ?>application/images/customer/card.jpeg" alt="Name of the Product">
         </a>
         <!-- Card content -->
         <div class="card-body p-0 m-0 gabriola">
@@ -75,7 +75,7 @@
       <div class="card cd-mw">
         <!-- Card image -->
         <a data-toggle="modal" href="#menu_modal_unsizable">
-          <img class="card-img-top" src="media/card.jpeg" alt="Name of the Product">
+          <img class="card-img-top" src="<?php echo base_url(); ?>application/images/customer/card.jpeg" alt="Name of the Product">
         </a>
         <!-- Card content -->
         <div class="card-body p-0 m-0 gabriola">
@@ -97,7 +97,7 @@
         <!-- Modal Body -->
         <div class="modal-body">
           <!-- Menu Image -->
-          <img class="w-100" src="media/card.jpeg" alt="Menu Item Name">
+          <img class="w-100" src="<?php echo base_url(); ?>application/images/customer/card.jpeg" alt="Menu Item Name">
           <!-- Title And Price -->
           <div class="d-flex justify-content-between gabriola rp-title">
             <p>Menu Item Name</p>
@@ -153,7 +153,7 @@
         <!-- Modal Body -->
         <div class="modal-body">
           <!-- Menu Image -->
-          <img class="w-100" src="media/card.jpeg" alt="Menu Item Name">
+          <img class="w-100" src="<?php echo base_url(); ?>application/images/customer/card.jpeg" alt="Menu Item Name">
           <!-- Title And Price -->
           <div class="d-flex justify-content-between gabriola rp-title">
             <p>Menu Item Name</p>
@@ -194,15 +194,15 @@
 
   <!-- SCRIPTS -->
   <!-- JQuery -->
-  <script type="text/javascript" src="<?php echo base_url('application/js/frameworks/jquery-3.3.1.min.js')?>"></script>
+  <script type="text/javascript" src="<?php echo base_url(); ?>application/js/frameworks/jquery-3.3.1.min.js"></script>
   <!-- Bootstrap tooltips -->
-  <script type="text/javascript" src="<?php echo base_url('application/js/frameworks/popper.min.js')?>"></script>
+  <script type="text/javascript" src="<?php echo base_url(); ?>application/js/frameworks/popper.min.js"></script>
   <!-- Bootstrap core JavaScript -->
-  <script type="text/javascript" src="<?php echo base_url('application/js/frameworks/bootstrap.min.js')?>"></script>
+  <script type="text/javascript" src="<?php echo base_url(); ?>application/js/frameworks/bootstrap.min.js"></script>
   <!-- MDB core JavaScript -->
-  <script type="text/javascript" src="<?php echo base_url('application/js/frameworks/mdb.min.js')?>"></script>
+  <script type="text/javascript" src="<?php echo base_url(); ?>application/js/frameworks/mdb.min.js"></script>
   <!-- Custom JavaScript -->
-  <script type="text/javascript" src="<?php echo base_url('application/js/customer/indec.js')?>"></script>
+  <script type="text/javascript" src="<?php echo base_url(); ?>application/js/customer/indec.js"></script>
 </body>
 
 </html>
