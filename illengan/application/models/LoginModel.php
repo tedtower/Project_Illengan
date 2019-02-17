@@ -18,5 +18,5 @@ class LoginModel extends CI_Model{
             echo $this->err[0];
         }
     }
-}    
+}
 ?>

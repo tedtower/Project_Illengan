@@ -1,49 +1,94 @@
 <?php
 class Admin extends CI_Controller{
-    function dashboard(){
 
+    function __construct(){
+        parent::__construct();
+        $this->load->model('adminmodel');
+    }
+    function viewDashboard(){
+        $this->load->view('admin_module/dashboard');
     }
 
     function viewAccounts(){
-        $this->load->model('adminmodel');
         $data['account'] = $this->adminmodel->get_accounts();
-        $this->load->view('admin_module/',$data);
+        $this->load->view('admin_module/accounts',$data);
     }
 
-    function viewCategories(){
-        $this->load->model('adminmodel');
-        $data['category'] = $this->adminmodel->get_categories();
-        $this->load->view('admin_module/',$data);
+    function viewStockCategories(){
+        $data['category'] = $this->adminmodel->get_stockcategories();
+        $this->load->view('admin_module/inventorycategories',$data);
+    }
+
+    function addStockCategory(){
+        $category_name = $this->input->get('category_name');
+        $data['category'] = $this->adminmodel->add_stockcategory($category_name);
+        $this->viewStockCategories();
+    }
+
+    function editStockCategory(){
+        $category_id = $this->input->get('category_id');
+        $category_name = $this->input->get('new_name');
+        $data['category'] = $this->adminmodel->edit_stockcategory($category_id, $category_name);
+        $this->viewStockCategories();
+    }
+
+    function deleteStockCategory($category_id){
+        if($this->adminmodel->delete_stockcategory($category_id)){
+            $this->viewStockCategories();
+        }else{
+            //error
+        }
+    }
+
+    function viewMenuCategories(){
+        $data['category'] = $this->adminmodel->get_menucategories();
+        $this->load->view('admin_module/menucategories',$data);
+    }
+
+    function addMenuCategory(){
+        $category_name = $this->input->get('category_name');
+        $this->adminmodel->add_menucategory($category_name);
+        $this->viewMenuCategories();
+    }
+
+    function editMenuCategory(){
+        $category_id = $this->input->get('category_id');
+        $category_name = $this->input->get('new_name');
+        $data['category'] = $this->adminmodel->edit_menucategory($category_id, $category_name);
+        $this->viewMenuCategories();
+    }
+
+    function deleteMenuCategory($category_id){
+        if($this->adminmodel->delete_menucategory($category_id)){
+            $this->viewMenuCategories();
+        }else{
+            //error
+        }
     }
 
     function viewInventory(){
-        $this->load->model('adminmodel');
         $data['stock'] = $this->adminmodel->get_inventory();
-        $this->load->view('admin_module/',$data);
+        $this->load->view('admin_module/inventory',$data);
     }
 
     function viewLogs(){
-        $this->load->model('adminmodel');
         $data['log'] = $this->adminmodel->get_logs();
-        $this->load->view('admin_module/',$data);
+        $this->load->view('admin_module/logs',$data);
     }
 
     function viewMenu(){
-        $this->load->model('adminmodel');
         $data['menu'] = $this->adminmodel->get_menu();
         $this->load->view('admin_module/menuitems',$data);
     }
 
     function viewSales(){
-        $this->load->model('adminmodel');
         $data['sales'] = $this->adminmodel->get_sales();
-        $this->load->view('admin_module/',$data);
+        $this->load->view('admin_module/sales',$data);
     }
 
     function viewSources(){
-        $this->load->model('adminmodel');
         $data['source'] = $this->adminmodel->get_sources();
-        $this->load->view('admin_module/',$data);
+        $this->load->view('admin_module/sources',$data);
     }
 
     function viewSpoilagesMenu(){
@@ -58,13 +103,11 @@ class Admin extends CI_Controller{
     }
 
     function viewTables(){
-        $this->load->model('adminmodel');
         $data['table'] = $this->adminmodel->get_tables();
-        $this->load->view('admin_module/',$data);
+        $this->load->view('admin_module/tables',$data);
     }
 
     function viewTrans(){
-        $this->load->model('adminmodel');
         $data['transaction'] = $this->adminmodel->get_transactions();
         $this->load->view('admin_module/',$data);
     }
@@ -98,5 +141,23 @@ class Admin extends CI_Controller{
         $this->adminmodel->add_damages_stock($stype,$stock_name,$sqty,$sdate,$remarks);
         $this->load->view('admin_module/add_spoilages_stock'); 
     }
+    function addTable(){
+        $table_no = $this->input->get('table_no');
+        if($this->adminmodel->add_table($table_no)){
+            $this->viewTables();
+        }else{
+            echo "There was an error!!!!";
+        }
+        
+    }
+
+    function deleteTable($table_no){
+        if($this->adminmodel->delete_table($table_no)){
+            $this->viewTables();
+        }else{
+            echo "There was an error";
+        }
+    }
+
 }
 ?>
