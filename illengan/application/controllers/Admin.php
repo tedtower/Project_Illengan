@@ -46,10 +46,15 @@ class Admin extends CI_Controller{
         $this->load->view('admin_module/',$data);
     }
 
-    function viewSpoilages(){
-        $this->load->model('adminmodel');
-        $data['spoilage'] = $this->adminmodel->get_spoilages();
-        $this->load->view('admin_module/',$data);
+    function viewSpoilagesMenu(){
+        $this->load->model("adminmodel");
+        $data['spoilagesmenu'] = $this->adminmodel->get_spoilages_menu();
+        $this->load->view('admin_module/view_spoilages_menu', $data);
+    }
+    function viewSpoilagesStock(){
+        $this->load->model("adminmodel");
+        $data['spoilagesstock'] = $this->adminmodel->get_spoilages_stock();
+        $this->load->view('admin_module/view_spoilages_stock', $data);
     }
 
     function viewTables(){
@@ -63,6 +68,35 @@ class Admin extends CI_Controller{
         $data['transaction'] = $this->adminmodel->get_transactions();
         $this->load->view('admin_module/',$data);
     }
+    function deletespoilages($sid){
+        $this->load->model("adminmodel");
+        $this->adminmodel->delete_spoilages($sid); 
+        echo "Data deleted successfully !";
+        
+    }
+    function insertspoilagesmenu(){
+        $this->load->model('adminmodel');
 
+        $stype = $this->input->post("stype");
+        $menu_name =$this->input->post("menu_name");
+        $sqty =$this->input->post("sqty");
+        $sdate =$this->input->post("sdate");
+        $remarks =$this->input->post("remarks");
+
+        $this->adminmodel->add_damages_menu($stype,$menu_name,$sqty,$sdate,$remarks);
+        $this->load->view('admin_module/add_spoilages_menu'); 
+    }
+    function insertspoilagesstock(){
+        $this->load->model('adminmodel');
+
+        $stype = $this->input->post("stype");
+        $stock_name =$this->input->post("stock_name");
+        $sqty =$this->input->post("sqty");
+        $sdate =$this->input->post("sdate");
+        $remarks =$this->input->post("remarks");
+
+        $this->adminmodel->add_damages_stock($stype,$stock_name,$sqty,$sdate,$remarks);
+        $this->load->view('admin_module/add_spoilages_stock'); 
+    }
 }
 ?>
