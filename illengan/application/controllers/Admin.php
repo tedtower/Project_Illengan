@@ -10,10 +10,33 @@ class Admin extends CI_Controller{
     }
 
     function viewAccounts(){
+        $this->load->model("adminmodel");
         $data['account'] = $this->adminmodel->get_accounts();
-        $this->load->view('admin_module/accounts',$data);
+        $this->load->view('admin_module/view_accounts',$data);
     }
+    function viewChangePassword($account_id){
+         $this->load->view('admin_module/changePassword',$account_id);
+    }
+    function changeAccountPassword($account_id){ //dito ka nagstop ikucompare mo yung old pass sa old pass(retrieve)
+        $this->load->model("adminmodel");
 
+        $old_password = $this->input->post('old_password');
+        $new_password = $this->input->post('new_password');
+        $new_password_confirmation = $this->input->post('new_password_confirmation');
+
+
+
+        $data['changepassword'] = $this->adminmodel->get_accounts();
+        $this->viewChangePassword($account_id);
+    }
+    function deleteAccount($account_id){
+        $this->load->model("adminmodel");
+        $this->adminmodel->delete_spoilages($account_id); 
+        echo "Data deleted successfully !";
+    }
+    function editAccount(){
+ 
+    }
     function viewStockCategories(){
         $data['category'] = $this->adminmodel->get_stockcategories();
         $this->load->view('admin_module/inventorycategories',$data);
