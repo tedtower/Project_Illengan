@@ -6,121 +6,202 @@ class Admin extends CI_Controller{
         $this->load->model('adminmodel');
     }
     function viewDashboard(){
-        $this->load->view('admin_module/dashboard');
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $this->load->view('admin_module/dashboard');
+        }else{
+
+        }
     }
 
     function viewAccounts(){
-        $data['account'] = $this->adminmodel->get_accounts();
-        $this->load->view('admin_module/accounts',$data);
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['account'] = $this->adminmodel->get_accounts();
+            $this->load->view('admin_module/accounts',$data);
+        }else{
+
+        }
     }
 
     function viewStockCategories(){
-        $data['category'] = $this->adminmodel->get_stockcategories();
-        $this->load->view('admin_module/inventorycategories',$data);
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['category'] = $this->adminmodel->get_stockcategories();
+            $this->load->view('admin_module/inventorycategories',$data);
+        }else{
+
+        }
     }
 
     function addStockCategory(){
-        $category_name = $this->input->get('category_name');
-        $data['category'] = $this->adminmodel->add_stockcategory($category_name);
-        $this->viewStockCategories();
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $category_name = $this->input->get('category_name');
+            $data['category'] = $this->adminmodel->add_stockcategory($category_name);
+            $this->viewStockCategories();
+        }else{
+
+        }
     }
 
     function editStockCategory(){
-        $category_id = $this->input->get('category_id');
-        $category_name = $this->input->get('new_name');
-        $data['category'] = $this->adminmodel->edit_stockcategory($category_id, $category_name);
-        $this->viewStockCategories();
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $category_id = $this->input->get('category_id');
+            $category_name = $this->input->get('new_name');
+            $data['category'] = $this->adminmodel->edit_stockcategory($category_id, $category_name);
+            $this->viewStockCategories();
+        }else{
+
+        }
     }
 
     function deleteStockCategory($category_id){
-        if($this->adminmodel->delete_stockcategory($category_id)){
-            $this->viewStockCategories();
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            if($this->adminmodel->delete_stockcategory($category_id)){
+                $this->viewStockCategories();
+            }else{
+                //error
+            }
         }else{
-            //error
+
         }
     }
 
     function viewMenuCategories(){
-        $data['category'] = $this->adminmodel->get_menucategories();
-        $this->load->view('admin_module/menucategories',$data);
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['category'] = $this->adminmodel->get_menucategories();
+            $this->load->view('admin_module/menucategories',$data);
+        }else{
+
+        }
     }
 
     function addMenuCategory(){
-        $category_name = $this->input->get('category_name');
-        $this->adminmodel->add_menucategory($category_name);
-        $this->viewMenuCategories();
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $category_name = $this->input->get('category_name');
+            $this->adminmodel->add_menucategory($category_name);
+            $this->viewMenuCategories();
+        }else{
+
+        }
     }
 
     function editMenuCategory(){
-        $category_id = $this->input->get('category_id');
-        $category_name = $this->input->get('new_name');
-        $data['category'] = $this->adminmodel->edit_menucategory($category_id, $category_name);
-        $this->viewMenuCategories();
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $category_id = $this->input->get('category_id');
+            $category_name = $this->input->get('new_name');
+            $data['category'] = $this->adminmodel->edit_menucategory($category_id, $category_name);
+            $this->viewMenuCategories();
+        }else{
+            redirect('login');
+        }
     }
 
     function deleteMenuCategory($category_id){
-        if($this->adminmodel->delete_menucategory($category_id)){
-            $this->viewMenuCategories();
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            if($this->adminmodel->delete_menucategory($category_id)){
+                $this->viewMenuCategories();
+            }else{
+                //error
+            }
         }else{
-            //error
+
         }
     }
 
     function viewInventory(){
-        $data['stock'] = $this->adminmodel->get_inventory();
-        $this->load->view('admin_module/inventory',$data);
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['stock'] = $this->adminmodel->get_inventory();
+            $this->load->view('admin_module/inventory',$data);
+        }else{
+
+        }
     }
 
     function viewLogs(){
-        $data['log'] = $this->adminmodel->get_logs();
-        $this->load->view('admin_module/logs',$data);
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['log'] = $this->adminmodel->get_logs();
+            $this->load->view('admin_module/logs',$data);
+        }else{
+
+        }
     }
 
     function viewMenu(){
-        $data['menu'] = $this->adminmodel->get_menu();
-        $this->load->view('admin_module/menuitems',$data);
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['menu'] = $this->adminmodel->get_menu();
+            $data['category'] = $this->adminmodel->get_categories();
+            $this->load->view('admin_module/menuitems',$data);
+        }else{
+
+        }
     }
 
     function viewSales(){
-        $data['sales'] = $this->adminmodel->get_sales();
-        $this->load->view('admin_module/sales',$data);
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['sales'] = $this->adminmodel->get_sales();
+            $this->load->view('admin_module/sales',$data);
+        }else{
+
+        }
     }
 
     function viewSources(){
-        $data['source'] = $this->adminmodel->get_sources();
-        $this->load->view('admin_module/sources',$data);
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['source'] = $this->adminmodel->get_sources();
+            $this->load->view('admin_module/sources',$data);
+        }else{
+
+        }
     }
 
     function viewSpoilages(){
-        $data['spoilage'] = $this->adminmodel->get_spoilages();
-        $this->load->view('admin_module/spoilages',$data);
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['spoilage'] = $this->adminmodel->get_spoilages();
+            $this->load->view('admin_module/spoilages',$data);
+        }else{
+
+        }
     }
 
     function viewTables(){
-        $data['table'] = $this->adminmodel->get_tables();
-        $this->load->view('admin_module/tables',$data);
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['table'] = $this->adminmodel->get_tables();
+            $this->load->view('admin_module/tables',$data);
+        }else{
+
+        }
     }
 
     function viewTrans(){
-        $data['transaction'] = $this->adminmodel->get_transactions();
-        $this->load->view('admin_module/',$data);
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['transaction'] = $this->adminmodel->get_transactions();
+            $this->load->view('admin_module/',$data);
+        }else{
+
+        }
     }
 
     function addTable(){
-        $table_no = $this->input->get('table_no');
-        if($this->adminmodel->add_table($table_no)){
-            $this->viewTables();
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $table_no = $this->input->get('table_no');
+            if($this->adminmodel->add_table($table_no)){
+                $this->viewTables();
+            }else{
+                echo "There was an error!!!!";
+            }
         }else{
-            echo "There was an error!!!!";
+
         }
         
     }
 
     function deleteTable($table_no){
-        if($this->adminmodel->delete_table($table_no)){
-            $this->viewTables();
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            if($this->adminmodel->delete_table($table_no)){
+                $this->viewTables();
+            }else{
+                echo "There was an error";
+            }
         }else{
-            echo "There was an error";
+
         }
     }
 
