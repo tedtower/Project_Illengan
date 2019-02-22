@@ -57,6 +57,12 @@ $route['Add_Damages/form_validation'] = 'Add_damages/form_validation';
 $route['Add_Damages/added'] = 'Add_damages/added';
 $route['verifylogin'] = "login/check_cred";
 $route['admin/menu'] = "admin/viewmenu";
+$route['admin/viewspoilagesmenu'] = "admin/viewspoilagesmenu";
+$route['admin/viewspoilagesstock'] = "admin/viewspoilagesstock";
+$route['admin/addspoilagesmenu'] = "admin/addspoilagesmenu";
+$route['admin/insertspoilagesstock'] = "admin/insertspoilagesstock";
+$route['admin/insertspoilagesmenu'] = "admin/insertspoilagesmenu";
+
 $route['admin/dashboard'] = "admin/viewdashboard";
 $route['admin/tables'] = "admin/viewtables";
 $route['admin/tables/add'] = "admin/addtable";
@@ -70,3 +76,4 @@ $route['admin/stockcategories/add'] = "admin/addstockcategory";
 $route['admin/stockcategories/delete/(:num)'] = "admin/deletestockcategory/$1";
 $route['admin/stockcategories/edit'] = "admin/editstockcategory/";
 $route['admin/sources'] = "admin/viewsources";
+$route['admin/viewaccounts'] = "admin/viewaccounts";

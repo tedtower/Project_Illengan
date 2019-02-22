@@ -98,14 +98,15 @@
                     <!-- <input type="text" name="category_name" value=""> -->
                     <select name="category">
                         <?php 
-                      if(isset($category)){
-                        foreach($category as $category){
+                      if(!empty($category)){
+                        foreach($category as $category_item){
                       ?>
-                        <option value="<?php echo $category['category_id']?>"><?php echo $category['category_name']?>
+                        <option value="<?php echo $category_item['category_id']?>"><?php echo $category_item['category_name']?>
                         </option>
                         <?php
                         }
-                      }?>
+                      }
+                      ?>
                     </select>
                     <input type="text" name="price" value="">
                     <input id="avail" type="radio" name="availability" value="available"><label
@@ -140,13 +141,13 @@
                     <input type="text" name="item_desc" value="">
                     <!-- <input type="text" name="category_name" value=""> -->
                     <select name="category">
-                        <?php 
-                      if(isset($category)){
-                        foreach($category as $category){
+                    <?php 
+                      if(!empty($category)){
+                        foreach($category as $category_item){
                       ?>
-                        <option value="<?php echo $category['category_id']?>"><?php echo $category['category_name']?>
+                        <option value="<?php echo $category_item['category_id']?>"><?php echo $category_item['category_name']?>
                         </option>
-                        <?php
+                    <?php
                         }
                       }?>
                     </select>
