@@ -78,6 +78,81 @@
     <!-- End of Left Sidebar -->
 
     <!-- Content -->
+    <!-- ADD INVENTORY ITEM -->
+    <div>
+    <div><span>Add Inventory</span></div>
+    <form>
+        <div>
+            <span>Stock Name: </span>
+            <span>Stock Quantity: </span>
+            <span>Stock Unit: </span>
+            <span>Stock Minimum Quantity: </span>
+            <span>Stock Category: </span>
+            <span>Stock Status: </span>
+        </div>
+        <div>
+            <input name="stock_name" type="text" value="">
+            <input name="stock_quantity" type="number" value="">
+            <input name="stock_unit" type="text" value="">
+            <input name="stock_minqty" type="number" value="">
+            <select name = "stock_category">
+            <?php
+            if(isset($category)){
+                foreach($category as $category_item){
+            ?>
+                <option value="<?php echo $category_item['category_id']?>"><?php echo $category_item['category_name']?></option>
+            <?php        
+                }
+            }
+            ?>
+            </select>
+            <select name="stock_status">
+                <option value="Available">Available</option>
+                <option value="Unavailable">Unavailable</option>
+            </select>
+        </div>
+    </form>
+    </div>
+    <!-- END ADD INVENTORY ITEM -->
+    <!-- EDIT INVENTORY ITEM -->
+    <div>
+    <div><span>Edit Inventory</span></div>
+    <form>
+        <div>            
+            <span>Stock Name: </span>
+            <span>Stock Name: </span>
+            <span>Stock Quantity: </span>
+            <span>Stock Unit: </span>
+            <span>Stock Minimum Quantity: </span>
+            <span>Stock Category: </span>
+            <span>Stock Status: </span>
+        </div>
+        <div>
+            <input name="stock_id" type="text" disabled="disabled">
+            <input name="stock_name" type="text" value="">
+            <input name="stock_quantity" type="number" value="">
+            <input name="stock_unit" type="text" value="">
+            <input name="stock_minqty" type="number" value="">
+            <select name = "stock_category">
+            <?php
+            if(isset($category)){
+                foreach($category as $category_item){
+            ?>
+                <option value="<?php echo $category_item['category_id']?>"><?php echo $category_item['category_name']?></option>
+            <?php        
+                }
+            }
+            ?>
+            </select>
+            <select name="stock_status">
+                <option value="Available">Available</option>
+                <option value="Unavailable">Unavailable</option>
+            </select>
+        </div>
+        
+    </form>
+    </div>
+    <!-- END EDIT INVENTORY ITEM -->
     <!-- Table -->
     <div class="container">
         <table id="table" class="display">
@@ -97,21 +172,21 @@
             <tbody>
                 <?php 
                     if (isset($stock)){
-                      foreach ($stock as $stock){
+                      foreach ($stock as $stock_item){
                     ?>
                 <tr>
-                    <td><?php echo $stock['stock_id'] ?></td>
-                    <td><?php echo $stock['stock_name']?></td>
-                    <td><?php echo $stock['stock_quantity']?></td>
-                    <td><?php echo $stock['stock_unit']?></td>
-                    <td><?php echo $stock['stock_minimum']?></td>
-                    <td><?php echo $stock['category_name']?></td>
-                    <td><?php echo $stock['stock_status']?></td>
+                    <td><?php echo $stock_item['stock_id'] ?></td>
+                    <td><?php echo $stock_item['stock_name']?></td>
+                    <td><?php echo $stock_item['stock_quantity']?></td>
+                    <td><?php echo $stock_item['stock_unit']?></td>
+                    <td><?php echo $stock_item['stock_minimum']?></td>
+                    <td><?php echo $stock_item['category_name']?></td>
+                    <td><?php echo $stock_item['stock_status']?></td>
                     <td>
                         <div class="text-left mt-2">
                             <button class="btn btn-primary btn-xs mb-2">Edit</button>
                             <button
-                                class="btn btn-success btn-xs mb-2"">Delete</button>
+                                class="btn btn-success btn-xs mb-2">Delete</button>
                         </div>
                       </td>
                     </tr>
