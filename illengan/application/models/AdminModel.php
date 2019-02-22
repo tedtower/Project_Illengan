@@ -52,7 +52,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function add_stockitem($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id){
-        $query = "Insert into stockitems (stock_id,stock_name,stock_quantity,stock_unit,stock_status,category_id) values (NULL,?,?,?,?,?,?);";
+        $query = "Insert into stockitems (stock_id,stock_name,stock_quantity,stock_unit,stock_minimum,stock_status,category_id) values (NULL,?,?,?,?,?,?);";
         return $this->db->query($query,array($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id));
     }
     function get_logs(){

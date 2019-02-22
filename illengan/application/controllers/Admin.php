@@ -279,7 +279,7 @@ class Admin extends CI_Controller{
                 if($this->adminmodel->add_stockitem($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id)){
                     $this->viewInventory();
                 }else{
-                    //error
+                    echo "asfgnkaenr;kglaskjdf;lkawjrslgkjalekrgn";
                 }
             }
 

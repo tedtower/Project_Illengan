@@ -100,7 +100,7 @@
             if(isset($category)){
                 foreach($category as $category_item){
             ?>
-                    <option value="<?php echo $category_item['category_id']?>">
+                    <option value="<?php echo $category_item['category_id']?>" <?php echo set_select('stock_category', $category_item['category_id'])?>>
                         <?php echo $category_item['category_name']?></option>
                     <?php        
                 }
@@ -108,8 +108,8 @@
             ?>
                 </select>
                 <select name="stock_status">
-                    <option value="Available">Available</option>
-                    <option value="Unavailable">Unavailable</option>
+                    <option value="Available"<?php echo set_select('stock_status', 'Available')?>>Available</option>
+                    <option value="Unavailable"<?php echo set_select('stock_status', 'Unavailable')?>>Unavailable</option>
                 </select>
             </div>
             <div>
