@@ -78,3 +78,4 @@ $route['admin/stockcategories/edit'] = "admin/editstockcategory/";
 $route['admin/sources'] = "admin/viewsources";
 $route['admin/viewaccounts'] = "admin/viewaccounts";
 $route['admin/inventory'] = "admin/viewinventory";
+$route['admin/inventory/add'] = "admin/addstockitem";

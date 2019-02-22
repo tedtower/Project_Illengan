@@ -258,6 +258,35 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
+//functions for adding///////////////////////////////////////////////////////////////////////////
+    function addStockItem(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->form_validation->set_rules('stock_name','Stock Name','trim|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('stock_quantity','Stock Quantity','trim|required|numeric');
+            $this->form_validation->set_rules('stock_minqty','Minimum Quantity','trim|numeric');
+            $this->form_validation->set_rules('stock_status','Stock Status','trim|required|alpha');
+            $this->form_validation->set_rules('stock_category','Stock Status','trim|required|numeric');
+            
+            if($this->form_validation->run() == FALSE){
+                $this->viewInventory();
+            }else{
+                $stock_name = $this->input->post('stock_name');
+                $stock_quantity = $this->input->post('stock_quantity');
+                $stock_unit = $this->input->post('stock_unit');
+                $stock_minimum = $this->input->post('stock_minqty');
+                $stock_status = $this->input->post('stock_status');
+                $category_id = $this->input->post('stock_category');
+                if($this->adminmodel->add_stockitem($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id)){
+                    $this->viewInventory();
+                }else{
+                    //error
+                }
+            }
+
+        }else{
+            redirect('login');
+        }
+    }
 
 }
 ?>
