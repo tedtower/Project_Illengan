@@ -5,16 +5,8 @@ class Login extends CI_Controller{
         $this->load->view('landing');
     }
 
-    function load_adminlogin(){
-        $this->load->view('admin_module/login');
-    }
-
-    function load_baristalogin(){
-        $this->load->view('barista_module/login');
-    }
-
-    function load_cheflogin(){
-        $this->load->view('chef_module/login');
+    function viewlogin(){
+        $this->load->view('login');
     }
 
     function check_cred(){
@@ -24,7 +16,7 @@ class Login extends CI_Controller{
         $loginAttempt = $this->loginmodel->validate($uname,$pword);
         if(is_array($loginAttempt)){
             $user_data = array(
-                'userid' => $loginAttempt[0]['account_id'],
+                'user_id' => $loginAttempt[0]['account_id'],
                 'user_name' => ucfirst($loginAttempt[0]['account_username']),
                 'user_type' => $loginAttempt[0]['account_type']
             );
@@ -42,7 +34,7 @@ class Login extends CI_Controller{
             }
         }else{
             $data['err'] = $loginAttempt;
-            $this->load->view('admin_module/login',$data);
+            $this->load->view('login',$data);
         }
     }
 
