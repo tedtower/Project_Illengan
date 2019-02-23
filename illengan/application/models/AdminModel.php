@@ -3,17 +3,20 @@ class AdminModel extends CI_Model{
     
     private $err = array('Username does not exist!', 'Incorrect password');
 
-        function add_damages($data){
-        $this->db->insert("spoilages", $data);
-    }
     function get_accounts(){
         $query = "Select * from accounts";
         return $this->db->query($query)->result_array();
     }
-    //i'M CURRENTLY WORKING ON THIS
-    function change_account_password($account_id){
-        $query = "Update `accounts` set `account_password`= '$account_password' WHERE account_id = '$account_id'";
-        return $this->db->query($query)->wresult_array();
+   function change_account_password($new_password, $account_id){
+
+        $data = array(
+            'account_password' => $new_password
+         );
+
+         $this->db->where('account_id', $account_id);
+         $this->db->update('accounts', $data);
+         $this->db->affected_rows();
+         return true;       
     }
     function get_menucategories(){
         $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories left join menu using (category_id) where category_type = 'menu' group by category_id order by category_name asc";

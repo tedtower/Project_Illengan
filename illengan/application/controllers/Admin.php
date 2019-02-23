@@ -17,18 +17,27 @@ class Admin extends CI_Controller{
     function viewChangePassword($account_id){
          $this->load->view('admin_module/changePassword',$account_id);
     }
-    function changeAccountPassword($account_id){ //dito ka nagstop ikucompare mo yung old pass sa old pass(retrieve)
+    function changeAccountPassword(){ //dito ka nagstop set query result sa variable
         $this->load->model("adminmodel");
 
         $old_password = $this->input->post('old_password');
         $new_password = $this->input->post('new_password');
         $new_password_confirmation = $this->input->post('new_password_confirmation');
-
-
-
-        $data['changepassword'] = $this->adminmodel->get_accounts();
-        $this->viewChangePassword($account_id);
+        $account_id = $this->input->post('account_id');
+        
+        
+        $this->db->select('account_password')->from('accounts')->where('account_id',$account_id);
+        $current_password = $this->db->get();
+        
+        if(($old_password == $query) && ($new_password == $new_password_confirmation)){
+            $this->adminmodel->change_account_password($new_password, $account_id);
+            echo "Password changed successfully !";
+        }else{
+            echo "Passwords doesn't match";
+        }
     }
+        
+    
     function deleteAccount($account_id){
         $this->load->model("adminmodel");
         $this->adminmodel->delete_spoilages($account_id); 

@@ -12,24 +12,25 @@
 <br>
 <form method="post" action="<?php echo base_url()?>index.php/admin/changeAccountPassword">
 	<label for="formGroupExampleInput3">Old Password</label>
-		<input type="password" class="form-control"  name="old_password" placeholder="Price" required>
+		<input type="password" class="form-control"  name="old_password" placeholder="Old Password" required>
 		<span class="text-danger"><?php echo form_error("price"); ?></span>
 	</div>
 
 	<div class="form-group">
 		<label for="formGroupExampleInput4">New Password</label>
-		<input type="password" class="form-control" name="new_password" placeholder="Date" required>
+		<input type="password" class="form-control" name="new_password" placeholder="New Password" required>
 		<span class="text-danger"><?php echo form_error("date"); ?></span>
 	</div>
 
 	<div class="form-group">
 		<label for="formGroupExampleInput3">Confirm Password</label>
-		<input type="password" class="form-control"  name="new_password_confirmation" placeholder="remarks" required>
+		<input type="password" class="form-control"  name="new_password_confirmation" placeholder="Confirm Password" required>
 		<span class="text-danger"><?php echo form_error("remarks"); ?></span>
 	</div>
+	<input type='hidden' name='account_id' value='<?php $account_id = $this->input->post('account_id'); ?>'/> 
 	
 	<div class="form-group">
-		<input type="submit" class="btn btn-info" name="submit_password" value="Add">
+		<input type="submit" class="btn btn-info" name="submit_password" value="Update">
 	</div>
 </form>
 </body>

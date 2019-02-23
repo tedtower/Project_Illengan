@@ -72,7 +72,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <th>Damage date</th> <!--sdate-->
             <th>Date Recorded</th> <!--date_recorded-->
             <th>Remarks</th> <!--remarks-->
-            <th>Delete</th>
+            <th>Operations</th>
         </tr>
         <?php
             
