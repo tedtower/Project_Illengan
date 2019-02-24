@@ -3,21 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Customer extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
+	public function view($page = '') {
+		if(!file_exists(APPPATH.'views/customer/'.$page.'.php')) {
+			show_404();
+		}
+		$data['title'] = ucfirst($page);
+		$this->load->view('customer/head');
+		$this->load->view('customer/'.$page, $data);
+		$this->load->view('customer/foot');
+	}
+
 	public function view_menu() {
 		$this->load->model('Db_model');
 		$data = array();
@@ -61,7 +56,7 @@ class Customer extends CI_Controller {
 	}
 
 	function remove($rowid) {
-// Check rowid value.
+		// Check rowid value.
 		if ($rowid==="all"){
 		// Destroy data which store in session.
 		$this->cart->destroy();
@@ -82,5 +77,6 @@ class Customer extends CI_Controller {
 		$this->cart->destroy();
 		echo "destroy was called";
 	}
+
    }
 
