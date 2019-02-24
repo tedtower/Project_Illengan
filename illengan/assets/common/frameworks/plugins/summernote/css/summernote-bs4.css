@@ -2,9 +2,9 @@
     font-family: "summernote";
     font-style: normal;
     font-weight: normal;
-    src: url("../editor-fonts/summernote4c4d.eot?e557617934c52ea068954af79ed7c221");
-    src: url("../editor-fonts/summernoted41d.eot?#iefix") format("embedded-opentype"), url("../editor-fonts/summernote4c4d.woff?e557617934c52ea068954af79ed7c221")
-    format("woff"), url("../editor-fonts/summernote4c4d.ttf?e557617934c52ea068954af79ed7c221") format("truetype")
+    src: url("font/summernote4c4d.eot?e557617934c52ea068954af79ed7c221");
+    src: url("font/summernoted41d.eot?#iefix") format("embedded-opentype"), url("font/summernote4c4d.woff?e557617934c52ea068954af79ed7c221")
+    format("woff"), url("font/summernote4c4d.ttf?e557617934c52ea068954af79ed7c221") format("truetype")
 }
 
 [class^="note-icon-"]:before,
