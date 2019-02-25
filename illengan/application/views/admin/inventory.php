@@ -79,7 +79,7 @@
 
     <!-- Content -->
     <!-- ADD INVENTORY ITEM -->
-    <div>
+    <div id="addmodal">
         <div><span>Add Inventory</span></div>
         <form method="post">
             <div>
@@ -120,7 +120,7 @@
     </div>
     <!-- END ADD INVENTORY ITEM -->
     <!-- EDIT INVENTORY ITEM -->
-    <div>
+    <div id="editmodal">
         <div><span>Edit Inventory</span></div>
         <form method="post">
             <div>
@@ -155,7 +155,10 @@
                     <option value="Unavailable">Unavailable</option>
                 </select>
             </div>
-
+            <div>
+                <button type="reset">Cancel</button>
+                <button type="submit" formaction="<?php echo site_url("admin/inventory/edit")?>">OK</button>
+            </div>
         </form>
     </div>
     <!-- END EDIT INVENTORY ITEM -->
@@ -207,41 +210,19 @@
 </body>
 </html>
 <script>
-var stock_ids;       
-var stock_names;     
-var stock_qtys;      
-var stock_units;     
-var stock_mins;      
-var category_names;  
-var stock_statuses;  
-var editbuttons;     
     $(document).ready(function(){
         $('.editbutton').on('click',function(){
-            var index = $(this).attr('data-index');
-            
+            showEditModal($(this).attr('data-index'));
         });
     });
-    function showEditModal(){
-        $()
+    function showEditModal(index){
+        $("#editmodal input[name='new_stock_id']").val($(".stock_id").eq(index).text());
+        $("#editmodal input[name='new_stock_name']").val($(".stock_name").eq(index).text());
+        $("#editmodal input[name='new_stock_quantity']").val($(".stock_quantity").eq(index).text());
+        $("#editmodal input[name='new_stock_unit']").val($(".stock_unit").eq(index).text());
+        $("#editmodal input[name='new_stock_minqty']").val($(".stock_min").eq(index).text());
+        $("#editmodal input[name='new_stock_status']").val($(".stock_status").eq(index).text());
     }
-
-    function initialize(){
-        stock_ids       = $('.stock_id');
-        stock_names     = $('.stock_name');
-        stock_qtys      = $('.stock_qty');
-        stock_units     = $('.stock_unit');
-        stock_mins      = $('.stock_min');
-        category_names  = $('.category_name');
-        stock_statuses  = $('.stock_status');
-        editbuttons     = $('.editbutton');
-        deletebuttons   = $('.deletebutton');
+    function closeEditModal(){
     }
-
-    function setEvent(){
-        for(var x = 0 ; x < editButtons.length ; x++){
-            editbuttons[x].
-        }
-    }
-
-
 </script>
