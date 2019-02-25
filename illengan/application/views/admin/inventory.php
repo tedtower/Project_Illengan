@@ -40,34 +40,34 @@
                     <ul class="navbar-nav flex-column"><br>
 
                         <li class="nav-item">
-                            <a class="nav-item" href="<?php echo site_url('admin/dashboard')?>"><i
+                            <a class="nav-item" href="<?php echo site_url('admin/dashboard');?>"><i
                                     class="fa fa-fw fa-user-circle"></i>Dashboard</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-item" href="<?php echo site_url('admin/menu')?>"><i class=""></i>Menu
+                            <a class="nav-item" href="<?php echo site_url('admin/menu');?>"><i class=""></i>Menu
                                 Items</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-item" href="<?php echo site_url('admin/sales')?>"><i class=""></i>Sales</a>
+                            <a class="nav-item" href="<?php echo site_url('admin/sales');?>"><i class=""></i>Sales</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-item" href="<?php echo site_url('admin/inventory')?>"><i
+                            <a class="nav-item" href="<?php echo site_url('admin/inventory');?>"><i
                                     class=""></i>Inventory</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-item" href="<?php echo site_url('admin/tables')?>"><i class=""></i>Tables</a>
+                            <a class="nav-item" href="<?php echo site_url('admin/tables');?>"><i class=""></i>Tables</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-item" href="<?php echo site_url('')?>"><i class=""></i>Reports</a>
+                            <a class="nav-item" href="<?php echo site_url('');?>"><i class=""></i>Reports</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-item" href="<?php echo site_url('admin/accounts')?>"><i
+                            <a class="nav-item" href="<?php echo site_url('admin/accounts');?>"><i
                                     class=""></i>Accounts</a>
                         </li>
                     </ul>
@@ -91,25 +91,25 @@
                 <span>Stock Status: </span>
             </div>
             <div>
-                <input name="stock_name" type="text" value="<?php echo set_value('stock_name')?>">
-                <input name="stock_quantity" type="number" value="<?php echo set_value('stock_quantity')?>">
-                <input name="stock_unit" type="text" value="<?php echo set_value('stock_unit')?>">
-                <input name="stock_minqty" type="number" value="<?php echo set_value('stock_minqty')?>">
-                <select name="stock_category">
+                <input name="new_stock_name" type="text" value="<?php echo set_value('stock_name');?>">
+                <input name="new_stock_quantity" type="number" value="<?php echo set_value('stock_quantity');?>">
+                <input name="new_stock_unit" type="text" value="<?php echo set_value('stock_unit');?>">
+                <input name="new_stock_minqty" type="number" value="<?php echo set_value('stock_minqty');?>">
+                <select name="new_stock_category">
                     <?php
             if(isset($category)){
                 foreach($category as $category_item){
             ?>
-                    <option value="<?php echo $category_item['category_id']?>" <?php echo set_select('stock_category', $category_item['category_id'])?>>
-                        <?php echo $category_item['category_name']?></option>
+                    <option value="<?php echo $category_item['category_id'];?>" <?php echo set_select('stock_category', $category_item['category_id']);?>>
+                        <?php echo $category_item['category_name'];?></option>
                     <?php        
                 }
             }
             ?>
                 </select>
-                <select name="stock_status">
-                    <option value="Available"<?php echo set_select('stock_status', 'Available')?>>Available</option>
-                    <option value="Unavailable"<?php echo set_select('stock_status', 'Unavailable')?>>Unavailable</option>
+                <select name="new_stock_status">
+                    <option value="Available"<?php echo set_select('stock_status', 'Available');?>>Available</option>
+                    <option value="Unavailable"<?php echo set_select('stock_status', 'Unavailable');?>>Unavailable</option>
                 </select>
             </div>
             <div>
@@ -133,24 +133,24 @@
                 <span>Stock Status: </span>
             </div>
             <div>
-                <input name="stock_id" type="text" disabled="disabled">
-                <input name="stock_name" type="text" value="">
-                <input name="stock_quantity" type="number" value="">
-                <input name="stock_unit" type="text" value="">
-                <input name="stock_minqty" type="number" value="">
-                <select name="stock_category">
+                <input name="new_stock_id" type="text" disabled="disabled">
+                <input name="new_stock_name" type="text" value="">
+                <input name="new_stock_quantity" type="number" value="">
+                <input name="new_stock_unit" type="text" value="">
+                <input name="new_stock_minqty" type="number" value="">
+                <select name="new_stock_category">
                     <?php
             if(isset($category)){
                 foreach($category as $category_item){
             ?>
-                    <option value="<?php echo $category_item['category_id']?>">
-                        <?php echo $category_item['category_name']?></option>
+                    <option value="<?php echo $category_item['category_id'];?>">
+                        <?php echo $category_item['category_name'];?></option>
                     <?php        
                 }
             }
             ?>
                 </select>
-                <select name="stock_status">
+                <select name="new_stock_status">
                     <option value="Available">Available</option>
                     <option value="Unavailable">Unavailable</option>
                 </select>
@@ -178,29 +178,70 @@
             <tbody>
                 <?php 
                     if (isset($stock)){
+                        $count=0;
                       foreach ($stock as $stock_item){
                     ?>
                 <tr>
-                    <td><?php echo $stock_item['stock_id'] ?></td>
-                    <td><?php echo $stock_item['stock_name']?></td>
-                    <td><?php echo $stock_item['stock_quantity']?></td>
-                    <td><?php echo $stock_item['stock_unit']?></td>
-                    <td><?php echo $stock_item['stock_minimum']?></td>
-                    <td><?php echo $stock_item['category_name']?></td>
-                    <td><?php echo $stock_item['stock_status']?></td>
+                    <td class="stock_id"><?php echo $stock_item['stock_id'] ;?></td>
+                    <td class="stock_name"><?php echo $stock_item['stock_name'];?></td>
+                    <td class="stock_qty"><?php echo $stock_item['stock_quantity'];?></td>
+                    <td class="stock_unit"><?php echo $stock_item['stock_unit'];?></td>
+                    <td class="stock_min"><?php echo $stock_item['stock_minimum'];?></td>
+                    <td class="category_name"><?php echo $stock_item['category_name'];?></td>
+                    <td class="stock_status"><?php echo $stock_item['stock_status'];?></td>
                     <td>
                         <div class="text-left mt-2">
-                            <button class="btn btn-primary btn-xs mb-2" name="editbutton">Edit</button>
-                            <button class="btn btn-success btn-xs mb-2">Delete</button>
+                            <button class="btn btn-primary btn-xs mb-2" data-index="<?php echo $count;?>" class="editbutton">Edit</button>
+                            <button class="btn btn-success btn-xs mb-2" data-id="<?php echo $stock_item['stock_id']?>" class="deletebutton">Delete</button>
                         </div>
                     </td>
                 </tr>
-                <?php  }
+                <?php  
+                        $count++;
+                        }
                     }
                     ?>
             </tbody>
         </table>
     </div>
 </body>
-
 </html>
+<script>
+var stock_ids;       
+var stock_names;     
+var stock_qtys;      
+var stock_units;     
+var stock_mins;      
+var category_names;  
+var stock_statuses;  
+var editbuttons;     
+    $(document).ready(function(){
+        $('.editbutton').on('click',function(){
+            var index = $(this).attr('data-index');
+            
+        });
+    });
+    function showEditModal(){
+        $()
+    }
+
+    function initialize(){
+        stock_ids       = $('.stock_id');
+        stock_names     = $('.stock_name');
+        stock_qtys      = $('.stock_qty');
+        stock_units     = $('.stock_unit');
+        stock_mins      = $('.stock_min');
+        category_names  = $('.category_name');
+        stock_statuses  = $('.stock_status');
+        editbuttons     = $('.editbutton');
+        deletebuttons   = $('.deletebutton');
+    }
+
+    function setEvent(){
+        for(var x = 0 ; x < editButtons.length ; x++){
+            editbuttons[x].
+        }
+    }
+
+
+</script>
