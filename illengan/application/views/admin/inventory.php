@@ -100,7 +100,8 @@
             if(isset($category)){
                 foreach($category as $category_item){
             ?>
-                    <option value="<?php echo $category_item['category_id'];?>" <?php echo set_select('stock_category', $category_item['category_id']);?>>
+                    <option value="<?php echo $category_item['category_id'];?>"
+                        <?php echo set_select('stock_category', $category_item['category_id']);?>>
                         <?php echo $category_item['category_name'];?></option>
                     <?php        
                 }
@@ -108,8 +109,9 @@
             ?>
                 </select>
                 <select name="new_stock_status">
-                    <option value="Available"<?php echo set_select('stock_status', 'Available');?>>Available</option>
-                    <option value="Unavailable"<?php echo set_select('stock_status', 'Unavailable');?>>Unavailable</option>
+                    <option value="Available" <?php echo set_select('stock_status', 'Available');?>>Available</option>
+                    <option value="Unavailable" <?php echo set_select('stock_status', 'Unavailable');?>>Unavailable
+                    </option>
                 </select>
             </div>
             <div>
@@ -194,8 +196,10 @@
                     <td class="stock_status"><?php echo $stock_item['stock_status'];?></td>
                     <td>
                         <div class="text-left mt-2">
-                            <button class="btn btn-primary btn-xs mb-2" data-index="<?php echo $count;?>" class="editbutton">Edit</button>
-                            <button class="btn btn-success btn-xs mb-2" data-id="<?php echo $stock_item['stock_id']?>" class="deletebutton">Delete</button>
+                            <button class="btn btn-primary btn-xs mb-2 myeditbutton"
+                                data-index="<?php echo $count;?>">Edit</button>
+                            <button class="btn btn-success btn-xs mb-2 mydeletebutton"
+                                data-id="<?php echo $stock_item['stock_id']?>">Delete</button>
                         </div>
                     </td>
                 </tr>
@@ -208,21 +212,30 @@
         </table>
     </div>
 </body>
+
 </html>
 <script>
-    $(document).ready(function(){
-        $('.editbutton').on('click',function(){
-            showEditModal($(this).attr('data-index'));
-        });
+$(document).ready(function() {
+    $('.myeditbutton').on('click', function() {
+        showEditModal($(this).attr('data-index'));
     });
-    function showEditModal(index){
-        $("#editmodal input[name='new_stock_id']").val($(".stock_id").eq(index).text());
-        $("#editmodal input[name='new_stock_name']").val($(".stock_name").eq(index).text());
-        $("#editmodal input[name='new_stock_quantity']").val($(".stock_quantity").eq(index).text());
-        $("#editmodal input[name='new_stock_unit']").val($(".stock_unit").eq(index).text());
-        $("#editmodal input[name='new_stock_minqty']").val($(".stock_min").eq(index).text());
-        $("#editmodal input[name='new_stock_status']").val($(".stock_status").eq(index).text());
-    }
-    function closeEditModal(){
-    }
+    
+    $('.mydeletebutton').on('click', function() {
+        showDeleteModal($(this).attr('data-id'));
+    });
+});
+
+function showEditModal(index) {
+    $("#editmodal").css('display','block');
+    $("#editmodal input[name='new_stock_id']").val($(".stock_id").eq(index).text());
+    $("#editmodal input[name='new_stock_name']").val($(".stock_name").eq(index).text());
+    $("#editmodal input[name='new_stock_quantity']").val($(".stock_quantity").eq(index).text());
+    $("#editmodal input[name='new_stock_unit']").val($(".stock_unit").eq(index).text());
+    $("#editmodal input[name='new_stock_minqty']").val($(".stock_min").eq(index).text());
+    $("#editmodal input[name='new_stock_status']").val($(".stock_status").eq(index).text());
+}
+
+// function showDeleteModal() {
+//     $("#deletemodal").css('display','none');
+// }
 </script>

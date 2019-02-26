@@ -128,7 +128,7 @@ class Admin extends CI_Controller{
         }
     }
 
-    function viewInventory(){
+    function viewInventory($error = null){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['stock'] = $this->adminmodel->get_inventory();
             $data['category'] = $this->adminmodel->get_stockcategories();
@@ -137,6 +137,8 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
+
+
 
     function viewLogs(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
@@ -279,7 +281,40 @@ class Admin extends CI_Controller{
                 if($this->adminmodel->add_stockitem($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id)){
                     $this->viewInventory();
                 }else{
-                    echo "asfgnkaenr;kglaskjdf;lkawjrslgkjalekrgn";
+                    $this->viewInventory("");                }
+            }
+
+        }else{
+            redirect('login');
+        }
+    }
+
+//Functions for Editing/////////////////////
+    function editStockItem(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            
+            $this->form_validation->set_rules('new_stock_id','Stock ID','trim|required|numeric');
+            $this->form_validation->set_rules('new_stock_name','Stock Name','trim|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('new_stock_quantity','Stock Quantity','trim|required|numeric');
+            $this->form_validation->set_rules('new_stock_unit','Stock Unit','trim|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('new_stock_minqty','Minimum Quantity','trim|numeric');
+            $this->form_validation->set_rules('new_stock_status','Stock Status','trim|required|alpha');
+            $this->form_validation->set_rules('new_stock_category','Stock Category','trim|required|numeric');
+            
+            if($this->form_validation->run() == FALSE){
+                $this->viewInventory();
+            }else{
+                $stock_id = $this->input->post('new_stock_id');
+                $stock_name = $this->input->post('new_stock_name');
+                $stock_quantity = $this->input->post('new_stock_quantity');
+                $stock_unit = $this->input->post('new_stock_unit');
+                $stock_minimum = $this->input->post('new_stock_minqty');
+                $stock_status = $this->input->post('new_stock_status');
+                $category_id = $this->input->post('new_stock_category');
+                if($this->adminmodel->edit_stockitem($stock_id,$stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id)){
+                    $this->viewInventory();
+                }else{
+                    $this->viewInventory("");
                 }
             }
 
@@ -288,5 +323,17 @@ class Admin extends CI_Controller{
         }
     }
 
+//DELETE FUNCTIONS-------------------------------------------------------------------
+    function deleteStockItem($stock_id){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            if($this->adminmodel->delete_stockitem($stock_id)){
+                $this->viewInventory();
+            }else{                
+                $this->viewInventory("");
+            }
+        }else{
+            redirect('login');
+        }
+    }
 }
 ?>
