@@ -7,7 +7,7 @@ class Admin extends CI_Controller{
     }
     function viewDashboard(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin_module/dashboard');
+            $this->load->view('admin/dashboard');
         }else{
             redirect('login');
         }
@@ -16,13 +16,13 @@ class Admin extends CI_Controller{
     function viewAccounts(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['account'] = $this->adminmodel->get_accounts();
-            $this->load->view('admin_module/accounts',$data);
+            $this->load->view('admin/accounts',$data);
         }else{
             redirect('login');
         }
     }
     function viewChangePassword($account_id){
-         $this->load->view('admin_module/changePassword',$account_id);
+         $this->load->view('admin/changePassword',$account_id);
     }
     function changeAccountPassword($account_id){ //dito ka nagstop ikucompare mo yung old pass sa old pass(retrieve)
         $this->load->model("adminmodel");
@@ -47,7 +47,7 @@ class Admin extends CI_Controller{
     function viewStockCategories(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['category'] = $this->adminmodel->get_stockcategories();
-            $this->load->view('admin_module/inventorycategories',$data);
+            $this->load->view('admin/inventorycategories',$data);
         }else{
             redirect('login');
         }
@@ -89,7 +89,7 @@ class Admin extends CI_Controller{
     function viewMenuCategories(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['category'] = $this->adminmodel->get_menucategories();
-            $this->load->view('admin_module/menucategories',$data);
+            $this->load->view('admin/menucategories',$data);
         }else{
             redirect('login');
         }
@@ -132,7 +132,7 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['stock'] = $this->adminmodel->get_inventory();
             $data['category'] = $this->adminmodel->get_stockcategories();
-            $this->load->view('admin_module/inventory',$data);
+            $this->load->view('admin/inventory',$data);
         }else{
             redirect('login');
         }
@@ -143,7 +143,7 @@ class Admin extends CI_Controller{
     function viewLogs(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['log'] = $this->adminmodel->get_logs();
-            $this->load->view('admin_module/logs',$data);
+            $this->load->view('admin/logs',$data);
         }else{
             redirect('login');
         }
@@ -153,7 +153,8 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['menu'] = $this->adminmodel->get_menu();
             $data['category'] = $this->adminmodel->get_menucategories();
-            $this->load->view('admin_module/menuitems',$data);
+            $this->load->view('admin/admingeneralheader',$data);
+            $this->load->view('admin/menuitems',$data);
         }else{
             redirect('login');
         }
@@ -162,7 +163,7 @@ class Admin extends CI_Controller{
     function viewSales(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['sales'] = $this->adminmodel->get_sales();
-            $this->load->view('admin_module/sales',$data);
+            $this->load->view('admin/sales',$data);
         }else{
             redirect('login');
         }
@@ -171,7 +172,7 @@ class Admin extends CI_Controller{
     function viewSources(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['source'] = $this->adminmodel->get_sources();
-            $this->load->view('admin_module/sources',$data);
+            $this->load->view('admin/sources',$data);
         }else{
             redirect('login');
         }
@@ -180,18 +181,18 @@ class Admin extends CI_Controller{
     function viewSpoilagesMenu(){
         $this->load->model("adminmodel");
         $data['spoilagesmenu'] = $this->adminmodel->get_spoilages_menu();
-        $this->load->view('admin_module/view_spoilages_menu', $data);
+        $this->load->view('admin/view_spoilages_menu', $data);
     }
     function viewSpoilagesStock(){
         $this->load->model("adminmodel");
         $data['spoilagesstock'] = $this->adminmodel->get_spoilages_stock();
-        $this->load->view('admin_module/view_spoilages_stock', $data);
+        $this->load->view('admin/view_spoilages_stock', $data);
     }
 
     function viewTables(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['table'] = $this->adminmodel->get_tables();
-            $this->load->view('admin_module/tables',$data);
+            $this->load->view('admin/tables',$data);
         }else{
             redirect('login');
         }
@@ -200,7 +201,7 @@ class Admin extends CI_Controller{
     function viewTrans(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['transaction'] = $this->adminmodel->get_transactions();
-            $this->load->view('admin_module/',$data);
+            $this->load->view('admin/',$data);
         }else{
             redirect('login');
         }
@@ -221,7 +222,7 @@ class Admin extends CI_Controller{
         $remarks =$this->input->post("remarks");
 
         $this->adminmodel->add_damages_menu($stype,$menu_name,$sqty,$sdate,$remarks);
-        $this->load->view('admin_module/add_spoilages_menu'); 
+        $this->load->view('admin/add_spoilages_menu'); 
     }
     function insertspoilagesstock(){
         $this->load->model('adminmodel');
@@ -233,7 +234,7 @@ class Admin extends CI_Controller{
         $remarks =$this->input->post("remarks");
 
         $this->adminmodel->add_damages_stock($stype,$stock_name,$sqty,$sdate,$remarks);
-        $this->load->view('admin_module/add_spoilages_stock'); 
+        $this->load->view('admin/add_spoilages_stock'); 
     }
     function addTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
@@ -322,6 +323,7 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
+    
 
 //DELETE FUNCTIONS-------------------------------------------------------------------
     function deleteStockItem($stock_id){

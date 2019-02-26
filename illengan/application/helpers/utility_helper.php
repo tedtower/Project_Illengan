@@ -17,4 +17,7 @@ function css_url(){
 function js_url(){
    return base_url().'assets/js/';
 }
+function font_url(){
+   return common_url().'fontstyles/';
+}
 ?>
