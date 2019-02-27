@@ -34,53 +34,7 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
-<<<<<<< HEAD
-
-    function viewAccounts(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['account'] = $this->adminmodel->get_accounts();
-            $this->load->view('admin/accounts',$data);
-        }else{
-            redirect('login');
-        }
-    }
-    function viewChangePassword($account_id){
-         $this->load->view('admin/changePassword',$account_id);
-    }
-    function changeAccountPassword($account_id){ //dito ka nagstop ikucompare mo yung old pass sa old pass(retrieve)
-        
-    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-    }else{
-        redirect('login');
-    }
-        $this->load->model("adminmodel");
-
-        $old_password = $this->input->post('old_password');
-        $new_password = $this->input->post('new_password');
-        $new_password_confirmation = $this->input->post('new_password_confirmation');
-
-
-
-        $data['changepassword'] = $this->adminmodel->get_accounts();
-        $this->viewChangePassword($account_id);
-    }
-    function deleteAccount($account_id){
-        $this->load->model("adminmodel");
-        $this->adminmodel->delete_spoilages($account_id); 
-        echo "Data deleted successfully !";
-    }
-    function editAccount(){
-        
-    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-    }else{
-        redirect('login');
-    }
- 
-    }
-    function viewStockCategories(){
-=======
     function viewInventory($error = null){
->>>>>>> c388f7b79f8416ab744dbacffaa2bacb2b65244e
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['stock'] = $this->adminmodel->get_inventory();
             $data['category'] = $this->adminmodel->get_stockcategories();
@@ -175,27 +129,6 @@ class Admin extends CI_Controller{
         }
     }
 
-<<<<<<< HEAD
-    function viewSpoilagesMenu(){
-        
-    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-    }else{
-        redirect('login');
-    }
-        $this->load->model("adminmodel");
-        $data['spoilagesmenu'] = $this->adminmodel->get_spoilages_menu();
-        $this->load->view('admin/view_spoilages_menu', $data);
-    }
-    function viewSpoilagesStock(){
-        
-    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-    }else{
-        redirect('login');
-    }
-        $this->load->model("adminmodel");
-        $data['spoilagesstock'] = $this->adminmodel->get_spoilages_stock();
-        $this->load->view('admin/view_spoilages_stock', $data);
-=======
     
 //CHANGE FUNCTIONS-------------------------------------------------------------------
     function changeAccountPassword(){  
@@ -215,7 +148,6 @@ class Admin extends CI_Controller{
             }else{
                 $this->viewChangePassword();
             }
->>>>>>> c388f7b79f8416ab744dbacffaa2bacb2b65244e
     }
     function editMenuCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
@@ -228,57 +160,16 @@ class Admin extends CI_Controller{
         }
     }
 
-<<<<<<< HEAD
-    function viewTrans(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['transaction'] = $this->adminmodel->get_transactions();
-            $this->load->view('admin/',$data);
-        }else{
-            redirect('login');
-        }
-    }
-    function deletespoilages($sid){
-        
-    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-    }else{
-        redirect('login');
-    }
-        $this->load->model("adminmodel");
-        $this->adminmodel->delete_spoilages($sid); 
-        echo "Data deleted successfully !";
-        
-    }
-    function insertspoilagesmenu(){
-        
-    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-    }else{
-        redirect('login');
-    }
-        $this->load->model('adminmodel');
-=======
     
 //ADD FUNCTIONS---------------------------------------------------------------------------------
     function addaccounts(){ //is_unique username not yet applied
->>>>>>> c388f7b79f8416ab744dbacffaa2bacb2b65244e
 
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]|max_length[50]');
         $this->form_validation->set_rules('confirm_password', 'Confirm password', 'required|min_length[8]|max_length[50]|matches[password]');
         $this->form_validation->set_rules('account_username','Username','required');
         $this->form_validation->set_rules('account_type','Account Type','required');
 
-<<<<<<< HEAD
-        $this->adminmodel->add_damages_menu($stype,$menu_name,$sqty,$sdate,$remarks);
-        $this->load->view('admin/add_spoilages_menu'); 
-    }
-    function insertspoilagesstock(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-        }else{
-            redirect('login');
-        }
-        $this->load->model('adminmodel');
-=======
         if($this->form_validation->run()){
->>>>>>> c388f7b79f8416ab744dbacffaa2bacb2b65244e
 
             $password = $this->input->post("password");
             $username = $this->input->post("username");
@@ -431,14 +322,10 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
-<<<<<<< HEAD
     // if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
     // }else{
     //     redirect('login');
     // }
-=======
-        
->>>>>>> c388f7b79f8416ab744dbacffaa2bacb2b65244e
 
 //DELETE FUNCTIONS-------------------------------------------------------------------
     function deleteAccount($account_id){
