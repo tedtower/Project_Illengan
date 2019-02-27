@@ -25,6 +25,11 @@ class Admin extends CI_Controller{
          $this->load->view('admin/changePassword',$account_id);
     }
     function changeAccountPassword($account_id){ //dito ka nagstop ikucompare mo yung old pass sa old pass(retrieve)
+        
+    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+    }else{
+        redirect('login');
+    }
         $this->load->model("adminmodel");
 
         $old_password = $this->input->post('old_password');
@@ -42,6 +47,11 @@ class Admin extends CI_Controller{
         echo "Data deleted successfully !";
     }
     function editAccount(){
+        
+    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+    }else{
+        redirect('login');
+    }
  
     }
     function viewStockCategories(){
@@ -179,11 +189,21 @@ class Admin extends CI_Controller{
     }
 
     function viewSpoilagesMenu(){
+        
+    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+    }else{
+        redirect('login');
+    }
         $this->load->model("adminmodel");
         $data['spoilagesmenu'] = $this->adminmodel->get_spoilages_menu();
         $this->load->view('admin/view_spoilages_menu', $data);
     }
     function viewSpoilagesStock(){
+        
+    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+    }else{
+        redirect('login');
+    }
         $this->load->model("adminmodel");
         $data['spoilagesstock'] = $this->adminmodel->get_spoilages_stock();
         $this->load->view('admin/view_spoilages_stock', $data);
@@ -207,12 +227,22 @@ class Admin extends CI_Controller{
         }
     }
     function deletespoilages($sid){
+        
+    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+    }else{
+        redirect('login');
+    }
         $this->load->model("adminmodel");
         $this->adminmodel->delete_spoilages($sid); 
         echo "Data deleted successfully !";
         
     }
     function insertspoilagesmenu(){
+        
+    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+    }else{
+        redirect('login');
+    }
         $this->load->model('adminmodel');
 
         $stype = $this->input->post("stype");
@@ -225,6 +255,10 @@ class Admin extends CI_Controller{
         $this->load->view('admin/add_spoilages_menu'); 
     }
     function insertspoilagesstock(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        }else{
+            redirect('login');
+        }
         $this->load->model('adminmodel');
 
         $stype = $this->input->post("stype");
@@ -323,7 +357,10 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
-    
+    // if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+    // }else{
+    //     redirect('login');
+    // }
 
 //DELETE FUNCTIONS-------------------------------------------------------------------
     function deleteStockItem($stock_id){
