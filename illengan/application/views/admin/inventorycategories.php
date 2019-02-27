@@ -97,11 +97,11 @@
                         foreach($category as $category){
                     ?>
                     <tr>
-                        <td><?php echo $category['category_name']?></td>
+                        <td class="category_name"><?php echo $category['category_name']?></td>
                         <td><?php echo $category['stock_no']?></td>
                         <td>
-                            <button name = "editCategory" data-id="<?php echo $category['category_id']?>">Edit</button>
-                            <a href="<?php echo site_url('admin/stockcategories/delete/'.$category['category_id'])?>">Delete</a>
+                            <button class = "editbutton" data-id="<?php echo $category['category_id']?>">Edit</button>
+                            <button formaction="<?php echo site_url('admin/stockcategories/delete/'.$category['category_id'])?>">Delete</button>
                         </td>
                     </tr>
                     <?php

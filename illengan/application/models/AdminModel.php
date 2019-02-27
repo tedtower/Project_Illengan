@@ -55,6 +55,10 @@ class AdminModel extends CI_Model{
         $query = "Insert into stockitems (stock_id,stock_name,stock_quantity,stock_unit,stock_minimum,stock_status,category_id) values (NULL,?,?,?,?,?,?);";
         return $this->db->query($query,array($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id));
     }
+    function edit_stockitem($stock_id,$stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id){
+        $query = "Update stockitems set stock_name = ?, stock_quantity = ?, stock_unit = ?, stock_minimum = ?, stock_status = ?, category_id = ? where stock_id=?;";
+        return $this->db->query($query,array($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id,$stock_id));
+    }
     function get_logs(){
         $query = "Select log_id, stock_name, quantity, log_date, log_type, date_recorded from log inner join stockitems using (stock_id)";
         return $this->db->query($query)->result_array();
@@ -105,9 +109,15 @@ class AdminModel extends CI_Model{
         $query = "Insert into tables (table_no) values (?);";
         return $this->db->query($query, array($table_no));
     }
+
+//DELETE FUNCTIONS---------------------------------------------------------------------------
     function delete_table($table_no){
         $query = "Delete from tables where table_no= ?";
         return $this->db->query($query, array($table_no));
+    }
+    function delete_stockitem($stock_id){
+        $query = "Delete from stockitems where stock_id=?;";
+        return $this->db->query($query, array($stock_id));
     }
 }
 ?>
