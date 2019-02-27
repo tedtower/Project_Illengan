@@ -31,6 +31,9 @@ class Login extends CI_Controller{
                 case 'Chef':
                     redirect('');
                     break;
+				case 'Customer':
+					redirect('');
+					break;
             }
         }else{
             $data['err'] = $loginAttempt;
