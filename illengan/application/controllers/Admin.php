@@ -12,39 +12,71 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
-
     function viewAccounts(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['account'] = $this->adminmodel->get_accounts();
-            $this->load->view('admin_module/accounts',$data);
-        }else{
-            redirect('login');
-        }
+            $this->load->view('admin_module/view_accounts',$data);
+        
     }
-    function viewChangePassword($account_id){
-         $this->load->view('admin_module/changePassword',$account_id);
-    }
-    function changeAccountPassword(){ //dito ka nagstop set query result sa variable
-        $this->load->model("adminmodel");
+    function viewChangePassword(){ //PROBLEM: ACCOUNT_ID MAGSEND KA SA VIEW TAPOS ISEND MO ULIT SA CHANGEACCOUNTPASSWORD FUNCTION
+         $account_id = $this->uri->segment('3');
+         $this->db->select('account_password')->from('accounts')->where('account_id',$account_id);
+         $query = $this->db->get();
+         $data = $query->result();
+         ob_start(); //to set echo output to a variable
+         echo ($data[0]['account_password']);
+         $account_password = ob_get_contents();
+         ob_end_clean(); 
 
-        $old_password = $this->input->post('old_password');
-        $new_password = $this->input->post('new_password');
-        $new_password_confirmation = $this->input->post('new_password_confirmation');
-        $account_id = $this->input->post('account_id');
-        
-        
-        $this->db->select('account_password')->from('accounts')->where('account_id',$account_id);
-        $current_password = $this->db->get();
-        
-        if(($old_password == $query) && ($new_password == $new_password_confirmation)){
-            $this->adminmodel->change_account_password($new_password, $account_id);
-            echo "Password changed successfully !";
-        }else{
-            echo "Passwords doesn't match";
-        }
+         $data['account_password'] = $account_password;
+         $this->load->view('admin_module/changePassword', $data);
     }
-        
-    
+    function changeAccountPassword(){  
+            $this->load->library('form_validation');
+
+            
+            $account_id= $this->input->post("account_id");
+            $this->form_validation->set_rules('new_password', 'Password', 'required|min_length[8]|max_length[50]');
+            $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[8]|max_length[50]|matches[new_password]');
+            $this->form_validation->set_rules('account_password', 'Current Password', 'required');
+            $this->form_validation->set_rules('old_password', 'Old Password', 'required|matches[account_password]');
+
+            if($this->form_validation->run()){
+                $this->load->model("adminmodel");
+                $new_password = $this->input->post("new_password");
+                $this->adminmodel->change_account_password($new_password, $account_id);
+       
+            }else{
+                $this->viewChangePassword();
+            }
+    }
+    function viewaddaccounts(){
+        $this->load->view('admin_module/add_accounts');   
+    }
+    function addaccounts(){ //is_unique username not yet applied
+
+        $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]|max_length[50]');
+        $this->form_validation->set_rules('confirm_password', 'Confirm password', 'required|min_length[8]|max_length[50]|matches[password]');
+        $this->form_validation->set_rules('account_username','Username','required');
+        $this->form_validation->set_rules('account_type','Account Type','required');
+
+        if($this->form_validation->run()){
+
+            $password = $this->input->post("password");
+            $username = $this->input->post("username");
+            $account_type = $this->input->post("account_type");
+            
+            $data = array(
+                'account_password'=>$password,
+                'account_username'=>$username,
+                'account_type'=>$account_type
+            );
+
+            $this->adminmodel->add_accounts($data);
+       
+        }else{
+            $this->viewaddaccounts();
+        }
+    }   
     function deleteAccount($account_id){
         $this->load->model("adminmodel");
         $this->adminmodel->delete_spoilages($account_id); 
@@ -184,17 +216,6 @@ class Admin extends CI_Controller{
         }
     }
 
-    function viewSpoilagesMenu(){
-        $this->load->model("adminmodel");
-        $data['spoilagesmenu'] = $this->adminmodel->get_spoilages_menu();
-        $this->load->view('admin_module/view_spoilages_menu', $data);
-    }
-    function viewSpoilagesStock(){
-        $this->load->model("adminmodel");
-        $data['spoilagesstock'] = $this->adminmodel->get_spoilages_stock();
-        $this->load->view('admin_module/view_spoilages_stock', $data);
-    }
-
     function viewTables(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['table'] = $this->adminmodel->get_tables();
@@ -212,35 +233,64 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
+    function viewSpoilagesMenu(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->model("adminmodel");
+            $data['spoilagesmenu'] = $this->adminmodel->get_spoilages_menu();
+            $this->load->view('admin_module/view_spoilages_menu', $data);
+        }else{
+            redirect('login');
+        }
+    }
+    function viewSpoilagesStock(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->model("adminmodel");
+            $data['spoilagesstock'] = $this->adminmodel->get_spoilages_stock();
+            $this->load->view('admin_module/view_spoilages_stock', $data);
+        }else{
+            redirect('login');
+        }
+    }
     function deletespoilages($sid){
-        $this->load->model("adminmodel");
-        $this->adminmodel->delete_spoilages($sid); 
-        echo "Data deleted successfully !";
-        
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->model("adminmodel");
+            $this->adminmodel->delete_spoilages($sid); 
+            echo "Data deleted successfully !";
+        }else{
+            redirect('login');
+        }
     }
     function insertspoilagesmenu(){
-        $this->load->model('adminmodel');
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->model('adminmodel');
 
-        $stype = $this->input->post("stype");
-        $menu_name =$this->input->post("menu_name");
-        $sqty =$this->input->post("sqty");
-        $sdate =$this->input->post("sdate");
-        $remarks =$this->input->post("remarks");
+            $stype = $this->input->post("stype");
+            $menu_name =$this->input->post("menu_name");
+            $sqty =$this->input->post("sqty");
+            $sdate =$this->input->post("sdate");
+            $remarks =$this->input->post("remarks");
 
-        $this->adminmodel->add_damages_menu($stype,$menu_name,$sqty,$sdate,$remarks);
-        $this->load->view('admin_module/add_spoilages_menu'); 
+            $this->adminmodel->add_damages_menu($stype,$menu_name,$sqty,$sdate,$remarks);
+            $this->load->view('admin_module/add_spoilages_menu'); 
+        }else{
+        redirect('login');
+        }
     }
     function insertspoilagesstock(){
-        $this->load->model('adminmodel');
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->model('adminmodel');
 
-        $stype = $this->input->post("stype");
-        $stock_name =$this->input->post("stock_name");
-        $sqty =$this->input->post("sqty");
-        $sdate =$this->input->post("sdate");
-        $remarks =$this->input->post("remarks");
+            $stype = $this->input->post("stype");
+            $stock_name =$this->input->post("stock_name");
+            $sqty =$this->input->post("sqty");
+            $sdate =$this->input->post("sdate");
+            $remarks =$this->input->post("remarks");
 
-        $this->adminmodel->add_damages_stock($stype,$stock_name,$sqty,$sdate,$remarks);
-        $this->load->view('admin_module/add_spoilages_stock'); 
+            $this->adminmodel->add_damages_stock($stype,$stock_name,$sqty,$sdate,$remarks);
+            $this->load->view('admin_module/add_spoilages_stock'); 
+        }else{
+            redirect('login');
+        }
     }
     function addTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){

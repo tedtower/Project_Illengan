@@ -7,16 +7,12 @@ class AdminModel extends CI_Model{
         $query = "Select * from accounts";
         return $this->db->query($query)->result_array();
     }
+    function add_accounts($data){
+        $this->db->insert('Accounts',$data);
+    }
    function change_account_password($new_password, $account_id){
-
-        $data = array(
-            'account_password' => $new_password
-         );
-
-         $this->db->where('account_id', $account_id);
-         $this->db->update('accounts', $data);
-         $this->db->affected_rows();
-         return true;       
+        $query = "update accounts set account_password = ?  where account_id = ? ";
+        return $this->db->query($query,array($new_password,$account_id));  
     }
     function get_menucategories(){
         $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories left join menu using (category_id) where category_type = 'menu' group by category_id order by category_name asc";
@@ -84,13 +80,13 @@ class AdminModel extends CI_Model{
     }
     function add_damages_menu($stype,$menu_name,$sqty,$sdate,$remarks){
         $menu_id = "(Select m.menu_id from menu AS m INNER JOIN spoilages AS s ON (m.menu_id) where m.menu_name = '$menu_name' GROUP by m.menu_id)";
-        $query = "Insert into spoilages (stype, sqty, sdate, remarks, menu_id) values ('$stype', '$sqty', '$sdate', '$remarks', $menu_id)";
-        $this->db->query($query);    
+        $query = "Insert into spoilages (stype, sqty, sdate, remarks, menu_id) values (?,?,?,?,?)";
+        return $this->db->query($query, array($stype, $sqty, $sdate, $remarks, $menu_id));   
     }
     function add_damages_stock($stype,$stock_name,$sqty,$sdate,$remarks){
         $stock_id = "(Select st.stock_id from stockitems AS st INNER JOIN spoilages AS sp ON (st.stock_id) where st.stock_name = '$stock_name' GROUP by st.stock_id)";
-        $query = "Insert into spoilages (stype, sqty, sdate, remarks, stock_id) values ('$stype', '$sqty', '$sdate', '$remarks', $stock_id)";
-        $this->db->query($query);
+        $query = "Insert into spoilages (stype, sqty, sdate, remarks, stock_id) values (?,?,?,?,?)";
+        return $this->db->query($query, array($stype, $sqty, $sdate, $remarks, $stock_id)); 
     }
     function delete_spoilages($sid){
         $this->db->where('sid', $sid);
