@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 28, 2019 at 06:45 AM
+-- Generation Time: Feb 28, 2019 at 07:45 AM
 -- Server version: 5.7.21
 -- PHP Version: 5.6.35
 
@@ -83,6 +83,14 @@ CREATE TABLE IF NOT EXISTS `categories` (
   KEY `maincat_idx` (`supcat_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`category_id`, `supcat_id`, `category_name`, `category_type`) VALUES
+(1, NULL, 'main', 'menu'),
+(2, 1, 'sub', 'menu');
+
 -- --------------------------------------------------------
 
 --
@@ -161,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `menu` (
   `menu_description` longtext,
   `menu_availability` enum('available','temp unavailable','unavailable') NOT NULL DEFAULT 'unavailable',
   `menu_image` varchar(50) DEFAULT NULL,
-  `temp` enum('h','c','hc') NOT NULL,
+  `temp` enum('h','c','hc') DEFAULT NULL,
   PRIMARY KEY (`menu_id`),
   KEY `category_idx` (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
