@@ -38,6 +38,7 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['stock'] = $this->adminmodel->get_inventory();
             $data['category'] = $this->adminmodel->get_stockcategories();
+            $this->load->view('admin/admingeneralheader',$data);
             $this->load->view('admin/inventory',$data);
         }else{
             redirect('login');
@@ -302,6 +303,7 @@ class Admin extends CI_Controller{
             $this->form_validation->set_rules('new_stock_category','Stock Category','trim|required|numeric');
             
             if($this->form_validation->run() == FALSE){
+                echo "YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYOOOOOOOOOOOOOOOOOOOOOOOOOOOOOWWWWWWWWWWWWWWWWWWWWWWWWW";
                 $this->viewInventory();
             }else{
                 $stock_id = $this->input->post('new_stock_id');
@@ -314,7 +316,7 @@ class Admin extends CI_Controller{
                 if($this->adminmodel->edit_stockitem($stock_id,$stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id)){
                     $this->viewInventory();
                 }else{
-                    $this->viewInventory("");
+                    echo "errrrrrroooooooooooooooooooooooooorrrrrrrrrrrr";
                 }
             }
 
@@ -368,7 +370,7 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             if($this->adminmodel->delete_stockitem($stock_id)){
                 $this->viewInventory();
-            }else{                
+            }else{           
                 $this->viewInventory("");
             }
         }else{

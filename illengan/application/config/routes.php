@@ -77,3 +77,5 @@ $route['admin/sources'] = "admin/viewsources";
 $route['admin/viewaccounts'] = "admin/viewaccounts";
 $route['admin/inventory'] = "admin/viewinventory";
 $route['admin/inventory/add'] = "admin/addstockitem";
+$route['admin/inventory/edit'] = "admin/editstockitem";
+$route['admin/inventory/delete/(:num)'] = "admin/deletestockitem/$1";
