@@ -67,6 +67,33 @@ class AdminModel extends CI_Model{
         $query = "update accounts set account_password = ?  where account_id = ? ";
         return $this->db->query($query,array($new_password,$account_id));  
     }
+    function edit_menuspoilage($s_id,$menu_id,$s_type,$s_date,$date_recorded,$remarks){
+        $query = "update spoilage set s_type = ?, s_date = ?, date_recorded = ?, remarks=? where s_id=?";
+        if($this->db->query($query,array($stype,$s_date,$date_recorded,$remarks,$s_id))){
+            $query = "Update menuspoil set menu_id = ? where s_id = ?";
+            return $this->db->query($query,array($menu_id,$s_id));
+        }else{
+            return false;
+        }
+    }
+    function edit_stockspoilage($s_id,$stock_id,$s_type,$s_date,$date_recorded,$remarks){
+        $query = "update spoilage set s_type = ?, s_date = ?, date_recorded = ?, remarks=? where s_id=?";
+        if($this->db->query($query,array($stype,$s_date,$date_recorded,$remarks,$s_id))){
+            $query = "Update stockspoil set stock_id = ? where s_id = ?";
+            return $this->db->query($query,array($stock_id,$s_id));
+        }else{
+            return false;
+        }
+    }
+    function edit_aospoilage($s_id,$ao_id,$s_type,$s_date,$date_recorded,$remarks){
+        $query = "update spoilage set s_type = ?, s_date = ?, date_recorded = ?, remarks=? where s_id=?";
+        if($this->db->query($query,array($stype,$s_date,$date_recorded,$remarks,$s_id))){
+            $query = "Update ao_spoil set ao_id = ? where s_id = ?";
+            return $this->db->query($query,array($ao_id,$s_id));
+        }else{
+            return false;
+        }
+    }
     function edit_menucategory($category_id,$category_name){
         $query = "update categories set category_name = ?  where category_id = ? and category_type='menu'";
         return $this->db->query($query,array($category_name,$category_id));
@@ -107,11 +134,11 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_menumaincategories(){
-        $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories left join menu using (category_id) where category_type = 'menu' and supcat_id = 'null' group by category_id order by category_name asc";
+        $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories left join menu using (category_id) where category_type = 'menu' and supcat_id is null group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
     }
     function get_menusubcategories(){
-        $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories left join menu using (category_id) where category_type = 'menu' and supcat_id != 'null' group by category_id order by category_name asc";
+        $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories left join menu using (category_id) where category_type = 'menu' and supcat_id is not null group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
     }
     function get_sales(){
@@ -123,11 +150,11 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_stockmaincategories(){
-        $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' and supcat_id = 'null' group by category_id order by category_name asc";
+        $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' and supcat_id is null group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
     }
     function get_stocksubcategories(){
-        $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' and supcat_id != 'null' group by category_id order by category_name asc";
+        $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' and supcat_id is not null group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
     }
     function get_sources(){
