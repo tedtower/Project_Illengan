@@ -7,6 +7,33 @@ class AdminModel extends CI_Model{
     function add_accounts($data){
         $this->db->insert('Accounts',$data);
     }
+    function add_menuspoil($menu_id,$s_type,$s_date,$date_recorded,$remarks=null){
+        $query = "insert into spoilage (s_id, stype, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
+        if($this->db->query($query,array($s_type,$s_date,$date_recorded,$remarks))){ 
+            $query = "insert into menuspoil values (?,?)";
+            return $this->db->query($query,array($this->db->insert_id(),$menu_id));
+        }else{
+            return false;
+        }
+    }
+    function add_stockspoil($stock_id,$s_type,$s_date,$date_recorded,$remarks=null){
+        $query = "insert into spoilage (s_id, stype, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
+        if($this->db->query($query,array($s_type,$s_date,$date_recorded,$remarks))){ 
+            $query = "insert into stockspoil values (?,?)";
+            return $this->db->query($query,array($this->db->insert_id(),$stock_id));
+        }else{
+            return false;
+        }
+    }
+    function add_aospoil($ao_id,$s_type,$s_date,$date_recorded,$remarks=null){
+        $query = "insert into spoilage (s_id, stype, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
+        if($this->db->query($query,array($s_type,$s_date,$date_recorded,$remarks))){ 
+            $query = "insert into ao_spoil values (?,?)";
+            return $this->db->query($query,array($this->db->insert_id(),$ao_id));
+        }else{
+            return false;
+        }
+    }
     function add_damages_menu($stype,$menu_name,$sqty,$sdate,$remarks){
         $menu_id = "(Select m.menu_id from menu AS m INNER JOIN spoilages AS s ON (m.menu_id) where m.menu_name = '$menu_name' GROUP by m.menu_id)";
         $query = "Insert into spoilages (stype, sqty, sdate, remarks, menu_id) values (?,?,?,?,?)";
@@ -108,7 +135,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_spoilages_menu(){
-        $query = "Select spoilages.s_id, menu_name , s_qty, sdate, date_recorded, remarks from spoilages inner join menuspoil using (s_id) inner join menu using (menu_id)";
+        $query = "Select s_id, menu_name , s_qty, sdate, date_recorded, remarks from spoilages inner join menuspoil using (s_id) inner join menu using (menu_id)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilages_stock(){
