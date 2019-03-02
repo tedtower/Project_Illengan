@@ -31,7 +31,7 @@ class AdminModel extends CI_Model{
     }
     function add_table($table_no){
         $query = "Insert into tables (table_no) values (?);";
-        return $this->db->query($query, array($table_no));
+        return $this->db->query($query, array($table_code));
     }
     
     
@@ -100,7 +100,11 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_transactions(){
-        $query = "Select * from transactions inner join transitems using (trans_id)";
+        $query = "Select trans_id, receipt_no, source_name, trans_amt, trans_date, date_recorded, remarks from transactions left join sources using (source_id)";
+        return $this->db->query($query)->result_array();
+    }
+    function get_transitems(){
+        $query = "Select trans_id, item_name, item_qty, item_unit, item_price, item_qty*item_price as total_price from transitems";
         return $this->db->query($query)->result_array();
     }
 

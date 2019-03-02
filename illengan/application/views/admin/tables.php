@@ -1,6 +1,6 @@
 <div>
     <form method="get" action="<?php echo site_url('admin/tables/add')?>">
-        <span>Table Number: </span> <input name="table_no" type="number" value="">
+        <span>Table Number: </span> <input name="table_code" type="text" value="">
         <input type="submit" value="Submit">
     </form>
 </div>

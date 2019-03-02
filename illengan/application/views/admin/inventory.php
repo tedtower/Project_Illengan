@@ -126,9 +126,9 @@
                 <td class="stock_status"><?php echo $stock_item['stock_status'];?></td>
                 <td>
                     <div class="text-left mt-2">
-                        <button class="btn btn-primary btn-xs mb-2 myeditbutton"
-                            data-index="<?php echo $count;?>">Edit</button>
-                        <a class="btn btn-success btn-xs mb-2 mydeletebutton" href="<?php echo site_url('admin/inventory/delete/'.$stock_item['stock_id'])?>"
+                        <button class="btn btn-primary btn-xs mb-2 myEditBtn"
+                            data-idx="<?php echo $count;?>">Edit</button>
+                        <a class="btn btn-success btn-xs mb-2 myRemBtn" href="<?php echo site_url('admin/inventory/delete/'.$stock_item['stock_id'])?>"
                             data-id="<?php echo $stock_item['stock_id']?>">Delete</a>
                     </div>
                 </td>
@@ -146,12 +146,12 @@
 </html>
 <script>
 $(document).ready(function() {
-    $('.myeditbutton').on('click', function() {
-        showEditModal($(this).attr('data-index'));
+    $('.myEditBtn').on('click', function() {
+        showEditModal($(this).attr('data-idx'));
     });
 
-    $('.mydeletebutton').on('click', function() {
-        showDeleteModal($(this).attr('data-id'));
+    $('.myRemBtn').on('click', function() {
+        showRemModal($(this).attr('data-id'));
     });
 
 });
