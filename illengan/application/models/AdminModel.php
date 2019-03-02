@@ -68,11 +68,23 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_menu(){
-        $query = "Select menu_id, menu_name, menu_description, menu_price, menu_availability, menu_image, size, category_name from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
+        $query = "Select menu_id, menu_name, menu_description, menu_availability, menu_image, category_name, temp from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
+        return $this->db->query($query)->result_array();
+    }
+    function get_menuprices(){
+        $query = "select menu_id, size_name, size_price from sizes";
         return $this->db->query($query)->result_array();
     }
     function get_menucategories(){
         $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories left join menu using (category_id) where category_type = 'menu' group by category_id order by category_name asc";
+        return $this->db->query($query)->result_array();
+    }
+    function get_menumaincategories(){
+        $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories left join menu using (category_id) where category_type = 'menu' and supcat_id = 'null' group by category_id order by category_name asc";
+        return $this->db->query($query)->result_array();
+    }
+    function get_menusubcategories(){
+        $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories left join menu using (category_id) where category_type = 'menu' and supcat_id != 'null' group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
     }
     function get_sales(){
@@ -83,16 +95,24 @@ class AdminModel extends CI_Model{
         $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
     }
+    function get_stockmaincategories(){
+        $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' and supcat_id = 'null' group by category_id order by category_name asc";
+        return $this->db->query($query)->result_array();
+    }
+    function get_stocksubcategories(){
+        $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' and supcat_id != 'null' group by category_id order by category_name asc";
+        return $this->db->query($query)->result_array();
+    }
     function get_sources(){
-        $query = "Select source_id, source_name, contact_num, status from sources order by source_name asc";
+        $query = "Select source_id, source_name, contact_num, email, status from sources order by source_name asc";
         return $this->db->query($query)->result_array();
     }
     function get_spoilages_menu(){
-        $query = "Select spoilages.sid, menu.menu_name,categories.category_type,spoilages.sqty,menu.size,spoilages.sdate, spoilages.date_recorded, spoilages.remarks from spoilages inner join menu using (menu_id) inner join categories using (category_id) where spoilages.stype = 'menu'";
+        $query = "Select spoilages.s_id, menu_name , s_qty, sdate, date_recorded, remarks from spoilages inner join menuspoil using (s_id) inner join menu using (menu_id)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilages_stock(){
-        $query = "Select spoilages.sid, stockitems.stock_name,categories.category_type,spoilages.sqty,stockitems.stock_unit,spoilages.sdate, spoilages.date_recorded, spoilages.remarks from spoilages inner join stockitems using (stock_id) inner join categories using (category_id)";
+        $query = "Select spoilages.s_id, stock_name,s_qty,stock_unit,sdate, date_recorded, remarks from spoilages inner join stockspoil using (s_id) inner join stockitems using (stock_id)";
         return  $this->db->query($query)->result_array();
     }
     function get_tables(){
