@@ -7,6 +7,33 @@ class AdminModel extends CI_Model{
     function add_accounts($data){
         $this->db->insert('Accounts',$data);
     }
+    function add_menuspoil($menu_id,$s_type,$s_date,$date_recorded,$remarks=null){
+        $query = "insert into spoilage (s_id, stype, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
+        if($this->db->query($query,array($s_type,$s_date,$date_recorded,$remarks))){ 
+            $query = "insert into menuspoil values (?,?)";
+            return $this->db->query($query,array($this->db->insert_id(),$menu_id));
+        }else{
+            return false;
+        }
+    }
+    function add_stockspoil($stock_id,$s_type,$s_date,$date_recorded,$remarks=null){
+        $query = "insert into spoilage (s_id, stype, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
+        if($this->db->query($query,array($s_type,$s_date,$date_recorded,$remarks))){ 
+            $query = "insert into stockspoil values (?,?)";
+            return $this->db->query($query,array($this->db->insert_id(),$stock_id));
+        }else{
+            return false;
+        }
+    }
+    function add_aospoil($ao_id,$s_type,$s_date,$date_recorded,$remarks=null){
+        $query = "insert into spoilage (s_id, stype, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
+        if($this->db->query($query,array($s_type,$s_date,$date_recorded,$remarks))){ 
+            $query = "insert into ao_spoil values (?,?)";
+            return $this->db->query($query,array($this->db->insert_id(),$ao_id));
+        }else{
+            return false;
+        }
+    }
     function add_damages_menu($stype,$menu_name,$sqty,$sdate,$remarks){
         $menu_id = "(Select m.menu_id from menu AS m INNER JOIN spoilages AS s ON (m.menu_id) where m.menu_name = '$menu_name' GROUP by m.menu_id)";
         $query = "Insert into spoilages (stype, sqty, sdate, remarks, menu_id) values (?,?,?,?,?)";
@@ -31,7 +58,7 @@ class AdminModel extends CI_Model{
     }
     function add_table($table_no){
         $query = "Insert into tables (table_no) values (?);";
-        return $this->db->query($query, array($table_no));
+        return $this->db->query($query, array($table_code));
     }
     
     
@@ -49,6 +76,33 @@ class AdminModel extends CI_Model{
                 $data['account_id'] = $account_id;
                 $this->load->view('admin/changepassword', $data);
             }
+        }
+    }
+    function edit_menuspoilage($s_id,$menu_id,$s_type,$s_date,$date_recorded,$remarks){
+        $query = "update spoilage set s_type = ?, s_date = ?, date_recorded = ?, remarks=? where s_id=?";
+        if($this->db->query($query,array($stype,$s_date,$date_recorded,$remarks,$s_id))){
+            $query = "Update menuspoil set menu_id = ? where s_id = ?";
+            return $this->db->query($query,array($menu_id,$s_id));
+        }else{
+            return false;
+        }
+    }
+    function edit_stockspoilage($s_id,$stock_id,$s_type,$s_date,$date_recorded,$remarks){
+        $query = "update spoilage set s_type = ?, s_date = ?, date_recorded = ?, remarks=? where s_id=?";
+        if($this->db->query($query,array($stype,$s_date,$date_recorded,$remarks,$s_id))){
+            $query = "Update stockspoil set stock_id = ? where s_id = ?";
+            return $this->db->query($query,array($stock_id,$s_id));
+        }else{
+            return false;
+        }
+    }
+    function edit_aospoilage($s_id,$ao_id,$s_type,$s_date,$date_recorded,$remarks){
+        $query = "update spoilage set s_type = ?, s_date = ?, date_recorded = ?, remarks=? where s_id=?";
+        if($this->db->query($query,array($stype,$s_date,$date_recorded,$remarks,$s_id))){
+            $query = "Update ao_spoil set ao_id = ? where s_id = ?";
+            return $this->db->query($query,array($ao_id,$s_id));
+        }else{
+            return false;
         }
     }
     function edit_menucategory($category_id,$category_name){
@@ -80,11 +134,23 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_menu(){
-        $query = "Select menu_id, menu_name, menu_description, menu_price, menu_availability, menu_image, size, category_name from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
+        $query = "Select menu_id, menu_name, menu_description, menu_availability, menu_image, category_name, temp from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
+        return $this->db->query($query)->result_array();
+    }
+    function get_menuprices(){
+        $query = "select menu_id, size_name, size_price from sizes";
         return $this->db->query($query)->result_array();
     }
     function get_menucategories(){
         $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories left join menu using (category_id) where category_type = 'menu' group by category_id order by category_name asc";
+        return $this->db->query($query)->result_array();
+    }
+    function get_menumaincategories(){
+        $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories left join menu using (category_id) where category_type = 'menu' and supcat_id is null group by category_id order by category_name asc";
+        return $this->db->query($query)->result_array();
+    }
+    function get_menusubcategories(){
+        $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories left join menu using (category_id) where category_type = 'menu' and supcat_id is not null group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
     }
     function get_sales(){
@@ -95,16 +161,24 @@ class AdminModel extends CI_Model{
         $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
     }
+    function get_stockmaincategories(){
+        $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' and supcat_id is null group by category_id order by category_name asc";
+        return $this->db->query($query)->result_array();
+    }
+    function get_stocksubcategories(){
+        $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' and supcat_id is not null group by category_id order by category_name asc";
+        return $this->db->query($query)->result_array();
+    }
     function get_sources(){
-        $query = "Select source_id, source_name, contact_num, status from sources order by source_name asc";
+        $query = "Select source_id, source_name, contact_num, email, status from sources order by source_name asc";
         return $this->db->query($query)->result_array();
     }
     function get_spoilages_menu(){
-        $query = "Select spoilages.sid, menu.menu_name,categories.category_type,spoilages.sqty,menu.size,spoilages.sdate, spoilages.date_recorded, spoilages.remarks from spoilages inner join menu using (menu_id) inner join categories using (category_id) where spoilages.stype = 'menu'";
+        $query = "Select s_id, menu_name , s_qty, sdate, date_recorded, remarks from spoilages inner join menuspoil using (s_id) inner join menu using (menu_id)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilages_stock(){
-        $query = "Select spoilages.sid, stockitems.stock_name,categories.category_type,spoilages.sqty,stockitems.stock_unit,spoilages.sdate, spoilages.date_recorded, spoilages.remarks from spoilages inner join stockitems using (stock_id) inner join categories using (category_id)";
+        $query = "Select spoilages.s_id, stock_name,s_qty,stock_unit,sdate, date_recorded, remarks from spoilages inner join stockspoil using (s_id) inner join stockitems using (stock_id)";
         return  $this->db->query($query)->result_array();
     }
     function get_tables(){
@@ -112,7 +186,11 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_transactions(){
-        $query = "Select * from transactions inner join transitems using (trans_id)";
+        $query = "Select trans_id, receipt_no, source_name, trans_amt, trans_date, date_recorded, remarks from transactions left join sources using (source_id)";
+        return $this->db->query($query)->result_array();
+    }
+    function get_transitems(){
+        $query = "Select trans_id, item_name, item_qty, item_unit, item_price, item_qty*item_price as total_price from transitems";
         return $this->db->query($query)->result_array();
     }
 

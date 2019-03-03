@@ -41,6 +41,7 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['stock'] = $this->adminmodel->get_inventory();
             $data['category'] = $this->adminmodel->get_stockcategories();
+            $this->load->view('admin/admingeneralheader',$data);
             $this->load->view('admin/inventory',$data);
         }else{
             redirect('login');
@@ -73,6 +74,20 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
+    // function viewReturns($method=null){        
+    //     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+    //         switch($method){
+    //             "add":
+    //             break;
+    //             "edit":
+    //             break;
+    //             "delete":
+    //             break;
+    //         }
+    //     }else{
+    //         redirect('login');
+    //     }
+    // }
     function viewSales(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['sales'] = $this->adminmodel->get_sales();
@@ -125,8 +140,9 @@ class Admin extends CI_Controller{
     }
     function viewTrans(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['transaction'] = $this->adminmodel->get_transactions();
-            $this->load->view('admin/',$data);
+            $data['transactions'] = $this->adminmodel->get_transactions();
+            $data['transitems'] = $this->adminmodel->get_transitems();
+            $this->load->view('admin/transactions',$data);
         }else{
             redirect('login');
         }
@@ -167,10 +183,10 @@ class Admin extends CI_Controller{
 //ADD FUNCTIONS---------------------------------------------------------------------------------
     function addaccounts(){ //is_unique username not yet applied
 
-        $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]|max_length[50]');
-        $this->form_validation->set_rules('confirm_password', 'Confirm password', 'required|min_length[8]|max_length[50]|matches[password]');
-        $this->form_validation->set_rules('account_username','Username','required');
-        $this->form_validation->set_rules('account_type','Account Type','required');
+        $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]|max_length[50]');
+        $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[8]|max_length[50]|matches[password]');
+        $this->form_validation->set_rules('account_username','Username','trim|required');
+        $this->form_validation->set_rules('account_type','Account Type','trim|required');
 
         if($this->form_validation->run()){
 
@@ -222,7 +238,6 @@ class Admin extends CI_Controller{
                 }else{
                     $this->viewInventory("");                }
             }
-
         }else{
             redirect('login');
         }
@@ -238,8 +253,8 @@ class Admin extends CI_Controller{
     }
     function addTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $table_no = $this->input->get('table_no');
-            if($this->adminmodel->add_table($table_no)){
+            $table_no = $this->input->get('table_code');
+            if($this->adminmodel->add_table($table_code)){
                 $this->viewTables();
             }else{
                 echo "There was an error!!!!";
@@ -262,7 +277,7 @@ class Admin extends CI_Controller{
             $this->adminmodel->add_damages_menu($stype,$menu_name,$sqty,$sdate,$remarks);
             $this->load->view('admin/add_spoilages_menu'); 
         }else{
-        redirect('login');
+            redirect('login');
         }
     }
     function insertspoilagesstock(){
@@ -286,8 +301,8 @@ class Admin extends CI_Controller{
 //EDIT FUNCTIONS-------------------------------------------------------------------------------------
     function editStockCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $category_id = $this->input->get('category_id');
-            $category_name = $this->input->get('new_name');
+            $category_id = $this->input->post('category_id');
+            $category_name = $this->input->post('new_name');
             $data['category'] = $this->adminmodel->edit_stockcategory($category_id, $category_name);
             $this->viewStockCategories();
         }else{
@@ -318,7 +333,6 @@ class Admin extends CI_Controller{
                 if($this->adminmodel->edit_stockitem($stock_id,$stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id)){
                     $this->viewInventory();
                 }else{
-                    $this->viewInventory("");
                 }
             }
 
@@ -326,7 +340,10 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
-        
+    // if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+    // }else{
+    //     redirect('login');
+    // }
 
 //DELETE FUNCTIONS-------------------------------------------------------------------
     function deleteAccount($account_id){
@@ -372,7 +389,7 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             if($this->adminmodel->delete_stockitem($stock_id)){
                 $this->viewInventory();
-            }else{                
+            }else{           
                 $this->viewInventory("");
             }
         }else{

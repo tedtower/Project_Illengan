@@ -13,5 +13,6 @@
     <link rel="stylesheet"
         href="<?php echo font_url()?>material-design-iconic-font/materialdesignicons.min.css">
     <link rel="stylesheet" href="<?php echo font_url()?>flag-icon-css/flag-icon.min.css">
-    <title>Inventory Categories</title>
+    <script src="<?php echo framework_url()?>mdb/js/jquery-3.3.1.min.js"></script>
+    <title>Il-lengan - <?php echo $title?></title>
 </head>
