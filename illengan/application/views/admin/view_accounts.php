@@ -20,6 +20,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <a class="btn btn-primary" href="<?php echo base_url()?>index.php/admin/viewaddaccounts" role="button">Add Accounts</a>
 
+
 <div class="table-responsive" style="text-align:center">
     <table class="table table-bordered">
         <tr>
@@ -42,7 +43,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <td><?php echo $row['account_password']; ?></td>
                         <td>
                         <a href="<?php echo site_url('admin/viewchangepassword/'.$row['account_id']); ?>">Change Password</a>
-                        <a href="<?php echo site_url('admin/editAccount/'.$row['account_id']);?>">Edit</a>
+                        <a href="<?php echo site_url('admin/vieweditAccounts/'.$row['account_id']);?>">Edit</a>
                         <a href="<?php echo site_url('admin/deleteAccount/'.$row['account_id']);?>">Delete</a>
                         </td>
                     </tr>

@@ -78,6 +78,10 @@ class AdminModel extends CI_Model{
             }
         }
     }
+    function edit_accounts($account_username,$account_type,$account_id){
+        $query = "Update accounts set account_username = ?, account_type = ? where account_id = ?";
+            return $this->db->query($query,array($account_username,$account_type,$account_id));
+    }
     function edit_menuspoilage($s_id,$menu_id,$s_type,$s_date,$date_recorded,$remarks){
         $query = "update spoilage set s_type = ?, s_date = ?, date_recorded = ?, remarks=? where s_id=?";
         if($this->db->query($query,array($stype,$s_date,$date_recorded,$remarks,$s_id))){
