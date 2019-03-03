@@ -26,6 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <th>Account ID</th>
             <th>Username</th> 
             <th>Account Type</th> 
+            <th>Password</th>
             <th>Actions</th> 
             
         </tr>
@@ -38,8 +39,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <td><?php echo $row['account_id']; ?></td>
                         <td><?php echo $row['account_username']; ?></td>
                         <td><?php echo $row['account_type']; ?></td>
+                        <td><?php echo $row['account_password']; ?></td>
                         <td>
-                        <a href="<?php echo site_url('admin/viewChangePassword/'.$row['account_id']); ?>">Change Password</a>
+                        <a href="<?php echo site_url('admin/viewchangepassword/'.$row['account_id']); ?>">Change Password</a>
                         <a href="<?php echo site_url('admin/editAccount/'.$row['account_id']);?>">Edit</a>
                         <a href="<?php echo site_url('admin/deleteAccount/'.$row['account_id']);?>">Delete</a>
                         </td>

@@ -75,5 +75,6 @@ $route['admin/stockcategories/delete/(:num)'] = "admin/deletestockcategory/$1";
 $route['admin/stockcategories/edit'] = "admin/editstockcategory/";
 $route['admin/sources'] = "admin/viewsources";
 $route['admin/viewaccounts'] = "admin/viewaccounts";
+$route['admin/changepassword'] = "admin/changepassword";
 $route['admin/inventory'] = "admin/viewinventory";
 $route['admin/inventory/add'] = "admin/addstockitem";
