@@ -4,6 +4,7 @@ class Admin extends CI_Controller{
     function __construct(){
         parent::__construct();
         $this->load->model('adminmodel');
+        date_default_timezone_set('Asia/Manila');
     }
 //VIEW FUNCTIONS--------------------------------------------------------------------------------
     function viewAccounts(){
@@ -135,7 +136,7 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
-    function viewTrans(){
+    function viewTransactions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['transactions'] = $this->adminmodel->get_transactions();
             $data['transitems'] = $this->adminmodel->get_transitems();

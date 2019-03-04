@@ -93,7 +93,6 @@
                     <th scope="col">Description</th>
                     <!-- <th scope="col">Size</th> -->
                     <th scope="col">Category</th>
-                    <th scope="col">Price</th>
                     <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -110,7 +109,7 @@
                     <td><?php echo $item['menu_description']?></td>
                     <!-- <td></td> -->
                     <td><?php echo $item['category_name']?></td>
-                    <td>&#8369;<?php echo $item['menu_price']?></td>
+                    <!-- <td>&#8369;</td> -->
                     <td><?php echo $item['menu_availability']?></td>
                     <td>
                         <div class="text-left mt-2">

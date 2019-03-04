@@ -79,3 +79,7 @@ $route['admin/inventory'] = "admin/viewinventory";
 $route['admin/inventory/add'] = "admin/addstockitem";
 $route['admin/inventory/edit'] = "admin/editstockitem";
 $route['admin/inventory/delete/(:num)'] = "admin/deletestockitem/$1";
+$route['admin/transactions'] = "admin/viewtransactions";
+$route['admin/transactions/add'] = "admin/addtransactions";
+$route['admin/transactions/edit'] = "admin/edittransactions";
+$route['admin/transactions/delete'] = "admin/deletetransactions";
