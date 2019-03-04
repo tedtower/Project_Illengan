@@ -22,7 +22,11 @@ class Chef extends CI_Controller {
 	{
 		$this->load->model('ChefModel');
 		$data['orderlist'] = $this->ChefModel->return_orderlist();
-		$this->load->view('chef', $data); 
+		$this->load->view('chef/chef', $data); 
+	}
+	function notifications() {
+		$this->load-
+		$this->load->view('chef/notifications');
 	}
 
 	public function change_status() {
@@ -66,4 +70,27 @@ class Chef extends CI_Controller {
 		redirect('');
 	}
 
+	public function send(){
+        $arr['msg'] = $this->input->post('message');
+        $arr['date'] = date('Y-m-d');
+        $arr['status'] = 1;
+        $this->db->insert('tbl_msg',$arr);
+        $detail = $this->db->select('*')->from('tbl_msg')->where('id',$this->db->insert_id())->get()->row();
+        $msgCount = $this->db->select('*')->from('tbl_msg')->get()->num_rows();
+        $arr['message'] = $detail->msg;
+        $arr['date'] = date('m-d-Y', strtotime($detail->date));
+        $arr['msgcount'] = $msgCount;
+        $arr['success'] = true;
+        echo json_encode($arr);
+    }
+/*
+		public function change_status() {
+			$this->load->model('ChefModel');
+			$item_status = $this->input->post('item_status');
+			$menu_id = $this->input->post('menu_id');
+			$order_id = $this->input->post('order_id');
+
+			$this->ChefModel->update_status($order_id, $menu_id, $item_status);
+		}
+*/
 }

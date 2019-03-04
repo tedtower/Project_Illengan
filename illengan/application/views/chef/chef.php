@@ -6,13 +6,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php include_once('head.php') ?>
 </head>
 <body>
+<?php include_once('navigation.php') ?>
+<div class="content">
 
-<div id="container">
+	<table id="table-orders" class="table display">
 
-	<table id="table-orders" class="table table-striped">
-
-	<thead class="thead-dark">
+	<thead>
 	<th>Order No.</th>
+	<th>Table No.</th>
 	<th>Customer Name</th>
 	<th>Item</th>
 	<th>Quantity</th>
@@ -20,12 +21,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</thead>
 	
 	<tbody>
+	<tfoot>
 	<?php foreach($orderlist as $row) { ?>
 	
 		<tr class="table-row" data-toggle="modal" data-href="#order_details<?php echo $row->order_id; ?>"
 		data-menu_id="<?php echo $row->menu_id ?>" data-order_id="<?php echo $row->order_id ?>" 
 		data-item_status="<?php echo $row->item_status ?>">
 		<td><?php echo $row->order_id ?></td>
+		<td><?php echo $row->table_no ?></td>
 		<td><?php echo $row->cust_name ?></td>
 		<td><?php echo $row->menu_name ?></td>
 		<td><?php echo $row->order_qty ?></td>
@@ -38,12 +41,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</td>
 		</form>
 	</tr>
-	</div>
+	</tfoot>
 	<?php } ?>
 	</tbody>
 	</table>
-	<button>HI</button>
+
 </div>
-<?php include_once('scripts.php') ?>
+ <?php include_once('scripts.php') ?>
 </body>
 </html>

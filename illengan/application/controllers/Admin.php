@@ -8,25 +8,37 @@ class Admin extends CI_Controller{
     }
 //VIEW FUNCTIONS--------------------------------------------------------------------------------
     function viewAccounts(){
-        $data['account'] = $this->adminmodel->get_accounts();
-        $this->load->view('admin/view_accounts',$data);
-
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['account'] = $this->adminmodel->get_accounts();
+            $this->load->view('admin/view_accounts',$data);
+        }else{
+            redirect('login');
+        }   
     }
     function viewaddaccounts(){
-        $this->load->view('admin/add_accounts');   
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->view('admin/add_accounts');  
+        }else{  
+            redirect('login'); 
+        }
     }
-    function viewChangePassword(){ //PROBLEM: ACCOUNT_ID MAGSEND KA SA VIEW TAPOS ISEND MO ULIT SA CHANGEACCOUNTPASSWORD FUNCTION
-        $account_id = $this->uri->segment('3');
-        $this->db->select('account_password')->from('accounts')->where('account_id',$account_id);
-        $query = $this->db->get();
-        $data = $query->result();
-        ob_start(); //to set echo output to a variable
-        echo ($data[0]['account_password']);
-        $account_password = ob_get_contents();
-        ob_end_clean(); 
-
-        $data['account_password'] = $account_password;
-        $this->load->view('admin/changePassword', $data);
+    function vieweditAccounts(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $account_id = $this->uri->segment('3');
+            $data['account_id'] = $account_id;
+            $this->load->view('admin/editAccounts',$data);  
+        }else{  
+            redirect('login'); 
+        }
+    }
+    function viewChangePassword($account_id){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $account_id = $this->uri->segment('3');
+            $data['account_id'] = $account_id;
+            $this->load->view('admin/changepassword', $data);
+        }else{  
+            redirect('login'); 
+        }
    }
     function viewDashboard(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
@@ -147,37 +159,6 @@ class Admin extends CI_Controller{
     }
 
     
-//CHANGE FUNCTIONS-------------------------------------------------------------------
-    function changeAccountPassword(){  
-            $this->load->library('form_validation');
-
-            $account_id= $this->input->post("account_id");
-            $this->form_validation->set_rules('new_password', 'Password', 'required|min_length[8]|max_length[50]');
-            $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[8]|max_length[50]|matches[new_password]');
-            $this->form_validation->set_rules('account_password', 'Current Password', 'required');
-            $this->form_validation->set_rules('old_password', 'Old Password', 'required|matches[account_password]');
-
-            if($this->form_validation->run()){
-                $this->load->model("adminmodel");
-                $new_password = $this->input->post("new_password");
-                $this->adminmodel->change_account_password($new_password, $account_id);
-       
-            }else{
-                $this->viewChangePassword();
-            }
-    }
-    function editMenuCategory(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $category_id = $this->input->get('category_id');
-            $category_name = $this->input->get('new_name');
-            $data['category'] = $this->adminmodel->edit_menucategory($category_id, $category_name);
-            $this->viewMenuCategories();
-        }else{
-            redirect('login');
-        }
-    }
-
-    
 //ADD FUNCTIONS---------------------------------------------------------------------------------
     function addaccounts(){ //is_unique username not yet applied
 
@@ -189,7 +170,7 @@ class Admin extends CI_Controller{
         if($this->form_validation->run()){
 
             $password = $this->input->post("password");
-            $username = $this->input->post("username");
+            $username = $this->input->post("account_username");
             $account_type = $this->input->post("account_type");
             
             $data = array(
@@ -199,6 +180,7 @@ class Admin extends CI_Controller{
             );
 
             $this->adminmodel->add_accounts($data);
+            $this->viewAccounts();
     
         }else{
             $this->viewaddaccounts();
@@ -296,6 +278,49 @@ class Admin extends CI_Controller{
 
    
 //EDIT FUNCTIONS-------------------------------------------------------------------------------------
+    function changeAccountPassword(){  
+        $this->load->library('form_validation');
+
+        $account_id = $this->input->post('account_id');
+
+        $this->form_validation->set_rules('old_password', 'Current Password', 'required');
+        $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[8]|max_length[50]');
+        $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[8]|max_length[50]|matches[new_password]');
+        $this->form_validation->set_rules('account_password', 'Current Password', 'required');
+
+        if($this->form_validation->run()==false){
+            $old_password = $this->input->post("old_password");
+            $new_password = $this->input->post("new_password");
+            $this->adminmodel->change_account_password($old_password, $new_password, $account_id);
+        }else{
+        $this->viewChangePassword();
+        }
+    }
+    function editAccounts(){
+        $this->form_validation->set_rules('account_username','Username','trim|required');
+        $this->form_validation->set_rules('account_type','Account Type','trim|required');
+
+        if($this->form_validation->run()){
+            $account_username = $this->input->post("account_username");
+            $account_type = $this->input->post("account_type");
+            $account_id = $this->input->post("account_id");
+
+            $this->adminmodel->edit_accounts($account_username,$account_type,$account_id);
+            $this->viewAccounts();
+        }else{
+            $this->viewaccounts();
+        }
+    }
+    function editMenuCategory(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $category_id = $this->input->get('category_id');
+            $category_name = $this->input->get('new_name');
+            $data['category'] = $this->adminmodel->edit_menucategory($category_id, $category_name);
+            $this->viewMenuCategories();
+        }else{
+            redirect('login');
+        }
+    }
     function editStockCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $category_id = $this->input->post('category_id');
@@ -345,8 +370,11 @@ class Admin extends CI_Controller{
 //DELETE FUNCTIONS-------------------------------------------------------------------
     function deleteAccount($account_id){
         $this->load->model("adminmodel");
-        $this->adminmodel->delete_spoilages($account_id); 
-        echo "Data deleted successfully !";
+        if($this->adminmodel->delete_account($account_id)){
+            $this->viewAccounts();
+        }else{
+            //error
+        }; 
     }
     function deleteMenuCategory($category_id){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){

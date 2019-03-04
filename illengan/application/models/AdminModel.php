@@ -63,9 +63,24 @@ class AdminModel extends CI_Model{
     
     
     // UPDATE FUNCTIONS-------------------------------------------------------------
-    function change_account_password($new_password, $account_id){
-        $query = "update accounts set account_password = ?  where account_id = ? ";
-        return $this->db->query($query,array($new_password,$account_id));  
+    function change_account_password($old_password,$new_password, $account_id){
+        
+        $current_password_query = "select account_password from accounts where account_id = $account_id ";
+        $current_password = $this->db->query($current_password_query);
+            foreach($current_password->result_array() AS $row) {
+
+            if($old_password == $row['account_password']){
+                $query = "update accounts set account_password = ?  where account_id = ? ";
+                return $this->db->query($query,array($new_password, $account_id));  
+            }else{
+                $data['account_id'] = $account_id;
+                $this->load->view('admin/changepassword', $data);
+            }
+        }
+    }
+    function edit_accounts($account_username,$account_type,$account_id){
+        $query = "Update accounts set account_username = ?, account_type = ? where account_id = ?";
+            return $this->db->query($query,array($account_username,$account_type,$account_id));
     }
     function edit_menuspoilage($s_id,$menu_id,$s_type,$s_date,$date_recorded,$remarks){
         $query = "update spoilage set s_type = ?, s_date = ?, date_recorded = ?, remarks=? where s_id=?";
@@ -109,6 +124,7 @@ class AdminModel extends CI_Model{
 
 
     //SELECT FUNCTIONS------------------------------------------------------------------
+    
     function get_accounts(){
         $query = "Select * from accounts";
         return $this->db->query($query)->result_array();
@@ -184,6 +200,11 @@ class AdminModel extends CI_Model{
 
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
+    function delete_account($account_id){
+        $query = "delete from accounts where account_id = ?";
+        return $this->db->query($query,array($account_id));
+
+    }
     function delete_menucategory($category_id){
         $query = "delete from categories where category_id = ? and category_type= 'menu'";
         return $this->db->query($query,array($category_id));
