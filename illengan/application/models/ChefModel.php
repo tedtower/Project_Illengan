@@ -9,10 +9,11 @@
             return $query->result();
         }
 
-        function update_status($data) {
+        function update_status($order_id, $menu_id, $item_status) {
             $this->load->database();
+            $data['item_status'] = $item_status;
             $query = $this->db->query('UPDATE orderlist SET item_status = ? WHERE order_id = ? AND menu_id = ?');
-            $this->db->query($query, array($data['item_status'], $data['order_id'], $data['menu_id']));
-    }
+            $this->db->query($query, array($item_status, $order_id, $menu_id));
+        }
     }
 ?>
