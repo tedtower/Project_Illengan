@@ -9,10 +9,10 @@
   <?php include_once('head.php') ?>
 </head>
 
-<!--Main Navigation-->
-<header>
+<!--Main Navigation--><header>
   <nav class="navbar navbar-expand-sm fixed-top navbar-dark brown darken-2 scrolling-navbar py-0 my-0">
-    <img class="img-logo mr-3" src="<?php echo base_url().'logo.png' ?>">
+    <img
+< class="img-logo mr-3" src="<?php echo base_url().'logo.png' ?>">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -20,18 +20,23 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto roboto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Category 1</a>
+          <a class="nav-link" href="<?php echo site_url();?>index.php/customer/snacks">Snacks</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Category 2</a>
+          <a class="nav-link" href="<?php echo site_url();?>index.php/customer/drinks">Drinks</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Category 3</a>
+          <a class="nav-link" href="<?php echo site_url();?>index.php/customer/meals">Meal</a>
         </li>
         <li class="nav-item" style="right: 0;">
           <a class="nav-link" data-toggle="modal" href="#vieworders">Cart</a>
         </li>
+        <li class="nav-item" style="right: 0;">
+          <a class="nav-link" data-toggle="modal" href="#vieworderlist">ordered</a>
+        </li>
       </ul>
+    </div>
+    <div>
     </div>
   </nav>
   <div class="progress-container">
@@ -46,7 +51,13 @@
     <input class="form-control" type="text" placeholder="Enter keyword..." aria-label="Search">
     <button class="btn btn-rounded btn-sm my-0 ml-sm-1" style="background-color:#a1887f;" type="submit"><span class="fa fa-search"></span> Search</button>
   </form>
+<?php 
+$cust_name = $this->session->userdata('cust_name');
+$table_no = $this->session-> userdata('table_no'); 
 
+echo '<h2>Welcome - '.$cust_name.'</h2>';
+?>
+<h3><a href="<?php echo base_url();?>index.php/customer/logout">Log out</a>
 <!-- MENU ITEMS -->
 <?php include_once('menu.php'); ?>
 <!-- ORDERS -->
