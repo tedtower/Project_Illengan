@@ -53,8 +53,6 @@ $route['default_controller'] = 'login/index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'login/viewlogin';
-$route['Add_Damages/form_validation'] = 'Add_damages/form_validation';
-$route['Add_Damages/added'] = 'Add_damages/added';
 $route['verifylogin'] = "login/check_cred";
 $route['admin/menu'] = "admin/viewmenu";
 $route['admin/viewspoilagesmenu'] = "admin/viewspoilagesmenu";
@@ -82,3 +80,16 @@ $route['admin/menu/edit'] = "admin/edit_menu";
 $route['admin/menu/edit_image'] = "admin/edit_image";
 
 
+$route['admin/edit/accounts'] = "admin/vieweditAccounts";
+$route['admin/changepassword'] = "admin/changepassword";
+$route['admin/inventory'] = "admin/viewinventory";
+$route['admin/inventory/add'] = "admin/addstockitem";
+$route['admin/inventory/edit'] = "admin/editstockitem";
+$route['admin/inventory/delete/(:num)'] = "admin/deletestockitem/$1";
+$route['admin/transactions'] = "admin/viewtransactions";
+$route['admin/transactions/add'] = "admin/addtransactions";
+$route['admin/transactions/edit'] = "admin/edittransactions";
+$route['admin/transactions/delete'] = "admin/deletetransactions";
+
+
+$route['admin/sample'] = 'admin/samplemethod';
