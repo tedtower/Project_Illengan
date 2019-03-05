@@ -152,10 +152,17 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['transactions'] = $this->adminmodel->get_transactions();
             $data['transitems'] = $this->adminmodel->get_transitems();
+            $this->load->view('admin/admingeneralheader');
             $this->load->view('admin/transactions',$data);
         }else{
             redirect('login');
         }
+    }
+
+    function samplemethod(){
+        
+        $this->output->set_output(json_encode($this->adminmodel->get_samplemethod($this->input->get('id'))));
+        $this->output->set_output(json_encode($this->adminmodel->get_transactions()));
     }
 
     
@@ -213,9 +220,9 @@ class Admin extends CI_Controller{
                 $stock_status = $this->input->post('stock_status');
                 $category_id = $this->input->post('stock_category');
                 if($this->adminmodel->add_stockitem($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id)){
-                    $this->viewInventory();
+                    redirect('admin/inventory');
                 }else{
-                    $this->viewInventory("");                }
+                    redirect('admin/inventory');             }
             }
         }else{
             redirect('login');

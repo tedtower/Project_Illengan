@@ -198,6 +198,10 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
 
+    function get_samplemethod($id){
+        $query = "Select trans_id, item_name, item_qty, item_unit, item_price, item_qty*item_price as total_price from transitems where trans_id=?";
+        return $this->db->query($query, array($id))->result_array();
+    }
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
     function delete_account($account_id){
