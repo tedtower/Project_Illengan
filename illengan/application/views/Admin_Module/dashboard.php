@@ -80,6 +80,9 @@
                         <li class="nav-item">
                                 <a class="nav-item" href="<?php echo site_url('admin/accounts')?>"><i class=""></i>Accounts</a>
                         </li>
+                        <li class="nav-item">
+                                <a class="nav-item" href="<?php echo site_url('admin/sources')?>"><i class=""></i>sources</a>
+                        </li>
                     </ul>
                 </div>
             </nav>
