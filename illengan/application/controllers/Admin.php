@@ -87,6 +87,15 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
+    function viewInsertSpoilageMenu(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->view('admin/add_spoilagesmenu');
+        }else{
+            redirect('login');
+        }
+    }
+
+
     // function viewReturns($method=null){        
     //     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
     //         switch($method){
@@ -117,7 +126,16 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
-    function viewSpoilagesSales(){
+    function viewSpoilages(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->model("adminmodel");
+            $data['spoilages'] = $this->adminmodel->get_spoilages();
+            $this->load->view('admin/view_spoilages', $data);
+        }else{
+            redirect('login');
+        }
+    }
+    function viewSpoilagesMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model("adminmodel");
             $data['spoilagesmenu'] = $this->adminmodel->get_spoilages_menu();
@@ -253,17 +271,33 @@ class Admin extends CI_Controller{
         }
         
     }
-    function insertspoilagessales(){
+    function insertspoilagesaddons(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model('adminmodel');
 
-            $stype = $this->input->post("s_type");
+            $s_type = $this->input->post("s_type");
             $menu_name =$this->input->post("menu_name");
-            $sqty =$this->input->post("s_qty");
-            $sdate =$this->input->post("s_date");
+            $s_qty =$this->input->post("s_qty");
+            $s_date =$this->input->post("s_date");
             $remarks =$this->input->post("remarks");
 
-            $this->adminmodel->add_menuspoil($menu_name,$s_type,$s_date,$date_recorded,$remarks=null);
+            $this->adminmodel->add_aospoil($menu_name,$s_type,$s_date,$date_recorded,$remarks=null);
+            $this->load->view('admin/viewspoilages'); 
+        }else{
+            redirect('login');
+        }
+    }
+    function insertspoilagesmenu(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+
+            $s_type = $this->input->post("s_type");
+            $menu_name =$this->input->post("menu_name");
+            $s_qty =$this->input->post("s_qty");
+            $s_date =$this->input->post("s_date");
+            $remarks =$this->input->post("remarks");
+            $date_recorded =$this->input->post("date_recorded");
+
+            $this->adminmodel->add_menuspoil($menu_name,$s_type,$s_date,$date_recorded,$remarks);
             $this->load->view('admin/add_spoilages_menu'); 
         }else{
             redirect('login');

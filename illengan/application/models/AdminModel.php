@@ -8,7 +8,7 @@ class AdminModel extends CI_Model{
         $this->db->insert('Accounts',$data);
     }
     function add_menuspoil($menu_id,$s_type,$s_date,$date_recorded,$remarks=null){
-        $query = "insert into spoilage (s_id, stype, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
+        $query = "insert into spoilage (s_id, s_type, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
         if($this->db->query($query,array($s_type,$s_date,$date_recorded,$remarks))){ 
             $query = "insert into menuspoil values (?,?)";
             return $this->db->query($query,array($this->db->insert_id(),$menu_id));
@@ -16,8 +16,8 @@ class AdminModel extends CI_Model{
             return false;
         }
     }
-    function add_stockspoil($stock_id,$s_type,$s_date,$date_recorded,$remarks=null){
-        $query = "insert into spoilage (s_id, stype, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
+    function add_stockspoil($s_type,$s_date,$date_recorded,$remarks){
+        $query = "insert into spoilage (stype, s_date, date_recorded, remarks) values (?,?,?,?)";
         if($this->db->query($query,array($s_type,$s_date,$date_recorded,$remarks))){ 
             $query = "insert into stockspoil values (?,?)";
             return $this->db->query($query,array($this->db->insert_id(),$stock_id));
@@ -172,6 +172,10 @@ class AdminModel extends CI_Model{
     }
     function get_sources(){
         $query = "Select source_id, source_name, contact_num, email, status from sources order by source_name asc";
+        return $this->db->query($query)->result_array();
+    }
+    function get_spoilages(){
+        $query = "Select * from spoilage inner join menuspoil using (s_id) inner join menu using (menu_id)";
         return $this->db->query($query)->result_array();
     }
     function get_spoilages_menu(){
