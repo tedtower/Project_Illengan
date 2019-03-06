@@ -46,6 +46,9 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
+    function viewinsertspoilage(){
+        $this->load->view('admin/add_spoilages');
+    }
     function viewInventory($error = null){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['stock'] = $this->adminmodel->get_inventory();
@@ -113,7 +116,7 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
-    function viewSpoilagesMenu(){
+    function viewSpoilagesSales(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model("adminmodel");
             $data['spoilagesmenu'] = $this->adminmodel->get_spoilages_menu();
@@ -242,17 +245,17 @@ class Admin extends CI_Controller{
         }
         
     }
-    function insertspoilagesmenu(){
+    function insertspoilagessales(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model('adminmodel');
 
-            $stype = $this->input->post("stype");
+            $stype = $this->input->post("s_type");
             $menu_name =$this->input->post("menu_name");
-            $sqty =$this->input->post("sqty");
-            $sdate =$this->input->post("sdate");
+            $sqty =$this->input->post("s_qty");
+            $sdate =$this->input->post("s_date");
             $remarks =$this->input->post("remarks");
 
-            $this->adminmodel->add_damages_menu($stype,$menu_name,$sqty,$sdate,$remarks);
+            $this->adminmodel->add_menuspoil($menu_name,$s_type,$s_date,$date_recorded,$remarks=null);
             $this->load->view('admin/add_spoilages_menu'); 
         }else{
             redirect('login');
@@ -268,7 +271,7 @@ class Admin extends CI_Controller{
             $sdate =$this->input->post("sdate");
             $remarks =$this->input->post("remarks");
 
-            $this->adminmodel->add_damages_stock($stype,$stock_name,$sqty,$sdate,$remarks);
+            $this->adminmodel->add_stockspoil($stock_id,$s_type,$s_date,$date_recorded,$remarks=null);
             $this->load->view('admin/add_spoilages_stock'); 
         }else{
             redirect('login');

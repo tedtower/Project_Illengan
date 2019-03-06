@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
-<form method="POST" action="<?php echo base_url()?>index.php/admin/insertspoilagesmenu">
+<form method="POST" action="<?php echo base_url()?>index.php/admin/insertspoilagessales">
 
    <div class="form-group">
     <label for="formGroupExampleInput2">Description</label>
@@ -16,11 +16,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <span class="text-danger"><?php echo form_error("quantity"); ?></span>
   </div>
 
-  <div class="form-group">
-    <label for="formGroupExampleInput3">Price</label>
-    <input type="text" class="form-control"  name="price" placeholder="Price" required>
-    <span class="text-danger"><?php echo form_error("price"); ?></span>
-  </div>
+    <!--Fix for spoilages-->
+    <label for="formGroupExampleInput2">Spoilage Type</label>
+    <input type="radio" name="s_type"
+    <?php if (isset($gender) && $gender=="female") echo "checked";?>
+    value="female">Female
+    <input type="radio" name="gender"
+    <?php if (isset($gender) && $gender=="male") echo "checked";?>
+    value="male">Male
+    <input type="radio" name="gender"
+    <?php if (isset($gender) && $gender=="other") echo "checked";?>
+    value="other">Other
 
   <div class="form-group">
     <label for="formGroupExampleInput4">Damage Date</label>

@@ -34,16 +34,6 @@ class AdminModel extends CI_Model{
             return false;
         }
     }
-    function add_damages_menu($stype,$menu_name,$sqty,$sdate,$remarks){
-        $menu_id = "(Select m.menu_id from menu AS m INNER JOIN spoilages AS s ON (m.menu_id) where m.menu_name = '$menu_name' GROUP by m.menu_id)";
-        $query = "Insert into spoilages (stype, sqty, sdate, remarks, menu_id) values (?,?,?,?,?)";
-        return $this->db->query($query, array($stype, $sqty, $sdate, $remarks, $menu_id));   
-    }
-    function add_damages_stock($stype,$stock_name,$sqty,$sdate,$remarks){
-        $stock_id = "(Select st.stock_id from stockitems AS st INNER JOIN spoilages AS sp ON (st.stock_id) where st.stock_name = '$stock_name' GROUP by st.stock_id)";
-        $query = "Insert into spoilages (stype, sqty, sdate, remarks, stock_id) values (?,?,?,?,?)";
-        return $this->db->query($query, array($stype, $sqty, $sdate, $remarks, $stock_id)); 
-    }
     function add_menucategory($category_name){
         $query = "Insert into categories (category_id, category_name, category_type) values (NULL, ? ,'Menu')";
         return $this->db->query($query,array($category_name));
@@ -178,7 +168,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_spoilages_menu(){
-        $query = "Select s_id, menu_name , s_qty, sdate, date_recorded, remarks from spoilages inner join menuspoil using (s_id) inner join menu using (menu_id)";
+        $query = "Select s_id, menu_name , s_qty, s_date, date_recorded, remarks from spoilage inner join menuspoil using (s_id) inner join menu using (menu_id)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilages_stock(){
