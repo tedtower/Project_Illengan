@@ -127,6 +127,7 @@ class AdminModel extends CI_Model{
         $query = "Select log_id, stock_name, quantity, log_date, log_type, date_recorded from log inner join stockitems using (stock_id)";
         return $this->db->query($query)->result_array();
     }
+    //Menu management
     function get_menu(){
         $query = "Select menu_id, menu_name, menu_description, menu_availability, menu_image, category_name, temp from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
         return $this->db->query($query)->result_array();
@@ -146,6 +147,12 @@ class AdminModel extends CI_Model{
     function get_menusubcategories(){
         $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories left join menu using (category_id) where category_type = 'menu' and supcat_id is not null group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
+    }
+
+    function add_menu($menu_name, $menu_description, $category_id, $menu_price, $picture){
+        $query = "Insert into menu (menu_id, menu_name, menu_description, category_id, menu_price, menu_image, size, menu_availability) values (NULL,?,?,?,?,?, NULL,'Available')";
+        return $this->db->query($query,array($menu_name, $menu_description, $category_id, $menu_price, $picture));
+
     }
     function get_sales(){
         $query = "Select order_id, order_date_time, order_payable, pay_date_time, date_recorded, menu_name, order_qty, order_total from orderslip inner join orderlist using (order_id) inner join menu using (menu_id) where payment_status = 'paid';";
@@ -172,7 +179,7 @@ class AdminModel extends CI_Model{
         return  $this->db->query($query)->result_array();
     }
     function get_spoilages_stock(){
-        $query = "Select spoilages.s_id, stock_name,s_qty,stock_unit,sdate, date_recorded, remarks from spoilages inner join stockspoil using (s_id) inner join stockitems using (stock_id)";
+        $query = "s_id, stock_name,s_qty,stock_unit,sdate, date_recorded, remarks from spoilages inner join stockspoil using (s_id) inner join stockitems using (stock_id)";
         return  $this->db->query($query)->result_array();
     }
     function get_tables(){
@@ -188,6 +195,10 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
 
+    function get_samplemethod($id){
+        $query = "Select trans_id, item_name, item_qty, item_unit, item_price, item_qty*item_price as total_price from transitems where trans_id=?";
+        return $this->db->query($query, array($id))->result_array();
+    }
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
     function delete_account($account_id){
@@ -214,6 +225,26 @@ class AdminModel extends CI_Model{
     function delete_table($table_no){
         $query = "Delete from tables where table_no= ?";
         return $this->db->query($query, array($table_no));
+    }
+    function insert_data($data){
+        $this->db->insert("sources", $data);
+    }
+    function edit_data($source_id, $source_name, $contact_num, $status){
+        $query = "update sources set source_name = ?, contact_num = ?, status = ?  where source_id = ?";
+        return $this->db->query($query,array($source_name,$contact_num,$status,$source_id));
+    }
+    function delete_data($id){
+        $this->db->where("source_id", $id);
+        $this->db->delete("sources");
+    }
+
+    function delete_menu($id){
+        $this->db->where("menu_id", $id);
+        $this->db->delete("menu");
+    }
+    function edit_menu($menu_id, $menu_name, $category_id, $menu_description, $menu_price, $menu_availability){
+        $query = "update menu set menu_name = ?, category_id = ?, menu_description = ?, menu_price = ?, menu_availability = ? where menu_id = ?";
+        return $this->db->query($query,array($menu_name, $category_id, $menu_description, $menu_price, $menu_availability, $menu_id));
     }
 
 }
