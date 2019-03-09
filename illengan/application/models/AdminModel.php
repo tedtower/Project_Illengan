@@ -8,7 +8,7 @@ class AdminModel extends CI_Model{
         $this->db->insert('Accounts',$data);
     }
     function add_menuspoil($menu_id,$s_type,$s_date,$date_recorded,$remarks=null){
-        $query = "insert into spoilage (s_id, stype, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
+        $query = "insert into spoilage (s_id, s_type, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
         if($this->db->query($query,array($s_type,$s_date,$date_recorded,$remarks))){ 
             $query = "insert into menuspoil values (?,?)";
             return $this->db->query($query,array($this->db->insert_id(),$menu_id));
@@ -16,8 +16,8 @@ class AdminModel extends CI_Model{
             return false;
         }
     }
-    function add_stockspoil($stock_id,$s_type,$s_date,$date_recorded,$remarks=null){
-        $query = "insert into spoilage (s_id, stype, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
+    function add_stockspoil($s_type,$s_date,$date_recorded,$remarks){
+        $query = "insert into spoilage (stype, s_date, date_recorded, remarks) values (?,?,?,?)";
         if($this->db->query($query,array($s_type,$s_date,$date_recorded,$remarks))){ 
             $query = "insert into stockspoil values (?,?)";
             return $this->db->query($query,array($this->db->insert_id(),$stock_id));
@@ -33,16 +33,6 @@ class AdminModel extends CI_Model{
         }else{
             return false;
         }
-    }
-    function add_damages_menu($stype,$menu_name,$sqty,$sdate,$remarks){
-        $menu_id = "(Select m.menu_id from menu AS m INNER JOIN spoilages AS s ON (m.menu_id) where m.menu_name = '$menu_name' GROUP by m.menu_id)";
-        $query = "Insert into spoilages (stype, sqty, sdate, remarks, menu_id) values (?,?,?,?,?)";
-        return $this->db->query($query, array($stype, $sqty, $sdate, $remarks, $menu_id));   
-    }
-    function add_damages_stock($stype,$stock_name,$sqty,$sdate,$remarks){
-        $stock_id = "(Select st.stock_id from stockitems AS st INNER JOIN spoilages AS sp ON (st.stock_id) where st.stock_name = '$stock_name' GROUP by st.stock_id)";
-        $query = "Insert into spoilages (stype, sqty, sdate, remarks, stock_id) values (?,?,?,?,?)";
-        return $this->db->query($query, array($stype, $sqty, $sdate, $remarks, $stock_id)); 
     }
     function add_menucategory($category_name){
         $query = "Insert into categories (category_id, category_name, category_type) values (NULL, ? ,'Menu')";
@@ -163,6 +153,7 @@ class AdminModel extends CI_Model{
         $query = "Select log_id, stock_name, quantity, log_date, log_type, date_recorded from log inner join stockitems using (stock_id)";
         return $this->db->query($query)->result_array();
     }
+    //Menu management
     function get_menu(){
         $query = "Select menu_id, menu_name, menu_description, menu_availability, menu_image, category_name, temp from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
         return $this->db->query($query)->result_array();
@@ -182,6 +173,12 @@ class AdminModel extends CI_Model{
     function get_menusubcategories(){
         $query = "Select category_id, category_name, category_type, COUNT(menu_id) as menu_no from categories left join menu using (category_id) where category_type = 'menu' and supcat_id is not null group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
+    }
+
+    function add_menu($menu_name, $menu_description, $category_id, $menu_price, $picture){
+        $query = "Insert into menu (menu_id, menu_name, menu_description, category_id, menu_price, menu_image, size, menu_availability) values (NULL,?,?,?,?,?, NULL,'Available')";
+        return $this->db->query($query,array($menu_name, $menu_description, $category_id, $menu_price, $picture));
+
     }
     function get_sales(){
         $query = "Select order_id, order_date_time, order_payable, pay_date_time, date_recorded, menu_name, order_qty, order_total from orderslip inner join orderlist using (order_id) inner join menu using (menu_id) where payment_status = 'paid';";
@@ -203,8 +200,12 @@ class AdminModel extends CI_Model{
         $query = "Select source_id, source_name, contact_num, email, status from sources order by source_name asc";
         return $this->db->query($query)->result_array();
     }
+    function get_spoilages(){
+        $query = "Select * from spoilage inner join menuspoil using (s_id) inner join menu using (menu_id)";
+        return $this->db->query($query)->result_array();
+    }
     function get_spoilages_menu(){
-        $query = "Select s_id, menu_name , s_qty, sdate, date_recorded, remarks from spoilages inner join menuspoil using (s_id) inner join menu using (menu_id)";
+        $query = "Select s_id, menu_name , s_qty, s_date, date_recorded, remarks from spoilage inner join menuspoil using (s_id) inner join menu using (menu_id)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilages_stock(){
@@ -262,6 +263,26 @@ class AdminModel extends CI_Model{
     function delete_transitem($trans_id, $item_name){
         $query = "Delete from transitems where trans_id=? and item_name=?";
         return $this->db->query($query, array($trans_id, $item_name));
+    }
+    function insert_data($data){
+        $this->db->insert("sources", $data);
+    }
+    function edit_data($source_id, $source_name, $contact_num, $status){
+        $query = "update sources set source_name = ?, contact_num = ?, status = ?  where source_id = ?";
+        return $this->db->query($query,array($source_name,$contact_num,$status,$source_id));
+    }
+    function delete_data($id){
+        $this->db->where("source_id", $id);
+        $this->db->delete("sources");
+    }
+
+    function delete_menu($id){
+        $this->db->where("menu_id", $id);
+        $this->db->delete("menu");
+    }
+    function edit_menu($menu_id, $menu_name, $category_id, $menu_description, $menu_price, $menu_availability){
+        $query = "update menu set menu_name = ?, category_id = ?, menu_description = ?, menu_price = ?, menu_availability = ? where menu_id = ?";
+        return $this->db->query($query,array($menu_name, $category_id, $menu_description, $menu_price, $menu_availability, $menu_id));
     }
 
 }

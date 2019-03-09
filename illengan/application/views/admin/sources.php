@@ -18,7 +18,7 @@
                     if (isset($source)){
                       foreach ($source as $source){
                     ?>
-            <tr data-id="<?php echo $source['source_id']?>"">
+            <tr data-id="<?php echo $source['source_id']?>">
                       <td><?php echo $source['source_name'] ?></td>
                       <td><?php echo $source['contact_num']?></td>
                       <td><?php echo $source['status']?></td>
