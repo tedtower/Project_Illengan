@@ -7,22 +7,30 @@ class AdminModel extends CI_Model{
     function add_accounts($data){
         $this->db->insert('Accounts',$data);
     }
-    function add_menuspoil($menu_id,$s_type,$s_date,$date_recorded,$remarks=null){
-        $query = "insert into spoilage (s_id, s_type, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
-        if($this->db->query($query,array($s_type,$s_date,$date_recorded,$remarks))){ 
-            $query = "insert into menuspoil values (?,?)";
-            return $this->db->query($query,array($this->db->insert_id(),$menu_id));
-        }else{
-            return false;
+    function add_menuspoil($s_type,$menu_name,$s_qty,$s_date,$date_recorded,$remarks){
+        $query1 = "select menu_id from `menu` where menu_name = ? ";
+        $menu_id = $this->db->query($query1,array($menu_name));
+        foreach($menu_id->result_array() AS $row) {
+            $query = "insert into spoilage (s_id, s_type, s_qty, s_date, date_recorded, remarks) values (NULL,?,?,?,?,?)";
+            if($this->db->query($query,array($s_type,$s_qty,$s_date,$date_recorded,$remarks))){ 
+                $query = "insert into menuspoil values (?,?)";
+                return $this->db->query($query,array($this->db->insert_id(),$row['menu_id']));
+            }else{
+                return false;
+            }
         }
     }
-    function add_stockspoil($s_type,$s_date,$date_recorded,$remarks){
-        $query = "insert into spoilage (stype, s_date, date_recorded, remarks) values (?,?,?,?)";
-        if($this->db->query($query,array($s_type,$s_date,$date_recorded,$remarks))){ 
-            $query = "insert into stockspoil values (?,?)";
-            return $this->db->query($query,array($this->db->insert_id(),$stock_id));
-        }else{
-            return false;
+    function add_stockspoil($s_type,$stock_name,$s_qty,$s_date,$date_recorded,$remarks){
+        $query1 = "select stock_id from `stockitems` where stock_name = ? ";
+        $stock_id = $this->db->query($query1,array($stock_name));
+        foreach($stock_id->result_array() AS $row) {
+            $query = "insert into spoilage (s_id, s_type, s_qty, s_date, date_recorded, remarks) values (NULL,?,?,?,?,?)";
+            if($this->db->query($query,array($s_type,$s_qty,$s_date,$date_recorded,$remarks))){ 
+                $query = "insert into stockspoil values (?,?)";
+                return $this->db->query($query,array($this->db->insert_id(),$row['stock_id']));
+            }else{
+                return false;
+            }
         }
     }
     function add_aospoil($ao_id,$s_type,$s_date,$date_recorded,$remarks=null){
@@ -175,7 +183,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_spoilages(){
-        $query = "Select * from spoilage inner join menuspoil using (s_id) inner join menu using (menu_id)";
+        $query = "select * FROM spoilage LEFT JOIN menuspoil USING (s_id) LEFT JOIN menu USING (menu_id) LEFT JOIN ao_spoil USING (s_id) LEFT JOIN addons USING (ao_id) LEFT JOIN stockspoil USING (s_id) LEFT JOIN stockitems USING (stock_id)";
         return $this->db->query($query)->result_array();
     }
     function get_spoilages_menu(){
@@ -214,9 +222,9 @@ class AdminModel extends CI_Model{
         $query = "delete from categories where category_id = ? and category_type= 'menu'";
         return $this->db->query($query,array($category_id));
     }
-    function delete_spoilages($sid){
-        $this->db->where('sid', $sid);
-        $this->db->delete('spoilages');
+    function delete_spoilages($s_id){
+        $this->db->where('s_id', $s_id);
+        $this->db->delete('spoilage');
     }
     function delete_stockcategory($category_id){
         $query = "delete from categories where category_id = ? and category_type= 'inventory'";

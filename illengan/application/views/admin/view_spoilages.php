@@ -100,7 +100,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <title>Il-Lengan</title>
 </head>
 <body>
-
+<a class="btn btn-primary" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageAo" role="button">Add Add-ons Spoilage</a>
+<a class="btn btn-primary" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageStock" role="button">Add Stock Spoilage</a>
 <a class="btn btn-primary" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageMenu" role="button">Add Menu Spoilage</a>
 <div class="table-responsive" style="text-align:center">
     <table class="table table-bordered">
@@ -117,6 +118,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             
             if (isset($spoilages)){
                 foreach ($spoilages as $row){
+					if (isset($spoilages)){
+						foreach ($spoilages as $row){
+							if($row['stype'] = 'm'){
               ?>
                     <tr>
                         <td><?php echo $row['s_id']; ?></td>
@@ -128,10 +132,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <td><a href="<?php echo site_url('admin/deletespoilages/'.$row['s_id']);?>">Delete</a></td>
                     </tr>
                     <?php
-                    }
+					}
+				}
+				}
+			}
             }else{
                 echo "There is no data";
-            }
+			}
             ?>
     </table>
     </body>

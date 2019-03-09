@@ -47,9 +47,6 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
-    function viewinsertspoilage(){
-        $this->load->view('admin/add_spoilages');
-    }
     function viewInventory($error = null){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['stock'] = $this->adminmodel->get_inventory();
@@ -90,6 +87,20 @@ class Admin extends CI_Controller{
     function viewInsertSpoilageMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->view('admin/add_spoilagesmenu');
+        }else{
+            redirect('login');
+        }
+    }
+    function viewInsertSpoilageStock(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->view('admin/add_spoilagesstock');
+        }else{
+            redirect('login');
+        }
+    }
+    function viewInsertSpoilageAo(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->view('admin/add_spoilagesao');
         }else{
             redirect('login');
         }
@@ -294,11 +305,12 @@ class Admin extends CI_Controller{
             $menu_name =$this->input->post("menu_name");
             $s_qty =$this->input->post("s_qty");
             $s_date =$this->input->post("s_date");
-            $remarks =$this->input->post("remarks");
             $date_recorded =$this->input->post("date_recorded");
+            $remarks =$this->input->post("remarks");
 
-            $this->adminmodel->add_menuspoil($menu_name,$s_type,$s_date,$date_recorded,$remarks);
-            $this->load->view('admin/add_spoilages_menu'); 
+            $this->adminmodel->add_menuspoil($s_type,$menu_name,$s_qty,$s_date,$date_recorded,$remarks);
+            $data['spoilages'] = $this->adminmodel->get_spoilages();
+            $this->load->view('admin/view_spoilages', $data);
         }else{
             redirect('login');
         }
@@ -307,17 +319,35 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model('adminmodel');
 
-            $stype = $this->input->post("stype");
+            $s_type = $this->input->post("s_type");
             $stock_name =$this->input->post("stock_name");
-            $sqty =$this->input->post("sqty");
-            $sdate =$this->input->post("sdate");
+            $s_qty =$this->input->post("s_qty");
+            $s_date =$this->input->post("s_date");
+            $date_recorded =$this->input->post("date_recorded");
             $remarks =$this->input->post("remarks");
 
-            $this->adminmodel->add_stockspoil($stock_id,$s_type,$s_date,$date_recorded,$remarks=null);
-            $this->load->view('admin/add_spoilages_stock'); 
+            $this->adminmodel->add_stockspoil($s_type,$stock_name,$s_qty,$s_date,$date_recorded,$remarks);
+            $data['spoilages'] = $this->adminmodel->get_spoilages();
+            $this->load->view('admin/view_spoilages', $data);
         }else{
             redirect('login');
         }
+    }
+    function changeAccountPassword(){  
+        $this->load->library('form_validation');
+        $account_id = $this->input->post('account_id');
+        $this->form_validation->set_rules('old_password', 'Current Password', 'required');
+        $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[8]|max_length[50]');
+        $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[8]|max_length[50]|matches[new_password]');
+        $this->form_validation->set_rules('account_password', 'Current Password', 'required');
+        if($this->form_validation->run()==false){
+            $old_password = $this->input->post("old_password");
+            $new_password = $this->input->post("new_password");
+            $this->adminmodel->change_account_password($old_password, $new_password, $account_id);
+        }else{
+        $this->viewChangePassword();
+        }
+        $this->viewAccounts();
     }
 
     function editAccounts(){
