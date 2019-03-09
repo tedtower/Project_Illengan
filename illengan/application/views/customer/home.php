@@ -51,7 +51,7 @@
     $table_no = $this->session-> userdata('table_no');
 	echo '<h2>Welcome - '.$cust_name.'</h2><br>';
 ?>
-	<h3><a href="<?php echo base_url();?>index.php/customer/logout">Log out</a>
+	<h3><a href="<?php echo base_url();?>customer/logout">Log out</a>
 <?php 
 	include_once('menu.php');
 	include_once('orders.php');

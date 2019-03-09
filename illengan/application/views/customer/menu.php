@@ -48,14 +48,14 @@
                 <!-- Modal Body -->
                 <div class="modal-body">
                     <!-- Menu Image -->
-                    <img class="w-100" src="media/card.jpeg" alt="Menu Item Name">
+                    <img class="w-100" src="" alt="Menu Item">
                     <!-- Title And Price -->
                     <div class="d-flex justify-content-between gab rp-title">
-                        <p id="menu_name">Menu Item Name</p>
-                        <p><span class="fs-24">₱</span><span id="menu_price">100</span></p>
+                        <p id="menu_name"></p>
+                        <p><span class="fs-24">₱</span><span id="menu_price"></span></p>
                     </div>
                     <!-- Palitan ang teal-text to tex-danger pag unavailable yung item -->
-                    <h4 class="gab">Status: <span id="menu_availability" class="teal-text">Available</span></h4>
+                    <h4 class="gab">Status: <span id="menu_availability" class="teal-text"></span></h4>
                     <hr>
                     <!-- Order Form -->
                     <h3 class="gab">Order Details</h3>
@@ -63,9 +63,6 @@
                         <div class="d-flex w-100 delius">
                             <label class="px-1 mt-1 label-indent" for="size">Size:</label>
                             <select class="browser-default custom-select" id="size" name="menu_size" required>
-                            <option selected value="100">Small (100 php)</option>
-                            <option value="120">Medium (120php)</option>
-                            <option value="140">Large (140 php)</option>
                             </select>
                         </div>
                     </div>
@@ -84,10 +81,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="input-group w-auto" >
-                            <label for="hot-or-cold" class="mt-1">Type: &nbsp;</label>
-                            <!-- If checked, it's hot, if it's not, then cold -->
-                            <input type="checkbox" class="hc mr-1" id="hot-or-cold" />
+                        <div class="input-group w-auto" id="temperature">
+                            <label class="mt-1">Type: &nbsp;</label>
+                            
+                            <input type="radio" class="hc mr-1" id="hot-or-cold" value="Hot" />
+                            <span class="mt-1 font-weight-bold" id="temp"> Hot</span>
+                            <input type="radio" class="hc mr-1" id="hot-or-cold" value="Cold" />
                             <span class="mt-1 font-weight-bold" id="temp"> Cold</span>
                         </div>
                     </div>
@@ -96,14 +95,10 @@
                         <div class="input-group-prepend">
                             <button class="btn btn-md btn-outline-accent m-0 px-3 py-2 z-depth-0" type="button">Add-on</button>
                         </div>
-                        <select class="browser-default custom-select w-25" id="inputGroupSelect03" aria-label="Example select with button addon">
+                        <select class="browser-default custom-select w-25" id="addon[]" aria-label="Addon">
                             <option selected disabled>Choose...</option>
-                            <option value="">No Thank You.</option>
-                            <option value="1">Addon One (15 php)</option>
-                            <option value="2">Addon Two (20 php)</option>
-                            <option value="3">Addon Three (25 php)</option>
                         </select>
-                        <input type="number" min="1" placeholder="Quantity..." aria-label="Add-on Quantity" class="form-control">
+                        <input type="number" min="1" name="addonqty[]" placeholder="Quantity..." aria-label="Add-on Quantity" class="form-control">
                     </div>
                     <div class="delius form-group green-border-focus">
                         <div class="d-flex flex-row">
@@ -113,7 +108,7 @@
                     </div>
                     <div class="text-center float-right">
                         <button type="button" class="btn btn-outline-accent px-3" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-accent px-3">Save To Order List</button>
+                        <button type="button" class="btn btn-accent px-3" data-menuid="">Save To Order List</button>
                     </div>
                 </div>
             </div>
@@ -127,6 +122,8 @@ $(function() {
         var menu_id = $(this).attr('data-menuItemID');
         if($(this).attr("data-opened") == '1'){
             setModalValues(menu_id);
+        }else{
+
         }
         $.ajax({
             method: "get",
@@ -136,6 +133,7 @@ $(function() {
             },
             dataType: "json",
             success: function(details) {
+
                 menu[details[0]['menu_id']] = details[0];
                 setModalValues(details[0]['menu_id']);
             }
@@ -143,38 +141,44 @@ $(function() {
     });
 });
 
-function setModalValues(menu_id){
-    $("#name").text(menu[menu_id]['menu_name']);
-    $("#desc").text(menu[menu_id]['menu_description']);
-    $("#status").text(menu[menu_id]['menu_availability']);
-    if(menu[menu_id]['temp'] === 'hc'){
-        var temp = 
-        `<div>
-            <input type='radio' name="temp" id="hot" value="Hot"/><label for="hot">Hot</label>
-            <input type='radio' name="temp" id="cold" value="Cold"/><label for="cold">Cold</label>
-        </div>`;
-        $("#sizeable").after(temp);
-    }
+function setModalValues(menu_id){    
+    $("input [name='id']").val(menu[menu_id]["menu_id"]);
+    $("#menu_modal").find("img").attr("src") = "media/"+menu[menu_id]['menu_image'];
+    $("#menu_name").text(menu[menu_id]['menu_name']);
+    // $("#desc").text(menu[menu_id]['menu_description']);
+    $("#menu_availability").text(menu[menu_id]['menu_availability']);
+    //SIZES
     if(menu[menu_id]["sizes"].length === 1){
-        $("#sizeable").empty();
+        $("#sizeable").css("display","none");
+        $("#menu_price").text(menu[menu_id]["sizes"][0]['size_price']);
         $("input [name='price']").val(menu[menu_id]["sizes"][0]['size_price']);
     }else{
-        var sizediv = 
-        `<label class="px-1" for="size">Size:</label>
-        <select class="browser-default custom-select delius" id="size" name="size">
-            <option selected disabled>Select Order Size...</option>
-        </select>`;
-        var size = "<option value=''></option>";
+        var size = "<option value=''></option>";        
+        $("#sizeable").css("display","block");
         for(var x = 0 ; x < menu[menu_id]["sizes"].length ; x++ ){            
             $("#size").append(size);
-            $("#size").last().val(menu[menu_id]["sizes"][x]["size_price"]);
+            $("#size").last().val(menu[menu_id]["sizes"][x]["size_name"]);
             $("#size").last().text(menu[menu_id]["sizes"][x]["size_name"]);
         }
+        $("#size").first().attr("selected","selected");
     }
+    //TEMPERATURE
+    if(menu[menu_id]['temp'] === 'hc'){
+        $("#temperature").css("display","block");
+    }else{
+        $("#temperature").css("display","none");
+    }
+    //ADDONS
     if(menu[menu_id]['addons'].length === 0){
-
+        
     }
-    $("input [name='id']").val(menu[menu_id]["menu_id"]);
-
+}
+function closeModal(){
+    $("#menu_name").empty();
+    $("#menu_price").empty();
+    $("#size").empty();
+    $("#menu_availability").empty();
+    $("#menu_modal").find("img").attr("src") = "";
+    $("addon");
 }
 </script>
