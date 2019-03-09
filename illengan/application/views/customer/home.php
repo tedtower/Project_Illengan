@@ -11,8 +11,7 @@
 
 <!--Main Navigation--><header>
   <nav class="navbar navbar-expand-sm fixed-top navbar-dark brown darken-2 scrolling-navbar py-0 my-0">
-    <img
-< class="img-logo mr-3" src="<?php echo base_url().'logo.png' ?>">
+    <img class="img-logo mr-3" src="<?php echo base_url().'logo.png' ?>">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
