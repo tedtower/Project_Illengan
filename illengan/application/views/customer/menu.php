@@ -51,19 +51,18 @@
                     <img class="w-100" src="media/card.jpeg" alt="Menu Item Name">
                     <!-- Title And Price -->
                     <div class="d-flex justify-content-between gab rp-title">
-                        <p>Menu Item Name</p>
-                        <p><span class="fs-24">₱</span>100</p>
+                        <p id="menu_name">Menu Item Name</p>
+                        <p><span class="fs-24">₱</span><span id="menu_price">100</span></p>
                     </div>
-                    <h4 class="gab">Status: <span class="teal-text">Available</span></h4>
-                    <h4 class="gab">Status: <span class="text-danger">Unavailable</span></h4>
+                    <!-- Palitan ang teal-text to tex-danger pag unavailable yung item -->
+                    <h4 class="gab">Status: <span id="menu_availability" class="teal-text">Available</span></h4>
                     <hr>
                     <!-- Order Form -->
                     <h3 class="gab">Order Details</h3>
-                    <span class="fs-15 delius"><i class="text-danger">Note:</i>The add-ons and temperature will reflect based on the quantity of the specific menu that you will order. If you want to differ the items, please order them separately.</span>
                     <div class="input-group mb-3 mt-2" id="sizable">
                         <div class="d-flex w-100 delius">
                             <label class="px-1 mt-1 label-indent" for="size">Size:</label>
-                            <select class="browser-default custom-select" id="size" name="size" required>
+                            <select class="browser-default custom-select" id="size" name="menu_size" required>
                             <option selected value="100">Small (100 php)</option>
                             <option value="120">Medium (120php)</option>
                             <option value="140">Large (140 php)</option>
@@ -78,7 +77,7 @@
                                 <button class="btn btn-md btn-light m-0 py-1 px-3 z-depth-0" type="button" data-quantity="minus" data-field="quantity">
                                     <i class="fa fa-minus" aria-hidden="true"></i>
                                 </button>
-                                <input type="text" class="form-control text-center font-weight-bold" name="quantity" id="quantity" value="1" disabled>
+                                <input type="text" class="form-control text-center font-weight-bold" name="order_quantity" id="quantity" value="1" disabled>
                                 <button class="btn btn-md btn-light m-0 py-1 px-3 z-depth-0" type="button" data-quantity="plus" data-field="quantity">
                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                 </button>
@@ -86,7 +85,8 @@
                             </div>
                         </div>
                         <div class="input-group w-auto">
-                            <label for="hot-or-cold" class="mt-1">Temperature: &nbsp;</label>
+                            <label for="hot-or-cold" class="mt-1">Type: &nbsp;</label>
+                            <!-- If checked, it's hot, if it's not, then cold -->
                             <input type="checkbox" class="hc mr-1" id="hot-or-cold" />
                             <span class="mt-1 font-weight-bold" id="temp"> Cold</span>
                         </div>
