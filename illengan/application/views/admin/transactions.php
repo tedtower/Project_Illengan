@@ -122,8 +122,25 @@
         </tbody>
     </table>
 </div>
+<FORM CLASS="FORMCLASS">
+</FORM>
+<FORM CLASS="FORMCLASS">
+</FORM>
+<FORM CLASS="FORMCLASS">
+</FORM>
 <script>
+var trans = {};
+    
+
 $(function() {
+    // $(".FORMCLASS").ON('SUBMIT',FUNCTION(){
+    //     VAR INPUTS = $(THIS).children("INPUT");
+    //     $.ajax({
+    //         method: "post",
+    //         url: 'admin/showtranstable',
+    //         data: { inputs : INPUTS },
+    //     });
+    // });
     $('#samplebutton').on('click', function() {
         $.ajax({
             url: '<?php echo site_url('admin/sample')?>',
@@ -132,12 +149,17 @@ $(function() {
             },
             dataType: 'json',
             success: function(response) {
-                console.log(response);
+                // console.log(response[0]);
+                // trans.push(response[0]);
+                var tableelement = 
+                `<table>
+
+                </table>`;
             }
         });
     });
 
-    $(".addTransItemBtn").on('click', function(event) {
+    $(".addTransItemBtn").on('SUBMIT', function(event) {
         var inputTable = 
             `<div class='transitem_input_div'>
                 <table>
@@ -161,6 +183,9 @@ $(function() {
         }
         $(this).closest("div").find("tbody").append(inputRow);
     });
+
+
+
     $(" .transitem_input_div button ").on('click', function(event){
         console.log("yooooq");
         $(this).closest("tr").remove();

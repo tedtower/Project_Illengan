@@ -182,7 +182,7 @@ class Admin extends CI_Controller{
 
     function samplemethod(){
         
-        $this->output->set_output(json_encode($this->adminmodel->get_samplemethod($this->input->get('id'))));
+        // $this->output->set_output(json_encode($this->adminmodel->get_samplemethod($this->input->get('id'))));
         $this->output->set_output(json_encode($this->adminmodel->get_transactions()));
     }
 
@@ -327,7 +327,6 @@ class Admin extends CI_Controller{
         }
     }
 
-   
 //EDIT FUNCTIONS-------------------------------------------------------------------------------------
     function changeAccountPassword(){  
         $this->load->library('form_validation');

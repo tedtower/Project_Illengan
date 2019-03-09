@@ -91,5 +91,5 @@ $route['admin/transactions/add'] = "admin/addtransactions";
 $route['admin/transactions/edit'] = "admin/edittransactions";
 $route['admin/transactions/delete'] = "admin/deletetransactions";
 
-
+$route['customer/menu/getitemdetails'] = "customer/getdetails";
 $route['admin/sample'] = 'admin/samplemethod';

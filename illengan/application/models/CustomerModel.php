@@ -41,6 +41,27 @@
 				'date_record' => $record //unknown format
 			);
         $this->db->insert('orderslip', $data);
-		}
+        }
+
+        function get_menudetails($menu_id){
+            $query = "select * from menu where menu_id = ?";
+            return $this->db->query($query, array($menu_id));
+        }
+        function get_sizes($menu_id){
+            $query = "Select menu_id, size_name, size_price from sizes where menu_id = ?";
+            return $this->db->query($query, array($menu_id))->result_array();
+        }
+        function get_addons($menu_id){
+            $query = "Select ao_id, ao_name, ao_price, ao_status from itemadd inner join addons using where menu_id = ?";
+            return $this->db->query($query, array($menu_id))->result_array();
+        }
+        // function get_freebiepromo($menu_id){
+        //     $query = "Select promo_id, from discounts inner join menu";
+
+        // }        
+        // function get_discountpromo($menu_id){
+        //     $query = "Select promo_id, dc_name, dc_perc, dc_status from discounts inner join menu";
+
+        // }
     }
 ?>
