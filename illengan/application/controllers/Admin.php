@@ -250,6 +250,13 @@ class Admin extends CI_Controller{
         }
         
     }
+    function addTransactions(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            
+        }else{
+            redirect('login');
+        }
+    }
     function insertspoilagesmenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model('adminmodel');
@@ -300,7 +307,7 @@ class Admin extends CI_Controller{
             $new_password = $this->input->post("new_password");
             $this->adminmodel->change_account_password($old_password, $new_password, $account_id);
         }else{
-        $this->viewChangePassword();
+            $this->viewChangePassword();
         }
     }
     function editAccounts(){
@@ -425,6 +432,7 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
+    
     function deleteTable($table_no){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             if($this->adminmodel->delete_table($table_no)){
