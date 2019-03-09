@@ -1,0 +1,60 @@
+menu_id,category_id,menu_name,menu_description,menu_availability,menu_image,temp
+1,7,"Fries, Nachos, & Onion Rings",NULL,available,NULL,NULL
+2,7,"Quesadilla, Fries, Nachos, & Onion Rings",NULL,available,NULL,NULL
+3,7,"Wicked Oreos & Turon ala Mode",NULL,available,NULL,NULL
+4,8,"Clubhouse, Fries, Nachos & Onion Rings",NULL,available,NULL,NULL
+5,8,"6pcs. Fried Chicken w/ Mojos",NULL,available,NULL,NULL
+6,8,"3pcs. Fried Chicken & 3pcs. Buffalo Chicken w/ Mojos",NULL,available,NULL,NULL
+7,6,Liempo,NULL,available,NULL,NULL
+8,6,Bangus,NULL,available,NULL,NULL
+9,6,"2pc. Fried Chicken",NULL,available,NULL,NULL
+10,6,"2pc. Buffalo Chicken",NULL,available,NULL,NULL
+11,6,"Burger Steak",NULL,available,NULL,NULL
+12,6,"Grilled Chicken Legs",NULL,available,NULL,NULL
+13,1,"Fish Fillet w/ Mango Sauce",NULL,available,NULL,NULL
+14,1,"Baby Back Ribs",NULL,available,NULL,NULL
+15,5,"French Fries",NULL,available,NULL,NULL
+16,5,"Animal Fries",NULL,available,NULL,NULL
+17,5,Nachos,NULL,available,NULL,NULL
+18,5,"Chicken Quesadilla",NULL,available,NULL,NULL
+19,5,"Fresh Lumpia",NULL,available,NULL,NULL
+20,5,"Onion Rings",NULL,available,NULL,NULL
+21,5,"Fish & Chips",NULL,available,NULL,NULL
+22,5,"Crispy Wings",NULL,available,NULL,NULL
+23,5,"Buffalo Wings",NULL,available,NULL,NULL
+24,5,"Italian Pasta",NULL,available,NULL,NULL
+25,5,"Pesto Pasta",NULL,available,NULL,NULL
+26,5,"Carbonara Pasta",NULL,available,NULL,NULL
+27,5,"Waffles & Bacon",NULL,available,NULL,NULL
+28,5,"Clubhouse Sandwich w/ Fries",NULL,available,NULL,NULL
+29,5,"Bacon Cheeseburger w/ Fries",NULL,available,NULL,NULL
+30,5,"Chicken Sandwich w/ Fries",NULL,available,NULL,NULL
+31,5,"Pesto Melt w/ Fries",NULL,available,NULL,NULL
+32,3,"Wicked Oreos",NULL,available,NULL,NULL
+33,3,Affogato,NULL,available,NULL,NULL
+34,3,"Turon ala Mode",NULL,available,NULL,NULL
+35,3,"Crepe w/ Seasonal Fruits",NULL,available,NULL,NULL
+36,9,"Hazelnut Frappe",NULL,available,NULL,NULL
+37,9,"Caramel Frappe",NULL,available,NULL,NULL
+38,9,"Light Mocha Frappe",NULL,available,NULL,NULL
+39,9,"Strawberry Frappe",NULL,available,NULL,NULL
+40,9,"Caramel Frappe",NULL,available,NULL,NULL
+41,9,"Chocolate Frappe",NULL,available,NULL,NULL
+42,9,"Matcha Frappe",NULL,available,NULL,NULL
+43,10,"Long Black Espresso",NULL,available,NULL,NULL
+44,10,Americano,NULL,available,NULL,NULL
+45,10,Capuccino,NULL,available,NULL,NULL
+46,10,"Vanilla Espresso",NULL,available,NULL,NULL
+47,10,"Hazelnut Espresso",NULL,available,NULL,NULL
+48,10,"Caramel Espresso",NULL,available,NULL,NULL
+49,10,"Cafe Latte",NULL,available,NULL,NULL
+50,11,"Benguet Coffee",NULL,available,NULL,NULL
+51,11,"Kalinga Coffee",NULL,available,NULL,NULL
+52,11,"Sagada Coffee",NULL,available,NULL,NULL
+53,11,"Specialty Grade Coffee",NULL,available,NULL,NULL
+54,12,"Hot Choco",NULL,available,NULL,NULL
+55,12,"Mango Juice",NULL,available,NULL,NULL
+56,12,"Pineapple Juice",NULL,available,NULL,NULL
+57,12,"Coca Cola",NULL,available,NULL,NULL
+58,12,Sprite,NULL,available,NULL,NULL
+59,12,Royal,NULL,available,NULL,NULL
