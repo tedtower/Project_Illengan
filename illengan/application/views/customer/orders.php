@@ -1,86 +1,78 @@
-<div class="modal fade" id="vieworders" tabindex="-1" role="dialog" aria-labelledby="menuItemModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-      <div class="modal-content" style="padding:0px;">
-      <div class="modal-header">
-      <h4>Ordered Menu Items</h4>
-</div>
-        <!-- Modal Body -->
-        <div class="modal-body">
-        <form method="post" action="<?php echo base_url();?>index.php/customer/save_order">
-        <?php 
-        $cust_name = $this->session->userdata('cust_name');
-         $table_no = $this->session-> userdata('table_no');
-         ?> 
-
-        <input type="text" class="form-control" name="cust_name" value="<?php echo $cust_name;?>"
-        required style="width: 20%;">
-        <input type="text" class="form-control" name="table_no"value=" <?php echo $table_no?>" 
-        required style="width: 20%; right: 0;"-->
-       <br/>
-          <?php $cart_check = $this->cart->contents();
+ <!-- Order Modal -->
+    <div class="modal fade" id="menu_modal" tabindex="-1" role="dialog" aria-labelledby="orderListModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <button type="button" class="close d-flex justify-content-end" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="rp-title">&times;</span>
+                    </button>
+	<form method="post" action="<?php echo base_url();?>index.php/customer/save_order">
+	<?php 
+		$cart_check = $this->cart->contents();
+		$cust_name = $this->session->userdata('cust_name');
+        $table_no = $this->session-> userdata('table_no');
+		echo '<strong>Customer Name:</strong>'.$cust_name.'
+		<br><strong>Table Number: </strong>'.$table_no.'<br>';
           if(empty($cart_check)) { //check if the customer did not order yet
-            echo 'To order menu items click on "Add to Order" Button';
+            echo 'To order menu items click on "Save to Orderlist" Button';
+		  }else{
             ?>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-outline-dark-green" data-dismiss="modal">Close</button>
-          </div>
-          <?php
-          } else {
-          ?>
-      <table id="table" class=" table table-striped orders" border="0" cellpadding="5px" cellspacing="1px">
-          <tbody>
-          <tr>
-          <th>Item Name</th>
-          <th>Quantity</th>
-          <th>Price</th>
-          <th>Subtotal</th>
-          <th>Actions</th>
-          </tr>
-          
-          <?php 
-          $total_qty=0;
-          $i=1;
-          $cart = $this->cart->contents();
-		  $total= $this->cart->total();
-          foreach ($cart as $item): 
-            ?>
-          <tr>
-          <?php echo form_hidden($i.'[rowid]', $item['rowid']);?>
-          <td><?php echo $item['name']; ?></td>
-          <td><?php echo $item['qty']?></td>
-          <td><?php echo number_format($item['price'],2) ?></td>
-          <td>
-          <?php $subtotal = $item['qty']* $item['price']; //computation of each menu item
-          echo number_format($subtotal, 2) ?>
-          </td>
-          <td>
-		  <a href="<?php echo base_url('index.php/customer/remove/'.$item['rowid']);?>"
-          <button class="btn-danger btn">Remove</button></a></td>
-          </td>
-          </tr>
-          <?php 
-          $total_qty= $total_qty += $item['qty'];
-          endforeach;
-          ?>
-          <tr>
-          <td><b>Order total:</b></td>
-          <td><b><input type="text" value="<?php echo $total_qty;?>"name="total_qty" id="total_qty" readonly/></b></td>
-          <td><b>TOTAL</b></td>
-          <td><b>
-          <input type="text" value="<?php echo number_format($total, 2);?>" name="total" id ="total" readonly/></b></td>
-          <td></td>
-          <td></td>
-          </tr>
-          </tbody>
-          </table>
+                    <div class="text-center">
+                        <h1 class="gab">Orderlist</h1>
+                        <table class="table table-sm table-hover w-responsive mx-auto delius">
+                            <thead>
+                                <tr>
+                                <th scope="col">Menu Item</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+							<?php 
+							$cart = $this->cart->contents();
+							 $i=1;
+							 $total_qty=0;
+							foreach($cart as $item){
+								$subtotal= $item['qty']* $item['price'];
+								$total= $this->cart->total();
+							?>
+                            <tbody>
+                                <tr>
+								<?php 
+									echo form_hidden($i.'[rowid]', $item['rowid']); 
+									echo form_hidden($item['id']);
+								?>
+                                <th scope="row"><?php echo $item['name'];?></th>
+                                <td><?php echo $item['qty'];?></td>
+                                <td><?php echo $subtotal;?></td>
+                                <td>
+                                    <button type="button" class="btn btn-mdb-color btn-sm m-0 p-2" data-toggle="modal" data-target="#editModal">Edit</button>
+                                    <button type="button" class="btn btn-danger btn-sm m-0 p-2" data-toggle="modal" data-target="#deleteModal">Remove</button>
+                                </td>
+                                </tr>
+							<?php
+								 $total_qty += $item['qty'];
+								$i++;
+								}
+							?>
+								<tr>
+									<td><h3 class="gab">Total Quantity: <?php echo $total_qty; ?></h3></td>
+									<td><h3 class="gab">Total Price: <?php echo $total; ?> php</h3></td>
+								</tr>
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                    <div class="text-center">
+                        <input type="submit" data-toggle="modal" class="btn btn-green btn-md delius" data-target="#proceed_modal">Order Now!</input>
+					</div>
+                </div>
+				</form>
+				<?php 
+				}
+			?>
+            </div>
         </div>
-        <div class="modal-footer">
-		      <button type="button" class="btn btn-outline-dark-green" data-dismiss="modal">Close</button>
-          <input type="submit" value="Save" >
-          <?php echo form_close(); 
-          $i++;}?>
-        </div>
-
-      </div>
     </div>
-  </div>
+			
