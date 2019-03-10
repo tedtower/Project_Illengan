@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'>
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Il-Lengan | Admin Dashboard</title>
+    <!--Bootstrap core CSS-->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <!--Animation library for notifications-->
+    <link href="assets/css/animate.min.css" rel="stylesheet" />
+    <!--  Light Bootstrap Table core CSS    -->
+    <link href="assets/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" />
+    <!--CSS for Demo Purpose, don't include it in your project-->
+    <link href="assets/css/demo.css" rel="stylesheet" />
+    <!--Fonts and icons-->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="sidebar" data-color="brown" data-image="assets/img/Coffee_1.jpg">
+            <!--Left Navigation Bar-->
+            <div class="sidebar-wrapper">
+                <div class="logo">
+                    <img src="assets/img/logo_lg.png" alt="il-lengan-logo" img-align="center" width="225px"
+                        height="135px">
+                </div>
+
+                <ul class="nav">
+                    <li class="active">
+                        <a href="adminDashboard.html">
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminMenuItems.html">
+                            <p>Menu Items</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminSales.html">
+                            <p>Sales</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminInventory.html">
+                            <p>Inventory</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminTables.html">
+                            <p>Tables</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminReports.html">
+                            <p>Reports</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="addminAccounts.html">
+                            <p>Accounts</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--End Side Bar-->
+        <div class="content">
+            <div class="container-fluid">
+                <p style="text-align:right; font-weight: regular; font-size: 16px">
+                    <!--!Real Time Date & Time
+                <?php echo date("M j, Y -l"); -->
+                </p>
+                <br>
+                <div class="row">
+
+
+                    <div class="main-panel">
+                        <div class="content">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <!--Card 1-->
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="card card-stats">
+                                            <div class="card-header" data-background="orange">
+                                                <i class="glyphicon glyphicon-leaf"></i>
+                                            </div>
+                                            <div class="card-content">
+                                                <p class="category">Today's Total Sales</p>
+                                                <h3 class="title">
+                                                    <!--<?php echo number_format($data1['todaytotalsales']);-->
+                                                </h3>
+                                            </div>
+                                            <a href="adminSales.html">
+                                                <div class="card-footer">
+                                                    <div class="stats">
+                                                        <i class="glyphicon glyphicon-circle-arrow-right">Details</i>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!--Card 2-->
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="card card-stats">
+                                            <div class="card-header" data-background="orange">
+                                                <i class="glyphicon glyphicon-leaf"></i>
+                                            </div>
+                                            <div class="card-content">
+                                                <p class="category">Today's Total Revenue</p>
+                                                <h3 class="title">
+                                                    <!--<?php echo number_format($data1['todaytotalsales']);-->
+                                                </h3>
+                                            </div>
+                                            <a href="views/adminTotalRevenue.html">
+                                                <div class="card-footer">
+                                                    <div class="stats">
+                                                        <i class="glyphicon glyphicon-circle-arrow-right">Details</i>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!--Card 3-->
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="card card-stats">
+                                            <div class="card-header" data-background="orange">
+                                                <i class="glyphicon glyphicon-leaf"></i>
+                                            </div>
+                                            <div class="card-content">
+                                                <p class="category">Total Items</p>
+                                                <h3 class="title">
+                                                    <!--<?php echo number_format($data1['todaytotalsales']);-->
+                                                </h3>
+                                            </div>
+                                            <a href="views/adminTotalItems.html">
+                                                <div class="card-footer">
+                                                    <div class="stats">
+                                                        <i class="glyphicon glyphicon-circle-arrow-right">Details</i>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!--Card 4-->
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="card card-stats">
+                                            <div class="card-header" data-background="orange">
+                                                <i class="glyphicon glyphicon-leaf"></i>
+                                            </div>
+                                            <div class="card-content">
+                                                <p class="category">Needs Restock</p>
+                                                <h3 class="title">
+                                                    <!--<?php echo number_format($data1['todaytotalsales']);-->
+                                                </h3>
+                                            </div>
+                                            <a href="views/adminNeedRestocks.html">
+                                                <div class="card-footer">
+                                                    <div class="stats">
+                                                        <i class="glyphicon glyphicon-circle-arrow-right">Details</i>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!--End Card 1 to 4 Dashboard-->
+                                    <div class="col-md-4">
+                                        <div class="card">
+
+                                            <div class="header">
+                                                <h4 class="title">Yearly Sales</h4>
+                                                <p class="category">January to December 2018</p>
+                                            </div>
+                                            <div class="content">
+                                                <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
+
+                                                <div class="footer">
+                                                    <div class="legend">
+                                                        <i class="fa fa-circle text-info"></i> High
+                                                        <i class="fa fa-circle text-danger"></i> Low
+                                                    </div>
+                                                    <hr>
+                                                    <div class="stats">
+                                                        <i class="fa fa-history"></i> Updated 10 minutes ago
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <div class="card">
+                                            <div class="header">
+                                                <h4 class="title">Top Menu Categories By Sales</h4>
+                                                <p class="category">January - December 2018</p>
+                                            </div>
+                                            <div class="content">
+                                                <div id="chartHours" class="ct-chart"></div>
+                                                <div class="footer">
+                                                    <div class="legend">
+                                                        <i class="fa fa-circle text-info"></i> High
+                                                        <i class="fa fa-circle text-danger"></i> Low
+                                                    </div>
+                                                    <hr>
+                                                    <div class="stats">
+                                                        <i class="fa fa-history"></i> Updated 10 minutes ago
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card ">
+                                            <div class="header">
+                                                <h4 class="title">Top Menu Items By Sales</h4>
+                                                <p class="category">January - December 2018</p>
+                                            </div>
+                                            <div class="content">
+                                                <div id="chartActivity" class="ct-chart"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="card ">
+                                            <div class="header">
+                                                <h4 class="title">Others</h4>
+                                                <p class="category"></p>
+                                            </div>
+                                            <div class="content">
+                                                <div class="table-full-width">
+                                                    <table class="table">
+                                                    </table>
+                                                </div>
+
+                                                <div class="footer">
+                                                    <hr>
+                                                    <div class="stats">
+                                                        <i class="fa fa-history"></i> Updated 25 minutes ago
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+</body>
+
+<!--   Core JS Files   -->
+<script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+<!--  Charts Plugin -->
+<script src="assets/js/chartist.min.js"></script>
+<!--  Notifications Plugin    -->
+<script src="assets/js/bootstrap-notify.js"></script>
+<!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
+<script src="assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
+<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
+<script src="assets/js/demo.js"></script>
+
+</html>

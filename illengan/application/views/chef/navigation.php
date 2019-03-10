@@ -3,15 +3,17 @@
       <a href="#"><img id="icon" src="<?php echo base_url().'assets/media/logo.png' ?>"></a>
   </div>
 <!-- END FOR LOGO PILL -->
+<a href="<?php echo base_url().'index.php/chef/index'?>">
   <div class="select-nav-pill">
     <div class="icon-div active">
-      <a href="<?php echo base_url().'index.php/chef/index'?>">
-      <img id="icon" src="<?php echo base_url().'assets/media/navigation/choices.png' ?>"></a>
+     
+      <img id="icon" src="<?php echo base_url().'assets/media/navigation/choices.png' ?>">
     </div>
     <div class="nav-title">
     <p>Orders</p>
     </div>
   </div>
+  </a>
   <!-- END FOR ORDERS PILL -->
   <div class="select-nav-pill">
     <div class="icon-div active">
@@ -23,25 +25,28 @@
     </div>
   </div>
  <!-- END FOR BILLINGS -->
+ <a href="<?php echo base_url().'index.php/chef/index'?>">
   <div class="select-nav-pill">
     <div class="icon-div active">
-      <a href="<?php echo base_url().'index.php/chef/index'?>">
-      <img id="icon" src="<?php echo base_url().'assets/media/navigation/Inventory.png' ?>"></a>
+      <img id="icon" src="<?php echo base_url().'assets/media/navigation/Inventory.png' ?>">
     </div>
     <div class="nav-title">
     <p>Inventory</p>
     </div>
   </div>
+  </a>
   <!-- END FOR BILLINGS -->
+  <a href="<?php echo base_url().'index.php/chef/index'?>">
   <div class="select-nav-pill">
     <div class="icon-div active">
-      <a href="<?php echo base_url().'index.php/chef/index'?>">
-      <img id="icon" src="<?php echo base_url().'assets/media/navigation/notification.png' ?>"></a>
+     
+      <img id="icon" src="<?php echo base_url().'assets/media/navigation/notification.png' ?>">
     </div>
     <div class="nav-title">
     <p>Notifications</p>
     </div>
   </div>
+  </a>
   <!-- END FOR NOTIFICATIONS -->
 </div>
 
