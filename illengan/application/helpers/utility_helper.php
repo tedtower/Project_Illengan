@@ -20,4 +20,16 @@ function js_url(){
 function font_url(){
    return common_url().'fontstyles/';
 }
+function cmcss_url(){
+   return base_url().'assets/css/customer/';
+}
+function cmjs_url(){
+   return base_url().'assets/js/customer/';
+}
+function cmedia_url(){
+   return base_url().'assets/media/customer/';
+}
+function logo_url(){
+   return base_url().'assets/common/logo/';
+}
 ?>

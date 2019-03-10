@@ -1,6 +1,14 @@
 <?php
-    class Db_model extends CI_Model {
-        
+    class CustomerModel extends CI_Model {
+        function fetch_category(){
+            $query = $this->db->query('SELECT category_name FROM categories WHERE supcat_id IS NULL AND category_type = "menu" GROUP BY category_name ASC');
+            return $query->result();
+        }
+        function fetch_menu(){
+            $query = $this->db->query('SELECT menu.menu_id, categories.category_name, menu.menu_name, menu.menu_description, menu.menu_availability, menu.menu_image, categories.category_type, MIN(sizes.size_price) AS size_price
+            FROM menu LEFT JOIN categories USING (category_id) NATURAL JOIN sizes WHERE category_type = "menu" GROUP BY menu_name');
+            return $query->result();
+        }
         function get_all(){
             $query =$this->db->get('menu');
             return $query->result();
@@ -45,7 +53,7 @@
 
         function get_menudetails($menu_id){
             $query = "select * from menu where menu_id = ?";
-            return $this->db->query($query, array($menu_id));
+            return $this->db->query($query, array($menu_id))->result_array();
         }
         function get_sizes($menu_id){
             $query = "Select menu_id, size_name, size_price from sizes where menu_id = ?";

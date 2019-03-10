@@ -11,34 +11,23 @@
     <!-- Card group -->
     <div class="d-flex flex-wrap">
 
+        <?php foreach($menu as $items) { ?>
         <!-- Card -->
-        <div class="card cd-mw">
+        <div class="card cd-mw menuItemCard" date-menuItemID="<?php echo $items->menu_id; ?>">
+        <input type="number" id="menID" value="<?php echo $items->menu_id; ?>" hidden>
         <!-- Card image -->
-            <a data-toggle="modal" href="#menu_modal">
-            <img class="card-img-top" src="media/card.jpeg" alt="Name of the Product">
+            <a href="" id="menu_card">
+            <img class="card-img-top" src="<?php echo cmedia_url(); ?>card.jpeg">
             </a>
             <!-- Card content -->
             <div class="card-body p-0 m-0 gab">
                 <!-- Title -->
-                <p class="text-truncate float-left menu-title" id="mt">Menu Item Name</p>
-                <p class="float-right menu-price" id="mp"><span class="fs-15">₱</span>100</p>
+                <p class="text-truncate float-left menu-title" id="mt"><?php echo $items->menu_name; ?></p>
+                <p class="float-right menu-price" id="mp"><span class="fs-15">₱</span><?php echo $items->size_price; ?></p>
             </div>
         </div>
-
-        <!-- Card -->
-        <div class="card cd-mw">
-            <!-- Card image -->
-            <a data-toggle="modal" href="#menu_modal">
-                <img class="card-img-top" src="media/card.jpeg" alt="Name of the Product">
-            </a>
-            <!-- Card content -->
-            <div class="card-body p-0 m-0 gab">
-            <!-- Title -->
-            <p class="text-truncate float-left menu-title" id="mt">Menu Item Name</p>
-            <p class="float-right menu-price" id="mp"><span class="fs-15">₱</span>85</p>
-            </div>
-        </div>
-
+        <?php } ?>
+        
     </div>
 
     <!-- Sizable Modal -->
@@ -123,21 +112,21 @@ $(function() {
         if($(this).attr("data-opened") == '1'){
             setModalValues(menu_id);
         }else{
+            $.ajax({
+                method: "get",
+                url: "customer/menu/getitemdetails",
+                data: {
+                    menu_id: menu_id
+                },
+                dataType: "json",
+                success: function(details) {
+
+                    menu[details[0]['menu_id']] = details[0];
+                    setModalValues(details[0]['menu_id']);
+                }
+            });
 
         }
-        $.ajax({
-            method: "get",
-            url: "customer/menu/getitemdetails",
-            data: {
-                menu_id: menu_id
-            },
-            dataType: "json",
-            success: function(details) {
-
-                menu[details[0]['menu_id']] = details[0];
-                setModalValues(details[0]['menu_id']);
-            }
-        });
     });
 });
 
