@@ -18,17 +18,37 @@ class Chef extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index()
-	{
-		$this->load->model('ChefModel');
-		$data['orderlist'] = $this->ChefModel->return_orderlist();
-		$this->load->view('chef/chef', $data); 
+	function __construct(){
+		parent::__construct();
+		$this->load->database();
+        $this->load->model('ChefModel');
 	}
-	function notifications() {
-		$this->load-
-		$this->load->view('chef/notifications');
+	
+	function index()
+	{
+		$this->load->view('chef/chef'); 
+	}
+	
+	function product_data(){
+		$data=$this->ChefModel->return_orderlist();
+		echo json_encode($data);
 	}
 
+	function save(){
+		$data=$this->ChefModel->save_product();
+		echo json_encode($data);
+	}
+
+	function update(){
+		$data=$this->ChefModel->update_product();
+		echo json_encode($data);
+	}
+
+	function delete(){
+		$data=$this->ChefModel->delete_product();
+		echo json_encode($data);
+	}
+	/*
 	public function change_status() {
 		$this->load->model('ChefModel');
 		$order_id = $this->input->post('order_id');
@@ -70,20 +90,7 @@ class Chef extends CI_Controller {
 		redirect('');
 	}
 
-	public function send(){
-        $arr['msg'] = $this->input->post('message');
-        $arr['date'] = date('Y-m-d');
-        $arr['status'] = 1;
-        $this->db->insert('tbl_msg',$arr);
-        $detail = $this->db->select('*')->from('tbl_msg')->where('id',$this->db->insert_id())->get()->row();
-        $msgCount = $this->db->select('*')->from('tbl_msg')->get()->num_rows();
-        $arr['message'] = $detail->msg;
-        $arr['date'] = date('m-d-Y', strtotime($detail->date));
-        $arr['msgcount'] = $msgCount;
-        $arr['success'] = true;
-        echo json_encode($arr);
-    }
-/*
+
 		public function change_status() {
 			$this->load->model('ChefModel');
 			$item_status = $this->input->post('item_status');
