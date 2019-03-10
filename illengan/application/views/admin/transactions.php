@@ -30,6 +30,12 @@
                 </div>
             </div>
             <div>
+                <button type="button" class="addTransItemBtn">Add Item</button>
+            </div>
+            <div class="addItemDiv">
+
+            </div>
+            <div>
                 <button type="reset" class="btn btn-secondary">Cancel</button>
                 <button type="submit" class="btn btn-success"
                     formaction="<?php echo site_url('admin/transactions/add')?>">Submit</button>
@@ -79,7 +85,8 @@
 </div>
 <!-- END EDIT MODAL -->
 <div>
-    <table>
+    <button id="samplebutton">button</button>
+    <table id="mytable">
         <thead>
             <tr>
                 <th>Receipt No.</th>
@@ -88,7 +95,7 @@
             </tr>
         </thead>
         <tbody>
-        <?php
+            <?php
             if(!empty($transactions)){
                 $lastIndex = 0;
                 foreach($transactions as $transaction){
@@ -102,54 +109,87 @@
                 <div>
                     <span>Date Recorded:</span>
                     <span><?php echo $transaction['date_recorded']?></span>
-                </div>                
+                </div>
                 <div>
                     <span>remarks:</span>
                     <p><?php echo $transaction['remarks']?></p>
                 </div>
-                <?php
-                if(!empty($transitems)){
-                ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Quantity</th>
-                            <th>Unit</th>
-                            <th>Price</th>
-                            <th>Total Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                <?php 
-                    while($transitems[$lastIndex]['trans_id'] == $transaction['trans_id']){                      
-                            $lastindex++;
-                ?>
-                        <tr>
-                            <td><?php echo $transitems[$lastIndex]['item_name']?></td>
-                            <td><?php echo $transitems[$lastIndex]['item_qty']?></td>
-                            <td><?php echo $transitems[$lastIndex]['item_unit']?></td>
-                            <td><?php echo $transitems[$lastIndex]['item_price']?></td>
-                            <td><?php echo $transitems[$lastIndex]['total_price']?></td>
-                        </tr>                
-                <?php
-                    }
-                ?>
-                        <tr class="Total Amount"><td colspan="4">Total Amount: </td><td><?php echo $transaction['trans_amt']?></td></tr>
-                    </tbody>
-                </table>
-                <?php
-                }else{
-                ?>
-                    <p>There are no Transaction Items recorded!!</p>     
-                <?php               
-                }
-                ?>
             </div>
-        <?php
+            <?php
                 }
             }
         ?>
         </tbody>
     </table>
 </div>
+<FORM CLASS="FORMCLASS">
+</FORM>
+<FORM CLASS="FORMCLASS">
+</FORM>
+<FORM CLASS="FORMCLASS">
+</FORM>
+<script>
+var trans = {};
+    
+
+$(function() {
+    // $(".FORMCLASS").ON('SUBMIT',FUNCTION(){
+    //     VAR INPUTS = $(THIS).children("INPUT");
+    //     $.ajax({
+    //         method: "post",
+    //         url: 'admin/showtranstable',
+    //         data: { inputs : INPUTS },
+    //     });
+    // });
+    $('#samplebutton').on('click', function() {
+        $.ajax({
+            url: '<?php echo site_url('admin/sample')?>',
+            data: {
+                id: 1
+            },
+            dataType: 'json',
+            success: function(response) {
+                // console.log(response[0]);
+                // trans.push(response[0]);
+                var tableelement = 
+                `<table>
+
+                </table>`;
+            }
+        });
+    });
+
+    $(".addTransItemBtn").on('SUBMIT', function(event) {
+        var inputTable = 
+            `<div class='transitem_input_div'>
+                <table>
+                    <thead><tr><th>Name</th><th>Quantity</th><th>Unit</th><th>Price</th><th>Action</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>`;
+        var inputRow = 
+            `<tr>
+                <td><input type = 'text' name='transitem_name[]' value=''></td> 
+                <td><input type = 'number' name='transitem_qty[]' value=''></td> 
+                <td><input type = 'text' name='transitem_unit[]' value=''></td>
+                <td><input type = 'text' name='transitem_price[]' value=''></td>
+                <td><button type="button">
+                        <span>&times;</span>
+                    </button>
+                </td>
+            </tr>`;
+        if ($(this).siblings().length === 0) {
+            $(this).after(inputTable);
+        }
+        $(this).closest("div").find("tbody").append(inputRow);
+    });
+
+
+
+    $(" .transitem_input_div button ").on('click', function(event){
+        console.log("yooooq");
+        $(this).closest("tr").remove();
+    });
+
+});
+</script>

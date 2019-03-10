@@ -41,5 +41,14 @@ class Login extends CI_Controller{
         }
     }
 
+    function logout() {
+		if($this->session->userdata('user_id') && $this->session->userdata('user_type')){
+			$this->session->unset_userdata('user_id');
+			$this->session->unset_userdata('user_name');
+			$this->session->unset_userdata('user_type');
+		}
+		redirect('login');		
+    }
+
 }
 ?>

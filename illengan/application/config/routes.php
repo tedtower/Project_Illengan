@@ -75,9 +75,21 @@ $route['admin/stockcategories/delete/(:num)'] = "admin/deletestockcategory/$1";
 $route['admin/stockcategories/edit'] = "admin/editstockcategory/";
 $route['admin/sources'] = "admin/viewsources";
 $route['admin/viewaccounts'] = "admin/viewaccounts";
+$route['admin/menu/add'] = "admin/add_menu";
+$route['admin/menu/edit'] = "admin/edit_menu";
+$route['admin/menu/edit_image'] = "admin/edit_image";
+
+
 $route['admin/edit/accounts'] = "admin/vieweditAccounts";
 $route['admin/changepassword'] = "admin/changepassword";
 $route['admin/inventory'] = "admin/viewinventory";
 $route['admin/inventory/add'] = "admin/addstockitem";
 $route['admin/inventory/edit'] = "admin/editstockitem";
 $route['admin/inventory/delete/(:num)'] = "admin/deletestockitem/$1";
+$route['admin/transactions'] = "admin/viewtransactions";
+$route['admin/transactions/add'] = "admin/addtransactions";
+$route['admin/transactions/edit'] = "admin/edittransactions";
+$route['admin/transactions/delete'] = "admin/deletetransactions";
+
+$route['customer/menu/getitemdetails'] = "customer/getdetails";
+$route['admin/sample'] = 'admin/samplemethod';

@@ -4,6 +4,7 @@ class Admin extends CI_Controller{
     function __construct(){
         parent::__construct();
         $this->load->model('adminmodel');
+        date_default_timezone_set('Asia/Manila');
     }
 //VIEW FUNCTIONS--------------------------------------------------------------------------------
     function viewAccounts(){
@@ -83,6 +84,29 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
+    function viewInsertSpoilageMenu(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->view('admin/add_spoilagesmenu');
+        }else{
+            redirect('login');
+        }
+    }
+    function viewInsertSpoilageStock(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->view('admin/add_spoilagesstock');
+        }else{
+            redirect('login');
+        }
+    }
+    function viewInsertSpoilageAo(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->view('admin/add_spoilagesao');
+        }else{
+            redirect('login');
+        }
+    }
+
+
     // function viewReturns($method=null){        
     //     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
     //         switch($method){
@@ -109,6 +133,15 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['source'] = $this->adminmodel->get_sources();
             $this->load->view('admin/sources',$data);
+        }else{
+            redirect('login');
+        }
+    }
+    function viewSpoilages(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->model("adminmodel");
+            $data['spoilages'] = $this->adminmodel->get_spoilages();
+            $this->load->view('admin/view_spoilages', $data);
         }else{
             redirect('login');
         }
@@ -147,14 +180,21 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
-    function viewTrans(){
+    function viewTransactions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['transactions'] = $this->adminmodel->get_transactions();
             $data['transitems'] = $this->adminmodel->get_transitems();
+            $this->load->view('admin/admingeneralheader');
             $this->load->view('admin/transactions',$data);
         }else{
             redirect('login');
         }
+    }
+
+    function samplemethod(){
+        
+        // $this->output->set_output(json_encode($this->adminmodel->get_samplemethod($this->input->get('id'))));
+        $this->output->set_output(json_encode($this->adminmodel->get_transactions()));
     }
 
     
@@ -212,9 +252,9 @@ class Admin extends CI_Controller{
                 $stock_status = $this->input->post('stock_status');
                 $category_id = $this->input->post('stock_category');
                 if($this->adminmodel->add_stockitem($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id)){
-                    $this->viewInventory();
+                    redirect('admin/inventory');
                 }else{
-                    $this->viewInventory("");                }
+                    redirect('admin/inventory');             }
             }
         }else{
             redirect('login');
@@ -242,18 +282,42 @@ class Admin extends CI_Controller{
         }
         
     }
-    function insertspoilagesmenu(){
+    function addTransactions(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            
+        }else{
+            redirect('login');
+        }
+    }
+    function insertspoilagesaddons(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model('adminmodel');
 
-            $stype = $this->input->post("stype");
+            $s_type = $this->input->post("s_type");
             $menu_name =$this->input->post("menu_name");
-            $sqty =$this->input->post("sqty");
-            $sdate =$this->input->post("sdate");
+            $s_qty =$this->input->post("s_qty");
+            $s_date =$this->input->post("s_date");
             $remarks =$this->input->post("remarks");
 
-            $this->adminmodel->add_damages_menu($stype,$menu_name,$sqty,$sdate,$remarks);
-            $this->load->view('admin/add_spoilages_menu'); 
+            $this->adminmodel->add_aospoil($menu_name,$s_type,$s_date,$date_recorded,$remarks=null);
+            $this->load->view('admin/viewspoilages'); 
+        }else{
+            redirect('login');
+        }
+    }
+    function insertspoilagesmenu(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+
+            $s_type = $this->input->post("s_type");
+            $menu_name =$this->input->post("menu_name");
+            $s_qty =$this->input->post("s_qty");
+            $s_date =$this->input->post("s_date");
+            $date_recorded =$this->input->post("date_recorded");
+            $remarks =$this->input->post("remarks");
+
+            $this->adminmodel->add_menuspoil($s_type,$menu_name,$s_qty,$s_date,$date_recorded,$remarks);
+            $data['spoilages'] = $this->adminmodel->get_spoilages();
+            $this->load->view('admin/view_spoilages', $data);
         }else{
             redirect('login');
         }
@@ -262,20 +326,37 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model('adminmodel');
 
-            $stype = $this->input->post("stype");
+            $s_type = $this->input->post("s_type");
             $stock_name =$this->input->post("stock_name");
-            $sqty =$this->input->post("sqty");
-            $sdate =$this->input->post("sdate");
+            $s_qty =$this->input->post("s_qty");
+            $s_date =$this->input->post("s_date");
+            $date_recorded =$this->input->post("date_recorded");
             $remarks =$this->input->post("remarks");
 
-            $this->adminmodel->add_damages_stock($stype,$stock_name,$sqty,$sdate,$remarks);
-            $this->load->view('admin/add_spoilages_stock'); 
+            $this->adminmodel->add_stockspoil($s_type,$stock_name,$s_qty,$s_date,$date_recorded,$remarks);
+            $data['spoilages'] = $this->adminmodel->get_spoilages();
+            $this->load->view('admin/view_spoilages', $data);
         }else{
             redirect('login');
         }
     }
+    function changeAccountPassword(){  
+        $this->load->library('form_validation');
+        $account_id = $this->input->post('account_id');
+        $this->form_validation->set_rules('old_password', 'Current Password', 'required');
+        $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[8]|max_length[50]');
+        $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[8]|max_length[50]|matches[new_password]');
+        $this->form_validation->set_rules('account_password', 'Current Password', 'required');
+        if($this->form_validation->run()==false){
+            $old_password = $this->input->post("old_password");
+            $new_password = $this->input->post("new_password");
+            $this->adminmodel->change_account_password($old_password, $new_password, $account_id);
+        }else{
+        $this->viewChangePassword();
+        }
+        $this->viewAccounts();
+    }
 
-   
 //EDIT FUNCTIONS-------------------------------------------------------------------------------------
     function changeAccountPassword(){  
         $this->load->library('form_validation');
@@ -292,7 +373,7 @@ class Admin extends CI_Controller{
             $new_password = $this->input->post("new_password");
             $this->adminmodel->change_account_password($old_password, $new_password, $account_id);
         }else{
-        $this->viewChangePassword();
+            $this->viewChangePassword();
         }
     }
     function editAccounts(){
@@ -417,6 +498,7 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
+    
     function deleteTable($table_no){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             if($this->adminmodel->delete_table($table_no)){
@@ -428,5 +510,97 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
+    function add_source(){
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules("source_name", "Source Name", 'required');
+        $this->form_validation->set_rules("contact_num", "Contact Number", 'required');
+
+        if($this->form_validation->run()){
+            $this->load->model("adminmodel");
+            $data = array(
+                "source_name" =>$this->input->post("source_name"),
+                "contact_num" =>$this->input->post("contact_num")
+            );
+            if($this->input->post("insert")){
+                $this->adminmodel->insert_data($data);
+                redirect(base_url() . "index.php/admin/viewsources");
+            }
+        }else{
+            $this->viewsources();
+        }
+
+    }
+
+    function edit_source(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $source_id = $this->input->get('source_id');
+            $source_name = $this->input->get('new_name');
+            $contact_num = $this->input->get('new_num');
+            $status = $this->input->get('new_status');
+            $data['source'] = $this->adminmodel->edit_data($source_id, $source_name, $contact_num, $status);
+            $this->viewsources();
+        }else{
+            redirect('login');
+        }
+    }
+    
+    function delete_data(){
+        $id = $this->uri->segment(3);
+        $this->load->model("adminmodel");
+        $this->adminmodel->delete_data($id);
+        $this->viewsources();
+
+    }
+    function add_menu(){
+        $config = array(
+            'upload_path' => "./uploads/",
+            'allowed_types' => "gif|jpg|png|jpeg|pdf",
+            'overwrite' => TRUE,
+            'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+            );
+        $this->load->library('upload', $config);
+        if ( ! $this->upload->do_upload('menu_image')){
+            echo 'error';
+        }
+        else{
+        $data = $this->upload->data();
+        $picture = $data['file_name'];
+        $menu_name = $this->input->post('menu_name');
+        $menu_description = $this->input->post('menu_description');
+        $category_id = $this->input->post('category_id');
+        $menu_price = $this->input->post('menu_price');
+        $this->adminmodel->add_menu($menu_name, $menu_description, $category_id, $menu_price, $picture);
+        redirect('admin/menu');
+        }
+
+    }
+    function delete_menu(){
+        $id = $this->uri->segment(3);
+        $this->load->model("adminmodel");
+        $this->adminmodel->delete_menu($id);
+        $this->viewMenu();
+    }
+    function edit_menu(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $menu_id = $this->input->post('menu_id');
+            $menu_name = $this->input->post('new_name');
+            $menu_description = $this->input->post('new_description');
+            $category_id = $this->input->post('new_category');
+            $string_price = $this->input->post('new_price');
+            $menu_price = floatval($string_price);
+            $menu_availability = $this->input->post('new_availability');
+            $data['menu'] = $this->adminmodel->edit_menu($menu_id, $menu_name, $category_id, $menu_description, $menu_price, $menu_availability);
+            redirect('admin/menu');
+        }else{
+            redirect('login');
+        }
+    }
+    function edit_image(){
+        $data['image'] = $this->adminmodel->edit_image();
+        $this->load->view('admin_module/edit_menuimage', $data);
+        
+    }
+
 }
+
 ?>
