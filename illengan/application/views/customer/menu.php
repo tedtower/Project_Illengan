@@ -95,7 +95,7 @@
                         <div class="input-group-prepend">
                             <button class="btn btn-md btn-outline-accent m-0 px-3 py-2 z-depth-0" type="button">Add-on</button>
                         </div>
-                        <select class="browser-default custom-select w-25" id="addon[]" aria-label="Addon">
+                        <select class="browser-default custom-select w-25" name="addon[]" aria-label="Addon">
                             <option selected disabled>Choose...</option>
                         </select>
                         <input type="number" min="1" name="addonqty[]" placeholder="Quantity..." aria-label="Add-on Quantity" class="form-control">
@@ -108,7 +108,7 @@
                     </div>
                     <div class="text-center float-right">
                         <button type="button" class="btn btn-outline-accent px-3" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-accent px-3" data-menuid="">Save To Order List</button>
+                        <button type="button" class="btn btn-accent px-3" id="menu_id" data-menuid="">Save To Order List</button>
                     </div>
                 </div>
             </div>
@@ -142,7 +142,7 @@ $(function() {
 });
 
 function setModalValues(menu_id){    
-    $("input [name='id']").val(menu[menu_id]["menu_id"]);
+    $("#menu_id").attr("data-menuid", menu[menu_id]["menu_id"]);
     $("#menu_modal").find("img").attr("src") = "media/"+menu[menu_id]['menu_image'];
     $("#menu_name").text(menu[menu_id]['menu_name']);
     // $("#desc").text(menu[menu_id]['menu_description']);
@@ -179,6 +179,7 @@ function closeModal(){
     $("#size").empty();
     $("#menu_availability").empty();
     $("#menu_modal").find("img").attr("src") = "";
-    $("addon");
+    $("addon");   
+    $("#menu_id").attr("data-menuid", "");
 }
 </script>
