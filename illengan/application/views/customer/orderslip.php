@@ -1,3 +1,4 @@
+ <?php include_once('head.php');include_once('scripts.php')?>
  <!-- Proceed Order Modal -->
     <div class="modal fade" id="proceed_modal" tabindex="-1" role="dialog" aria-labelledby="proceedOrderModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">

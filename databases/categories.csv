@@ -1,0 +1,23 @@
+1,NULL,Meals,menu
+2,NULL,Drinks,menu
+3,NULL,Desserts,menu
+4,1,Pasta,menu
+5,1,"Ala Carte",menu
+6,1,"Combo (w/ Rice, Buttered Veggie & Egg)",menu
+7,1,"Tamtaman (Samplers)",menu
+8,1,"Gagay-yem (Barkada Meals)",menu
+9,2,Frappe,menu
+10,2,Espresso,menu
+11,2,"French-Pressed (Brewed)",menu
+12,2,"Hot and Cold Drinks",menu
+13,NULL,Sauce,inventory
+14,NULL,Syrup,inventory
+15,NULL,Powder,inventory
+16,NULL,Bean,inventory
+17,NULL,Tea,inventory
+18,NULL,Refreshment,inventory
+19,18,Soda,inventory
+20,18,Water,inventory
+21,18,Juice,inventory
+22,NULL,Meat,inventory
+23,NULL,Pasta,inventory
