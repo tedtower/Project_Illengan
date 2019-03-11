@@ -1,4 +1,3 @@
-category_id,supcat_id,category_name,category_type
 1,NULL,Meals,menu
 2,NULL,Drinks,menu
 3,NULL,Desserts,menu

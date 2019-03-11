@@ -93,3 +93,5 @@ $route['admin/transactions/delete'] = "admin/deletetransactions";
 
 $route['customer/menu/getitemdetails'] = "customer/getdetails";
 $route['admin/sample'] = 'admin/samplemethod';
+
+$route['customer/(:any)'] = "customer/view/$1";

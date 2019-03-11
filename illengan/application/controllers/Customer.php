@@ -6,27 +6,51 @@ class Customer extends CI_Controller {
 	// }else{
 	// 	redirect('login');
 	// }
-
 //index page
+	function __construct(){
+		parent::__construct();
+		$this->load->model('customermodel');
+		date_default_timezone_set('Asia/Manila');
+	}
+
 	function welcome(){
 		$this->load->view('login');
 	}
 	//display the menu
 	function menu(){
-		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
+		if($this->isLoggedIn()){
+			$data= array();
+			$data['menu'] = $this->customermodel->get_all();
+			$data['cust_name'] = $this->session->userdata('cust_name');
+			$data['table_no'] = $this->session->userdata('table_no');
+			$this->load->view('home');
 		}else{
 			redirect('login');
 		}
-		$this->load->model('Db_model');
-		$data= array();
-		$data['menu'] = $this->Db_model->get_all();
-		$data['cust_name'] = $this->session->userdata('cust_name');
-		$data['table_no'] = $this->session->userdata('table_no');
-		$this->load->view('home');
 	}
+
+	function isLoggedIn(){
+		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
+			return true;
+		}
+		return false;
+	}
+
+	public function view($page = 'menu'){
+		if($this->isLoggedIn()){
+			$data['categories'] = $this->customermodel->fetch_category();
+			$data['menu'] = $this->customermodel->fetch_menu();
+			$this->load->view('customer/template/head',$data);
+			$this->load->view('customer/'.$page,$data);
+			$this->load->view('customer/template/foot');
+		}else{
+			redirect('login');
+		}
+	}
+
 	//AJAX Menu Details (including Sizes and Addons)
 	function getDetails(){
-		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
+		if($this->isLoggedIn()){
 			$item = array(
 				'details' => $this->input->get_menudetails("menu_id"),
 				'sizes' => $this->input->get_sizes("menu_id"),
@@ -59,11 +83,11 @@ class Customer extends CI_Controller {
     
 //view_menu --pass data
 	function view_menu(){
-		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
-			$this->load->model('Db_model');
+		if($this->isLoggedIn()){
+			$this->load->model('customermodel');
 			$data= array();
 			$data['cart'] = $this->cart->contents();
-			$data['menu'] = $this->Db_model->get_all();
+			$data['menu'] = $this->customermodel->get_all();
 			$data['cust_name'] = $this->session->userdata('cust_name');
 			$data['table_no'] = $this->session->userdata('table_no');
 			$this->load->view('home', $data);
@@ -72,40 +96,10 @@ class Customer extends CI_Controller {
 		}
 	}
 
-	//categories
-	function snacks($type= 'snacks'){
-		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
-			$this->load->model('Db_model');
-			$data = array();
-			$data['snacks'] =$this->Db_model->return_snacks();
-			$this->load->view($type, $data);
-		}else{
-			redirect('login');
-		}
-	}
-	function drinks($type= 'drinks'){
-		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
-			$this->load->model('Db_model');
-			$data = array();
-			$data['drinks'] =$this->Db_model->return_drinks();
-			$this->load->view($type, $data);
-		}else{
-			redirect('login');
-		}
-	}
-	function meals($type= 'meals'){
-		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
-			$this->load->model('Db_model');
-			$data = array();
-			$data['meals'] =$this->Db_model->return_meals();
-			$this->load->view($type, $data);
-		}else{
-			redirect('login');
-		}
-	}
+	
 	//add menu item as an temporary order
 	function add() {
-		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
+		if($this->isLoggedIn()){
 			$data = array(
 				'id' => $this->input->post('id'),
 				'name' => $this->input->post('name'),
@@ -121,7 +115,7 @@ class Customer extends CI_Controller {
 	}
 	//fucntion to save or contain the menu items selected in a library cart
 	function save_order() { //summary orderlist with confirmation
-		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
+		if($this->isLoggedIn()){
 			$data = array(
 				'id' => $this->input->post('id'),
 				'name' => $this->input->post('name'),
@@ -139,14 +133,14 @@ class Customer extends CI_Controller {
 		}
 	}
 	function ordered() { //insert in db table orderslip and orderlist
-		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){			
-			$this->load->model('Db_model');
+		if($this->isLoggedIn()){			
+			$this->load->model('customermodel');
 			$data['cart'] = $this->cart->contents();
 			if($cart = $this->cart->contents()):
 				foreach($cart as $items):
 					$total = $this->cart->total();
 					$order_num = 1; //function to count orderslip
-				$this->Db_model->insert_order($order_num,$items['id'], $items['subtotal'], $total);
+				$this->customermodel->insert_order($order_num,$items['id'], $items['subtotal'], $total);
 				echo '<script>alert("Inserted")</script>';
 				endforeach;
 			endif;
@@ -156,7 +150,7 @@ class Customer extends CI_Controller {
 		}
 	}
 	function remove($rowid) {
-		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
+		if($this->isLoggedIn()){
 			if ($rowid ==="all"){
 				$this->cart->destroy();
 			}else{
@@ -173,7 +167,7 @@ class Customer extends CI_Controller {
 	}
 
 	function destroy() {
-		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
+		if($this->isLoggedIn()){
 			$this->cart->destroy();
 			echo "destroy was called";
 		}else{
