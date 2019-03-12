@@ -5,8 +5,12 @@
             return $query->result();
         }
         function fetch_menu(){
-            $query = $this->db->query('SELECT menu.menu_id, categories.category_name, menu.menu_name, menu.menu_description, menu.menu_availability, menu.menu_image, categories.category_type, MIN(sizes.size_price) AS size_price
+            $query = $this->db->query('SELECT menu.menu_id, categories.category_name, menu.menu_name, menu.menu_description, menu.menu_availability, menu.menu_image, menu.temp, categories.category_type, MIN(sizes.size_price) AS size_price
             FROM menu LEFT JOIN categories USING (category_id) NATURAL JOIN sizes WHERE category_type = "menu" GROUP BY menu_name');
+            return $query->result();
+        }
+        function fetch_allsubcats(){
+            $query = $this->db->query('SELECT * from categories where supcat_id IS NOT NULL ORDER BY category_id, supcat_id ASC');
             return $query->result();
         }
         function get_all(){

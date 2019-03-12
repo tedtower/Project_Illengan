@@ -23,6 +23,6 @@
     <?php endforeach;?>
   </div>
   <div style="height:1500px;"></div>
-  <!-- SCRIPTS --
+  <!-- SCRIPTS -->
   <!-- JQuery -->
   <?php include_once('scripts.php') ?>

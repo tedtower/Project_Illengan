@@ -95,3 +95,4 @@ $route['customer/menu/getitemdetails'] = "customer/getdetails";
 $route['admin/sample'] = 'admin/samplemethod';
 
 $route['customer/(:any)'] = "customer/view/$1";
+$route['customer/menu/details'] = "customer/getmenudetails";
