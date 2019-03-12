@@ -21,7 +21,11 @@ class Barista extends CI_Controller{
     }
     function getBillDetails(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
-            //Code Here
+            $order_id = $this->input->post("order_id");
+            $data['orderdetails'] = array(
+                'orderslip' => $this->barsitamodel->get_orderslip($order_id),
+                'orderlist' => $this->baristamodel->get_orderlist($order_id)
+            );
         }else{
             redirect('login');
         }
