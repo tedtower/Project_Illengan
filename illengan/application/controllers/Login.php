@@ -32,7 +32,7 @@ class Login extends CI_Controller{
                     redirect('');
                     break;
 				case 'Customer':
-					redirect('');
+					redirect('customer/menu');
 					break;
             }
         }else{
