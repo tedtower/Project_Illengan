@@ -24,12 +24,6 @@ class Customer extends CI_Controller {
 		return false;
 	}
 
-	public function getMenuDetails(){
-		if($this->isLoggedIn()){
-			$mId = $this->input->post('mID');
-		}
-	}
-
 	//display the menu
 	function menu(){
 		if($this->isLoggedIn()){
@@ -49,11 +43,12 @@ class Customer extends CI_Controller {
 		if($this->isLoggedIn()){
 			$data['categories'] = $this->customermodel->fetch_category();
 			$data['menu'] = $this->customermodel->fetch_menu();
-			$data['subcats'] = $this->customermodel->fetch_allsubcats();
+			$data['subcats'] = array_merge($this->customermodel->fetch_allsubcats(), $this->customermodel->fetch_catswithmenu());
+			sort($data['subcats']);
+			$data['pref_menu'] = $this->customermodel->fetch_menupref();
 			$this->load->view('customer/template/head',$data);
 			$this->load->view('customer/'.$page,$data);
 			$this->load->view('customer/template/foot');
-			$this->load->view('customer/template/modal_ajax');
 		}else{
 			redirect('login');
 		}

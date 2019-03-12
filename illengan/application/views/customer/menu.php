@@ -2,7 +2,6 @@
     <div class="text-center gab py-0 my-0">
         <h1>Menu</h1>
     </div>
-
     <?php foreach($subcats as $subcategories){ ?>
     <!-- Subcategory -->
     <div class="d-inline-flex px-4 animated flipInX slow subcategory mb-2 delius">
@@ -23,7 +22,6 @@
                         } else {
                             echo "".cmedia_url()."menu/no_image.jpg";
                         }
-                        
                     ?>">
                 </a>
                 <!-- Card content -->
@@ -37,6 +35,7 @@
     </div>
     <?php } ?>
     
-    <?php include 'menu_modal.php'; ?>
+    <?php include 'modals/menu_modal.php'; ?>
+    <?php include 'modals/order_modal.php'; ?>
 
 
