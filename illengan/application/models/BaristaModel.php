@@ -1,5 +1,20 @@
 <?php
 class BaristaModel extends CI_Model{
+
+    function view(){
+        $this->load->database();
+        $query = $this->db->query('SELECT * FROM ((orderlist ol INNER JOIN orderslip os ON ol.order_id = os.order_id)
+        INNER JOIN menu mn ON mn.menu_id = ol.menu_id) ORDER BY os.order_id;');
+        return $query->result();
+    }
+
+    /*function update_status($order_id, $menu_id, $item_status) {
+        $data['item_status'] = $item_status;
+        $query = $this->db->query('UPDATE orderlist SET item_status = ? WHERE order_id = ? AND menu_id = ?');
+        $this->db->query($query, array($item_status, $order_id, $menu_id));
+    }
+*/
+
     function get_bills(){
         $query = "Select * from orderslip";
         return $this->db->query($query)->result_array();
