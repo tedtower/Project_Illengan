@@ -93,14 +93,16 @@ class Admin extends CI_Controller{
     }
     function viewInsertSpoilageStock(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin/add_spoilagesstock');
+            $data['stockitems'] = $this->adminmodel->get_stock();
+            $this->load->view('admin/add_spoilagesstock',$data);
         }else{
             redirect('login');
         }
     }
     function viewInsertSpoilageAo(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin/add_spoilagesao');
+            $data['addons'] = $this->adminmodel->get_addons();
+            $this->load->view('admin/add_spoilagesao', $data);
         }else{
             redirect('login');
         }

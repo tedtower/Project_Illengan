@@ -196,6 +196,14 @@ class AdminModel extends CI_Model{
         $query = "Select order_id, order_date_time, order_payable, pay_date_time, date_recorded, menu_name, order_qty, order_total from orderslip inner join orderlist using (order_id) inner join menu using (menu_id) where payment_status = 'paid';";
         return $this->db->query($query)->result_array();
     }
+    function get_stock(){
+        $query = "Select * from stockitems";
+        return $this->db->query($query)->result_array();
+    }
+    function get_addons(){
+        $query = "Select * from addons";
+        return $this->db->query($query)->result_array();
+    }
     function get_stockcategories(){
         $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
