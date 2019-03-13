@@ -166,6 +166,10 @@ class AdminModel extends CI_Model{
         $query = "Select menu_id, menu_name, menu_description, menu_availability, menu_image, category_name, temp from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
         return $this->db->query($query)->result_array();
     }
+    function get_menu2(){
+        $query = "Select * from menu";
+        return $this->db->query($query)->result_array();
+    }
     function get_menuprices(){
         $query = "select menu_id, size_name, size_price from sizes";
         return $this->db->query($query)->result_array();

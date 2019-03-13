@@ -65,7 +65,6 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
-
     function viewMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['menu'] = $this->adminmodel->get_menu();
@@ -86,7 +85,8 @@ class Admin extends CI_Controller{
     }
     function viewInsertSpoilageMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin/add_spoilagesmenu');
+            $data['menu'] = $this->adminmodel->get_menu2();
+            $this->load->view('admin/add_spoilagesmenu',$data);
         }else{
             redirect('login');
         }
@@ -458,7 +458,8 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model("adminmodel");
             $this->adminmodel->delete_spoilages($sid); 
-            echo "Data deleted successfully !";
+            $data['spoilages']=$this->adminmodel->get_spoilages();
+            $this->load->view('admin/view_spoilages',$data);
         }else{
             redirect('login');
         }
