@@ -6,7 +6,7 @@
     <!-- Custom -->
     <script src="<?php echo cmjs_url(); ?>loadmodal.js"></script>
     <script src="<?php echo cmjs_url(); ?>progress.bar.js"></script>
-    <script src="<?php echo cmjs_url(); ?>quantity.js"></script>
-    <script src="<?php echo cmjs_url(); ?>changtemp.js"></script>
+    <script src="<?php echo cmjs_url(); ?>accordion.js"></script>
+    <?php $this->load->view('customer/template/modal_ajax');?>
 </body>
 </html>

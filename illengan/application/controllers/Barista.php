@@ -7,6 +7,16 @@ class Barista extends CI_Controller{
         // code for getting current date : date("Y-m-d")
         // code for getting current date and time : date("Y-m-d H:i:s")
     }
+
+    function index(){
+            $this->load->view('barista/baristaView'); 
+        }
+
+        function orders(){
+            $data=$this->baristaModel->view();
+		    echo json_encode($data);
+        }
+
     function getOrders(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
             //Code Here
@@ -50,5 +60,7 @@ class Barista extends CI_Controller{
             redirect('login');
         }
     }
+
+
 }
 ?>

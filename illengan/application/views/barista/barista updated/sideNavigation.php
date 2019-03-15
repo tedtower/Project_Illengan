@@ -9,7 +9,7 @@
 
                 <ul class="nav">
                     <li class="active">
-                        <a href="<?php echo site_url('barista/baristaOrders')?>">
+                        <a href="<?php echo site_url('barista/barista/orders')?>">
                             <p>Orders</p>
                         </a>
                     </li>
