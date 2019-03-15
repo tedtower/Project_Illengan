@@ -7,6 +7,6 @@
     <script src="<?php echo cmjs_url(); ?>loadmodal.js"></script>
     <script src="<?php echo cmjs_url(); ?>progress.bar.js"></script>
     <script src="<?php echo cmjs_url(); ?>accordion.js"></script>
-    <?php $this->load->view('customer/template/modal_ajax');?>
+    <?php $this->load->view('customer/template/modal_func');?>
 </body>
 </html>
