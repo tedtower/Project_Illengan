@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 15, 2019 at 01:47 PM
+-- Generation Time: Mar 15, 2019 at 03:41 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.14
 
@@ -84,7 +84,16 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `category_type` enum('menu','inventory') NOT NULL,
   PRIMARY KEY (`category_id`),
   KEY `maincat_idx` (`supcat_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`category_id`, `supcat_id`, `category_name`, `category_type`) VALUES
+(1, NULL, 'Meals', 'menu'),
+(2, NULL, 'Drinks', 'menu'),
+(3, NULL, 'Desserts', 'menu');
 
 -- --------------------------------------------------------
 
@@ -177,10 +186,22 @@ CREATE TABLE IF NOT EXISTS `menu` (
   `menu_name` varchar(64) NOT NULL,
   `menu_description` longtext,
   `menu_availability` enum('available','temp unavailable','unavailable') NOT NULL DEFAULT 'available',
-  `menu_image` varchar(50) DEFAULT 'no_image.jpg',
+  `menu_image` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`menu_id`),
   KEY `category_idx` (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `menu`
+--
+
+INSERT INTO `menu` (`menu_id`, `category_id`, `menu_name`, `menu_description`, `menu_availability`, `menu_image`) VALUES
+(1, 1, 'Menu w/o Size & Temp', 'This is a menu without sizes and temperature.', 'available', NULL),
+(2, 1, 'Menu w/ Size w/o Temp', 'This is a menu with sizes but without temperature.', 'available', NULL),
+(3, 2, 'Menu w/o Size w/ Temp', 'This is a menu without sizes but with temperature.', 'available', NULL),
+(4, 2, 'Menu w/ Size & Temp', 'This is a menu with sizes and temperature.', 'available', NULL),
+(5, 3, 'Temporarily Unavailable Menu', 'This is a menu which is temporarily unavailable.', 'temp unavailable', NULL),
+(6, 3, 'Unavailable Menu', 'This is a menu which is unavailable.', 'unavailable', NULL);
 
 -- --------------------------------------------------------
 
@@ -308,13 +329,30 @@ CREATE TABLE IF NOT EXISTS `preferences` (
   `pref_id` int(11) NOT NULL,
   `menu_id` int(11) NOT NULL,
   `size_name` varchar(45) NOT NULL DEFAULT 'Normal',
-  `size_price` double NOT NULL,
+  `size_price` double DEFAULT NULL,
   `size_status` enum('enabled','disabled') NOT NULL,
   `temp` enum('h','c') DEFAULT NULL,
-  `pref_price` double NOT NULL,
+  `pref_price` double DEFAULT NULL,
   PRIMARY KEY (`pref_id`) USING BTREE,
   KEY `menu_id` (`menu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `preferences`
+--
+
+INSERT INTO `preferences` (`pref_id`, `menu_id`, `size_name`, `size_price`, `size_status`, `temp`, `pref_price`) VALUES
+(1, 1, 'Normal', 80, 'enabled', NULL, NULL),
+(2, 2, 'Normal', 90, 'enabled', NULL, NULL),
+(3, 2, 'Jumbo', 110, 'enabled', NULL, NULL),
+(4, 3, 'Normal', 100, 'enabled', 'h', NULL),
+(5, 3, 'Normal', 100, 'enabled', 'c', 110),
+(6, 4, 'Normal', 120, 'enabled', 'h', NULL),
+(7, 4, 'Normal', 120, 'enabled', 'c', 130),
+(8, 4, 'Jumbo', 140, 'enabled', 'h', NULL),
+(9, 4, 'Jumbo', 140, 'enabled', 'c', 150),
+(10, 5, 'Normal', 65, 'enabled', NULL, NULL),
+(11, 6, 'Normal', 70, 'enabled', NULL, NULL);
 
 -- --------------------------------------------------------
 
