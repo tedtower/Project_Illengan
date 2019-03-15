@@ -24,21 +24,6 @@ class Customer extends CI_Controller {
 		return false;
 	}
 
-	//display the menu
-	function menu(){
-		if($this->isLoggedIn()){
-			$data= array();
-			$data['menu'] = $this->customermodel->get_all();
-			$data['cust_name'] = $this->session->userdata('cust_name');
-			$data['table_no'] = $this->session->userdata('table_no');
-			$this->load->view('home');
-		}else{
-			redirect('login');
-		}
-	}
-
-	
-
 	public function view($page = 'menu'){
 		if($this->isLoggedIn()){
 			$data['categories'] = $this->customermodel->fetch_category();
@@ -46,6 +31,7 @@ class Customer extends CI_Controller {
 			$data['subcats'] = array_merge($this->customermodel->fetch_allsubcats(), $this->customermodel->fetch_catswithmenu());
 			sort($data['subcats']);
 			$data['pref_menu'] = $this->customermodel->fetch_menupref();
+			$data['addons'] = $this->customermodel->fetch_addon();
 			$this->load->view('customer/template/head',$data);
 			$this->load->view('customer/'.$page,$data);
 			$this->load->view('customer/template/foot');
