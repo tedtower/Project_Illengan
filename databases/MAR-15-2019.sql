@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 15, 2019 at 03:41 PM
+-- Generation Time: Mar 15, 2019 at 04:12 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.14
 
@@ -39,6 +39,16 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `is_online` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`account_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `accounts`
+--
+
+INSERT INTO `accounts` (`account_id`, `account_type`, `account_username`, `account_password`, `is_online`) VALUES
+(1, 'Admin', 'manager', 'manager', 0),
+(2, 'Customer', 'customer', 'customer', 0),
+(3, 'Barista', 'barista', 'barista', 0),
+(4, 'Chef', 'chef', 'chef', 0);
 
 -- --------------------------------------------------------
 
@@ -329,10 +339,9 @@ CREATE TABLE IF NOT EXISTS `preferences` (
   `pref_id` int(11) NOT NULL,
   `menu_id` int(11) NOT NULL,
   `size_name` varchar(45) NOT NULL DEFAULT 'Normal',
-  `size_price` double DEFAULT NULL,
   `size_status` enum('enabled','disabled') NOT NULL,
   `temp` enum('h','c') DEFAULT NULL,
-  `pref_price` double DEFAULT NULL,
+  `pref_price` double NOT NULL,
   PRIMARY KEY (`pref_id`) USING BTREE,
   KEY `menu_id` (`menu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -341,18 +350,18 @@ CREATE TABLE IF NOT EXISTS `preferences` (
 -- Dumping data for table `preferences`
 --
 
-INSERT INTO `preferences` (`pref_id`, `menu_id`, `size_name`, `size_price`, `size_status`, `temp`, `pref_price`) VALUES
-(1, 1, 'Normal', 80, 'enabled', NULL, NULL),
-(2, 2, 'Normal', 90, 'enabled', NULL, NULL),
-(3, 2, 'Jumbo', 110, 'enabled', NULL, NULL),
-(4, 3, 'Normal', 100, 'enabled', 'h', NULL),
-(5, 3, 'Normal', 100, 'enabled', 'c', 110),
-(6, 4, 'Normal', 120, 'enabled', 'h', NULL),
-(7, 4, 'Normal', 120, 'enabled', 'c', 130),
-(8, 4, 'Jumbo', 140, 'enabled', 'h', NULL),
-(9, 4, 'Jumbo', 140, 'enabled', 'c', 150),
-(10, 5, 'Normal', 65, 'enabled', NULL, NULL),
-(11, 6, 'Normal', 70, 'enabled', NULL, NULL);
+INSERT INTO `preferences` (`pref_id`, `menu_id`, `size_name`, `size_status`, `temp`, `pref_price`) VALUES
+(1, 1, 'Normal', 'enabled', NULL, 80),
+(2, 2, 'Normal', 'enabled', NULL, 90),
+(3, 2, 'Jumbo', 'enabled', NULL, 110),
+(4, 3, 'Normal', 'enabled', 'h', 100),
+(5, 3, 'Normal', 'enabled', 'c', 110),
+(6, 4, 'Normal', 'enabled', 'h', 120),
+(7, 4, 'Normal', 'enabled', 'c', 130),
+(8, 4, 'Jumbo', 'enabled', 'h', 140),
+(9, 4, 'Jumbo', 'enabled', 'c', 150),
+(10, 5, 'Normal', 'enabled', NULL, 65),
+(11, 6, 'Normal', 'enabled', NULL, 70);
 
 -- --------------------------------------------------------
 
