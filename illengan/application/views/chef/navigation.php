@@ -15,27 +15,7 @@
   </div>
   </a>
   <!-- END FOR ORDERS PILL -->
-  <div class="select-nav-pill">
-    <div class="icon-div active">
-      <a href="<?php echo base_url().'index.php/chef/index'?>">
-      <img id="icon" src="<?php echo base_url().'assets/media/navigation/cashier.png' ?>"></a>
-    </div>
-    <div class="nav-title">
-    <p>Billings</p>
-    </div>
-  </div>
- <!-- END FOR BILLINGS -->
- <a href="<?php echo base_url().'index.php/chef/index'?>">
-  <div class="select-nav-pill">
-    <div class="icon-div active">
-      <img id="icon" src="<?php echo base_url().'assets/media/navigation/Inventory.png' ?>">
-    </div>
-    <div class="nav-title">
-    <p>Inventory</p>
-    </div>
-  </div>
-  </a>
-  <!-- END FOR BILLINGS -->
+
   <a href="<?php echo base_url().'index.php/chef/index'?>">
   <div class="select-nav-pill">
     <div class="icon-div active">

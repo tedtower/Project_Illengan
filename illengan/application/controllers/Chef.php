@@ -30,74 +30,38 @@ class Chef extends CI_Controller {
 	}
 	
 	function product_data(){
-		$data=$this->ChefModel->return_orderlist();
-		echo json_encode($data);
-	}
-
-	function save(){
-		$data=$this->ChefModel->save_product();
-		echo json_encode($data);
-	}
-
-	function update(){
-		$data=$this->ChefModel->update_product();
-		echo json_encode($data);
-	}
-
-	function delete(){
-		$data=$this->ChefModel->delete_product();
-		echo json_encode($data);
-	}
-	/*
-	public function change_status() {
-		$this->load->model('ChefModel');
-		$order_id = $this->input->post('order_id');
-		$menu_id = $this->input->post('menu_id');
-		$item_status = $this->input->post('item_status');
-
-		if($item_status == 'pending') {
-			$data = array(
-				'order_id' => $order_id,
-				'menu_id' => $menu_id,
-				'item_status' => 'in preparation'
-			);
-			$this->db->where('order_id', $order_id);
-			$this->db->where('menu_id', $menu_id);
-			$this->db->update('orderlist', $data);
-
-		} else if ($item_status == 'in preparation') {
-			$data = array(
-				'order_id' => $order_id,
-				'menu_id' => $menu_id,
-				'item_status' => 'finished'
-			);
-			$this->db->where('order_id', $order_id);
-			$this->db->where('menu_id', $menu_id);
-			$this->db->update('orderlist', $data);
-
-		} else if ($item_status == 'finished') {
-			$data = array(
-				'order_id' => $order_id,
-				'menu_id' => $menu_id,
-				'item_status' => 'pending'
-			);
-
-			$this->db->where('order_id', $order_id);
-			$this->db->where('menu_id', $menu_id);
-			$this->db->update('orderlist', $data);
-		} 
+		$this->load->database();
+        $this->load->model('ChefModel');
+		$orderlist = $this->ChefModel->return_orderlist();
+    	$data['orderlist'] = $orderlist;
+		$response = array();
+		$posts = array();
 		
-		redirect('');
+    foreach($orderlist as $row) 
+    { 
+        $posts[] = array(
+            "order_id"                  =>  $row->order_id,
+            "cust_name"             	=>  $row->cust_name,
+            "table_code"            	=>  $row->table_code,
+            "menu_name" 				=>  $row->menu_name,
+            "order_qty"                 =>  $row->order_qty,
+            "item_status"               =>  $row->item_status
+        );
+    } 
+    $response = $posts;
+    echo json_encode($response,TRUE);
+	$fp = fopen('./orders.json', 'w');
+    fwrite($fp, json_encode($response));
 	}
 
 
-		public function change_status() {
-			$this->load->model('ChefModel');
-			$item_status = $this->input->post('item_status');
-			$menu_id = $this->input->post('menu_id');
-			$order_id = $this->input->post('order_id');
+	function change_status() {
+		$item_status = $this->input->post('item_status');
+		$menu_id = $this->input->post('menu_id');
+		$order_id = $this->input->post('order_id');
+		
+		$this->ChefModel->update_status($order_id, $menu_id, $item_status);
+		$this->product_data();
+	}
 
-			$this->ChefModel->update_status($order_id, $menu_id, $item_status);
-		}
-*/
 }
