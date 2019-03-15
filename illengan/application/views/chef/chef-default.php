@@ -1,47 +1,120 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<!DOCTYPE html>
+<html>
+<head>
+<?php include_once('head.php') ?>
+</head>
+<body>
+<?php include_once('navigation.php') ?>
+<div class="container content">
+	<!-- Page Heading -->
+    <div class="row">
+        <div class="col-12">
+    
+            <table class="table table-striped" id="mydata">
+                <thead>
+                    <tr> 
+                        <th>Order Id</th>
+                        <th>Customer Name</th>
+                        <th>Table No.</th>
+                        <th>Menu Name</th>
+                        <th>Order Qty</th>
+                        <th>Item Status</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="show_data">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+        
+</div>
 
-class Chef extends CI_Controller {
+<?php include_once('scripts.php') ?>
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
-	function __construct(){
-		parent::__construct();
-		$this->load->database();
-        $this->load->model('ChefModel');
-	}
-	
-	function index()
-	{
-		$this->load->view('chef/chef'); 
-	}
-	
-	function product_data(){
-		$data=$this->ChefModel->return_orderlist();
-		echo json_encode($data);
-	}
+<script type="text/javascript">
+let UPDATE = 5000;
+var table = $('#mydata');
 
+setInterval(function() {
+    table.DataTable().ajax.reload(null, false);
+    console.log('reload');
+    orders();
+}, 1000);
 
-	function change_status() {
-		$item_status = $this->input->post('item_status');
-		$menu_id = $this->input->post('menu_id');
-		$order_id = $this->input->post('order_id');
-		
-		$this->ChefModel->update_status($order_id, $menu_id, $item_status);
-		$this->product_data();
-	}
+function orders() {
+$(document).ready(function() {
+    $.ajax({
+        type: 'POST',
+        url: 'http://www.illengan.com/chef/get_orderlist'
+            }); 
+ 
+});
+ }
 
+$(document).ready(function() {
+    $.ajax({
+        type: 'POST',
+        url: 'http://www.illengan.com/chef/get_orderlist',
+        data: {
+            order_id: order_id
+        },
+        success: function() {
+           alert(order_id);
+        }
+            }); 
+ 
+});
+
+$(document).ready(function() {
+	  table.DataTable( {
+             ajax: {
+                 url: "http://www.illengan.com/orders.json",
+                 dataSrc: ''
+             },
+		    colReorder: {
+			realtime: true
+		    },
+            "aoColumns" : [
+                {data : 'order_id'},
+                {data : 'cust_name'},
+                {data : 'table_code'},
+                {data : 'menu_name'},
+                {data : 'order_qty'},
+                {data : 'item_status'},
+                {
+                    data: null,
+                    render: function ( data, type, row ) {
+                        return '<button type="button" class="btn btn-primary"' + 
+                        'data-toggle="modal" data-target="#exampleModal"></button>';
+      }
+    }
+		    ]
+	        } );
+
+} );
+
+function change_status() {
+    
 }
+
+</script>
+</body>
+</html>
+success : function(data){
+                    var html = '';
+                    var i;
+                    for(i=0; i<data.length; i++){
+                        html += '<tr>'+
+                                '<td>'+data[i].order_id+'</td>'+
+                                '<td>'+data[i].cust_name+'</td>'+
+                                '<td>'+data[i].table_code+'</td>'+
+                                '<td>'+data[i].menu_name+'</td>'+
+                                '<td>'+data[i].order_qty+'</td>'+
+                                '<td>'+data[i].item_status+'</td>'+
+                                
+                                '</tr>';
+                    }
+                    $('#mydata').html(html);
+                }

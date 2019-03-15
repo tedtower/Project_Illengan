@@ -18,7 +18,6 @@
                         <th>Table No.</th>
                         <th>Menu Name</th>
                         <th>Order Qty</th>
-                        <th>Item Status</th>
                         <th style="text-align: right;">Actions</th>
                     </tr>
                 </thead>
@@ -38,16 +37,16 @@ let UPDATE = 5000;
 var table = $('#mydata');
 
 setInterval(function() {
-    table.DataTable().ajax.reload(null, false);
-    console.log('reload');
-    orders();
+table.DataTable().ajax.reload(null, false);
+console.log('reload');
+orders();
 }, 1000);
 
 function orders() {
 $(document).ready(function() {
-
     $.ajax({
-        url: 'http://www.illengan.com/chef/product_data'
+        type: 'POST',
+        url: 'http://www.illengan.com/chef/get_orderlist'
             }); 
  
 });
@@ -56,7 +55,7 @@ $(document).ready(function() {
 $(document).ready(function() {
 	  table.DataTable( {
              ajax: {
-                 url: "http://www.illengan.com/orders.json",
+                 url: "http://www.illengan.com/chef/get_orderlist",
                  dataSrc: ''
              },
 		    colReorder: {
@@ -68,12 +67,21 @@ $(document).ready(function() {
                 {data : 'table_code'},
                 {data : 'menu_name'},
                 {data : 'order_qty'},
-                {data : 'item_status'}
+                {
+                    data: 'item_status',
+                    render: function ( data, type, row, meta) {
+                        return '<button class="btn '+ data +'">'+ data +'</button>';
+      }
+    }
 		    ]
 	        } );
-          
 
 } );
+
+function change_status() {
+
+    
+}
 
 </script>
 </body>
