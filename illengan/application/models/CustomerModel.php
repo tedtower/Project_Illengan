@@ -5,10 +5,24 @@
             return $query->result();
         }
         function fetch_menu(){
-            $query = $this->db->query('SELECT menu.menu_id, categories.category_name, menu.menu_name, menu.menu_description, menu.menu_availability, menu.menu_image, categories.category_type, MIN(sizes.size_price) AS size_price
-            FROM menu LEFT JOIN categories USING (category_id) NATURAL JOIN sizes WHERE category_type = "menu" GROUP BY menu_name');
+            $query = $this->db->query('SELECT menu.menu_id, categories.category_name, menu.menu_name, menu.menu_description, menu.menu_availability,
+            menu.menu_image, categories.category_type, MIN(preferences.size_price) AS size_price, preferences.temp, preferences.pref_price
+            FROM menu LEFT JOIN categories USING (category_id) NATURAL JOIN preferences WHERE category_type = "menu" AND menu_availability != "unavailable" GROUP BY menu_name');
             return $query->result();
         }
+        function fetch_allsubcats(){
+            $query = $this->db->query('SELECT * FROM categories WHERE supcat_id IS NOT NULL ORDER BY category_id, supcat_id ASC');
+            return $query->result();
+        }
+        function fetch_catswithmenu(){
+            $query = $this->db->query('SELECT category_name FROM categories NATURAL JOIN menu GROUP BY category_id ORDER BY category_id ASC');
+            return $query->result();
+        }
+        function fetch_menupref(){
+            $query = $this->db->get('preferences');
+            return $query->result();
+        }
+
         function get_all(){
             $query =$this->db->get('menu');
             return $query->result();

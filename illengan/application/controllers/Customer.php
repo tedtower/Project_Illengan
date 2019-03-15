@@ -12,10 +12,18 @@ class Customer extends CI_Controller {
 		$this->load->model('customermodel');
 		date_default_timezone_set('Asia/Manila');
 	}
-
+	//Direct Log-in
 	function welcome(){
 		$this->load->view('login');
 	}
+	//Check Session
+	function isLoggedIn(){
+		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
+			return true;
+		}
+		return false;
+	}
+
 	//display the menu
 	function menu(){
 		if($this->isLoggedIn()){
@@ -29,17 +37,15 @@ class Customer extends CI_Controller {
 		}
 	}
 
-	function isLoggedIn(){
-		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
-			return true;
-		}
-		return false;
-	}
+	
 
 	public function view($page = 'menu'){
 		if($this->isLoggedIn()){
 			$data['categories'] = $this->customermodel->fetch_category();
 			$data['menu'] = $this->customermodel->fetch_menu();
+			$data['subcats'] = array_merge($this->customermodel->fetch_allsubcats(), $this->customermodel->fetch_catswithmenu());
+			sort($data['subcats']);
+			$data['pref_menu'] = $this->customermodel->fetch_menupref();
 			$this->load->view('customer/template/head',$data);
 			$this->load->view('customer/'.$page,$data);
 			$this->load->view('customer/template/foot');
@@ -51,10 +57,11 @@ class Customer extends CI_Controller {
 	//AJAX Menu Details (including Sizes and Addons)
 	function getDetails(){
 		if($this->isLoggedIn()){
+			$menu_id = $this->input->post("menu_id");
 			$item = array(
-				'details' => $this->input->get_menudetails("menu_id"),
-				'sizes' => $this->input->get_sizes("menu_id"),
-				'addons' => $this->input->get_addons("menu_id")
+				'details' => $this->input->get_menudetails($menu_id),
+				'sizes' => $this->input->get_sizes($menu_id),
+				'addons' => $this->input->get_addons($menu_id)
 			);
 			$this->output->set_output(json_encode($item));
 		}else{

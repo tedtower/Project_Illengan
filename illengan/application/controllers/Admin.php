@@ -340,22 +340,9 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
-    function changeAccountPassword(){  
-        $this->load->library('form_validation');
-        $account_id = $this->input->post('account_id');
-        $this->form_validation->set_rules('old_password', 'Current Password', 'required');
-        $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[8]|max_length[50]');
-        $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[8]|max_length[50]|matches[new_password]');
-        $this->form_validation->set_rules('account_password', 'Current Password', 'required');
-        if($this->form_validation->run()==false){
-            $old_password = $this->input->post("old_password");
-            $new_password = $this->input->post("new_password");
-            $this->adminmodel->change_account_password($old_password, $new_password, $account_id);
-        }else{
-        $this->viewChangePassword();
-        }
-        $this->viewAccounts();
-    }
+
+
+   
 
 //EDIT FUNCTIONS-------------------------------------------------------------------------------------
     function changeAccountPassword(){  

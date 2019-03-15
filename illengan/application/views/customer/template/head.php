@@ -6,7 +6,7 @@
     <title>Il-Lengan: Customer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Webpage Icon -->
-    <link rel="icon" href="<?php echo base_url().'application/css/media/logo.png'?>" type="image/png" />
+    <link rel="icon" href="<?php echo logo_url().'logo_sm.ico'?>" type="image/ico" />
     <!-- Frameworks -->
     <link rel="stylesheet" type="text/css" media="screen" href="<?php echo framework_url(); ?>mdb/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" media="screen" href="<?php echo framework_url(); ?>mdb/css/mdb.min.css">
