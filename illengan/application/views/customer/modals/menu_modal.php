@@ -1,5 +1,6 @@
 <!-- Sizable Modal -->
 <div class="modal fade" id="menu_modal" tabindex="-1" role="dialog" aria-labelledby="menuItemModal" aria-hidden="true">
+    <span id="mid" hidden></span>
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content" style="padding:0px;">
             <!-- Modal Body -->
@@ -38,20 +39,17 @@
                             </select>
                         </div>
                     </div>
-                    <button class="accordion py-2 delius">Add-ons</button>
-                    <div class="panel mb-3">
-                        <!-- INSERT CHECKBOX GROUP HERE -->
-                    </div>
+                    <!-- Missing Add On -->
                     <div class="delius form-group green-border-focus">
                         <div class="d-flex flex-row">
                             <span class="px-1 mt-1 label-indent">Notes: </span>
-                            <textarea class="form-control" id="exampleFormControlTextarea5" rows="2"></textarea>
+                            <textarea class="form-control" id="menu_note" rows="2"></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="text-center float-right">
                     <button type="button" class="btn btn-outline-accent px-3" data-dismiss="modal" id="close-menu">Close</button>
-                    <button type="button" class="btn btn-accent px-3 save-order">Save To Order List</button>
+                    <button type="button" class="btn btn-accent px-3 save-order" id="save_order">Save To Order List</button>
                 </div>
             </div>
         </div>
