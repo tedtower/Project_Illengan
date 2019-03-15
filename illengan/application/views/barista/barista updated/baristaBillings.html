@@ -71,6 +71,42 @@
                 </div>
             </nav>-->
             <!--End Side Bar-->
+            <div>
+                <input ><!-- Order ID -->                
+                <h5>Table Code : </h5><!-- Table Code -->
+                <p id="table_code"></p>
+                <h5>Customer Name : </h5><!-- Customer Name -->
+                <p id="customer_name"></p>
+                <h5>Payment Status: </h5><!-- Payment Status -->
+                <p id="payment status"></p>
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Quantity</th>
+                                <th>Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="itemnames"></td>
+                                <td class="itemqty"></td>
+                                <td class="itemprice"></td>
+                            </tr>
+                            <tr><td cols="2">Amount Payable</td><td id="totalamountpayable"></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <input type="text" name="cash" value=""/>
+                    <input type="text" name="change" value="" readonly="readonly"/>
+                </div>
+                <div>
+                    <button type="button" class="closemodal">Close</button>
+                    <button type="button" id="update-pay-status-btn" data-orderid="">Submit</button>
+                </div>
+            </div>
             <div class="main-panel">
             <div class="content">
                 <div class="container-fluid">
@@ -98,6 +134,8 @@
                     </thead>
                     <tbody>
                     <!--Insert PHP-->
+                    <?php 
+                    ?>
                     <tr>
                         <td>
                         <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
@@ -112,7 +150,7 @@
                         <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
                         </td>
                         <td>
-                            <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                            <!--insert PHP echo (e.g. "?php echo $row->code; ?>  data-toggle="modal"  data-target=""-->
                         </td>
                         <td>
                             <div class="onoffswitch">
@@ -125,7 +163,7 @@
                         <td>
                             <div class="onoffswitch">
                                 <!--View button-->
-                                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="">View</button>
+                                <button class="btn btn-info btn-sm view-btn"  data-orderid="1">View</button>
                                 <!--Cancel button-->
                                 <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="">Cancel</button>
                             </div>
@@ -148,11 +186,30 @@
     <script src="assets/js/demo.js"></script>
 
     <script type="text/javascript">
+    $(function(){
         $('table tbody tr  td').on('click', function () {
             $("#myModal").modal("show");
             $("#txtfname").val($(this).closest('tr').children()[0].textContent);
             $("#txtlname").val($(this).closest('tr').children()[1].textContent);
         });
+        console.log($("button[class ~= 'view-btn']").text());
+        $("button[class~='view-btn']").on("click",function(){
+            console.log("I'm so beautiful!!!!!!!!!!!!!");
+            var order_id = $(this).attr("data-orderid");
+            $.ajax({
+                method: "post",
+                url: "barista/getBillDetails",
+                data: {
+                    order_id : order_id
+                },
+                dataType: "json",
+                success: function(bill){
+                    console.log(bill);
+                }
+            });
+        });
+
+    });
     </script>
 
 </html>

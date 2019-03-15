@@ -14,7 +14,7 @@ class Barista extends CI_Controller{
             redirect('login');
         }
     }
-    function getBillings(){
+    function getBills(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
             $data["bills"] = $this->baristamodel->get_bills();
             $this->load->view("", $data);
@@ -36,7 +36,15 @@ class Barista extends CI_Controller{
     }
     function setBillStatus(){        
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
-            $payment_date_time = ;
+            $payment_date_time = date("Y-m-d H:i:s");
+            $date_recorded = date("Y-m-d");
+            $order_id = $this->input->post("order_id");
+            
+            if($this->baristamodule->update_billstatus($order_id, $payment_date_time, $date_recorded)){
+                $this->output->set_output(json_encode($this->baristamodel->get_bills()));
+            }else{
+                //error
+            }
 
         }else{
             redirect('login');
