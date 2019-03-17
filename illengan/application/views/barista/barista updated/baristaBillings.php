@@ -71,7 +71,7 @@
                 </div>
             </nav>-->
         <!--End Side Bar-->
-        <div>
+        <div id="billModal">
             <h5>Order No : </h5><!-- Order ID -->
             <p id="orderNo"></p>
             <h5>Table Code : </h5><!-- Table Code -->
@@ -92,10 +92,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="itemnames"></td>
-                            <td class="itemqty"></td>
-                            <td class="itemprice"></td>
+                        <tr class="orderList">
+                            <td class="itemNames"></td>
+                            <td class="itemQty"></td>
+                            <td class="itemPrice"></td>
                         </tr>
                         <tr>
                             <td cols="2">Amount Payable</td>
@@ -235,17 +235,78 @@ $(function() {
     });
 
     $("#cash").on('change', function() {
-        if ($(this).val() == undefined) {
+        if (isNaN(parseFloat($(this).val()))) {
+            $(this).val(0.00);
             $("#change").val(0.00);
         } else {
-            $("#change").val(parseDouble($(this).val()) - parseDouble($("#amtPayable").val()));
+            parseInt($(this).val()).toFixed(2);
+            $("#change").val((parseDouble($(this).val()) - parseDouble($("#amtPayable").val())).toFixed(2));
         }
+    });
+
+    $("#update-pay-status-btn").on('click', function(event){
+        var status;
+        if($(this).attr("data-paystatus") === "Paid"){
+            status = "p";
+        }else{
+            status = "u";
+        }
+        if(parseFloat($("#cash").val()) < parseFloat($("#amtPayable").val()) && status === "u"){
+            alert("Customer Payment is insufficient!");
+            event.preventDefault();
+        }            
+        var orderId = $(this).attr("data-orderid");
+        $.ajax({
+            method: "post",
+            url: "barista/billings/update",
+            data: {
+                order_id: orderId,
+                pay_status: status
+            }, 
+            dataType: "json",
+            success: function(bill){
+                console.log(bill);
+            }
+        });
     });
 
 });
 
-function setData(orderId) {
-    //setting of data in modal
+function setModalData(orderId) {
+    var listLength = bills[orderId]['orderList'].length;
+    var listRow = `<tr class="orderList">
+                            <td class="itemNames"></td>
+                            <td class="itemQty"></td>
+                            <td class="itemPrice"></td>
+                        </tr>
+                        `;
+    removeModalData();
+    $("#orderNo").text(bills[orderId]['orderslip']['order_id']);
+    $("#tableCode").text(bills[orderId]['orderslip']['table_code']);
+    $("#customerName").text(bills[orderId]['orderslip']['cust_name']);
+    $("#paymentStatus").text(bills[orderId]['orderslip']['pay_status']);
+    $("#paymentDate").text(bills[orderId]['orderslip']['pay_date_time']);
+    for(var index = 0 ; index < listLength ; index++){
+        $("#billModal table tbody").last().before(listRow);
+        $(".itemNames").eq($("orderList").length-1).text(bills[orderId]['orderList'][index]["menu_name"]);
+        $(".itemQty").eq($("orderList").length-1).text(bills[orderId]['orderList'][index]["order_qty"]);
+        $(".itemPrice").eq($("orderList").length-1).text(bills[orderId]['orderList'][index]["order_total"]);
+    }
+    $("#update-pay-status-btn").attr("data-orderid", bills[orderId]["orderslip"]["order_id"]);
+    $("#update-pay-status-btn").attr("data-paystatus", bills[orderId]["orderslip"]["pay_status"]);
+}
+
+function removeModalData(){    
+    $("#orderNo").empty();
+    $("#tableCode").empty();
+    $("#customerName").empty();
+    $("#paymentStatus").empty();
+    $("#paymentDate").empty();
+    $(".orderList").remove();
+    $("#cash").val(0.00);
+    $("#change").val(0.00);
+    $("#update-pay-status-btn").attr("data-orderid", "");    
+    $("#update-pay-status-btn").attr("data-paystatus", "");
 }
 </script>
 

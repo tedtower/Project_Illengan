@@ -36,7 +36,7 @@ class Barista extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
             $order_id = $this->input->post("order_id");
             $orderdetails = array(
-                'orderslip' => $this->barsitamodel->get_orderslip($order_id),
+                'orderslip' => $this->barsitamodel->get_orderslip($order_id)[0],
                 'orderlist' => $this->baristamodel->get_orderlist($order_id)
             );
             $this->output->set_output(json_encode($orderdetails));
@@ -49,11 +49,23 @@ class Barista extends CI_Controller{
             $payment_date_time = date("Y-m-d H:i:s");
             $date_recorded = date("Y-m-d");
             $order_id = $this->input->post("order_id");
+            $status = $this->input->post("pay_status");
             
-            if($this->baristamodule->update_billstatus($order_id, $payment_date_time, $date_recorded)){
-                $this->output->set_output(json_encode($this->baristamodel->get_bills()));
-            }else{
-                //error
+            switch($status){
+                case "p": 
+                    if($this->baristamodule->update_billstatus($order_id)){
+                        $this->output->set_output(json_encode($this->baristamodel->get_bills()));
+                    }else{
+                        //error
+                    }
+                    break;
+                case "u" : 
+                    if($this->baristamodule->update_billstatus($order_id, $payment_date_time, $date_recorded)){
+                        $this->output->set_output(json_encode($this->baristamodel->get_bills()));
+                    }else{
+                        //error
+                    }
+                    break;
             }
 
         }else{
