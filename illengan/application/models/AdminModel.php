@@ -73,21 +73,39 @@ class AdminModel extends CI_Model{
     
     
     // UPDATE FUNCTIONS-------------------------------------------------------------
-    function change_account_password($old_password,$new_password, $account_id){
-        
-        $current_password_query = "select account_password from accounts where account_id = $account_id ";
-        $current_password = $this->db->query($current_password_query);
-            foreach($current_password->result_array() AS $row) {
-
-            if($old_password == $row['account_password']){
-                $query = "update accounts set account_password = ?  where account_id = ? ";
-                return $this->db->query($query,array($new_password, $account_id));  
-            }else{
-                $data['account_id'] = $account_id;
-                $this->load->view('admin/changepassword', $data);
-            }
-        }
+    function get_password($account_id){
+        $query = "select account_password from accounts where account_id = ? ";
+        return $this->db->query($query,array($account_id))->result_array();
     }
+
+    function change_account_password($new_password, $account_id){
+        $query = "update accounts set account_password = ?  where account_id = ? ";
+        return $this->db->query($query,array($new_password, $account_id));  
+           
+    }
+
+    // function change_account_password($old_password,$new_password, $account_id){
+
+    //     $query2 = "select account_password from accounts where account_id = ? ";
+    //     $current_password = $this->db->query($query2,array($account_id));
+    //         foreach($current_password->result() AS $row) {
+
+    //         if(password_verify($row->account_password,$old_password)){
+    //             $query = "update accounts set account_password = ?  where account_id = ? ";
+    //             return $this->db->query($query,array($new_password, $account_id));  
+    //         }else{
+                
+    //             echo $old_password;
+    //             echo "====";
+    //             echo $row->account_password;
+                
+    //             echo "there is a problem in model";
+    //             // $data['account_id'] = $account_id;
+    //             // $this->load->view('admin/changepassword', $data);
+    //         }
+    //     }
+    // }
+
     function edit_accounts($account_username,$account_type,$account_id){
         $query = "Update accounts set account_username = ?, account_type = ? where account_id = ?";
             return $this->db->query($query,array($account_username,$account_type,$account_id));

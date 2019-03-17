@@ -203,17 +203,17 @@ class Admin extends CI_Controller{
 //ADD FUNCTIONS---------------------------------------------------------------------------------
     function addaccounts(){ //is_unique username not yet applied
 
-        $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]|max_length[50]');
-        $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[8]|max_length[50]|matches[password]');
+        $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[50]');
+        $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
         $this->form_validation->set_rules('account_username','Username','trim|required');
         $this->form_validation->set_rules('account_type','Account Type','trim|required');
 
         if($this->form_validation->run()){
 
-            $password = $this->input->post("password");
+            $password = password_hash($this->input->post("password"),PASSWORD_DEFAULT, ['cost' => 12]);
             $username = $this->input->post("account_username");
             $account_type = $this->input->post("account_type");
-            
+
             $data = array(
                 'account_password'=>$password,
                 'account_username'=>$username,
@@ -222,7 +222,7 @@ class Admin extends CI_Controller{
 
             $this->adminmodel->add_accounts($data);
             $this->viewAccounts();
-    
+
         }else{
             $this->viewaddaccounts();
         }
@@ -343,27 +343,37 @@ class Admin extends CI_Controller{
         }
     }
 
-
-   
-
 //EDIT FUNCTIONS-------------------------------------------------------------------------------------
     function changeAccountPassword(){  
-        $this->load->library('form_validation');
+    $this->load->library('form_validation');
 
-        $account_id = $this->input->post('account_id');
+    $account_id = $this->input->post('account_id');
+    $this->adminmodel->get_password($account_id);
+    $current_password = $this->adminmodel->get_password($account_id);
 
-        $this->form_validation->set_rules('old_password', 'Current Password', 'required');
-        $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[8]|max_length[50]');
-        $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[8]|max_length[50]|matches[new_password]');
-        $this->form_validation->set_rules('account_password', 'Current Password', 'required');
+    $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[3]|max_length[50]');
+    $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[3]|max_length[50]|matches[new_password]');
+    $this->form_validation->set_rules('old_password', 'Old Password', 'required');
 
-        if($this->form_validation->run()==false){
-            $old_password = $this->input->post("old_password");
-            $new_password = $this->input->post("new_password");
-            $this->adminmodel->change_account_password($old_password, $new_password, $account_id);
+        if($this->form_validation->run()){
+            $input_old_password = $this->input->post("old_password");
+            $new_password = password_hash($this->input->post("new_password"),PASSWORD_DEFAULT, ['cost' => 12]);
+
+            foreach($current_password AS $row) {
+                    
+                    if (password_verify($input_old_password, $row['account_password'])){                 
+                        $this->adminmodel->change_account_password($new_password,$account_id);
+                    }else{
+                        $data['account_id'] = $account_id;
+                        $this->load->view('admin/changepassword', $data);
+                    }
+
+            }   
         }else{
-            $this->viewChangePassword();
+            $this->viewChangePassword($account_id);
         }
+        $data['account'] = $this->adminmodel->get_accounts();
+        $this->load->view('admin/view_accounts',$data);
     }
     function editAccounts(){
         $this->form_validation->set_rules('account_username','Username','trim|required');
