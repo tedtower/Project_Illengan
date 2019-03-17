@@ -26,10 +26,10 @@ class Login extends CI_Controller{
                     redirect('admin/menu');
                     break;
                 case 'Barista':
-                    redirect('');
+                    redirect('barista/orders');
                     break;
                 case 'Chef':
-                    redirect('');
+                    redirect('chef/orders');
                     break;
 				case 'Customer':
 					redirect('customer/menu');
