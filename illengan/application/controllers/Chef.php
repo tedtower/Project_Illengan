@@ -62,11 +62,10 @@ class Chef extends CI_Controller {
 
 
 	function change_status() {
+		$order_item_id = $this->input->post('order_item_id');
 		$item_status = $this->input->post('item_status');
-		$menu_id = $this->input->post('menu_id');
-		$order_id = $this->input->post('order_id');
-		
-		$this->ChefModel->update_status($order_id, $menu_id, $item_status);
+	
+		$this->ChefModel->update_status($order_item_id, $item_status);
 		$this->get_orderlist();
 	}
 

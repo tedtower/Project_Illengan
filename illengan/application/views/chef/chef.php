@@ -36,12 +36,6 @@
 let UPDATE = 5000;
 var table = $('#mydata');
 
-setInterval(function() {
-table.DataTable().ajax.reload(null, false);
-console.log('reload');
-orders();
-}, 1000);
-
 function orders() {
 $(document).ready(function() {
     $.ajax({
@@ -56,7 +50,7 @@ $(document).ready(function() {
 	  table.DataTable( {
              ajax: {
                  url: "http://www.illengan.com/chef/get_orderlist",
-                 dataSrc: ''
+                 dataSrc: '',
              },
 		    colReorder: {
 			realtime: true
@@ -68,9 +62,12 @@ $(document).ready(function() {
                 {data : 'menu_name'},
                 {data : 'order_qty'},
                 {
-                    data: 'item_status',
+                    data: null,
                     render: function ( data, type, row, meta) {
-                        return '<button class="btn '+ data +'">'+ data +'</button>';
+                        return '<button id="status" class="status btn '+ data.item_status +
+                        '" data-order_item_id="'+ data.order_item_id +'"'+
+                        ' data-item_status="'+ data.item_status +'" onclick="change_status()">'+ data.item_status +'</button>';
+                        
       }
     }
 		    ]
@@ -79,9 +76,39 @@ $(document).ready(function() {
 } );
 
 function change_status() {
+    $('.status').on('click', function() {
+        var orderItemId = $(this).data("order_item_id");
+        var itemStatus = $(this).data("item_status");
 
+        if(itemStatus === "pending") {
+            item_status = "ongoing";
+        } else if(itemStatus === "ongoing") {
+            item_status = "done";
+        } else if(itemStatus === "done") {
+            item_status = "pending";
+        }
     
+        // AJAX CODE FOR POSTING NEW STATUS
+        $.ajax({
+        type: 'POST',
+        url: 'http://www.illengan.com/chef/change_status',
+        data: {
+            order_item_id: orderItemId,
+            item_status: item_status
+        },
+        success: function() {
+            table.DataTable().ajax.reload(null, false);
+        }
+            }); 
+ 
+        });
 }
+
+setInterval(function() {
+        table.DataTable().ajax.reload(null, false);
+        console.log('reload');
+        orders();
+    }, 5000);
 
 </script>
 </body>
