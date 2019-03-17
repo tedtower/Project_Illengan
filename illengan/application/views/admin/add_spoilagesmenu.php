@@ -5,9 +5,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <form method="POST" action="<?php echo base_url()?>index.php/admin/insertspoilagesmenu">
 
    <div class="form-group">
-    <label for="formGroupExampleInput2">Description</label>
-    <input type="text" class="form-control" name="menu_name" placeholder="description" required>
-    <span class="text-danger"><?php echo form_error("quantity"); ?></span>
+   <label for="formGroupExampleInput2">Description</label>
+	<select name = "menu_name">
+		<?php foreach($menu as $row){ ?>
+		<option name = "menu_name" value="<?php echo $row['menu_name'] ?>"><?php echo $row['menu_name'] ?></option>
+    <?php
+       } ?>
+	</select> 
   </div>
    
   <div class="form-group">
