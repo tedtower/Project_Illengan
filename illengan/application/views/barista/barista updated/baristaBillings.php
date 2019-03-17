@@ -72,13 +72,16 @@
             </nav>-->
         <!--End Side Bar-->
         <div>
-            <input><!-- Order ID -->
+            <h5>Order No : </h5><!-- Order ID -->
+            <p id="orderNo"></p>
             <h5>Table Code : </h5><!-- Table Code -->
-            <p id="table_code"></p>
+            <p id="tableCode"></p>
             <h5>Customer Name : </h5><!-- Customer Name -->
-            <p id="customer_name"></p>
+            <p id="customerName"></p>
             <h5>Payment Status: </h5><!-- Payment Status -->
-            <p id="payment status"></p>
+            <p id="paymentStatus"></p>
+            <h5>Payment Date and Time: </h5><!-- Payment Status -->
+            <p id="paymentDate"></p>
             <div>
                 <table>
                     <thead>
@@ -102,10 +105,16 @@
                 </table>
             </div>
             <div>
-                <input type="text" name="cash" value="" />
-                <input type="text" name="change" value="" readonly="readonly" />
+                <div class="d-inline-block">
+                    <label for="cash">Cash: </label>
+                    <input type="text" id="cash" name="cash" value="" />
+                </div>
+                <div>
+                    <label for="change">Change: </label>
+                    <input type="text" id="change" name="change" value="" readonly="readonly" />
+                </div>
             </div>
-            <div>
+            <div class="d-inline-block">
                 <button type="button" class="closemodal">Close</button>
                 <button type="button" id="update-pay-status-btn" data-orderid="">Submit</button>
             </div>
@@ -138,7 +147,7 @@
                             </thead>
                             <tbody>
                                 <!--Insert PHP-->
-                                <?php 
+                    <?php 
                         if(!empty($bills)){
                             foreach($bills as $bill){
                     ?>
@@ -209,7 +218,7 @@ $(function() {
 
     $("button[class~='view-btn']").on("click", function() {
         var orderId = $(this).attr("data-orderid");
-        if(bills[orderId] !== undefined){
+        if (bills[orderId] !== undefined) {
             $.ajax({
                 method: "post",
                 url: "barista/getBillDetails",
@@ -218,17 +227,24 @@ $(function() {
                 },
                 dataType: "json",
                 success: function(bill) {
-                    bills[bill[orderId]] = bill[0];
+                    bills[orderId] = bill[0];
                 }
             });
         }
         setData(orderId);
     });
 
-    $().on();
+    $("#cash").on('change', function() {
+        if ($(this).val() == undefined) {
+            $("#change").val(0.00);
+        } else {
+            $("#change").val(parseDouble($(this).val()) - parseDouble($("#amtPayable").val()));
+        }
+    });
 
 });
-function setData(orderId){
+
+function setData(orderId) {
     //setting of data in modal
 }
 </script>
