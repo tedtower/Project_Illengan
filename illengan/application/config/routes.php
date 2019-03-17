@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'chef/index';
+$route['default_controller'] = 'login/viewlogin';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'login/viewlogin';
@@ -90,9 +90,15 @@ $route['admin/transactions'] = "admin/viewtransactions";
 $route['admin/transactions/add'] = "admin/addtransactions";
 $route['admin/transactions/edit'] = "admin/edittransactions";
 $route['admin/transactions/delete'] = "admin/deletetransactions";
-
-$route['customer/menu/getitemdetails'] = "customer/getdetails";
 $route['admin/sample'] = 'admin/samplemethod';
 
+//CUSTOMER ROUTES
+$route['customer/menu/getitemdetails'] = "customer/getdetails";
 $route['customer/(:any)'] = "customer/view/$1";
 $route['customer/menu/details'] = "customer/getmenudetails";
+
+// BARISTA ROUTES
+$route['barista/getBills'] = "barista/getbills";
+$route['barista/getBillDetails'] = "barista/getBillDetails";
+$route['barista/setStatus'] = "barista/setbillstatus";
+$route['customer/(:any)'] = "customer/view/$1";

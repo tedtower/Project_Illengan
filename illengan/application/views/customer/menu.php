@@ -2,7 +2,6 @@
     <div class="text-center gab py-0 my-0">
         <h1>Menu</h1>
     </div>
-
     <?php foreach($subcats as $subcategories){ ?>
     <!-- Subcategory -->
     <div class="d-inline-flex px-4 animated flipInX slow subcategory mb-2 delius">
@@ -23,20 +22,20 @@
                         } else {
                             echo "".cmedia_url()."menu/no_image.jpg";
                         }
-                        
                     ?>">
                 </a>
                 <!-- Card content -->
                 <div class="card-body p-0 m-0 gab">
                     <!-- Title -->
                     <p class="text-truncate float-left menu-title" id="mt"><?php echo $items->menu_name; ?></p>
-                    <p class="float-right menu-price" id="mp"><span class="fs-15">₱</span><?php echo $items->size_price; ?></p>
+                    <p class="float-right menu-price" id="mp"><span class="fs-15">₱</span><?php echo $items->pref_price; ?></p>
                 </div>
         </div>
         <?php }} ?> 
     </div>
     <?php } ?>
     
-    <?php include 'menu_modal.php'; ?>
+    <?php include 'modals/menu_modal.php'; ?>
+    <?php include 'modals/order_modal.php'; ?>
 
 

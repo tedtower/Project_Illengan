@@ -5,14 +5,27 @@
             return $query->result();
         }
         function fetch_menu(){
-            $query = $this->db->query('SELECT menu.menu_id, categories.category_name, menu.menu_name, menu.menu_description, menu.menu_availability, menu.menu_image, menu.temp, categories.category_type, MIN(sizes.size_price) AS size_price
-            FROM menu LEFT JOIN categories USING (category_id) NATURAL JOIN sizes WHERE category_type = "menu" GROUP BY menu_name');
+            $query = $this->db->query('SELECT menu.menu_id, categories.category_name, menu.menu_name, menu.menu_description, menu.menu_availability,
+            menu.menu_image, categories.category_type, MIN(preferences.pref_price) AS pref_price, preferences.temp FROM menu LEFT JOIN categories USING (category_id) NATURAL JOIN preferences WHERE category_type = "menu" AND menu_availability != "unavailable" GROUP BY menu_name');
             return $query->result();
         }
         function fetch_allsubcats(){
-            $query = $this->db->query('SELECT * from categories where supcat_id IS NOT NULL ORDER BY category_id, supcat_id ASC');
+            $query = $this->db->query('SELECT * FROM categories WHERE supcat_id IS NOT NULL ORDER BY category_id, supcat_id ASC');
             return $query->result();
         }
+        function fetch_catswithmenu(){
+            $query = $this->db->query('SELECT category_name FROM categories NATURAL JOIN menu GROUP BY category_id ORDER BY category_id ASC');
+            return $query->result();
+        }
+        function fetch_menupref(){
+            $query = $this->db->query('SELECT menu_id,pref_price,temp,IF(temp IS NOT NULL, CONCAT(size_name," (",IF(temp="h","Hot",IF(temp="c","Cold",NULL)),") - ",pref_price), CONCAT(size_name," - ",pref_price)) AS preference FROM preferences ORDER BY pref_price ASC');
+            return $query->result();
+        }
+        function fetch_addon(){
+            $query = $this->db->query('SELECT * FROM itemadd NATURAL JOIN addons WHERE ao_status = "enabled" ORDER BY ao_price ASC');
+            return $query->result();
+        }
+
         function get_all(){
             $query =$this->db->get('menu');
             return $query->result();

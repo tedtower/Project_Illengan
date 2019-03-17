@@ -24,36 +24,17 @@ class Customer extends CI_Controller {
 		return false;
 	}
 
-	public function getMenuDetails(){
-		if($this->isLoggedIn()){
-			$mId = $this->input->post('mID');
-		}
-	}
-
-	//display the menu
-	function menu(){
-		if($this->isLoggedIn()){
-			$data= array();
-			$data['menu'] = $this->customermodel->get_all();
-			$data['cust_name'] = $this->session->userdata('cust_name');
-			$data['table_no'] = $this->session->userdata('table_no');
-			$this->load->view('home');
-		}else{
-			redirect('login');
-		}
-	}
-
-	
-
 	public function view($page = 'menu'){
 		if($this->isLoggedIn()){
 			$data['categories'] = $this->customermodel->fetch_category();
 			$data['menu'] = $this->customermodel->fetch_menu();
-			$data['subcats'] = $this->customermodel->fetch_allsubcats();
+			$data['subcats'] = array_merge($this->customermodel->fetch_allsubcats(), $this->customermodel->fetch_catswithmenu());
+			sort($data['subcats']);
+			$data['pref_menu'] = $this->customermodel->fetch_menupref();
+			$data['addons'] = $this->customermodel->fetch_addon();
 			$this->load->view('customer/template/head',$data);
 			$this->load->view('customer/'.$page,$data);
 			$this->load->view('customer/template/foot');
-			$this->load->view('customer/template/modal_ajax');
 		}else{
 			redirect('login');
 		}
