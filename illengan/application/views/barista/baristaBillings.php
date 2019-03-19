@@ -107,11 +107,11 @@
             <div>
                 <div class="d-inline-block">
                     <label for="cash">Cash: </label>
-                    <input type="text" id="cash" name="cash" value="" />
+                    <input type="text" id="cash" name="cash" value="0.00" />
                 </div>
                 <div>
                     <label for="change">Change: </label>
-                    <input type="text" id="change" name="change" value="" readonly="readonly" />
+                    <input type="text" id="change" name="change" value="0.00" readonly="readonly" />
                 </div>
             </div>
             <div class="d-inline-block">
@@ -196,51 +196,54 @@
 </body>
 
 <!--   Core JS Files   -->
-<script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="<?php echo framework_url()."mdb/js/jquery-3.3.1.min.js"?>" type="text/javascript"></script>
 <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
 <!--  Charts Plugin -->
 <script src="assets/js/chartist.min.js"></script>
 <!--  Notifications Plugin    -->
 <script src="assets/js/bootstrap-notify.js"></script>
 <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
-<script src="assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
+<script src="<?php echo framework_url()?>assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
 <!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
 <script src="assets/js/demo.js"></script>
 
 <script>
 var bills = {};
 $(function() {
-    $('table tbody tr  td').on('click', function() {
-        $("#myModal").modal("show");
-        $("#txtfname").val($(this).closest('tr').children()[0].textContent);
-        $("#txtlname").val($(this).closest('tr').children()[1].textContent);
-    });
+    // $('table tbody tr  td').on('click', function() {
+    //     $("#myModal").modal("show");
+    //     $("#txtfname").val($(this).closest('tr').children()[0].textContent);
+    //     $("#txtlname").val($(this).closest('tr').children()[1].textContent);
+    // });
 
     $("button[class~='view-btn']").on("click", function() {
         var orderId = $(this).attr("data-orderid");
-        if (bills[orderId] !== undefined) {
+        console.log(orderId);
+        if (bills[orderId] === undefined) {
             $.ajax({
                 method: "post",
-                url: "barista/getBillDetails",
+                url: "<?php echo site_url('barista/getBillDetails')?>",
                 data: {
-                    order_id: order_id
+                    order_id: orderId
                 },
                 dataType: "json",
                 success: function(bill) {
-                    bills[orderId] = bill[0];
+                    bills[orderId] = bill;            
+                    setModalData(orderId);
                 }
             });
+        }else{            
+            setModalData(orderId);
         }
-        setData(orderId);
     });
 
     $("#cash").on('change', function() {
         if (isNaN(parseFloat($(this).val()))) {
-            $(this).val(0.00);
-            $("#change").val(0.00);
+            $(this).val('0.00');
+            $("#change").val('0.00');
         } else {
-            parseInt($(this).val()).toFixed(2);
-            $("#change").val((parseDouble($(this).val()) - parseDouble($("#amtPayable").val())).toFixed(2));
+            $(this).val(parseInt($(this).val()).toFixed(2));
+            $("#change").val((parseFloat($(this).val()) - parseFloat($("#totalamountpayable").text())).toFixed(2));
         }
     });
 
@@ -251,29 +254,29 @@ $(function() {
         }else{
             status = "u";
         }
-        if(parseFloat($("#cash").val()) < parseFloat($("#amtPayable").val()) && status === "u"){
+        if(parseFloat($("#cash").val()) < parseFloat($("#totalamountpayable").text()) && status === "u"){
             alert("Customer Payment is insufficient!");
-            event.preventDefault();
-        }            
-        var orderId = $(this).attr("data-orderid");
-        $.ajax({
-            method: "post",
-            url: "barista/billings/update",
-            data: {
-                order_id: orderId,
-                pay_status: status
-            }, 
-            dataType: "json",
-            success: function(bill){
-                console.log(bill);
-            }
-        });
+        }else{
+            var orderId = $(this).attr("data-orderid");
+            $.ajax({
+                method: "post",
+                url: "billings/setStatus",
+                data: {
+                    order_id: orderId,
+                    pay_status: status
+                }, 
+                dataType: "json",
+                success: function(bill){
+                    console.log(bill);
+                }
+            });
+        }       
     });
 
 });
 
 function setModalData(orderId) {
-    var listLength = bills[orderId]['orderList'].length;
+    var listLength = bills[orderId]['orderlist'].length;
     var listRow = `<tr class="orderList">
                             <td class="itemNames"></td>
                             <td class="itemQty"></td>
@@ -281,6 +284,7 @@ function setModalData(orderId) {
                         </tr>
                         `;
     removeModalData();
+    console.log(bills[orderId]['orderslip']['order_id']);
     $("#orderNo").text(bills[orderId]['orderslip']['order_id']);
     $("#tableCode").text(bills[orderId]['orderslip']['table_code']);
     $("#customerName").text(bills[orderId]['orderslip']['cust_name']);
@@ -288,10 +292,11 @@ function setModalData(orderId) {
     $("#paymentDate").text(bills[orderId]['orderslip']['pay_date_time']);
     for(var index = 0 ; index < listLength ; index++){
         $("#billModal table tbody").last().before(listRow);
-        $(".itemNames").eq($("orderList").length-1).text(bills[orderId]['orderList'][index]["menu_name"]);
-        $(".itemQty").eq($("orderList").length-1).text(bills[orderId]['orderList'][index]["order_qty"]);
-        $(".itemPrice").eq($("orderList").length-1).text(bills[orderId]['orderList'][index]["order_total"]);
+        $(".itemNames").eq($("orderList").length-1).text(bills[orderId]['orderlist'][index]["menu_name"]);
+        $(".itemQty").eq($("orderList").length-1).text(bills[orderId]['orderlist'][index]["order_qty"]);
+        $(".itemPrice").eq($("orderList").length-1).text(bills[orderId]['orderlist'][index]["order_total"]);
     }
+    $("#totalamountpayable").text(bills[orderId]['orderslip']['order_payable']);
     $("#update-pay-status-btn").attr("data-orderid", bills[orderId]["orderslip"]["order_id"]);
     $("#update-pay-status-btn").attr("data-paystatus", bills[orderId]["orderslip"]["pay_status"]);
 }
@@ -303,8 +308,8 @@ function removeModalData(){
     $("#paymentStatus").empty();
     $("#paymentDate").empty();
     $(".orderList").remove();
-    $("#cash").val(0.00);
-    $("#change").val(0.00);
+    $("#cash").val('0.00');
+    $("#change").val('0.00');
     $("#update-pay-status-btn").attr("data-orderid", "");    
     $("#update-pay-status-btn").attr("data-paystatus", "");
 }

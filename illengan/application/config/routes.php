@@ -99,6 +99,6 @@ $route['customer/(:any)'] = "customer/view/$1";
 $route['customer/menu/details'] = "customer/getmenudetails";
 
 // BARISTA ROUTES
-$route['barista/getBills'] = "barista/getbills";
+$route['barista/billings'] = "barista/getbills";
 $route['barista/getBillDetails'] = "barista/getBillDetails";
-$route['barista/setStatus'] = "barista/setbillstatus";
+$route['barista/billings/setStatus'] = "barista/setbillstatus";

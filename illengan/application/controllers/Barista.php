@@ -1,9 +1,10 @@
 <?php
 class Barista extends CI_Controller{
+    
     function __construct(){
-        parent::__construct();
-        $this->load->model('baristamodel');        
-        date_default_timezone_set('Asia/Manila');
+        parent:: __construct();      
+        date_default_timezone_set('Asia/Manila');        
+        $this->load->model('baristamodel');  
         // code for getting current date : date("Y-m-d")
         // code for getting current date and time : date("Y-m-d H:i:s")
     }
@@ -12,8 +13,8 @@ class Barista extends CI_Controller{
             $this->load->view('barista/baristaView'); 
         }
 
-    function orders(){
-            $data=$this->baristamodel->view();
+        function orders(){
+            $data= $this->baristaModel->view();
 		    echo json_encode($data);
         }
 
@@ -27,16 +28,16 @@ class Barista extends CI_Controller{
     function getBills(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
             $data["bills"] = $this->baristamodel->get_bills();
-            $this->load->view("", $data);
+            $this->load->view("barista/baristabillings", $data);
         }else{
             redirect('login');
         }
     }
     function getBillDetails(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
-            $order_id = $this->input->post("order_id");
+            $order_id = $this->input->post("order_id"); 
             $orderdetails = array(
-                'orderslip' => $this->barsitamodel->get_orderslip($order_id)[0],
+                'orderslip' => $this->baristamodel->get_orderslip($order_id)[0],
                 'orderlist' => $this->baristamodel->get_orderlist($order_id)
             );
             $this->output->set_output(json_encode($orderdetails));
@@ -53,14 +54,14 @@ class Barista extends CI_Controller{
             
             switch($status){
                 case "p": 
-                    if($this->baristamodule->update_billstatus($order_id)){
+                    if($this->baristamodel->update_billstatus($order_id)){
                         $this->output->set_output(json_encode($this->baristamodel->get_bills()));
                     }else{
                         //error
                     }
                     break;
                 case "u" : 
-                    if($this->baristamodule->update_billstatus($order_id, $payment_date_time, $date_recorded)){
+                    if($this->baristamodel->update_billstatus($order_id, $payment_date_time, $date_recorded)){
                         $this->output->set_output(json_encode($this->baristamodel->get_bills()));
                     }else{
                         //error

@@ -2,7 +2,6 @@
 class BaristaModel extends CI_Model{
 
     function view(){
-        $this->load->database();
         $query = $this->db->query('SELECT * FROM ((orderlist ol INNER JOIN orderslip os ON ol.order_id = os.order_id)
         INNER JOIN menu mn ON mn.menu_id = ol.menu_id) ORDER BY os.order_id;');
         return $query->result();
@@ -16,7 +15,7 @@ class BaristaModel extends CI_Model{
 */
 
     function get_bills(){
-        $query = "Select * from orderslip";
+        $query = "select order_id, table_code, cust_name, order_payable, order_date, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status , pay_date_time from orderslip";
         return $this->db->query($query)->result_array();
     }
 
@@ -26,7 +25,7 @@ class BaristaModel extends CI_Model{
     }
 
     function get_orderslip($order_id){
-        $query = "select order_id, table_code, cust_name, order_payable, order_date, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status,pay_date_time from orderslip where order_id = ?";
+        $query = "select order_id, table_code, cust_name, order_payable, order_date, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status , pay_date_time from orderslip where order_id = ?";
         return $this->db->query($query, array($order_id))->result_array();
     }
 
