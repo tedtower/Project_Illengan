@@ -12,8 +12,8 @@ class Barista extends CI_Controller{
             $this->load->view('barista/baristaView'); 
         }
 
-        function orders(){
-            $data=$this->baristaModel->view();
+    function orders(){
+            $data=$this->baristamodel->view();
 		    echo json_encode($data);
         }
 
