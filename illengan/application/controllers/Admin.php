@@ -2,8 +2,8 @@
 class Admin extends CI_Controller{
 
     function __construct(){
-        parent::__construct();
-        $this->load->model('adminmodel');
+        parent:: __construct();
+        $this->load->model('adminmodel'); 
         date_default_timezone_set('Asia/Manila');
     }
 //VIEW FUNCTIONS--------------------------------------------------------------------------------
