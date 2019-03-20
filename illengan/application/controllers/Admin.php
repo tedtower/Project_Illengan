@@ -360,14 +360,13 @@ class Admin extends CI_Controller{
             $new_password = password_hash($this->input->post("new_password"),PASSWORD_DEFAULT, ['cost' => 12]);
 
             foreach($current_password AS $row) {
-                    
-                    if (password_verify($input_old_password, $row['account_password'])){                 
-                        $this->adminmodel->change_account_password($new_password,$account_id);
-                    }else{
-                        $data['account_id'] = $account_id;
-                        $this->load->view('admin/changepassword', $data);
-                    }
-
+                if (password_verify($input_old_password, $row['account_password'])){                 
+                    $this->adminmodel->change_account_password($new_password,$account_id);
+                }else{
+                    echo "Current password is incorrect!";
+                    // $data['account_id'] = $account_id;
+                    // $this->load->view('admin/changepassword', $data);
+                }
             }   
         }else{
             $this->viewChangePassword($account_id);
