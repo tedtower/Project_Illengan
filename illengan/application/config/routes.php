@@ -95,8 +95,17 @@ $route['admin/sample'] = 'admin/samplemethod';
 
 //CUSTOMER ROUTES
 $route['customer/menu/getitemdetails'] = "customer/getdetails";
+$route['customer/process_login'] = "customer/process_login";
+$route['customer/view_menu'] = "customer/view_menu";
+$route['menu'] = "customer/menu";
+$route['view'] = "customer/view";
+$route['add_order'] = "customer/add";
+$route['customer/logout'] = "customer/logout";
+$route['destroy'] = "customer/destroy";
+$route['welcome'] = "customer/welcome";
+$route['LogIn'] = 'customer/isLoggedIn';
+$route['details'] = "customer/getMenuDetails";
 $route['customer/(:any)'] = "customer/view/$1";
-$route['customer/menu/details'] = "customer/getmenudetails";
 
 // BARISTA ROUTES
 $route['barista/billings'] = "barista/getbills";
