@@ -14,14 +14,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/style.css'?>">
 </head>
 <body>
-<?php include_once('barista updated/sideNavigation.php') ?>
+<?php include_once('navigation.php') ?>
 
 <div class="container content">
 	<!-- Page Heading -->
     <div class="row">
         <div class="col-12">
-        <form>
-         <label for="realtimedate">Date<input type="date" placeholder=""/></label>
+        <form action="barista/getDate" method="get">
+         <label>Date <input type="" value="<?php echo date('Y-M-d'); ?>"/></label>
         </form>
             
             <table class="table table-striped" id="mydata">
@@ -154,7 +154,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		            for(i=0; i<data.length; i++){
 		                html += '<tr>'+
 		                  		'<td>'+data[i].order_id+'</td>'+
-								'<td>'+data[i].cust_name+'</td>'+
+								          '<td>'+data[i].cust_name+'</td>'+
 		                        '<td>'+data[i].table_code+
                             '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-order_id="'+data[i].order_id+'" data-menu_name="'+data[i].table_code+'">Edit</a>'+' '+
                             '</td>'+
@@ -171,33 +171,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		            }
 		            $('#show_data').html(html);
                 setInterval( function () {
-    table.ajax.reload();
-}, 5000 );
+                    table.ajax.reload();
+                }, 5000 );
 		        }
 
 		    });
 		}
 
-        //Save product
-        $('#btn_save').on('click',function(){
-            var order_id = $('#order_id').val();
-            var menu_name = $('#menu_name').val();
-            var price        = $('#price').val();
-            $.ajax({
-                type : "POST",
-                url  : "<?php echo site_url('product/save')?>",
-                dataType : "JSON",
-                data : {order_id:order_id , menu_name:menu_name, price:price},
-                success: function(data){
-                    $('[name="order_id"]').val("");
-                    $('[name="menu_name"]').val("");
-                    $('[name="price"]').val("");
-                    $('#Modal_Add').modal('hide');
-                    view_product();
-                }
-            });
-            return false;
-        });
+
 
         //get data for update record
         $('#show_data').on('click','.item_edit',function(){
@@ -215,7 +196,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             var table_code = $('#table_code_edit').val();
             $.ajax({
                 type : "POST",
-                url  : "<?php echo site_url('orders/editTableNumber')?>",//-------------------------
+                url  : "<?php echo site_url('barista/editTableNumber')?>",
                 dataType : "JSON",
                 data : {order_id:order_id , table_code:table_code},
                 success: function(data){
@@ -241,7 +222,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             var order_id = $('#order_id_remove').val();
             $.ajax({
                 type : "POST",
-                url  : "<?php echo site_url('product/delete')?>",
+                url  : "<?php echo site_url('barista/removeRow')?>",
                 dataType : "JSON",
                 data : {order_id:order_id},
                 success: function(data){
@@ -254,7 +235,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         });
 
 	});
-
 </script>
+
 </body>
 </html>
+/*$(document).on("click", "a.remove", function(event) {
+    event.preventDefault();
+    var order_id = $(this).data("rowid");
+    var row = $(this).closest("tr");    
+    $.ajax({
+       url: "barista/removeRow",
+       type: "POST",
+       data: {
+          operation: "remove",
+          order_id: order_id
+       },
+       success: function(response){
+          row.remove();
+       },
+       error: function (response) {
+          console.log("Something went wrong");
+       }
+    });
+
+});*/
