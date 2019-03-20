@@ -28,8 +28,14 @@ class Chef extends CI_Controller {
 	{
 		$this->load->view('chef/chef'); 
 	}
-	
-	function product_data(){
+
+	function get_orderlist() {
+		$data = $this->ChefModel->return_orderlist();
+
+        echo json_encode($data);
+	}
+
+	function orders_json(){
 		$this->load->database();
         $this->load->model('ChefModel');
 		$orderlist = $this->ChefModel->return_orderlist();
@@ -61,7 +67,7 @@ class Chef extends CI_Controller {
 		$order_id = $this->input->post('order_id');
 		
 		$this->ChefModel->update_status($order_id, $menu_id, $item_status);
-		$this->product_data();
+		$this->get_orderlist();
 	}
 
 }

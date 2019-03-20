@@ -4,10 +4,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <form method="POST" action="<?php echo base_url()?>index.php/admin/insertspoilagesstock">
 
-   <div class="form-group">
-    <label for="formGroupExampleInput2">Description</label>
-    <input type="text" class="form-control" name="stock_name" placeholder="description" required>
-    <span class="text-danger"><?php echo form_error("quantity"); ?></span>
+<div class="form-group">
+   <label for="formGroupExampleInput2">Description</label>
+	<select name = "ao_name">
+		<?php foreach($addons as $row){ ?>
+		<option name = "ao_name" value="<?php echo $row['ao_name'] ?>"><?php echo $row['ao_name'] ?></option>
+    <?php
+       } ?>
+	</select> 
   </div>
    
   <div class="form-group">

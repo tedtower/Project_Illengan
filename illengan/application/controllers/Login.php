@@ -1,10 +1,6 @@
 <?php
 class Login extends CI_Controller{
 
-    function index(){
-        $this->load->view('landing');
-    }
-
     function viewlogin(){
         $this->load->view('login');
     }
@@ -26,10 +22,10 @@ class Login extends CI_Controller{
                     redirect('admin/menu');
                     break;
                 case 'Barista':
-                    redirect('');
+                    redirect('barista/billings');
                     break;
                 case 'Chef':
-                    redirect('');
+                    redirect('chef/orders');
                     break;
 				case 'Customer':
 					redirect('customer/menu');

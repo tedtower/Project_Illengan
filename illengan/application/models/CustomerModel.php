@@ -1,5 +1,9 @@
 <?php
     class CustomerModel extends CI_Model {
+	function get_tables(){
+	    $query = $this->db->query('SELECT table_code FROM tables');
+	    return $query->result();
+	}
         function fetch_category(){
             $query = $this->db->query('SELECT category_name FROM categories WHERE supcat_id IS NULL AND category_type = "menu" GROUP BY category_name ASC');
             return $query->result();
@@ -23,6 +27,10 @@
         }
         function fetch_addon(){
             $query = $this->db->query('SELECT * FROM itemadd NATURAL JOIN addons WHERE ao_status = "enabled" ORDER BY ao_price ASC');
+            return $query->result();
+        }
+        function fetch_promo(){
+            $query = $this->db->query('SELECT * FROM promo_cons natural join promo where status = "enabled"');
             return $query->result();
         }
 
@@ -80,6 +88,7 @@
             $query = "Select ao_id, ao_name, ao_price, ao_status from itemadd inner join addons using where menu_id = ?";
             return $this->db->query($query, array($menu_id))->result_array();
         }
+        
         // function get_freebiepromo($menu_id){
         //     $query = "Select promo_id, from discounts inner join menu";
 
