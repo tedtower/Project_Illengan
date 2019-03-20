@@ -1,5 +1,9 @@
 <?php
     class CustomerModel extends CI_Model {
+	function get_tables(){
+	    $query = $this->db->query('SELECT table_code FROM tables');
+	    return $query->result();
+	}
         function fetch_category(){
             $query = $this->db->query('SELECT category_name FROM categories WHERE supcat_id IS NULL AND category_type = "menu" GROUP BY category_name ASC');
             return $query->result();
