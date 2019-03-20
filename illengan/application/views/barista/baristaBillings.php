@@ -206,6 +206,7 @@
 <!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
 <script src="assets/js/demo.js"></script>
 
+<!-- separate file -->
 <script>
 var bills = {};
 $(function() {
@@ -294,6 +295,15 @@ function setModalData(orderId) {
         $(".itemNames").eq($("orderList").length-1).text(bills[orderId]['orderlist'][index]["menu_name"]);
         $(".itemQty").eq($("orderList").length-1).text(bills[orderId]['orderlist'][index]["order_qty"]);
         $(".itemPrice").eq($("orderList").length-1).text(bills[orderId]['orderlist'][index]["order_total"]);
+    }
+    if(bills[orderId]["orderslip"]["pay_status"] === "Paid"){
+        $("#cash").attr("disabled","disabled");
+        $("#change").attr("disabled","disabled");
+        $("#update-pay-status-btn").text("Unpay");
+    }else{        
+        $("#cash").removeAttr("disabled");
+        $("#change").removeAttr("disabled");
+        $("#update-pay-status-btn").text("Pay");
     }
     $("#totalamountpayable").text(bills[orderId]['orderslip']['order_payable']);
     $("#update-pay-status-btn").attr("data-orderid", bills[orderId]["orderslip"]["order_id"]);
