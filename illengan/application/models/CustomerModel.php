@@ -1,5 +1,9 @@
 <?php
     class CustomerModel extends CI_Model {
+	function get_tables(){
+	    $query = $this->db->query('SELECT table_code FROM tables');
+	    return $query->result();
+	}
         function fetch_category(){
             $query = $this->db->query('SELECT category_name FROM categories WHERE supcat_id IS NULL AND category_type = "menu" GROUP BY category_name ASC');
             return $query->result();
@@ -18,7 +22,7 @@
             return $query->result();
         }
         function fetch_menupref(){
-            $query = $this->db->query('SELECT menu_id,pref_price,temp,IF(temp IS NOT NULL, CONCAT(size_name," (",IF(temp="h","Hot",IF(temp="c","Cold",NULL)),") - ",pref_price), CONCAT(size_name," - ",pref_price)) AS preference FROM preferences ORDER BY pref_price ASC');
+            $query = $this->db->query('SELECT pref_id,size_name,menu_id,pref_price,temp,IF(temp IS NOT NULL, CONCAT(size_name," (",IF(temp="h","Hot",IF(temp="c","Cold",NULL)),") - ",pref_price), CONCAT(size_name," - ",pref_price)) AS preference FROM preferences ORDER BY pref_price ASC');
             return $query->result();
         }
         function fetch_addon(){
@@ -57,7 +61,7 @@
 				'order_total' => $subtotal,
 				'order_qty' =>$qty,
             );
-        $this->db->insert('orderlist', $data);
+            $this->db->insert('orderlist', $data);
         }
 		function insert(){ //insert in table orderslip
             $data=array(
@@ -69,7 +73,7 @@
 				'pay_date_time' => $pay_time, //format unknown
 				'date_record' => $record //unknown format
 			);
-        $this->db->insert('orderslip', $data);
+            $this->db->insert('orderslip', $data);
         }
 
         function get_menudetails($menu_id){
