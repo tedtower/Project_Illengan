@@ -11,12 +11,12 @@ class Barista extends CI_Controller{
 
     function index(){
             $this->load->view('barista/baristaView'); 
-        }
+    }
 
-        function orders(){
-            $data= $this->baristaModel->view();
-		    echo json_encode($data);
-        }
+    function orders(){
+        $data= $this->baristaModel->view();
+        echo json_encode($data);
+    }
 
     function getOrders(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){

@@ -31,7 +31,6 @@
                     <img src="assets/img/logo_lg.png" alt="il-lengan-logo" img-align="center" width="225px"
                         height="135px">
                 </div>
-
                 <ul class="nav">
                     <li>
                         <a href="baristaOrders.html">
