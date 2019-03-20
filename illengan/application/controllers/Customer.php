@@ -32,6 +32,7 @@ class Customer extends CI_Controller {
 			sort($data['subcats']);
 			$data['pref_menu'] = $this->customermodel->fetch_menupref();
 			$data['addons'] = $this->customermodel->fetch_addon();
+			$data['orders'] = $this->cart->contents();
 			$this->load->view('customer/template/head',$data);
 			$this->load->view('customer/'.$page,$data);
 			$this->load->view('customer/template/foot');
@@ -40,24 +41,13 @@ class Customer extends CI_Controller {
 		}
 	}
 
-	//AJAX Menu Details (including Sizes and Addons)
-	function getDetails(){
-		if($this->isLoggedIn()){
-			$menu_id = $this->input->post("menu_id");
-			$item = array(
-				'details' => $this->input->get_menudetails($menu_id),
-				'sizes' => $this->input->get_sizes($menu_id),
-				'addons' => $this->input->get_addons($menu_id)
-			);
-			$this->output->set_output(json_encode($item));
-		}else{
-			redirect('login');
-		}
-
+	public function set_order(){
+		$orders = $this->input->post();
+		$this->cart->insert($orders);
 	}
+
 	//login
-	public function process_login()
-    {
+	public function process_login(){
         $cust_name = $this->input->post('cust_name');
         $table_no = $this->input->post('table_no');
         if ($cust_name != NULL || $table_no != NULL) {
@@ -72,7 +62,6 @@ class Customer extends CI_Controller {
             $this->load->view('login', $data);
         }
     }
-//logout
     
 //view_menu --pass data
 	function view_menu(){
