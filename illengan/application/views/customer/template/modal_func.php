@@ -79,6 +79,7 @@ $('button#save_order').click(function(){
 		data : {id:mi, price:up, qty:q},
 		success : function()
 		{
+            alert("Saved to Orderlist!!");
 		},
 		error : function()
 		{
