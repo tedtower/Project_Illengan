@@ -2,8 +2,8 @@
 class Admin extends CI_Controller{
 
     function __construct(){
-        parent::__construct();
-        $this->load->model('adminmodel');
+        parent:: __construct();
+        $this->load->model('adminmodel'); 
         date_default_timezone_set('Asia/Manila');
     }
 //VIEW FUNCTIONS--------------------------------------------------------------------------------
@@ -15,6 +15,8 @@ class Admin extends CI_Controller{
             redirect('login');
         }   
     }
+
+//Modal na ito
     function viewaddaccounts(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->view('admin/add_accounts');  
@@ -65,7 +67,6 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
-
     function viewMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['menu'] = $this->adminmodel->get_menu();
@@ -86,21 +87,24 @@ class Admin extends CI_Controller{
     }
     function viewInsertSpoilageMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin/add_spoilagesmenu');
+            $data['menu'] = $this->adminmodel->get_menu2();
+            $this->load->view('admin/add_spoilagesmenu',$data);
         }else{
             redirect('login');
         }
     }
     function viewInsertSpoilageStock(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin/add_spoilagesstock');
+            $data['stockitems'] = $this->adminmodel->get_stock();
+            $this->load->view('admin/add_spoilagesstock',$data);
         }else{
             redirect('login');
         }
     }
     function viewInsertSpoilageAo(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin/add_spoilagesao');
+            $data['addons'] = $this->adminmodel->get_addons();
+            $this->load->view('admin/add_spoilagesao', $data);
         }else{
             redirect('login');
         }
@@ -199,28 +203,25 @@ class Admin extends CI_Controller{
 
     
 //ADD FUNCTIONS---------------------------------------------------------------------------------
-    function addaccounts(){ //is_unique username not yet applied
+    function addaccounts(){
 
-        $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]|max_length[50]');
-        $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[8]|max_length[50]|matches[password]');
-        $this->form_validation->set_rules('account_username','Username','trim|required');
+        $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[50]');
+        $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
+        $this->form_validation->set_rules('account_username','Username','trim|required|is_unique[accounts.account_username]');
         $this->form_validation->set_rules('account_type','Account Type','trim|required');
 
         if($this->form_validation->run()){
-
-            $password = $this->input->post("password");
+            $password = password_hash($this->input->post("password"),PASSWORD_DEFAULT, ['cost' => 12]);
             $username = $this->input->post("account_username");
             $account_type = $this->input->post("account_type");
-            
             $data = array(
                 'account_password'=>$password,
                 'account_username'=>$username,
                 'account_type'=>$account_type
             );
-
             $this->adminmodel->add_accounts($data);
             $this->viewAccounts();
-    
+
         }else{
             $this->viewaddaccounts();
         }
@@ -341,27 +342,36 @@ class Admin extends CI_Controller{
         }
     }
 
-
-   
-
 //EDIT FUNCTIONS-------------------------------------------------------------------------------------
     function changeAccountPassword(){  
-        $this->load->library('form_validation');
+    $this->load->library('form_validation');
 
-        $account_id = $this->input->post('account_id');
+    $account_id = $this->input->post('account_id');
+    $this->adminmodel->get_password($account_id);
+    $current_password = $this->adminmodel->get_password($account_id);
 
-        $this->form_validation->set_rules('old_password', 'Current Password', 'required');
-        $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[8]|max_length[50]');
-        $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[8]|max_length[50]|matches[new_password]');
-        $this->form_validation->set_rules('account_password', 'Current Password', 'required');
+    $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[3]|max_length[50]');
+    $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[3]|max_length[50]|matches[new_password]');
+    $this->form_validation->set_rules('old_password', 'Old Password', 'required');
 
-        if($this->form_validation->run()==false){
-            $old_password = $this->input->post("old_password");
-            $new_password = $this->input->post("new_password");
-            $this->adminmodel->change_account_password($old_password, $new_password, $account_id);
+        if($this->form_validation->run()){
+            $input_old_password = $this->input->post("old_password");
+            $new_password = password_hash($this->input->post("new_password"),PASSWORD_DEFAULT, ['cost' => 12]);
+
+            foreach($current_password AS $row) {
+                if (password_verify($input_old_password, $row['account_password'])){                 
+                    $this->adminmodel->change_account_password($new_password,$account_id);
+                }else{
+                    echo "Current password is incorrect!";
+                    // $data['account_id'] = $account_id;
+                    // $this->load->view('admin/changepassword', $data);
+                }
+            }   
         }else{
-            $this->viewChangePassword();
+            $this->viewChangePassword($account_id);
         }
+        $data['account'] = $this->adminmodel->get_accounts();
+        $this->load->view('admin/view_accounts',$data);
     }
     function editAccounts(){
         $this->form_validation->set_rules('account_username','Username','trim|required');
@@ -458,7 +468,8 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model("adminmodel");
             $this->adminmodel->delete_spoilages($sid); 
-            echo "Data deleted successfully !";
+            $data['spoilages']=$this->adminmodel->get_spoilages();
+            $this->load->view('admin/view_spoilages',$data);
         }else{
             redirect('login');
         }

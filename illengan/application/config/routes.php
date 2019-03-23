@@ -49,7 +49,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+<<<<<<< HEAD
 $route['default_controller'] = 'chef';
+=======
+
+$route['default_controller'] = 'login/viewlogin';
+>>>>>>> 5e5990de3860356e1701f11ffe45629b88560ecf
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'login/viewlogin';
@@ -79,9 +84,9 @@ $route['admin/menu/add'] = "admin/add_menu";
 $route['admin/menu/edit'] = "admin/edit_menu";
 $route['admin/menu/edit_image'] = "admin/edit_image";
 
-
-$route['admin/edit/accounts'] = "admin/vieweditAccounts";
-$route['admin/changepassword'] = "admin/changepassword";
+$route['admin/accounts/add'] = "admin/addaccount";
+$route['admin/accounts/edit'] = "admin/vieweditAccounts";
+$route['admin/accounts/changepassword'] = "admin/changepassword";
 $route['admin/inventory'] = "admin/viewinventory";
 $route['admin/inventory/add'] = "admin/addstockitem";
 $route['admin/inventory/edit'] = "admin/editstockitem";
@@ -94,11 +99,19 @@ $route['admin/sample'] = 'admin/samplemethod';
 
 //CUSTOMER ROUTES
 $route['customer/menu/getitemdetails'] = "customer/getdetails";
+$route['customer/process_login'] = "customer/process_login";
+$route['customer/view_menu'] = "customer/view_menu";
+$route['menu'] = "customer/menu";
+$route['view'] = "customer/view";
+$route['add_order'] = "customer/add";
+$route['customer/logout'] = "customer/logout";
+$route['destroy'] = "customer/destroy";
+$route['welcome'] = "customer/welcome";
+$route['LogIn'] = 'customer/isLoggedIn';
+$route['details'] = "customer/getMenuDetails";
 $route['customer/(:any)'] = "customer/view/$1";
-$route['customer/menu/details'] = "customer/getmenudetails";
 
 // BARISTA ROUTES
-$route['barista/getBills'] = "barista/getbills";
+$route['barista/billings'] = "barista/getbills";
 $route['barista/getBillDetails'] = "barista/getBillDetails";
-$route['barista/setStatus'] = "barista/setbillstatus";
-$route['customer/(:any)'] = "customer/view/$1";
+$route['barista/billings/setStatus'] = "barista/setbillstatus";

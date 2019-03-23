@@ -108,3 +108,6 @@ input .hc{
     border: 1px solid #b96e43;
     box-shadow: 0 0 0 0.2rem #b96e434d;
 }
+input#addon-qty{
+    width: 75px;
+}

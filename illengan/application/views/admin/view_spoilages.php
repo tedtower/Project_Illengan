@@ -118,8 +118,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             
             if (isset($spoilages)){
                 foreach ($spoilages as $row){
-					if (isset($spoilages)){
-						foreach ($spoilages as $row){
 							if($row['stype'] = 'm'){
               ?>
                     <tr>
@@ -133,8 +131,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </tr>
                     <?php
 					}
-				}
-				}
+			
+				
 			}
             }else{
                 echo "There is no data";

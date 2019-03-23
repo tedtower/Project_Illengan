@@ -1,21 +1,16 @@
-<!-- Sizable Modal -->
 <div class="modal fade" id="menu_modal" tabindex="-1" role="dialog" aria-labelledby="menuItemModal" aria-hidden="true">
     <span id="mid" hidden></span>
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content" style="padding:0px;">
-            <!-- Modal Body -->
             <div class="modal-body">
-                <!-- Menu Image -->
                 <img class="w-100 img-fluid" src="" id="menu_image">
-                <!-- Title And Price -->
                 <div class="d-flex justify-content-between gab rp-title">
                     <p id="menu_name"></p>
-                    <p><span class="fs-24">₱</span><span id="menu_price"></span></p>
+					<input type ="hidden" id="menu_id" data-menu_id = "menu_id"/>
+                    <p><span class="fs-24">₱</span><span id="menu_price" data-menu_price="menu_price"</span></p>
                 </div>
-                <!-- Palitan ang teal-text to tex-danger pag unavailable yung item -->
                 <h4 class="gab">Status: <span id="menu_status"></span></h4>
                 <hr>
-                <!-- Order Form -->
                 <div id="order-details">
                     <h3 class="gab">Order Details</h3>
                     <div class="md-form input-group mb-3 m-0 p-0 delius">
@@ -39,6 +34,19 @@
                             </select>
                         </div>
                     </div>
+                    <!-- TO BE EDITED -->
+                    <div class="input-group mb-3 mt-2 delius" id="addonable">
+                        <div class="d-flex w-100" id="menu_size">
+                            <label class="px-1 mt-1" for="addon">Addon:</label>
+                            <select class="browser-default custom-select" id="addon" name="addon" required>
+                                <option disabled selected value>Choose an addon</option>
+                            </select>
+                            <input type="number" class="form-control text-center" placeholder="Quantity" min="1" value="1" id="addon_qty">
+                            <div class="input-group-append">
+                            <button class="btn btn-md btn-outline-accent m-0 px-4 py-2 z-depth-0" type="button" id="add_addon">Add</button>
+                            </div>
+                        </div>
+                    </div>
                     <!-- Missing Add On -->
                     <div class="delius form-group green-border-focus">
                         <div class="d-flex flex-row">
@@ -49,7 +57,7 @@
                 </div>
                 <div class="text-center float-right">
                     <button type="button" class="btn btn-outline-accent px-3" data-dismiss="modal" id="close-menu">Close</button>
-                    <button type="button" class="btn btn-accent px-3 save-order" id="save_order">Save To Order List</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-accent px-3 save-order" id="save_order">Save To Order List</button>
                 </div>
             </div>
         </div>
