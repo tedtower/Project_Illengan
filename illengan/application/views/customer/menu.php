@@ -1,3 +1,4 @@
+<?php include_once('session.php')?>
 <!-- Category -->
     <div class="text-center gab py-0 my-0">
         <h1>Menu</h1>

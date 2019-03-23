@@ -72,22 +72,19 @@ $('a.menu_card').click(function(){
 });
 
 $('button#save_order').click(function(){
-    var menu_exist = 0,
-        pid = parseInt($('select#size option:selected').data("id")),
-        sn = $('select#size option:selected').data("name"),
-        mi =  parseInt($('span#mid').text()),
-        up = parseInt($('span#menu_price').text()),
-        q = parseInt($('input#quantity').val()),
-        n = $('textarea#menu_note').val();
-    $.each(orders, function(o, or){
-        if(or.menu_id == mi){
-            addExistOrder(o,pid,sn,mi,up,q,n);
-            menu_exist++;
-        }
-    });
-    if(menu_exist != 1){
-        addOrder(pid,sn,mi,up,q,n);
-    }
+    
+	$.ajax({
+		url : "<?php echo site_url('add_order');?>",
+		method : "POST",
+		data : {id:mi, price:up, qty:q},
+		success : function(data)
+		{
+		},
+		error : function(data)
+		{
+			console.log('ERROR: ', data);
+		}
+	});
 });
 
 $('button#add_addon').click(function(){
@@ -107,7 +104,7 @@ $('button#add_addon').click(function(){
         addOns();
     }
 });
-
+/*
 function addOrder(pid,sn,mi,up,q,n){
     setOrder(pid,sn,up,q,n);
     orders.push({});
@@ -169,5 +166,5 @@ function sendPost(){
         console.log("error");
     });
 }
-
+*/
 </script>

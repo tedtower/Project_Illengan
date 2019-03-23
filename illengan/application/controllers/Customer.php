@@ -16,31 +16,36 @@ class Customer extends CI_Controller {
 			$this->load->view('customer/login', $data);
 			
 		}else{
-			redirect('default_controller');
+			redirect('LogIn');
 		}
 	}
 	//login
 	public function process_login()
     {
-		$cust_name = $this->input->post('cust_name');
-        $table_no['table_code'] = $this->input->post('table_no');
-		if ($cust_name != NULL || $table_no != NULL) {
-			$data= array(
-				'cust_name' => $cust_name,
-				'table_no' => $table_no
-			);
-			$this->session->set_userdata($data);
-			redirect('menu');
-        } else {
-            $data['error'] = 'Invalid Login';
-            $this->load->view('LogIn', $data);
-        }
+		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
+			$cust_name = $this->input->post('cust_name');
+			$table_no['table_code'] = $this->input->post('table_no');
+				if ($cust_name != NULL || $table_no != NULL) {
+					$data= array(
+						'cust_name' => $cust_name,
+						'table_no' => $table_no
+					);
+					$this->session->set_userdata($data);
+					redirect('menu');
+				} else {
+					$data['error'] = 'Invalid Login';
+					$this->load->view('customer/login');
+				}
+		}else{
+			redirect('LogIn');
+		}
     }
+	/*
 	public function getMenuDetails(){
 			$this->load->library('cart');
 			$item_id = $this->input->post('item_id');
 			redirect('add_order');
-	}
+	}*/
 
 	//display the menu
 	function menu(){
@@ -64,7 +69,8 @@ class Customer extends CI_Controller {
 			$data['cart'] = $this->cart->contents();
 			$data['categories'] = $this->customermodel->fetch_category();
 			$data['menu'] = $this->customermodel->fetch_menu();
-			$data['subcats'] = array_merge($this->customermodel->fetch_allsubcats(), $this->customermodel->fetch_catswithmenu());
+			$data['subcats'] = array_merge($this->customermodel->fetch_allsubcats(), 
+			$this->customermodel->fetch_catswithmenu());
 			sort($data['subcats']);
 			$data['pref_menu'] = $this->customermodel->fetch_menupref();
 			$data['addons'] = $this->customermodel->fetch_addon();
@@ -73,7 +79,7 @@ class Customer extends CI_Controller {
 			$this->load->view('customer/template/head',$data);
 			$this->load->view('customer/'.$page,$data);
 			$this->load->view('customer/template/foot');
-			$this->load->view('customer/template/modal_ajax');
+			$this->load->view('customer/template/modal_func');
 			$this->load->view('customer/home', $data);
 		}else{
 			redirect('LogIn');
@@ -85,22 +91,7 @@ class Customer extends CI_Controller {
 		$this->cart->insert($orders);
 	}
 
-	//login
-	public function process_login(){
-        $cust_name = $this->input->post('cust_name');
-        $table_no = $this->input->post('table_no');
-        if ($cust_name != NULL || $table_no != NULL) {
-			$data= array(
-				'cust_name' => $cust_name,
-				'table_no' => $table_no
-			);
-			$this->session->set_userdata($data);
-			redirect('customer/view_menu');
-        } else {
-            $data['error'] = 'Invalid Account';
-            $this->load->view('login', $data);
-        }
-    }
+	
     
 //view_menu --pass data
 	function view_menu(){
@@ -147,12 +138,13 @@ class Customer extends CI_Controller {
 	//add menu item as an temporary order
 	function add() {
 		if($this->session->userdata('table_no')!= NULL){
+			$this->load->library('cart');
 			$data = array(
-				'id' => $this->input->post('menu_id')
+				'id' => $this->input->post('id'),
+				'price' =>$this->input->post('price'),
+				'qty' => $this->input->post('qty')
 			);
-			$this->cart->insert($data);
-			echo '<script>alert("Added to Cart")</script>'; //term for adding as an temporary order		
-			redirect('menu');
+			$this->cart->insert($data);//term for adding as an temporary order
 		}else{
 			redirect('LogIn');
 		}
