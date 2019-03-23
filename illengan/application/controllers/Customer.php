@@ -84,23 +84,6 @@ class Customer extends CI_Controller {
 		$orders = $this->input->post();
 		$this->cart->insert($orders);
 	}
-
-	//login
-	public function process_login(){
-        $cust_name = $this->input->post('cust_name');
-        $table_no = $this->input->post('table_no');
-        if ($cust_name != NULL || $table_no != NULL) {
-			$data= array(
-				'cust_name' => $cust_name,
-				'table_no' => $table_no
-			);
-			$this->session->set_userdata($data);
-			redirect('customer/view_menu');
-        } else {
-            $data['error'] = 'Invalid Account';
-            $this->load->view('login', $data);
-        }
-    }
     
 //view_menu --pass data
 	function view_menu(){
