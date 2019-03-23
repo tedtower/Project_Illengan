@@ -6,7 +6,8 @@
                 <img class="w-100 img-fluid" src="" id="menu_image">
                 <div class="d-flex justify-content-between gab rp-title">
                     <p id="menu_name"></p>
-                    <p><span class="fs-24">₱</span><span id="menu_price"></span></p>
+					<input type ="hidden" id="menu_id" data-menu_id = "menu_id"/>
+                    <p><span class="fs-24">₱</span><span id="menu_price" data-menu_price="menu_price"</span></p>
                 </div>
                 <h4 class="gab">Status: <span id="menu_status"></span></h4>
                 <hr>

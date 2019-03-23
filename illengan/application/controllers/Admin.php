@@ -203,11 +203,11 @@ class Admin extends CI_Controller{
 
     
 //ADD FUNCTIONS---------------------------------------------------------------------------------
-    function addAccount(){ //is_unique username not yet applied
+    function addaccounts(){
 
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[50]');
         $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
-        $this->form_validation->set_rules('account_username','Username','trim|required');
+        $this->form_validation->set_rules('account_username','Username','trim|required|is_unique[accounts.account_username]');
         $this->form_validation->set_rules('account_type','Account Type','trim|required');
 
         if($this->form_validation->run()){
