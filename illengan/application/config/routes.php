@@ -80,9 +80,9 @@ $route['admin/menu/add'] = "admin/add_menu";
 $route['admin/menu/edit'] = "admin/edit_menu";
 $route['admin/menu/edit_image'] = "admin/edit_image";
 
-
-$route['admin/edit/accounts'] = "admin/vieweditAccounts";
-$route['admin/changepassword'] = "admin/changepassword";
+$route['admin/accounts/add'] = "admin/addaccount";
+$route['admin/accounts/edit'] = "admin/vieweditAccounts";
+$route['admin/accounts/changepassword'] = "admin/changepassword";
 $route['admin/inventory'] = "admin/viewinventory";
 $route['admin/inventory/add'] = "admin/addstockitem";
 $route['admin/inventory/edit'] = "admin/editstockitem";

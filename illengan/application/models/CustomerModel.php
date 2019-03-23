@@ -61,7 +61,7 @@
 				'order_total' => $subtotal,
 				'order_qty' =>$qty,
             );
-        $this->db->insert('orderlist', $data);
+            $this->db->insert('orderlist', $data);
         }
 		function insert(){ //insert in table orderslip
             $data=array(
@@ -73,7 +73,7 @@
 				'pay_date_time' => $pay_time, //format unknown
 				'date_record' => $record //unknown format
 			);
-        $this->db->insert('orderslip', $data);
+            $this->db->insert('orderslip', $data);
         }
 
         function get_menudetails($menu_id){

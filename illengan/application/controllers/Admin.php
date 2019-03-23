@@ -15,6 +15,8 @@ class Admin extends CI_Controller{
             redirect('login');
         }   
     }
+
+//Modal na ito
     function viewaddaccounts(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->view('admin/add_accounts');  
@@ -201,25 +203,22 @@ class Admin extends CI_Controller{
 
     
 //ADD FUNCTIONS---------------------------------------------------------------------------------
-    function addaccounts(){ //is_unique username not yet applied
+    function addaccounts(){
 
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[50]');
         $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
-        $this->form_validation->set_rules('account_username','Username','trim|required');
+        $this->form_validation->set_rules('account_username','Username','trim|required|is_unique[accounts.account_username]');
         $this->form_validation->set_rules('account_type','Account Type','trim|required');
 
         if($this->form_validation->run()){
-
             $password = password_hash($this->input->post("password"),PASSWORD_DEFAULT, ['cost' => 12]);
             $username = $this->input->post("account_username");
             $account_type = $this->input->post("account_type");
-
             $data = array(
                 'account_password'=>$password,
                 'account_username'=>$username,
                 'account_type'=>$account_type
             );
-
             $this->adminmodel->add_accounts($data);
             $this->viewAccounts();
 
