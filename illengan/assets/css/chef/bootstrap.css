@@ -2321,6 +2321,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 
 .btn {
   display: inline-block;
+  width: 100px;
   font-weight: 400;
   text-align: center;
   white-space: nowrap;
@@ -2393,8 +2394,8 @@ fieldset:disabled a.btn {
 .pending:not(:disabled):not(.disabled):active, .pending:not(:disabled):not(.disabled).active,
 .show > .pending.dropdown-toggle {
   color: #fff;
-  background-color: #0062cc;
-  border-color: #005cbf;
+  background-color: rgb(61, 70, 70);
+  border-color: rgb(75, 85, 85);
 }
 
 .ongoing {
@@ -2465,37 +2466,37 @@ fieldset:disabled a.btn {
   box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
 }
 
-.btn-served {
+.served {
   color: #fff;
   background-color: #28a745;
   border-color: #28a745;
 }
 
-.btn-served:hover {
+.served:hover {
   color: #fff;
   background-color: #218838;
   border-color: #1e7e34;
 }
 
-.btn-served:focus, .btn-served.focus {
+.served:focus, .served.focus {
   box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
 }
 
-.btn-served.disabled, .btn-served:disabled {
+.served.disabled, .served:disabled {
   color: #fff;
   background-color: #28a745;
   border-color: #28a745;
 }
 
-.btn-served:not(:disabled):not(.disabled):active, .btn-served:not(:disabled):not(.disabled).active,
-.show > .btn-served.dropdown-toggle {
+.served:not(:disabled):not(.disabled):active, .served:not(:disabled):not(.disabled).active,
+.show > .served.dropdown-toggle {
   color: #fff;
   background-color: #1e7e34;
   border-color: #1c7430;
 }
 
-.btn-served:not(:disabled):not(.disabled):active:focus, .btn-served:not(:disabled):not(.disabled).active:focus,
-.show > .btn-served.dropdown-toggle:focus {
+.served:not(:disabled):not(.disabled):active:focus, .served:not(:disabled):not(.disabled).active:focus,
+.show > .served.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
 }
 

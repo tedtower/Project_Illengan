@@ -10,13 +10,13 @@
     <div class="row">
         <div class="col-12">
     
-            <table class="table table-striped" id="mydata">
+            <table class="dataTable  dtr-inline collapsed table stripe table display" id="mydata">
                 <thead>
                     <tr> 
-                        <th>Order Id</th>
+                        <th></th>
+                        <th>Menu Name</th>
                         <th>Customer Name</th>
                         <th>Table No.</th>
-                        <th>Menu Name</th>
                         <th>Order Qty</th>
                         <th style="text-align: right;">Actions</th>
                     </tr>
@@ -46,39 +46,86 @@ $(document).ready(function() {
 });
  }
 
+ function format ( d ) {
+    // `d` is the original data object for the row
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+        '<tr>'+
+            '<td>Add Ons</td>'+
+            '<td>Remarks</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>---</td>'+
+            '<td>'+d.remarks+'</td>'+
+        '</tr>'+
+    '</table>';
+}
+
 $(document).ready(function() {
-	  table.DataTable( {
+    var table = $('#mydata').DataTable( {
              ajax: {
                  url: "http://www.illengan.com/chef/get_orderlist",
-                 dataSrc: '',
+                 dataSrc: ''
              },
 		    colReorder: {
 			realtime: true
 		    },
             "aoColumns" : [
-                {data : 'order_id'},
+                {
+                "className":      'details-control',
+                "data":           null,
+                "defaultContent": ''
+                },
+                {data : 'menu_name'},
                 {data : 'cust_name'},
                 {data : 'table_code'},
-                {data : 'menu_name'},
                 {data : 'order_qty'},
                 {
                     data: null,
                     render: function ( data, type, row, meta) {
-                        return '<button id="status" class="status btn '+ data.item_status +
+                        return '<button id="status" class="status btn dt-buttons '+ data.item_status +
                         '" data-order_item_id="'+ data.order_item_id +'"'+
                         ' data-item_status="'+ data.item_status +'" onclick="change_status()">'+ data.item_status +'</button>';
-                        
-      }
-    }
-		    ]
-	        } );
+                        }
+                    }
+		        ],
+                createdRow: function (row, data, index) {
+                        console.dir(row);
+                        $(row).addClass('shown');
 
+                }
+	        });
+
+// FOR SHOWING THE ACCORDION
+        $('#mydata tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+        
+                if ( row.child.isShown() ) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }
+                else {
+                    // Open this row
+                    row.child( format(row.data()) ).show();
+                    tr.addClass('shown');
+                }
+            } );
+        
+        $("#mydata").DataTable().rows().every( function () {
+                var tr = $(this.node());
+                this.child(format(tr.data('child-value'))).show();
+                tr.addClass('shown');
+            });
+
+            
 } );
 
 function change_status() {
     $('.status').on('click', function() {
         var orderItemId = $(this).data("order_item_id");
         var itemStatus = $(this).data("item_status");
+        var item_status;
 
         if(itemStatus === "pending") {
             item_status = "ongoing";
@@ -103,12 +150,6 @@ function change_status() {
  
         });
 }
-
-setInterval(function() {
-        table.DataTable().ajax.reload(null, false);
-        console.log('reload');
-        orders();
-    }, 5000);
 
 </script>
 </body>
