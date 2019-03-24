@@ -107,13 +107,11 @@ $(document).ready(function() {
                 }
             } );
         
-        $("#mydata").DataTable().rows().every( function () {
+            table.rows().every( function () {
                 var tr = $(this.node());
-                var row = table.row(tr);
-
-                row.child(format(row.data())).show();
+                this.child(format(table.row(tr).data())).show();
                 tr.addClass('shown');
-            });
+                });
 
             
 } );
