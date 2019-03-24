@@ -137,25 +137,17 @@ class Customer extends CI_Controller {
 	function addOrder() {
 		if($this->session->userdata('table_no')!= NULL){
 			$this->load->library('cart');
-			$preference = $this->customermodel->get_preference($this->input->post('menu_size'));
+			$preference = $this->customermodel->get_preference($this->input->post('preference'));
 			$data = array(
-				'id' => $this->input->post('menu_size'),
+				'id' => $this->input->post('preference'),
+				'name' =>$preference['order'],
+				'qty' => $this->input->post('quantity'),
 				'order_desc' => $preference['order'],
-				'order_qty' => $this->input->post('order_quantity'),
-				'subtotal' => $this->input->post('order_quantity')*$preference['pref_price'] ,
-				'remarks' => $this->input->post('notes'),
-				'addons' => $this->input->post('addon')
+				'subtotal' => $this->input->post('quantity')*$preference['pref_price'] ,
+				'remarks' => $this->input->post('remarks'),
+				'addons' => json_decode($this->input->post('addons'))
 			);
-			echo $this->input->post('order_quantity');
-			echo "----";
-			echo $preference['pref_price'];
-			echo "----";
-			echo $this->input->post('order_quantity')*$preference['pref_price'];
-			echo "----";
-			echo json_encode($this->input->post('addon'));
 			$this->cart->insert($data);//term for adding as a temporary order
-			echo "----";
-			echo json_encode($this->cart->contents());
 		}else{
 			redirect('LogIn');
 		}

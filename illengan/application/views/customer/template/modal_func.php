@@ -124,44 +124,42 @@ $('#addonSelectBtn').on('click', function(event){
 });
 
 
-// $("#menumodalform").on('submit', function(event) {
-//     var prefId = $("#size > option:selected").data("id");
-//     var qty = $("#quantity").val();
-//     var remarks = $("#menu_note").val();
-//     var addonIds = [];
-//     var addonQtys = [];
-//     for (var index = 0; index < $(this).find("select[name='addon[]']").length; index++) {
-//         addonIds.push($(this).find("select[name='addon[]']").eq(index).val());
-//         addonQtys.push($(this).find("input[name='addon_qty[]']").eq(index).val());
-//     }
-//     $.ajax({
-//         method: "post",
-//         url: <?php echo site_url('customer/menu/addorder')?>,
-//         data: {
-//             preference: prefId,
-//             quantity: qty,
-//             remarks: remarks,
-//             addons: JSON.stringify({                
-//                 "addon_id": addonIds,
-//                 "addon_qty": addonQtys
-//             })            
-//         },
-//         dataType: 'text',
-//         beforeSend: function(){
-//             console.log(JSON.stringify({"addon_id": addonIds,
-//                 "addon_qty": addonQtys}));
-//         },
-//         success: function(response) {
-//             console.log(response);
-//             alert("Successfully added to orderlist!");
-//         },
-//         error: function() {
-//             alert("there was an error");
-//         }
-//     });
+$("#menumodalform").on('submit', function(event) {
+    var prefId = $("#size > option:selected").data("id");
+    var qty = $("#quantity").val();
+    var remarks = $("#menu_note").val();
+    var addonIds = [];
+    var addonQtys = [];
+    for (var index = 0; index < $(this).find("select[name='addon[]']").length; index++) {
+        addonIds.push($(this).find("select[name='addon[]']").eq(index).val());
+        addonQtys.push($(this).find("input[name='addon_qty[]']").eq(index).val());
+    }
+    $.ajax({
+        method: "post",
+        url: "<?php echo site_url('customer/menu/addorder')?>",
+        data: {
+            preference: prefId,
+            quantity: qty,
+            remarks: remarks,
+            addons: JSON.stringify({                
+                "addon_id": addonIds,
+                "addon_qty": addonQtys
+            })            
+        },
+        beforeSend: function(){
+            console.log(JSON.stringify({"addon_id": addonIds,
+                "addon_qty": addonQtys}));
+        },
+        success: function() {
+            alert("Successfully added to orderlist!");
+        },
+        error: function() {
+            alert("there was an error");
+        }
+    });
     
-//     event.preventDefault();
-// });
+    event.preventDefault();
+});
 
 // $('button#add_addon').click(function(){
 //     var add_exist = 0;
