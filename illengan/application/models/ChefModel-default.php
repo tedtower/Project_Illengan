@@ -4,8 +4,8 @@
         
         function return_orderlist() {
             $this->load->database();
-            $query = $this->db->query('SELECT * FROM ((orderlist ol INNER JOIN orderslip os USING (order_id)) INNER JOIN
-            preferences USING (pref_id)) INNER JOIN menu mn USING (menu_id);');
+            $query = $this->db->query('SELECT * FROM ((orderlist ol INNER JOIN orderslip os ON ol.order_id = os.order_id)
+            INNER JOIN menu mn ON mn.menu_id = ol.menu_id) ORDER BY ol.order_item_id ASC;');
             return $query->result();
         }
     

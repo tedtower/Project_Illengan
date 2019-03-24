@@ -30,13 +30,4 @@
   <!-- END FOR NOTIFICATIONS -->
 </div>
 
-<div class="mid-navigation">
-<div class="div-right row">
-  <div class="user col-xs-6">
-    <div class="user-img"><img src="<?php echo base_url().'assets/media/navigation/chef.png' ?>"></div>
-    <div class="username"><p>Chef</p></div></div>
-    <div class="user col-xs-6">
-    <div class="user-img"><img src="<?php echo base_url().'assets/media/navigation/sign-out.png' ?>"></div>
-    <div class="username"><p>Sign-out</p></div></div>
-</div>
 </div>
