@@ -47,21 +47,7 @@ class Customer extends CI_Controller {
 			redirect('add_order');
 	}*/
 
-	//display the menu
-	function menu(){
-		if($this->session->userdata('table_no')!= NULL){
-			$data= array();
-			$data['cart'] = $this->cart->contents();
-			$data['menu'] = $this->customermodel->fetch_menu();
-			$data['subcats'] = $this->customermodel->fetch_allsubcats();
-			$data['cust_name'] = $this->session->userdata('cust_name');
-			$data['table_no'] = $this->session->userdata('table_no');
-			redirect('view');
-			
-		}else{
-			redirect('LogIn');
-		}
-	}
+
 
 	function view($page = 'menu'){
 		if($this->session->userdata('table_no')!= NULL){
@@ -69,6 +55,7 @@ class Customer extends CI_Controller {
 			$data['cart'] = $this->cart->contents();
 			$data['categories'] = $this->customermodel->fetch_category();
 			$data['menu'] = $this->customermodel->fetch_menu();
+			$data['promo'] = $this->customermodel->fetch_promo();
 			$data['subcats'] = array_merge($this->customermodel->fetch_allsubcats(), 
 			$this->customermodel->fetch_catswithmenu());
 			sort($data['subcats']);
@@ -139,11 +126,13 @@ class Customer extends CI_Controller {
 			$this->load->library('cart');
 			$preference = $this->customermodel->get_preference($this->input->post('preference'));
 			$data = array(
-				'pref_id' => $this->input->post('preference'),
+				'id' => $this->input->post('preference'),
+				'name' =>$preference['order'],
+				'qty' => $this->input->post('quantity'),
 				'order_desc' => $preference['order'],
-				'order_qty' => $this->input->post('quantity'),
-				'subtotal' => intval($this->input->post('quantity'))*$preference['pref_price'] ,
-				'remarks' => $this->input->post('remarks')
+				'subtotal' => $this->input->post('quantity')*$preference['pref_price'] ,
+				'remarks' => $this->input->post('remarks'),
+				'addons' => json_decode($this->input->post('addons'))
 			);
 			$this->cart->insert($data);//term for adding as a temporary order
 		}else{

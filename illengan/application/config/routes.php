@@ -49,6 +49,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8d4567c7f1c522f137e36880f23d5085c3e21e82
 $route['default_controller'] = 'login/viewlogin';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
@@ -96,14 +100,17 @@ $route['admin/sample'] = 'admin/samplemethod';
 $route['customer/menu/getitemdetails'] = "customer/getdetails";
 $route['customer/process_login'] = "customer/process_login";
 $route['customer/view_menu'] = "customer/view_menu";
+<<<<<<< HEAD
 $route['menu'] = "customer/menu";
 $route['customer/discounts'] = "customer/discounts";
+=======
+>>>>>>> 8d4567c7f1c522f137e36880f23d5085c3e21e82
 $route['view'] = "customer/view";
-$route['customer/menu/add_order'] = "customer/addorder";
+$route['customer/menu/add_order'] = "customer/addOrder";
 $route['customer/logout'] = "customer/logout";
 $route['destroy'] = "customer/destroy";
 $route['welcome'] = "customer/welcome";
-$route['LogIn'] = 'customer/isLoggedIn';
+$route['CheckIn'] = 'customer/isLoggedIn';
 $route['details'] = "customer/getMenuDetails";
 $route['customer/(:any)'] = "customer/view/$1";
 
