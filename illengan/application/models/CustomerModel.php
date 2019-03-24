@@ -89,7 +89,7 @@
             return $this->db->query($query, array($menu_id))->result_array();
         }
         function get_preference($prefID){
-            $query = `SELECT 
+            $query = "SELECT 
                         pref_id,
                         menu_id,
                         pref_price,
@@ -105,8 +105,8 @@
                             INNER JOIN
                         menu USING (menu_id)
                     WHERE
-                        pref_id = ?;`;
-            return $this->db->query($query, array($prefId))->result_array()[0];
+                        pref_id = ?;";
+            return $this->db->query($query, array($prefID))->result_array()[0];
         }
         
         // function get_freebiepromo($menu_id){

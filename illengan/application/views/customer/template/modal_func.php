@@ -55,7 +55,7 @@ $('a.menu_card').click(function(){
             }else{
                 $('#sizable').show();
                 for(x=0; x<menu_pref.length; x++){
-                    $('#size').append('<option data-id="'+menu_pref[x].pref_id+'" data-name="'+menu_pref[x].size_name+'" value="'+menu_pref[x].pref_price+'">'+menu_pref[x].preference+'</option>');
+                    $('#size').append('<option data-id="'+menu_pref[x].pref_id+'" data-name="'+menu_pref[x].size_name+'" value="'+menu_pref[x].pref_id+'">'+menu_pref[x].preference+'</option>');
                 }
             }
             if(menu_addon.length > 0){
@@ -119,55 +119,49 @@ $('#addonSelectBtn').on('click', function(event){
     $("#ao_select_div").append(ao_select);
     for(var z=0; z<menu_addon.length; z++){
         console.log( $('#ao_select_div').last());
-        $('#ao_select_div select[name="addon[]"]').eq($("#ao_select_div").children().length-1).append('<option class="addons" id="'+menu_addon[z].ao_id+'" data-name="'+menu_addon[z].ao_name+'" value="'+menu_addon[z].ao_price+'">'+menu_addon[z].ao_name+' - '+menu_addon[z].ao_price+'php</option>');
+        $('#ao_select_div select[name="addon[]"]').eq($("#ao_select_div").children().length-1).append('<option class="addons" id="'+menu_addon[z].ao_id+'" data-name="'+menu_addon[z].ao_name+'" value="'+menu_addon[z].ao_id+'">'+menu_addon[z].ao_name+' - '+menu_addon[z].ao_price+'php</option>');
     }
 });
 
 
-$("#menumodalform").on('submit', function(event) {
-    var prefId = $("#size > option:selected").data("id");
-    var qty = $("#quantity").val();
-    var remarks = $("#menu_note").val();
-    var addonIds = [];
-    var addonQtys = [];
-    for (var index = 0; index < $(this).find("select[name='addon[]']").length; index++) {
-        addonIds.push($(this).find("select[name='addon[]']").eq(index).val());
-        addonQtys.push($(this).find("input[name='addon_qty[]']").eq(index).val());
-    }
-    $.ajax({
-        method: "post",
-        url: "<?php echo site_url('customer/menu/addorder')?>",
-        data: {
-            preference: prefId,
-            quantity: qty,
-            remarks: remarks
-            // addons: [{
-                
-            //     "addon_id": addonIds,
-            //     "addon_qty": addonQtys
-            // }
-
-            // ]
-            
-        },
-        dataType: 'string',
-        beforeSend: function(){
-            console.log(prefId);
-            console.log(qty);
-            console.log(remarks);
-            console.log(addonIds);
-            console.log(addonQtys);
-        },
-        success: function(response) {
-            alert("Successfully added to orderlist!"+ response);
-        },
-        error: function() {
-            alert("there was an error");
-        }
-    });
+// $("#menumodalform").on('submit', function(event) {
+//     var prefId = $("#size > option:selected").data("id");
+//     var qty = $("#quantity").val();
+//     var remarks = $("#menu_note").val();
+//     var addonIds = [];
+//     var addonQtys = [];
+//     for (var index = 0; index < $(this).find("select[name='addon[]']").length; index++) {
+//         addonIds.push($(this).find("select[name='addon[]']").eq(index).val());
+//         addonQtys.push($(this).find("input[name='addon_qty[]']").eq(index).val());
+//     }
+//     $.ajax({
+//         method: "post",
+//         url: <?php echo site_url('customer/menu/addorder')?>,
+//         data: {
+//             preference: prefId,
+//             quantity: qty,
+//             remarks: remarks,
+//             addons: JSON.stringify({                
+//                 "addon_id": addonIds,
+//                 "addon_qty": addonQtys
+//             })            
+//         },
+//         dataType: 'text',
+//         beforeSend: function(){
+//             console.log(JSON.stringify({"addon_id": addonIds,
+//                 "addon_qty": addonQtys}));
+//         },
+//         success: function(response) {
+//             console.log(response);
+//             alert("Successfully added to orderlist!");
+//         },
+//         error: function() {
+//             alert("there was an error");
+//         }
+//     });
     
-    event.preventDefault();
-});
+//     event.preventDefault();
+// });
 
 // $('button#add_addon').click(function(){
 //     var add_exist = 0;
