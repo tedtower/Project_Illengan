@@ -102,7 +102,7 @@ $route['customer/menu/add_order'] = "customer/addOrder";
 $route['customer/logout'] = "customer/logout";
 $route['destroy'] = "customer/destroy";
 $route['welcome'] = "customer/welcome";
-$route['LogIn'] = 'customer/isLoggedIn';
+$route['CheckIn'] = 'customer/isLoggedIn';
 $route['details'] = "customer/getMenuDetails";
 $route['customer/(:any)'] = "customer/view/$1";
 
