@@ -47,21 +47,7 @@ class Customer extends CI_Controller {
 			redirect('add_order');
 	}*/
 
-	//display the menu
-	function menu(){
-		if($this->session->userdata('table_no')!= NULL){
-			$data= array();
-			$data['cart'] = $this->cart->contents();
-			$data['menu'] = $this->customermodel->fetch_menu();
-			$data['subcats'] = $this->customermodel->fetch_allsubcats();
-			$data['cust_name'] = $this->session->userdata('cust_name');
-			$data['table_no'] = $this->session->userdata('table_no');
-			redirect('view');
-			
-		}else{
-			redirect('LogIn');
-		}
-	}
+
 
 	function view($page = 'menu'){
 		if($this->session->userdata('table_no')!= NULL){
@@ -69,6 +55,7 @@ class Customer extends CI_Controller {
 			$data['cart'] = $this->cart->contents();
 			$data['categories'] = $this->customermodel->fetch_category();
 			$data['menu'] = $this->customermodel->fetch_menu();
+			$data['promo'] = $this->customermodel->fetch_promo();
 			$data['subcats'] = array_merge($this->customermodel->fetch_allsubcats(), 
 			$this->customermodel->fetch_catswithmenu());
 			sort($data['subcats']);
