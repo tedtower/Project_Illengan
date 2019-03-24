@@ -134,13 +134,16 @@ class Customer extends CI_Controller {
 		$this->load->view('customer/login', $data);
     }
 	//add menu item as a temporary order
-	function add() {
+	function addOrder() {
 		if($this->session->userdata('table_no')!= NULL){
 			$this->load->library('cart');
+			$preference = $this->customermodel->get_preference($this->input->post('preference'));
 			$data = array(
-				'id' => $this->input->post('id'),
-				'price' =>$this->input->post('price'),
-				'qty' => $this->input->post('qty')
+				'pref_id' => $this->input->post('preference'),
+				'order_desc' => $preference['order'],
+				'order_qty' => $this->input->post('quantity'),
+				'subtotal' => intval($this->input->post('quantity'))*$preference['pref_price'] ,
+				'remarks' => $this->input->post('remarks')
 			);
 			$this->cart->insert($data);//term for adding as a temporary order
 		}else{

@@ -88,6 +88,26 @@
             $query = "Select ao_id, ao_name, ao_price, ao_status from itemadd inner join addons using where menu_id = ?";
             return $this->db->query($query, array($menu_id))->result_array();
         }
+        function get_preference($prefID){
+            $query = `SELECT 
+                        pref_id,
+                        menu_id,
+                        pref_price,
+                        CONCAT(menu_name,
+                                IF(size_name = 'Normal',
+                                    '',
+                                    CONCAT(' - ', size_name)),
+                                IF(temp IS NULL,
+                                    '',
+                                    IF(temp = 'h', ' Hot', ' Cold'))) AS 'order'
+                    FROM
+                        preferences
+                            INNER JOIN
+                        menu USING (menu_id)
+                    WHERE
+                        pref_id = ?;`;
+            return $this->db->query($query, array($prefId))->result_array()[0];
+        }
         
         // function get_freebiepromo($menu_id){
         //     $query = "Select promo_id, from discounts inner join menu";

@@ -11,7 +11,6 @@ var orders = [], oc=0;
 var selected_addons = [], ac=0;
 var order = "";
 
-
 $(document).ready(function(){
     $("select#size").change(function(){
         var selectedPrice = $(this).children("option:selected").val();
@@ -88,23 +87,44 @@ $('button#save_order').click(function(){
 	});
 });
 
-$('button#add_addon').click(function(){
-    var add_exist = 0;
-    if(selected_addons.length > 0){
-        $.each(selected_addons, function(a, ao){
-            if(ao.name == $('select#addon option:selected').data("name")){
-                addExistOns(a);
-                add_exist++;
-            }
-        });
-        if(add_exist != 1){
-            addOns();
-        }
-        add_exist = 0;
-    }else{
-        addOns();
-    }
+$('#addon_select').on('click', function(event){
+	var ao_select = `
+							<!--Select For Addons-->
+                            <select class="browser-default custom-select w-50" id="addon" name="addon">
+                                <option selected disabled>Choose...</option>
+                            </select>
+                            <input type="number" min="1" placeholder="Qty" aria-label="Add-on Quantity"
+                                class="form-control" name="addon_qty">
+                            <div class="input-group-prepend">
+                                <!--Subtotal-->
+                                <span class="ao_subs mt-2 ml-1" id="lagay_ka_dito_ng_id">50.00</span>
+                                <div class="rem_add mt-2">
+                                    <!--Delete Button-->
+                                    <a href="javascript:void(0)" class="text-danger ml-1 px-2"><i
+                                            class="fal fa-times"></i></a>
+                                </div>
+                            </div>`;
+    event.stopImmediatePropagation();
+    $("#ao_select_div").append(ao_select);
 });
+
+// $('button#add_addon').click(function(){
+//     var add_exist = 0;
+//     if(selected_addons.length > 0){
+//         $.each(selected_addons, function(a, ao){
+//             if(ao.name == $('select#addon option:selected').data("name")){
+//                 addExistOns(a);
+//                 add_exist++;
+//             }
+//         });
+//         if(add_exist != 1){
+//             addOns();
+//         }
+//         add_exist = 0;
+//     }else{
+//         addOns();
+//     }
+// });
 /*
 function addOrder(pid,sn,mi,up,q,n){
     setOrder(pid,sn,up,q,n);
