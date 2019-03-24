@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content" style="padding:0px;">
             <div class="modal-body">
-                <?php echo form_open('customer/add_order', "id='menumodalform'");?>
+                <?php echo form_open("", "id='menumodalform'");?>
                 <input name="mID" id="mid" value="" hidden>
                 <img class="w-100 img-fluid" src="" id="menu_image">
                 <div class="d-flex justify-content-between gab rp-title">
@@ -43,25 +43,10 @@
                     <div id="addonable mb-3">
                         <h4 class="gab m-0"><i class="far fa-layer-plus"></i> Add-ons</h4>
                         <div class="add_butt">
-                            <button type="button" class="btn btn-outline-accent p-2 ml-0 mb-2"
-                                id="addon_select">Add Add-on</button>
+                            <button type="button" class="btn btn-outline-accent p-2 ml-0 mb-2" id="addonSelectBtn">Add
+                                Add-on</button>
                         </div>
-                        <div class="input-group mb-3 delius ao_select" id="ao_select_div">
-                            <!--Select For Addons-->
-                            <select class="browser-default custom-select w-50" id="addon" name="addon[]">
-                                <option selected disabled>Choose...</option>
-                            </select>
-                            <input type="number" min="1" placeholder="Qty" aria-label="Add-on Quantity"
-                                class="form-control" name="addon_qty[]">
-                            <div class="input-group-prepend">
-                                <!--Subtotal-->
-                                <span class="ao_subs mt-2 ml-1" id="lagay_ka_dito_ng_id">50.00</span>
-                                <div class="rem_add mt-2">
-                                    <!--Delete Button-->
-                                    <a href="javascript:void(0)" class="text-danger ml-1 px-2"><i
-                                            class="fal fa-times"></i></a>
-                                </div>
-                            </div>
+                        <div class="ao_select" id="ao_select_div">
                         </div>
                     </div>
                     <!--Notes-->
@@ -83,36 +68,3 @@
         </div>
     </div>
 </div>
-
-<script>
-$("#menumodalform").on('submit', function() {
-    var prefId = $("#size > option:selected").data("id");
-    var qty = $("#quantity").val();
-    var remarks = $("#menu_note").val();
-    var addonIds=[];
-    var addonQtys=[];
-    for( var index = 0 ; index < $(this).find("select[name='addon']").length ; index++){
-        addonIds.push($(this).find("select[name='addon']").eq(index).val());
-        addonQtys.push($(this).find("input[name='addon_qty']").eq(index).val());
-    }
-    $.ajax({
-        method: "post",
-        url: "<?php echo site_url('customer/menu/addorder')?>",
-        data: {
-            preference: prefId,
-            quantity: qty, ,
-            remarks: remarks,
-            addons : {
-                "addon_id" : addonIds,
-                "addon_qty" : addonQtys
-            }
-        },
-        success: function() {
-            alert("Successfully added to orderlist!");
-        },
-        error: function() {
-            alert("there was an error");
-        }
-    });
-});
-</script>

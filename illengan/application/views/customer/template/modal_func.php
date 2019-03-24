@@ -11,6 +11,8 @@ var orders = [], oc=0;
 var selected_addons = [], ac=0;
 var order = "";
 
+var menu_addon;
+
 $(document).ready(function(){
     $("select#size").change(function(){
         var selectedPrice = $(this).children("option:selected").val();
@@ -28,7 +30,7 @@ $('a.menu_card').click(function(){
     for(var i = 0; i < menu.length; i++) {
         if(menu[i].menu_id == item_id) {
             var menu_pref = jQuery.grep(pref,function(obj){return obj.menu_id == item_id;});
-            var menu_addon = jQuery.grep(addon,function(obj){return obj.menu_id == item_id;});
+            menu_addon = jQuery.grep(addon,function(obj){return obj.menu_id == item_id;});
             $('#menu_name').text(menu[i].menu_name);
             if(menu[i].menu_image){
                 $('#menu_image').attr("src","<?php echo cmedia_url(); ?>menu/"+menu[i].menu_image);
@@ -58,8 +60,15 @@ $('a.menu_card').click(function(){
             }
             if(menu_addon.length > 0){
                 $('#addonable').show();
-                for(z=0; z<menu_addon.length; z++){
+                for(var z=0; z<menu_addon.length; z++){
                         $('#addon').append('<option class="addons" id="'+menu_addon[z].ao_id+'" data-name="'+menu_addon[z].ao_name+'" value="'+menu_addon[z].ao_price+'">'+menu_addon[z].ao_name+' - '+menu_addon[z].ao_price+'php</option>');
+                }
+                if(menu_addon.length != 1){
+                    $('div.add_butt').show();
+                    $('div.rem_add').show();
+                }else{
+                    $('div.add_butt').hide();
+                    $('div.rem_add').hide();
                 }
             }else{
                 $('#addonable').hide();
@@ -70,11 +79,11 @@ $('a.menu_card').click(function(){
     $('#menu_modal').modal('show');
 });
 
-$('button#save_order').click(function(){
+//$('button#save_order').click(function(){
     
-	$.ajax({
-		url : "<?php echo site_url('add_order');?>",
-		method : "POST",
+<?php /*$.ajax({
+	url : "<?php echo site_url('add_order');?>",
+	method : "POST",
 		data : {id:mi, price:up, qty:q},
 		success : function()
 		{
@@ -85,27 +94,79 @@ $('button#save_order').click(function(){
 			console.log('ERROR: ');
 		}
 	});
-});
 
-$('#addon_select').on('click', function(event){
-	var ao_select = `
-							<!--Select For Addons-->
-                            <select class="browser-default custom-select w-50" id="addon" name="addon">
-                                <option selected disabled>Choose...</option>
-                            </select>
-                            <input type="number" min="1" placeholder="Qty" aria-label="Add-on Quantity"
-                                class="form-control" name="addon_qty">
-                            <div class="input-group-prepend">
-                                <!--Subtotal-->
-                                <span class="ao_subs mt-2 ml-1" id="lagay_ka_dito_ng_id">50.00</span>
-                                <div class="rem_add mt-2">
-                                    <!--Delete Button-->
-                                    <a href="javascript:void(0)" class="text-danger ml-1 px-2"><i
-                                            class="fal fa-times"></i></a>
+});*/?>
+
+$('#addonSelectBtn').on('click', function(event){
+	var ao_select = `<!--Select For Addons-->
+                            <div class="input-group mb-3 delius">
+                                <select class="browser-default custom-select w-50 addonSelect" name="addon[]">
+                                    <option selected disabled>Choose...</option>
+                                </select>
+                                <input type="number" min="1" placeholder="Qty" aria-label="Add-on Quantity"
+                                    class="form-control" name="addon_qty[]">
+                                <div class="input-group-prepend">
+                                    <!--Subtotal-->
+                                    <span class="ao_subs mt-2 ml-1" id="lagay_ka_dito_ng_id">50.00</span>
+                                    <div class="rem_add mt-2">
+                                        <!--Delete Button-->
+                                        <a href="javascript:void(0)" class="text-danger ml-1 px-2"><i
+                                                class="fal fa-times"></i></a>
+                                    </div>
                                 </div>
                             </div>`;
-    event.stopImmediatePropagation();
+    event.stopImmediatePropagation();    
     $("#ao_select_div").append(ao_select);
+    for(var z=0; z<menu_addon.length; z++){
+        console.log( $('#ao_select_div').last());
+        $('#ao_select_div select[name="addon[]"]').eq($("#ao_select_div").children().length-1).append('<option class="addons" id="'+menu_addon[z].ao_id+'" data-name="'+menu_addon[z].ao_name+'" value="'+menu_addon[z].ao_price+'">'+menu_addon[z].ao_name+' - '+menu_addon[z].ao_price+'php</option>');
+    }
+});
+
+
+$("#menumodalform").on('submit', function(event) {
+    var prefId = $("#size > option:selected").data("id");
+    var qty = $("#quantity").val();
+    var remarks = $("#menu_note").val();
+    var addonIds = [];
+    var addonQtys = [];
+    for (var index = 0; index < $(this).find("select[name='addon[]']").length; index++) {
+        addonIds.push($(this).find("select[name='addon[]']").eq(index).val());
+        addonQtys.push($(this).find("input[name='addon_qty[]']").eq(index).val());
+    }
+    $.ajax({
+        method: "post",
+        url: "<?php echo site_url('customer/menu/addorder')?>",
+        data: {
+            preference: prefId,
+            quantity: qty,
+            remarks: remarks
+            // addons: [{
+                
+            //     "addon_id": addonIds,
+            //     "addon_qty": addonQtys
+            // }
+
+            // ]
+            
+        },
+        dataType: 'string',
+        beforeSend: function(){
+            console.log(prefId);
+            console.log(qty);
+            console.log(remarks);
+            console.log(addonIds);
+            console.log(addonQtys);
+        },
+        success: function(response) {
+            alert("Successfully added to orderlist!"+ response);
+        },
+        error: function() {
+            alert("there was an error");
+        }
+    });
+    
+    event.preventDefault();
 });
 
 // $('button#add_addon').click(function(){

@@ -143,7 +143,8 @@ class Customer extends CI_Controller {
 				'order_desc' => $preference['order'],
 				'order_qty' => $this->input->post('quantity'),
 				'subtotal' => intval($this->input->post('quantity'))*$preference['pref_price'] ,
-				'remarks' => $this->input->post('remarks')
+				'remarks' => $this->input->post('remarks'),
+				'addons' => json_decode($this->input->post('addons'))
 			);
 			$this->cart->insert($data);//term for adding as a temporary order
 		}else{
