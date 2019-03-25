@@ -31,6 +31,7 @@ class Customer extends CI_Controller {
 	function checkout(){
 		$this->session->unset_userdata('cust_name');
 		$this->session->unset_userdata('table_no');
+		$this->cart->destroy();
 		redirect('customer/checkin');
 	}
 	
@@ -54,7 +55,7 @@ class Customer extends CI_Controller {
 		}
 	}
 
-	//View Pages *CONSULT BEFORE ADDING THINGS*
+	//View Pages *CONSULT BEFORE MODIFYING*
 	function view(){
 		if($this->isCheckedIn()){
 			$data = array ();
@@ -153,15 +154,6 @@ class Customer extends CI_Controller {
 				$this->cart->update($data);
 			}
 			redirect('customer/view_menu');
-		}else{
-			redirect('customer/checkin');
-		}
-	}
-
-	function destroy() {
-		if($this->isLoggedIn()){
-			$this->cart->destroy();
-			redirect('customer/menu');
 		}else{
 			redirect('customer/checkin');
 		}
