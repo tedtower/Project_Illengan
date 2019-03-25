@@ -33,7 +33,16 @@ class Admin extends CI_Controller{
             redirect('login'); 
         }
     }
-    function viewChangePassword($account_id){
+    function vieweditAccounts2($account_id){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['account_id'] = $account_id;
+            $this->load->view('admin/editAccounts',$data);  
+        }else{  
+            redirect('login'); 
+        }
+    }
+
+    function viewChangePassword(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $account_id = $this->uri->segment('3');
             $data['account_id'] = $account_id;
@@ -42,6 +51,15 @@ class Admin extends CI_Controller{
             redirect('login'); 
         }
    }
+   function viewChangePassword2($account_id){
+    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        echo "Incorrect Current Password.";
+        $data['account_id'] = $account_id;
+        $this->load->view('admin/changepassword', $data);
+    }else{  
+        redirect('login'); 
+    }
+}
     function viewDashboard(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->view('admin/dashboard');
@@ -361,31 +379,36 @@ class Admin extends CI_Controller{
             foreach($current_password AS $row) {
                 if (password_verify($input_old_password, $row['account_password'])){                 
                     $this->adminmodel->change_account_password($new_password,$account_id);
-                }else{
-                    echo "Current password is incorrect!";
-                    // $data['account_id'] = $account_id;
-                    // $this->load->view('admin/changepassword', $data);
+                }else{ 
+                    $data['account_id'] = $account_id;
+                    $this->viewChangePassword2($data);
                 }
             }   
         }else{
             $this->viewChangePassword($account_id);
         }
-        $data['account'] = $this->adminmodel->get_accounts();
-        $this->load->view('admin/view_accounts',$data);
+        // $data['account'] = $this->adminmodel->get_accounts();
+        // $this->load->view('admin/view_accounts',$data);
     }
     function editAccounts(){
-        $this->form_validation->set_rules('account_username','Username','trim|required');
+        $this->form_validation->set_rules('account_username','Username','trim|required|is_unique[accounts.account_username]');
         $this->form_validation->set_rules('account_type','Account Type','trim|required');
+        $account_id = $this->input->post("account_id");
 
         if($this->form_validation->run()){
             $account_username = $this->input->post("account_username");
             $account_type = $this->input->post("account_type");
-            $account_id = $this->input->post("account_id");
 
-            $this->adminmodel->edit_accounts($account_username,$account_type,$account_id);
+            $data =array(
+                'account_type' => $account_type,
+                'account_username' =>$account_username
+            );
+            $data['account_id'] = $account_id;
+            
+            $this->adminmodel->edit_accounts($data,$account_id);
             $this->viewAccounts();
-        }else{
-            $this->viewaccounts();
+            }else{
+            $this->vieweditAccounts2($account_id);
         }
     }
     function editMenuCategory(){
