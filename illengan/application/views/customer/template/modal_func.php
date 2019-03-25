@@ -46,6 +46,7 @@ $(document).ready(function(){
             prefId = parseInt($("#sizeSelect > option:selected").data("id"));
         }else{
             prefId = parseInt($("#sizeInput").val());
+            
         }        
         var qty = parseInt($("#quantity").val());
         var remarks = $("#menu_note").val();
