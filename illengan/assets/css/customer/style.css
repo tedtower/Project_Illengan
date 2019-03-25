@@ -111,3 +111,9 @@ input .hc{
 input#addon-qty{
     width: 75px;
 }
+
+.freebie {
+    float: left;
+    padding-left: 20px;
+    padding-top: 10px;
+}
