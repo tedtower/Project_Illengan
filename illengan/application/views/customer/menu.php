@@ -10,12 +10,12 @@
     </div>
 
     <!-- Card group -->
-    
+    <div class="d-flex flex-wrap mb-4" >
         <?php foreach($menu as $items) {
             if($subcategories->category_name == $items->category_name){ ?> 
-            <div class="d-flex flex-wrap mb-4" id="<?php echo $items->menu_id; ?>">
+            
                 <!-- Card -->
-                <div class="card cd-mw">
+                <div class="card cd-mw" id="<?php echo $items->menu_id; ?>">
                 <!-- Card image -->
                 <a href="javascript:void(0)" class="menu_card" id="<?php echo $items->menu_id; ?>" >
                     <img class="card-img-top" src="<?php

@@ -1,9 +1,10 @@
-discounts();
+promos();
 
-function discounts() {
+
+function promos() {
     $(document).ready(function() {
         $.ajax({
-            url: 'http://www.illengan.com/customer/discounts',
+            url: 'http://www.illengan.com/customer/promos',
             dataType : 'json',
             success: function(data) {
                 var i;
@@ -15,12 +16,14 @@ function discounts() {
                     menu_id = document.getElementById(d_menu_id); // kinuha ko yung div na yon gamit yung value ng id
                     menu_id.style.border = '10px solid purple'; // ito na yung part na pag add ng css kung background color 
                     // ilagagay mo kunwari ganito lang menu_id.style.backgroundColor = 'black'; ganern search mo na lang yung
-                    // kung pano mag change ng css gamit javascript
-                    
+                    // kung pano mag change ng css gamit javascript          
                 }
+                },
+              failure: function() {
+                  alert('There are no current discounts for today.');
+              } 
                 
-            }
+            });
                 }); 
      
-    });
-     }
+    };

@@ -97,7 +97,7 @@ $route['customer/menu/getitemdetails'] = "customer/getdetails";
 $route['customer/process_login'] = "customer/process_login";
 $route['customer/view_menu'] = "customer/view_menu";
 $route['menu'] = "customer/menu";
-$route['customer/discounts'] = "customer/discounts";
+$route['customer/promos'] = "customer/promos";
 
 $route['view'] = "customer/view";
 $route['customer/menu/add_order'] = "customer/addOrder";
