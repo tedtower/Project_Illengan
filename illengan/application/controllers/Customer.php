@@ -159,9 +159,9 @@ class Customer extends CI_Controller {
 		}
 	}
 
-	function discounts() {
-		if($this->isCheckedIn()){
-			$data = $this->customermodel->fetch_discounts();
+function promos() {
+		if(isCheckedIn()){
+			$data = $this->customermodel->fetch_promos();
 			echo json_encode($data);
 		}else{
 			redirect('customer/checkin');
