@@ -1,10 +1,15 @@
 <?php 
-
 	$cust_name = $this->session->userdata('cust_name');
     $table_no = $this->session-> userdata('table_no');
 ?>
-<h2>Welcome in Il-lengan Cafe <strong>
-	<?php echo $cust_name;?></strong>
-</h2> 
-<br><strong>Table Code: <?php echo $table_no['table_code'];?></strong>
-<h3><a href="<?php echo base_url('customer/logout')?>">Log out</a></h3>
+<div class="ml-2">
+	<h3 class="gab mb-0">
+		Welcome in Il-lengan Cafe
+		<?php if(isset($cust_name)){
+			echo ', '.$cust_name.'!';
+		}else{
+			echo '!';
+		}?>
+	</h3>
+	<span class="delius">Done ordering? <a href="<?php echo base_url('customer/checkout')?>">Click here to checkout.</a></span>
+</div>
