@@ -59,7 +59,7 @@ $('a.menu_card').click(function(){
             }else{
                 $('#sizable').show();
                 for(x=0; x<menu_pref.length; x++){
-                    $('#size').append('<option data-price="'+menu_pref[x].pref_price+'" data-name="'+menu_pref[x].size_name+'" value="'+menu_pref[x].pref_id+'">'+menu_pref[x].preference+'</option>');
+                    $('#size').append('<option data-price="'+menu_pref[x].pref_price+'" data-id="'+menu_pref[x].pref_id+'" value="'+menu_pref[x].pref_price+'">'+menu_pref[x].preference+'</option>');
                 }
             }
             if(menu_addon.length > 0){
