@@ -1,7 +1,7 @@
 <?php include_once('session.php')?>
 <!-- Category -->
     <div class="text-center gab py-0 my-0">
-        <h1>Menu</h1>
+        <h1 class="mt-2">Menu</h1>
     </div>
     <?php foreach($subcats as $subcategories){ ?>
     <!-- Subcategory -->
