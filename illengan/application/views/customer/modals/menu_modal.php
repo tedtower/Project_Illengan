@@ -60,7 +60,7 @@
                 <div class="text-center float-right">
                     <button type="button" class="btn btn-outline-accent px-3" data-dismiss="modal"
                         id="close-menu">Close</button>
-                    <button type="submit" class="btn btn-accent px-3 save-order" id="save_order">Save To Order
+                    <button type="submit" class="btn btn-accent px-3">Save To Order
                         List</button>
                 </div>
                 <?php echo form_close();?>

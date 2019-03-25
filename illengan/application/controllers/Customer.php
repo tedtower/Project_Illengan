@@ -20,7 +20,7 @@ class Customer extends CI_Controller {
 		}
 	}
 	//login
-	public function process_login()
+	public function checkIn()
     {
 		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
 			$cust_name = $this->input->post('cust_name');
@@ -57,7 +57,6 @@ class Customer extends CI_Controller {
 			$data['cust_name'] = $this->session->userdata('cust_name');
 			$data['table_no'] = $this->session->userdata('table_no');
 			redirect('view');
-			
 		}else{
 			redirect('LogIn');
 		}
@@ -123,15 +122,15 @@ class Customer extends CI_Controller {
 	}
 	
 //logout
-    function logout() {
-		$this->session->unset_userdata('cust_name');
-		$this->session->unset_userdata('table_no');
-		$this->load->driver('cache');//
-		$this->session->sess_destroy();//
-		$this->cache->clean();//
-		ob_clean();//
-		$data['number'] = $this->customermodel->get_tables();
-		$this->load->view('customer/login', $data);
+    function checkOut() {
+			if($this->session->userdata('table_no')){				
+				$this->session->unset_userdata('cust_name');
+				$this->session->unset_userdata('table_no');
+				$this->load->driver('cache');//
+				$this->cache->clean();//
+				ob_clean();//
+			}
+			redirect('customer/checkIn');
     }
 	//add menu item as a temporary order
 	function addOrder() {

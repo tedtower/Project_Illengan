@@ -136,10 +136,9 @@
                         <table id="example" class="table table-striped table-bordered dt-responsive nowrap"
                             cellspacing="0" width="100%">
                             <thead>
-                                <th><b class="pull-left">Order No.</b></th>
+                                <th><b class="pull-left">Slip No.</b></th>
                                 <th><b class="pull-left">Table No.</b></th>
                                 <th><b class="pull-left">Customer Name</b></th>
-                                <th><b class="pull-left">Order Date</b></th>
                                 <th><b class="pull-left">Amount Payable</b></th>
                                 <th><b class="pull-left">Payment Status</b></th>
                                 <th><b class="pull-left">Action</b></th>
@@ -161,10 +160,6 @@
                                     </td>
                                     <td>
                                         <?php echo $bill['cust_name'] ?>
-                                        <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
-                                    </td>
-                                    <td>
-                                        <?php echo $bill['order_date'] ?>
                                         <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
                                     </td>
                                     <td>

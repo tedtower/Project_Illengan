@@ -95,12 +95,12 @@ $route['admin/sample'] = 'admin/samplemethod';
 
 //CUSTOMER ROUTES
 $route['customer/menu/getitemdetails'] = "customer/getdetails";
-$route['customer/process_login'] = "customer/process_login";
+$route['customer/checkIn'] = "customer/checkIn";
 $route['customer/view_menu'] = "customer/view_menu";
 $route['menu'] = "customer/menu";
 $route['view'] = "customer/view";
 $route['customer/menu/add_order'] = "customer/addOrder";
-$route['customer/logout'] = "customer/logout";
+$route['customer/checkOut'] = "customer/checkOut";
 $route['destroy'] = "customer/destroy";
 $route['welcome'] = "customer/welcome";
 $route['LogIn'] = 'customer/isLoggedIn';

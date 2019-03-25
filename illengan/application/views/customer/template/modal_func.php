@@ -55,13 +55,13 @@ $('a.menu_card').click(function(){
             }else{
                 $('#sizable').show();
                 for(x=0; x<menu_pref.length; x++){
-                    $('#size').append('<option data-id="'+menu_pref[x].pref_id+'" data-name="'+menu_pref[x].size_name+'" value="'+menu_pref[x].pref_id+'">'+menu_pref[x].preference+'</option>');
+                    $('#size').append('<option data-price="'+menu_pref[x].pref_price+'" data-name="'+menu_pref[x].size_name+'" value="'+menu_pref[x].pref_id+'">'+menu_pref[x].preference+'</option>');
                 }
             }
             if(menu_addon.length > 0){
                 $('#addonable').show();
                 for(var z=0; z<menu_addon.length; z++){
-                        $('#addon').append('<option class="addons" id="'+menu_addon[z].ao_id+'" data-name="'+menu_addon[z].ao_name+'" value="'+menu_addon[z].ao_price+'">'+menu_addon[z].ao_name+' - '+menu_addon[z].ao_price+'php</option>');
+                        $('#addon').append('<option class="addons" data-id="'+menu_addon[z].ao_id+'" data-name="'+menu_addon[z].ao_name+'" value="'+menu_addon[z].ao_price+'">'+menu_addon[z].ao_name+' - '+menu_addon[z].ao_price+'php</option>');
                 }
                 if(menu_addon.length != 1){
                     $('div.add_butt').show();
@@ -157,7 +157,6 @@ $("#menumodalform").on('submit', function(event) {
             alert("there was an error");
         }
     });
-    
     event.preventDefault();
 });
 

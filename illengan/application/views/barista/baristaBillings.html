@@ -90,7 +90,6 @@
                             <thead>
                                 <th><b class="pull-left">Order No.</b></th>
                                 <th><b class="pull-left">Table No.</b></th>
-                                <th><b class="pull-left">Order Date</b></th>
                                 <th><b class="pull-left">Customer Name</b></th>
                                 <th><b class="pull-left">Amount Payable</b></th>
                                 <th><b class="pull-left">Payment Status</b></th>
@@ -100,19 +99,19 @@
                                 <!--Insert PHP-->
                                 <tr>
                                     <td>
-                                        <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                        <?php echo $bill['order_id'] ?>
                                     </td>
                                     <td>
-                                        <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                        <?php echo $bill['table_code'] ?>
                                     </td>
                                     <td>
-                                        <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                        <?php echo $bill['cust_name'] ?>
                                     </td>
                                     <td>
-                                        <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                        <?php echo $bill['order_payable'] ?>
                                     </td>
                                     <td>
-                                        <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                        <?php echo $bill['pay_status'] ?>
                                     </td>
                                     <td>
                                         <div class="onoffswitch">
