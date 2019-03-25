@@ -101,11 +101,10 @@ $route['customer/discounts'] = "customer/discounts";
 
 $route['view'] = "customer/view";
 $route['customer/menu/add_order'] = "customer/addOrder";
-$route['customer/logout'] = "customer/logout";
-$route['destroy'] = "customer/destroy";
-$route['welcome'] = "customer/welcome";
-$route['CheckIn'] = 'customer/isLoggedIn';
-$route['details'] = "customer/getMenuDetails";
+$route['customer/checkout'] = "customer/checkout";
+$route['customer/destroy'] = "customer/destroy";
+$route['customer/welcome'] = "customer/welcome";
+$route['customer/checkin'] = 'customer/checkIn';
 $route['customer/(:any)'] = "customer/view/$1";
 
 // BARISTA ROUTES
