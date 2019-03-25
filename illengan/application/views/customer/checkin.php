@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<?php echo isset($error) ? $error : ''; ?>
-         <form method="post" action="<?php echo site_url();?>customer/process_login">
+         <form method="post" action="<?php echo site_url();?>customer/process_checkin">
     <div class="modal fade" id="tableModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
