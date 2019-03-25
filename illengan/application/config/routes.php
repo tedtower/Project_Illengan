@@ -45,14 +45,10 @@ $route['admin/transactions/delete'] = "admin/deletetransactions";
 $route['admin/sample'] = 'admin/samplemethod';
 
 //CUSTOMER ROUTES
-$route['customer/menu/getitemdetails'] = "customer/getdetails";
-$route['customer/process_login'] = "customer/process_login";
-$route['customer/view_menu'] = "customer/view_menu";
+$route['customer/process_checkin'] = "customer/process_checkin";
 $route['customer/discounts'] = "customer/discounts";
 $route['customer/menu/add_order'] = "customer/addOrder";
 $route['customer/checkout'] = "customer/checkout";
-$route['customer/destroy'] = "customer/destroy";
-$route['customer/welcome'] = "customer/welcome";
 $route['customer/checkin'] = 'customer/checkIn';
 $route['customer/menu'] = "customer/view";
 
