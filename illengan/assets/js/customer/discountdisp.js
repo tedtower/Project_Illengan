@@ -8,6 +8,7 @@ function promos() {
             dataType : 'json',
             success: function(data) {
                 var i, d_menu_id, menu_id;
+                $('.indicate_promo').hide();
 
                 for(i = 0; i < data.length ; i++) {
                     if(data[i].promo_id != null) {

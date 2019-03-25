@@ -188,7 +188,7 @@ class Customer extends CI_Controller {
 
 	function promos() {
 		if($this->isLoggedIn()){
-			if(isCheckedIn()){
+			if($this->isCheckedIn()){
 				$data = $this->customermodel->fetch_promos();
 				echo json_encode($data);
 			}else{
