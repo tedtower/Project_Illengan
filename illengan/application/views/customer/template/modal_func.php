@@ -29,8 +29,12 @@ $('a.menu_card').click(function(){
     $('span#mid').text(item_id);
     for(var i = 0; i < menu.length; i++) {
         if(menu[i].menu_id == item_id) {
-            var menu_pref = jQuery.grep(pref,function(obj){return obj.menu_id == item_id;});
-            menu_addon = jQuery.grep(addon,function(obj){return obj.menu_id == item_id;});
+            var menu_pref = jQuery.grep(pref,function(obj){
+                return obj.menu_id == item_id;
+                });
+            menu_addon = jQuery.grep(addon,function(obj){
+                return obj.menu_id == item_id;
+                });
             $('#menu_name').text(menu[i].menu_name);
             if(menu[i].menu_image){
                 $('#menu_image').attr("src","<?php echo cmedia_url(); ?>menu/"+menu[i].menu_image);

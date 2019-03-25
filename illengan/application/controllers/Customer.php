@@ -45,22 +45,18 @@ class Customer extends CI_Controller {
 	//Sets the customer's name and table as session variable
 	public function processCheckin(){
 		if($this->isLoggedIn()){
-			if($this->isCheckedIn()){
-				$cust_name = $this->input->post('cust_name');
-				$table_no['table_code'] = $this->input->post('table_no');
-					if ($cust_name != NULL || $table_no != NULL) {
-						$data= array(
-							'cust_name' => $cust_name,
-							'table_no' => $table_no
-						);
-						$this->session->set_userdata($data);
-						redirect('customer/menu');
-					} else {
-						redirect('customer/checkin');
-					}
-			}else{
-				redirect('customer/checkin');
-			}
+			$cust_name = $this->input->post('cust_name');
+			$table_no['table_code'] = $this->input->post('table_no');
+				if ($cust_name != NULL || $table_no != NULL) {
+					$data= array(
+						'cust_name' => $cust_name,
+						'table_no' => $table_no
+					);
+					$this->session->set_userdata($data);
+					redirect('customer/menu');
+				} else {
+					redirect('customer/checkin');
+				}
 		}else{
 			redirect('login');
 		}
