@@ -24,7 +24,7 @@ class Customer extends CI_Controller {
 	//Checking in of customers *CONSULT BEFORE MODIFYING*
 	function checkIn(){
 		$data['number'] = $this->customermodel->get_tables();
-		$this->load->view('customer/login', $data);
+		$this->load->view('customer/checkin', $data);
 	}
 
 	//Unsets session variables and redirects to checkin
@@ -123,7 +123,7 @@ class Customer extends CI_Controller {
 			redirect('customer/checkin');
 		}
 	}
-	
+
 	function ordered() { //insert in db table orderslip and orderlist
 		if($this->isCheckedIn()){			
 			$this->load->model('customermodel');
