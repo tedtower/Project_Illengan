@@ -122,7 +122,6 @@ $('#addonSelectBtn').on('click', function(event){
     event.stopImmediatePropagation();    
     $("#ao_select_div").append(ao_select);
     for(var z=0; z<menu_addon.length; z++){
-        console.log( $('#ao_select_div').last());
         $('#ao_select_div select[name="addon[]"]').eq($("#ao_select_div").children().length-1).append('<option class="addons" id="'+menu_addon[z].ao_id+'" data-name="'+menu_addon[z].ao_name+'" value="'+menu_addon[z].ao_id+'">'+menu_addon[z].ao_name+' - '+menu_addon[z].ao_price+'php</option>');
     }
 });
