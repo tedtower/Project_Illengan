@@ -1,9 +1,26 @@
 <?php
     class CustomerModel extends CI_Model {
-	function get_tables(){
+	function get_tables(){ 
 	    $query = $this->db->query('SELECT table_code FROM tables');
 	    return $query->result();
-	}
+    }
+        function fetch_promos(){
+            $query = $this->db->query('SELECT * FROM menu left join preferences using (menu_id)
+            left join promo_cons using (pref_id)
+            left join promo using (promo_id)
+            left join discounts AS d using (promo_id) 
+            left join freebie AS f using (promo_id) 
+            left join menu_discount AS md USING (promo_id)
+            left join menu_freebie AS mf USING (promo_id)');
+            return $query->result();
+        }
+
+        function fetch_discounts(){
+            $query = $this->db->query('SELECT * FROM (((menu INNER JOIN preferences USING (menu_id)) INNER JOIN promo_cons USING (pref_id)) INNER JOIN promo USING (promo_id)) INNER JOIN discounts USING (promo_id);');
+            return $query->result();
+        }
+
+
         function fetch_category(){
             $query = $this->db->query('SELECT category_name FROM categories WHERE supcat_id IS NULL AND category_type = "menu" GROUP BY category_name ASC');
             return $query->result();
@@ -30,7 +47,8 @@
             return $query->result();
         }
         function fetch_promo(){
-            $query = $this->db->query('SELECT * FROM promo_cons natural join promo where status = "enabled"');
+            $query = $this->db->query('SELECT md.promo_id AS dis_promo_id,md.pref_id AS dis_pref_id, dc_name, dc_amt,mf.promo_id AS fb_promo_id, mf.pref_id AS fb_pref_id, freebie_name,status FROM promo left join discounts AS d using (promo_id) left join freebie AS f using (promo_id) 
+            left join menu_discount AS md USING (promo_id) left join menu_freebie AS mf USING (promo_id) ');
             return $query->result();
         }
 
@@ -87,6 +105,26 @@
         function get_addons($menu_id){
             $query = "Select ao_id, ao_name, ao_price, ao_status from itemadd inner join addons using where menu_id = ?";
             return $this->db->query($query, array($menu_id))->result_array();
+        }
+        function get_preference($prefID){
+            $query = "SELECT 
+                        pref_id,
+                        menu_id,
+                        pref_price,
+                        CONCAT(menu_name,
+                                IF(size_name = 'Normal',
+                                    '',
+                                    CONCAT(' - ', size_name)),
+                                IF(temp IS NULL,
+                                    '',
+                                    IF(temp = 'h', ' Hot', ' Cold'))) AS 'order'
+                    FROM
+                        preferences
+                            INNER JOIN
+                        menu USING (menu_id)
+                    WHERE
+                        pref_id = ?;";
+            return $this->db->query($query, array($prefID))->result_array()[0];
         }
         
         // function get_freebiepromo($menu_id){

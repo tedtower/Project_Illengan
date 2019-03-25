@@ -49,7 +49,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-
 $route['default_controller'] = 'login/viewlogin';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
@@ -95,18 +94,12 @@ $route['admin/transactions/delete'] = "admin/deletetransactions";
 $route['admin/sample'] = 'admin/samplemethod';
 
 //CUSTOMER ROUTES
-$route['customer/menu/getitemdetails'] = "customer/getdetails";
-$route['customer/process_login'] = "customer/process_login";
-$route['customer/view_menu'] = "customer/view_menu";
-$route['menu'] = "customer/menu";
-$route['view'] = "customer/view";
-$route['add_order'] = "customer/add";
-$route['customer/logout'] = "customer/logout";
-$route['destroy'] = "customer/destroy";
-$route['welcome'] = "customer/welcome";
-$route['LogIn'] = 'customer/isLoggedIn';
-$route['details'] = "customer/getMenuDetails";
-$route['customer/(:any)'] = "customer/view/$1";
+$route['customer/process_checkin'] = "customer/process_checkin";
+$route['customer/promos'] = "customer/promos";
+$route['customer/menu/add_order'] = "customer/addOrder";
+$route['customer/checkout'] = "customer/checkout";
+$route['customer/checkin'] = 'customer/checkIn';
+$route['customer/menu'] = "customer/view";
 
 // BARISTA ROUTES
 $route['barista/billings'] = "barista/getbills";

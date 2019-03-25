@@ -1,6 +1,7 @@
+<?php include_once('session.php')?>
 <!-- Category -->
     <div class="text-center gab py-0 my-0">
-        <h1>Menu</h1>
+        <h1 class="mt-2">Menu</h1>
     </div>
     <?php foreach($subcats as $subcategories){ ?>
     <!-- Subcategory -->
@@ -9,13 +10,14 @@
     </div>
 
     <!-- Card group -->
-    <div class="d-flex flex-wrap mb-4">
+    <div class="d-flex flex-wrap mb-4" >
         <?php foreach($menu as $items) {
             if($subcategories->category_name == $items->category_name){ ?> 
+            
                 <!-- Card -->
-                <div class="card cd-mw">
+                <div class="card cd-mw" id="<?php echo $items->menu_id; ?>">
                 <!-- Card image -->
-                <a href="javascript:void(0)" class="menu_card" id="<?php echo $items->menu_id; ?>">
+                <a href="javascript:void(0)" class="menu_card" id="<?php echo $items->menu_id; ?>" >
                     <img class="card-img-top" src="<?php
                         if(isset($items->menu_image)){
                             echo "".cmedia_url()."menu/".$items->menu_image;
