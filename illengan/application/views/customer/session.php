@@ -5,7 +5,7 @@
 <div class="ml-2">
 	<h3 class="gab mb-0">
 		Welcome to Il-lengan Cafe
-		<?php if($cust_name=""){
+		<?php if($cust_name != ""){
 			echo ', '.$cust_name.'!';
 		}else{
 			echo '!';
