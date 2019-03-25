@@ -5,8 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         
         function view(){
             $this->load->database();
-            $query = $this->db->query('SELECT * FROM ((orderlist ol INNER JOIN orderslip os ON ol.order_id = os.order_id)
-            INNER JOIN menu mn ON mn.menu_id = ol.menu_id) ORDER BY os.order_id;');
+            $query = $this->db->query('SELECT * from orderslip join orderlist using (order_id) join preferences using (pref_id)');
             return $query->result();
         }
 
@@ -19,15 +18,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $this->db->where('order_id', $order_id);
             $result=$this->db->update('orderslip');
             return $result;
-            
-            /*$query->$this->db->query("UPDATE orderslip set table_code = ?  where orderslip.order_id = ?");
-            return $this->db->query($query,array($table_no)); */
+
         }
 
-        function remove(){
-            $order_id=$this->input->post('order_id');
-            $this->db->where('order_id', $order_id);
-            $result=$this->db->remove('menu_name');
+        function cancelOrder(){
+            $order_item_id=$this->input->post('order_item_id');
+            $this->db->where('order_item_id', $order_item_id);
+            $result=$this->db->delete('orderlist');
             return $result;
         }
         

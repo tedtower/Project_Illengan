@@ -79,9 +79,10 @@ $route['admin/menu/add'] = "admin/add_menu";
 $route['admin/menu/edit'] = "admin/edit_menu";
 $route['admin/menu/edit_image'] = "admin/edit_image";
 
-$route['admin/accounts/add'] = "admin/addaccount";
+$route['admin/accounts/view'] = "admin/viewaccounts";
+$route['admin/accounts/add'] = "admin/addaccounts";
 $route['admin/accounts/edit'] = "admin/vieweditAccounts";
-$route['admin/accounts/changepassword'] = "admin/changepassword";
+$route['admin/accounts/changepassword'] = "admin/changeAccountPassword";
 $route['admin/inventory'] = "admin/viewinventory";
 $route['admin/inventory/add'] = "admin/addstockitem";
 $route['admin/inventory/edit'] = "admin/editstockitem";
@@ -93,17 +94,10 @@ $route['admin/transactions/delete'] = "admin/deletetransactions";
 $route['admin/sample'] = 'admin/samplemethod';
 
 //CUSTOMER ROUTES
-$route['customer/menu/getitemdetails'] = "customer/getdetails";
-$route['customer/process_login'] = "customer/process_login";
-$route['customer/view_menu'] = "customer/view_menu";
-$route['menu'] = "customer/menu";
+$route['customer/processCheckIn'] = "customer/processCheckIn";
 $route['customer/promos'] = "customer/promos";
-
-$route['view'] = "customer/view";
-$route['customer/menu/add_order'] = "customer/addOrder";
+$route['customer/menu/addorder'] = "customer/addOrder";
 $route['customer/checkout'] = "customer/checkout";
-$route['customer/destroy'] = "customer/destroy";
-$route['customer/welcome'] = "customer/welcome";
 $route['customer/checkin'] = 'customer/checkIn';
 $route['customer/menu'] = "customer/view";
 

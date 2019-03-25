@@ -1,7 +1,7 @@
 <h2>Change Password</h2>
 <br>
 
-<form method="post" action="<?php echo base_url()?>index.php/admin/changeAccountPassword">
+<form method="post" action="<?php echo base_url('admin/accounts/changepassword')?>">
 
 	<div class="form-group">
 	<label for="formGroupExampleInput3">Old Password</label>
