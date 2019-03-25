@@ -33,14 +33,15 @@
                         </div>
                     </div>
                     <!--Preferences-->
-                    <div class="input-group mb-3 delius" id="sizable">
+                    <div class="input-group mb-3 delius" id="sizeable">
                         <div class="w-100" id="menu_size">
                             <h4 class="gab m-0"><i class="far fa-user-cog"></i> Preference</h4>
-                            <select class="browser-default custom-select" id="size" name="menu_size"></select>
+                            <select class="browser-default custom-select" id="sizeSelect" name="menu_size"></select>
                         </div>
+                        <input type="text" id="sizeInput" name="menu_size" value="" hidden>
                     </div>
                     <!--Addons-->
-                    <div id="addonable mb-3">
+                    <div class="mb-3" id="addonable">
                         <h4 class="gab m-0"><i class="far fa-layer-plus"></i> Add-ons</h4>
                         <div class="add_butt">
                             <button type="button" class="btn btn-outline-accent p-2 ml-0 mb-2" id="addonSelectBtn">Add
