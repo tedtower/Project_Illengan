@@ -23,8 +23,12 @@ class Customer extends CI_Controller {
 	//Checking in of customers *CONSULT BEFORE MODIFYING*
 	function checkIn(){
 		if($this->isLoggedIn()){
-			$data['number'] = $this->customermodel->get_tables();
-			$this->load->view('customer/checkin', $data);
+			if($this->isCheckedIn()){
+				redirect('customer/menu');
+			}else{
+				$data['number'] = $this->customermodel->get_tables();
+				$this->load->view('customer/checkin', $data);
+			}
 		}else{
 			redirect('login');
 		}
