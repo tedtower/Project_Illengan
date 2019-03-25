@@ -34,6 +34,7 @@ class Customer extends CI_Controller {
 	function checkout(){
 		$this->session->unset_userdata('cust_name');
 		$this->session->unset_userdata('table_no');
+		$this->cart->destroy();
 		redirect('customer/checkin');
 	}
 	
@@ -70,17 +71,17 @@ class Customer extends CI_Controller {
 				$data['categories'] = $this->customermodel->fetch_category();
 				$data['menu'] = $this->customermodel->fetch_menu();
 				$data['promo'] = $this->customermodel->fetch_promo();
-				$data['subcats'] = array_merge($this->customermodel->fetch_allsubcats(), 
-				$this->customermodel->fetch_catswithmenu());
+				//$data['subcats'] = array_merge($this->customermodel->fetch_allsubcats(), 
+				//$this->customermodel->fetch_catswithmenu());
+				$data['subcats'] = $this->customermodel->fetch_allsubcats();
 				sort($data['subcats']);
 				$data['pref_menu'] = $this->customermodel->fetch_menupref();
 				$data['addons'] = $this->customermodel->fetch_addon();
 				$data['orders'] = $this->cart->contents();
 				$this->load->view('customer/template/head',$data);
-				$this->load->view('customer/'.$page,$data);
+				$this->load->view('customer/menu',$data);
 				$this->load->view('customer/template/foot');
 				$this->load->view('customer/template/modal_func');
-				$this->load->view('customer/home', $data);
 			}else{
 				redirect('customer/checkin');
 			}
@@ -185,30 +186,17 @@ class Customer extends CI_Controller {
 		}
 	}
 
-	function destroy() {
-		if($this->isLoggedIn()){			
-			if($this->isCheckedIn()){
-				$this->cart->destroy();
-				redirect('menu');
-			}else{
-				redirect('customer/checkin');
-			}
-		}else{
-			redirect('login');
-		}
-	}
-
-	function discounts() {
+	function promos() {
 		if($this->isLoggedIn()){
-			if($this->isCheckedIn()){
-				$data = $this->customermodel->fetch_discounts();
+			if(isCheckedIn()){
+				$data = $this->customermodel->fetch_promos();
 				echo json_encode($data);
 			}else{
 				redirect('customer/checkin');
-			}
+			}	
 		}else{
 			redirect('login');
-		}	
+		}
 	}
  }
 ?>

@@ -7,8 +7,7 @@
     <script src="<?php echo cmjs_url(); ?>loadmodal.js"></script>
     <script src="<?php echo cmjs_url(); ?>progress.bar.js"></script>
     <script src="<?php echo cmjs_url(); ?>accordion.js"></script>
-    <script src="<?php echo base_url(); ?>assets/js/customer/discountdisp.js"></script>
-    <?php $this->load->view('customer/template/modal_func');?>
+    <script src="<?php echo cmjs_url(); ?>discountdisp.js"></script>
 </body>
 
 </html>
