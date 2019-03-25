@@ -94,7 +94,7 @@ $route['admin/transactions/delete'] = "admin/deletetransactions";
 $route['admin/sample'] = 'admin/samplemethod';
 
 //CUSTOMER ROUTES
-$route['customer/process_checkin'] = "customer/process_checkin";
+$route['customer/processCheckIn'] = "customer/processCheckIn";
 $route['customer/promos'] = "customer/promos";
 $route['customer/menu/add_order'] = "customer/addOrder";
 $route['customer/checkout'] = "customer/checkout";
