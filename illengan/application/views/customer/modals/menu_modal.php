@@ -33,14 +33,15 @@
                         </div>
                     </div>
                     <!--Preferences-->
-                    <div class="input-group mb-3 delius" id="sizable">
+                    <div class="input-group mb-3 delius" id="sizeable">
                         <div class="w-100" id="menu_size">
                             <h4 class="gab m-0"><i class="far fa-user-cog"></i> Preference</h4>
-                            <select class="browser-default custom-select" id="size" name="menu_size"></select>
+                            <select class="browser-default custom-select" id="sizeSelect" name="menu_size"></select>
                         </div>
+                        <input type="text" id="sizeInput" name="menu_size" value="" hidden>
                     </div>
                     <!--Addons-->
-                    <div id="addonable mb-3">
+                    <div class="mb-3" id="addonable">
                         <h4 class="gab m-0"><i class="far fa-layer-plus"></i> Add-ons</h4>
                         <div class="add_butt">
                             <button type="button" class="btn btn-outline-accent p-2 ml-0 mb-2" id="addonSelectBtn">Add
@@ -60,7 +61,7 @@
                 <div class="text-center float-right">
                     <button type="button" class="btn btn-outline-accent px-3" data-dismiss="modal"
                         id="close-menu">Close</button>
-                    <button type="submit" class="btn btn-accent px-3 save-order" id="save_order">Save To Order
+                    <button type="submit" class="btn btn-accent px-3">Save To Order
                         List</button>
                 </div>
                 <?php echo form_close();?>

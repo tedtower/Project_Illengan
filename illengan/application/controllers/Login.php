@@ -2,7 +2,11 @@
 class Login extends CI_Controller{
 
     function viewlogin(){
-        $this->load->view('login');
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type')){
+            $this->homeRedirect();
+        }else{
+            $this->load->view('login');
+        }
     }
 
     function check_cred(){
@@ -17,23 +21,26 @@ class Login extends CI_Controller{
                 'user_type' => $loginAttempt[0]['account_type']
             );
             $this->session->set_userdata($user_data);
-            switch ($this->session->userdata('user_type')){
-                case 'Admin':
-                    redirect('admin/menu');
-                    break;
-                case 'Barista':
-                    redirect('barista/billings');
-                    break;
-                case 'Chef':
-                    redirect('chef/orders');
-                    break;
-				case 'Customer':
-					redirect('customer/menu');
-					break;
-            }
         }else{
             $data['err'] = $loginAttempt;
             $this->load->view('login',$data);
+        }
+    }
+
+    function homeRedirect(){        
+        switch ($this->session->userdata('user_type')){
+            case 'Admin':
+                redirect('admin/menu');
+                break;
+            case 'Barista':
+                redirect('barista/billings');
+                break;
+            case 'Chef':
+                redirect('chef/orders');
+                break;
+            case 'Customer':
+                redirect('customer/menu');
+                break;
         }
     }
 

@@ -10,27 +10,32 @@
 var orders = [], oc=0;
 var selected_addons = [], ac=0;
 var order = "";
-
 var menu_addon;
-
 $(document).ready(function(){
     $("select#size").change(function(){
         var selectedPrice = $(this).children("option:selected").val();
         $('span#menu_price').text(selectedPrice);
     });
 });
-
 $('a.menu_card').click(function(){
-    $('#size option').remove();
-    $('#addon option.addons').remove();
-    $('div.ao').remove();
+    $('#sizeSelect').attr('disabled','disabled');    
+    $("#sizeInput").val('');
+    $('#sizeInput').attr('disabled','disabled');
+    $('#sizeable').hide();
+    $('#addonSelectBtn').attr('disabled','disabled');
+    $('#ao_select_div').empty();
+    $('#addonable').hide();
     $('textarea#menu_note').val('');
     var item_id = $(this).attr('id');
     $('span#mid').text(item_id);
     for(var i = 0; i < menu.length; i++) {
         if(menu[i].menu_id == item_id) {
-            var menu_pref = jQuery.grep(pref,function(obj){return obj.menu_id == item_id;});
-            menu_addon = jQuery.grep(addon,function(obj){return obj.menu_id == item_id;});
+            var menu_pref = jQuery.grep(pref,function(obj){
+                return obj.menu_id == item_id;
+                });
+            menu_addon = jQuery.grep(addon,function(obj){
+                return obj.menu_id == item_id;
+                });
             $('#menu_name').text(menu[i].menu_name);
             if(menu[i].menu_image){
                 $('#menu_image').attr("src","<?php echo cmedia_url(); ?>menu/"+menu[i].menu_image);
@@ -39,7 +44,7 @@ $('a.menu_card').click(function(){
             }
             $('#menu_price').text(menu[i].pref_price);
             $('#menu_description').text(menu[i].menu_description);
-            if(menu[i].menu_availability == 'available'){
+            if(menu[i].menu_availability === 'available'){
                 $('#menu_status').text(menu[i].menu_availability.charAt(0).toUpperCase() + menu[i].menu_availability.slice(1));
                 $('#menu_status').attr("class","teal-text");
                 $('#order-details').show();
@@ -50,15 +55,22 @@ $('a.menu_card').click(function(){
                 $('#order-details').hide();
                 $('.save-order').hide();
             }
-            if(menu_pref.length == 1){
-                $('#sizable').hide();
-            }else{
-                $('#sizable').show();
+            if(menu_pref.length !== 1){                
+                $('#sizeable').show();                
+                $("#sizeSelect").removeAttr('disabled');
                 for(x=0; x<menu_pref.length; x++){
-                    $('#size').append('<option data-id="'+menu_pref[x].pref_id+'" data-name="'+menu_pref[x].size_name+'" value="'+menu_pref[x].pref_id+'">'+menu_pref[x].preference+'</option>');
+                    $('#sizeSelect').append('<option data-id="'+menu_pref[x].pref_id+'" data-name="'+menu_pref[x].size_name+'" value="'+menu_pref[x].pref_id+'">'+menu_pref[x].preference+'</option>');
                 }
+            }else{
+                $("#sizeInput").removeAttr('disabled');
+                $("#sizeInput").val(menu_pref[0].pref_id);
             }
+            
+// id   addonSelectBtn = disable
+// id   ao_select_div = empty
+// id   addonable = hide
             if(menu_addon.length > 0){
+                $("#addonSelectBtn").removeAttr('disabled');
                 $('#addonable').show();
                 for(var z=0; z<menu_addon.length; z++){
                         $('#addon').append('<option class="addons" id="'+menu_addon[z].ao_id+'" data-name="'+menu_addon[z].ao_name+'" value="'+menu_addon[z].ao_price+'">'+menu_addon[z].ao_name+' - '+menu_addon[z].ao_price+'php</option>');
@@ -70,15 +82,12 @@ $('a.menu_card').click(function(){
                     $('div.add_butt').hide();
                     $('div.rem_add').hide();
                 }
-            }else{
-                $('#addonable').hide();
             }
             break;
         }
     }
     $('#menu_modal').modal('show');
 });
-
 //$('button#save_order').click(function(){
     
 <?php /*$.ajax({
@@ -94,9 +103,7 @@ $('a.menu_card').click(function(){
 			console.log('ERROR: ');
 		}
 	});
-
 });*/?>
-
 $('#addonSelectBtn').on('click', function(event){
 	var ao_select = `<!--Select For Addons-->
                             <div class="input-group mb-3 delius">
@@ -118,12 +125,9 @@ $('#addonSelectBtn').on('click', function(event){
     event.stopImmediatePropagation();    
     $("#ao_select_div").append(ao_select);
     for(var z=0; z<menu_addon.length; z++){
-        console.log( $('#ao_select_div').last());
         $('#ao_select_div select[name="addon[]"]').eq($("#ao_select_div").children().length-1).append('<option class="addons" id="'+menu_addon[z].ao_id+'" data-name="'+menu_addon[z].ao_name+'" value="'+menu_addon[z].ao_id+'">'+menu_addon[z].ao_name+' - '+menu_addon[z].ao_price+'php</option>');
     }
 });
-
-
 $("#menumodalform").on('submit', function(event) {
     var prefId = $("#size > option:selected").data("id");
     var qty = $("#quantity").val();
@@ -141,26 +145,25 @@ $("#menumodalform").on('submit', function(event) {
             preference: prefId,
             quantity: qty,
             remarks: remarks,
-            addons: JSON.stringify({                
+			addons: JSON.stringify({                
                 "addon_id": addonIds,
                 "addon_qty": addonQtys
             })            
         },
         beforeSend: function(){
-            console.log(JSON.stringify({"addon_id": addonIds,
+			console.log(prefId,qty, remarks, JSON.stringify({"addon_id": addonIds,
                 "addon_qty": addonQtys}));
         },
-        success: function() {
-            alert("Successfully added to orderlist!");
+        success: function(data) {
+         //   alert("Successfully added to orderlist!");
+			$('#order_modal').html(data);
         },
         error: function() {
             alert("there was an error");
         }
     });
-    
     event.preventDefault();
 });
-
 // $('button#add_addon').click(function(){
 //     var add_exist = 0;
 //     if(selected_addons.length > 0){
@@ -190,7 +193,6 @@ function addOrder(pid,sn,mi,up,q,n){
     console.log(orders[oc].order.length);
     oc++;
 }
-
 function addExistOrder(aeo,pid,sn,mi,up,q,n){
     var existed = 0;
     for(var b=0; b<orders[aeo].order.length; b++){
@@ -209,7 +211,6 @@ function addExistOrder(aeo,pid,sn,mi,up,q,n){
         console.log(orders);
     }
 }
-
 function setOrder(pid,sn,up,q,n){
     if(selected_addons.length > 0){
         order = {pref_id:pid, s_name:sn, quantity:q, u_price:up, note:n, addons:selected_addons}
@@ -218,7 +219,6 @@ function setOrder(pid,sn,up,q,n){
     }
     
 }
-
 function addOns(){
     selected_addons.push({});
     selected_addons[ac].quantity = parseInt($('input#addon_qty').val());
@@ -231,7 +231,6 @@ function addExistOns(ad){
     selected_addons[ad].quantity = selected_addons[ad].quantity + parseInt($('input#addon_qty').val());
     selected_addons[ad].t_price = $('select#addon option:selected').val()*selected_addons[ad].quantity;
 }
-
 function sendPost(){
     $.post('menu/add_order', orders, 
     function(returnedData){
