@@ -203,7 +203,9 @@ class Customer extends CI_Controller {
 
 	function discounts() {
 		if($this->session->userdata('table_no')!= NULL){
-			$data = $this->customermodel->fetch_discounts();
+			$data = array();
+			$data['discounts'] = $this->customermodel->fetch_discounts();
+			$data['freebies'] = $this->customermodel->fetch_freebies();
 			echo json_encode($data);
 		}else{
 			redirect('LogIn');
