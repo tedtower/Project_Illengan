@@ -18,13 +18,13 @@
                 </div>
                 <div class="modal-body">
 				<h4 class="gab">Table Code:</h4>
-				<select class="form-control mb-3" name="table_no" required>
+				<select class="form-control mb-2 delius" name="table_no" required>
 				    <option value="">Please Select</option>
                     <?php foreach($number as $row){ 
                         echo '<option value="'.$row->table_code.'">'.$row->table_code.'</option>';
                     }?>
                 </select>
-					<div class="md-form input-group m-0">
+					<div class="md-form input-group m-0 delius">
                         <input type="text" name="cust_name" id="cust_name" class="form-control text-center" placeholder="Customer's Name (optional)" aria-label="Cutomer Name"/>
                     </div>
                 </div>
