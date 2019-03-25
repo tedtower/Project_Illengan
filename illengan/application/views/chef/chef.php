@@ -87,12 +87,7 @@ $(document).ready(function() {
                         ' data-item_status="'+ data.item_status +'" onclick="change_status()">'+ data.item_status +'</button>';
                         }
                     }
-		        ],
-                createdRow: function (row, data, index) {
-                        console.dir(row);
-                        $(row).addClass('shown');
-
-                }
+		        ]
 	        });
 
 // FOR SHOWING THE ACCORDION
@@ -112,11 +107,11 @@ $(document).ready(function() {
                 }
             } );
         
-        $("#mydata").DataTable().rows().every( function () {
+            table.rows().every( function () {
                 var tr = $(this.node());
-                this.child(format(tr.data('child-value'))).show();
+                this.child(format(table.row(tr).data())).show();
                 tr.addClass('shown');
-            });
+                });
 
             
 } );
