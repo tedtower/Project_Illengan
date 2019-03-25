@@ -16,6 +16,7 @@
             
                 <!-- Card -->
                 <div class="card cd-mw" id="<?php echo $items->menu_id; ?>">
+                <span class="indicate_promo <?php echo $items->menu_id; ?>" style="position:absolute;right:0;top:0"><img style="width:60px;" src="<?php echo base_url('/assets/media/customer/banner.png')?>"></span>
                 <!-- Card image -->
                 <a href="javascript:void(0)" class="menu_card" id="<?php echo $items->menu_id; ?>" >
                     <img class="card-img-top" src="<?php
