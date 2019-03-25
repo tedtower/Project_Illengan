@@ -54,7 +54,7 @@ $route['customer/checkout'] = "customer/checkout";
 $route['customer/destroy'] = "customer/destroy";
 $route['customer/welcome'] = "customer/welcome";
 $route['customer/checkin'] = 'customer/checkIn';
-$route['customer/(:any)'] = "customer/view/$1";
+$route['customer/menu'] = "customer/view";
 
 // BARISTA ROUTES
 $route['barista/billings'] = "barista/getbills";
