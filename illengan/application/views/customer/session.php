@@ -4,8 +4,8 @@
 ?>
 <div class="ml-2">
 	<h3 class="gab mb-0">
-		Welcome in Il-lengan Cafe
-		<?php if(isset($cust_name)){
+		Welcome to Il-lengan Cafe
+		<?php if($cust_name=""){
 			echo ', '.$cust_name.'!';
 		}else{
 			echo '!';
