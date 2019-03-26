@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo site_url('barista/baristaBillings')?>">
+                        <a href="<?php echo site_url('barista/billings')?>">
                             <p>Billings</p>
                         </a>
                     </li>

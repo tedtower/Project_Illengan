@@ -7,10 +7,7 @@ function promos() {
             url: 'http://www.illengan.com/customer/promos',
             dataType : 'json',
             success: function(data) {
-                var i;
-                var d_menu_id;
-                var menu_id;
-                $('.indicate_promo').hide();
+                var i, d_menu_id, menu_id;
 
                 for(i = 0; i < data.length ; i++) {
                     if(data[i].promo_id != null) {

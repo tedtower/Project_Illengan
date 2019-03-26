@@ -197,5 +197,16 @@ class Customer extends CI_Controller {
 			redirect('login');
 		}
 	}
+
+	function freebies() {
+		if($this->session->userdata('table_no')!= NULL){
+			$data = $this->customermodel->fetch_freebies();
+
+			echo json_encode($data);
+		}else{
+			redirect('customer/checkin');
+		}
+	
+	}
  }
 ?>
