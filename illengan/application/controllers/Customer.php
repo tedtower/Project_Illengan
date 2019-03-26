@@ -70,7 +70,6 @@ class Customer extends CI_Controller {
 				$data['cart'] = $this->cart->contents();
 				$data['categories'] = $this->customermodel->fetch_category();
 				$data['menu'] = $this->customermodel->fetch_menu();
-				$data['promo'] = $this->customermodel->fetch_promo();
 				//$data['subcats'] = array_merge($this->customermodel->fetch_allsubcats(), 
 				//$this->customermodel->fetch_catswithmenu());
 				$data['subcats'] = $this->customermodel->fetch_allsubcats();
