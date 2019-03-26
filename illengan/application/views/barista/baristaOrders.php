@@ -17,41 +17,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
   <?php echo include_once('sideNavigation.php') ?>
-  
-  <div class="wrapper">
-        <div class="sidebar" data-color="brown" data-image="assets/media/barista/Coffee_1.jpg">
-            <!--Left Navigation Bar-->
-            <div class="sidebar-wrapper" style="overflow: hidden">
-                <div class="logo">
-                    <img src="assets/media/barista/logo_lg.png" alt="il-lengan-logo" img-align="center" width="225px"
-                        height="135px">
-                </div>
-
-                <ul class="nav">
-                    <li class="active">
-                        <a href="baristaOrders.html">
-                            <p>Orders</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="baristaBillings.html">
-                            <p>Billings</p>
-                            </a>
-                    </li>
-                    <li>
-                        <a href="baristaInventory.html">
-                            <p>Inventory</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="baristaNotifications.html">
-                            <p>Notifications</p>
-                        </a>
-                    </li>
-                    </ul>
-                </div>
+  </div>
+            <div><a href="<?php echo site_url('barista/pendingStatus'); ?>">Pending Orders</a> &nbsp;
+            <a href="<?php echo site_url('barista/servedStatus'); ?>">Served Orders</a>
             </div>
-            
             <table class="display" id="mydata" >
                 <thead>
                     <tr>
@@ -70,9 +39,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </tbody>
             </table>
         </div>
-    </div>
         
-</div>
+
 
 <!-- MODAL EDIT -->
 <form>
@@ -166,13 +134,14 @@ $(document).ready(function() {
 
                 {data : 'order_desc'},
                 {data : 'order_qty'},
-                {data : 'item_status'},
-                /*{
+                {
                     data: null,
                     render: function ( data, type, row, meta) {
-                        return '<button class="btn '+ data.order_id +'" data-order_id="'+ data.order_id +'">'+ data +'</button>';
+                        return '<button id="status" class="status btn dt-buttons '+ data.item_status +
+                        '" data-order_item_id="'+ data.order_item_id +'"'+
+                        ' data-item_status="'+ data.item_status +'" onclick="change_status()">'+ data.item_status +'</button>';
                     }
-                },*/
+                },
       
                 {data: null,
                     render: function ( data, type, row, meta) {
@@ -183,6 +152,8 @@ $(document).ready(function() {
 
 		    ]
 	        } );
+
+});
 
 
 
@@ -243,8 +214,35 @@ $('#show_data').on('click','.item_edit',function(){
             });
             return false;
         });
-      } );
+
 //change status function
+$('.status').on('click', function() {
+        var orderItemId = $(this).data("order_item_id");
+        var itemStatus = $(this).data("item_status");
+        var item_status;
+        if(itemStatus === "pending") {
+            item_status = "ongoing";
+        } else if(itemStatus === "ongoing") {
+            item_status = "done";
+        } else if(itemStatus === "done") {
+            item_status = "served";
+        }else if(itemStatus === "served"){
+            item_status = "pending";
+        }
+    
+        // AJAX CODE FOR POSTING NEW STATUS
+        $.ajax({
+        type: 'POST',
+        url: 'http://www.illengan.com/barista/change_status',
+        data: {
+            order_item_id: orderItemId,
+            item_status: item_status
+        },
+        success: function() {
+            table.DataTable().ajax.reload(null, false);
+        }
+            });
+  });
 
 
 </script>

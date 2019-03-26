@@ -33,12 +33,12 @@
                 </div>
                 <ul class="nav">
                     <li>
-                        <a href="baristaOrders.html">
+                        <a href="<?php echo site_url('barista/orders'); ?>">
                             <p>Orders</p>
                         </a>
                     </li>
                     <li class="active">
-                        <a href="baristaBillings.html">
+                        <a href="<?php echo site_url('barista/billings'); ?>">
                             <p>Billings</p>
                         </a>
                     </li>
@@ -163,7 +163,7 @@
                                         <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
                                     </td>
                                     <td>
-                                        <?php echo $bill['order_payable'] ?>
+                                        <?php echo $bill['total'] ?>
                                         <!--insert PHP echo (e.g. "?php echo $row->code; ?>  data-toggle="modal"  data-target=""-->
                                     </td>
                                     <td>
@@ -300,7 +300,7 @@ function setModalData(orderId) {
         $("#change").removeAttr("disabled");
         $("#update-pay-status-btn").text("Pay");
     }
-    $("#totalamountpayable").text(bills[orderId]['orderslip']['order_payable']);
+    $("#totalamountpayable").text(bills[orderId]['orderslip']['total']);
     $("#update-pay-status-btn").attr("data-orderid", bills[orderId]["orderslip"]["order_id"]);
     $("#update-pay-status-btn").attr("data-paystatus", bills[orderId]["orderslip"]["pay_status"]);
 }

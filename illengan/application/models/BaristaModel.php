@@ -47,8 +47,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $this->db->query($query, array($item_status, $order_id, $menu_id));
         }
 
+        function pending_orders(){
+            $query = $this->db->query('SELECT * from orderslip join orderlist using (order_id) join preferences using (pref_id)
+             where orderlist.item_status = "pending" ');
+            return $query->result();
+        }
+
+        function served_orders(){
+            $query = $this->db->query('SELECT * from orderslip join orderlist using (order_id) join preferences using (pref_id) 
+            where orderlist.item_status = "served" ');
+            return $query->result();
+        }
+
         function get_bills(){
-            $query = "select order_id, table_code, cust_name, order_payable, order_date, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status , pay_date_time from orderslip";
+            $query = "select order_id, table_code, cust_name, total, order_date, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status , pay_date_time from orderslip";
             return $this->db->query($query)->result_array();
         }
 
@@ -58,7 +70,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         function get_orderslip($order_id){
-            $query = "select order_id, table_code, cust_name, order_payable, order_date, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status , pay_date_time from orderslip where order_id = ?";
+            $query = "select order_id, table_code, cust_name, total, order_date, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status , pay_date_time from orderslip where order_id = ?";
             return $this->db->query($query, array($order_id))->result_array();
         }
 
