@@ -11,6 +11,8 @@ var orders = [], oc=0;
 var selected_addons = [], ac=0;
 var order = "";
 var menu_addon;
+var mainSubtotal = 0;
+var addonSubtotal = 0;
 $(document).ready(function(){
     //On click Menu card
     $('a.menu_card').on('click',function(){
@@ -19,39 +21,35 @@ $(document).ready(function(){
         setModalContents(item_id);        
         $('#menu_modal').modal('show');
     });
-
     
-
-    // Computing Subtotal of Menu Item (Total Price per Item)
-    $("#quantity, #sizeInput, #sizeSelect, select[name='addon[]'], input[name='addonQty[]'").on('change',function(){
-        var subtotal = 0;
+    $("#quantity").on('change', function(){
+        var quantity = 0;
+        if($(this).val()!= undefined ){
+            quantity = parseInt($(this).val());       
+        }        
         if($("#sizeInput").is(":disabled")){
-            subtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
-            console.log("Size Price Select");
-            console.log(subtotal);
+            mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
         }else{
-            subtotal = parseFloat($("#sizeInput").data("price"));
-            console.log("Size Price Input");
-            console.log(subtotal);
+            mainSubtotal = parseFloat($("#sizeInput").data("price"));
         }
-        subtotal *= parseInt($('#quantity').val());
-            console.log("Item Quantity");
-            console.log(subtotal);
-        if($("select[name='addon[]']") !== undefined){
-            if(parseInt($("input[name='addonQty[]']").val()) != undefined){
-                $("select[name='addon[]']").each(function(index){
-                    subtotal += parseFloat($(this).eq(index).data("price")) * parseInt($("input[name='addonQty[]']").eq(index).val());
-                });
-                console.log("Addon Subtotal");
-                console.log(subtotal);                
-            }else{
-                console.log("No Addon");
-            }
-        }
-        console.log("Total Subtotal");
-        console.log(subtotal);
-        $("#menuSubtotal").text(subtotal);
+        mainSubtotal *= quantity;
+        mainSubtotal += addonSubtotal;
+        $("#menuSubtotal").text(mainSubtotal);
     });
+
+    $("#sizeSelect").on('change',function(){
+        var quantity = 0;
+        mainSubtotal = 0;
+        if(!isNaN(parseInt($('#quantity').val()))){
+            quantity = parseInt($('#quantity').val());
+        }
+        if(!isNaN(parseInt($(this).find('option:selected').data('price')))){            
+            mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price")) * quantity;
+        }
+        mainSubtotal += addonSubtotal;
+        $("#menuSubtotal").text(mainSubtotal);
+    });
+    // Computing Subtotal of Menu Item (Total Price per Item)
 
     $('#addonSelectBtn').on('click', function(event){
         var ao_select = `<!--Select For Addons-->
@@ -60,7 +58,7 @@ $(document).ready(function(){
                                         <option selected disabled>Choose...</option>
                                     </select>
                                     <input type="number" min="1" placeholder="Qty" aria-label="Add-on Quantity"
-                                        class="form-control" name="addon_qty[]">
+                                        class="form-control" name="addonQty[]">
                                     <div class="input-group-prepend">
                                         <!--Subtotal-->
                                         <span class="ao_subtotal mt-2 ml-1" id="">50.00</span>
@@ -76,6 +74,28 @@ $(document).ready(function(){
         for(var z=0; z<menu_addon.length; z++){
             $('#ao_select_div select[name="addon[]"]').eq($("#ao_select_div").children().length-1).append('<option class="addons" data-price="'+menu_addon[z].ao_id+'" data-name="'+menu_addon[z].ao_price+'" value="'+menu_addon[z].ao_id+'">'+menu_addon[z].ao_name+' - '+menu_addon[z].ao_price+'php</option>');
         }
+
+        $("input[name='addonQty[]']").on('change',function(){
+            addonSubtotal = 0;
+            $("input[name='addonQty[]']").each(function(index){            
+                if(!isNaN(parseInt($("select[name='addon[]']").eq(index).val())) && !isNaN(parseInt($(this).val()))){
+                    addonSubtotal += parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data("price")) * parseInt($(this).val());
+                }
+            });
+            addonSubtotal += mainSubtotal;
+            $("#menuSubtotal").text(addonSubtotal);
+        });
+
+        $("select[name='addon[]']").on('change',function(){
+            addonSubtotal = 0;
+            $("select[name='addon[]']").each(function(index){            
+                if(!isNaN(parseInt($("input[name='addonQty[]']").eq(index).val())) && !isNaN(parseFloat($(this).val()))){
+                    addonSubtotal += parseFloat($(this).find('option:selected').data("price")) * parseInt($("input[name='addonQty[]']").eq(index).val());
+                }
+            });
+            addonSubtotal += mainSubtotal;
+            $("#menuSubtotal").text(addonSubtotal);
+        });
     });
     $("#menumodalform").on('submit', function(event) {
         var prefId;
