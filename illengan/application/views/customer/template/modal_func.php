@@ -84,6 +84,7 @@ $(document).ready(function(){
         $('#sizeSelect').attr('disabled','disabled'); 
         $("#sizeInput").val('');
         $('#sizeInput').attr('disabled','disabled');
+        $("#sizeSelect").empty();
         $('#sizeable').hide();
         $('#addonSelectBtn').attr('disabled','disabled');
         $('#ao_select_div').empty();
