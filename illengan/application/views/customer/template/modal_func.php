@@ -97,33 +97,6 @@ $(document).ready(function(){
             $("#menuSubtotal").text(addonSubtotal);
         });
     });
-    //----------------------------------------------------
-    $('#sizeSelect').on('change', function(event){
-        var prefId;
-        if($("#sizeInput").is(":disabled")){
-            prefId = parseInt($("#sizeSelect > option:selected").data("id"));
-        }else{
-            prefId = parseInt($("#sizeInput").val());
-        }
-        $.ajax({
-            method: "post",
-            url: "<?php echo site_url('customer/menu/getPref')?>",
-            data: {
-                preference: prefId
-            },
-            beforeSend: function(){
-                console.log(prefId);
-            },
-            success: function() {
-                console.log("success!!");
-            },
-            error: function() {
-                console.log("there was an error");
-            }
-        });
-    });
-//--------------------------------------------------------------------------------------------
-
     $("#menumodalform").on('submit', function(event) {
         var prefId;
         if($("#sizeInput").is(":disabled")){
@@ -245,7 +218,7 @@ function setModalContents(item_id){
                     for(x=0; x<menu_pref.length; x++){
                         $('#sizeSelect').append('<option data-id="'+menu_pref[x].pref_id+'" data-name="'+menu_pref[x].size_name+'" value="'+menu_pref[x].pref_id+'">'+menu_pref[x].preference+'</option>');
                     }
-                }else if(menu_pref.length == 1){
+                }else{
                     $("#sizeInput").removeAttr('disabled');
                     $("#sizeInput").val(menu_pref[0].pref_id);
                 }

@@ -148,15 +148,6 @@ class Customer extends CI_Controller {
 			redirect('login');
 		}
 	}
-	function getPref() {
-		$preference = $this->customermodel->get_preferences($this->input->post('preferences'));
-		$this->customermodel->get_discount($preference);
-	}
-	function addtoCart() {
-		$data['discounts'] = $this->customermodel->get_discount($preference);
-		$this->load->library('cart');
-		$this->cart->insert($data);
-	}
 
 	//function to save or contain the menu items selected in a library cart
 	function save_order() { //summary orderlist with confirmation
