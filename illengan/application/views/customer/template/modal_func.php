@@ -137,23 +137,23 @@ $(document).ready(function(){
         event.preventDefault();
     });
 
-    // Under construction hehe
-    // $('').on('click',function(){
+    // $('a[href="#order_modal"]').on('click',function(){
     //     $.ajax({
     //         method: 'POST',
     //         url: 'customer/menu/orderlist/view',
-    //         data: '',
     //         dataType: 'JSON',
     //         success: function(cart){
-
+    //             setOrderslipModal(cart);
     //         },
     //         error: function(){
-
+    //             alert("asdgaksfngasd");
     //         }
     //     });
     // });
 });
-
+function setOrderslipModal(cart){
+    console.log(cart);
+}
 function unsetModalContents(){        
     $('span#mid').text('');
     $('#sizeSelect').attr('disabled','disabled');    

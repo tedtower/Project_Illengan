@@ -3,9 +3,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     class BaristaModel extends CI_Model{
         
-        function view(){
+        function orderlist(){
             $this->load->database();
             $query = $this->db->query('SELECT * from orderslip join orderlist using (order_id) join preferences using (pref_id)');
+            return $query->result();
+        }
+
+        function show_orderslip(){
+            $this->load->database();
+            $query = $this->db->query('SELECT * from orderslip join orderlist using (order_id) join preferences using (pref_id) GROUP BY table_code');
             return $query->result();
         }
 
@@ -22,9 +28,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         function cancelOrder(){
-            $order_item_id=$this->input->post('order_item_id');
-            $this->db->where('order_item_id', $order_item_id);
-            $result=$this->db->delete('orderlist');
+            $order_id=$this->input->post('order_id');
+            $this->db->where('order_id', $order_id);
+            $result=$this->db->delete('orderslip');
             return $result;
         }
         
@@ -41,14 +47,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          return $query->result_array();
       }*/
 
-        function update_status($order_id, $menu_id, $item_status) {
+        function update_status($order_id, $order_desc, $item_status) {
             $data['item_status'] = $item_status;
-            $query = $this->db->query('UPDATE orderlist SET item_status = ? WHERE order_id = ? AND menu_id = ?');
-            $this->db->query($query, array($item_status, $order_id, $menu_id));
+            $query = $this->db->query('UPDATE orderlist SET item_status = ? WHERE order_item_id = ? AND order_id = ?');
+            $this->db->query($query, array($item_status, $order_item_id, $order_id));
+        }
+
+        function pending_orders(){
+            $query = $this->db->query('SELECT * from orderslip join orderlist using (order_id) join preferences using (pref_id)
+             where orderlist.item_status = "pending" ');
+            return $query->result();
+        }
+
+        function served_orders(){
+            $query = $this->db->query('SELECT * from orderslip join orderlist using (order_id) join preferences using (pref_id) 
+            where orderlist.item_status = "served" ');
+            return $query->result();
         }
 
         function get_bills(){
-            $query = "select order_id, table_code, cust_name, order_payable, order_date, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status , pay_date_time from orderslip";
+            $query = "select order_id, table_code, cust_name, total, order_date, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status , pay_date_time from orderslip";
             return $this->db->query($query)->result_array();
         }
 
@@ -58,7 +76,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         function get_orderslip($order_id){
-            $query = "select order_id, table_code, cust_name, order_payable, order_date, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status , pay_date_time from orderslip where order_id = ?";
+            $query = "select order_id, table_code, cust_name, total, order_date, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status , pay_date_time from orderslip where order_id = ?";
             return $this->db->query($query, array($order_id))->result_array();
         }
 

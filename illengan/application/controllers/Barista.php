@@ -13,17 +13,23 @@ class Barista extends CI_Controller{
 
         function index()
         {
-            $this->load->view('barista/baristaView'); 
+            $this->load->view('barista/baristaOrders'); 
     }
 
-    function orders(){
+    function orders_b(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
-            $data= $this->baristamodel->view();
+            $data= $this->baristamodel->orderlist();
             echo json_encode($data);
             //Code Here
         }else{
             redirect('login');
         }
+    }
+
+    function orderslip(){
+        $this->load->view('barista/orderslip');
+        //$data = $this->baristamodel->show_orderslip();
+        //echo json_encode($data);
     }
 
     function getOrders(){
@@ -64,43 +70,39 @@ class Barista extends CI_Controller{
         echo mdate($format);
     }
 
-
-    /*function editTableNumber($order_id, $table_no){
-        $table_no = $this->input->post('table_no');
-        $order_id = $this->input->post('order_id');
-        $this->load->model('baristaModel');
-        $this->baristaModel->edit_tablenumber($order_id, $table_no);
-        $this->load->view('editTable');
-
-        if(isset($table_no)){
-            $this->db->update('orderslip');
-        }else{
-            echo "Error";
-        }
-        // $this->viewStockCategories();
-    }*/
-
     function editTableNumber(){
         $data=$this->baristaModel->edit_tablenumber();
         echo json_encode($data);
 
 
     }
-
     
     function change_status() {
         $item_status = $this->input->post('item_status');
-        $menu_id = $this->input->post('menu_id');
+        $order_item_id = $this->input->post('order_item_id');
         $order_id = $this->input->post('order_id');
         
-        $this->baristaModel->update_status($order_id, $menu_id, $item_status);
+        $this->baristamodel->update_status($order_id, $order_item_id, $item_status);
         $this->get_orderlist();
     }
 
-    function removeRow(){
-        $data=$this->baristaModel->remove();
+    function cancel(){
+        $data=$this->baristamodel->cancelOrder();
         echo json_encode($data);
     }
+
+    function pendingStatus(){
+        $this->load->view('barista/pendingOrders');
+        $data = $this->baristamodel->pending_orders();
+        echo json_encode($data);
+    }
+
+    function servedStatus(){
+        //$this->load->view('barista/pendingOrders');
+        $data = $this->baristamodel->served_orders();
+        echo json_encode($data);
+    }
+
 
     function setBillStatus(){        
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
@@ -134,46 +136,5 @@ class Barista extends CI_Controller{
 
     }
 
-        
-
-
-        /*function change_status() {
-            $order_id = $this->input->post('order_id');
-            $menu_id = $this->input->post('menu_id');
-            $item_status = $this->input->post('item_status');
-            if($item_status == 'pending') {
-                $data = array(
-                    'order_id' => $order_id,
-                    'menu_id' => $menu_id,
-                    'item_status' => 'ongoing'
-                );
-                $this->db->where('order_id', $order_id);
-                $this->db->where('menu_id', $menu_id);
-                $this->db->update('orderlist', $data);
-            } else if ($item_status == 'on going') {
-                $data = array(
-                    'order_id' => $order_id,
-                    'menu_id' => $menu_id,
-                    'item_status' => 'Done'
-                );
-                $this->db->where('order_id', $order_id);
-                $this->db->where('menu_id', $menu_id);
-                $this->db->update('orderlist', $data);
-            } else if ($item_status == 'done') {
-                $data = array(
-                    'order_id' => $order_id,
-                    'menu_id' => $menu_id,
-                    'item_status' => 'Served'
-                );
-                $this->db->where('order_id', $order_id);
-                $this->db->where('menu_id', $menu_id);
-                $this->db->update('orderlist', $data);
-            } 
-            
-            redirect('');
-        }
-            function billings(){
-                //codes here
-            }*/
 
 ?>

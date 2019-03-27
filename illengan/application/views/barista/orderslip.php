@@ -5,58 +5,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'>
-    <meta name="viewport" content="width=device-width">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Il-Lengan | Barista Orders</title>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/bootstrap.css'?>">
+    <title>Il-Lengan | Orderslip </title>
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/bootstrap.css'?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/jquery.dataTables.css'?>">
   <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/dataTables.bootstrap4.css'?>">
   <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/style.css'?>">
 </head>
 <body>
-  <?php echo include_once('sideNavigation.php') ?>
-  
-  <div class="wrapper">
-        <div class="sidebar" data-color="brown" data-image="assets/media/barista/Coffee_1.jpg">
-            <!--Left Navigation Bar-->
-            <div class="sidebar-wrapper" style="overflow: hidden">
-                <div class="logo">
-                    <img src="assets/media/barista/logo_lg.png" alt="il-lengan-logo" img-align="center" width="225px"
-                        height="135px">
-                </div>
-
-                <ul class="nav">
-                    <li class="active">
-                        <a href="baristaOrders.html">
-                            <p>Orders</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="baristaBillings.html">
-                            <p>Billings</p>
-                            </a>
-                    </li>
-                    <li>
-                        <a href="baristaInventory.html">
-                            <p>Inventory</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="baristaNotifications.html">
-                            <p>Notifications</p>
-                        </a>
-                    </li>
-                    </ul>
-                </div>
+<div class="container">
+<div><a href="<?php echo site_url('barista/orders'); ?>" class="btn btn-info" role="button">Orderlist</a> &nbsp;
+            <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="btn  btn-info" role="button">Pending Orders</a> &nbsp;
+            <a href="<?php echo site_url('barista/servedStatus'); ?>" class="btn btn-info" role="button">Served Orders</a>
+            <a href="<?php echo site_url('barista/orderslip'); ?>" class="btn btn-info" role="button">Orderslip</a>
             </div>
-            
-            <table class="display" id="mydata" >
+            <table class="table table-striped" id="mydata" >
                 <thead>
                     <tr>
                         <th>Slip No.</th>
-                        <th>Order Item No.</th>
+                       <!-- <th>Order Item No.</th> -->
                         <th>Customer Name</th>
                         <th>Table</th>
                         <th>Order</th>
@@ -69,10 +35,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     
                 </tbody>
             </table>
-        </div>
-    </div>
+      </div>
         
-</div>
+
 
 <!-- MODAL EDIT -->
 <form>
@@ -124,7 +89,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                        <strong>Are you sure to remove this record?</strong>
                   </div>
                   <div class="modal-footer">
-                    <input type="hidden" name="order_item_id_remove" id="order_item_id_remove" class="form-control">
+                    <input type="hidden" name="order_id_remove" id="order_id_remove" class="form-control">
                     <button type="button" type="submit" id="btn_cancel" class="btn btn-primary">Yes</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                   </div>
@@ -154,7 +119,6 @@ $(document).ready(function() {
 		    },
             "aoColumns" : [
                 {data : 'order_id'},
-                {data : 'order_item_id'},
                 {data : 'cust_name'},
                 {
                   data: null,
@@ -166,13 +130,14 @@ $(document).ready(function() {
 
                 {data : 'order_desc'},
                 {data : 'order_qty'},
-                {data : 'item_status'},
-                /*{
+                {
                     data: null,
                     render: function ( data, type, row, meta) {
-                        return '<button class="btn '+ data.order_id +'" data-order_id="'+ data.order_id +'">'+ data +'</button>';
+                        return '<button id="status" class="status btn dt-buttons '+ data.item_status +
+                        '" data-order_item_id="'+ data.order_item_id +'"'+
+                        ' data-item_status="'+ data.item_status +'" onclick="change_status()">'+ data.item_status +'</button>';
                     }
-                },*/
+                },
       
                 {data: null,
                     render: function ( data, type, row, meta) {
@@ -183,6 +148,8 @@ $(document).ready(function() {
 
 		    ]
 	        } );
+
+});
 
 
 
@@ -219,22 +186,22 @@ $('#show_data').on('click','.item_edit',function(){
 
         //get data for delete record
         $('#show_data').on('click','.item_delete',function(){
-            var order_item_id = $(this).data('order_item_id');
+            var order_id = $(this).data('order_id');
             
             $('#Modal_Remove').modal('show');
-            $('[name="order_item_id_remove"]').val(order_item_id);
+            $('[name="order_id_remove"]').val(order_id);
         });
 
         //delete record to database
          $('#btn_cancel').on('click',function(){
-            var order_item_id = $('#order_item_id_remove').val();
+            var order_id = $('#order_id_remove').val();
             $.ajax({
                 type : "POST",
                 url  : "<?php echo site_url('barista/cancel')?>",
                 dataType : "JSON",
-                data : {order_item_id:order_item_id},
+                data : {order_id:order_id},
                 success: function(data){
-                    $('[name="order_item_id_remove"]').val("");
+                    $('[name="order_id_remove"]').val("");
                     alert("Record removed successfully!");
                     $('#Modal_Remove').modal('hide');
                     
@@ -243,8 +210,35 @@ $('#show_data').on('click','.item_edit',function(){
             });
             return false;
         });
-      } );
+
 //change status function
+$('.status').on('click', function() {
+        var orderItemId = $(this).data("order_item_id");
+        var itemStatus = $(this).data("item_status");
+        var item_status;
+        if(itemStatus === "pending") {
+            item_status = "ongoing";
+        } else if(itemStatus === "ongoing") {
+            item_status = "done";
+        } else if(itemStatus === "done") {
+            item_status = "served";
+        }else if(itemStatus === "served"){
+            item_status = "pending";
+        }
+    
+        // AJAX CODE FOR POSTING NEW STATUS
+        $.ajax({
+        type: 'POST',
+        url: 'http://www.illengan.com/barista/change_status',
+        data: {
+            order_item_id: orderItemId,
+            item_status: item_status
+        },
+        success: function() {
+            table.DataTable().ajax.reload(null, false);
+        }
+            });
+  });
 
 
 </script>

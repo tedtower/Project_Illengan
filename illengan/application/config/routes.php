@@ -94,6 +94,7 @@ $route['admin/transactions/delete'] = "admin/deletetransactions";
 $route['admin/sample'] = 'admin/samplemethod';
 
 //CUSTOMER ROUTES
+$route['customer/menu/orderlist/view'] = "customer/viewOrderList";
 $route['customer/processCheckIn'] = "customer/processCheckIn";
 $route['customer/promos'] = "customer/promos";
 $route['customer/menu/addorder'] = "customer/addOrder";
@@ -102,6 +103,11 @@ $route['customer/checkin'] = 'customer/checkIn';
 $route['customer/menu'] = "customer/view";
 
 // BARISTA ROUTES
+$route['barista/orders'] = "barista/index";
 $route['barista/billings'] = "barista/getbills";
 $route['barista/getBillDetails'] = "barista/getBillDetails";
 $route['barista/billings/setStatus'] = "barista/setbillstatus";
+
+// CHEF ROUTES
+$route['chef/get_orderlist'] = "chef/get_orderlist";
+$route['chef/change_status'] = "chef/change_status";
