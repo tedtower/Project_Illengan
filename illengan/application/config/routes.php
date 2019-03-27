@@ -105,3 +105,7 @@ $route['customer/menu'] = "customer/view";
 $route['barista/billings'] = "barista/getbills";
 $route['barista/getBillDetails'] = "barista/getBillDetails";
 $route['barista/billings/setStatus'] = "barista/setbillstatus";
+
+// CHEF ROUTES
+$route['chef/get_orderlist'] = "chef/get_orderlist";
+$route['chef/change_status'] = "chef/change_status";

@@ -201,6 +201,8 @@ class Customer extends CI_Controller {
 
 	function freebies() {
 		if($this->session->userdata('table_no')!= NULL){
+			$menu_id = $this->input->post('menu_id');
+			
 			$data = $this->customermodel->fetch_freebies();
 
 			echo json_encode($data);
