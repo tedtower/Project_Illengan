@@ -28,9 +28,10 @@ function promos() {
             };
 
 function freebie_promos() {
-    $('.13').on("click", function() {
-        var v_pref_id = $(this).data('id');
-        console.log(v_pref_id);
+        var sel = document.getElementById('sizeSelect');
+
+        // display value property of select list (from selected option)
+        console.log("yehey"+ sel.value );
 
         // $.ajax({
         //     url: 'http://www.illengan.com/customer/freebies',
@@ -46,6 +47,5 @@ function freebie_promos() {
                 
         //     }
         // });
-    });
     
 }
