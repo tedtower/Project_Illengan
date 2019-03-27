@@ -99,18 +99,36 @@ class Customer extends CI_Controller {
 	function addOrder() {
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
-				$this->load->library('cart');
+				$this->session->set_userdata('something','asjrlgkjanrjgnkajrg');
 				$preference = $this->customermodel->get_preference($this->input->post('preference'));
 				$data = array(
 					'id' => $this->input->post('preference'),
-					'name' =>$preference['order'],
+					'name' => $preference['order'],
 					'qty' => $this->input->post('quantity'),
-					'order_desc' => $preference['order'],
+					'orderDesc' => $preference['order'],
 					'subtotal' => $this->input->post('quantity')*$preference['pref_price'] ,
 					'remarks' => $this->input->post('remarks'),
 					'addons' => json_decode($this->input->post('addons'))
 				);
-				$this->cart->insert($data);//term for adding as a temporary order
+				if(!$this->session->has_userdata('orders')){
+					$this->session->set_userdata('orders',array());
+				}
+				$array = $this->session->userdata('orders');
+				array_push($array, $data);
+				$this->session->set_userdata('orders', $array);
+				//term for adding as a temporary order
+			}else{
+				redirect('customer/checkin');
+			}
+		}else{
+			redirect('login');
+		}
+	}
+
+	function viewOrderList(){
+		if($this->isLoggedIn()){
+			if($this->isCheckedIn()){
+				$this->output->set_output($this->session->userdata('orders'));
 			}else{
 				redirect('customer/checkin');
 			}
