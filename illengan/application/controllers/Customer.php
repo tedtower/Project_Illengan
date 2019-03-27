@@ -100,23 +100,21 @@ class Customer extends CI_Controller {
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
 				$this->session->set_userdata('something','asjrlgkjanrjgnkajrg');
-				$preference = $this->customermodel->get_preference($this->input->post('preference'));
-				$data = array(
-					'id' => $this->input->post('preference'),
-					'name' => $preference['order'],
-					'qty' => $this->input->post('quantity'),
-					'orderDesc' => $preference['order'],
-					'subtotal' => $this->input->post('quantity')*$preference['pref_price'] ,
-					'remarks' => $this->input->post('remarks'),
-					'addons' => json_decode($this->input->post('addons'))
-				);
-				if(!$this->session->has_userdata('orders')){
-					$this->session->set_userdata('orders',array());
-				}
-				$array = $this->session->userdata('orders');
-				array_push($array, $data);
-				$this->session->set_userdata('orders', $array);
-				//term for adding as a temporary order
+				// $preference = $this->customermodel->get_preference($this->input->post('preference'));
+				// $data = array(
+				// 	'id' => $this->input->post('preference'),
+				// 	'name' =>$preference['order'],
+				// 	'qty' => $this->input->post('quantity'),
+				// 	'orderDesc' => $preference['order'],
+				// 	'subtotal' => $this->input->post('quantity')*$preference['pref_price'] ,
+				// 	'remarks' => $this->input->post('remarks'),
+				// 	'addons' => json_decode($this->input->post('addons'))
+				// );
+				// if(!$this->session->has_userdata('orders')){
+				// 	$this->session->set_userdata('orders',array());
+				// }
+				// array_push($this->session->userdata('orders'), $data);
+				// //term for adding as a temporary order
 			}else{
 				redirect('customer/checkin');
 			}
@@ -128,7 +126,21 @@ class Customer extends CI_Controller {
 	function viewOrderList(){
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
-				$this->output->set_output($this->session->userdata('orders'));
+				// $orderslip = array();
+				// $this->output->set_output($this->session->userdata('orders'));
+				// foreach($this->session->userdata('orders') as $order){
+				// 	echo $order['id'];
+				// 	array_push($orderslip, array(
+				// 		"prefId" => $order['id'],
+				// 		"orderQty" => $order['qty'],
+				// 		"orderDesc" => $order['orderDesc'],
+				// 		"subtotal" => $order['subtotal'],
+				// 		"remarks" => $order['remarks'],
+				// 		"addons" => $order['addons']
+				// 	));
+				// }
+				// $this->output->set_output(json_encode($orderslip));
+				echo $this->session->userdata('something');
 			}else{
 				redirect('customer/checkin');
 			}
