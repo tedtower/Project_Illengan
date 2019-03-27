@@ -11,9 +11,8 @@
     <div class="d-inline-flex px-4 animated flipInX slow subcategory mb-2 delius">
         <h5 class="subcategory_label"><?php echo $subcategories->category_name; ?></h5>
     </div>
-
     <!-- Card group -->
-    <div class="d-flex flex-wrap mb-4">
+    <div class="d-flex flex-wrap mb-4 menu_group">
         <?php foreach($menu as $items) {
             if($subcategories->category_name == $items->category_name){ ?>
         <!-- Card -->
