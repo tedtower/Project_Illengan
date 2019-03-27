@@ -41,7 +41,7 @@
                             <h4 class="gab m-0"><i class="far fa-user-cog"></i> Preference</h4>
                             <select class="browser-default custom-select" id="sizeSelect" name="menu_size"></select>
                         </div>
-                        <input type="text" id="sizeInput" name="menu_size" value="" hidden>
+                        <input type="text" id="sizeInput" name="menu_size" data-price="" value="" hidden>
                     </div>
                     <!--Addons-->
                     <div class="mb-3" id="addonable">
@@ -59,7 +59,7 @@
                         <textarea class="form-control delius" name="notes" id="menu_note" rows="2"></textarea>
                     </div>
                     <!--Total Price-->
-                    <h3 class="gab">Total Price: <span id="menu_total">100</span>php</h3>
+                    <h3 class="gab">Total Price: <span id="menuSubtotal">100</span>php</h3>
                 </div>
                 <div class="text-center float-right">
                     <button type="button" class="btn btn-outline-accent px-3" data-dismiss="modal"
