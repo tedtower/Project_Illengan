@@ -21,6 +21,7 @@ class Login extends CI_Controller{
                 'user_type' => $loginAttempt[0]['account_type']
             );
             $this->session->set_userdata($user_data);
+            $this->homeRedirect();
         }else{
             $data['err'] = $loginAttempt;
             $this->load->view('login',$data);
@@ -36,7 +37,7 @@ class Login extends CI_Controller{
                 redirect('barista/billings');
                 break;
             case 'Chef':
-                redirect('chef/orders');
+                redirect('chef');
                 break;
             case 'Customer':
                 redirect('customer/menu');

@@ -70,7 +70,6 @@ class Customer extends CI_Controller {
 				$data['cart'] = $this->cart->contents();
 				$data['categories'] = $this->customermodel->fetch_category();
 				$data['menu'] = $this->customermodel->fetch_menu();
-				$data['promo'] = $this->customermodel->fetch_promo();
 				//$data['subcats'] = array_merge($this->customermodel->fetch_allsubcats(), 
 				//$this->customermodel->fetch_catswithmenu());
 				$data['subcats'] = $this->customermodel->fetch_allsubcats();
@@ -188,7 +187,7 @@ class Customer extends CI_Controller {
 
 	function promos() {
 		if($this->isLoggedIn()){
-			if(isCheckedIn()){
+			if($this->isCheckedIn()){
 				$data = $this->customermodel->fetch_promos();
 				echo json_encode($data);
 			}else{
@@ -201,6 +200,8 @@ class Customer extends CI_Controller {
 
 	function freebies() {
 		if($this->session->userdata('table_no')!= NULL){
+			$menu_id = $this->input->post('menu_id');
+			
 			$data = $this->customermodel->fetch_freebies();
 
 			echo json_encode($data);

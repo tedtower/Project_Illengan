@@ -30,7 +30,6 @@
                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                 </button>
                                 <div class="freebie" id="freebie">
-                                    <p>Hi!!!</p>
                                 </div>
                             </div>
                         </div>

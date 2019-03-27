@@ -16,7 +16,7 @@
   </a>
   <!-- END FOR ORDERS PILL -->
 
-  <a href="<?php echo base_url().'index.php/chef/index'?>">
+  <a href="<?php echo base_url().'chef'?>">
   <div class="select-nav-pill">
     <div class="icon-div active">
      
@@ -28,6 +28,17 @@
   </div>
   </a>
   <!-- END FOR NOTIFICATIONS -->
+  <a href="<?php echo base_url('login/logout')?>">
+  <div class="select-nav-pill">
+    <div class="icon-div active">
+     
+      <img id="icon" src="<?php echo base_url().'assets/media/navigation/sign-out-option.png' ?>">
+    </div>
+    <div class="nav-title">
+    <p>Sign Out</p>
+    </div>
+  </div>
+  </a>
 </div>
 
 </div>

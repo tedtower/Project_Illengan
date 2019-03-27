@@ -1,5 +1,5 @@
 promos();
-
+freebie_promos()
 
 function promos() {
     $(document).ready(function() {
@@ -8,6 +8,7 @@ function promos() {
             dataType : 'json',
             success: function(data) {
                 var i, d_menu_id, menu_id;
+                $('.indicate_promo').hide();
 
                 for(i = 0; i < data.length ; i++) {
                     if(data[i].promo_id != null) {
@@ -24,4 +25,27 @@ function promos() {
             });
                 }); 
      
-    };
+            };
+
+function freebie_promos() {
+    $('.13').on("click", function() {
+        var v_pref_id = $(this).data('id');
+        console.log(v_pref_id);
+
+        // $.ajax({
+        //     url: 'http://www.illengan.com/customer/freebies',
+        //     dataType: 'json',
+        //     success: function(data) {
+        //         var i;
+        //         var d_menu_id;
+        //         for(i = 0; i < data.length; i++) {
+        //             d_menu_id = data[i].menu_id;
+                    
+        //         }
+        //         console.log('database:'+ d_menu_id);
+                
+        //     }
+        // });
+    });
+    
+}

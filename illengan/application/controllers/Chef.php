@@ -30,18 +30,25 @@ class Chef extends CI_Controller {
 	}
 
 	function get_orderlist() {
+		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Chef'){
 		$data = $this->ChefModel->return_orderlist();
-
-        echo json_encode($data);
+		echo json_encode($data);
+		} else {
+			redirect('login');
+		}
 	}
 
 
 	function change_status() {
+		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Chef'){
 		$order_item_id = $this->input->post('order_item_id');
 		$item_status = $this->input->post('item_status');
 	
 		$this->ChefModel->update_status($order_item_id, $item_status);
 		$this->get_orderlist();
+		} else {
+			redirect('login');
+		}
 	}
 
 }

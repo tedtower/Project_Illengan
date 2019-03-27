@@ -15,9 +15,12 @@
             return $query->result();
         }
 
-        function fetch_freebies(){
-            $query = $this->db->query('SELECT * FROM (((menu INNER JOIN preferences USING (menu_id)) INNER JOIN promo_cons USING (pref_id)) INNER JOIN promo USING (promo_id)) INNER JOIN freebie USING (promo_id);');
-            return $query->result();
+        function fetch_freebies($pref_id){
+            $query = $this->db->query('SELECT * FROM (((menu INNER JOIN preferences USING (menu_id)) 
+            INNER JOIN promo_cons USING (pref_id)) 
+            INNER JOIN promo USING (promo_id)) 
+            INNER JOIN freebie USING (promo_id) WHERE pref_id = ?;');
+            return $this->db->query($query, array($pref_id))->result();
         }
 
 
@@ -44,11 +47,6 @@
         }
         function fetch_addon(){
             $query = $this->db->query('SELECT * FROM itemadd NATURAL JOIN addons WHERE ao_status = "enabled" ORDER BY ao_price ASC');
-            return $query->result();
-        }
-        function fetch_promo(){
-            $query = $this->db->query('SELECT md.promo_id AS dis_promo_id,md.pref_id AS dis_pref_id, dc_name, dc_amt,mf.promo_id AS fb_promo_id, mf.pref_id AS fb_pref_id, freebie_name,status FROM promo left join discounts AS d using (promo_id) left join freebie AS f using (promo_id) 
-            left join menu_discount AS md USING (promo_id) left join menu_freebie AS mf USING (promo_id) ');
             return $query->result();
         }
 

@@ -81,9 +81,10 @@ $(document).ready(function(){
         event.preventDefault();
     });
     $('a.menu_card').on('click',function(){
-        $('#sizeSelect').attr('disabled','disabled');    
+        $('#sizeSelect').attr('disabled','disabled'); 
         $("#sizeInput").val('');
         $('#sizeInput').attr('disabled','disabled');
+        $("#sizeSelect").empty();
         $('#sizeable').hide();
         $('#addonSelectBtn').attr('disabled','disabled');
         $('#ao_select_div').empty();
