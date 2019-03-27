@@ -5,30 +5,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'>
-    <meta name="viewport" content="width=device-width">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Il-Lengan | Barista Orders</title>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/bootstrap.css'?>">
+    <title>Il-Lengan | Orderslip </title>
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/bootstrap.css'?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/jquery.dataTables.css'?>">
   <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/dataTables.bootstrap4.css'?>">
   <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/style.css'?>">
 </head>
 <body>
-  <?php echo include_once('sideNavigation.php') ?>
- <div class="container">
-
-            <div><a href="<?php echo site_url('barista/orders'); ?>" class="btn btn-info" role="button">Orderlist</a> &nbsp;
-              <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="btn  btn-info" role="button">Pending Orders</a> &nbsp;
+<div class="container">
+<div><a href="<?php echo site_url('barista/orders'); ?>" class="btn btn-info" role="button">Orderlist</a> &nbsp;
+            <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="btn  btn-info" role="button">Pending Orders</a> &nbsp;
             <a href="<?php echo site_url('barista/servedStatus'); ?>" class="btn btn-info" role="button">Served Orders</a>
             <a href="<?php echo site_url('barista/orderslip'); ?>" class="btn btn-info" role="button">Orderslip</a>
             </div>
             <table class="table table-striped" id="mydata" >
                 <thead>
                     <tr>
-                        <!--<th>Slip No.</th> -->
-                        <th>Order Item No.</th>
+                        <th>Slip No.</th>
+                       <!-- <th>Order Item No.</th> -->
                         <th>Customer Name</th>
                         <th>Table</th>
                         <th>Order</th>
@@ -41,11 +35,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     
                 </tbody>
             </table>
-    </div>
+      </div>
         
 
 
-<!-- MODAL EDIT 
+<!-- MODAL EDIT -->
 <form>
             <div class="modal fade" id="Modal_Edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-lg" role="document">
@@ -78,7 +72,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               </div>
             </div>
             </form>
-        END MODAL EDIT-->
+        <!--END MODAL EDIT-->
 
         <!--MODAL DELETE-->
         <form>
@@ -124,10 +118,15 @@ $(document).ready(function() {
 			realtime: true
 		    },
             "aoColumns" : [
-                {data : 'order_item_id'},
+                {data : 'order_id'},
                 {data : 'cust_name'},
                 {
-                  data: 'table_code'},
+                  data: null,
+                    render: function ( data, type, row, meta) {
+                        return data.table_code+
+                            '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-order_id="'+data.order_id+'" data-table_code="'+data.table_code+'">Edit</a>';
+                    }        
+                },
 
                 {data : 'order_desc'},
                 {data : 'order_qty'},
@@ -155,7 +154,7 @@ $(document).ready(function() {
 
 
 //start of new function
-/*$('#show_data').on('click','.item_edit',function(){
+$('#show_data').on('click','.item_edit',function(){
             var order_id = $(this).data('order_id');
             var table_code        = $(this).data('table_code');
             
@@ -183,7 +182,7 @@ $(document).ready(function() {
                 }
             });
             return false;
-        });*/
+        });
 
         //get data for delete record
         $('#show_data').on('click','.item_delete',function(){

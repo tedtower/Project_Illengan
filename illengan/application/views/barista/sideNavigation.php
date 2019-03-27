@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="sidebar-wrapper" style="overflow: hidden">
                 <div class="logo">
                     <img src="<?php echo site_url('assets/media/barista/logo_lg.png')?>" alt="il-lengan-logo" style="img-align:center; width: 225px;
-                        height:135px">
+                        height:135px"/>
                 </div>
 
                 <ul class="nav">
