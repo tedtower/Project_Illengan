@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 
@@ -9,6 +10,8 @@
     <title>Il-Lengan | Admin Inventory</title>
     <!--Bootstrap core CSS-->
     <link href="assets/css/admin/bootstrap.min.css" rel="stylesheet" />
+    <!--Animation library for notifications-->
+    <link href="assets/css/admin/animate.min.css" rel="stylesheet" />
     <!--  Light Bootstrap Table core CSS    -->
     <link href="assets/css/admin/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" />
     <!--CSS for Demo Purpose, don't include it in your project-->
@@ -17,17 +20,21 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <link href="assets/common/fontstyles/pre-icon-7/pe-icon-7-stroke.css" rel="stylesheet" />
+
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="sidebar" data-color="brown" data-image="assets/media/admin/Coffee_1.jpg">
-            <!--Left Navigation Bar-->
-            <div class="sidebar-wrapper" style="overflow: hidden">
-                <div class="logo">
-                    <img src="assets/media/admin/logo_lg.png" alt="il-lengan-logo" img-align="center" width="225px"
-                        height="135px">
-                </div>
+
+    <body>
+
+        <div class="wrapper">
+            <div class="sidebar" data-color="brown" data-image="assets/media/admin/Coffee_1.jpg">
+                <!--Left Navigation Bar-->
+                <div class="sidebar-wrapper" style="overflow: hidden">
+                    <div class="logo">
+                        <img src="assets/media/admin/logo_lg.png" alt="il-lengan-logo" img-align="center" width="225px"
+                            height="135px">
+                    </div>
 
                     <ul class="nav">
                         <li>
@@ -50,6 +57,7 @@
                                 <p>Inventory</p>
                             </a>
                         </li>
+                        
                         <li>
                             <a href="adminTables.html">
                                 <p>Tables</p>
@@ -61,8 +69,18 @@
                             </a>
                         </li>
                         <li>
-                            <a href="addminAccounts.html">
+                            <a href="adminAccounts.html">
                                 <p>Accounts</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="adminTransactions.html">
+                                <p>Transactions</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="adminSpoilages.html">
+                                <p>Spoilages</p>
                             </a>
                         </li>
                     </ul>
@@ -322,7 +340,7 @@
     <script src="assets/js/admin/light-bootstrap-dashboard.js?v=1.4.0"></script>
     <!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
     <script src="assets/js/admin/demo.js"></script>
-    <!-- Script -->
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('#example').DataTable({
