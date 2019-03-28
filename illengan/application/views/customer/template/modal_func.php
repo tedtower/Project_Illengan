@@ -24,7 +24,7 @@ $(document).ready(function(){
         
     $("#quantity").on('change', function(){
         var quantity = 0;
-        if($(this).val()!= undefined ){
+        if(!isNaN(parseInt($(this).val()))){
             quantity = parseInt($(this).val());       
         }        
         if($("#sizeInput").is(":disabled")){
@@ -33,7 +33,7 @@ $(document).ready(function(){
             mainSubtotal = parseFloat($("#sizeInput").data("price"));
         }
         mainSubtotal = mainSubtotal*quantity;
-        mainSubtotal + mainSubtotal+addonSubtotal;
+        mainSubtotal = mainSubtotal+addonSubtotal;
         $("#menuSubtotal").text(mainSubtotal);
     });
 
@@ -43,7 +43,7 @@ $(document).ready(function(){
         if(!isNaN(parseInt($('#quantity').val()))){
             quantity = parseInt($('#quantity').val());
         }
-        if(!isNaN(parseInt($(this).find('option:selected').data('price')))){            
+        if(!isNaN(parseFloat($(this).find('option:selected').data('price')))){            
             mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price")) * quantity;
         }
         mainSubtotal = mainSubtotal+addonSubtotal;
@@ -63,10 +63,10 @@ $(document).ready(function(){
                     <option selected disabled>Choose...</option>
                 </select>
                 <input type="number" min="1" placeholder="Qty" aria-label="Add-on Quantity"
-                class="form-control" name="addon_qty[]">
+                class="form-control" name="addonQty[]">
                 <div class="input-group-prepend">
                     <!--Subtotal-->
-                    <span class="ao_subs mt-2 ml-1" id="lagay_ka_dito_ng_id">50.00</span>
+                    <span class="aoSub mt-2 ml-1" id=""></span>
                     <div class="rem_add mt-2">
                         <!--Delete Button-->
                         <a href="javascript:void(0)" class="text-danger ml-1 px-2"><i class="fal fa-times"></i></a>
@@ -82,9 +82,12 @@ $(document).ready(function(){
 
     $("input[name='addonQty[]']").on('change',function(){
         addonSubtotal = 0;
+        var aoSub = 0;
         $("input[name='addonQty[]']").each(function(index){            
             if(!isNaN(parseInt($("select[name='addon[]']").eq(index).val())) && !isNaN(parseInt($(this).val()))){
-                addonSubtotal = addonSubtotal+parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data("price")) * parseInt($(this).val());
+                aoSub = parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data("price")) * parseInt($(this).val());
+                $(".aoSub").eq(index).val(aoSub);
+                addonSubtotal = addonSubtotal+ aoSub;
             }
         });
         addonSubtotal = addonSubtotal+mainSubtotal;
@@ -93,9 +96,12 @@ $(document).ready(function(){
 
     $("select[name='addon[]']").on('change',function(){
         addonSubtotal = 0;
+        var aoSub = 0;
         $("select[name='addon[]']").each(function(index){            
             if(!isNaN(parseInt($("input[name='addonQty[]']").eq(index).val())) && !isNaN(parseFloat($(this).val()))){
-                addonSubtotal = addonSubtotal+parseFloat($(this).find('option:selected').data("price")) * parseInt($("input[name='addonQty[]']").eq(index).val());
+                aoSub = parseFloat($(this).find('option:selected').data("price")) * parseInt($("input[name='addonQty[]']").eq(index).val());
+                $(".aoSub").eq(index).val(aoSub);
+                addonSubtotal = addonSubtotal + aoSub;
             }
         });
         addonSubtotal = addonSubtotal+mainSubtotal;
@@ -200,7 +206,7 @@ function setModalContents(item_id){
                 }
             }else{
                 $("#sizeInput").removeAttr('disabled');
-                menu[0].pref_price = $("#sizeInput").data("price");
+                $("#sizeInput").attr("data-price", menu[0].pref_price);
                 $("#sizeInput").val(menu_pref[0].pref_id);
             }
             if(menu_addon.length > 0){
