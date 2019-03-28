@@ -111,7 +111,7 @@ $(document).ready(function(){
     $("#menumodalform").on('submit', function(event) {
         var prefId;
         if($("#sizeInput").is(":disabled")){
-            prefId = parseInt($("#sizeSelect > option:selected").data("id"));
+            prefId = parseInt($("#sizeSelect").val());
         }else{
             prefId = parseInt($("#sizeInput").val());
             
