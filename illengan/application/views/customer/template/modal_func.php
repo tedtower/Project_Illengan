@@ -67,7 +67,7 @@ $(document).ready(function(){
                 class="form-control" name="addonQty[]">
                 <div class="input-group-prepend">
                     <!--Subtotal-->
-                    <span class="aoSub mt-2 ml-1" id=""></span>
+                    <span class="aoSub mt-2 ml-1"></span>
                     <div class="rem_add mt-2">
                         <!--Delete Button-->
                         <a href="javascript:void(0)" class="text-danger ml-1 px-2"><i class="fal fa-times"></i></a>
@@ -87,7 +87,7 @@ $(document).ready(function(){
             $("input[name='addonQty[]']").each(function(index){            
                 if(!isNaN(parseInt($("select[name='addon[]']").eq(index).val())) && !isNaN(parseInt($(this).val()))){
                     aoSub = parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data("price")) * parseInt($(this).val());
-                    $(".aoSub").eq(index).val(aoSub);
+                    $("span[class~='aoSub']").eq(index).text(aoSub);
                     addonSubtotal = addonSubtotal+ aoSub;
                 }
             });
@@ -101,7 +101,7 @@ $(document).ready(function(){
             $("select[name='addon[]']").each(function(index){            
                 if(!isNaN(parseInt($("input[name='addonQty[]']").eq(index).val())) && !isNaN(parseFloat($(this).val()))){
                     aoSub = parseFloat($(this).find('option:selected').data("price")) * parseInt($("input[name='addonQty[]']").eq(index).val());
-                    $(".aoSub").eq(index).val(aoSub);
+                    $("span[class~='aoSub']").eq(index).text(aoSub);
                     addonSubtotal = addonSubtotal + aoSub;
                 }
             });
@@ -110,7 +110,7 @@ $(document).ready(function(){
         });
     });
 
-    $("#menumodalform").on('submit', function(event) {
+    $("#menumodalform").on('submit', function(event) {        
         event.preventDefault();
         var prefId;
         if($("#sizeInput").is(":disabled")){
