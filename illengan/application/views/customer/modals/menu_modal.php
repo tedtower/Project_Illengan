@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content" style="padding:0px;">
             <div class="modal-body">
-                <?php echo form_open('customer/menu/add_order', "id='menumodalform'");?>
+                <?php echo form_open('customer/menu/addOrder', "id='menumodalform'");?>
                 <input name="mID" id="mid" value="" hidden>
                 <img class="w-100 img-fluid" src="" id="menu_image">
                 <div class="d-flex justify-content-between gab rp-title">
@@ -36,11 +36,11 @@
                     </div>
                     <!--Preferences-->
                     <div class="input-group mb-3 delius" id="sizeable">
+                        <input type="text" id="sizeInput" data-price="" name="menu_size" value="" hidden="hidden">
                         <div class="w-100" id="menu_size">
                             <h4 class="gab m-0"><i class="far fa-user-cog"></i> Preference</h4>
                             <select class="browser-default custom-select" id="sizeSelect" name="menu_size"></select>
                         </div>
-                        <input type="text" id="sizeInput" data-price="" name="menu_size" value="" hidden="hidden">
                     </div>
                     <!--Addons-->
                     <div class="mb-3" id="addonable">
@@ -58,7 +58,7 @@
                         <textarea class="form-control delius" name="notes" id="menu_note" rows="2"></textarea>
                     </div>
                     <!--Total Price-->
-                    <h3 class="gab">Total Price: <span id="menuSubtotal"></span>php</h3>
+                    <h3 class="gab">Total Price: <span id="menuSubtotal"></span> php</h3>
                 </div>
                 <div class="text-center float-right">
                     <button type="button" class="btn btn-outline-accent px-3" data-dismiss="modal"

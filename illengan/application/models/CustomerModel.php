@@ -122,7 +122,7 @@
                         menu USING (menu_id)
                     WHERE
                         pref_id = ?;";
-            return $this->db->query($query, array($prefID))->result_array()[0];
+            return $this->db->query($query, array($prefID))->result_array();
         }
 
         // function get_addonsPrices(){

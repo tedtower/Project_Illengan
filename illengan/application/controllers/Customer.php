@@ -107,8 +107,8 @@ class Customer extends CI_Controller {
 	function addOrder() {
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
-				$preference = $this->customermodel->get_preference($this->input->post('preference'));
-				$addons = $this->customermodel->get_addonsPrices();
+				$preference = $this->customermodel->get_preference($this->input->post('preference'))[0];
+				//$addons = $this->customermodel->get_addonsPrices();
 				// $addonQtys = ;
 				$data = array(
 					'id' => $this->input->post('preference'),
@@ -116,9 +116,9 @@ class Customer extends CI_Controller {
 					'qty' => $this->input->post('quantity'),
 					'orderDesc' => $preference['order'],
 					'subtotal' => $this->input->post('quantity')*$preference['pref_price'] ,
-					'remarks' => $this->input->post('remarks'),
-					'addons' => json_decode($this->input->post('addons')),
-					'addonSUbtotals' => 'the subtotals'
+					'remarks' => $this->input->post('remarks')
+					//'addons' => json_decode($this->input->post('addons')),
+					//'addonSUbtotals' => 'the subtotals'
 				);
 				if(!$this->session->has_userdata('orders')){
 					$this->session->set_userdata('orders',array());
@@ -126,6 +126,7 @@ class Customer extends CI_Controller {
 				$array = $this->session->userdata('orders');
 				array_push($array, $data);
 				$this->session->set_userdata('orders', $array);
+				echo json_encode($preference);
 				//term for adding as a temporary order
 			}else{
 				redirect('customer/checkin');
@@ -135,10 +136,11 @@ class Customer extends CI_Controller {
 		}
 	}
 
-	function viewOrderList(){
+	function viewOrders(){
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
-				$this->output->set_output($this->session->userdata('orders'));
+				$this->output->set_output(json_encode($this->session->userdata('orders')));				
+				$this->output->set_output(json_encode($this->session->userdata('orders')));
 			}else{
 				redirect('customer/checkin');
 			}
