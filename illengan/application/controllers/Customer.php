@@ -109,6 +109,7 @@ class Customer extends CI_Controller {
 			if($this->isCheckedIn()){
 				$preference = $this->customermodel->get_preference($this->input->post('preference'));
 				$addons = $this->customermodel->get_addonsPrices();
+				// $addonQtys = ;
 				$data = array(
 					'id' => $this->input->post('preference'),
 					'name' => $preference['order'],
@@ -125,7 +126,7 @@ class Customer extends CI_Controller {
 				$array = $this->session->userdata('orders');
 				array_push($array, $data);
 				$this->session->set_userdata('orders', $array);
-				// //term for adding as a temporary order
+				//term for adding as a temporary order
 			}else{
 				redirect('customer/checkin');
 			}
@@ -138,6 +139,23 @@ class Customer extends CI_Controller {
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
 				$this->output->set_output($this->session->userdata('orders'));
+			}else{
+				redirect('customer/checkin');
+			}
+		}else{
+			redirect('login');
+		}
+	}
+
+	function completeOrder(){		
+		if($this->isLoggedIn()){
+			if($this->isCheckedIn()){
+				$orderDate = date("Y-m-d");
+				$tableCode = $this->session->userdata('table_no');
+				$customer = $this->session->userdata('cust_name');
+				$orderlist = $this->session->userdata('orders');
+				// foreach()
+				$this->customermodel->add_orderslip($tableCode, $customer, $orderlist, $orderDate);
 			}else{
 				redirect('customer/checkin');
 			}

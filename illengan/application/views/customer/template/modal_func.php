@@ -19,35 +19,33 @@ $(document).ready(function(){
         unsetModalContents();        
         var item_id = $(this).attr('id');
         setModalContents(item_id);        
+        $("#quantity").on('change', function(){
+            var quantity = 0;
+            if(!isNaN(parseInt($(this).val()))){
+                quantity = parseInt($(this).val());
+            }        
+            if($("#sizeInput").is(":disabled")){
+                mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
+            }else{
+                mainSubtotal = parseFloat($("#sizeInput").data("price"));
+            }
+            mainSubtotal = mainSubtotal*quantity;
+            mainSubtotal = mainSubtotal+addonSubtotal;
+            $("#menuSubtotal").text(mainSubtotal);
+        });
+        $("#sizeSelect").on('change',function(){
+            var quantity = 0;
+            mainSubtotal = 0;
+            if(!isNaN(parseInt($('#quantity').val()))){
+                quantity = parseInt($('#quantity').val());
+            }
+            if(!isNaN(parseFloat($(this).find('option:selected').data('price')))){            
+                mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price")) * quantity;
+            }
+            mainSubtotal = mainSubtotal+addonSubtotal;
+            $("#menuSubtotal").text(mainSubtotal);
+        });        
         $('#menu_modal').modal('show');
-    });
-        
-    $("#quantity").on('change', function(){
-        var quantity = 0;
-        if(!isNaN(parseInt($(this).val()))){
-            quantity = parseInt($(this).val());       
-        }        
-        if($("#sizeInput").is(":disabled")){
-            mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
-        }else{
-            mainSubtotal = parseFloat($("#sizeInput").data("price"));
-        }
-        mainSubtotal = mainSubtotal*quantity;
-        mainSubtotal = mainSubtotal+addonSubtotal;
-        $("#menuSubtotal").text(mainSubtotal);
-    });
-
-    $("#sizeSelect").on('change',function(){
-        var quantity = 0;
-        mainSubtotal = 0;
-        if(!isNaN(parseInt($('#quantity').val()))){
-            quantity = parseInt($('#quantity').val());
-        }
-        if(!isNaN(parseFloat($(this).find('option:selected').data('price')))){            
-            mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price")) * quantity;
-        }
-        mainSubtotal = mainSubtotal+addonSubtotal;
-        $("#menuSubtotal").text(mainSubtotal);
     });
 
     /*$(document).ready(function(){
@@ -198,7 +196,7 @@ function setModalContents(item_id){
                 $('#order-details').hide();
                 $('.save-order').hide();
             }
-            if(menu_pref.length !== 1){                
+            if(menu_pref.length > 1){                
                 $('#sizeable').show();                
                 $("#sizeSelect").removeAttr('disabled');
                 for(var x=0; x<menu_pref.length; x++){
@@ -206,8 +204,8 @@ function setModalContents(item_id){
                 }
             }else{
                 $("#sizeInput").removeAttr('disabled');
-                $("#sizeInput").attr("data-price", menu[0].pref_price);
-                $("#sizeInput").val(menu_pref[0].pref_id);
+                $("#sizeInput").attr("value", menu_pref[0].pref_id);
+                $("#sizeInput").attr("data-price", menu_pref[0].pref_price);
             }
             if(menu_addon.length > 0){
                 $("#addonSelectBtn").removeAttr('disabled');
