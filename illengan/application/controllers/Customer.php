@@ -135,10 +135,11 @@ class Customer extends CI_Controller {
 		}
 	}
 
-	function viewOrderList(){
+	function viewOrders(){
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
-				$this->output->set_output($this->session->userdata('orders'));
+				$this->output->set_output(json_encode($this->session->userdata('orders')));				
+				$this->output->set_output(json_decode(json_encode($this->session->userdata('orders'))));
 			}else{
 				redirect('customer/checkin');
 			}
@@ -196,6 +197,7 @@ class Customer extends CI_Controller {
 		}
 	}
 
+	
 	function promos() {
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
@@ -215,8 +217,6 @@ class Customer extends CI_Controller {
 			$data = $this->customermodel->fetch_freebies($pref_id);
 	
 			echo json_encode($data);
-			
-	
 	}
  }
 ?>

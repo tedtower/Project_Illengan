@@ -32,9 +32,10 @@ function promos() {
 
 function freebie_promos() {
         var e = document.getElementById("sizeSelect");
-        var v_pref_id = e.options[e.selectedIndex].value;
+        var v_pref_id = 13;
         var v_quantity;
         
+        console.log(v_pref_id);
         // if(typeof v_pref_id == undefined) {
         //     v_pref_id = document.getElementById("sizeInput").value;
         // } 
