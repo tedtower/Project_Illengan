@@ -19,17 +19,18 @@
                         <h4 class="gab m-0"><i class="far fa-sort-numeric-up"></i> Quantity</h4>
                         <div class="d-flex flex-row mr-5 w-100">
                             <div class="input-group-prepend">
-                                <button class="btn btn-md btn-light m-0 py-1 px-3 z-depth-0" type="button"
-                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                <button id="subQty" class="btn btn-md btn-light m-0 py-1 px-3 z-depth-0" type="button"
+                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown();freebie_promos()">
                                     <i class="fa fa-minus" aria-hidden="true"></i>
                                 </button>
                                 <input type="number" class="form-control text-center font-weight-bold px-3"
                                     name="order_quantity" id="quantity" min="1" value="1">
-                                <button class="btn btn-md btn-light m-0 py-1 px-3 z-depth-0" type="button"
-                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                <button id="addQty" class="btn btn-md btn-light m-0 py-1 px-3 z-depth-0" type="button"
+                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp();freebie_promos()">
                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                 </button>
                                 <div class="freebie" id="freebie">
+                                   
                                 </div>
                             </div>
                         </div>
@@ -42,6 +43,7 @@
                         </div>
                         <input type="text" id="sizeInput" name="menu_size" value="" hidden>
                     </div>
+                    <input type="hidden" id="prefId">
                     <!--Addons-->
                     <div class="mb-3" id="addonable">
                         <h4 class="gab m-0"><i class="far fa-layer-plus"></i> Add-ons</h4>

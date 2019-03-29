@@ -16,11 +16,13 @@
         }
 
         function fetch_freebies($pref_id){
-            $query = $this->db->query('SELECT * FROM (((menu INNER JOIN preferences USING (menu_id)) 
+            $query = $this->db->query('SELECT * FROM ((((menu 
+            INNER JOIN preferences pref USING (menu_id)) 
             INNER JOIN promo_cons USING (pref_id)) 
             INNER JOIN promo USING (promo_id)) 
-            INNER JOIN freebie USING (promo_id) WHERE pref_id = ?;');
-            return $this->db->query($query, array($pref_id))->result();
+            INNER JOIN freebie USING (promo_id)) 
+            inner join menu_freebie AS mf USING (promo_id) WHERE pref.pref_id = '.$pref_id.';');
+            return $query->result();
         }
 
 

@@ -120,11 +120,15 @@ $(document).ready(function(){
                     $('.save-order').hide();
                 }
                 if(menu_pref.length !== 1){                
-                    $('#sizeable').show();                
+                    $('#sizeable').show();     
+                            
                     $("#sizeSelect").removeAttr('disabled');
                     for(x=0; x<menu_pref.length; x++){
                         $('#sizeSelect').append('<option data-id="'+menu_pref[x].pref_id+'" data-name="'+menu_pref[x].size_name+'" value="'+menu_pref[x].pref_id+'">'+menu_pref[x].preference+'</option>');
                     }
+                    console.log($('#sizeSelect').val());
+                    $('#sizeSelect').attr('onchange','freebie_promos()') ;
+                    $('#quantity').attr('onchange','freebie_promos()') ;  
                 }else{
                     $("#sizeInput").removeAttr('disabled');
                     $("#sizeInput").val(menu_pref[0].pref_id);

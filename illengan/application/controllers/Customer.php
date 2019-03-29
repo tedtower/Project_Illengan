@@ -199,15 +199,12 @@ class Customer extends CI_Controller {
 	}
 
 	function freebies() {
-		if($this->session->userdata('table_no')!= NULL){
-			$menu_id = $this->input->post('menu_id');
-			
-			$data = $this->customermodel->fetch_freebies();
 
+			$pref_id = $this->input->post('pref_id');
+			$data = $this->customermodel->fetch_freebies($pref_id);
+	
 			echo json_encode($data);
-		}else{
-			redirect('customer/checkin');
-		}
+			
 	
 	}
  }
