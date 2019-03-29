@@ -3,9 +3,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     class BaristaModel extends CI_Model{
         
-        function view(){
+        function orderlist(){
             $this->load->database();
             $query = $this->db->query('SELECT * from orderslip join orderlist using (order_id) join preferences using (pref_id)');
+            return $query->result();
+        }
+
+        function show_orderslip(){
+            $this->load->database();
+            $query = $this->db->query('SELECT * from orderslip join orderlist using (order_id) join preferences using (pref_id) GROUP BY table_code');
             return $query->result();
         }
 
@@ -22,9 +28,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         function cancelOrder(){
-            $order_item_id=$this->input->post('order_item_id');
-            $this->db->where('order_item_id', $order_item_id);
-            $result=$this->db->delete('orderlist');
+            $order_id=$this->input->post('order_id');
+            $this->db->where('order_id', $order_id);
+            $result=$this->db->delete('orderslip');
             return $result;
         }
         
@@ -41,10 +47,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          return $query->result_array();
       }*/
 
-        function update_status($order_id, $menu_id, $item_status) {
+        function update_status($order_id, $order_desc, $item_status) {
             $data['item_status'] = $item_status;
-            $query = $this->db->query('UPDATE orderlist SET item_status = ? WHERE order_id = ? AND menu_id = ?');
-            $this->db->query($query, array($item_status, $order_id, $menu_id));
+            $query = $this->db->query('UPDATE orderlist SET item_status = ? WHERE order_item_id = ? AND order_id = ?');
+            $this->db->query($query, array($item_status, $order_item_id, $order_id));
         }
 
         function pending_orders(){

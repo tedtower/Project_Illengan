@@ -18,12 +18,18 @@ class Barista extends CI_Controller{
 
     function orders_b(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
-            $data= $this->baristamodel->view();
+            $data= $this->baristamodel->orderlist();
             echo json_encode($data);
             //Code Here
         }else{
             redirect('login');
         }
+    }
+
+    function orderslip(){
+        $this->load->view('barista/orderslip');
+        //$data = $this->baristamodel->show_orderslip();
+        //echo json_encode($data);
     }
 
     function getOrders(){
@@ -73,26 +79,27 @@ class Barista extends CI_Controller{
     
     function change_status() {
         $item_status = $this->input->post('item_status');
-        $menu_id = $this->input->post('menu_id');
+        $order_item_id = $this->input->post('order_item_id');
         $order_id = $this->input->post('order_id');
         
-        $this->baristaModel->update_status($order_id, $menu_id, $item_status);
+        $this->baristamodel->update_status($order_id, $order_item_id, $item_status);
         $this->get_orderlist();
     }
 
     function cancel(){
-        $data=$this->baristaModel->cancelOrder();
+        $data=$this->baristamodel->cancelOrder();
         echo json_encode($data);
     }
 
     function pendingStatus(){
-        $data = $this->baristaModel->pending_orders();
+        $this->load->view('barista/pendingOrders');
+        $data = $this->baristamodel->pending_orders();
         echo json_encode($data);
     }
 
     function servedStatus(){
         //$this->load->view('barista/pendingOrders');
-        $data = $this->baristaModel->served_orders();
+        $data = $this->baristamodel->served_orders();
         echo json_encode($data);
     }
 

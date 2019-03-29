@@ -7,43 +7,112 @@
     echo "var pref =".$pref_array.";\n";
     echo "var addon =".$addon_array.";\n";
 ?>
-var orders = [], oc=0;
-var selected_addons = [], ac=0;
-var order = "";
-var menu_addon;
+    var orders = [],
+        selected_addons = [],
+        oc=0, ac=0, order="",
+        menu_addon, mainSubtotal = 0,
+        addonSubtotal = 0;
+
 $(document).ready(function(){
-    $("select#size").change(function(){
-        var selectedPrice = $(this).children("option:selected").val();
-        $('span#menu_price').text(selectedPrice);
+    //On click Menu card
+    $('a.menu_card').on('click',function(){
+        unsetModalContents();        
+        var item_id = $(this).attr('id');
+        setModalContents(item_id);        
+        $("#quantity").on('change', function(){
+            var quantity = 1;
+            if(!isNaN(parseInt($(this).val()))){
+                quantity = parseInt($(this).val());
+            }else{
+                $(this).val(quantity);
+            }    
+            if($("#sizeInput").is(":disabled")){
+                mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
+            }else{
+                mainSubtotal = parseFloat($("#sizeInput").data("price"));
+            }
+            mainSubtotal = mainSubtotal*quantity;
+            mainSubtotal = mainSubtotal+addonSubtotal;
+            $("#menuSubtotal").text(mainSubtotal);
+        });
+
+        $("#sizeSelect").on('change',function(){
+            var quantity = 0;
+            mainSubtotal = 0;
+            if(!isNaN(parseInt($('#quantity').val()))){
+                quantity = parseInt($('#quantity').val());
+            }
+            if(!isNaN(parseFloat($(this).find('option:selected').data('price')))){            
+                mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price")) * quantity;
+            }
+            mainSubtotal = mainSubtotal+addonSubtotal;
+            $("#menuSubtotal").text(mainSubtotal);
+        });        
+        $('#menu_modal').modal('show');
     });
+
+    /*$(document).ready(function(){
+        $("select#size").change(function(){
+            var selectedPrice = $(this).children("option:selected").val();
+            $('span#menu_price').text(selectedPrice);
+    });*/
+
     $('#addonSelectBtn').on('click', function(event){
         var ao_select = `<!--Select For Addons-->
-                                <div class="input-group mb-3 delius">
-                                    <select class="browser-default custom-select w-50 addonSelect" name="addon[]">
-                                        <option selected disabled>Choose...</option>
-                                    </select>
-                                    <input type="number" min="1" placeholder="Qty" aria-label="Add-on Quantity"
-                                        class="form-control" name="addon_qty[]">
-                                    <div class="input-group-prepend">
-                                        <!--Subtotal-->
-                                        <span class="ao_subs mt-2 ml-1" id="lagay_ka_dito_ng_id">50.00</span>
-                                        <div class="rem_add mt-2">
-                                            <!--Delete Button-->
-                                            <a href="javascript:void(0)" class="text-danger ml-1 px-2"><i
-                                                    class="fal fa-times"></i></a>
-                                        </div>
-                                    </div>
-                                </div>`;
-        event.stopImmediatePropagation();    
-        $("#ao_select_div").append(ao_select);
-        for(var z=0; z<menu_addon.length; z++){
-            $('#ao_select_div select[name="addon[]"]').eq($("#ao_select_div").children().length-1).append('<option class="addons" id="'+menu_addon[z].ao_id+'" data-name="'+menu_addon[z].ao_name+'" value="'+menu_addon[z].ao_id+'">'+menu_addon[z].ao_name+' - '+menu_addon[z].ao_price+'php</option>');
-        }
+            <div class="input-group mb-3 delius">
+                <select class="browser-default custom-select w-50 addonSelect" name="addon[]">
+                    <option selected disabled>Choose...</option>
+                </select>
+                <input type="number" min="1" placeholder="Qty" aria-label="Add-on Quantity"
+                class="form-control" name="addonQty[]">
+                <div class="input-group-prepend">
+                    <!--Subtotal-->
+                    <span class="aoSub mt-2 ml-1" id=""></span>
+                    <div class="rem_add mt-2">
+                        <!--Delete Button-->
+                        <a href="javascript:void(0)" class="text-danger ml-1 px-2"><i class="fal fa-times"></i></a>
+                    </div>
+                </div>
+            </div>`;
+
+    event.stopImmediatePropagation();    
+    $("#ao_select_div").append(ao_select);
+    for(var z=0; z<menu_addon.length; z++){
+        $('#ao_select_div select[name="addon[]"]').eq($("#ao_select_div").children().length-1).append('<option class="addons" data-price="'+menu_addon[z].ao_price+'" data-name="'+menu_addon[z].ao_name+'" value="'+menu_addon[z].ao_id+'">'+menu_addon[z].ao_name+' - '+menu_addon[z].ao_price+'php</option>');
+    }
+
+    $("input[name='addonQty[]']").on('change',function(){
+        addonSubtotal = 0;
+        var aoSub = 0;
+        $("input[name='addonQty[]']").each(function(index){            
+            if(!isNaN(parseInt($("select[name='addon[]']").eq(index).val())) && !isNaN(parseInt($(this).val()))){
+                aoSub = parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data("price")) * parseInt($(this).val());
+                $(".aoSub").eq(index).val(aoSub);
+                addonSubtotal = addonSubtotal+ aoSub;
+            }
+        });
+        addonSubtotal = addonSubtotal+mainSubtotal;
+        $("#menuSubtotal").text(addonSubtotal);
     });
+
+    $("select[name='addon[]']").on('change',function(){
+        addonSubtotal = 0;
+        var aoSub = 0;
+        $("select[name='addon[]']").each(function(index){            
+            if(!isNaN(parseInt($("input[name='addonQty[]']").eq(index).val())) && !isNaN(parseFloat($(this).val()))){
+                aoSub = parseFloat($(this).find('option:selected').data("price")) * parseInt($("input[name='addonQty[]']").eq(index).val());
+                $(".aoSub").eq(index).val(aoSub);
+                addonSubtotal = addonSubtotal + aoSub;
+            }
+        });
+        addonSubtotal = addonSubtotal+mainSubtotal;
+        $("#menuSubtotal").text(addonSubtotal);
+    });
+
     $("#menumodalform").on('submit', function(event) {
         var prefId;
         if($("#sizeInput").is(":disabled")){
-            prefId = parseInt($("#sizeSelect > option:selected").data("id"));
+            prefId = parseInt($("#sizeSelect").val());
         }else{
             prefId = parseInt($("#sizeInput").val());
             
@@ -147,10 +216,37 @@ $(document).ready(function(){
                         $('div.rem_add').hide();
                     }
                 }
-                break;
+            }else{
+                $("#sizeInput").removeAttr('disabled');
+                $("#sizeInput").attr("value", menu_pref[0].pref_id);
+                $("#sizeInput").attr("data-price", menu_pref[0].pref_price);
             }
+            if(menu_addon.length > 0){
+                $("#addonSelectBtn").removeAttr('disabled');
+                $('#addonable').show();
+                // if(menu_addon.length != 1){
+                //     $('div.add_butt').show();
+                //     $('div.rem_add').show();
+                // }else{
+                //     $('div.add_butt').hide();
+                //     $('div.rem_add').hide();
+                //}
+            }
+            var quantity = 1;
+            if(!isNaN(parseInt($("#quantity").val()))){
+                quantity = parseInt($("#quantity").val());
+            }else{
+                $("#quantity").val(quantity);
+            }    
+            if($("#sizeInput").is(":disabled")){
+                $("#menuSubtotal").text(parseFloat($("#sizeSelect > option:selected").data("price"))*quantity);
+            }else{
+                $("#menuSubtotal").text(parseFloat($("#sizeInput").data("price"))*quantity);
+            }
+            break;
         }
-        $('#menu_modal').modal('show');
-    });
+    }
+}
+
 });
 </script>

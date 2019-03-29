@@ -126,6 +126,10 @@
                         pref_id = ?;";
             return $this->db->query($query, array($prefID))->result_array()[0];
         }
+
+        // function get_addonsPrices(){
+        //     $query = 
+        // }
         
         // function get_freebiepromo($menu_id){
         //     $query = "Select promo_id, from discounts inner join menu";
