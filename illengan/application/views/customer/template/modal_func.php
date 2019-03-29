@@ -20,10 +20,12 @@ $(document).ready(function(){
         var item_id = $(this).attr('id');
         setModalContents(item_id);        
         $("#quantity").on('change', function(){
-            var quantity = 0;
+            var quantity = 1;
             if(!isNaN(parseInt($(this).val()))){
                 quantity = parseInt($(this).val());
-            }        
+            }else{
+                $(this).val(quantity);
+            }    
             if($("#sizeInput").is(":disabled")){
                 mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
             }else{
@@ -33,6 +35,7 @@ $(document).ready(function(){
             mainSubtotal = mainSubtotal+addonSubtotal;
             $("#menuSubtotal").text(mainSubtotal);
         });
+
         $("#sizeSelect").on('change',function(){
             var quantity = 0;
             mainSubtotal = 0;
@@ -155,6 +158,7 @@ function setOrderslipModal(cart){
 
 function unsetModalContents(){        
     $('span#mid').text('');
+    $('#quantity').val(1);
     $('#sizeSelect').attr('disabled','disabled'); 
     $('#sizeSelect').empty();  
     $("#sizeInput").val('');
@@ -217,6 +221,17 @@ function setModalContents(item_id){
                 //     $('div.add_butt').hide();
                 //     $('div.rem_add').hide();
                 //}
+            }
+            var quantity = 1;
+            if(!isNaN(parseInt($("#quantity").val()))){
+                quantity = parseInt($("#quantity").val());
+            }else{
+                $("#quantity").val(quantity);
+            }    
+            if($("#sizeInput").is(":disabled")){
+                $("#menuSubtotal").text(parseFloat($("#sizeSelect > option:selected").data("price"))*quantity);
+            }else{
+                $("#menuSubtotal").text(parseFloat($("#sizeInput").data("price"))*quantity);
             }
             break;
         }
