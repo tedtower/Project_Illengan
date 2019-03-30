@@ -1,24 +1,6 @@
 <head>
-	<meta charset="UTF-8">
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'>
-	<meta name="viewport" content="width=device-width">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title>Il-Lengan | Admin Spoilages</title>
-	<!--Bootstrap core CSS-->
-	<link href="assets/css/admin/bootstrap.min.css" rel="stylesheet" />
-	<!--Animation library for notifications-->
-	<link href="assets/css/admin/animate.min.css" rel="stylesheet" />
-	<!--  Light Bootstrap Table core CSS    -->
-	<link href="assets/css/admin/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" />
-	<!--CSS for Demo Purpose, don't include it in your project-->
-	<link href="assets/css/admin/demo.css" rel="stylesheet" />
-	<!--Fonts and icons-->
-	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-	<link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' />
-	<link href="assets/common/fontstyles/pre-icon-7/pe-icon-7-stroke.css" rel="stylesheet" />
-
+<?php include_once('templates/head.php') ?>
 </head>
-
 <body>
 	<div class="wrapper">
 		<div class="sidebar" data-color="brown" data-image="assets/media/admin/Coffee_1.jpg">
@@ -72,7 +54,7 @@
 						</a>
 					</li>
 					<li class="active">
-						<a href="adminSpoilages.html">
+						<a href="http://www.illengan.com/admin/viewspoilages">
 							<p>Spoilages</p>
 						</a>
 					</li>
@@ -345,6 +327,6 @@
 		</div>
 	</div>
 
-<?php include_once('scripts.php') ?>
+<?php include_once('templates/scripts.php') ?>
 
 </body>
