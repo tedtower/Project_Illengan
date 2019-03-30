@@ -149,7 +149,6 @@ class Customer extends CI_Controller {
 	function viewOrders(){
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
-				$this->output->set_output(json_encode($this->session->userdata('orders')));				
 				$this->output->set_output(json_encode($this->session->userdata('orders')));
 			}else{
 				redirect('customer/checkin');

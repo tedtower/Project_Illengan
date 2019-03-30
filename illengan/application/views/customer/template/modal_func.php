@@ -12,7 +12,7 @@
         oc=0, ac=0, order="",
         menu_addon, mainSubtotal = 0,
         addonSubtotal = 0;
-
+ 
 $(document).ready(function(){
     //On click Menu card
     $('a.menu_card').on('click',function(){
