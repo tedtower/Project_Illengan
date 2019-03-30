@@ -124,7 +124,7 @@ $(document).ready(function(){
         var addonQtys = [];
         for (var index = 0; index < $(this).find("select[name='addon[]']").length; index++) {
             addonIds.push($(this).find("select[name='addon[]']").eq(index).val());
-            addonQtys.push($(this).find("input[name='addon_qty[]']").eq(index).val());
+            addonQtys.push($(this).find("input[name='addonQty[]']").eq(index).val());
         }
         $.ajax({
             method: "post",
@@ -134,8 +134,9 @@ $(document).ready(function(){
                 quantity: qty,
                 remarks: remarks,
                 addons: JSON.stringify({                
-                    "addon_id": addonIds,
-                    "addon_qty": addonQtys
+                    "addonIds": addonIds,
+                    "addonQtys": addonQtys,
+                    "addonSubtotals" : []
                 })            
             },
             beforeSend: function(){
@@ -144,8 +145,9 @@ $(document).ready(function(){
             success: function(data) {
                 console.log(data);
             },
-            error: function() {
-                alert("there was an error");
+            error: function(response,setting, errorThrown) {
+                console.log(response.responseText);
+                console.log(errorThrown);
             }
         });
     });
