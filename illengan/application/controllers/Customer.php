@@ -108,25 +108,35 @@ class Customer extends CI_Controller {
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
 				$preference = $this->customermodel->get_preference($this->input->post('preference'))[0];
-				//$addons = $this->customermodel->get_addonsPrices();
-				// $addonQtys = ;
+				$rawAddons = json_decode($this->input->post('addons'),true);
+				if(empty($rawAddons['addonIds'])){
+					$rawAddons = "";
+				}else{
+					$addonsPrices = $this->customermodel->get_addonPrices($rawAddons['addonIds']);					
+					for($index = 0 ; $index < count($rawAddons['addonIds']) ; $index++){
+						foreach($addonsPrices as $addon){
+							if($addon['ao_id'] == $rawAddons['addonIds'][$index]){
+								array_push($rawAddons['addonSubtotals'], $addon['ao_price']*$rawAddons['addonQtys'][$index]);
+							}
+						}
+					}
+				}
 				$data = array(
 					'id' => $this->input->post('preference'),
 					'name' => $preference['order'],
 					'qty' => $this->input->post('quantity'),
 					'orderDesc' => $preference['order'],
 					'subtotal' => $this->input->post('quantity')*$preference['pref_price'] ,
-					'remarks' => $this->input->post('remarks')
-					//'addons' => json_decode($this->input->post('addons')),
-					//'addonSUbtotals' => 'the subtotals'
+					'remarks' => $this->input->post('remarks'),
+					'addons' => $rawAddons
 				);
 				if(!$this->session->has_userdata('orders')){
 					$this->session->set_userdata('orders',array());
 				}
-				$array = $this->session->userdata('orders');
-				array_push($array, $data);
-				$this->session->set_userdata('orders', $array);
-				echo json_encode($preference);
+				$order = $this->session->userdata('orders');
+				array_push($order, $data);
+				$this->session->set_userdata('orders', $order);
+				echo json_encode($this->session->userdata('orders'));
 				//term for adding as a temporary order
 			}else{
 				redirect('customer/checkin');
