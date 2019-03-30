@@ -186,6 +186,15 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
+    function viewSpoilagesAo(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->model("adminmodel");
+            $data['spoilagesao'] = $this->adminmodel->get_spoilages_ao();
+            $this->load->view('admin/view_spoilages_ao', $data);
+        }else{
+            redirect('login');
+        }
+    }
     function viewStockCategories(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['category'] = $this->adminmodel->get_stockcategories();

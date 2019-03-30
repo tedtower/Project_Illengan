@@ -54,7 +54,7 @@
 						</a>
 					</li>
 					<li class="active">
-						<a href="http://www.illengan.com/admin/spoilages">
+						<a href="http://www.illengan.com/admin/viewspoilages">
 							<p>Spoilages</p>
 						</a>
 					</li>
@@ -71,7 +71,7 @@
 								<div class="card-header" data-background-color="brown">
 									<div class="nav-tabs-navigation">
 										<div class="nav-tabs-wrapper">
-											<ul class="nav nav-tabs" data-tabs="tabs" data-background-color="brown">
+                                        <ul class="nav nav-tabs" data-tabs="tabs" data-background-color="brown">
 												<li class="active">
 													<a href="http://www.illengan.com/admin/viewAllSpoilages">
 														All Spoilages
@@ -110,10 +110,6 @@
 								<!--Table-->
 								<div class="card-content">
 									<!--MODAL DAPAT TO-->
-									<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageAo" 
-										data-original-title style="float: left">Add Add-ons Spoilage</a>
-									<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageStock" 
-										data-original-title style="float: left">Add Stock Spoilage</a>
 									<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageMenu"
 										data-original-title style="float: left">Add Menu Spoilage</a>
 									
@@ -143,8 +139,8 @@
 										<tbody>
 										<?php
             
-											if (isset($spoilages)){
-												foreach ($spoilages as $row){
+											if (isset($spoilagesmenu)){
+												foreach ($spoilagesmenu as $row){
 													if($row['stype'] = 'm'){
 											?>
 											<!--Insert PHP-->
