@@ -67,7 +67,7 @@ $(document).ready(function(){
                 class="form-control" name="addonQty[]">
                 <div class="input-group-prepend">
                     <!--Subtotal-->
-                    <span class="aoSub mt-2 ml-1" id=""></span>
+                    <span class="aoSub mt-2 ml-1"></span>
                     <div class="rem_add mt-2">
                         <!--Delete Button-->
                         <a href="javascript:void(0)" class="text-danger ml-1 px-2"><i class="fal fa-times"></i></a>
@@ -75,38 +75,39 @@ $(document).ready(function(){
                 </div>
             </div>`;
 
-    event.stopImmediatePropagation();    
-    $("#ao_select_div").append(ao_select);
-    for(var z=0; z<menu_addon.length; z++){
-        $('#ao_select_div select[name="addon[]"]').eq($("#ao_select_div").children().length-1).append('<option class="addons" data-price="'+menu_addon[z].ao_price+'" data-name="'+menu_addon[z].ao_name+'" value="'+menu_addon[z].ao_id+'">'+menu_addon[z].ao_name+' - '+menu_addon[z].ao_price+'php</option>');
-    }
+        event.stopImmediatePropagation();    
+        $("#ao_select_div").append(ao_select);
+        for(var z=0; z<menu_addon.length; z++){
+            $('#ao_select_div select[name="addon[]"]').eq($("#ao_select_div").children().length-1).append('<option class="addons" data-price="'+menu_addon[z].ao_price+'" data-name="'+menu_addon[z].ao_name+'" value="'+menu_addon[z].ao_id+'">'+menu_addon[z].ao_name+' - '+menu_addon[z].ao_price+'php</option>');
+        }
 
-    $("input[name='addonQty[]']").on('change',function(){
-        addonSubtotal = 0;
-        var aoSub = 0;
-        $("input[name='addonQty[]']").each(function(index){            
-            if(!isNaN(parseInt($("select[name='addon[]']").eq(index).val())) && !isNaN(parseInt($(this).val()))){
-                aoSub = parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data("price")) * parseInt($(this).val());
-                $(".aoSub").eq(index).val(aoSub);
-                addonSubtotal = addonSubtotal+ aoSub;
-            }
+        $("input[name='addonQty[]']").on('change',function(){
+            addonSubtotal = 0;
+            var aoSub = 0;
+            $("input[name='addonQty[]']").each(function(index){            
+                if(!isNaN(parseInt($("select[name='addon[]']").eq(index).val())) && !isNaN(parseInt($(this).val()))){
+                    aoSub = parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data("price")) * parseInt($(this).val());
+                    $("span[class~='aoSub']").eq(index).text(aoSub);
+                    addonSubtotal = addonSubtotal+ aoSub;
+                }
+            });
+            addonSubtotal = addonSubtotal+mainSubtotal;
+            $("#menuSubtotal").text(addonSubtotal);
         });
-        addonSubtotal = addonSubtotal+mainSubtotal;
-        $("#menuSubtotal").text(addonSubtotal);
-    });
 
-    $("select[name='addon[]']").on('change',function(){
-        addonSubtotal = 0;
-        var aoSub = 0;
-        $("select[name='addon[]']").each(function(index){            
-            if(!isNaN(parseInt($("input[name='addonQty[]']").eq(index).val())) && !isNaN(parseFloat($(this).val()))){
-                aoSub = parseFloat($(this).find('option:selected').data("price")) * parseInt($("input[name='addonQty[]']").eq(index).val());
-                $(".aoSub").eq(index).val(aoSub);
-                addonSubtotal = addonSubtotal + aoSub;
-            }
+        $("select[name='addon[]']").on('change',function(){
+            addonSubtotal = 0;
+            var aoSub = 0;
+            $("select[name='addon[]']").each(function(index){            
+                if(!isNaN(parseInt($("input[name='addonQty[]']").eq(index).val())) && !isNaN(parseFloat($(this).val()))){
+                    aoSub = parseFloat($(this).find('option:selected').data("price")) * parseInt($("input[name='addonQty[]']").eq(index).val());
+                    $("span[class~='aoSub']").eq(index).text(aoSub);
+                    addonSubtotal = addonSubtotal + aoSub;
+                }
+            });
+            addonSubtotal = addonSubtotal+mainSubtotal;
+            $("#menuSubtotal").text(addonSubtotal);
         });
-        addonSubtotal = addonSubtotal+mainSubtotal;
-        $("#menuSubtotal").text(addonSubtotal);
     });
 
     $("#menumodalform").on('submit', function(event) {        
@@ -115,44 +116,41 @@ $(document).ready(function(){
         if($("#sizeInput").is(":disabled")){
             prefId = parseInt($("#sizeSelect").val());
         }else{
-            prefId = parseInt($("#sizeInput").val());
-            
-        }        
+            prefId = parseInt($("#sizeInput").attr('value'));
+        }
         var qty = parseInt($("#quantity").val());
         var remarks = $("#menu_note").val();
         var addonIds = [];
         var addonQtys = [];
         for (var index = 0; index < $(this).find("select[name='addon[]']").length; index++) {
             addonIds.push($(this).find("select[name='addon[]']").eq(index).val());
-            addonQtys.push($(this).find("input[name='addon_qty[]']").eq(index).val());
+            addonQtys.push($(this).find("input[name='addonQty[]']").eq(index).val());
         }
         $.ajax({
             method: "post",
-            url: "<?php echo site_url('customer/menu/addorder')?>",
+            url: "<?php echo site_url('customer/menu/addOrder')?>",
             data: {
                 preference: prefId,
                 quantity: qty,
                 remarks: remarks,
                 addons: JSON.stringify({                
-                    "addon_id": addonIds,
-                    "addon_qty": addonQtys
+                    "addonIds": addonIds,
+                    "addonQtys": addonQtys,
+                    "addonSubtotals" : []
                 })            
             },
             beforeSend: function(){
                 console.log(prefId, qty, remarks);
             },
-            success: function() {
-                alert("success!!");
+            success: function(data) {
+                console.log(data);
             },
-            error: function() {
-                alert("there was an error");
+            error: function(response,setting, errorThrown) {
+                console.log(response.responseText);
+                console.log(errorThrown);
             }
         });
     });
-
-});
-
-
 });
 
 function setOrderslipModal(cart){

@@ -128,12 +128,18 @@
                         menu USING (menu_id)
                     WHERE
                         pref_id = ?;";
-            return $this->db->query($query, array($prefID))->result_array()[0];
+            return $this->db->query($query, array($prefID))->result_array();
         }
 
-        // function get_addonsPrices(){
-        //     $query = 
-        // }
+        function get_addonPrices($addonIds){
+            $query = "SELECT 
+                            ao_id, ao_price
+                        FROM
+                            addons
+                        WHERE
+                            ao_id IN ?;";
+            return $this->db->query($query,array($addonIds))->result_array();
+        }
         
         // function get_freebiepromo($menu_id){
         //     $query = "Select promo_id, from discounts inner join menu";

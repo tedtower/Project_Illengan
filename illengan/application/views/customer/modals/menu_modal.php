@@ -35,11 +35,11 @@
                     </div>
                     <!--Preferences-->
                     <div class="input-group mb-3 delius" id="sizeable">
+                        <input type="text" id="sizeInput" data-price="" name="menu_size" value="" hidden="hidden">
                         <div class="w-100" id="menu_size">
                             <h4 class="gab m-0"><i class="far fa-user-cog"></i> Preference</h4>
                             <select class="browser-default custom-select" id="sizeSelect" name="menu_size"></select>
                         </div>
-                        <input type="text" id="sizeInput" data-price="" name="menu_size" value="" hidden="hidden">
                     </div>
                     <!--Freebies-->
                     <div class="freebiemain">
