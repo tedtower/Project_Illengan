@@ -14,7 +14,7 @@
                 <hr>
                 <div id="order-details">
                     <h2 class="text-center gab">Order Details</h2>
-                    <!--Quantity-->
+                    <!--Quantity--> 
                     <div class="md-form input-group mb-3 m-0 p-0 delius">
                         <h4 class="gab m-0"><i class="far fa-sort-numeric-up"></i> Quantity</h4>
                         <div class="d-flex flex-row mr-5 w-100">
@@ -29,8 +29,7 @@
                                     onclick="this.parentNode.querySelector('input[type=number]').stepUp();freebie_promos()">
                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                 </button>
-                                <div class="freebie" id="freebie">
-                                </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -41,6 +40,12 @@
                             <select class="browser-default custom-select" id="sizeSelect" name="menu_size"></select>
                         </div>
                         <input type="text" id="sizeInput" data-price="" name="menu_size" value="" hidden="hidden">
+                    </div>
+                    <!--Freebies-->
+                    <div class="freebiemain">
+                    <div class="freebie col-xs-12" id="freebie">
+                    <p class="please"><i>Please choose your freebie</i></p>
+                    </div>
                     </div>
                     <!--Addons-->
                     <div class="mb-3" id="addonable">

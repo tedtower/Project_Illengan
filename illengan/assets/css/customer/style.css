@@ -111,9 +111,28 @@ input .hc{
 input#addon-qty{
     width: 75px;
 }
+.freebiemain {
+    position: relative;
+    display: -webkit-box;
+    width: 100%;
+    padding-bottom: 10px;
+}
 
+.freebiemain p {
+    line-break: auto;
+    line-height: 0;
+    font-size: 15px;
+}
 .freebie {
+    position: relative;
+    display: inline-block;
     float: left;
-    padding-left: 20px;
-    padding-top: 10px;
+    padding-left: 10px;
+    padding-top: 1px;
+    width: 50%;
+}
+
+.freeBOpt {
+    position: relative;
+    width: 100%;
 }
