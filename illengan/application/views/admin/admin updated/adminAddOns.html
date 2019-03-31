@@ -23,7 +23,6 @@
 </head>
 
 <body>
-
     <div class="wrapper">
         <div class="sidebar" data-color="brown" data-image="assets/media/admin/Coffee_1.jpg">
             <!--Left Navigation Bar-->
@@ -201,8 +200,10 @@
                                                         <!-- <?php endif ?> -->
                                                     </div>
                                                 </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                </td>
                                 <!--End Table Content-->
                                 <!--Modal for Activation/Deactivation-->
                                 <div class="modal fade" id="deactivate" tabindex="-1" data-backdrop="static"
@@ -392,98 +393,98 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-    //     $('#example').DataTable({
-    //             "dom": ' fBrtip',
-    //             "lengthChange": false,
-    //             "info": true,
-    //             buttons: [
-    //                 {
-    //                     "extend": 'excel',
-    //                     "text": '<i class="fa fa-file-excel-o"></i> CSV',
-    //                     "className": 'btn btn-success btn-xs',
-    //                     exportOptions: {
-    //                         columns: [0, 1, 2, 3, 4, 5]
-    //                     }
-    //                 },
+        //     $('#example').DataTable({
+        //             "dom": ' fBrtip',
+        //             "lengthChange": false,
+        //             "info": true,
+        //             buttons: [
+        //                 {
+        //                     "extend": 'excel',
+        //                     "text": '<i class="fa fa-file-excel-o"></i> CSV',
+        //                     "className": 'btn btn-success btn-xs',
+        //                     exportOptions: {
+        //                         columns: [0, 1, 2, 3, 4, 5]
+        //                     }
+        //                 },
 
-    //                 "extend": 'pdf',
-    //                 "text": '<i class="fa fa-file-pdf-o"></i> PDF',
-    //                 "className": 'btn btn-danger btn-xs',
-    //                 "orientation": 'portrait',
-    //                 "title": 'Il-Lengan Inventory',
-    //                 "download": 'open',
+        //                 "extend": 'pdf',
+        //                 "text": '<i class="fa fa-file-pdf-o"></i> PDF',
+        //                 "className": 'btn btn-danger btn-xs',
+        //                 "orientation": 'portrait',
+        //                 "title": 'Il-Lengan Inventory',
+        //                 "download": 'open',
 
-    //                 "messageBottom":
-    //                 "\n \n \n \n \n Prepared by:  <?php echo $object->u_fname  . ' ' . $object->u_lname; ?>",
-    //                 styles: {
-    //                     "messageBottom": {
-    //                         bold: true,
-    //                         fontSize: 15
-    //                     }
-    //                 },
-    //                 "exportOptions": {
-    //                     columns: [0, 1, 2, 3, 4, 5],
+        //                 "messageBottom":
+        //                 "\n \n \n \n \n Prepared by:  <?php echo $object->u_fname  . ' ' . $object->u_lname; ?>",
+        //                 styles: {
+        //                     "messageBottom": {
+        //                         bold: true,
+        //                         fontSize: 15
+        //                     }
+        //                 },
+        //                 "exportOptions": {
+        //                     columns: [0, 1, 2, 3, 4, 5],
 
-    //                 },
+        //                 },
 
-    //                 "header": true,
-    //                 customize: function (doc) {
-    //                     var now = new Date();
-    //                     var jsDate = now.getDate() + '-' + (now.getMonth() + 1) + '-' + now
-    //                         .getFullYear();
-    //                     var logo = 'data:assets/img/logo.png';
-    //                     doc.content.splice(0, 1, {
-    //                         text: [{
-    //                             text: 'Il-Lengan Cafe.\n',
-    //                             bold: true,
-    //                             fontSize: 15
-    //                         }, {
-    //                             text: ' \n',
-    //                             bold: true,
-    //                             fontSize: 11
-    //                         }, {
-    //                             text: '',
-    //                             bold: true,
-    //                             fontSize: 11
-    //                         }],
-    //                         margin: [0, 0, 0, 20],
-    //                         alignment: 'center',
-    //                         image: logo
-    //                     });
-    //                     doc.content[1].table.widths = ['14%', '14%', '20%', '24%', '14%', '14%'];
-    //                     doc.pageMargins = [40, 40, 40, 40];
-    //                     doc['footer'] = (function (page, pages) {
-    //                         return {
-    //                             columns: [{
-    //                                     alignment: 'left',
-    //                                     text: ['Date Downloaded: ', {
-    //                                         text: jsDate.toString()
-    //                                     }]
-    //                                 },
-    //                                 {
-    //                                     alignment: 'right',
-    //                                     text: ['page ', {
-    //                                         text: page.toString()
-    //                                     }, ' of ', {
-    //                                         text: pages.toString()
-    //                                     }]
-    //                                 }
-    //                             ],
-    //                             margin: 20
-    //                         }
-    //                     });
-    //                 }
+        //                 "header": true,
+        //                 customize: function (doc) {
+        //                     var now = new Date();
+        //                     var jsDate = now.getDate() + '-' + (now.getMonth() + 1) + '-' + now
+        //                         .getFullYear();
+        //                     var logo = 'data:assets/img/logo.png';
+        //                     doc.content.splice(0, 1, {
+        //                         text: [{
+        //                             text: 'Il-Lengan Cafe.\n',
+        //                             bold: true,
+        //                             fontSize: 15
+        //                         }, {
+        //                             text: ' \n',
+        //                             bold: true,
+        //                             fontSize: 11
+        //                         }, {
+        //                             text: '',
+        //                             bold: true,
+        //                             fontSize: 11
+        //                         }],
+        //                         margin: [0, 0, 0, 20],
+        //                         alignment: 'center',
+        //                         image: logo
+        //                     });
+        //                     doc.content[1].table.widths = ['14%', '14%', '20%', '24%', '14%', '14%'];
+        //                     doc.pageMargins = [40, 40, 40, 40];
+        //                     doc['footer'] = (function (page, pages) {
+        //                         return {
+        //                             columns: [{
+        //                                     alignment: 'left',
+        //                                     text: ['Date Downloaded: ', {
+        //                                         text: jsDate.toString()
+        //                                     }]
+        //                                 },
+        //                                 {
+        //                                     alignment: 'right',
+        //                                     text: ['page ', {
+        //                                         text: page.toString()
+        //                                     }, ' of ', {
+        //                                         text: pages.toString()
+        //                                     }]
+        //                                 }
+        //                             ],
+        //                             margin: 20
+        //                         }
+        //                     });
+        //                 }
 
-    //             }
-    //         ]
-    //     });
-    // });
-    $('table tbody tr  td').on('click', function () {
-        $("#myModal").modal("show");
-        $("#txtfname").val($(this).closest('tr').children()[0].textContent);
-        $("#txtlname").val($(this).closest('tr').children()[1].textContent);
+        //             }
+        //         ]
+        //     });
+        // });
+        $('table tbody tr  td').on('click', function () {
+            $("#myModal").modal("show");
+            $("#txtfname").val($(this).closest('tr').children()[0].textContent);
+            $("#txtlname").val($(this).closest('tr').children()[1].textContent);
+        });
     });
-});
 </script>
 
 </html>

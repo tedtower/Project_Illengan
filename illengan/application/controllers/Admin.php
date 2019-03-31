@@ -10,7 +10,10 @@ class Admin extends CI_Controller{
     function viewAccounts(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['account'] = $this->adminmodel->get_accounts();
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/view_accounts',$data);
+            $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }   
@@ -74,8 +77,10 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['stock'] = $this->adminmodel->get_inventory();
             $data['category'] = $this->adminmodel->get_stockcategories();
-            $this->load->view('admin/admingeneralheader',$data);
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/inventory',$data);
+            $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
@@ -92,8 +97,10 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['menu'] = $this->adminmodel->get_menu();
             $data['category'] = $this->adminmodel->get_menucategories();
-            $this->load->view('admin/admingeneralheader',$data);
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/menuitems',$data);
+            $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
@@ -149,7 +156,10 @@ class Admin extends CI_Controller{
     function viewSales(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['sales'] = $this->adminmodel->get_sales();
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/sales',$data);
+            $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
@@ -157,7 +167,10 @@ class Admin extends CI_Controller{
     function viewSources(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['source'] = $this->adminmodel->get_sources();
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/sources',$data);
+            $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
@@ -167,6 +180,7 @@ class Admin extends CI_Controller{
             $this->load->model("adminmodel");
             $data['spoilages'] = $this->adminmodel->get_spoilages();
             $this->load->view('admin/view_spoilages', $data);
+            $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
@@ -175,6 +189,8 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model("adminmodel");
             $data['spoilagesmenu'] = $this->adminmodel->get_spoilages_menu();
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/view_spoilages_menu', $data);
         }else{
             redirect('login');
@@ -184,6 +200,8 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model("adminmodel");
             $data['spoilagesstock'] = $this->adminmodel->get_spoilages_stock();
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/view_spoilages_stock', $data);
         }else{
             redirect('login');
@@ -193,6 +211,8 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model("adminmodel");
             $data['spoilagesao'] = $this->adminmodel->get_spoilages_ao();
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/view_spoilages_ao', $data);
         }else{
             redirect('login');
@@ -201,6 +221,8 @@ class Admin extends CI_Controller{
     function viewStockCategories(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['category'] = $this->adminmodel->get_stockcategories();
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/inventorycategories',$data);
         }else{
             redirect('login');
@@ -209,7 +231,10 @@ class Admin extends CI_Controller{
     function viewTables(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['table'] = $this->adminmodel->get_tables();
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/tables',$data);
+            $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
@@ -218,8 +243,10 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['transactions'] = $this->adminmodel->get_transactions();
             $data['transitems'] = $this->adminmodel->get_transitems();
-            $this->load->view('admin/admingeneralheader');
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/transactions',$data);
+            $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
