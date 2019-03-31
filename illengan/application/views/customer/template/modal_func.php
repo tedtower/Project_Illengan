@@ -124,7 +124,12 @@ $(document).ready(function(){
                 if(!isNaN(parseInt($("select[name='addon[]']").eq(index).val())) && !isNaN(parseInt($(this).val()))){
                     aoSub = parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data("price")) * parseInt($(this).val());
                     $("span[class~='aoSub']").eq(index).text(aoSub);
-                    addonSubtotal = addonSubtotal+ aoSub;
+                    addonSubtotal += aoSub;
+                }else if(isNaN(parseInt($(this).val())) && !isNaN(parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data('price')))){
+                    $(this).val(1);
+                    aoSub = parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data('price'));
+                    addonSubtotal += aoSub;
+                    $("span[class~='aoSub']").eq(index).text(aoSub);
                 }
             });
             addonSubtotal = addonSubtotal+mainSubtotal;
@@ -141,9 +146,12 @@ $(document).ready(function(){
                     addonSubtotal = addonSubtotal + aoSub;
                 }else if(isNaN(parseInt($("input[name='addonQty[]']").eq(index).val())) && !isNaN(parseInt($(this).val()))){
                     $("input[name='addonQty[]']").eq(index).val(1);
+                    aoSub = parseFloat($(this).find('option:selected').data("price"));
+                    addonSubtotal += aoSub;
+                    $("span[class~='aoSub']").eq(index).text(aoSub);
                 }
             });
-            addonSubtotal = addonSubtotal+mainSubtotal;
+            addonSubtotal += mainSubtotal;
             $("#menuSubtotal").text(addonSubtotal);
         });
     });
@@ -270,10 +278,11 @@ function setModalContents(item_id){
                 $("#quantity").val(quantity);
             }    
             if($("#sizeInput").is(":disabled")){
-                $("#menuSubtotal").text(parseFloat($("#sizeSelect > option:selected").data("price"))*quantity);
+                mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"))*quantity;
             }else{
-                $("#menuSubtotal").text(parseFloat($("#sizeInput").data("price"))*quantity);
+                mainSubtotal = parseFloat($("#sizeInput").data("price"))*quantity;
             }
+            $("#menuSubtotal").text(mainSubtotal);
             break;
         }
     }
