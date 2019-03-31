@@ -38,7 +38,7 @@
                     </div>
                 </li>
                 <li class="nav-item"><!-- #order_modal -->
-                <a class="nav-link" data-toggle="modal" href="<?= site_url("customer/menu/vieworders")?>"><i class="fal fa-tasks"></i> Orders</a>
+                    <a class="nav-link" data-toggle="modal" href="#order_modal"><i class="fal fa-tasks"></i> Orders</a>
                 </li>
             </ul>
             <!-- Search form -->
