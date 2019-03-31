@@ -18,7 +18,43 @@ $(document).ready(function(){
     $('a.menu_card').on('click',function(){
         unsetModalContents();        
         var item_id = $(this).attr('id');
-        setModalContents(item_id);        
+        setModalContents(item_id);
+        $("#qtyIncrement").on('click',function(){            
+            var quantity = 1;
+            if(!isNaN(parseInt($('#quantity').val()))){
+                quantity = parseInt($("#quantity").val())+1;
+                $("#quantity").val(quantity);
+                console.log(quantity);
+            }else{
+                $("#quantity").val(quantity);
+            }    
+            if($("#sizeInput").is(":disabled")){
+                mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
+            }else{
+                mainSubtotal = parseFloat($("#sizeInput").data("price"));
+            }
+            mainSubtotal = mainSubtotal*quantity;
+            mainSubtotal = mainSubtotal+addonSubtotal;
+            $("#menuSubtotal").text(mainSubtotal);
+        });
+        $("#qtyDecrement").on('click',function(){            
+            var quantity = 1;
+            if(!isNaN(parseInt($('#quantity').val()))){ 
+                quantity = parseInt($("#quantity").val()) - 1;
+                $("#quantity").val(quantity);
+                console.log(quantity);
+            }else{
+                $("#quantity").val(quantity);
+            }    
+            if($("#sizeInput").is(":disabled")){
+                mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
+            }else{
+                mainSubtotal = parseFloat($("#sizeInput").data("price"));
+            }
+            mainSubtotal = mainSubtotal*quantity;
+            mainSubtotal = mainSubtotal+addonSubtotal;
+            $("#menuSubtotal").text(mainSubtotal);
+        });         
         $("#quantity").on('change', function(){
             var quantity = 1;
             if(!isNaN(parseInt($(this).val()))){
@@ -103,6 +139,8 @@ $(document).ready(function(){
                     aoSub = parseFloat($(this).find('option:selected').data("price")) * parseInt($("input[name='addonQty[]']").eq(index).val());
                     $("span[class~='aoSub']").eq(index).text(aoSub);
                     addonSubtotal = addonSubtotal + aoSub;
+                }else if(isNaN(parseInt($("input[name='addonQty[]']").eq(index).val())) && !isNaN(parseInt($(this).val()))){
+                    $("input[name='addonQty[]']").eq(index).val(1);
                 }
             });
             addonSubtotal = addonSubtotal+mainSubtotal;
