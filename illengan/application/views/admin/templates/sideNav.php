@@ -13,8 +13,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url('admin/menu')?>">
-                        <p>Menu Items</p>
+                    <a href="<?php echo base_url('admin/inventory')?>">
+                        <p>Inventory</p>
                     </a>
                 </li>
                 <li>
@@ -23,19 +23,29 @@
                     </a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url('admin/inventory')?>">
-                        <p>Inventory</p>
+                    <a href="<?php echo base_url('admin/spoilages')?>">
+                        <p>Spoilages</p>
                     </a>
                 </li>
 
                 <li>
-                    <a href="<?php echo base_url('admin/tables')?>">
-                        <p>Tables</p>
+                    <a href="<?php echo base_url('admin/transactions')?>">
+                        <p>Transactions</p>
                     </a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url('admin/reports')?>">
-                        <p>Reports</p>
+                    <a href="<?php echo base_url('admin/sources')?>">
+                        <p>Sources</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo base_url('admin/menu')?>">
+                        <p>Menu Items</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo base_url('admin/tables')?>">
+                        <p>Tables</p>
                     </a>
                 </li>
                 <li>
@@ -43,14 +53,9 @@
                         <p>Accounts</p>
                     </a>
                 </li>
-                <li class="active">
-                    <a href="<?php echo base_url('admin/transactions')?>">
-                        <p>Transactions</p>
-                    </a>
-                </li>
                 <li>
-                    <a href="<?php echo base_url('admin/spoilages')?>">
-                        <p>Spoilages</p>
+                    <a href="<?php echo base_url('admin/reports')?>">
+                        <p>Reports</p>
                     </a>
                 </li>
             </ul>
