@@ -18,38 +18,38 @@
                     </a>
                 </li>
                 <li>
-                    <a href="adminSales.html">
+                    <a <?php echo base_url().'application/views/admin/adminSales.html' ?>">
                         <p>Sales</p>
                     </a>
                 </li>
                 <li>
-                    <a href="adminInventory.html">
+                    <a <?php echo base_url().'application/views/admin/adminInventory.html' ?>">
                         <p>Inventory</p>
                     </a>
                 </li>
 
                 <li>
-                    <a href="adminTables.html">
+                    <a <?php echo base_url().'application/views/admin/adminTables.html' ?>">
                         <p>Tables</p>
                     </a>
                 </li>
                 <li>
-                    <a href="adminReports.html">
+                    <a <?php echo base_url().'application/views/admin/adminReports.html' ?>">
                         <p>Reports</p>
                     </a>
                 </li>
                 <li>
-                    <a href="adminAccounts.html">
+                    <a <?php echo base_url().'application/views/admin/adminAccounts.html' ?>">
                         <p>Accounts</p>
                     </a>
                 </li>
                 <li class="active">
-                    <a href="adminTransactions.html">
+                    <a <?php echo base_url().'application/views/admin/adminTransactions.html' ?>">
                         <p>Transactions</p>
                     </a>
                 </li>
                 <li>
-                    <a href="adminSpoilages.html">
+                    <a <?php echo base_url().'application/views/admin/adminSpoilages.html' ?>">
                         <p>Spoilages</p>
                     </a>
                 </li>
