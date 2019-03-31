@@ -1,5 +1,5 @@
 <!--Bootstrap core CSS-->
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/bootstrap.min.css'?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/common/frameworks/mdb/css/bootstrap.min.css'?>">
 <!--Animation library for notifications-->
 <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/animate.min.css'?>">
 <!--  Light Bootstrap Table core CSS    -->
