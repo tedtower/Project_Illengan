@@ -8,48 +8,48 @@
 
             <ul class="nav">
                 <li>
-                    <a href="<?php echo base_url().'application/views/admin/adminDashboard.html' ?>">
+                    <a href="<?php echo base_url('admin/dashboard') ?>">
                         <p>Dashboard</p>
                     </a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url().'application/views/admin/adminMenuItems.html' ?>">
+                    <a href="<?php echo base_url('admin/menu')?>">
                         <p>Menu Items</p>
                     </a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url().'application/views/admin/adminSales.html' ?>">
+                    <a href="<?php echo base_url('admin/sales')?>">
                         <p>Sales</p>
                     </a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url().'application/views/admin/adminInventory.html' ?>">
+                    <a href="<?php echo base_url('admin/inventory')?>">
                         <p>Inventory</p>
                     </a>
                 </li>
 
                 <li>
-                    <a href="<?php echo base_url().'application/views/admin/adminTables.html' ?>">
+                    <a href="<?php echo base_url('admin/tables')?>">
                         <p>Tables</p>
                     </a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url().'application/views/admin/adminReports.html' ?>">
+                    <a href="<?php echo base_url('admin/reports')?>">
                         <p>Reports</p>
                     </a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url().'application/views/admin/adminAccounts.html' ?>">
+                    <a href="<?php echo base_url('admin/accounts')?>">
                         <p>Accounts</p>
                     </a>
                 </li>
                 <li class="active">
-                    <a href="<?php echo base_url().'application/views/admin/adminTransactions.html' ?>">
+                    <a href="<?php echo base_url('admin/transactions')?>">
                         <p>Transactions</p>
                     </a>
                 </li>
                 <li>
-                    <a href="<?php echo base_url().'application/views/admin/adminSpoilages.html' ?>">
+                    <a href="<?php echo base_url('admin/spoilages')?>">
                         <p>Spoilages</p>
                     </a>
                 </li>

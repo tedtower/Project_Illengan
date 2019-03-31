@@ -1,4 +1,5 @@
-<!--   Core JS Files   -->
+
+</body><!--   Core JS Files   -->
 <script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.3.2.1.min.js'?>"></script>
 <script type="text/javascript" src="<?php echo base_url().'assets/js/admin/bootstrap.min.js'?>"></script>
 <!--  Charts Plugin -->

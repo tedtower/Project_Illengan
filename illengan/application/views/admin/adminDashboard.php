@@ -1,114 +1,14 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'>
-    <meta name="viewport" content="width=device-width">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Il-Lengan | Admin Dashboard</title>
-    <!--Bootstrap core CSS-->
-    <link href="assets/css/admin/bootstrap.min.css" rel="stylesheet" />
-    <!--Animation library for notifications-->
-    <link href="assets/css/admin/animate.min.css" rel="stylesheet" />
-    <!--  Light Bootstrap Table core CSS    -->
-    <link href="assets/css/admin/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" />
-    <!--CSS for Demo Purpose, don't include it in your project-->
-    <link href="assets/css/admin/demo.css" rel="stylesheet" />
-    <!--Fonts and icons-->
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
-    <link href="assets/common/fontstyles/pre-icon-7/pe-icon-7-stroke.css" rel="stylesheet" />
-
-</head>
-
-<body>
-
-    <div class="wrapper">
-        <div class="sidebar" data-color="brown" data-image="assets/media/admin/Coffee_1.jpg">
-            <!--Left Navigation Bar-->
-            <div class="sidebar-wrapper" style="overflow: hidden">
-                <div class="logo">
-                    <img src="assets/media/admin/logo_lg.png" alt="il-lengan-logo" img-align="center" width="225px"
-                        height="135px">
-                </div>
-
-                <ul class="nav">
-                    <li class="active">
-                        <a href="adminDashboard.html">
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="adminMenuItems.html">
-                            <p>Menu Items</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="adminSales.html">
-                            <p>Sales</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="adminInventory.html">
-                            <p>Inventory</p>
-                        </a>
-                    </li>
-                    
-                    <li>
-                        <a href="adminTables.html">
-                            <p>Tables</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="adminReports.html">
-                            <p>Reports</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="adminAccounts.html">
-                            <p>Accounts</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="adminTransactions.html">
-                            <p>Transactions</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="adminSpoilages.html">
-                            <p>Spoilages</p>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <!--Hamburger Nav
-            <nav class="navbar navbar-transparent navbar-absolute">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse">
-                            <span class="sr-only"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#"></a>
-                    </div>
-                </div>
-            </nav>-->
-        <!--End Side Bar-->
         <div class="content">
             <div class="container-fluid">
                 <p style="text-align:right; font-weight: regular; font-size: 16px">
-                    <!--!Real Time Date & Time
-                <?php echo date("M j, Y -l"); -->
+                    <!-- Real Time Date & Time -->
+                    <?php echo date("M j, Y -l"); ?>
                 </p>
                 <br>
                 <div class="row">
 
                     <div class="main-panel">
-                        <div class="content"  style="margin-top:5px;">
+                        <div class="content" style="margin-top:5px;">
                             <div class="container-fluid">
                                 <div class="row">
                                     <!--Card 1-->
@@ -120,7 +20,7 @@
                                             <div class="card-content">
                                                 <p class="category">Today's Total Sales</p>
                                                 <h3 class="title">
-                                                    <!--<?php echo number_format($data1['todaytotalsales']);-->
+                                                    <?php //echo number_format($data1['todaytotalsales']);?>
                                                 </h3>
                                             </div>
                                             <a href="adminSales.html">
@@ -141,7 +41,7 @@
                                             <div class="card-content">
                                                 <p class="category">Today's Total Revenue</p>
                                                 <h3 class="title">
-                                                    <!--<?php echo number_format($data1['todaytotalsales']);-->
+                                                    <?php //echo number_format($data1['todaytotalsales']);?>
                                                 </h3>
                                             </div>
                                             <a href="views/adminTotalRevenue.html">
@@ -162,7 +62,7 @@
                                             <div class="card-content">
                                                 <p class="category">Total Items</p>
                                                 <h3 class="title">
-                                                    <!--<?php echo number_format($data1['todaytotalsales']);-->
+                                                    <?php //echo number_format($data1['todaytotalsales']);?>
                                                 </h3>
                                             </div>
                                             <a href="views/adminTotalItems.html">
@@ -183,7 +83,7 @@
                                             <div class="card-content">
                                                 <p class="category">Needs Restock</p>
                                                 <h3 class="title">
-                                                    <!--<?php echo number_format($data1['todaytotalsales']);-->
+                                                    <?php //echo number_format($data1['todaytotalsales']);?>
                                                 </h3>
                                             </div>
                                             <a href="views/adminNeedRestocks.html">
@@ -284,19 +184,5 @@
                         </div>
                     </div>
                 </div>
-
-
-</body>
-
-    <!--   Core JS Files   -->
-    <script src="assets/js/admin/jquery.3.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/js/admin/bootstrap.min.js" type="text/javascript"></script>
-    <!--  Charts Plugin -->
-    <script src="assets/js/admin/chartist.min.js"></script>
-    <!--  Notifications Plugin    -->
-    <script src="assets/js/admin/bootstrap-notify.js"></script>
-    <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
-    <script src="assets/js/admin/light-bootstrap-dashboard.js?v=1.4.0"></script>
-    <!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
-    <script src="assets/js/admin/demo.js"></script>
-</html>
+            </div>
+        </div>

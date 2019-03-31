@@ -62,7 +62,10 @@ class Admin extends CI_Controller{
 }
     function viewDashboard(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin/dashboard');
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');            
+            $this->load->view('admin/adminDashboard');            
+            $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
