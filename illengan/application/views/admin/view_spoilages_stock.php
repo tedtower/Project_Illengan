@@ -2,7 +2,65 @@
 <?php include_once('templates/head.php') ?>
 </head>
 <body>
-<?php include_once('templates/sideNav.php') ?>
+	<div class="wrapper">
+		<div class="sidebar" data-color="brown" data-image="assets/media/admin/Coffee_1.jpg">
+			<!--Left Navigation Bar-->
+			<div class="sidebar-wrapper" style="overflow: hidden">
+				<div class="logo">
+					<img src="assets/media/admin/logo_lg.png" alt="il-lengan-logo" img-align="center" width="225px"
+						height="135px">
+				</div>
+
+				<ul class="nav">
+					<li>
+						<a href="adminDashboard.html">
+							<p>Dashboard</p>
+						</a>
+					</li>
+					<li>
+						<a href="adminMenuItems.html">
+							<p>Menu Items</p>
+						</a>
+					</li>
+					<li>
+						<a href="adminSales.html">
+							<p>Sales</p>
+						</a>
+					</li>
+					<li>
+						<a href="adminInventory.html">
+							<p>Inventory</p>
+						</a>
+					</li>
+
+					<li>
+						<a href="adminTables.html">
+							<p>Tables</p>
+						</a>
+					</li>
+					<li>
+						<a href="adminReports.html">
+							<p>Reports</p>
+						</a>
+					</li>
+					<li>
+						<a href="adminAccounts.html">
+							<p>Accounts</p>
+						</a>
+					</li>
+					<li>
+						<a href="adminTransactions.html">
+							<p>Transactions</p>
+						</a>
+					</li>
+					<li class="active">
+						<a href="http://www.illengan.com/admin/viewspoilages">
+							<p>Spoilages</p>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 		<!--End Side Bar-->
 		<div class="main-panel">
 			<div class="content" style="margin-top: 5px;">
@@ -13,7 +71,7 @@
 								<div class="card-header" data-background-color="brown">
 									<div class="nav-tabs-navigation">
 										<div class="nav-tabs-wrapper">
-											<ul class="nav nav-tabs" data-tabs="tabs" data-background-color="brown">
+										<ul class="nav nav-tabs" data-tabs="tabs" data-background-color="brown">
 												<li class="active">
 													<a href="http://www.illengan.com/admin/viewAllSpoilages">
 														All Spoilages
@@ -52,14 +110,8 @@
 								<!--Table-->
 								<div class="card-content">
 									<!--MODAL DAPAT TO-->
-									<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageAo" 
-										data-original-title style="float: left">Add Add-ons Spoilage</a>
 									<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageStock" 
 										data-original-title style="float: left">Add Stock Spoilage</a>
-									<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageMenu"
-										data-original-title style="float: left">Add Menu Spoilage</a>
-									
-
 									<!--Search
                             <div id ="example_filter" class="dataTables_filter">
                                 <label>
@@ -85,14 +137,14 @@
 										<tbody>
 										<?php
             
-											if (isset($spoilages)){
-												foreach ($spoilages as $row){
+											if (isset($spoilagesstock)){
+												foreach ($spoilagesstock as $row){
 													if($row['stype'] = 'm'){
 											?>
 											<!--Insert PHP-->
 											<tr>
 											<td><?php echo $row['s_id']; ?></td>
-											<td><?php echo $row['menu_name']; ?></td>
+											<td><?php echo $row['stock_name']; ?></td>
 											<td><?php echo $row['s_qty']; ?></td>
 											<td><?php echo $row['s_date']; ?></td>
 											<td><?php echo $row['date_recorded']; ?></td>

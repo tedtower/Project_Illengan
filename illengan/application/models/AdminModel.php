@@ -247,7 +247,11 @@ class AdminModel extends CI_Model{
         return  $this->db->query($query)->result_array();
     }
     function get_spoilages_stock(){
-        $query = "s_id, stock_name,s_qty,stock_unit,sdate, date_recorded, remarks from spoilages inner join stockspoil using (s_id) inner join stockitems using (stock_id)";
+        $query = "Select s_id, stock_name,s_qty,stock_unit,s_date, date_recorded, remarks from spoilage inner join stockspoil using (s_id) inner join stockitems using (stock_id)";
+        return  $this->db->query($query)->result_array();
+    }
+    function get_spoilages_ao(){
+        $query = "Select s_id, ao_name,s_qty, ao_category,s_date, date_recorded, remarks from spoilage INNER JOIN ao_spoil using (s_id)INNER JOIN addons using (ao_id)";
         return  $this->db->query($query)->result_array();
     }
     function get_tables(){
