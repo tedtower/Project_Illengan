@@ -2,7 +2,7 @@
 <?php include_once('templates/head.php') ?>
 </head>
 <body>
-<?php include_once('navigation.php') ?>
+<?php include_once('templates/sideNav.php') ?>
 		<!--End Side Bar-->
 		<div class="main-panel">
 			<div class="content" style="margin-top: 5px;">
