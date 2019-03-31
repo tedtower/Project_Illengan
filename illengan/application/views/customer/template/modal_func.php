@@ -126,6 +126,7 @@ $(document).ready(function(){
             addonIds.push($(this).find("select[name='addon[]']").eq(index).val());
             addonQtys.push($(this).find("input[name='addonQty[]']").eq(index).val());
         }
+        $('#menu_modal').modal('hide');
         $.ajax({
             method: "post",
             url: "<?php echo site_url('customer/menu/addOrder')?>",
@@ -143,6 +144,7 @@ $(document).ready(function(){
                 console.log(prefId, qty, remarks);
             },
             success: function(data) {
+                alert("Menu has been added in the orderlist.");
                 console.log(data);
             },
             error: function(response,setting, errorThrown) {
@@ -238,4 +240,5 @@ function setModalContents(item_id){
         }
     }
 }
+
 </script>
