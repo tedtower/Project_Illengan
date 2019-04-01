@@ -23,7 +23,6 @@
 </head>
 
 <body>
-
     <div class="wrapper">
         <div class="sidebar" data-color="brown" data-image="assets/media/admin/Coffee_1.jpg">
             <!--Left Navigation Bar-->
@@ -153,58 +152,72 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <!--   Core JS Files   -->
-                            <script src="assets/js/admin/jquery.3.2.1.min.js" type="text/javascript"></script>
-                            <script src="assets/js/admin/bootstrap.min.js" type="text/javascript"></script>
-                            <!--  Charts Plugin -->
-                            <script src="assets/js/admin/chartist.min.js"></script>
-                            <!--  Notifications Plugin    -->
-                            <script src="assets/js/admin/bootstrap-notify.js"></script>
-                            <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
-                            <script src="assets/js/admin/light-bootstrap-dashboard.js?v=1.4.0"></script>
-                            <!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
-                            <script src="assets/js/admin/demo.js"></script>
-                            <!--Script-->
-                            <script>
-                                $(document).ready(function () {
-                                    var counter = 0;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<!--   Core JS Files   -->
+<script src="assets/js/admin/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="assets/js/admin/bootstrap.min.js" type="text/javascript"></script>
+<!--  Charts Plugin -->
+<script src="assets/js/admin/chartist.min.js"></script>
+<!--  Notifications Plugin    -->
+<script src="assets/js/admin/bootstrap-notify.js"></script>
+<!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
+<script src="assets/js/admin/light-bootstrap-dashboard.js?v=1.4.0"></script>
+<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
+<script src="assets/js/admin/demo.js"></script>
+<!--Script-->
+<script>
+    $(document).ready(function () {
+        var counter = 0;
 
-                                    $("#addrow").on("click", function () {
-                                        var newRow = $("<tr>");
-                                        var cols = "";
+        $("#addrow").on("click", function () {
+            var newRow = $("<tr>");
+            var cols = "";
 
-                                        cols += '<td><input type="text" class="form-control" name="quantity' + counter + '"/></td>';
-                                        cols += '<td><input type="text" class="form-control" name="description' + counter + '"/></td>';
-                                        cols += '<td><input type="text" class="form-control" name="totalPrice' + counter + '"/></td>';
+            cols +=
+                '<td><input type="text" class="form-control" name="quantity' +
+                counter + '"/></td>';
+            cols +=
+                '<td><input type="text" class="form-control" name="description' +
+                counter + '"/></td>';
+            cols +=
+                '<td><input type="text" class="form-control" name="totalPrice' +
+                counter + '"/></td>';
 
-                                        cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
-                                        newRow.append(cols);
-                                        $("table.order-list").append(newRow);
-                                        counter++;
-                                    });
-
-
-
-                                    $("table.order-list").on("click", ".ibtnDel", function (event) {
-                                        $(this).closest("tr").remove();
-                                        counter -= 1
-                                    });
-
-
-                                });
+            cols +=
+                '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
+            newRow.append(cols);
+            $("table.order-list").append(newRow);
+            counter++;
+        });
 
 
 
-                                function calculateRow(row) {
-                                    var price = +row.find('input[name^="price"]').val();
+        $("table.order-list").on("click", ".ibtnDel", function (event) {
+            $(this).closest("tr").remove();
+            counter -= 1
+        });
 
-                                }
 
-                                function calculateGrandTotal() {
-                                    var grandTotal = 0;
-                                    $("table.order-list").find('input[name^="price"]').each(function () {
-                                        grandTotal += +$(this).val();
-                                    });
-                                    $("#grandtotal").text(grandTotal.toFixed(2));
-                                }
-                            </script>
+    });
+
+
+
+    function calculateRow(row) {
+        var price = +row.find('input[name^="price"]').val();
+
+    }
+
+    function calculateGrandTotal() {
+        var grandTotal = 0;
+        $("table.order-list").find('input[name^="price"]').each(function () {
+            grandTotal += +$(this).val();
+        });
+        $("#grandtotal").text(grandTotal.toFixed(2));
+    }
+</script>

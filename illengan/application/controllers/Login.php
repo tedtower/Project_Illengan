@@ -31,7 +31,7 @@ class Login extends CI_Controller{
     function homeRedirect(){        
         switch ($this->session->userdata('user_type')){
             case 'Admin':
-                redirect('admin/menu');
+                redirect('admin/dashboard');
                 break;
             case 'Barista':
                 redirect('barista/billings');

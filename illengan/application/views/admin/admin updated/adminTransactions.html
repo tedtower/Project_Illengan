@@ -285,7 +285,7 @@
 
                                                         <div class="col-md-6 form-group">
                                                             <div class="form-group label-floating">
-                                                                <label for="email">Status</label>                                                                                                                
+                                                                <label for="email">Status</label>
                                                                 <input class="form-control" value="" type="number"
                                                                     name="status" min="0"
                                                                     oninput="validity.valid||(value='');"
@@ -359,7 +359,7 @@
             </div>
         </div>
 
-
+    </div>
 </body>
 
 <!--   Core JS Files   -->
@@ -373,79 +373,88 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#example').DataTable({
-            "dom": ' fBrtip',
-            "lengthChange": false,
-            "info": true,
-            buttons: [
+                "dom": ' fBrtip',
+                "lengthChange": false,
+                "info": true,
+                buttons: [
 
 
-                {
-                    "extend": 'excel', "text": '<i class="fa fa-file-excel-o"></i> CSV', "className": 'btn btn-success btn-xs',
-                    exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5]
-                    }
-                },
+                    {
+                        "extend": 'excel',
+                        "text": '<i class="fa fa-file-excel-o"></i> CSV',
+                        "className": 'btn btn-success btn-xs',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5]
+                        }
+                    },
 
-                "extend": 'pdf',
-                "text": '<i class="fa fa-file-pdf-o"></i> PDF',
-                "className": 'btn btn-danger btn-xs',
-                "orientation": 'portrait',
-                "title": 'Il-Lengan Inventory',
-                "download": 'open',
+                    "extend": 'pdf',
+                    "text": '<i class="fa fa-file-pdf-o"></i> PDF',
+                    "className": 'btn btn-danger btn-xs',
+                    "orientation": 'portrait',
+                    "title": 'Il-Lengan Inventory',
+                    "download": 'open',
 
-                "messageBottom": "\n \n \n \n \n Prepared by:  <?php echo $object->u_fname  . ' ' . $object->u_lname; ?>",
-                styles: {
-                    "messageBottom": {
-                        bold: true,
-                        fontSize: 15
-                    }
-                },
-                "exportOptions": {
-                    columns: [0, 1, 2, 3, 4, 5],
-
-                },
-
-                "header": true,
-                customize: function (doc) {
-                    var now = new Date();
-                    var jsDate = now.getDate() + '-' + (now.getMonth() + 1) + '-' + now.getFullYear();
-                    var logo = 'data:assets/img/logo.png';
-                    doc.content.splice(0, 1, {
-                        text: [{
-                            text: 'Il-Lengan Cafe.\n',
+                    "messageBottom":
+                    "\n \n \n \n \n Prepared by:  <?php echo $object->u_fname  . ' ' . $object->u_lname; ?>",
+                    styles: {
+                        "messageBottom": {
                             bold: true,
                             fontSize: 15
-                        }, {
-                            text: ' \n',
-                            bold: true,
-                            fontSize: 11
-                        }, {
-                            text: '',
-                            bold: true,
-                            fontSize: 11
-                        }],
-                        margin: [0, 0, 0, 20],
-                        alignment: 'center',
-                        image: logo
-                    });
-                    doc.content[1].table.widths = ['14%', '14%', '20%', '24%', '14%', '14%'];
-                    doc.pageMargins = [40, 40, 40, 40];
-                    doc['footer'] = (function (page, pages) {
-                        return {
-                            columns: [
-                                {
-                                    alignment: 'left',
-                                    text: ['Date Downloaded: ', { text: jsDate.toString() }]
-                                },
-                                {
-                                    alignment: 'right',
-                                    text: ['page ', { text: page.toString() }, ' of ', { text: pages.toString() }]
-                                }
-                            ],
-                            margin: 20
                         }
-                    });
-                }
+                    },
+                    "exportOptions": {
+                        columns: [0, 1, 2, 3, 4, 5],
+
+                    },
+
+                    "header": true,
+                    customize: function (doc) {
+                        var now = new Date();
+                        var jsDate = now.getDate() + '-' + (now.getMonth() + 1) + '-' + now
+                            .getFullYear();
+                        var logo = 'data:assets/img/logo.png';
+                        doc.content.splice(0, 1, {
+                            text: [{
+                                text: 'Il-Lengan Cafe.\n',
+                                bold: true,
+                                fontSize: 15
+                            }, {
+                                text: ' \n',
+                                bold: true,
+                                fontSize: 11
+                            }, {
+                                text: '',
+                                bold: true,
+                                fontSize: 11
+                            }],
+                            margin: [0, 0, 0, 20],
+                            alignment: 'center',
+                            image: logo
+                        });
+                        doc.content[1].table.widths = ['14%', '14%', '20%', '24%', '14%', '14%'];
+                        doc.pageMargins = [40, 40, 40, 40];
+                        doc['footer'] = (function (page, pages) {
+                            return {
+                                columns: [{
+                                        alignment: 'left',
+                                        text: ['Date Downloaded: ', {
+                                            text: jsDate.toString()
+                                        }]
+                                    },
+                                    {
+                                        alignment: 'right',
+                                        text: ['page ', {
+                                            text: page.toString()
+                                        }, ' of ', {
+                                            text: pages.toString()
+                                        }]
+                                    }
+                                ],
+                                margin: 20
+                            }
+                        });
+                    }
 
                 }
             ]

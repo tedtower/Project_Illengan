@@ -46,7 +46,7 @@ class Customer extends CI_Controller {
 	function checkout(){
 		$this->session->unset_userdata('cust_name');
 		$this->session->unset_userdata('table_no');
-		$this->cart->destroy();
+		$this->session->unset_userdata('orders');
 		redirect('customer/checkin');
 	}
 	
@@ -84,7 +84,8 @@ class Customer extends CI_Controller {
 				sort($data['subcats']);
 				$data['pref_menu'] = $this->customermodel->fetch_menupref();
 				$data['addons'] = $this->customermodel->fetch_addon();
-				$data['orders'] = $this->cart->contents();
+				//$this->output->set_output(json_encode($this->session->userdata('orders')));
+				$data['orders'] = json_encode($this->session->userdata('orders'));
 				$this->load->view('customer/template/head',$data);
 				$this->load->view('customer/menu',$data);
 				$this->load->view('customer/template/foot');
@@ -146,17 +147,17 @@ class Customer extends CI_Controller {
 		}
 	}
 
-	function viewOrders(){
+	/*function viewOrders(){
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
-				$this->output->set_output(json_encode($this->session->userdata('orders')));
+				
 			}else{
 				redirect('customer/checkin');
 			}
 		}else{
 			redirect('login');
 		}
-	}
+	}*/
 
 	function completeOrder(){		
 		if($this->isLoggedIn()){
@@ -222,7 +223,6 @@ class Customer extends CI_Controller {
 	}
 
 	function freebies_discounts() {
-
 			$pref_id = $this->input->post('pref_id');
 			$data = array();
 			$data['freebies'] = $this->customermodel->fetch_freebies($pref_id);
