@@ -117,17 +117,19 @@ class Customer extends CI_Controller {
 					for($index = 0 ; $index < count($rawAddons['addonIds']) ; $index++){
 						foreach($addonsPrices as $addon){
 							if($addon['ao_id'] == $rawAddons['addonIds'][$index]){
-								array_push($rawAddons['addonSubtotals'], $addon['ao_price']*$rawAddons['addonQtys'][$index]);
+								$rawAddons['addonIds'][$index] = intval($rawAddons['addonIds'][$index]);
+								$rawAddons['addonQtys'][$index] = intval($rawAddons['addonQtys'][$index]);
+								array_push($rawAddons['addonSubtotals'], floatval($addon['ao_price'])*intval($rawAddons['addonQtys'][$index]));
 							}
 						}
 					}
 				}
 				$data = array(
-					'id' => $this->input->post('preference'),
+					'id' => intval($this->input->post('preference')),
 					'name' => $preference['order'],
-					'qty' => $this->input->post('quantity'),
+					'qty' => intval($this->input->post('quantity')),
 					'orderDesc' => $preference['order'],
-					'subtotal' => $this->input->post('quantity')*$preference['pref_price'] ,
+					'subtotal' => floatval($this->input->post('quantity')*$preference['pref_price']) ,
 					'remarks' => $this->input->post('remarks'),
 					'addons' => $rawAddons
 				);
@@ -222,10 +224,11 @@ class Customer extends CI_Controller {
 		}
 	}
 
-	function freebies() {
-
+	function freebies_discounts() {
 			$pref_id = $this->input->post('pref_id');
-			$data = $this->customermodel->fetch_freebies($pref_id);
+			$data = array();
+			$data['freebies'] = $this->customermodel->fetch_freebies($pref_id);
+			$data['discounts'] = $this->customermodel->fetch_discounts($pref_id);
 	
 			echo json_encode($data);
 	}
