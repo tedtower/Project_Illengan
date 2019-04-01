@@ -139,8 +139,6 @@ class Admin extends CI_Controller{
             redirect('login');
         }
     }
-
-
     // function viewReturns($method=null){        
     //     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
     //         switch($method){
