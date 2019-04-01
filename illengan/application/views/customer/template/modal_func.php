@@ -24,7 +24,6 @@ $(document).ready(function(){
             if(!isNaN(parseInt($('#quantity').val()))){
                 quantity = parseInt($("#quantity").val())+1;
                 $("#quantity").val(quantity);
-                console.log(quantity);
             }else{
                 $("#quantity").val(quantity);
             }    
@@ -39,10 +38,9 @@ $(document).ready(function(){
         });
         $("#qtyDecrement").on('click',function(){            
             var quantity = 1;
-            if(!isNaN(parseInt($('#quantity').val()))){ 
+            if(!isNaN(parseInt($('#quantity').val())) && parseInt($('#quantity').val()) > 1){ 
                 quantity = parseInt($("#quantity").val()) - 1;
                 $("#quantity").val(quantity);
-                console.log(quantity);
             }else{
                 $("#quantity").val(quantity);
             }    
@@ -55,9 +53,10 @@ $(document).ready(function(){
             mainSubtotal = mainSubtotal+addonSubtotal;
             $("#menuSubtotal").text(mainSubtotal);
         });         
+
         $("#quantity").on('change', function(){
             var quantity = 1;
-            if(!isNaN(parseInt($(this).val()))){
+            if(!isNaN(parseInt($(this).val())) && parseInt($(this).val()) > 1){
                 quantity = parseInt($(this).val());
             }else{
                 $(this).val(quantity);
@@ -68,8 +67,7 @@ $(document).ready(function(){
                 mainSubtotal = parseFloat($("#sizeInput").data("price"));
             }
             mainSubtotal = mainSubtotal*quantity;
-            mainSubtotal = mainSubtotal+addonSubtotal;
-            $("#menuSubtotal").text(mainSubtotal);
+            $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
         });
 
         $("#sizeSelect").on('change',function(){
@@ -81,8 +79,8 @@ $(document).ready(function(){
             if(!isNaN(parseFloat($(this).find('option:selected').data('price')))){            
                 mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price")) * quantity;
             }
-            mainSubtotal = mainSubtotal+addonSubtotal;
-            $("#menuSubtotal").text(mainSubtotal);
+            mainSubtotal *= quantity;
+            $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
         });        
         $('#menu_modal').modal('show');
     });
@@ -132,8 +130,7 @@ $(document).ready(function(){
                     $("span[class~='aoSub']").eq(index).text(aoSub);
                 }
             });
-            addonSubtotal = addonSubtotal+mainSubtotal;
-            $("#menuSubtotal").text(addonSubtotal);
+            $("#menuSubtotal").text(addonSubtotal+mainSubtotal);
         });
 
         $("select[name='addon[]']").on('change',function(){
@@ -151,8 +148,7 @@ $(document).ready(function(){
                     $("span[class~='aoSub']").eq(index).text(aoSub);
                 }
             });
-            addonSubtotal += mainSubtotal;
-            $("#menuSubtotal").text(addonSubtotal);
+            $("#menuSubtotal").text(addonSubtotal+mainSubtotal);
         });
     });
 
@@ -205,7 +201,8 @@ function setOrderslipModal(cart){
     console.log(cart);
 }
 
-function unsetModalContents(){        
+function unsetModalContents(){    
+    $("#quantity").off('click');    
     $('span#mid').text('');
     $('#quantity').val(1);
     $('#sizeSelect').attr('disabled','disabled'); 
