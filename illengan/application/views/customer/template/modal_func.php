@@ -3,12 +3,17 @@
     $menu_array = json_encode($menu);
     $pref_array = json_encode($pref_menu);
     $addon_array = json_encode($addons);
+    $orders_array = json_encode($orders);
     echo "var menu =".$menu_array.";\n";
     echo "var pref =".$pref_array.";\n";
     echo "var addon =".$addon_array.";\n";
+    if(isset($orders)){
+        echo "var orders =".$orders_array.";\n";
+    }else{
+        echo "var orders = [];\n";
+    }
 ?>
-    var orders = [],
-        selected_addons = [],
+    var selected_addons = [],
         oc=0, ac=0, order="",
         menu_addon, mainSubtotal = 0,
         addonSubtotal = 0;
