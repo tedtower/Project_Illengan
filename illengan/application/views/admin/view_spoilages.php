@@ -15,7 +15,7 @@
 										<div class="nav-tabs-wrapper">
 											<ul class="nav nav-tabs" data-tabs="tabs" data-background-color="brown">
 												<li class="active">
-													<a href="http://www.illengan.com/admin/viewAllSpoilages">
+													<a href="http://www.illengan.com/admin/spoilages">
 														All Spoilages
 														<div class="ripple-container"></div>
 													</a>
@@ -51,13 +51,6 @@
 							<div class="container-fluid">
 								<!--Table-->
 								<div class="card-content">
-									<!--MODAL DAPAT TO-->
-									<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageAo" 
-										data-original-title style="float: left">Add Add-ons Spoilage</a>
-									<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageStock" 
-										data-original-title style="float: left">Add Stock Spoilage</a>
-									<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageMenu"
-										data-original-title style="float: left">Add Menu Spoilage</a>
 									
 
 									<!--Search
@@ -92,7 +85,7 @@
 											<!--Insert PHP-->
 											<tr>
 											<td><?php echo $row['s_id']; ?></td>
-											<td><?php echo $row['menu_name']; ?></td>
+											<td><?php echo $row['description']; ?></td>
 											<td><?php echo $row['s_qty']; ?></td>
 											<td><?php echo $row['s_date']; ?></td>
 											<td><?php echo $row['date_recorded']; ?></td>

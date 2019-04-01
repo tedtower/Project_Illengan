@@ -2,66 +2,8 @@
 <?php include_once('templates/head.php') ?>
 </head>
 <body>
-	<div class="wrapper">
-		<div class="sidebar" data-color="brown" data-image="assets/media/admin/Coffee_1.jpg">
-			<!--Left Navigation Bar-->
-			<div class="sidebar-wrapper" style="overflow: hidden">
-				<div class="logo">
-					<img src="assets/media/admin/logo_lg.png" alt="il-lengan-logo" img-align="center" width="225px"
-						height="135px">
-				</div>
+<?php include_once('templates/sideNav.php') ?>
 
-				<ul class="nav">
-					<li>
-						<a href="adminDashboard.html">
-							<p>Dashboard</p>
-						</a>
-					</li>
-					<li>
-						<a href="adminMenuItems.html">
-							<p>Menu Items</p>
-						</a>
-					</li>
-					<li>
-						<a href="adminSales.html">
-							<p>Sales</p>
-						</a>
-					</li>
-					<li>
-						<a href="adminInventory.html">
-							<p>Inventory</p>
-						</a>
-					</li>
-
-					<li>
-						<a href="adminTables.html">
-							<p>Tables</p>
-						</a>
-					</li>
-					<li>
-						<a href="adminReports.html">
-							<p>Reports</p>
-						</a>
-					</li>
-					<li>
-						<a href="adminAccounts.html">
-							<p>Accounts</p>
-						</a>
-					</li>
-					<li>
-						<a href="adminTransactions.html">
-							<p>Transactions</p>
-						</a>
-					</li>
-					<li class="active">
-						<a href="http://www.illengan.com/admin/viewspoilages">
-							<p>Spoilages</p>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<!--End Side Bar-->
 		<div class="main-panel">
 			<div class="content" style="margin-top: 5px;">
 				<div class="container-fluid">
@@ -73,7 +15,7 @@
 										<div class="nav-tabs-wrapper">
                                         <ul class="nav nav-tabs" data-tabs="tabs" data-background-color="brown">
 												<li class="active">
-													<a href="http://www.illengan.com/admin/viewAllSpoilages">
+													<a href="http://www.illengan.com/admin/spoilages">
 														All Spoilages
 														<div class="ripple-container"></div>
 													</a>
@@ -110,7 +52,7 @@
 								<!--Table-->
 								<div class="card-content">
 									<!--MODAL DAPAT TO-->
-									<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageMenu"
+									<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/menu/spoilages/add"
 										data-original-title style="float: left">Add Menu Spoilage</a>
 									
 
@@ -327,7 +269,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
 
 <?php include_once('templates/scripts.php') ?>
 

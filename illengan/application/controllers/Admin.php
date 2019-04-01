@@ -105,8 +105,8 @@ class Admin extends CI_Controller{
     }
     function viewInsertSpoilageMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['menu'] = $this->adminmodel->get_menu2();
-            $this->load->view('admin/add_spoilagesmenu',$data);
+            $result = array('menu' => $this->adminmodel->get_menu2());
+            json_encode($result);
         }else{
             redirect('login');
         }
@@ -172,6 +172,7 @@ class Admin extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model("adminmodel");
             $data['spoilagesmenu'] = $this->adminmodel->get_spoilages_menu();
+
             $this->load->view('admin/view_spoilages_menu', $data);
         }else{
             redirect('login');
@@ -322,13 +323,15 @@ class Admin extends CI_Controller{
             $this->load->model('adminmodel');
 
             $s_type = $this->input->post("s_type");
-            $menu_name =$this->input->post("menu_name");
+            $ao_name =$this->input->post("ao_name");
             $s_qty =$this->input->post("s_qty");
             $s_date =$this->input->post("s_date");
             $remarks =$this->input->post("remarks");
+            $date_recorded = date("Y-m-d");
 
-            $this->adminmodel->add_aospoil($menu_name,$s_type,$s_date,$date_recorded,$remarks=null);
-            $this->load->view('admin/viewspoilages'); 
+            $this->adminmodel->add_aospoil($s_type,$ao_name,$s_type,$s_date,$date_recorded,$remarks);
+            $data['spoilages'] = $this->adminmodel->get_spoilages();
+            $this->load->view('admin/view_spoilages',$data); 
         }else{
             redirect('login');
         }
@@ -340,7 +343,7 @@ class Admin extends CI_Controller{
             $menu_name =$this->input->post("menu_name");
             $s_qty =$this->input->post("s_qty");
             $s_date =$this->input->post("s_date");
-            $date_recorded =$this->input->post("date_recorded");
+            $date_recorded = date("Y-m-d");
             $remarks =$this->input->post("remarks");
 
             $this->adminmodel->add_menuspoil($s_type,$menu_name,$s_qty,$s_date,$date_recorded,$remarks);
@@ -358,7 +361,7 @@ class Admin extends CI_Controller{
             $stock_name =$this->input->post("stock_name");
             $s_qty =$this->input->post("s_qty");
             $s_date =$this->input->post("s_date");
-            $date_recorded =$this->input->post("date_recorded");
+            $date_recorded = date("Y-m-d");
             $remarks =$this->input->post("remarks");
 
             $this->adminmodel->add_stockspoil($s_type,$stock_name,$s_qty,$s_date,$date_recorded,$remarks);
