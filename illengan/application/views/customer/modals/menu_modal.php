@@ -20,13 +20,13 @@
                         <div class="d-flex flex-row mr-5 w-100">
                             <div class="input-group-prepend">
                                 <button id="qtyDecrement" class="btn btn-md btn-light m-0 py-1 px-3 z-depth-0" type="button"
-                                    onclick="freebie_promos()">
+                                    onclick="freebies_discounts()">
                                     <i class="fa fa-minus" aria-hidden="true"></i>
                                 </button>
                                 <input type="number" class="form-control text-center font-weight-bold px-3"
                                     name="order_quantity" id="quantity" min="1" value="1">
                                 <button id="qtyIncrement" class="btn btn-md btn-light m-0 py-1 px-3 z-depth-0" type="button"
-                                    onclick="freebie_promos()">
+                                    onclick="freebies_discounts()">
                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                 </button>
                                

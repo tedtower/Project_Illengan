@@ -52,6 +52,7 @@ $(document).ready(function(){
             mainSubtotal = mainSubtotal*quantity;
             mainSubtotal = mainSubtotal+addonSubtotal;
             $("#menuSubtotal").text(mainSubtotal);
+            console.log($("#dc_subtotal").val());
         });         
 
         $("#quantity").on('change', function(){
@@ -66,12 +67,14 @@ $(document).ready(function(){
             }else{
                 mainSubtotal = parseFloat($("#sizeInput").data("price"));
             }
+            
             mainSubtotal = mainSubtotal*quantity;
             $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
+            console.log($("#dc_subtotal").val());
         });
 
         $("#sizeSelect").on('change',function(){
-            var quantity = 0;
+            var quantity = 1;
             mainSubtotal = 0;
             if(!isNaN(parseInt($('#quantity').val()))){
                 quantity = parseInt($('#quantity').val());
@@ -81,6 +84,7 @@ $(document).ready(function(){
             }
             mainSubtotal *= quantity;
             $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
+            console.log($("#dc_subtotal").val());
         });        
         $('#menu_modal').modal('show');
     });

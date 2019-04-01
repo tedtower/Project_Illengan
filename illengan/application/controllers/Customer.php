@@ -222,10 +222,11 @@ class Customer extends CI_Controller {
 		}
 	}
 
-	function freebies() {
-
-			$pref_id = 13;
-			$data = $this->customermodel->fetch_freebies($pref_id);
+	function freebies_discounts() {
+			$pref_id = $this->input->post('pref_id');
+			$data = array();
+			$data['freebies'] = $this->customermodel->fetch_freebies($pref_id);
+			$data['discounts'] = $this->customermodel->fetch_discounts($pref_id);
 	
 			echo json_encode($data);
 	}

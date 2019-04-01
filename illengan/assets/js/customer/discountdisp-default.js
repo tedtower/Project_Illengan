@@ -10,10 +10,6 @@ function hide_freebies() {
                     while(free_elements.length > 0){
                         free_elements[0].parentNode.removeChild(free_elements[0]);
                     }
-    var dc_elements = document.getElementsByClassName('dc_subtotal');
-                    while(dc_elements.length > 0){
-                        dc_elements[0].parentNode.removeChild(dc_elements[0]);
-                    }
 
 }
 
@@ -66,11 +62,10 @@ function freebies_discounts() {
             dataType: 'json',
          success: function(data) {
              var freeBQty, freebieDrop;
-
-            if(data.freebies.length != 0) {
-                if(v_quantity >= data.freebies[0].pc_qty && data.freebies[0].elective == 1){
-                    freeBQty = data.freebies[0].fb_qty * parseInt(v_quantity / data.freebies[0].pc_qty);
-                    //console.log('Total Freebies(Early): ' + freeBQty + ' | View Qty Entered: ' + v_quantity + ' | Constraint: ' + data.freebie[0].pc_qty);
+         
+                if(v_quantity >= data[0].pc_qty && data[0].elective == 1){
+                    freeBQty = data[0].fb_qty * parseInt(v_quantity / data[0].pc_qty);
+                    //console.log('Total Freebies(Early): ' + freeBQty + ' | View Qty Entered: ' + v_quantity + ' | Constraint: ' + data[0].pc_qty);
                     $('.please').show();
                     var appendDivs = []; 
 
@@ -87,40 +82,31 @@ function freebies_discounts() {
                 $('#freebie').append(appendDivs);
                 
                 try {
-                for(var i = 0; i <= data.freebies.length; i++) {
-                    optionsFB = '<option>'+data.freebies[i].fb_menuname+'</option>';
+                for(var i = 0; i <= data.length; i++) {
+                    optionsFB = '<option>'+data[i].fb_menuname+'</option>';
                     console.log(optionsFB);
                     $('.freeBOpt').append(optionsFB);
                 }
                 } catch(err) {
 
                 }
-                console.log('Total Freebies(Late): ' + freeBQty + ' data.freebies[0].menu_name ' + appendDivs.length);
+                console.log('Total Freebies(Late): ' + freeBQty + ' data[0].menu_name ' + appendDivs.length);
                     
                        
                 }
                 // For freebie promos which have different freebie offers
-               else if(v_quantity >= data.freebies[0].pc_qty && data.freebies[0].elective == 0) {
-                hide_freebies();
+               else if(v_quantity >= data[0].pc_qty && data[0].elective == 0) {
+                var free_elements = document.getElementsByClassName('freebieQty');
+                while(free_elements.length > 0){
+                    free_elements[0].parentNode.removeChild(free_elements[0]);
+                }
 
-                freeBQty = data.freebies[0].fb_qty * parseInt(v_quantity / data.freebies[0].pc_qty);
-                $('#freebie').append('<p class="freebieQty">You have '+freeBQty+' '+data.freebies[0].menu_name+' for a freebie!</p>');
+                freeBQty = data[0].fb_qty * parseInt(v_quantity / data[0].pc_qty);
+                $('#freebie').append('<p class="freebieQty">You have '+freeBQty+' '+data[0].menu_name+' for a freebie!</p>');
 
                }
-            } else if(data.discounts.length != 0) {
-                if(v_quantity >= data.discounts[0].pc_qty){
-                hide_freebies();
-                var dc_price = data.discounts[0].pref_price - data.discounts[0].dc_amt;
-                var dc_qty = parseInt(v_quantity - (v_quantity % data.discounts[0].pc_qty));
-                var sub_total = (dc_qty * dc_price) + ((dc_qty - v_quantity) * data.discounts[0].pref_price);
-                var org_price = v_quantity * data.discounts[0].pref_price;
-                $('#freebie').append('<input type="text" id="dc_subtotal" class="dc_subtotal" value="'+sub_total+'" hidden="hidden">'+
-                '<p class="freebieQty" >You have a discount of '+sub_total+' php from a price of '+org_price+' php!</p>');
-
-            } 
              
-         }
-        },
+         },
          failure: function() {
             console.log('OH NO');
 
