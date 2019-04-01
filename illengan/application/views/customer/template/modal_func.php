@@ -45,7 +45,11 @@ $(document).ready(function(){
             if(!isNaN(parseFloat($(this).find('option:selected').data('price')))){            
                 mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price")) * quantity;
             }
+            if(document.getElementById('dc_subtotal').value != null) {
+                mainSubtotal = document.getElementById('dc_subtotal').value;
+            } else {
             mainSubtotal = mainSubtotal+addonSubtotal;
+            }
             $("#menuSubtotal").text(mainSubtotal);
         });        
         $('#menu_modal').modal('show');

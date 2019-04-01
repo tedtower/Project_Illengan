@@ -96,6 +96,7 @@ $route['admin/sample'] = 'admin/samplemethod';
 //CUSTOMER ROUTES
 $route['customer/processCheckIn'] = "customer/processCheckIn";
 $route['customer/promos'] = "customer/promos";
+$route['customer/freebies_discounts'] = "customer/freebies_discounts";
 $route['customer/freebies'] = "customer/freebies";
 $route['customer/menu/vieworders'] = "customer/viewOrders";
 $route['customer/menu/addOrder'] = "customer/addOrder";
