@@ -37,51 +37,18 @@ $(document).ready(function(){
             $("#quantity").val(quantity);
         }
         computeSubtotal();
-        // var quantity = 1;
-        // if(!isNaN(parseInt($('#quantity').val()))){
-        //     quantity = parseInt($("#quantity").val())+1;
-        //     $("#quantity").val(quantity);
-        // }else{
-        //     $("#quantity").val(quantity);
-        // }    
-        // if($("#sizeInput").is(":disabled")){
-        //     mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
-        // }else{
-        //     mainSubtotal = parseFloat($("#sizeInput").data("price"));
-        // }
-        // console.log("QTYIncrement");        
-        // console.log(quantity);
-        // console.log(mainSubtotal);
-        // mainSubtotal = mainSubtotal*quantity;
-        // $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
     });
     $("#qtyDecrement").on('click',function(){
         var quantity = parseInt($("#quantity").val());
         if(isNaN(quantity)){
             $("#quantity").val(1); 
-        }else if (quantity < 1){
+        }else if (quantity == 1){
             $("#quantity").val(1);
         }else{
             quantity--;
             $("#quantity").val(quantity);
         }
         computeSubtotal();
-        // if(!isNaN(parseInt($('#quantity').val())) && parseInt($('#quantity').val()) > 1){ 
-        //     quantity = parseInt($("#quantity").val()) - 1;
-        //     $("#quantity").val(quantity);
-        // }else{
-        //     $("#quantity").val(quantity);
-        // }    
-        // if($("#sizeInput").is(":disabled")){
-        //     mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
-        // }else{
-        //     mainSubtotal = parseFloat($("#sizeInput").data("price"));
-        // }
-        // console.log("QTYDecrement");        
-        // console.log(quantity);
-        // console.log(mainSubtotal);
-        // mainSubtotal = mainSubtotal*quantity;
-        // $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
         console.log($("#dc_subtotal").val());
     });         
 
@@ -93,29 +60,8 @@ $(document).ready(function(){
             $(this).val(1);
         }
         computeSubtotal();
-        // if(!isNaN(parseInt($(this).val())) && parseInt($(this).val()) > 1){
-        //     quantity = parseInt($(this).val());
-        // }else{
-        //     $(this).val(quantity);
-        // }
-        // if($("#sizeInput").is(":disabled")){
-        //     mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
-        // }else{
-        //     mainSubtotal = parseFloat($("#sizeInput").data("price"));
-        // }
-        // console.log("Quantity");        
-        // console.log(quantity);
-        // console.log(mainSubtotal);        
-        // mainSubtotal = mainSubtotal*quantity;
-        // $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
         console.log($("#dc_subtotal").val());
     });
-
-    /*$(document).ready(function(){
-        $("select#size").change(function(){
-            var selectedPrice = $(this).children("option:selected").val();
-            $('span#menu_price').text(selectedPrice);
-    });*/
 
     $('#addonSelectBtn').on('click', function(event){
         var ao_select = `<!--Select For Addons-->
@@ -151,36 +97,10 @@ $(document).ready(function(){
                 $(this).val(1);
             }
             computeSubtotal();
-            // $("input[name='addonQty[]']").each(function(index){            
-            //     if(!isNaN(parseInt($("select[name='addon[]']").eq(index).val())) && !isNaN(parseInt($(this).val()))){
-            //         aoSub = parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data("price")) * parseInt($(this).val());
-            //         $("span[class~='aoSub']").eq(index).text(aoSub);
-            //         addonSubtotal += aoSub;
-            //     }else if(isNaN(parseInt($(this).val())) && !isNaN(parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data('price')))){
-            //         $(this).val(1);
-            //         aoSub = parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data('price'));
-            //         addonSubtotal += aoSub;
-            //         $("span[class~='aoSub']").eq(index).text(aoSub);
-            //     }
-            // });
-            // $("#menuSubtotal").text(addonSubtotal+mainSubtotal);
         });
 
         $("select[name='addon[]']").on('change',function(){
             computeSubtotal();
-            // $("select[name='addon[]']").each(function(index){            
-            //     if(!isNaN(parseInt($("input[name='addonQty[]']").eq(index).val())) && !isNaN(parseFloat($(this).val()))){
-            //         aoSub = parseFloat($(this).find('option:selected').data("price")) * parseInt($("input[name='addonQty[]']").eq(index).val());
-            //         $("span[class~='aoSub']").eq(index).text(aoSub);
-            //         addonSubtotal = addonSubtotal + aoSub;
-            //     }else if(isNaN(parseInt($("input[name='addonQty[]']").eq(index).val())) && !isNaN(parseInt($(this).val()))){
-            //         $("input[name='addonQty[]']").eq(index).val(1);
-            //         aoSub = parseFloat($(this).find('option:selected').data("price"));
-            //         addonSubtotal += aoSub;
-            //         $("span[class~='aoSub']").eq(index).text(aoSub);
-            //     }
-            // });
-            // $("#menuSubtotal").text(addonSubtotal+mainSubtotal);
         });
     });
 
@@ -285,19 +205,6 @@ function setModalContents(item_id){
                 }
                 $("#sizeSelect").on('change',function(){
                     computeSubtotal();
-                    // var quantity = 1;
-                    // mainSubtotal = 0;
-                    // if(!isNaN(parseInt($('#quantity').val()))){
-                    //     quantity = parseInt($('#quantity').val());
-                    // }
-                    // if(!isNaN(parseFloat($(this).find('option:selected').data('price')))){            
-                    //     mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price")) * quantity;
-                    // }
-                    // console.log("QTYIncrement");        
-                    // console.log(quantity);
-                    // console.log(mainSubtotal);
-                    // mainSubtotal *= quantity;
-                    // $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
                     console.log($("#dc_subtotal").val());
                 });                
                 $("#menuSubtotal").text(parseFloat($("#sizeSelect > option:selected").data("price")));
