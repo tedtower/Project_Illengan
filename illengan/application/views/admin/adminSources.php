@@ -3,7 +3,7 @@
 
 <head>
     <?php include_once('templates/head.php') ?>
-    <title>Il-Lengan | Admin Table</title>
+    <title>Il-Lengan | Admin Sources</title>
 </head>
 
     <body>
@@ -14,7 +14,7 @@
                 <!--Table-->
                 <div class="card-content">
                     <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newrawcoffee" data-original-title style="float: left">Add New
-                        Table</a>
+                        Source</a>
                     <!--Search
         <div id ="example_filter" class="dataTables_filter">
             <label>
@@ -28,12 +28,24 @@
                     <br><br>
                     <table id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead>
-                            <th><b class="pull-left">Table Code</b></th>
+                            <th><b class="pull-left">Name</b></th>
+                            <th><b class="pull-left">Contact Number</b></th>
+                            <th><b class="pull-left">Email</b></th>
+                            <th><b class="pull-left">Status</b></th>
                             <th><b class="pull-left">Actions</b></th>
                         </thead>
                         <tbody>
                             <!--Insert PHP-->
                             <tr>
+                                <td>
+                                    <!--insert PHP echo e.g. "?php echo $row->code; ?>"-->
+                                </td>
+                                <td>
+                                    <!--insert PHP echo e.g. "?php echo $row->code; ?>"-->
+                                </td>
+                                <td>
+                                    <!--insert PHP echo e.g. "?php echo $row->code; ?>"-->
+                                </td>
                                 <td>
                                     <!--insert PHP echo e.g. "?php echo $row->code; ?>"-->
                                 </td>
@@ -50,19 +62,38 @@
                         </tbody>
                     </table>
                     <!--Modals-->
-                    <!--Modal for Edit-->
+                    <!--Modal for Add || Edit-->
                     <form action="" method="post" accept-charset="utf-8">
                         <div class="modal-body" style="padding: 5px;">
                             <!--Add Menu Item Modal-->
-                            <!--Table Code-->
+                            <!--Source Name-->
                             <div class="row">
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-12 form-group">
                                     <div class="form-group label-floating">
-                                        <label for="tableCode">Table Code</label>
-                                        <input class="form-control" type="text" name="tableCode" value="" required pattern="[a-zA-Z][a-zA-Z\s][0-9]*" required title="Table Code shoule contain letters and numbers">
+                                        <label for="sourceName">Name</label>
+                                        <input class="form-control" type="text" name="sourceName" value="" required pattern="[a-zA-Z][a-zA-Z\s]*" required title="Source name should contains letters only">
                                     </div>
                                 </div>
                             </div>
+                            <!--Source Contact Number-->
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <div class="form-group label-floating">
+                                        <label for="sourceContactNum">Contact Number</label>
+                                        <input class="form-control" type="tel" name="sourceContactNum" value="" required pattern="[0-9]" required title="Contact number should only contain digits">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Source Email-->
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <div class="form-group label-floating">
+                                        <label for="sourceEmail">Email</label>
+                                        <input class="form-control" type="text" name="sourceEmail" value="" required pattern="[a-zA-Z][a-zA-Z\s]*" required title="Email address should only contain letters">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Status-->
                             <!--Delete Confirmation Box-->
                             <div class="modal fade" id="deactivate" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
                                 <div class="modal-dialog">
