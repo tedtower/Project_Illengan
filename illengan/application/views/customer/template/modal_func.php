@@ -18,74 +18,91 @@ $(document).ready(function(){
     $('a.menu_card').on('click',function(){
         unsetModalContents();        
         var item_id = $(this).attr('id');
-        setModalContents(item_id);
-
-        $("#sizeSelect").on('change',function(){
-            var quantity = 1;
-            mainSubtotal = 0;
-            if(!isNaN(parseInt($('#quantity').val()))){
-                quantity = parseInt($('#quantity').val());
-            }
-            if(!isNaN(parseFloat($(this).find('option:selected').data('price')))){            
-                mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price")) * quantity;
-            }
-            mainSubtotal *= quantity;
-            $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
-            console.log($("#dc_subtotal").val());
-        });        
+        setModalContents(item_id);       
         $('#menu_modal').modal('show');
     });
-    $("#qtyIncrement").on('click',function(){            
-        var quantity = 1;
-        if(!isNaN(parseInt($('#quantity').val()))){
-            quantity = parseInt($("#quantity").val())+1;
-            $("#quantity").val(quantity);
+    $("#qtyIncrement").on('click',function(){
+        var quantity = parseInt($("#quantity").val());
+        if(isNaN(quantity)){
+            $("#quantity").val(1); 
+        }else if (quantity < 1){
+            $("#quantity").val(1);
         }else{
+            quantity++;
             $("#quantity").val(quantity);
-        }    
-        if($("#sizeInput").is(":disabled")){
-            mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
-        }else{
-            mainSubtotal = parseFloat($("#sizeInput").data("price"));
         }
-        mainSubtotal = mainSubtotal*quantity;
-        mainSubtotal = mainSubtotal+addonSubtotal;
-        $("#menuSubtotal").text(mainSubtotal);
+        computeSubtotal();
+        // var quantity = 1;
+        // if(!isNaN(parseInt($('#quantity').val()))){
+        //     quantity = parseInt($("#quantity").val())+1;
+        //     $("#quantity").val(quantity);
+        // }else{
+        //     $("#quantity").val(quantity);
+        // }    
+        // if($("#sizeInput").is(":disabled")){
+        //     mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
+        // }else{
+        //     mainSubtotal = parseFloat($("#sizeInput").data("price"));
+        // }
+        // console.log("QTYIncrement");        
+        // console.log(quantity);
+        // console.log(mainSubtotal);
+        // mainSubtotal = mainSubtotal*quantity;
+        // $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
     });
-    $("#qtyDecrement").on('click',function(){            
-        var quantity = 1;
-        if(!isNaN(parseInt($('#quantity').val())) && parseInt($('#quantity').val()) > 1){ 
-            quantity = parseInt($("#quantity").val()) - 1;
-            $("#quantity").val(quantity);
+    $("#qtyDecrement").on('click',function(){
+        var quantity = parseInt($("#quantity").val());
+        if(isNaN(quantity)){
+            $("#quantity").val(1); 
+        }else if (quantity < 1){
+            $("#quantity").val(1);
         }else{
+            quantity--;
             $("#quantity").val(quantity);
-        }    
-        if($("#sizeInput").is(":disabled")){
-            mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
-        }else{
-            mainSubtotal = parseFloat($("#sizeInput").data("price"));
         }
-        mainSubtotal = mainSubtotal*quantity;
-        mainSubtotal = mainSubtotal+addonSubtotal;
-        $("#menuSubtotal").text(mainSubtotal);
+        computeSubtotal();
+        // if(!isNaN(parseInt($('#quantity').val())) && parseInt($('#quantity').val()) > 1){ 
+        //     quantity = parseInt($("#quantity").val()) - 1;
+        //     $("#quantity").val(quantity);
+        // }else{
+        //     $("#quantity").val(quantity);
+        // }    
+        // if($("#sizeInput").is(":disabled")){
+        //     mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
+        // }else{
+        //     mainSubtotal = parseFloat($("#sizeInput").data("price"));
+        // }
+        // console.log("QTYDecrement");        
+        // console.log(quantity);
+        // console.log(mainSubtotal);
+        // mainSubtotal = mainSubtotal*quantity;
+        // $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
         console.log($("#dc_subtotal").val());
     });         
 
     $("#quantity").on('change', function(){
-        var quantity = 1;
-        if(!isNaN(parseInt($(this).val())) && parseInt($(this).val()) > 1){
-            quantity = parseInt($(this).val());
-        }else{
-            $(this).val(quantity);
-        }    
-        if($("#sizeInput").is(":disabled")){
-            mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
-        }else{
-            mainSubtotal = parseFloat($("#sizeInput").data("price"));
+        var quantity = parseInt($(this).val());
+        if(isNaN(quantity)){
+            $(this).val(1); 
+        }else if (quantity < 1){
+            $(this).val(1);
         }
-        
-        mainSubtotal = mainSubtotal*quantity;
-        $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
+        computeSubtotal();
+        // if(!isNaN(parseInt($(this).val())) && parseInt($(this).val()) > 1){
+        //     quantity = parseInt($(this).val());
+        // }else{
+        //     $(this).val(quantity);
+        // }
+        // if($("#sizeInput").is(":disabled")){
+        //     mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price"));
+        // }else{
+        //     mainSubtotal = parseFloat($("#sizeInput").data("price"));
+        // }
+        // console.log("Quantity");        
+        // console.log(quantity);
+        // console.log(mainSubtotal);        
+        // mainSubtotal = mainSubtotal*quantity;
+        // $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
         console.log($("#dc_subtotal").val());
     });
 
@@ -120,39 +137,45 @@ $(document).ready(function(){
         }
 
         $("input[name='addonQty[]']").on('change',function(){
-            addonSubtotal = 0;
-            var aoSub = 0;
-            $("input[name='addonQty[]']").each(function(index){            
-                if(!isNaN(parseInt($("select[name='addon[]']").eq(index).val())) && !isNaN(parseInt($(this).val()))){
-                    aoSub = parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data("price")) * parseInt($(this).val());
-                    $("span[class~='aoSub']").eq(index).text(aoSub);
-                    addonSubtotal += aoSub;
-                }else if(isNaN(parseInt($(this).val())) && !isNaN(parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data('price')))){
-                    $(this).val(1);
-                    aoSub = parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data('price'));
-                    addonSubtotal += aoSub;
-                    $("span[class~='aoSub']").eq(index).text(aoSub);
-                }
-            });
-            $("#menuSubtotal").text(addonSubtotal+mainSubtotal);
+            var addonQty = parseInt($(this).val());
+            if(isNaN(addonQty)){
+                addonQty = 1;
+                $(this).val(1);
+            }else if(addonQty < 1){                
+                addonQty = 1;
+                $(this).val(1);
+            }
+            computeSubtotal();
+            // $("input[name='addonQty[]']").each(function(index){            
+            //     if(!isNaN(parseInt($("select[name='addon[]']").eq(index).val())) && !isNaN(parseInt($(this).val()))){
+            //         aoSub = parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data("price")) * parseInt($(this).val());
+            //         $("span[class~='aoSub']").eq(index).text(aoSub);
+            //         addonSubtotal += aoSub;
+            //     }else if(isNaN(parseInt($(this).val())) && !isNaN(parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data('price')))){
+            //         $(this).val(1);
+            //         aoSub = parseFloat($("select[name='addon[]']").eq(index).find('option:selected').data('price'));
+            //         addonSubtotal += aoSub;
+            //         $("span[class~='aoSub']").eq(index).text(aoSub);
+            //     }
+            // });
+            // $("#menuSubtotal").text(addonSubtotal+mainSubtotal);
         });
 
         $("select[name='addon[]']").on('change',function(){
-            addonSubtotal = 0;
-            var aoSub = 0;
-            $("select[name='addon[]']").each(function(index){            
-                if(!isNaN(parseInt($("input[name='addonQty[]']").eq(index).val())) && !isNaN(parseFloat($(this).val()))){
-                    aoSub = parseFloat($(this).find('option:selected').data("price")) * parseInt($("input[name='addonQty[]']").eq(index).val());
-                    $("span[class~='aoSub']").eq(index).text(aoSub);
-                    addonSubtotal = addonSubtotal + aoSub;
-                }else if(isNaN(parseInt($("input[name='addonQty[]']").eq(index).val())) && !isNaN(parseInt($(this).val()))){
-                    $("input[name='addonQty[]']").eq(index).val(1);
-                    aoSub = parseFloat($(this).find('option:selected').data("price"));
-                    addonSubtotal += aoSub;
-                    $("span[class~='aoSub']").eq(index).text(aoSub);
-                }
-            });
-            $("#menuSubtotal").text(addonSubtotal+mainSubtotal);
+            computeSubtotal();
+            // $("select[name='addon[]']").each(function(index){            
+            //     if(!isNaN(parseInt($("input[name='addonQty[]']").eq(index).val())) && !isNaN(parseFloat($(this).val()))){
+            //         aoSub = parseFloat($(this).find('option:selected').data("price")) * parseInt($("input[name='addonQty[]']").eq(index).val());
+            //         $("span[class~='aoSub']").eq(index).text(aoSub);
+            //         addonSubtotal = addonSubtotal + aoSub;
+            //     }else if(isNaN(parseInt($("input[name='addonQty[]']").eq(index).val())) && !isNaN(parseInt($(this).val()))){
+            //         $("input[name='addonQty[]']").eq(index).val(1);
+            //         aoSub = parseFloat($(this).find('option:selected').data("price"));
+            //         addonSubtotal += aoSub;
+            //         $("span[class~='aoSub']").eq(index).text(aoSub);
+            //     }
+            // });
+            // $("#menuSubtotal").text(addonSubtotal+mainSubtotal);
         });
     });
 
@@ -205,8 +228,7 @@ function setOrderslipModal(cart){
     console.log(cart);
 }
 
-function unsetModalContents(){    
-    $("#quantity").off('click');    
+function unsetModalContents(){      
     $('span#mid').text('');
     $('#quantity').val(1);
     $('#sizeSelect').attr('disabled','disabled'); 
@@ -255,7 +277,24 @@ function setModalContents(item_id){
                 $("#sizeSelect").removeAttr('disabled');
                 for(var x=0; x<menu_pref.length; x++){
                     $('#sizeSelect').append('<option data-price="'+menu_pref[x].pref_price+'" data-name="'+menu_pref[x].size_name+'" value="'+menu_pref[x].pref_id+'">'+menu_pref[x].preference+'</option>');
-                }                
+                }
+                $("#sizeSelect").on('change',function(){
+                    computeSubtotal();
+                    // var quantity = 1;
+                    // mainSubtotal = 0;
+                    // if(!isNaN(parseInt($('#quantity').val()))){
+                    //     quantity = parseInt($('#quantity').val());
+                    // }
+                    // if(!isNaN(parseFloat($(this).find('option:selected').data('price')))){            
+                    //     mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price")) * quantity;
+                    // }
+                    // console.log("QTYIncrement");        
+                    // console.log(quantity);
+                    // console.log(mainSubtotal);
+                    // mainSubtotal *= quantity;
+                    // $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
+                    console.log($("#dc_subtotal").val());
+                });                
                 $("#menuSubtotal").text(parseFloat($("#sizeSelect > option:selected").data("price")));
             }else{
                 $("#sizeInput").removeAttr('disabled');
@@ -277,6 +316,38 @@ function setModalContents(item_id){
             break;
         }
     }
+}
+function computeSubtotal(){
+    var addon = 0;
+    var addonQty = 0;
+    var aoSub = 0;
+    var addonSubtotal = 0;
+    var mainSubtotal = 0;
+    var prefPrice = 0;
+    var quantity = parseInt($("#quantity").val());
+    if($("#sizeInput").is(":disabled")){
+        prefPrice = parseFloat($("#sizeSelect > option:selected").data("price"));
+    }else{
+        prefPrice = parseFloat($("#sizeInput").data("price"));
+    }
+    console.log(prefPrice);
+    mainSubtotal = quantity * prefPrice;
+    if($("select[name='addon[]']").length > 0){
+        for (var index = 0; index < $("select[name='addon[]']").length ; index++){
+            addon = parseFloat($("select[name='addon[]']").eq(index).find("option:selected").data("price"));
+            addonQty = parseInt($("input[name='addonQty[]']").eq(index).val());
+            if(isNaN(addon)){
+                addon = 0;
+            }
+            if(isNaN(addonQty)){
+                addonQty = 1;
+            }
+            aoSub = addon * addonQty;
+            addonSubtotal += aoSub;
+            $("span[class~='aoSub']").eq(index).text(aoSub);
+        }
+    }
+    $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
 }
 
 </script>
