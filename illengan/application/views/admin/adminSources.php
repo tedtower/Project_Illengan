@@ -3,7 +3,8 @@
 
 <head>
     <?php include_once('templates/head.php') ?>
-    </head>
+    <title>Il-Lengan | Admin Sources</title>
+</head>
 
     <body>
         <?php include_once('templates/sideNav.php') ?>
@@ -13,7 +14,7 @@
                 <!--Table-->
                 <div class="card-content">
                     <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newrawcoffee" data-original-title style="float: left">Add New
-                        Item</a>
+                        Source</a>
                     <!--Search
         <div id ="example_filter" class="dataTables_filter">
             <label>
@@ -27,30 +28,26 @@
                     <br><br>
                     <table id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead>
-                            <th><b class="pull-left">Account No.</b></th>
-                            <th><b class="pull-left">Username</b></th>
-                            <th><b class="pull-left">Password</b></th>
-                            <th><b class="pull-left">Type</b></th>
-                            <th><b class="pull-left">Online</b></th>
+                            <th><b class="pull-left">Name</b></th>
+                            <th><b class="pull-left">Contact Number</b></th>
+                            <th><b class="pull-left">Email</b></th>
+                            <th><b class="pull-left">Status</b></th>
                             <th><b class="pull-left">Actions</b></th>
                         </thead>
                         <tbody>
                             <!--Insert PHP-->
                             <tr>
                                 <td>
-                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                    <!--insert PHP echo e.g. "?php echo $row->code; ?>"-->
                                 </td>
                                 <td>
-                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                    <!--insert PHP echo e.g. "?php echo $row->code; ?>"-->
                                 </td>
                                 <td>
-                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                    <!--insert PHP echo e.g. "?php echo $row->code; ?>"-->
                                 </td>
                                 <td>
-                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
-                                </td>
-                                <td>
-                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                    <!--insert PHP echo e.g. "?php echo $row->code; ?>"-->
                                 </td>
                                 <td>
                                     <!--Action Buttons-->
@@ -59,51 +56,44 @@
                                         <button class="btn btn-default btn-sm" data-toggle="modal" data-target="">Edit</button>
                                         <!--Delete button-->
                                         <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="">Delete</button>
-                                        <!--Change Pass button-->
-                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="">Change Password</button>
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                     <!--Modals-->
-                    <!--Modal for Edit-->
+                    <!--Modal for Add || Edit-->
                     <form action="" method="post" accept-charset="utf-8">
                         <div class="modal-body" style="padding: 5px;">
                             <!--Add Menu Item Modal-->
-                            <!--Account ID-->
+                            <!--Source Name-->
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <div class="form-group label-floating">
-                                        <input class="form-control" type="hidden" name="" value="" required>
+                                        <label for="sourceName">Name</label>
+                                        <input class="form-control" type="text" name="sourceName" value="" required pattern="[a-zA-Z][a-zA-Z\s]*" required title="Source name should contains letters only">
                                     </div>
                                 </div>
                             </div>
-                            <!--Account Username-->
+                            <!--Source Contact Number-->
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <div class="form-group label-floating">
-                                        <label for="email">Username</label>
-                                        <input class="form-control" type="text" name="name" value="" required pattern="[a-zA-Z][a-zA-Z\s]*" required title="Username should only countain letters">
+                                        <label for="sourceContactNum">Contact Number</label>
+                                        <input class="form-control" type="tel" name="sourceContactNum" value="" required pattern="[0-9]" required title="Contact number should only contain digits">
                                     </div>
                                 </div>
                             </div>
-                            <!--Account Type-->
+                            <!--Source Email-->
                             <div class="row">
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-12 form-group">
                                     <div class="form-group label-floating">
-                                        <div class="dropdown">
-                                            <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-                                                <span class="caret"></span></button>
-                                            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Admin</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Barista</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Chef</a></li>
-                                            </ul>
-                                        </div>
+                                        <label for="sourceEmail">Email</label>
+                                        <input class="form-control" type="text" name="sourceEmail" value="" required pattern="[a-zA-Z][a-zA-Z\s]*" required title="Email address should only contain letters">
                                     </div>
                                 </div>
                             </div>
+                            <!--Status-->
                             <!--Delete Confirmation Box-->
                             <div class="modal fade" id="deactivate" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -120,7 +110,7 @@
                                             <div class="modal-body" style="padding: 5px;">
                                                 <div class="row" style="text-align: center">
                                                     <br>
-                                                    <h4> Are you sure you want to delete this user account?</h4>
+                                                    <h4> Are you sure you want to delete this table?</h4>
                                                     <br>
                                                 </div>
                                         </form>
@@ -135,5 +125,6 @@
                 </div>
             </div>
         </div>
+        <?php include_once('templates/scripts.php') ?>
     </body>
 </html> 
