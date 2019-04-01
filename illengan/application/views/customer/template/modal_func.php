@@ -54,6 +54,7 @@ $(document).ready(function(){
             mainSubtotal = mainSubtotal*quantity;
             mainSubtotal = mainSubtotal+addonSubtotal;
             $("#menuSubtotal").text(mainSubtotal);
+            console.log($("#dc_subtotal").val());
         });         
         $("#quantity").on('change', function(){
             var quantity = 1;
@@ -67,9 +68,11 @@ $(document).ready(function(){
             }else{
                 mainSubtotal = parseFloat($("#sizeInput").data("price"));
             }
+            
             mainSubtotal = mainSubtotal*quantity;
             mainSubtotal = mainSubtotal+addonSubtotal;
             $("#menuSubtotal").text(mainSubtotal);
+            console.log($("#dc_subtotal").val());
         });
 
         $("#sizeSelect").on('change',function(){
@@ -81,11 +84,8 @@ $(document).ready(function(){
             if(!isNaN(parseFloat($(this).find('option:selected').data('price')))){            
                 mainSubtotal = parseFloat($("#sizeSelect > option:selected").data("price")) * quantity;
             }
-            if(document.getElementById('dc_subtotal').value != null) {
-                mainSubtotal = document.getElementById('dc_subtotal').value;
-            } else {
             mainSubtotal = mainSubtotal+addonSubtotal;
-            }
+            console.log($("#dc_subtotal").val());
             $("#menuSubtotal").text(mainSubtotal);
         });        
         $('#menu_modal').modal('show');

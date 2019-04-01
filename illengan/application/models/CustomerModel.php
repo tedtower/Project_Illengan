@@ -16,7 +16,7 @@
     }
 
     function fetch_freebies($pref_id){
-        $query = "SELECT *, mn.menu_name AS fb_menuname FROM ((((((menu 
+        $query = $this->db->query("SELECT *, mn.menu_name AS fb_menuname FROM ((((((menu 
         INNER JOIN preferences pref USING (menu_id)) 
         INNER JOIN promo_cons USING (pref_id)) 
         INNER JOIN promo USING (promo_id)) 
@@ -24,9 +24,8 @@
         inner join menu_freebie AS mf USING (promo_id)) 
         inner join preferences fb_pref ON mf.pref_id = fb_pref.pref_id)
         inner join menu mn ON fb_pref.menu_id = mn.menu_id
-        WHERE preference.pref_id = ".$pref_id.";";
-        echo $query;
-        return $this->db->query($query)->result();
+        WHERE pref.pref_id = ".$pref_id.";");
+         return $query->result();
     }
 
     function fetch_discounts($pref_id){
@@ -39,7 +38,7 @@
         inner join preferences fb_pref ON mf.pref_id = fb_pref.pref_id)
         inner join menu mn ON fb_pref.menu_id = mn.menu_id
         WHERE pref.pref_id = '.$pref_id.';');
-        return $query->result();
+         return $query->result();
     }
 
 
