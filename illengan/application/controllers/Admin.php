@@ -12,9 +12,10 @@ class Admin extends CI_Controller{
     function viewAccounts(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['account'] = $this->adminmodel->get_accounts();
-            $this->load->view('admin/templates/head');
+            $data['title'] = "Admin Accounts";
+            $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/view_accounts',$data);
+            $this->load->view('admin/view_accounts', $data);
             $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
@@ -67,9 +68,10 @@ class Admin extends CI_Controller{
 }
     function viewDashboard(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin/templates/head');
+            $data['title'] = "Admin Dashboard";
+            $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');            
-            $this->load->view('admin/adminDashboard');            
+            $this->load->view('admin/admin updated/adminDashboard');            
             $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
@@ -77,11 +79,12 @@ class Admin extends CI_Controller{
     }
     function viewInventory($error = null){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Admin Inventory";
+            $this->load->view('admin/templates/head', $data);
+            $this->load->view('admin/templates/sideNav');
             $data['stock'] = $this->adminmodel->get_inventory();
             $data['category'] = $this->adminmodel->get_stockcategories();
-            $this->load->view('admin/templates/head');
-            $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/inventory',$data);
+            $this->load->view('admin/admin updated/adminInventory',$data);
             $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
@@ -97,10 +100,11 @@ class Admin extends CI_Controller{
     }
     function viewMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Admin Menu";
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
             $data['menu'] = $this->adminmodel->get_menu();
             $data['category'] = $this->adminmodel->get_menucategories();
-            $this->load->view('admin/templates/head');
-            $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/menuitems',$data);
             $this->load->view('admin/templates/scripts');
         }else{
@@ -155,10 +159,11 @@ class Admin extends CI_Controller{
     // }
     function viewSales(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['sales'] = $this->adminmodel->get_sales();
-            $this->load->view('admin/templates/head');
+            $data['title'] = "Admin Sales";
+            $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/sales',$data);
+            $data['sales'] = $this->adminmodel->get_sales();
+            $this->load->view('admin/admin updated/adminSales',$data);
             $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
@@ -166,9 +171,10 @@ class Admin extends CI_Controller{
     }
     function viewSources(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['source'] = $this->adminmodel->get_sources();
-            $this->load->view('admin/templates/head');
+            $data['title'] = "Admin Sources";
+            $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
+            $data['source'] = $this->adminmodel->get_sources();
             $this->load->view('admin/sources',$data);
             $this->load->view('admin/templates/scripts');
         }else{
@@ -177,7 +183,7 @@ class Admin extends CI_Controller{
     }
     function viewSpoilages(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->model("adminmodel");
+            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
             $data['spoilages'] = $this->adminmodel->get_spoilages();
             $this->load->view('admin/view_spoilages', $data);
             $this->load->view('admin/templates/scripts');
@@ -187,7 +193,7 @@ class Admin extends CI_Controller{
     }
     function viewSpoilagesMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->model("adminmodel");
+            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
             $data['spoilagesmenu'] = $this->adminmodel->get_spoilages_menu();
             $this->load->view('admin/view_spoilages_menu', $data);
         }else{
@@ -196,7 +202,7 @@ class Admin extends CI_Controller{
     }
     function viewSpoilagesStock(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->model("adminmodel");
+            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
             $data['spoilagesstock'] = $this->adminmodel->get_spoilages_stock();
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
@@ -207,7 +213,7 @@ class Admin extends CI_Controller{
     }
     function viewSpoilagesAo(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->model("adminmodel");
+            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
             $data['spoilagesao'] = $this->adminmodel->get_spoilages_ao();
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
@@ -228,6 +234,7 @@ class Admin extends CI_Controller{
     }
     function viewTables(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Admin Tables";
             $data['table'] = $this->adminmodel->get_tables();
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
@@ -239,6 +246,7 @@ class Admin extends CI_Controller{
     }
     function viewTransactions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Admin Transactions";
             $data['transactions'] = $this->adminmodel->get_transactions();
             $data['transitems'] = $this->adminmodel->get_transitems();
             $this->load->view('admin/templates/head');
@@ -508,7 +516,7 @@ class Admin extends CI_Controller{
 
 //DELETE FUNCTIONS-------------------------------------------------------------------
     function deleteAccount($account_id){
-        $this->load->model("adminmodel");
+        $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
         if($this->adminmodel->delete_account($account_id)){
             $this->viewAccounts();
         }else{
@@ -528,7 +536,7 @@ class Admin extends CI_Controller{
     }
     function deletespoilages($sid){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->model("adminmodel");
+            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
             $this->adminmodel->delete_spoilages($sid); 
             $data['spoilages']=$this->adminmodel->get_spoilages();
             $this->load->view('admin/view_spoilages',$data);
@@ -576,7 +584,7 @@ class Admin extends CI_Controller{
         $this->form_validation->set_rules("contact_num", "Contact Number", 'required');
 
         if($this->form_validation->run()){
-            $this->load->model("adminmodel");
+            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
             $data = array(
                 "source_name" =>$this->input->post("source_name"),
                 "contact_num" =>$this->input->post("contact_num")
@@ -606,7 +614,7 @@ class Admin extends CI_Controller{
     
     function delete_data(){
         $id = $this->uri->segment(3);
-        $this->load->model("adminmodel");
+        $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
         $this->adminmodel->delete_data($id);
         $this->viewsources();
 
@@ -636,7 +644,7 @@ class Admin extends CI_Controller{
     }
     function delete_menu(){
         $id = $this->uri->segment(3);
-        $this->load->model("adminmodel");
+        $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
         $this->adminmodel->delete_menu($id);
         $this->viewMenu();
     }
