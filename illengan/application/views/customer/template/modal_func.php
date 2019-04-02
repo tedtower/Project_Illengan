@@ -157,7 +157,8 @@ function unsetModalContents(){
     $('span#mid').text('');
     $('#quantity').val(1);
     $('#sizeSelect').attr('disabled','disabled'); 
-    $('#sizeSelect').empty();  
+    $('#sizeSelect').empty();
+    $("#sizeInput").attr('data-price','');
     $("#sizeInput").val('');
     $('#sizeInput').attr('disabled','disabled');
     $('#sizeable').hide();
@@ -207,7 +208,7 @@ function setModalContents(item_id){
                     computeSubtotal();
                     console.log($("#dc_subtotal").val());
                 });                
-                $("#menuSubtotal").text(parseFloat($("#sizeSelect > option:selected").data("price")));
+                $("#menuSubtotal").text(parseFloat($("#sizeSelect > option:selected").attr("data-price")));
             }else{
                 $("#sizeInput").removeAttr('disabled');
                 $("#sizeInput").attr("value", menu_pref[0].pref_id);
@@ -237,16 +238,15 @@ function computeSubtotal(){
     var mainSubtotal = 0;
     var prefPrice = 0;
     var quantity = parseInt($("#quantity").val());
-    if($("#sizeInput").is(":disabled")){
-        prefPrice = parseFloat($("#sizeSelect > option:selected").data("price"));
+    if(!$("#sizeSelect").is(":disabled")){
+        prefPrice = parseFloat($("#sizeSelect > option:selected").attr("data-price"));
     }else{
-        prefPrice = parseFloat($("#sizeInput").data("price"));
+        prefPrice = parseFloat($("#sizeInput").attr("data-price"));
     }
-    console.log(prefPrice);
     mainSubtotal = quantity * prefPrice;
     if($("select[name='addon[]']").length > 0){
         for (var index = 0; index < $("select[name='addon[]']").length ; index++){
-            addon = parseFloat($("select[name='addon[]']").eq(index).find("option:selected").data("price"));
+            addon = parseFloat($("select[name='addon[]']").eq(index).find("option:selected").attr("data-price"));
             addonQty = parseInt($("input[name='addonQty[]']").eq(index).val());
             if(isNaN(addon)){
                 addon = 0;
