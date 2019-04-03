@@ -10,29 +10,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>Il-Lengan | Barista Orders</title>
-	        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
            <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>  
            <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>            
            <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" /> --> 
-	        <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/jquery.dataTables.css'?>">
-
-	        <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/bootstrap.css'?>">
-          <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/dataTables.bootstrap4.css'?>">
-          <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/style.css'?>">
-
-</head>
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/jquery.dataTables.css'?>">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/bootstrap.css'?>">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/dataTables.bootstrap4.css'?>">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/style.css'?>">
+  </head>
 <body>
   <?php echo include_once('sideNavigation.php') ?>
 
   <div class="container">
             <div class="nav nav-pills"><a href="<?php echo site_url('barista/orders'); ?>" class="nav nav-link" role="tab">Orderlist</a> &nbsp;
-              <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="nav nav-link active" role="tab">Pending Orders</a> &nbsp;
-            <a href="<?php echo site_url('barista/servedStatus'); ?>" class="nav nav-link" role="tab">Served Orders</a>
+              <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="nav nav-link" role="tab">Pending Orders</a> &nbsp;
+            <a href="<?php echo site_url('barista/servedStatus'); ?>" class="nav nav-link active" role="tab">Served Orders</a>
             <a href="<?php echo site_url('barista/orderslip'); ?>" class="nav nav-link" role="tab">Orderslip</a>
             </div>
             <br><br>
-            <table class="table table-striped" id="pendingorders" >
+            <table class="table table-striped" id="servedorders" >
                 <thead>
                     <tr>
                         <!--<th>Slip No.</th> -->
@@ -46,8 +44,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </tr>
                 </thead>
                 <tbody>
-                <?php  if(isset($orders)){
-                          foreach($orders as $row) 
+                <?php  if(isset($served)){
+                          foreach($served as $row) 
                           {  
                             ?> 
                                <tr>  
@@ -138,7 +136,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <script>
 $(document).ready(function(){
-    $('#pendingorders').DataTable();
+    $('#servedorders').DataTable();
 });
 
 

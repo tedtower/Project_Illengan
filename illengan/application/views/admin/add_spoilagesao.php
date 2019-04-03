@@ -1,8 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+date_default_timezone_set('Asia/Manila');
 ?>
 
-<form method="POST" action="<?php echo base_url()?>index.php/admin/insertspoilagesstock">
+<form method="POST" action="<?php echo base_url()?>index.php/admin/insertspoilagesaddons">
 
 <div class="form-group">
    <label for="formGroupExampleInput2">Description</label>
@@ -32,7 +33,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <span class="text-danger"><?php echo form_error("remarks"); ?></span>
   </div>
   
-  <input type='hidden' name='date_recorded' value='<?php echo date("m-d-y"); ?>'/> 
   <input type='hidden' name='s_type' value='a'/> 
   
   <div class="form-group">

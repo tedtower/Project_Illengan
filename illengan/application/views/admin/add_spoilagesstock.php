@@ -32,7 +32,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <span class="text-danger"><?php echo form_error("remarks"); ?></span>
   </div>
   
-  <input type='hidden' name='date_recorded' value='<?php echo date("m-d-y"); ?>'/> 
   <input type='hidden' name='s_type' value='s'/> 
   
   <div class="form-group">
