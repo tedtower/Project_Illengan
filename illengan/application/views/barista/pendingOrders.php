@@ -10,21 +10,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>Il-Lengan | Barista Orders</title>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/bootstrap.css'?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/jquery.dataTables.css'?>">
-  <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/dataTables.bootstrap4.css'?>">
-  <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/style.css'?>">
+	        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
+           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+           <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>  
+           <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>            
+           <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" /> --> 
+	        <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/jquery.dataTables.css'?>">
+
+	        <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/bootstrap.css'?>">
+          <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/dataTables.bootstrap4.css'?>">
+          <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/style.css'?>">
+
 </head>
 <body>
   <?php echo include_once('sideNavigation.php') ?>
- <div class="container">
 
-            <div><a href="<?php echo site_url('barista/orders'); ?>" class="btn btn-info" role="button">Orderlist</a> &nbsp;
-              <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="btn  btn-info" role="button">Pending Orders</a> &nbsp;
-            <a href="<?php echo site_url('barista/servedStatus'); ?>" class="btn btn-info" role="button">Served Orders</a>
-            <a href="<?php echo site_url('barista/orderslip'); ?>" class="btn btn-info" role="button">Orderslip</a>
+  <div class="container">
+            <div class="nav nav-pills"><a href="<?php echo site_url('barista/orders'); ?>" class="nav nav-link" role="tab">Orderlist</a> &nbsp;
+              <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="nav nav-link active" role="tab">Pending Orders</a> &nbsp;
+            <a href="<?php echo site_url('barista/servedStatus'); ?>" class="nav nav-link" role="tab">Served Orders</a>
+            <a href="<?php echo site_url('barista/orderslip'); ?>" class="nav nav-link" role="tab">Orderslip</a>
             </div>
-            <table class="table table-striped" id="mydata" >
+            <br><br>
+            <table class="table table-striped" id="pendingorders" >
                 <thead>
                     <tr>
                         <!--<th>Slip No.</th> -->
@@ -37,7 +45,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <th style="text-align: right;">Actions</th>
                     </tr>
                 </thead>
-                <tbody id="show_data">
+                <tbody>
+                <?php  if(isset($orders)){
+                          foreach($orders as $row) 
+                          {  
+                            ?> 
+                               <tr>  
+                                    <td><?= $row["order_item_id"]?></td>  
+                                    <td><?= $row["cust_name"]?></td>  
+                                    <td><?= $row["table_code"]?></td>  
+                                    <td><?= $row["order_desc"]?></td>  
+                                    <td><?= $row["order_qty"]?></td>  
+                                    <td><?= $row["item_status"]?></td>  
+                                    <td><button id="cancelOrder" class="btn btn-warning">Cancel</button></td>  
+                               </tr>    
+                         
+                          <?php } 
+                        } ?>  
                     
                 </tbody>
             </table>
@@ -112,46 +136,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script type="text/javascript" src="<?php echo base_url().'assets/js/barista/jquery.dataTables.js'?>"></script>
 <script type="text/javascript" src="<?php echo base_url().'assets/js/barista/dataTables.bootstrap4.js'?>"></script>
 
-<script type="text/javascript">
-var table = $('#mydata');
-$(document).ready(function() {
-	  table.DataTable( {
-             ajax: {
-                 url: "http://www.illengan.com/barista/orders_b",
-                 dataSrc: ''
-             },
-		    colReorder: {
-			realtime: true
-		    },
-            "aoColumns" : [
-                {data : 'order_item_id'},
-                {data : 'cust_name'},
-                {
-                  data: 'table_code'},
-
-                {data : 'order_desc'},
-                {data : 'order_qty'},
-                {
-                    data: null,
-                    render: function ( data, type, row, meta) {
-                        return '<button id="status" class="status btn dt-buttons '+ data.item_status +
-                        '" data-order_item_id="'+ data.order_item_id +'"'+
-                        ' data-item_status="'+ data.item_status +'" onclick="change_status()">'+ data.item_status +'</button>';
-                    }
-                },
-      
-                {data: null,
-                    render: function ( data, type, row, meta) {
-                        return '<a href="javascript:void(0);" class="btn btn-warning btn-sm item_delete" data-order_id="'+data.order_id+'">Cancel</a>';
-                               
-                    }        
-                }
-
-		    ]
-	        } );
-
+<script>
+$(document).ready(function(){
+    $('#pendingorders').DataTable();
 });
-
 
 
 //start of new function
@@ -187,59 +175,59 @@ $(document).ready(function() {
 
         //get data for delete record
         $('#show_data').on('click','.item_delete',function(){
-            var order_id = $(this).data('order_id');
+             var order_id = $(this).data('order_id');
             
-            $('#Modal_Remove').modal('show');
-            $('[name="order_id_remove"]').val(order_id);
-        });
+             $('#Modal_Remove').modal('show');
+             $('[name="order_id_remove"]').val(order_id);
+         });
 
-        //delete record to database
-         $('#btn_cancel').on('click',function(){
-            var order_id = $('#order_id_remove').val();
-            $.ajax({
-                type : "POST",
-                url  : "<?php echo site_url('barista/cancel')?>",
-                dataType : "JSON",
-                data : {order_id:order_id},
-                success: function(data){
-                    $('[name="order_id_remove"]').val("");
-                    alert("Record removed successfully!");
-                    $('#Modal_Remove').modal('hide');
+         //delete record to database
+          $('#btn_cancel').on('click',function(){
+             var order_id = $('#order_id_remove').val();
+             $.ajax({
+                 type : "POST",
+                 url  : "<?php echo site_url('barista/cancel')?>",
+                 dataType : "JSON",
+                 data : {order_id:order_id},
+                 success: function(data){
+                     $('[name="order_id_remove"]').val("");
+                     alert("Record removed successfully!");
+                     $('#Modal_Remove').modal('hide');
                     
-                    location.reload();
-                }
+                     location.reload();
+                 }
             });
-            return false;
-        });
+             return false;
+         });
 
-//change status function
-$('.status').on('click', function() {
-        var orderItemId = $(this).data("order_item_id");
-        var itemStatus = $(this).data("item_status");
-        var item_status;
-        if(itemStatus === "pending") {
-            item_status = "ongoing";
-        } else if(itemStatus === "ongoing") {
-            item_status = "done";
-        } else if(itemStatus === "done") {
-            item_status = "served";
-        }else if(itemStatus === "served"){
-            item_status = "pending";
-        }
+// //change status function
+// $('.status').on('click', function() {
+//         var orderItemId = $(this).data("order_item_id");
+//         var itemStatus = $(this).data("item_status");
+//         var item_status;
+//         if(itemStatus === "pending") {
+//             item_status = "ongoing";
+//         } else if(itemStatus === "ongoing") {
+//             item_status = "done";
+//         } else if(itemStatus === "done") {
+//             item_status = "served";
+//         }else if(itemStatus === "served"){
+//             item_status = "pending";
+//         }
     
-        // AJAX CODE FOR POSTING NEW STATUS
-        $.ajax({
-        type: 'POST',
-        url: 'http://www.illengan.com/barista/change_status',
-        data: {
-            order_item_id: orderItemId,
-            item_status: item_status
-        },
-        success: function() {
-            table.DataTable().ajax.reload(null, false);
-        }
-            });
-  });
+//         // AJAX CODE FOR POSTING NEW STATUS
+//         $.ajax({
+//         type: 'POST',
+//         url: 'http://www.illengan.com/barista/change_status',
+//         data: {
+//             order_item_id: orderItemId,
+//             item_status: item_status
+//         },
+//         success: function() {
+//             table.DataTable().ajax.reload(null, false);
+//         }
+//             });
+//   });
 
 
 </script>
