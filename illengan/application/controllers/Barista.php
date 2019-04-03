@@ -13,6 +13,7 @@ class Barista extends CI_Controller{
 
         function index()
         {
+            $this->load->view('barista/sideNavigation');
             $this->load->view('barista/baristaOrders'); 
     }
 
@@ -71,7 +72,7 @@ class Barista extends CI_Controller{
     }
 
     function editTableNumber(){
-        $data=$this->baristaModel->edit_tablenumber();
+        $data=$this->baristamodel->edit_tablenumber();
         echo json_encode($data);
 
 
@@ -91,16 +92,22 @@ class Barista extends CI_Controller{
         echo json_encode($data);
     }
 
-    function pendingStatus(){
-        $this->load->view('barista/pendingOrders');
-        $data = $this->baristamodel->pending_orders();
+    function cancelslip(){
+        $data=$this->baristamodel->cancel_slip();
         echo json_encode($data);
     }
 
+    function pendingStatus(){
+        //->load->view('barista/pending');
+        $data['orders'] = $this->baristamodel->pending_orders();
+        $this->load->view('barista/pendingOrders', $data);
+    }
+
     function servedStatus(){
-        //$this->load->view('barista/pendingOrders');
-        $data = $this->baristamodel->served_orders();
-        echo json_encode($data);
+        //$this->load->view('barista/servedOrders');
+        $data['served'] = $this->baristamodel->served_orders();
+        $this->load->view('barista/servedOrders', $data);
+        
     }
 
 
