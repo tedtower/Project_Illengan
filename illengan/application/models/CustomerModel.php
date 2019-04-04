@@ -89,26 +89,16 @@
             $query = $this->db->get_where('menu', array('category_id' => '12'));
             return $query->result();
         }
-        function insert_order($order_num, $id, $qty, $subtotal){ //insert in table orderlist
-            $data=array(
-                'order_id' => $order_num,
-				'menu_id' => $id,
-				'order_total' => $subtotal,
-				'order_qty' =>$qty,
-            );
-            $this->db->insert('orderlist', $data);
-        }
-		function insert(){ //insert in table orderslip
-            $data=array(
-                'order_id' => $order_num, //unknown function
-				'table_code' => $table_no,
-				'cust_name' => $cust_name,
-				'order_payable' => $order_payable,
-				'order_date' => $date, //format unknown
-				'pay_date_time' => $pay_time, //format unknown
-				'date_record' => $record //unknown format
-			);
-            $this->db->insert('orderslip', $data);
+       function orderInsert($total, $tableCode, $orderlist, $customer, $orderDate){ //insert in table orderslip
+            $query1 = "Insert into orderslip(table_code, cust_name, total, order_date, pay_date_time, date_recorded) values (?,?,?,?,?,?)";
+			$this->db->query($query1, array( $tableCode, $customer, $total, $orderDate,'', $orderDate)); 
+			$order_id= $this->db->insert_id();
+			$bool = false;
+			foreach($orderlist as $items){
+				$query2 = "Insert into orderlist (order_item_id, order_id, pref_id, order_desc, order_qty, subtotal, item_status, remarks) values (?,?,?,?,?,?,?,?)";
+				$bool = $this->db->query($query2, array(NULL,$order_id, $items['id'],'',$items['qty'], $total, 'pending', $items['remarks'])); 
+			}
+			return true;
         }
 
         function get_menudetails($menu_id){

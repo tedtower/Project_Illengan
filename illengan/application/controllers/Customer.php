@@ -149,27 +149,30 @@ class Customer extends CI_Controller {
 		}
 	}
 
-	/*function viewOrders(){
+	function viewOrders(){
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
-				
+				$this->load->view('customer/modals/order_modal');
 			}else{
 				redirect('customer/checkin');
 			}
 		}else{
 			redirect('login');
 		}
-	}*/
+	}
 
 	function completeOrder(){		
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
-				$orderDate = date("Y-m-d");
-				$tableCode = $this->session->userdata('table_no');
-				$customer = $this->session->userdata('cust_name');
+				$orderDate  = $this->input->post('date');
+				$tableCode = $this->input->post('table_no');
+				$customer = $this->input->post('cust_name');
 				$orderlist = $this->session->userdata('orders');
+				$total = $this->input->post('total');
 				// foreach()
-				$this->customermodel->add_orderslip($tableCode, $customer, $orderlist, $orderDate);
+				$this->customermodel->orderInsert($total, $tableCode, $orderlist, $customer, $orderDate);
+				echo'<script>alert("Successfully Ordered!")</scipt>';
+				$this->load->view('customer/menu');
 			}else{
 				redirect('customer/checkin');
 			}
@@ -177,28 +180,7 @@ class Customer extends CI_Controller {
 			redirect('login');
 		}
 	}
-
-	function ordered() { //insert in db table orderslip and orderlist		
-		if($this->isLoggedIn()){			
-			if($this->isCheckedIn()){			
-				$this->load->model('customermodel');
-				$data['cart'] = $this->cart->contents();
-				if($cart = $this->cart->contents()):
-					foreach($cart as $items):
-						$total = $this->cart->total();
-						$order_num = 1; //function to count orderslip
-					$this->customermodel->insert_order($order_num,$items['id'], $items['subtotal'], $total);
-					echo '<script>alert("Inserted")</script>';
-					endforeach;
-				endif;
-				$this->load->view('orderlist', $datas);
-			}else{
-				redirect('customer/checkin');
-			}
-		}else{
-			redirect('login');
-		}
-	}
+	
 	function removeOrder() {	
 		if($this->isLoggedIn()){			
 			if($this->isCheckedIn()){
