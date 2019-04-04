@@ -116,7 +116,7 @@ function freebies_discounts() {
                 var org_price = v_quantity * data.discounts[0].pref_price;
                 $('#freebie').append('<input type="text" id="dc_subtotal" class="dc_subtotal" value="'+sub_total+'" hidden="hidden">'+
                 '<p class="freebieQty" >You have a discount of '+sub_total+' php from a price of '+org_price+' php!</p>');
-
+                $("#menuSubtotal").text(sub_total);
             } 
              
          }
