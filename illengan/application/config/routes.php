@@ -55,6 +55,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'login/viewlogin';
 $route['verifylogin'] = "login/check_cred";
 $route['admin/menu'] = "admin/viewmenu";
+$route['admin/menu/datatables'] = "admin/datatables_menu";
 $route['admin/spoilages'] = "admin/viewspoilages";
 $route['admin/addons/spoilages'] = "admin/viewspoilagesao";
 $route['admin/menu/spoilages'] = "admin/viewspoilagesmenu";

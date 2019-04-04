@@ -103,10 +103,15 @@ class Admin extends CI_Controller{
             $data['title'] = "Admin Menu";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
-            $data['menu'] = $this->adminmodel->get_menu();
-            $data['category'] = $this->adminmodel->get_menucategories();
-            $this->load->view('admin/menuitems',$data);
-            $this->load->view('admin/templates/scripts');
+            $this->load->view('admin/menuitems');
+        }else{
+            redirect('login');
+        }
+    }
+    function datatables_menu(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data = $this->adminmodel->get_menu();
+            echo json_encode($data);
         }else{
             redirect('login');
         }
