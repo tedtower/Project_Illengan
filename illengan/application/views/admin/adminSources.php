@@ -3,7 +3,6 @@
 
 <head>
     <?php include_once('templates/head.php') ?>
-    <title>Il-Lengan | Admin Sources</title>
 </head>
 
     <body>
@@ -113,6 +112,7 @@
                                                     <h4> Are you sure you want to delete this table?</h4>
                                                     <br>
                                                 </div>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
