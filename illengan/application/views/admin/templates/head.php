@@ -17,8 +17,15 @@
     <!--CSS for Demo Purpose, don't include it in your project-->
     <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/admin/demo.css')?>">
     <!--Fonts and icons-->
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<?= base_url('assets/css/admin/font-awesome.min.css')?>">
     <link rel="stylesheet" type="text/css" href='http://fonts.googleapis.com/css?family=Roboto:400,700,300'>
     <link rel="stylesheet" type="text/css"
         href="<?= base_url('assets/common/fontstyles/pre-icon-7/pe-icon-7-stroke.css')?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/jquery.dataTables.css'?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/dataTables.bootstrap4.css'?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/responsive.bootstrap.css'?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/select.bootstrap.css'?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/buttons.bootstrap.css'?>">
+
+
 </head>

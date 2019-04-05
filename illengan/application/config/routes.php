@@ -55,6 +55,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'login/viewlogin';
 $route['verifylogin'] = "login/check_cred";
 $route['admin/menu'] = "admin/viewmenu";
+$route['admin/menu/datatables'] = "admin/datatables_menu";
 $route['admin/spoilages'] = "admin/viewspoilages";
 $route['admin/addons/spoilages'] = "admin/viewspoilagesao";
 $route['admin/menu/spoilages'] = "admin/viewspoilagesmenu";
@@ -66,6 +67,7 @@ $route['admin/menu/spoilages/add'] ="admin/viewInsertSpoilageMenu";
 $route['admin/stock/spoilages/add'] ="admin/viewInsertSpoilageStock";
 $route['admin/addons/spoilages/add'] ="admin/viewInsertSpoilageAo";
 
+$route['admin/sales'] = "admin/viewSales";
 
 $route['admin/dashboard'] = "admin/viewdashboard";
 $route['admin/tables'] = "admin/viewtables";
@@ -97,7 +99,6 @@ $route['admin/transactions'] = "admin/viewtransactions";
 $route['admin/transactions/add'] = "admin/addtransactions";
 $route['admin/transactions/edit'] = "admin/edittransactions";
 $route['admin/transactions/delete'] = "admin/deletetransactions";
-$route['admin/sample'] = 'admin/samplemethod';
 
 //CUSTOMER ROUTES
 $route['customer/processCheckIn'] = "customer/processCheckIn";
