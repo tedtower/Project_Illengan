@@ -54,7 +54,9 @@
                                 <div class="container-fluid">
                                     <!--Table-->
                                     <div class="card-content">
-                                        <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newTransaction" data-original-title style="float: left">Add Transaction</a>
+                                        <a class="btn btn-default btn-sm" data-toggle="modal"
+                                            data-target="#newTransaction" data-original-title style="float: left">Add
+                                            Transaction</a>
                                         <!--Search
                             <div id ="example_filter" class="dataTables_filter">
                                 <label>
@@ -66,7 +68,9 @@
                                 </label>
                             </div>-->
                                         <br><br>
-                                        <table id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                                        <table id="example"
+                                            class="table table-striped table-bordered dt-responsive nowrap"
+                                            cellspacing="0" width="100%">
                                             <thead>
                                                 <th><b class="pull-left">Receipt No.</b></th>
                                                 <th><b class="pull-left">Supplier Name</b></th>
@@ -92,9 +96,11 @@
                                                     <td>
                                                         <div class="onoffswitch">
                                                             <!--View button-->
-                                                            <button class="btn btn-default btn-sm" data-toggle="modal" data-target="">Edit</button>
+                                                            <button class="btn btn-default btn-sm" data-toggle="modal"
+                                                                data-target="">Edit</button>
                                                             <!--Delete button-->
-                                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="">Delete</button>
+                                                            <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                                                data-target="">Delete</button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -108,7 +114,9 @@
                                         <div class="col-md-12 form-group">
                                             <div class="form-group label-floating">
                                                 <label for="email">Receipt Number</label>
-                                                <input class="form-control" type="text" name="receiptNumber" value="" required pattern="[a-zA-Z][a-zA-Z\s][0-9]*" required title="Receipt number should contain letters and numbers">
+                                                <input class="form-control" type="text" name="receiptNumber" value=""
+                                                    required pattern="[a-zA-Z][a-zA-Z\s][0-9]*" required
+                                                    title="Receipt number should contain letters and numbers">
                                             </div>
                                         </div>
                                     </div>
@@ -116,7 +124,9 @@
                                         <div class="col-md-12 form-group">
                                             <div class="form-group label-floating">
                                                 <label for="supplier">Supplier Name</label>
-                                                <input class="form-control" type="text" name="supplierName" value="" required pattern="[a-zA-Z][a-zA-Z\s]*" required title="Supplier name should only contain letters">
+                                                <input class="form-control" type="text" name="supplierName" value=""
+                                                    required pattern="[a-zA-Z][a-zA-Z\s]*" required
+                                                    title="Supplier name should only contain letters">
                                             </div>
                                         </div>
                                     </div>
@@ -124,7 +134,9 @@
                                         <div class="col-md-12 form-group">
                                             <div class="form-group label-floating">
                                                 <label for="description">Remarks</label>
-                                                <input class="form-control" type="text" name="remarks" value="" required pattern="[a-zA-Z][a-zA-Z\s]*" required title="Remarks should only countain letters">
+                                                <input class="form-control" type="text" name="remarks" value="" required
+                                                    pattern="[a-zA-Z][a-zA-Z\s]*" required
+                                                    title="Remarks should only countain letters">
                                             </div>
                                         </div>
                                     </div>
@@ -140,9 +152,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    </div>
-    </div>
     </div>
     <?php include_once('templates/scripts.php') ?>
 </body>

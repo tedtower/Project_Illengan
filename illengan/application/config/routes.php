@@ -67,6 +67,7 @@ $route['admin/menu/spoilages/add'] ="admin/viewInsertSpoilageMenu";
 $route['admin/stock/spoilages/add'] ="admin/viewInsertSpoilageStock";
 $route['admin/addons/spoilages/add'] ="admin/viewInsertSpoilageAo";
 
+$route['admin/sales'] = "admin/viewSales";
 
 $route['admin/dashboard'] = "admin/viewdashboard";
 $route['admin/tables'] = "admin/viewtables";

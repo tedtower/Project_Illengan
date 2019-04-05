@@ -71,8 +71,9 @@ class Admin extends CI_Controller{
             $data['title'] = "Admin Dashboard";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');            
-            $this->load->view('admin/admin updated/adminDashboard');            
+            $this->load->view('admin/adminDashboard');            
             $this->load->view('admin/templates/scripts');
+            $this->load->view('admin/templates/footer');
         }else{
             redirect('login');
         }
@@ -84,7 +85,7 @@ class Admin extends CI_Controller{
             $this->load->view('admin/templates/sideNav');
             $data['stock'] = $this->adminmodel->get_inventory();
             $data['category'] = $this->adminmodel->get_stockcategories();
-            $this->load->view('admin/admin updated/adminInventory',$data);
+            $this->load->view('admin/adminInventory',$data);
             $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
@@ -92,8 +93,13 @@ class Admin extends CI_Controller{
     }
     function viewLogs(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Admin Logs";
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
             $data['log'] = $this->adminmodel->get_logs();
-            $this->load->view('admin/logs',$data);
+            $this->load->view('admin/adminLogs',$data);
+            $this->load->view('admin/templates/scripts');            
+            $this->load->view('admin/templates/footer');
         }else{
             redirect('login');
         }
@@ -167,9 +173,10 @@ class Admin extends CI_Controller{
             $data['title'] = "Admin Sales";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $data['sales'] = $this->adminmodel->get_sales();
-            $this->load->view('admin/admin updated/adminSales',$data);
+            // $data['sales'] = $this->adminmodel->get_sales();
+            $this->load->view('admin/adminSales',$data);
             $this->load->view('admin/templates/scripts');
+            $this->load->view('admin/templates/footer');
         }else{
             redirect('login');
         }
@@ -180,8 +187,9 @@ class Admin extends CI_Controller{
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
             $data['source'] = $this->adminmodel->get_sources();
-            $this->load->view('admin/sources',$data);
+            $this->load->view('admin/adminSources', $data);
             $this->load->view('admin/templates/scripts');
+            $this->load->view('admin/templates/footer');
         }else{
             redirect('login');
         }
@@ -192,6 +200,7 @@ class Admin extends CI_Controller{
             $data['spoilages'] = $this->adminmodel->get_spoilages();
             $this->load->view('admin/view_spoilages', $data);
             $this->load->view('admin/templates/scripts');
+            $this->load->view('admin/templates/footer');
         }else{
             redirect('login');
         }
@@ -212,6 +221,7 @@ class Admin extends CI_Controller{
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/view_spoilages_stock', $data);
+            $this->load->view('admin/templates/footer');
         }else{
             redirect('login');
         }
