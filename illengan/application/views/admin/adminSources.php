@@ -5,25 +5,18 @@
     <?php include_once('templates/head.php') ?>
 </head>
 
-    <body>
-        <?php include_once('templates/sideNav.php') ?>
-        <!--End Side Bar-->
+<body>
+    <?php include_once('templates/sideNav.php') ?>
+    <!--End Side Bar-->
+    <div class="main-panel">
+        <div class="container-fluid"></div>
+        <div class="navbar-header"></div>
+
         <div class="content">
             <div class="container-fluid">
                 <!--Table-->
                 <div class="card-content">
-                    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewSource" data-original-title style="float: left">Add New
-                        Source</a>
-                    <!--Search
-        <div id ="example_filter" class="dataTables_filter">
-            <label>
-                "Search:"
-                <div class="form-group form-group-sm is-empty">
-                   <input type="search" class="form-control" placeholder aria-controls="example">
-                   <span class="material-input"></span> 
-                </div>
-            </label>
-        </div>-->
+                    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewSource" data-original-title style="float: left">Add New Source</a><br><br>
                     <br><br>
                     <table id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead>
@@ -62,69 +55,97 @@
                     </table>
                     <!--Modals-->
                     <!--Modal for Add || Edit-->
-                    <form action="" method="post" accept-charset="utf-8">
-                        <div class="modal-body" style="padding: 5px;">
-                            <!--Add Menu Item Modal-->
-                            <!--Source Name-->
-                            <div class="row">
-                                <div class="col-md-12 form-group">
-                                    <div class="form-group label-floating">
-                                        <label for="sourceName">Name</label>
-                                        <input class="form-control" type="text" name="sourceName" value="" required pattern="[a-zA-Z][a-zA-Z\s]*" required title="Source name should contains letters only">
-                                    </div>
+                    <div class="modal fade" id="newSources" tabindex="-1" role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="panel-title" id="contactLabel"><span class="glyphicon glyphicon-info-sign"></span>New Source</h4>
                                 </div>
-                            </div>
-                            <!--Source Contact Number-->
-                            <div class="row">
-                                <div class="col-md-12 form-group">
-                                    <div class="form-group label-floating">
-                                        <label for="sourceContactNum">Contact Number</label>
-                                        <input class="form-control" type="tel" name="sourceContactNum" value="" required pattern="[0-9]" required title="Contact number should only contain digits">
-                                    </div>
-                                </div>
-                            </div>
-                            <!--Source Email-->
-                            <div class="row">
-                                <div class="col-md-12 form-group">
-                                    <div class="form-group label-floating">
-                                        <label for="sourceEmail">Email</label>
-                                        <input class="form-control" type="text" name="sourceEmail" value="" required pattern="[a-zA-Z][a-zA-Z\s]*" required title="Email address should only contain letters">
-                                    </div>
-                                </div>
-                            </div>
-                            <!--Status-->
-                            <!--Delete Confirmation Box-->
-                            <div class="modal fade" id="deactivate" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">
-                                            <!--Delete Button-->
-                                            <button type="button" class="close" data-dismiss="modal" onclick="document.getElementById('').click()" aria-hidden="true">×</button>
-                                            <h4 class="panel-title" id="contactLabel">
-                                                <span class="glyphicon glyphicon-warning-sign"></span>
-                                                Delete
-                                            </h4>
-                                        </div>
-                                        <form action="adminAccount/delete" method="post" accept-charset="utf-8">
-                                            <div class="modal-body" style="padding: 5px;">
-                                                <div class="row" style="text-align: center">
-                                                    <br>
-                                                    <h4> Are you sure you want to delete this source?</h4>
-                                                    <br>
+                                <form action="adminSources/insert" method="post" accept-charset="utf-8">
+                                    <div class="modal-body" style="padding: 5px;">
+                                        <!--Source Name-->
+                                        <div class="row">
+                                            <div class="col-md-12 form-group">
+                                                <div class="form-group label-floating">
+                                                    <label for="name">Name</label>
+                                                    <input class="form-control" type="text" name="name" required pattern="[a-zA-Z][a-zA-Z\s]*" required title="Source name should only countain letters" required>
                                                 </div>
                                             </div>
-                                        </form>
+                                        </div>
+                                        <!--Contact Number-->
+                                        <div class="row">
+                                            <div class="col-md-12 form-group">
+                                                <div class="form-group label-floating">
+                                                    <label for="contactNum">Contact Number</label>
+                                                    <input name="contactNum" class="form-control" type="number" value="" id="example-number-input" min="0" oninput="validity.valid||(value='');" data-validate="required" max="" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--Email Address-->
+                                        <div class="row">
+                                            <div class="col-md-12 form-group">
+                                                <div class="form-group label-floating">
+                                                    <label for="sourceEmail">Email</label>
+                                                    <input name="sourceEmail" class="form-control" type="textarea" value="" id="example-number-input" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required title="You have entered an invalid e-mail address. Try again.">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--Status-->
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <div class="form-group label-floating">
+                                                    <label for="status">Status</label>
+                                                    <select class="form-control" type="text" name="status" required pattern="[a-zA-Z][a-zA-Z\s]*" required title="Status should only countain letters" required>
+                                                        <option value="active">Active</option>
+                                                        <option value="inactive">Inactive</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="panel-footer" style="margin-bottom:-14px;" align="right">
-                                    <input type="submit" class="btn btn-danger" value="Close" />
-                                    <input type="reset" class="btn btn-success" value="Update Account" />
-                                </div>
+                                    <div class="panel-footer" style="margin-bottom:-14px;" align="right">
+                                        <input type="submit" class="btn btn-success" value="Save" />
+                                        <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                        <input type="reset" class="btn btn-danger" value="Clear" />
+                                        <!--<span class="glyphicon glyphicon-remove"></span>-->
+                                    </div>
+                                </form>
                             </div>
-                    </form>
+                        </div>
+                    </div>
+                    <!--Modal for Delete Confirmation-->
+                    <div class="modal fade" id="delete" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="deleteLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <!--Close Button-->
+                                    <button type="button" class="close" data-dismiss="modal" onclick="document.getElementById('').click()" aria-hidden="true">×</button>
+                                    <h4 class="panel-title" id="deleteLabel"><span class="glyphicon glyphicon-warning-sign"></span> Warning
+                                    </h4>
+                                </div>
+                                <form action="adminSources/delete" method="post" accept-charset="utf-8">
+                                    <div class="modal-body" style="padding: 5px;">
+                                        <div class="row" style="text-align: center">
+                                            <br>
+                                            <h4> Are you sure you want to 'delete' this source?</h4>
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer" style="margin-bottom:-14px;">
+                                        <input type="submit" class="btn btn-success" value="Yes" />
+                                        <button type="button" class="btn btn-danger btn-close" onclick="document.getElementById('').click()" data-dismiss="modal">No</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End Confirmation Modal-->
                 </div>
             </div>
         </div>
-        <?php include_once('templates/scripts.php') ?>
-    </body>
-</html> 
+    </div>
+    <?php include_once('templates/scripts.php') ?>
+</body>
+
+</html>
