@@ -15,9 +15,8 @@
             <table class="dataTable  dtr-inline collapsed table stripe table display" id="mydata">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th style="width:3%"></th>
                         <th>Menu Item</th>
-                        <th>Description</th>
                         <th>Category</th>
                         <th>Status</th>
                         <th>Actions</th>
@@ -61,7 +60,6 @@ $(document).ready(function() {
                 "defaultContent": ''
                 },
                 {data : 'menu_name'},
-                {data : 'menu_description'},
                 {data : 'category_name'},
                 {data : 'menu_availability'},
                 {
@@ -105,13 +103,18 @@ $(document).ready(function() {
 function format ( d ) {
 
     // `d` is the original data object for the row
-    return'<div style="margin:1% 5% 1% 5%;overflow:auto">'+
+    return'<div style="margin:1% 5% 1% 5%;overflow:auto;">'+
             '<div style="width:30%;float:left">'+
                 '<img name="editImage" style="width:100%;height:180px" src="http://www.illengan.com/uploads/'+d.menu_image+'" />'+
             '</div>'+
-            '<div style="width:50%;float:left;margin-left:3%">'+
+            '<div style="width:65%;float:left;margin-left:3%;">'+
                 '<b>Additional Information:</b>'+
                 '<table>'+
+                    '<tr>'+
+                    '<td>Description:</td>'+
+                    '<td>'+d.menu_description+'</td>'+
+                    '<tr>'+
+
                     '<tr>'+
                     '<td>Preferences:</td>'+
                     '<td></td>'+
