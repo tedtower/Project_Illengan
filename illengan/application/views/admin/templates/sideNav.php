@@ -1,6 +1,6 @@
 <body>
     <div class="wrapper">
-        <div class="sidebar" data-color="brown" data-image="<?php echo base_url('assets/media/admin/Coffee_1.jpg')?>">
+        <div class="sidebar" data-color="brown" data-image="<?php echo base_url().'assets/media/admin/Coffee_1.jpg'?>">
             <!--Left Navigation Bar-->
             <div class="sidebar-wrapper" style="overflow: hidden">
                 <div class="logo">
