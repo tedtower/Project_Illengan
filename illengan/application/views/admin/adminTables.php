@@ -16,7 +16,9 @@
                         <th><b class="pull-left">Actions</b></th>
                     </thead>
                     <tbody>
-                        <!--Insert PHP-->
+                        <?php
+                            
+                        ?>
                         <tr>
                             <td>
                                 <!--insert PHP echo e.g. "?php echo $row->code; ?>"-->

@@ -363,8 +363,24 @@ class Admin extends CI_Controller{
             }
         }else{
             redirect('login');
-        }
-        
+        }        
+    }
+    function editTable(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]');
+            if($this->form_validation->run()){
+                $tableCode = trim($this->input->get('tableCode'));
+                if($this->adminmodel->add_table($tableCode)){
+                    redirect('admin/tables');
+                }else{
+                    redirect('');
+                }
+            }else{
+                $this->viewTables();
+            }
+        }else{
+            redirect('login');
+        }        
     }
     function addTransactions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
