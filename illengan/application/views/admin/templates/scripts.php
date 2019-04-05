@@ -1,3 +1,4 @@
+</body>
 <!--   Core JS Files   -->
 <script type="text/javascript" src="<?=base_url().'assets/js/common/frameworks/mdb/js/jquery.3.3.1.min.js'?>"></script>
 <script type="text/javascript" src="<?=base_url().'assets/js/common/frameworks/mdb/js/bootstrap.min.js'?>"></script>
