@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <!--Table-->
         <div class="card-content">
-            <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newrawcoffee" data-original-title
+            <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewTable" data-original-title
                 style="float: left">Add New
                 Table</a>
             <!--Search

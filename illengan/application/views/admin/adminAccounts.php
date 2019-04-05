@@ -3,7 +3,7 @@
 
 <head>
     <?php include_once('templates/head.php') ?>
-    </head>
+</head>
 
     <body>
         <?php include_once('templates/sideNav.php') ?>
@@ -12,8 +12,8 @@
             <div class="container-fluid">
                 <!--Table-->
                 <div class="card-content">
-                    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newrawcoffee" data-original-title style="float: left">Add New
-                        Item</a>
+                    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewAccounts" data-original-title style="float: left">Add New
+                        Account</a>
                     <!--Search
         <div id ="example_filter" class="dataTables_filter">
             <label>

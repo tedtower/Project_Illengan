@@ -3,7 +3,6 @@
 
 <head>
     <?php include_once('templates/head.php') ?>
-    <title>Il-Lengan | Admin Menu Spoilages</title>
 </head>
 
 <body>

@@ -3,7 +3,6 @@
 
 <head>
     <?php include_once('templates/head.php') ?>
-    <title>Il-Lengan | Admin Sources</title>
 </head>
 
     <body>
@@ -13,7 +12,7 @@
             <div class="container-fluid">
                 <!--Table-->
                 <div class="card-content">
-                    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newrawcoffee" data-original-title style="float: left">Add New
+                    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewSource" data-original-title style="float: left">Add New
                         Source</a>
                     <!--Search
         <div id ="example_filter" class="dataTables_filter">
@@ -110,9 +109,10 @@
                                             <div class="modal-body" style="padding: 5px;">
                                                 <div class="row" style="text-align: center">
                                                     <br>
-                                                    <h4> Are you sure you want to delete this table?</h4>
+                                                    <h4> Are you sure you want to delete this source?</h4>
                                                     <br>
                                                 </div>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>

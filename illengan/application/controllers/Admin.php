@@ -235,10 +235,10 @@ class Admin extends CI_Controller{
     function viewTables(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['title'] = "Admin Tables";
-            $data['table'] = $this->adminmodel->get_tables();
-            $this->load->view('admin/templates/head');
+            // $data['table'] = $this->adminmodel->get_tables();
+            $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/tables',$data);
+            $this->load->view('admin/adminTables');
             $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
