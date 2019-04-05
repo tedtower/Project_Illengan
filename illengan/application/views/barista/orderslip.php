@@ -13,10 +13,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
 <div class="container">
-<div><a href="<?php echo site_url('barista/orders'); ?>" class="btn btn-info" role="button">Orderlist</a> &nbsp;
-            <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="btn  btn-info" role="button">Pending Orders</a> &nbsp;
-            <a href="<?php echo site_url('barista/servedStatus'); ?>" class="btn btn-info" role="button">Served Orders</a>
-            <a href="<?php echo site_url('barista/orderslip'); ?>" class="btn btn-info" role="button">Orderslip</a>
+<div class="nav nav-tabs"><a href="<?php echo site_url('barista/orders'); ?>" class="nav nav-link" role="tab">Orderlist</a> &nbsp;
+            <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="nav nav-link" role="tab">Pending Orders</a> &nbsp;
+            <a href="<?php echo site_url('barista/servedStatus'); ?>" class="nav nav-link" role="tab">Served Orders</a>
+            <a href="<?php echo site_url('barista/orderslip'); ?>" class="nav nav-link active" role="tab">Orderslip</a>
             </div>
             <table class="table table-striped" id="mydata" >
                 <thead>
@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <th>Table</th>
                         <th>Order</th>
                         <th>Order Qty</th>
-                        <th>Item Status</th>
+                        <!--<th>Item Status</th>-->
                         <th style="text-align: right;">Actions</th>
                     </tr>
                 </thead>
@@ -130,14 +130,14 @@ $(document).ready(function() {
 
                 {data : 'order_desc'},
                 {data : 'order_qty'},
-                {
+               /* {
                     data: null,
                     render: function ( data, type, row, meta) {
                         return '<button id="status" class="status btn dt-buttons '+ data.item_status +
                         '" data-order_item_id="'+ data.order_item_id +'"'+
                         ' data-item_status="'+ data.item_status +'" onclick="change_status()">'+ data.item_status +'</button>';
                     }
-                },
+                },*/
       
                 {data: null,
                     render: function ( data, type, row, meta) {
@@ -212,7 +212,7 @@ $('#show_data').on('click','.item_edit',function(){
         });
 
 //change status function
-$('.status').on('click', function() {
+/*$('.status').on('click', function() {
         var orderItemId = $(this).data("order_item_id");
         var itemStatus = $(this).data("item_status");
         var item_status;
@@ -238,7 +238,7 @@ $('.status').on('click', function() {
             table.DataTable().ajax.reload(null, false);
         }
             });
-  });
+  });*/
 
 
 </script>
