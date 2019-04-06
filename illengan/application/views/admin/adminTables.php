@@ -36,65 +36,33 @@
                 </table>
                 <!--Modals-->
                 <!--Modal for Edit-->
-<<<<<<< HEAD
-                <div class="modal-body" style="padding: 5px;">
-                    <!--Add Menu Item Modal-->
-                    <!--Table Code-->
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <form action="" method="post" accept-charset="utf-8">
-=======
-                <div class="modal fade" id="updateTable" tabindex="-1" role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading" >
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="panel-title" id="contactLabel"><span class="glyphicon glyphicon-info-sign"></span>Add New Raw Coffee</h4>
-                        </div>
-                <form action="adminTables/insert" method="post" accept-charset="utf-8">
-                    <div class="modal-body" style="padding: 5px;">
-                        <!--Add Menu Item Modal-->
-                        <!--Table Code-->
-                        <div class="row">
-                            <div class="col-md-6 form-group">
->>>>>>> b47c2e851cc37e0416d740e65b279a3b33f4f2a9
-                                <div class="form-group label-floating">
-                                    <label for="tableCode">Table Code</label>
-                                    <input class="form-control" type="text" name="tableCode" value="" required
-                                        pattern="[a-zA-Z][a-zA-Z\s][0-9]*" required
-                                        title="Table Code shoule contain letters and numbers">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-<<<<<<< HEAD
-                    <!--Delete Button-->
-                    <button type="button" class="close" data-dismiss="modal"
-                        onclick="document.getElementById('').click()" aria-hidden="true">×</button>
-                    <h4 class="panel-title" id="contactLabel">
-                        <span class="glyphicon glyphicon-warning-sign"></span>
-                        Delete
-                    </h4>
-                </div>
-                <!--Delete Confirmation Box-->
-                <div class="modal fade" id="deactivate" tabindex="-1" data-backdrop="static" data-keyboard="false"
-                    role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
+                <div class="modal fade" id="updateTable" tabindex="-1" role="dialog" aria-labelledby="contactLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
-                                <form action="adminAccount/delete" method="post" accept-charset="utf-8">
-                                    <div class="modal-body" style="padding: 5px;">
-                                        <div class="row" style="text-align: center">
-                                            <br>
-                                            <h4> Are you sure you want to delete this table?</h4>
-                                            <br>
-                                        </div>
-                                    </div>
-                                </form>
-=======
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="panel-title" id="contactLabel"><span
+                                        class="glyphicon glyphicon-info-sign"></span>Add New Raw Coffee</h4>
+                            </div>
+                            <form action="adminTables/insert" method="post" accept-charset="utf-8">
+                                <div class="modal-body" style="padding: 5px;">
+                                    <!--Add Menu Item Modal-->
+                                    <!--Table Code-->
+                                    <div class="row">
+                                        <div class="col-md-6 form-group">
+                                            <div class="form-group label-floating">
+                                                <label for="tableCode">Table Code</label>
+                                                <input class="form-control" type="text" name="tableCode" value=""
+                                                    required pattern="[a-zA-Z][a-zA-Z\s][0-9]*" required
+                                                    title="Table Code shoule contain letters and numbers">
+                                            </div>
+                            </form>
+                        </div>
+                    </div>
                     <!--Delete Confirmation Box-->
-                    <div class="modal fade" id="deleteTable" tabindex="-1" data-backdrop="static"
-                        data-keyboard="false" role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
+                    <div class="modal fade" id="deleteTable" tabindex="-1" data-backdrop="static" data-keyboard="false"
+                        role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
@@ -111,8 +79,8 @@
                             </div>
                             <div class="panel-footer" style="margin-bottom:-14px;" align="right">
                                 <input type="submit" class="btn btn-success" value="Yes" />
-                                <button type="button" class="btn btn-danger btn-close" onclick="document.getElementById('').click()" data-dismiss="modal">No</button>
->>>>>>> b47c2e851cc37e0416d740e65b279a3b33f4f2a9
+                                <button type="button" class="btn btn-danger btn-close"
+                                    onclick="document.getElementById('').click()" data-dismiss="modal">No</button>
                             </div>
                         </div>
                         <div class="panel-footer" style="margin-bottom:-14px;" align="right">
@@ -127,26 +95,27 @@
 				$success = $this->session->flashdata('success');
 				if(!empty($error)){
 					?>
-					<div class="alert alert-danger" style="margin: 80px; text-align: center; ">
-						<strong><?php echo $error; ?></strong> 
-					</div>
-			  <?php } else if(!empty($success)){ ?>
-					<div class="alert alert-success" style="margin: 80px; text-align: center; ">
-						<strong><?php echo $success; ?></strong> 
-					</div>
-			  <?php } ?> 
-                    <!--End Confirmation Modal-->
-                    </div>
+            <div class="alert alert-danger" style="margin: 80px; text-align: center; ">
+                <strong><?php echo $error; ?></strong>
             </div>
+            <?php } else if(!empty($success)){ ?>
+            <div class="alert alert-success" style="margin: 80px; text-align: center; ">
+                <strong><?php echo $success; ?></strong>
+            </div>
+            <?php } ?>
+            <!--End Confirmation Modal-->
         </div>
     </div>
-    <?php include_once('templates/scripts.php') ?>
+</div>
+</div>
+<?php include_once('templates/scripts.php') ?>
 </body>
 <script type="text/javascript">
-    $('table tbody tr  td').on('click', function() {
+$('table tbody tr  td').on('click', function() {
     $("#myModal").modal("show");
     $("#txtfname").val($(this).closest('tr').children()[0].textContent);
     $("#txtlname").val($(this).closest('tr').children()[1].textContent);
 });
 </script>
+
 </html>
