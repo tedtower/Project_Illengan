@@ -213,8 +213,8 @@ class Admin extends CI_Controller{
     }
     function viewSpoilagesAo(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
             $data['spoilagesao'] = $this->adminmodel->get_spoilages_ao();
+            //echo json_encode($data);
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/view_spoilages_ao', $data);

@@ -1,8 +1,4 @@
-<head>
-<?php include_once('templates/head.php') ?>
-</head>
 <body>
-<?php include_once('templates/sideNav.php') ?>
 
 		<div class="main-panel">
 			<div class="content" style="margin-top: 5px;">
@@ -66,7 +62,7 @@
                                 </label>
                             </div>-->
 									<br><br>
-									<table id="example" class="table table-striped table-bordered dt-responsive nowrap"
+									<table id="aospoilages" class="table table-striped table-bordered dt-responsive nowrap"
 										cellspacing="0" width="100%">
 										<thead>
 											<th><b class="pull-left">Code</b></th>
@@ -269,6 +265,20 @@
 			</div>
 		</div>
 
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery-3.2.1.js'?>"></script>
+<script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/bootstrap.js'?>"></script>
+<script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.datatables.js'?>"></script>
+<script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.bootstrap4.js'?>"></script>
+<script>
+		$(document).ready(function() {
+    $('#aospoilages').DataTable( {
+       
+    } );
+} );
+</script>
 <?php include_once('templates/scripts.php') ?>
 
 </body>
