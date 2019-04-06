@@ -22,21 +22,21 @@
 												</li>
 												<span></span>
 												<li>
-													<a href="http://www.illengan.com/admin/menu/spoilages">
+													<a href="http://www.illengan.com/admin/spoilages/menu">
 														Menu Spoilages
 														<div class="ripple-container"></div>
 													</a>
 												</li>
 												<span></span>
 												<li>
-													<a href="http://www.illengan.com/admin/stock/spoilages">
+													<a href="http://www.illengan.com/admin/spoilages/stock">
 														Stocks Spoilages
 														<div class="ripple-container"></div>
 													</a>
 												</li>
 												<span></span>
 												<li>
-													<a href="http://www.illengan.com/admin/addons/spoilages">
+													<a href="http://www.illengan.com/admin/spoilages/addons">
 														Add Ons Spoilages
 														<div class="ripple-container"></div>
 													</a>
@@ -52,7 +52,7 @@
 								<!--Table-->
 								<div class="card-content">
 									<!--MODAL DAPAT TO-->
-									<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/menu/spoilages/add"
+									<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/spoilages/menu/add"
 										data-original-title style="float: left">Add Menu Spoilage</a>
 								
 									<br><br>

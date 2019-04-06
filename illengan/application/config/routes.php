@@ -67,17 +67,16 @@ $route['admin/sources'] = "adminview/viewsources";
 $route['admin/accounts'] = "adminview/viewaccounts";
 $route['admin/inventory'] = "adminview/viewinventory";
 $route['admin/transactions'] = "adminview/viewtransactions";
+$route['admin/spoilages/addons'] = "adminview/viewspoilagesao";
+$route['admin/spoilages/menu'] = "adminview/viewspoilagesmenu";
+$route['admin/spoilages/stock'] = "adminview/viewspoilagesstock";
+$route['admin/spoilages/menu/add'] ="adminview/viewInsertSpoilageMenu";
+$route['admin/spoilages/stock/add'] ="adminview/viewInsertSpoilageStock";
+$route['admin/spoilages/addons/add'] ="adminview/viewInsertSpoilageAo";
 //End Viewing Routes
 
 //Not Sure Routes
 $route['admin/menu/datatables'] = "adminview/datatables_menu";
-$route['admin/addons/spoilages'] = "adminview/viewspoilagesao";
-$route['admin/menu/spoilages'] = "adminview/viewspoilagesmenu";
-$route['admin/stock/spoilages'] = "adminview/viewspoilagesstock";
-$route['admin/menu/spoilages/add'] ="adminview/viewInsertSpoilageMenu";
-$route['admin/stock/spoilages/add'] ="adminview/viewInsertSpoilageStock";
-$route['admin/addons/spoilages/add'] ="adminview/viewInsertSpoilageAo";
-$route['admin/accounts/edit'] = "adminview/vieweditAccounts";
 //End Note Sure Routes
 
 //Admin Add Routes ----------------------------------------------
@@ -101,6 +100,7 @@ $route['admin/menu/edit_image'] = "adminupdate/edit_image";
 $route['admin/inventory/edit'] = "adminupdate/editstockitem";
 $route['admin/transactions/edit'] = "adminupdate/edittransactions";
 $route['admin/accounts/changepassword'] = "adminupdate/changeAccountPassword";
+$route['admin/accounts/edit'] = "adminview/vieweditAccounts";
 //End Admin Update Routes ---------------------------------------
 
 //Admin Delete Routes -------------------------------------------

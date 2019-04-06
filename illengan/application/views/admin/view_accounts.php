@@ -8,6 +8,7 @@
     <body>
         <?php include_once('templates/sideNav.php') ?>
         <!--End Side Bar-->
+        <div class="main-panel">
         <div class="content">
             <div class="container-fluid">
                 <!--Table-->
@@ -59,11 +60,11 @@
                                 <td>
                                 <div class="onoffswitch">
                                         <!--Edit button-->
-                                        <a href="<?php echo site_url('admin/vieweditAccounts/'.$row['account_id']);?>">Edit</a>
+                                        <a class="btn btn-info" role="button" href="<?php echo site_url('admin/vieweditAccounts/'.$row['account_id']);?>">Edit</a>
                                         <!--Delete button-->
-                                        <a href="<?php echo site_url('admin/deleteAccount/'.$row['account_id']);?>">Delete</a>
+                                        <a class="btn btn-danger" role="button" href="<?php echo site_url('admin/deleteAccount/'.$row['account_id']);?>">Delete</a>
                                         <!--Change Pass button-->
-                                        <a href="<?php echo site_url('admin/viewchangepassword/'.$row['account_id']); ?>">Change Password</a>
+                                        <a class="btn btn-warning" role="button" href="<?php echo site_url('admin/viewchangepassword/'.$row['account_id']); ?>">Change Password</a>
                                         
                                 </div> 
                                 </td>

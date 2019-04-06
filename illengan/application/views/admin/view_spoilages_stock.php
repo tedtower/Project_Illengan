@@ -13,7 +13,7 @@
 									<div class="nav-tabs-navigation">
 										<div class="nav-tabs-wrapper">
 										<ul class="nav nav-tabs" data-tabs="tabs" data-background-color="brown">
-												<li class="active">
+										<li class="active">
 													<a href="http://www.illengan.com/admin/spoilages">
 														All Spoilages
 														<div class="ripple-container"></div>
@@ -21,21 +21,21 @@
 												</li>
 												<span></span>
 												<li>
-													<a href="http://www.illengan.com/admin/menu/spoilages">
+													<a href="http://www.illengan.com/admin/spoilages/menu">
 														Menu Spoilages
 														<div class="ripple-container"></div>
 													</a>
 												</li>
 												<span></span>
 												<li>
-													<a href="http://www.illengan.com/admin/stock/spoilages">
+													<a href="http://www.illengan.com/admin/spoilages/stock">
 														Stocks Spoilages
 														<div class="ripple-container"></div>
 													</a>
 												</li>
 												<span></span>
 												<li>
-													<a href="http://www.illengan.com/admin/addons/spoilages">
+													<a href="http://www.illengan.com/admin/spoilages/addons">
 														Add Ons Spoilages
 														<div class="ripple-container"></div>
 													</a>
@@ -51,7 +51,7 @@
 								<!--Table-->
 								<div class="card-content">
 									<!--MODAL DAPAT TO-->
-									<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageStock" 
+									<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/spoilages/stock/add" 
 										data-original-title style="float: left">Add Stock Spoilage</a>
 									
 									<br><br>
