@@ -207,16 +207,17 @@ class Admin extends CI_Controller{
     }
     function viewSpoilagesMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
             $data['spoilagesmenu'] = $this->adminmodel->get_spoilages_menu();
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/view_spoilages_menu', $data);
+            $this->load->view('admin/templates/footer');
         }else{
             redirect('login');
         }
     }
     function viewSpoilagesStock(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
             $data['spoilagesstock'] = $this->adminmodel->get_spoilages_stock();
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
@@ -229,10 +230,10 @@ class Admin extends CI_Controller{
     function viewSpoilagesAo(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['spoilagesao'] = $this->adminmodel->get_spoilages_ao();
-            //echo json_encode($data);
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/view_spoilages_ao', $data);
+            $this->load->view('admin/templates/footer');
         }else{
             redirect('login');
         }
