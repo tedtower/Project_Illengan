@@ -181,6 +181,11 @@ class Customer extends CI_Controller {
 		}
 	}
 	
+	function clearOrder(){
+		$this->session->unset_userdata('orders');
+		redirect('customer/menu');
+	}
+	
 	function removeOrder() {	
 		if($this->isLoggedIn()){			
 			if($this->isCheckedIn()){

@@ -196,7 +196,7 @@ class AdminModel extends CI_Model{
     }
     //Menu management
     function get_menu(){
-        $query = "Select menu_id, menu_name, menu_description, menu_availability, menu_image, category_name, temp from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
+        $query = "Select * from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
         return $this->db->query($query)->result_array();
     }
     //for spoilage
