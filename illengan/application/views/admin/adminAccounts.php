@@ -29,8 +29,8 @@
                         <thead>
                             <th><b class="pull-left">Account No.</b></th>
                             <th><b class="pull-left">Username</b></th>
-                            <th><b class="pull-left">Password</b></th>
                             <th><b class="pull-left">Type</b></th>
+                            <th><b class="pull-left">Password</b></th>
                             <th><b class="pull-left">Online</b></th>
                             <th><b class="pull-left">Actions</b></th>
                         </thead>
@@ -38,30 +38,29 @@
                             <!--Insert PHP-->
                             <tr>
                                 <td>
-                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                <?php echo $row['account_id']; ?>
                                 </td>
                                 <td>
-                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                <?php echo $row['account_username']; ?>
                                 </td>
                                 <td>
-                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                <?php echo $row['account_type']; ?>
                                 </td>
                                 <td>
-                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                <?php echo $row['account_password']; ?>
                                 </td>
                                 <td>
-                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                <?php echo $row['is_online']; ?>
                                 </td>
                                 <td>
-                                    <!--Action Buttons-->
-                                    <div class="onoffswitch">
+                                <div class="onoffswitch">
                                         <!--Edit button-->
                                         <button class="btn btn-default btn-sm" data-toggle="modal" data-target="">Edit</button>
                                         <!--Delete button-->
                                         <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="">Delete</button>
                                         <!--Change Pass button-->
                                         <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="">Change Password</button>
-                                    </div>
+                                </div> 
                                 </td>
                             </tr>
                         </tbody>

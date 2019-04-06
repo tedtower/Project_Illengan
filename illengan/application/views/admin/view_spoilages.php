@@ -3,7 +3,6 @@
 </head>
 <body>
 <?php include_once('templates/sideNav.php') ?>
-		<!--End Side Bar-->
 		<div class="main-panel">
 			<div class="content" style="margin-top: 5px;">
 				<div class="container-fluid">
@@ -13,7 +12,7 @@
 								<div class="card-header" data-background-color="brown">
 									<div class="nav-tabs-navigation">
 										<div class="nav-tabs-wrapper">
-											<ul class="nav nav-tabs" data-tabs="tabs" data-background-color="brown">
+										<ul class="nav nav-tabs" data-tabs="tabs" data-background-color="brown">
 												<li class="active">
 													<a href="http://www.illengan.com/admin/spoilages">
 														All Spoilages
@@ -51,20 +50,11 @@
 							<div class="container-fluid">
 								<!--Table-->
 								<div class="card-content">
-									
 
-									<!--Search
-                            <div id ="example_filter" class="dataTables_filter">
-                                <label>
-                                    "Search:"
-                                    <div class="form-group form-group-sm is-empty">
-                                       <input type="search" class="form-control" placeholder aria-controls="example">
-                                       <span class="material-input"></span> 
-                                    </div>
-                                </label>
-                            </div>-->
+								<a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageStock" 
+										data-original-title style="float: left">Add Stock Spoilage</a>
 									<br><br>
-									<table id="example" class="table table-striped table-bordered dt-responsive nowrap"
+									<table id="spoilages" class="table table-striped table-bordered dt-responsive nowrap"
 										cellspacing="0" width="100%">
 										<thead>
 											<th><b class="pull-left">Code</b></th>
@@ -268,6 +258,22 @@
 		</div>
 	</div>
 
-<?php include_once('templates/scripts.php') ?>
+	<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery-3.2.1.js'?>"></script>
+	<script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/bootstrap.js'?>"></script>
+	<script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.datatables.js'?>"></script>
+	<script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.bootstrap4.js'?>"></script>
+	<script>
+			$(document).ready(function() {
+		$('#spoilages').DataTable( {
+			responsive: {
+            details: false
+        }
 
+		} );
+	} );
+</script>
+<?php include_once('templates/scripts.php') ?>
 </body>
