@@ -16,9 +16,6 @@
                         <th><b class="pull-left">Actions</b></th>
                     </thead>
                     <tbody>
-                        <?php
-                            
-                        ?>
                         <tr>
                             <td>
                                 <!--insert PHP echo e.g. "?php echo $row->code; ?>"-->
@@ -39,53 +36,52 @@
                 </table>
                 <!--Modals-->
                 <!--Modal for Edit-->
-                <form action="" method="post" accept-charset="utf-8">
-                    <div class="modal-body" style="padding: 5px;">
-                        <!--Add Menu Item Modal-->
-                        <!--Table Code-->
-                        <div class="row">
-                            <div class="col-md-6 form-group">
+                <div class="modal-body" style="padding: 5px;">
+                    <!--Add Menu Item Modal-->
+                    <!--Table Code-->
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <form action="" method="post" accept-charset="utf-8">
                                 <div class="form-group label-floating">
                                     <label for="tableCode">Table Code</label>
                                     <input class="form-control" type="text" name="tableCode" value="" required
                                         pattern="[a-zA-Z][a-zA-Z\s][0-9]*" required
                                         title="Table Code shoule contain letters and numbers">
                                 </div>
-                            </div>
+                            </form>
                         </div>
-                        <!--Delete Button-->
-                        <button type="button" class="close" data-dismiss="modal"
-                            onclick="document.getElementById('').click()" aria-hidden="true">×</button>
-                        <h4 class="panel-title" id="contactLabel">
-                            <span class="glyphicon glyphicon-warning-sign"></span>
-                            Delete
-                        </h4>
                     </div>
-                    <!--Delete Confirmation Box-->
-                    <div class="modal fade" id="deactivate" tabindex="-1" data-backdrop="static"
-                        data-keyboard="false" role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">
-
-                                    <form action="adminAccount/delete" method="post" accept-charset="utf-8">
-                                        <div class="modal-body" style="padding: 5px;">
-                                            <div class="row" style="text-align: center">
-                                                <br>
-                                                <h4> Are you sure you want to delete this table?</h4>
-                                                <br>
-                                            </div>
+                    <!--Delete Button-->
+                    <button type="button" class="close" data-dismiss="modal"
+                        onclick="document.getElementById('').click()" aria-hidden="true">×</button>
+                    <h4 class="panel-title" id="contactLabel">
+                        <span class="glyphicon glyphicon-warning-sign"></span>
+                        Delete
+                    </h4>
+                </div>
+                <!--Delete Confirmation Box-->
+                <div class="modal fade" id="deactivate" tabindex="-1" data-backdrop="static" data-keyboard="false"
+                    role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <form action="adminAccount/delete" method="post" accept-charset="utf-8">
+                                    <div class="modal-body" style="padding: 5px;">
+                                        <div class="row" style="text-align: center">
+                                            <br>
+                                            <h4> Are you sure you want to delete this table?</h4>
+                                            <br>
                                         </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="panel-footer" style="margin-bottom:-14px;" align="right">
-                                <input type="submit" class="btn btn-danger" value="Close" />
-                                <input type="reset" class="btn btn-success" value="Update Account" />
+                                    </div>
+                                </form>
                             </div>
                         </div>
+                        <div class="panel-footer" style="margin-bottom:-14px;" align="right">
+                            <input type="submit" class="btn btn-danger" value="Close" />
+                            <input type="reset" class="btn btn-success" value="Update Account" />
+                        </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>

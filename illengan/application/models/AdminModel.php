@@ -325,13 +325,13 @@ class AdminModel extends CI_Model{
     function insert_data($data){
         $this->db->insert("sources", $data);
     }
-    function edit_data($source_id, $source_name, $contact_num, $status){
+    function edit_source($source_id, $source_name, $contact_num, $status){
         $query = "update sources set source_name = ?, contact_num = ?, status = ?  where source_id = ?";
         return $this->db->query($query,array($source_name,$contact_num,$status,$source_id));
     }
-    function delete_data($id){
+    function delete_source($id){
         $this->db->where("source_id", $id);
-        $this->db->delete("sources");
+        return $this->db->delete("sources");
     }
 
     function delete_menu($id){

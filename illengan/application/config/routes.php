@@ -54,51 +54,62 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'login/viewlogin';
 $route['verifylogin'] = "login/check_cred";
-$route['admin/menu'] = "admin/viewmenu";
-$route['admin/menu/datatables'] = "admin/datatables_menu";
-$route['admin/spoilages'] = "admin/viewspoilages";
-$route['admin/addons/spoilages'] = "admin/viewspoilagesao";
-$route['admin/menu/spoilages'] = "admin/viewspoilagesmenu";
-$route['admin/stock/spoilages'] = "admin/viewspoilagesstock";
-$route['admin/addspoilagesmenu'] = "admin/addspoilagesmenu";
-$route['admin/insertspoilagesstock'] = "admin/insertspoilagesstock";
-$route['admin/insertspoilagesmenu'] = "admin/insertspoilagesmenu";
-$route['admin/menu/spoilages/add'] ="admin/viewInsertSpoilageMenu";
-$route['admin/stock/spoilages/add'] ="admin/viewInsertSpoilageStock";
-$route['admin/addons/spoilages/add'] ="admin/viewInsertSpoilageAo";
 
-$route['admin/sales'] = "admin/viewSales";
+//Viewing Routes -----------------------------------------------
+$route['admin/menu'] = "admin/adminview/viewmenu";
+$route['admin/spoilages'] = "admin/adminview/viewspoilages";
+$route['admin/sales'] = "admin/adminview/viewSales";
+$route['admin/dashboard'] = "admin/adminview/viewdashboard";
+$route['admin/tables'] = "admin/adminview/viewtables";
+$route['admin/menucategories'] = "admin/adminview/viewmenucategories";
+$route['admin/stockcategories'] = "admin/adminview/viewstockcategories";
+$route['admin/sources'] = "admin/adminview/viewsources";
+$route['admin/accounts'] = "admin/adminview/viewaccounts";
+$route['admin/inventory'] = "admin/adminview/viewinventory";
+$route['admin/transactions'] = "admin/adminview/viewtransactions";
+//End Viewing Routes
 
-$route['admin/dashboard'] = "admin/viewdashboard";
-$route['admin/tables'] = "admin/viewtables";
-$route['admin/tables/add'] = "admin/addtable";
-$route['admin/tables/delete/(:num)'] = "admin/deletetable/$1";
-$route['admin/menucategories'] = "admin/viewmenucategories";
-$route['admin/menucategories/add'] = "admin/addmenucategory";
-$route['admin/menucategories/delete/(:num)'] = "admin/deletemenucategory/$1";
-$route['admin/menucategories/edit'] = "admin/editmenucategory/";
-$route['admin/stockcategories'] = "admin/viewstockcategories";
-$route['admin/stockcategories/add'] = "admin/addstockcategory";
-$route['admin/stockcategories/delete/(:num)'] = "admin/deletestockcategory/$1";
-$route['admin/stockcategories/edit'] = "admin/editstockcategory/";
-$route['admin/sources'] = "admin/viewsources";
-$route['admin/accounts'] = "admin/viewaccounts";
-$route['admin/menu/add'] = "admin/add_menu";
-$route['admin/menu/edit'] = "admin/edit_menu";
-$route['admin/menu/edit_image'] = "admin/edit_image";
-
-$route['admin/accounts/view'] = "admin/viewaccounts";
-$route['admin/accounts/add'] = "admin/addaccounts";
+//Not Sure Routes
+$route['admin/menu/datatables'] = "admin/adminview/datatables_menu";
+$route['admin/addons/spoilages'] = "admin/adminview/viewspoilagesao";
+$route['admin/menu/spoilages'] = "admin/adminview/viewspoilagesmenu";
+$route['admin/stock/spoilages'] = "admin/adminview/viewspoilagesstock";
+$route['admin/menu/spoilages/add'] ="admin/adminview/viewInsertSpoilageMenu";
+$route['admin/stock/spoilages/add'] ="admin/adminview/viewInsertSpoilageStock";
+$route['admin/addons/spoilages/add'] ="admin/adminview/viewInsertSpoilageAo";
 $route['admin/accounts/edit'] = "admin/vieweditAccounts";
-$route['admin/accounts/changepassword'] = "admin/changeAccountPassword";
-$route['admin/inventory'] = "admin/viewinventory";
-$route['admin/inventory/add'] = "admin/addstockitem";
-$route['admin/inventory/edit'] = "admin/editstockitem";
-$route['admin/inventory/delete/(:num)'] = "admin/deletestockitem/$1";
-$route['admin/transactions'] = "admin/viewtransactions";
-$route['admin/transactions/add'] = "admin/addtransactions";
-$route['admin/transactions/edit'] = "admin/edittransactions";
-$route['admin/transactions/delete'] = "admin/deletetransactions";
+//End Note Sure Routes
+
+//Admin Add Routes ----------------------------------------------
+$route['admin/transactions/add'] = "admin/adminadd/addtransactions";
+$route['admin/inventory/add'] = "admin/adminadd/addstockitem";
+$route['admin/menu/add'] = "admin/adminadd/add_menu";
+$route['admin/stockcategories/add'] = "admin/adminadd/addstockcategory";
+$route['admin/menucategories/add'] = "admin/adminadd/addmenucategory";
+$route['admin/accounts/add'] = "admin/adminadd/addaccounts";
+$route['admin/tables/add'] = "admin/adminadd/addtable";
+$route['admin/addspoilagesmenu'] = "admin/adminadd/addspoilagesmenu";
+$route['admin/insertspoilagesstock'] = "admin/adminadd/insertspoilagesstock";
+$route['admin/insertspoilagesmenu'] = "admin/adminadd/insertspoilagesmenu";
+//End Admin Add Routes ------------------------------------------
+
+//Admin Update Routes -------------------------------------------
+$route['admin/menucategories/edit'] = "admin/adminupdate/editmenucategory/";
+$route['admin/stockcategories/edit'] = "admin/adminupdate/editstockcategory/";
+$route['admin/menu/edit'] = "admin/adminupdate/edit_menu";
+$route['admin/menu/edit_image'] = "admin/adminupdate/edit_image";
+$route['admin/inventory/edit'] = "admin/adminupdate/editstockitem";
+$route['admin/transactions/edit'] = "admin/adminupdate/edittransactions";
+$route['admin/accounts/changepassword'] = "admin/adminupdate/changeAccountPassword";
+//End Admin Update Routes ---------------------------------------
+
+//Admin Delete Routes -------------------------------------------
+$route['admin/tables/delete/(:num)'] = "admin/admindelete/deletetable/$1";
+$route['admin/menucategories/delete/(:num)'] = "admin/admindelete/deletemenucategory/$1";
+$route['admin/stockcategories/delete/(:num)'] = "admin/admindelete/deletestockcategory/$1";
+$route['admin/inventory/delete/(:num)'] = "admin/admindelete/deletestockitem/$1";
+$route['admin/transactions/delete'] = "admin/admindelete/deletetransactions";
+//End Admin Delete Routes ---------------------------------------
 
 //CUSTOMER ROUTES
 $route['customer/processCheckIn'] = "customer/processCheckIn";
