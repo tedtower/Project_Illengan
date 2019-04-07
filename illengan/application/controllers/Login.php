@@ -21,6 +21,7 @@ class Login extends CI_Controller{
                 'user_type' => $loginAttempt[0]['account_type']
             );
             $this->session->set_userdata($user_data);
+            $this->homeRedirect(); //wala kasi to kanina
         }else{
             $data['err'] = $loginAttempt;
             $this->load->view('login',$data);

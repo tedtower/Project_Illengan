@@ -10,6 +10,7 @@
                     <p><span class="fs-24">₱</span><span id="menu_price"></span></p>
                 </div>
                 <p id="menu_description"></p>
+                <p id="promo_description"></p>
                 <h4 class="gab">Status: <span id="menu_status"></span></h4>
                 <hr>
                 <div id="order-details">
@@ -30,7 +31,6 @@
                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                 </button>
                                 <div class="freebie" id="freebie">
-                                    <p>Hi!!!</p>
                                 </div>
                             </div>
                         </div>

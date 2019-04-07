@@ -107,6 +107,7 @@ $(document).ready(function(){
                 }
                 $('#menu_price').text(menu[i].pref_price);
                 $('#menu_description').text(menu[i].menu_description);
+                
                 if(menu[i].menu_availability === 'available'){
                     $('#menu_status').text(menu[i].menu_availability.charAt(0).toUpperCase() + menu[i].menu_availability.slice(1));
                     $('#menu_status').attr("class","teal-text");
@@ -124,6 +125,7 @@ $(document).ready(function(){
                     for(x=0; x<menu_pref.length; x++){
                         $('#sizeSelect').append('<option data-id="'+menu_pref[x].pref_id+'" data-name="'+menu_pref[x].size_name+'" value="'+menu_pref[x].pref_id+'">'+menu_pref[x].preference+'</option>');
                     }
+                    console.log($('#sizeSelect').val());//commment here
                 }else{
                     $("#sizeInput").removeAttr('disabled');
                     $("#sizeInput").val(menu_pref[0].pref_id);
@@ -145,7 +147,22 @@ $(document).ready(function(){
                 break;
             }
         }
+         
+        $.ajax({
+                url: 'http://www.illengan.com/customer/discounts',
+                dataType: 'json',
+                success: function(data){
+                    for(var i = 0; i < menu.length; i++) {
+                        if(data[i].menu_id == item_id) {
+                            $('#promo_name').text(data[i].);
+
+                }
+            }
+        });
+        
         $('#menu_modal').modal('show');
     });
 });
+
+
 </script>
