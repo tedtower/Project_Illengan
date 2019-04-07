@@ -33,9 +33,10 @@ class AdminAdd extends CI_Controller{
     }
     function addMenuCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $category_name = $this->input->get('category_name');
-            $this->adminmodel->add_menucategory($category_name);
-            $this->viewMenuCategories();
+            $superCategory = trim($this->input->post('super_category'));
+            $category_name = trim($this->input->post('category_name'));
+            $this->adminmodel->add_menucategory($category_name, $superCategory);
+            redirect('admin/menucategories');
         }else{
             redirect('login');
         }
