@@ -21,11 +21,6 @@
     <link rel="stylesheet" type="text/css" href='http://fonts.googleapis.com/css?family=Roboto:400,700,300'>
     <link rel="stylesheet" type="text/css"
         href="<?= base_url('assets/common/fontstyles/pre-icon-7/pe-icon-7-stroke.css')?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/jquery.dataTables.css'?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/dataTables.bootstrap4.css'?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/responsive.bootstrap.css'?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/select.bootstrap.css'?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/buttons.bootstrap.css'?>">
-
-
+    <link rel="stylesheet" type="text/css"
+        href="<?=base_url('assets/common/frameworks/bootstrap-plugins/light-bootstrap-dashboard.css')?>">
 </head>

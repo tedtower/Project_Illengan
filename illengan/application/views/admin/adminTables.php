@@ -57,6 +57,9 @@
                                                     required pattern="[a-zA-Z][a-zA-Z\s][0-9]*" required
                                                     title="Table Code shoule contain letters and numbers">
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
