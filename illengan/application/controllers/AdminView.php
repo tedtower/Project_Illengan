@@ -254,7 +254,14 @@ class AdminView extends CI_Controller{
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminTables');
-            $this->load->view('admin/templates/scripts');
+            // $this->load->view('admin/templates/scripts');
+        }else{
+            redirect('login');
+        }
+    }
+    function getTables(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            echo json_encode($this->adminmodel->get_tables());
         }else{
             redirect('login');
         }
