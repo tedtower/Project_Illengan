@@ -41,7 +41,22 @@
          return $query->result();
     }
 
+<<<<<<< HEAD
+        function fetch_freebies(){
+            $query = $this->db->query('SELECT * FROM (((menu INNER JOIN preferences USING (menu_id)) INNER JOIN promo_cons USING (pref_id)) INNER JOIN promo USING (promo_id)) INNER JOIN freebie USING (promo_id);');
+            return $query->result();
+        }
+        function fetch_discounts(){
+            $query = $this->db->query('SELECT md.promo_id,md.pref_id, dc_name, dc_amt, status, pf.menu_id, pc_qty FROM promo 
+            left join discounts AS d using (promo_id) 
+            left join menu_discount AS md USING (promo_id)
+            left join preferences as pf using (pref_id)
+            left join promo_cons using (promo_id) group by pref_id');
+            return $query->result();
+        }
+=======
 
+>>>>>>> 9f037054c5ee78f6f559115665130ea60012cedb
 
         function fetch_category(){
             $query = $this->db->query('SELECT category_name FROM categories WHERE supcat_id IS NULL AND category_type = "menu" GROUP BY category_name ASC');

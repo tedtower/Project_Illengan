@@ -147,6 +147,57 @@ $(document).ready(function(){
             }
         });
     });
+<<<<<<< HEAD
+    $('a.menu_card').on('click',function(){
+        $('#sizeSelect').attr('disabled','disabled');    
+        $("#sizeInput").val('');
+        $('#sizeInput').attr('disabled','disabled');
+        $('#sizeable').hide();
+        $('#addonSelectBtn').attr('disabled','disabled');
+        $('#ao_select_div').empty();
+        $('#addonable').hide();
+        $('textarea#menu_note').val('');
+        var item_id = $(this).attr('id');
+        $('span#mid').text(item_id);
+        for(var i = 0; i < menu.length; i++) {
+            if(menu[i].menu_id == item_id) {
+                var menu_pref = jQuery.grep(pref,function(obj){
+                    return obj.menu_id == item_id;
+                    });
+                menu_addon = jQuery.grep(addon,function(obj){
+                    return obj.menu_id == item_id;
+                    });
+                $('#menu_name').text(menu[i].menu_name);
+                if(menu[i].menu_image){
+                    $('#menu_image').attr("src","<?php echo cmedia_url(); ?>menu/"+menu[i].menu_image);
+                } else {
+                    $('#menu_image').attr("src","<?php echo cmedia_url(); ?>menu/no_image.jpg");
+                }
+                $('#menu_price').text(menu[i].pref_price);
+                $('#menu_description').text(menu[i].menu_description);
+                
+                if(menu[i].menu_availability === 'available'){
+                    $('#menu_status').text(menu[i].menu_availability.charAt(0).toUpperCase() + menu[i].menu_availability.slice(1));
+                    $('#menu_status').attr("class","teal-text");
+                    $('#order-details').show();
+                    $('.save-order').show();
+                } else {
+                    $('#menu_status').text("Temporarily Unavailable");
+                    $('#menu_status').attr("class","text-danger");
+                    $('#order-details').hide();
+                    $('.save-order').hide();
+                }
+                if(menu_pref.length !== 1){                
+                    $('#sizeable').show();                
+                    $("#sizeSelect").removeAttr('disabled');
+                    for(x=0; x<menu_pref.length; x++){
+                        $('#sizeSelect').append('<option data-id="'+menu_pref[x].pref_id+'" data-name="'+menu_pref[x].size_name+'" value="'+menu_pref[x].pref_id+'">'+menu_pref[x].preference+'</option>');
+                    }
+                    console.log($('#sizeSelect').val());//commment here
+                }else{
+                    $("#sizeInput").removeAttr('disabled');
+                    $("#sizeInput").val(menu_pref[0].pref_id);
+=======
 });
 
 function setOrderslipModal(cart){
@@ -203,6 +254,7 @@ function setModalContents(item_id){
                 $("#sizeSelect").removeAttr('disabled');
                 for(var x=0; x<menu_pref.length; x++){
                     $('#sizeSelect').append('<option data-price="'+menu_pref[x].pref_price+'" data-name="'+menu_pref[x].size_name+'" value="'+menu_pref[x].pref_id+'">'+menu_pref[x].preference+'</option>');
+>>>>>>> 9f037054c5ee78f6f559115665130ea60012cedb
                 }
                 $("#sizeSelect").on('change',function(){
                     computeSubtotal();
@@ -235,6 +287,25 @@ function setModalContents(item_id){
             }
             break;
         }
+<<<<<<< HEAD
+         
+        $.ajax({
+                url: 'http://www.illengan.com/customer/discounts',
+                dataType: 'json',
+                success: function(data){
+                    for(var i = 0; i < menu.length; i++) {
+                        if(data[i].menu_id == item_id) {
+                            $('#promo_name').text(data[i].);
+
+                }
+            }
+        });
+        
+        $('#menu_modal').modal('show');
+    });
+});
+
+=======
     }
 }
 function computeSubtotal(){
@@ -272,5 +343,6 @@ function computeSubtotal(){
     }
     $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
 }
+>>>>>>> 9f037054c5ee78f6f559115665130ea60012cedb
 
 </script>
