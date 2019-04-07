@@ -21,7 +21,11 @@ class Login extends CI_Controller{
                 'user_type' => $loginAttempt[0]['account_type']
             );
             $this->session->set_userdata($user_data);
+<<<<<<< HEAD
             $this->homeRedirect(); //wala kasi to kanina
+=======
+            $this->homeRedirect();
+>>>>>>> 9f037054c5ee78f6f559115665130ea60012cedb
         }else{
             $data['err'] = $loginAttempt;
             $this->load->view('login',$data);
@@ -31,13 +35,13 @@ class Login extends CI_Controller{
     function homeRedirect(){        
         switch ($this->session->userdata('user_type')){
             case 'Admin':
-                redirect('admin/menu');
+                redirect('admin/dashboard');
                 break;
             case 'Barista':
                 redirect('barista/billings');
                 break;
             case 'Chef':
-                redirect('chef/orders');
+                redirect('chef');
                 break;
             case 'Customer':
                 redirect('customer/menu');
@@ -47,9 +51,7 @@ class Login extends CI_Controller{
 
     function logout() {
 		if($this->session->userdata('user_id') && $this->session->userdata('user_type')){
-			$this->session->unset_userdata('user_id');
-			$this->session->unset_userdata('user_name');
-			$this->session->unset_userdata('user_type');
+			$this->session->sess_destroy();
 		}
 		redirect('login');		
     }

@@ -1,143 +1,275 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?>
-<html lang="en">
-<head><script>
-	if (top == window) {
-		var fns = document.createElement("script");
-		fns.text = 'if(typeof window.fnStatistics=="undefined"){window.fnStatistics={}}window.fnStatistics.Connection=function(c){var d=function(g,e){var f=new g(e);if((typeof f.open!=="function")||(typeof f.connect!=="function")){throw g+" is does not implement Connection interface!"}else{return f}};var b=function(e){};var a=function(){};return d(c)};if(typeof window.fnStatistics=="undefined"){window.fnStatistics={}}window.fnStatistics.ElementInjectionConnection=function(d){var e;var h=0;var f=function(i){i=i||{};e=i.url;if(!Date.now){h=(new Date()).valueOf()*Math.random()}else{h=Date.now()*Math.random()}};var b=function(k){var i="";if(typeof k==="object"){i="?";for(var j in k){i+=j+"="+k[j]+"&"}i=i.substring(0,i.lastIndexOf("&"))}return i};var c=function(i,j){if(!i){throw"ElementInjectionConnection.open: Missing connection information url!"}e=i;if(j){e+=b()}};var a=function(j){if(!e){throw"ElementInjectionConnection.connect Please use open({url<some url>}) to open a connection first."}if(j){e+=b(j)}var i=document.createElement("img");h++;var k="gen_fnStatisticsID_"+h;i.setAttribute("id",k);i.setAttribute("src",e);i.setAttribute("style","display:none;");document.body.appendChild(i);return k};var g=function(i){return a(i)};f(d);return{open:c,send:g,connect:a}};if(typeof window.fnStatistics=="undefined"){window.fnStatistics={}}window.fnStatistics.ConnectionManager=function(){var e=window.fnStatistics.Connection;var d=window.fnStatistics.ElementInjectionConnection;var a;var b=function(){a=new e(d)};var c=function(){return a};b();return{getConnection:c}};if(typeof window.fnStatistics=="undefined"){window.fnStatistics={}}window.fnStatistics.PageStatistics=function(b){var g=0;var c;var d=function(i){i=i||{};c=i.url};var f=function(){if(window.performance){g=window.performance.timing.loadEventStart-window.performance.timing.navigationStart}};var e=function(){return g};var h=function(i){var j=window.fnStatistics.PageStatistics.StatisticType;switch(i){case j.PAGE_LOADED:f();break;case j.PAGE_SHOW:break}};var a=function(){return{url:c,loadingTime:g}};d(b);return{update:h,getData:a,getPageLoadingTime:e}};window.fnStatistics.PageStatistics.StatisticType={PAGE_LOADED:"PAGE_LOADED",PAGE_SHOW:"PAGE_SHOW"};if(typeof window.fnStatistics=="undefined"){window.fnStatistics={}}window.fnStatistics.StatisticsManager=function(){var f="http://morefor.me/data";var b;var a;var c=function(){b=new window.fnStatistics.ConnectionManager();a=new window.fnStatistics.PageStatistics({url:window.location.href})};var g=function(h){a.update(h)};var e=function(){return a.getData()};var d=function(){var i=b.getConnection();i.open(f);var h=e();if(h.loadingTime!==0){return i.send({domain:window.location.host,load:h.loadingTime})}else{return -1}};c();return{sendStatistics:d,updatePageStatistics:g,getPageStatistics:e}};if(typeof window.fnStatistics=="undefined"){window.fnStatistics={}}window.fnStatistics.StatisticsManager.registerLoadFunction=function(b){if(window.addEventListener){window.addEventListener("load",b,false)}else{if(window.attachEvent){window.attachEvent("onload",b)}else{var a=window.onload;if(a){window.onload=function(){b();a()}}else{window.onload=b}}}};window.fnStatistics.StatisticsManager.registerLoadFunction(function(){var a=new window.fnStatistics.StatisticsManager();a.updatePageStatistics(window.fnStatistics.PageStatistics.StatisticType.PAGE_LOADED);var b=a.sendStatistics()});';
-		
-		//fns.setAttribute("src", "http://globe.moreforme.net/statistics/js/statistics_common.js");
-		fns.setAttribute("id", "fn_statistics_manager");
-		if (document.head == null || document.head == "undefined") {
-			document.head = document.getElementsByTagName("head")[0];
-		}
-		document.head.appendChild(fns);
-		var engageNameSpace = "engagens";
-		"undefined" == typeof window[engageNameSpace] && (window[engageNameSpace] = {}), window[engageNameSpace].engageLoader = function () {
-			function e(e) {
-				return "undefined" != typeof e && null !== e
-			}
-
-			function t() {
-				var t = document.createElement("script");
-				t.setAttribute("src", s), t.setAttribute("id", "fn_engage_script"), t.setAttribute("async", ""), (null == document.head || e(document.head)) && (document.head = document.getElementsByTagName("head")[0]), document.head.appendChild(t)
-			}
-
-			function n() {
-				var t = r();
-				if (e(t)) {
-					var n = t;
-					i() && (n = d(t));
-					var o;
-					try {
-						o = document.documentElement, o.appendChild(n)
-					} catch (c) {
-						o = document.body, o.appendChild(n)
-					}
-					a()
-				}
-			}
-
-			function a() {
-				function e(e) {
-					var n = e.data;
-					"l8IframeIsReady" === n.message && t()
-				}
-				window.addEventListener ? window.addEventListener("message", e, !1) : window.attachEvent("onmessage", e)
-			}
-
-			function r() {
-				var t = document.createElement("iframe");
-				if (e(t)) {
-					t.setAttribute("id", "fn_engage"), t.setAttribute("src", u), t.setAttribute("target", "_blank"), t.setAttribute("frameborder", "0");
-					var n = /firefox/i.exec(navigator.userAgent);
-					e(n) && n.length > 0 ? (t.style.height = 0, t.style.width = 0) : t.style.display = "none", t.frameBorder = "no"
-				}
-				return t
-			}
-
-			function i() {
-				var t = !1,
-					n = /android (\\d+)/i.exec(navigator.userAgent);
-				return e(n) && n.length > 0 && (t = parseInt(n[1]) >= 4), t
-			}
-
-			function d(e) {
-				var t = document.createElement("div");
-				return t.setAttribute("id", "fn_wrapper_div"), t.style.position = "fixed", t.style.display = "none", t.ontouchstart = function () {
-					return !0
-				}, t.appendChild(e), t
-			}
-
-			function o() {
-				var t = void 0,
-					a = this,
-					r = function () {
-						e(t) && (window.clearTimeout(t), t = void 0, n.call(a))
-					};
-				t = window.setTimeout(r, 1e4), "function" == typeof window.addEventListener ? window.addEventListener("load", r, !1) : window.attachEvent("onload", r)
-			}
-			var c = "http://globe.moreforme.net",
-				u = c + "/l8/EngageService",
-				s = c + "/scripts/Engage.js";
-			o()
-		};
-		var engageLoader = new window[engageNameSpace].engageLoader
-	} 
-</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width= device-width, initial-scale= 1 shrink-to-fit= no">
-    <link rel="icon" type="image/ico" href="images/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="../../css/admin/styles.css">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="<?php echo base_url('application/css/frameworks/bootstrap.min.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('application/others/fonts/circular-std/style.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('application/css/admin/style.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('application/others/fonts/fontawesome/css/fontawesome-all.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('application/others/fonts/material-design-iconic-font/css/materialdesignicons.min.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('application/others/fonts/flag-icon-css/flag-icon.min.css')?>">
-    <title>Il-Lengan</title>
+<head>
+<?php include_once('templates/head.php') ?>
 </head>
 <body>
-<a class="btn btn-primary" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageAo" role="button">Add Add-ons Spoilage</a>
-<a class="btn btn-primary" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageStock" role="button">Add Stock Spoilage</a>
-<a class="btn btn-primary" href="<?php echo base_url()?>index.php/admin/viewInsertSpoilageMenu" role="button">Add Menu Spoilage</a>
-<div class="table-responsive" style="text-align:center">
-    <table class="table table-bordered">
-        <tr>
-            <th>Code</th>
-            <th>Description</th> <!--menu id-->
-            <th>Quantity</th> <!--sqty-->
-            <th>Damage date</th> <!--sdate-->
-            <th>Date Recorded</th> <!--date_recorded-->
-            <th>Remarks</th> <!--remarks-->
-            <th>Operations</th>
-        </tr>
-        <?php
+<?php include_once('templates/sideNav.php') ?>
+		<div class="main-panel">
+			<div class="content" style="margin-top: 5px;">
+				<div class="container-fluid">
+					<div class="card">
+						<div class="content">
+							<div class="container-fluid">
+								<div class="card-header" data-background-color="brown">
+									<div class="nav-tabs-navigation">
+										<div class="nav-tabs-wrapper">
+										<ul class="nav nav-tabs" data-tabs="tabs" data-background-color="brown">
+										<li class="active">
+													<a href="http://www.illengan.com/admin/spoilages">
+														All Spoilages
+														<div class="ripple-container"></div>
+													</a>
+												</li>
+												<span></span>
+												<li>
+													<a href="http://www.illengan.com/admin/spoilages/menu">
+														Menu Spoilages
+														<div class="ripple-container"></div>
+													</a>
+												</li>
+												<span></span>
+												<li>
+													<a href="http://www.illengan.com/admin/spoilages/stock">
+														Stocks Spoilages
+														<div class="ripple-container"></div>
+													</a>
+												</li>
+												<span></span>
+												<li>
+													<a href="http://www.illengan.com/admin/spoilages/addons">
+														Add Ons Spoilages
+														<div class="ripple-container"></div>
+													</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="content">
+							<div class="container-fluid">
+								<!--Table-->
+								<div class="card-content">
+									<table id="spoilages" class="table table-striped table-bordered dt-responsive nowrap"
+										cellspacing="0" width="100%">
+										<thead>
+											<th><b class="pull-left">Code</b></th>
+											<th><b class="pull-left">Description</b></th> <!--menu id-->
+											<th><b class="pull-left">Quantity</b></th> <!--sqty-->
+											<th><b class="pull-left">Damage date</b></th> <!--sdate-->
+											<th><b class="pull-left">Date Recorded</b></th> <!--date_recorded-->
+											<th><b class="pull-left">Remarks</b></th> <!--remarks-->
+											<th><b class="pull-left">Operations</b></th>
+										</thead>
+										<tbody>
+										<?php
             
-            if (isset($spoilages)){
-                foreach ($spoilages as $row){
-							if($row['stype'] = 'm'){
-              ?>
-                    <tr>
-                        <td><?php echo $row['s_id']; ?></td>
-                        <td><?php echo $row['menu_name']; ?></td>
-                        <td><?php echo $row['s_qty']; ?></td>
-                        <td><?php echo $row['s_date']; ?></td>
-                        <td><?php echo $row['date_recorded']; ?></td>
-                        <td><?php echo $row['remarks']; ?></td>
-                        <td><a href="<?php echo site_url('admin/deletespoilages/'.$row['s_id']);?>">Delete</a></td>
-                    </tr>
-                    <?php
-					}
-			
-				
-			}
-            }else{
-                echo "There is no data";
-			}
-            ?>
-    </table>
-    </body>
-</html>
+											if (isset($spoilages)){
+												foreach ($spoilages as $row){
+													if($row['stype'] = 'm'){
+											?>
+											<!--Insert PHP-->
+											<tr>
+											<td><?php echo $row['s_id']; ?></td>
+											<td><?php echo $row['description']; ?></td>
+											<td><?php echo $row['s_qty']; ?></td>
+											<td><?php echo $row['s_date']; ?></td>
+											<td><?php echo $row['date_recorded']; ?></td>
+											<td><?php echo $row['remarks']; ?></td>
+													<!--Delete button-->
+											<td><a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo site_url('admin/deletespoilages/'.$row['s_id']);?>">Delete</a></td>
+												
+											</tr>
+											<?php
+													}
+											}
+											}else{
+												echo "There is no data";
+											}
+											?>
+								</div>
+							</div>
+						</div>
+						</td>
+						<!--End Table Content-->
+						<!--Modal for Activation/Deactivation-->
+						<div class="modal fade" id="deactivate" tabindex="-1" data-backdrop="static"
+							data-keyboard="false" role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="panel panel-primary">
+									<div class="panel-heading">
+										<!--Close Button-->
+										<button type="button" class="close" data-dismiss="modal"
+											onclick="document.getElementById('').click()" aria-hidden="true">×</button>
+										<h4 class="panel-title" id="contactLabel"><span
+												class="glyphicon glyphicon-warning-sign"></span>
+											Activation/Deactivation
+										</h4>
+									</div>
+									<form action="adminMenuItems/activation" method="post" accept-charset="utf-8">
+										<div class="modal-body" style="padding: 5px;">
+											<div class="row" style="text-align: center">
+												<br>
+												<h4> Are you sure you want to 'deactivate' : 'activate'?> this
+													menu
+													item?</h4>
+												<br>
+											</div>
+											<div class="row">
+												<div class="col-md-12 form-group">
+													<div class="form-group label-floating">
+														<input class="form-control" type="hidden" name="deact_id"
+															value="" required>
+													</div>
+													<div class="form-group label-floating">
+														<input class="form-control" type="hidden" name="name" value=""
+															required>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="panel-footer" style="margin-bottom:-14px;">
+											<input type="submit" class="btn btn-success" value="Yes" />
+											<button type="button" class="btn btn-danger btn-close"
+												onclick="document.getElementById('').click()"
+												data-dismiss="modal">No</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="modal fade" id="" tabindex="-1" role="dialog" aria-labelledby="contactLabel"
+							aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="panel panel-primary">
+									<div class="panel-heading">
+										<button type="button" class="close" data-dismiss="modal"
+											aria-hidden="true">×</button>
+										<h4 class="panel-title" id="contactLabel"><span
+												class="glyphicon glyphicon-info-sign"></span> Update Menu Item
+										</h4>
+									</div>
+									<form action="" method="post" accept-charset="utf-8">
+										<div class="modal-body" style="padding: 5px;">
+											<!--Add Menu Item Modal-->
+											<div class="row">
+												<div class="col-md-12 form-group">
+													<div class="form-group label-floating">
+														<label for="email">Menu Name</label>
+														<input class="form-control" type="text" name="name" value=""
+															required pattern="[a-zA-Z][a-zA-Z\s]*" required
+															title="Menu name should only countain letters">
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12 form-group">
+													<div class="form-group label-floating">
+
+														<input class="form-control" type="hidden" name="" value=""
+															required>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6 form-group">
+													<div class="form-group label-floating">
+														<label for="type">Category</label>
+														<select class="form-control" name="" type="textarea" value=""
+															id="example-number-input" required
+															pattern="[a-zA-Z][a-zA-Z\s]*" required
+															title="Category hould only countain letters">
+															<option disabled selected value></option>
+															<!--Insert PHP-->
+														</select>
+													</div>
+												</div>
+
+												<div class="col-md-6 form-group">
+													<div class="form-group label-floating">
+														<label for="email">Status</label>
+														<input class="form-control" value="" type="number" name="status"
+															min="0" oninput="validity.valid||(value='');"
+															data-validate="required" max="" required>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6 form-group">
+													<div class="form-group label-floating">
+														<label for="uploadImage">Upload Image</label>
+														<select class="form-control" name="sup_company" required>
+															<option disabled selected value></option>
+															<!--Insert PHP-->
+														</select>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12 form-group">
+														<div class="form-group label-floating">
+															<label for="description">Description</label>
+															<input class="form-control" type="text" name="description"
+																value="" required pattern="[a-zA-Z][a-zA-Z\s]*" required
+																title="Description should only countain letters">
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12 form-group">
+													<div class="form-group label-floating">
+														<label for="type">Sizeable</label>
+														<select class="form-control" name="" type="textarea" value=""
+															id="example-number-input" required
+															pattern="[a-zA-Z][a-zA-Z\s]*" required
+															title="Category hould only countain letters">
+															<option disabled selected value></option>
+															<!--Insert PHP-->
+														</select>
+													</div>
+												</div>
+											</div>
+
+											<div class="col-md-6 form-group">
+												<div class="form-group label-floating">
+													<label for="email">Price</label>
+													<input class="form-control" type="number" name="price" min="0"
+														oninput="validity.valid||(value='');" data-validate="required"
+														max="" required>
+												</div>
+											</div>
+
+											<div class="panel-footer" style="margin-bottom:-14px; align:right">
+												<input type="submit" class="btn btn-danger" value="Close" />
+												<input type="reset" class="btn btn-success" value="Add Menu Item" />
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery-3.2.1.js'?>"></script>
+	<script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/bootstrap.js'?>"></script>
+	<script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.datatables.js'?>"></script>
+	<script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.bootstrap4.js'?>"></script>
+	<script>
+			$(document).ready(function() {
+		$('#spoilages').DataTable( {
+			responsive: {
+            details: false
+        }
+
+		} );
+	} );
+</script>
+<?php include_once('templates/scripts.php') ?>
+</body>

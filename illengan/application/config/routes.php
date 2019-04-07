@@ -54,49 +54,70 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'login/viewlogin';
 $route['verifylogin'] = "login/check_cred";
-$route['admin/menu'] = "admin/viewmenu";
-$route['admin/viewspoilagesmenu'] = "admin/viewspoilagesmenu";
-$route['admin/viewspoilagesstock'] = "admin/viewspoilagesstock";
-$route['admin/addspoilagesmenu'] = "admin/addspoilagesmenu";
-$route['admin/insertspoilagesstock'] = "admin/insertspoilagesstock";
-$route['admin/insertspoilagesmenu'] = "admin/insertspoilagesmenu";
 
-$route['admin/dashboard'] = "admin/viewdashboard";
-$route['admin/tables'] = "admin/viewtables";
-$route['admin/tables/add'] = "admin/addtable";
-$route['admin/tables/delete/(:num)'] = "admin/deletetable/$1";
-$route['admin/menucategories'] = "admin/viewmenucategories";
-$route['admin/menucategories/add'] = "admin/addmenucategory";
-$route['admin/menucategories/delete/(:num)'] = "admin/deletemenucategory/$1";
-$route['admin/menucategories/edit'] = "admin/editmenucategory/";
-$route['admin/stockcategories'] = "admin/viewstockcategories";
-$route['admin/stockcategories/add'] = "admin/addstockcategory";
-$route['admin/stockcategories/delete/(:num)'] = "admin/deletestockcategory/$1";
-$route['admin/stockcategories/edit'] = "admin/editstockcategory/";
-$route['admin/sources'] = "admin/viewsources";
-$route['admin/viewaccounts'] = "admin/viewaccounts";
-$route['admin/menu/add'] = "admin/add_menu";
-$route['admin/menu/edit'] = "admin/edit_menu";
-$route['admin/menu/edit_image'] = "admin/edit_image";
+//Viewing Routes -----------------------------------------------
+$route['admin/menu'] = "adminview/viewmenu";
+$route['admin/spoilages'] = "adminview/viewspoilages";
+$route['admin/sales'] = "adminview/viewSales";
+$route['admin/dashboard'] = "adminview/viewdashboard";
+$route['admin/tables'] = "adminview/viewtables";
+$route['admin/menucategories'] = "adminview/viewmenucategories";
+$route['admin/stockcategories'] = "adminview/viewstockcategories";
+$route['admin/sources'] = "adminview/viewsources";
+$route['admin/accounts'] = "adminview/viewaccounts";
+$route['admin/inventory'] = "adminview/viewinventory";
+$route['admin/transactions'] = "adminview/viewtransactions";
+$route['admin/spoilages/addons'] = "adminview/viewspoilagesao";
+$route['admin/spoilages/menu'] = "adminview/viewspoilagesmenu";
+$route['admin/spoilages/stock'] = "adminview/viewspoilagesstock";
+$route['admin/spoilages/menu/add'] ="adminview/viewInsertSpoilageMenu";
+$route['admin/spoilages/stock/add'] ="adminview/viewInsertSpoilageStock";
+$route['admin/spoilages/addons/add'] ="adminview/viewInsertSpoilageAo";
+//End Viewing Routes
 
-$route['admin/accounts/view'] = "admin/viewaccounts";
-$route['admin/accounts/add'] = "admin/addaccounts";
-$route['admin/accounts/edit'] = "admin/vieweditAccounts";
-$route['admin/accounts/changepassword'] = "admin/changeAccountPassword";
-$route['admin/inventory'] = "admin/viewinventory";
-$route['admin/inventory/add'] = "admin/addstockitem";
-$route['admin/inventory/edit'] = "admin/editstockitem";
-$route['admin/inventory/delete/(:num)'] = "admin/deletestockitem/$1";
-$route['admin/transactions'] = "admin/viewtransactions";
-$route['admin/transactions/add'] = "admin/addtransactions";
-$route['admin/transactions/edit'] = "admin/edittransactions";
-$route['admin/transactions/delete'] = "admin/deletetransactions";
-$route['admin/sample'] = 'admin/samplemethod';
+//Not Sure Routes
+$route['admin/menu/datatables'] = "adminview/datatables_menu";
+//End Note Sure Routes
+
+//Admin Add Routes ----------------------------------------------
+$route['admin/transactions/add'] = "adminadd/addtransactions";
+$route['admin/inventory/add'] = "adminadd/addstockitem";
+$route['admin/menu/add'] = "adminadd/add_menu";
+$route['admin/stockcategories/add'] = "adminadd/addstockcategory";
+$route['admin/menucategories/add'] = "adminadd/addmenucategory";
+$route['admin/accounts/add'] = "adminadd/addaccounts";
+$route['admin/tables/add'] = "adminadd/addtable";
+$route['admin/addspoilagesmenu'] = "adminadd/addspoilagesmenu";
+$route['admin/insertspoilagesstock'] = "adminadd/insertspoilagesstock";
+$route['admin/insertspoilagesmenu'] = "adminadd/insertspoilagesmenu";
+//End Admin Add Routes ------------------------------------------
+
+//Admin Update Routes -------------------------------------------
+$route['admin/menucategories/edit'] = "adminupdate/editmenucategory/";
+$route['admin/stockcategories/edit'] = "adminupdate/editstockcategory/";
+$route['admin/menu/edit'] = "adminupdate/edit_menu";
+$route['admin/menu/edit_image'] = "adminupdate/edit_image";
+$route['admin/inventory/edit'] = "adminupdate/editstockitem";
+$route['admin/transactions/edit'] = "adminupdate/edittransactions";
+$route['admin/accounts/changepassword'] = "adminupdate/changeAccountPassword";
+$route['admin/accounts/edit'] = "adminview/vieweditAccounts";
+//End Admin Update Routes ---------------------------------------
+
+//Admin Delete Routes -------------------------------------------
+$route['admin/tables/delete/(:num)'] = "admindelete/deletetable/$1";
+$route['admin/menucategories/delete/(:num)'] = "admindelete/deletemenucategory/$1";
+$route['admin/stockcategories/delete/(:num)'] = "admindelete/deletestockcategory/$1";
+$route['admin/inventory/delete/(:num)'] = "admindelete/deletestockitem/$1";
+$route['admin/transactions/delete'] = "admindelete/deletetransactions";
+//End Admin Delete Routes ---------------------------------------
 
 //CUSTOMER ROUTES
 $route['customer/processCheckIn'] = "customer/processCheckIn";
 $route['customer/promos'] = "customer/promos";
-$route['customer/menu/addorder'] = "customer/addOrder";
+$route['customer/freebies_discounts'] = "customer/freebies_discounts";
+$route['customer/freebies'] = "customer/freebies";
+$route['customer/menu/vieworders'] = "customer/viewOrders";
+$route['customer/menu/addOrder'] = "customer/addOrder";
 $route['customer/checkout'] = "customer/checkout";
 $route['customer/checkin'] = 'customer/checkIn';
 $route['customer/menu'] = "customer/view";
@@ -106,3 +127,7 @@ $route['barista/orders'] = "barista/index";
 $route['barista/billings'] = "barista/getbills";
 $route['barista/getBillDetails'] = "barista/getBillDetails";
 $route['barista/billings/setStatus'] = "barista/setbillstatus";
+
+// CHEF ROUTES
+$route['chef/get_orderlist'] = "chef/get_orderlist";
+$route['chef/change_status'] = "chef/change_status";

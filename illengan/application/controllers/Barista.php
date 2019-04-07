@@ -13,17 +13,24 @@ class Barista extends CI_Controller{
 
         function index()
         {
+            $this->load->view('barista/sideNavigation');
             $this->load->view('barista/baristaOrders'); 
     }
 
     function orders_b(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
-            $data= $this->baristamodel->view();
+            $data= $this->baristamodel->orderlist();
             echo json_encode($data);
             //Code Here
         }else{
             redirect('login');
         }
+    }
+
+    function orderslip(){
+        $this->load->view('barista/orderslip');
+        //$data = $this->baristamodel->show_orderslip();
+        //echo json_encode($data);
     }
 
     function getOrders(){
@@ -65,7 +72,7 @@ class Barista extends CI_Controller{
     }
 
     function editTableNumber(){
-        $data=$this->baristaModel->edit_tablenumber();
+        $data=$this->baristamodel->edit_tablenumber();
         echo json_encode($data);
 
 
@@ -73,27 +80,34 @@ class Barista extends CI_Controller{
     
     function change_status() {
         $item_status = $this->input->post('item_status');
-        $menu_id = $this->input->post('menu_id');
+        $order_item_id = $this->input->post('order_item_id');
         $order_id = $this->input->post('order_id');
         
-        $this->baristaModel->update_status($order_id, $menu_id, $item_status);
+        $this->baristamodel->update_status($order_id, $order_item_id, $item_status);
         $this->get_orderlist();
     }
 
     function cancel(){
-        $data=$this->baristaModel->cancelOrder();
+        $data=$this->baristamodel->cancelOrder();
+        echo json_encode($data);
+    }
+
+    function cancelslip(){
+        $data=$this->baristamodel->cancel_slip();
         echo json_encode($data);
     }
 
     function pendingStatus(){
-        $data = $this->baristaModel->pending_orders();
-        echo json_encode($data);
+        //->load->view('barista/pending');
+        $data['orders'] = $this->baristamodel->pending_orders();
+        $this->load->view('barista/pendingOrders', $data);
     }
 
     function servedStatus(){
-        //$this->load->view('barista/pendingOrders');
-        $data = $this->baristaModel->served_orders();
-        echo json_encode($data);
+        //$this->load->view('barista/servedOrders');
+        $data['served'] = $this->baristamodel->served_orders();
+        $this->load->view('barista/servedOrders', $data);
+        
     }
 
 

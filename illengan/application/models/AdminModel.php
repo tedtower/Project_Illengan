@@ -33,8 +33,22 @@ class AdminModel extends CI_Model{
             }
         }
     }
-    function add_aospoil($ao_id,$s_type,$s_date,$date_recorded,$remarks=null){
-        $query = "insert into spoilage (s_id, stype, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
+    function add_aospoil($s_type,$ao_name,$s_qty,$s_date,$date_recorded,$remarks){
+        $query1 = "select ao_id from `addons` where ao_name = ? ";
+        $ao_id = $this->db->query($query1,array($ao_name));
+        foreach($ao_id->result_array() AS $row) {
+            $query = "insert into spoilage (s_id, s_type, s_qty, s_date, date_recorded, remarks) values (NULL,?,?,?,?,?)";
+            if($this->db->query($query,array($s_type,$s_qty,$s_date,$date_recorded,$remarks))){ 
+                $query = "insert into ao_spoil values (?,?)";
+                return $this->db->query($query,array($this->db->insert_id(),$row['ao_id']));
+            }else{
+                return false;
+            }
+        }
+
+
+
+        $query = "insert into spoilage (s_id, s_type, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
         if($this->db->query($query,array($s_type,$s_date,$date_recorded,$remarks))){ 
             $query = "insert into ao_spoil values (?,?)";
             return $this->db->query($query,array($this->db->insert_id(),$ao_id));
@@ -42,6 +56,7 @@ class AdminModel extends CI_Model{
             return false;
         }
     }
+
     function add_menucategory($category_name){
         $query = "Insert into categories (category_id, category_name, category_type) values (NULL, ? ,'Menu')";
         return $this->db->query($query,array($category_name));
@@ -181,9 +196,10 @@ class AdminModel extends CI_Model{
     }
     //Menu management
     function get_menu(){
-        $query = "Select menu_id, menu_name, menu_description, menu_availability, menu_image, category_name, temp from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
+        $query = "Select * from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
         return $this->db->query($query)->result_array();
     }
+    //for spoilage
     function get_menu2(){
         $query = "Select * from menu";
         return $this->db->query($query)->result_array();
@@ -239,7 +255,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_spoilages(){
-        $query = "select * FROM spoilage LEFT JOIN menuspoil USING (s_id) LEFT JOIN menu USING (menu_id) LEFT JOIN ao_spoil USING (s_id) LEFT JOIN addons USING (ao_id) LEFT JOIN stockspoil USING (s_id) LEFT JOIN stockitems USING (stock_id)";
+        $query = "select s_id, menu_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN menuspoil USING (s_id) inner JOIN menu USING (menu_id) UNION select s_id, stock_name AS decription, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN stockspoil USING (s_id) inner JOIN stockitems USING (stock_id) UNION select s_id, ao_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN ao_spoil USING (s_id) inner JOIN addons USING (ao_id) ORDER BY date_recorded";
         return $this->db->query($query)->result_array();
     }
     function get_spoilages_menu(){
@@ -247,7 +263,11 @@ class AdminModel extends CI_Model{
         return  $this->db->query($query)->result_array();
     }
     function get_spoilages_stock(){
-        $query = "s_id, stock_name,s_qty,stock_unit,sdate, date_recorded, remarks from spoilages inner join stockspoil using (s_id) inner join stockitems using (stock_id)";
+        $query = "Select s_id, stock_name,s_qty,stock_unit,s_date, date_recorded, remarks from spoilage inner join stockspoil using (s_id) inner join stockitems using (stock_id)";
+        return  $this->db->query($query)->result_array();
+    }
+    function get_spoilages_ao(){
+        $query = "Select s_id, ao_name,s_qty, ao_category,s_date, date_recorded, remarks from spoilage INNER JOIN ao_spoil using (s_id)INNER JOIN addons using (ao_id)";
         return  $this->db->query($query)->result_array();
     }
     function get_tables(){
@@ -305,13 +325,13 @@ class AdminModel extends CI_Model{
     function insert_data($data){
         $this->db->insert("sources", $data);
     }
-    function edit_data($source_id, $source_name, $contact_num, $status){
+    function edit_source($source_id, $source_name, $contact_num, $status){
         $query = "update sources set source_name = ?, contact_num = ?, status = ?  where source_id = ?";
         return $this->db->query($query,array($source_name,$contact_num,$status,$source_id));
     }
-    function delete_data($id){
+    function delete_source($id){
         $this->db->where("source_id", $id);
-        $this->db->delete("sources");
+        return $this->db->delete("sources");
     }
 
     function delete_menu($id){

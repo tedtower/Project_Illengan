@@ -4,17 +4,44 @@
 	    $query = $this->db->query('SELECT table_code FROM tables');
 	    return $query->result();
     }
-        function fetch_promos(){
-            $query = $this->db->query('SELECT * FROM menu left join preferences using (menu_id)
-            left join promo_cons using (pref_id)
-            left join promo using (promo_id)
-            left join discounts AS d using (promo_id) 
-            left join freebie AS f using (promo_id) 
-            left join menu_discount AS md USING (promo_id)
-            left join menu_freebie AS mf USING (promo_id)');
-            return $query->result();
-        }
+    function fetch_promos(){
+        $query = $this->db->query('SELECT * FROM menu left join preferences using (menu_id)
+        left join promo_cons using (pref_id)
+        left join promo using (promo_id)
+        left join discounts AS d using (promo_id) 
+        left join freebie AS f using (promo_id) 
+        left join menu_discount AS md USING (promo_id)
+        left join menu_freebie AS mf USING (promo_id)');
+        return $query->result();
+    }
 
+    function fetch_freebies($pref_id){
+        $query = $this->db->query("SELECT *, mn.menu_name AS fb_menuname FROM ((((((menu 
+        INNER JOIN preferences pref USING (menu_id)) 
+        INNER JOIN promo_cons USING (pref_id)) 
+        INNER JOIN promo USING (promo_id)) 
+        INNER JOIN freebie USING (promo_id)) 
+        inner join menu_freebie AS mf USING (promo_id)) 
+        inner join preferences fb_pref ON mf.pref_id = fb_pref.pref_id)
+        inner join menu mn ON fb_pref.menu_id = mn.menu_id
+        WHERE pref.pref_id = ".$pref_id.";");
+         return $query->result();
+    }
+
+    function fetch_discounts($pref_id){
+        $query = $this->db->query('SELECT *, mn.menu_name AS dc_menuname FROM ((((((menu 
+        INNER JOIN preferences pref USING (menu_id)) 
+        INNER JOIN promo_cons USING (pref_id)) 
+        INNER JOIN promo USING (promo_id)) 
+        INNER JOIN discounts USING (promo_id)) 
+        inner join menu_discount AS mf USING (promo_id)) 
+        inner join preferences fb_pref ON mf.pref_id = fb_pref.pref_id)
+        inner join menu mn ON fb_pref.menu_id = mn.menu_id
+        WHERE pref.pref_id = '.$pref_id.';');
+         return $query->result();
+    }
+
+<<<<<<< HEAD
         function fetch_freebies(){
             $query = $this->db->query('SELECT * FROM (((menu INNER JOIN preferences USING (menu_id)) INNER JOIN promo_cons USING (pref_id)) INNER JOIN promo USING (promo_id)) INNER JOIN freebie USING (promo_id);');
             return $query->result();
@@ -27,6 +54,9 @@
             left join promo_cons using (promo_id) group by pref_id');
             return $query->result();
         }
+=======
+
+>>>>>>> 9f037054c5ee78f6f559115665130ea60012cedb
 
         function fetch_category(){
             $query = $this->db->query('SELECT category_name FROM categories WHERE supcat_id IS NULL AND category_type = "menu" GROUP BY category_name ASC');
@@ -74,26 +104,16 @@
             $query = $this->db->get_where('menu', array('category_id' => '12'));
             return $query->result();
         }
-        function insert_order($order_num, $id, $qty, $subtotal){ //insert in table orderlist
-            $data=array(
-                'order_id' => $order_num,
-				'menu_id' => $id,
-				'order_total' => $subtotal,
-				'order_qty' =>$qty,
-            );
-            $this->db->insert('orderlist', $data);
-        }
-		function insert(){ //insert in table orderslip
-            $data=array(
-                'order_id' => $order_num, //unknown function
-				'table_code' => $table_no,
-				'cust_name' => $cust_name,
-				'order_payable' => $order_payable,
-				'order_date' => $date, //format unknown
-				'pay_date_time' => $pay_time, //format unknown
-				'date_record' => $record //unknown format
-			);
-            $this->db->insert('orderslip', $data);
+       function orderInsert($total, $tableCode, $orderlist, $customer, $orderDate){ //insert in table orderslip
+            $query1 = "Insert into orderslip(table_code, cust_name, total, order_date, pay_date_time, date_recorded) values (?,?,?,?,?,?)";
+			$this->db->query($query1, array( $tableCode, $customer, $total, $orderDate,'', $orderDate)); 
+			$order_id= $this->db->insert_id();
+			$bool = false;
+			foreach($orderlist as $items){
+				$query2 = "Insert into orderlist (order_item_id, order_id, pref_id, order_desc, order_qty, subtotal, item_status, remarks) values (?,?,?,?,?,?,?,?)";
+				$bool = $this->db->query($query2, array(NULL,$order_id, $items['id'],'',$items['qty'], $total, 'pending', $items['remarks'])); 
+			}
+			return true;
         }
 
         function get_menudetails($menu_id){
@@ -126,7 +146,17 @@
                         menu USING (menu_id)
                     WHERE
                         pref_id = ?;";
-            return $this->db->query($query, array($prefID))->result_array()[0];
+            return $this->db->query($query, array($prefID))->result_array();
+        }
+
+        function get_addonPrices($addonIds){
+            $query = "SELECT 
+                            ao_id, ao_price
+                        FROM
+                            addons
+                        WHERE
+                            ao_id IN ?;";
+            return $this->db->query($query,array($addonIds))->result_array();
         }
         
         // function get_freebiepromo($menu_id){

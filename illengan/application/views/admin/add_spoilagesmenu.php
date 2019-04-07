@@ -1,18 +1,18 @@
+//Under Construction
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+<head><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script></head>
+<form method="POST" action="<?php echo base_url()?>index.php/admin/menu/spoilages/add">
 
-<form method="POST" action="<?php echo base_url()?>index.php/admin/insertspoilagesmenu">
 
+<!--Ito lang gagalawin-->
    <div class="form-group">
    <label for="formGroupExampleInput2">Description</label>
-	<select name = "menu_name">
-		<?php foreach($menu as $row){ ?>
-		<option name = "menu_name" value="<?php echo $row['menu_name'] ?>"><?php echo $row['menu_name'] ?></option>
-    <?php
-       } ?>
-	</select> 
+	<select id="menuitems"></select>
   </div>
+<!---------------------------->
    
   <div class="form-group">
     <label for="formGroupExampleInput2">Quantity</label>
@@ -32,11 +32,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <span class="text-danger"><?php echo form_error("remarks"); ?></span>
   </div>
   
-  <input type='hidden' name='date_recorded' value='<?php echo date("m-d-y"); ?>'/> 
   <input type='hidden' name='s_type' value='m'/> 
   
   <div class="form-group">
       <input type="submit" class="btn btn-info" name="add" value="Add">
   </div>
 </form>
+//Not yet finished
+<script type="text/javascript">
+  
+    $(document).on('change', '#menuitems', function() {
+        Menu();
+    });
 
+    function Menu(){
+    
+
+      }
+
+ 
+</script>

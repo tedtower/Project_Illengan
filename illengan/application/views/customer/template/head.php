@@ -37,16 +37,16 @@
                         <?php } ?>
                     </div>
                 </li>
-                <li class="nav-item">
-                <a class="nav-link" data-toggle="modal" href="#order_modal"><i class="fal fa-tasks"></i> Orders</a>
+                <li class="nav-item"><!-- #order_modal -->
+                    <a class="nav-link" data-toggle="modal" href="#order_modal"><i class="fal fa-tasks"></i> Orders</a>
                 </li>
             </ul>
             <!-- Search form -->
-            <form class="navbar-nav py-0 my-1">
+            <div class="navbar-nav py-0 my-1">
                 <div class="active-sbar">
                     <input id="searchmenu" class="form-control" type="search" placeholder="Search here..." aria-label="Search">
                 </div>
-            </form>
+            </div>
         </div>
     </nav>
     <!-- Progress Bar -->

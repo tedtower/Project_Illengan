@@ -2,6 +2,14 @@
 
 class Customer extends CI_Controller {
 
+	function __construct(){
+		parent:: __construct();
+		$this->load->model("customermodel");
+        date_default_timezone_set('Asia/Manila');  
+        // code for getting current date : date("Y-m-d")
+        // code for getting current date and time : date("Y-m-d H:i:s")
+	}
+
 	//Checks if the user is logged in. *DON'T CHANGE*
 	function isLoggedIn(){
 		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
@@ -38,7 +46,7 @@ class Customer extends CI_Controller {
 	function checkout(){
 		$this->session->unset_userdata('cust_name');
 		$this->session->unset_userdata('table_no');
-		$this->cart->destroy();
+		$this->session->unset_userdata('orders');
 		redirect('customer/checkin');
 	}
 	
@@ -76,7 +84,8 @@ class Customer extends CI_Controller {
 				sort($data['subcats']);
 				$data['pref_menu'] = $this->customermodel->fetch_menupref();
 				$data['addons'] = $this->customermodel->fetch_addon();
-				$data['orders'] = $this->cart->contents();
+				//$this->output->set_output(json_encode($this->session->userdata('orders')));
+				$data['orders'] = json_encode($this->session->userdata('orders'));
 				$this->load->view('customer/template/head',$data);
 				$this->load->view('customer/menu',$data);
 				$this->load->view('customer/template/foot');
@@ -99,84 +108,39 @@ class Customer extends CI_Controller {
 	function addOrder() {
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
-				$this->load->library('cart');
-				$preference = $this->customermodel->get_preference($this->input->post('preference'));
-				$data = array(
-					'id' => $this->input->post('preference'),
-					'name' =>$preference['order'],
-					'qty' => $this->input->post('quantity'),
-					'order_desc' => $preference['order'],
-					'subtotal' => $this->input->post('quantity')*$preference['pref_price'] ,
-					'remarks' => $this->input->post('remarks'),
-					'addons' => json_decode($this->input->post('addons'))
-				);
-				$this->cart->insert($data);//term for adding as a temporary order
-			}else{
-				redirect('customer/checkin');
-			}
-		}else{
-			redirect('login');
-		}
-	}
-
-	//function to save or contain the menu items selected in a library cart
-	function save_order() { //summary orderlist with confirmation
-		if($this->isLoggedIn()){			
-			if($this->isCheckedIn()){
-				$data = array(
-					'id' => $this->input->post('id'),
-					'name' => $this->input->post('name'),
-					'qty' => $this->input->post('quantity'),
-					'price' => $this->input->post('price'),
-					'subtotal' => $this->input->post('subtotal'),
-					'total_qty' => $this->input->post('total_qty'),
-					'total' => $this->input->post('total')
-				);
-				$datas = $this->cart->insert($data);
-				echo '<script>alert("Saved")</script>'; //with confirmation
-				$this->load->view('orderlist', $datas);
-			}else{
-				redirect('customer/checkin');
-			}
-		}else{
-			redirect('login');
-		}
-	}
-
-	function ordered() { //insert in db table orderslip and orderlist		
-		if($this->isLoggedIn()){			
-			if($this->isCheckedIn()){			
-				$this->load->model('customermodel');
-				$data['cart'] = $this->cart->contents();
-				if($cart = $this->cart->contents()):
-					foreach($cart as $items):
-						$total = $this->cart->total();
-						$order_num = 1; //function to count orderslip
-					$this->customermodel->insert_order($order_num,$items['id'], $items['subtotal'], $total);
-					echo '<script>alert("Inserted")</script>';
-					endforeach;
-				endif;
-				$this->load->view('orderlist', $datas);
-			}else{
-				redirect('customer/checkin');
-			}
-		}else{
-			redirect('login');
-		}
-	}
-	function remove($rowid) {	
-		if($this->isLoggedIn()){			
-			if($this->isCheckedIn()){
-				if ($rowid ==="all"){
-					$this->cart->destroy();
+				$preference = $this->customermodel->get_preference($this->input->post('preference'))[0];
+				$rawAddons = json_decode($this->input->post('addons'),true);
+				if(empty($rawAddons['addonIds'])){
+					$rawAddons = "";
 				}else{
-					$data = array(
-					'rowid' => $rowid,
-					'qty' => 0
-					);
-					$this->cart->update($data);
+					$addonsPrices = $this->customermodel->get_addonPrices($rawAddons['addonIds']);					
+					for($index = 0 ; $index < count($rawAddons['addonIds']) ; $index++){
+						foreach($addonsPrices as $addon){
+							if($addon['ao_id'] == $rawAddons['addonIds'][$index]){
+								$rawAddons['addonIds'][$index] = intval($rawAddons['addonIds'][$index]);
+								$rawAddons['addonQtys'][$index] = intval($rawAddons['addonQtys'][$index]);
+								array_push($rawAddons['addonSubtotals'], floatval($addon['ao_price'])*intval($rawAddons['addonQtys'][$index]));
+							}
+						}
+					}
 				}
-				redirect('customer/view_menu');
+				$data = array(
+					'id' => intval($this->input->post('preference')),
+					'name' => $preference['order'],
+					'qty' => intval($this->input->post('quantity')),
+					'orderDesc' => $preference['order'],
+					'subtotal' => floatval($this->input->post('quantity')*$preference['pref_price']) ,
+					'remarks' => $this->input->post('remarks'),
+					'addons' => $rawAddons
+				);
+				if(!$this->session->has_userdata('orders')){
+					$this->session->set_userdata('orders',array());
+				}
+				$order = $this->session->userdata('orders');
+				array_push($order, $data);
+				$this->session->set_userdata('orders', $order);
+				echo json_encode($this->session->userdata('orders'));
+				//term for adding as a temporary order
 			}else{
 				redirect('customer/checkin');
 			}
@@ -185,6 +149,55 @@ class Customer extends CI_Controller {
 		}
 	}
 
+	function viewOrders(){
+		if($this->isLoggedIn()){
+			if($this->isCheckedIn()){
+				$this->load->view('customer/modals/order_modal');
+			}else{
+				redirect('customer/checkin');
+			}
+		}else{
+			redirect('login');
+		}
+	}
+
+	function completeOrder(){		
+		if($this->isLoggedIn()){
+			if($this->isCheckedIn()){
+				$orderDate  = $this->input->post('date');
+				$tableCode = $this->input->post('table_no');
+				$customer = $this->input->post('cust_name');
+				$orderlist = $this->session->userdata('orders');
+				$total = $this->input->post('total');
+				// foreach()
+				$this->customermodel->orderInsert($total, $tableCode, $orderlist, $customer, $orderDate);
+				echo'<script>alert("Successfully Ordered!")</scipt>';
+				$this->load->view('customer/menu');
+			}else{
+				redirect('customer/checkin');
+			}
+		}else{
+			redirect('login');
+		}
+	}
+	
+	function clearOrder(){
+		$this->session->unset_userdata('orders');
+		redirect('customer/menu');
+	}
+	
+	function removeOrder() {	
+		if($this->isLoggedIn()){			
+			if($this->isCheckedIn()){
+			}else{
+				redirect('customer/checkin');
+			}
+		}else{
+			redirect('login');
+		}
+	}
+
+	
 	function promos() {
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
@@ -198,15 +211,13 @@ class Customer extends CI_Controller {
 		}
 	}
 
-	function freebies() {
-		if($this->session->userdata('table_no')!= NULL){
-			$data = $this->customermodel->fetch_freebies();
-
-			echo json_encode($data);
-		}else{
-			redirect('customer/checkin');
-		}
+	function freebies_discounts() {
+			$pref_id = $this->input->post('pref_id');
+			$data = array();
+			$data['freebies'] = $this->customermodel->fetch_freebies($pref_id);
+			$data['discounts'] = $this->customermodel->fetch_discounts($pref_id);
 	
+			echo json_encode($data);
 	}
 	function discounts() {
 		if($this->session->userdata('table_no')!= NULL){

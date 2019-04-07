@@ -8,6 +8,7 @@
     <script src="<?php echo cmjs_url(); ?>progress.bar.js"></script>
     <script src="<?php echo cmjs_url(); ?>accordion.js"></script>
     <script src="<?php echo cmjs_url(); ?>discountdisp.js"></script>
+    <script src="<?php echo cmjs_url(); ?>filtersearch.js"></script>
 </body>
 
-</html>
+</html> 
