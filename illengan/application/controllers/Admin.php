@@ -196,9 +196,8 @@ class Admin extends CI_Controller{
     }
     function viewSpoilages(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
-            $data['spoilages'] = $this->adminmodel->get_spoilages();
-            $this->load->view('admin/view_spoilages', $data);
+            $data= $this->adminmodel->get_spoilages();
+            echo json_encode($data);
             $this->load->view('admin/templates/scripts');
             $this->load->view('admin/templates/footer');
         }else{
@@ -376,7 +375,7 @@ class Admin extends CI_Controller{
     }
     function insertspoilagesaddons(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->model('adminmodel');
+           
 
             $s_type = $this->input->post("s_type");
             $ao_name =$this->input->post("ao_name");
@@ -411,7 +410,7 @@ class Admin extends CI_Controller{
     }
     function insertspoilagesstock(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->model('adminmodel');
+           
 
             $s_type = $this->input->post("s_type");
             $stock_name =$this->input->post("stock_name");
@@ -688,6 +687,10 @@ class Admin extends CI_Controller{
         $data['image'] = $this->adminmodel->edit_image();
         $this->load->view('admin_module/edit_menuimage', $data);
         
+    }
+    function deleteSpoilages(){
+        $data=$this->adminmodel->delete_spoilages();
+        echo json_encode($data);
     }
 
 }
