@@ -5,6 +5,7 @@
             <?php echo date("M j, Y -l"); ?>
         </p>
         <br>
+        <div class="main-panel">
         <div class="row">
 
             <div class="main-panel">

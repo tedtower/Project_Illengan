@@ -61,6 +61,7 @@ $route['admin/spoilages'] = "adminview/viewspoilages";
 $route['admin/sales'] = "adminview/viewSales";
 $route['admin/dashboard'] = "adminview/viewdashboard";
 $route['admin/tables'] = "adminview/viewtables";
+$route['admin/tables/getTables'] = "adminview/getTables";
 $route['admin/menucategories'] = "adminview/viewmenucategories";
 $route['admin/stockcategories'] = "adminview/viewstockcategories";
 $route['admin/sources'] = "adminview/viewsources";

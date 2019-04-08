@@ -45,9 +45,6 @@ class AdminModel extends CI_Model{
                 return false;
             }
         }
-
-
-
         $query = "insert into spoilage (s_id, s_type, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
         if($this->db->query($query,array($s_type,$s_date,$date_recorded,$remarks))){ 
             $query = "insert into ao_spoil values (?,?)";
@@ -57,20 +54,20 @@ class AdminModel extends CI_Model{
         }
     }
 
-    function add_menucategory($category_name){
-        $query = "Insert into categories (category_id, category_name, category_type) values (NULL, ? ,'Menu')";
+    function add_menucategory($category_name, $superCategory){
+        $query = "Insert into categories (category_id, category_name, supcat_id, category_type) values (NULL, ?, ? ,'Menu')";
         return $this->db->query($query,array($category_name));
     }
-    function add_stockcategory($category_name){
-        $query = "Insert into categories (category_id, category_name, category_type) values (NULL, ? ,'Inventory')";
-        return $this->db->query($query,array($category_name));
+    function add_stockcategory($category_name, $superCategory){
+        $query = "Insert into categories (category_id, category_name, supcat_id, category_type) values (NULL, ? , ? ,'Inventory')";
+        return $this->db->query($query,array($category_name, $superCategory));
     }
     function add_stockitem($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id){
         $query = "Insert into stockitems (stock_id,stock_name,stock_quantity,stock_unit,stock_minimum,stock_status,category_id) values (NULL,?,?,?,?,?,?);";
         return $this->db->query($query,array($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id));
     }
     function add_table($table_no){
-        $query = "Insert into tables (table_no) values (?);";
+        $query = "Insert into tables (table_code) values (?);";
         return $this->db->query($query, array($table_code));
     }
     function add_transaction($source_id, $receipt_no, $trans_amt, $trans_date, $date_recorded, $remarks, $transitems){

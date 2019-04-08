@@ -219,5 +219,14 @@ class Customer extends CI_Controller {
 	
 			echo json_encode($data);
 	}
+	function discounts() {
+		if($this->session->userdata('table_no')!= NULL){
+			$data = $this->customermodel->fetch_discounts();
+			echo json_encode($data);
+		}else{
+			redirect('customer/checkin');
+		}
+	
+	}
  }
 ?>

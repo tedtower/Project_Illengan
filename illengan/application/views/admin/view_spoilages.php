@@ -1,64 +1,53 @@
+<!doctype html>
+<html lang="en">
+
 <head>
-<?php include_once('templates/head.php') ?>
+	<?php include_once('templates/head.php') ?>
 </head>
+
 <body>
-<?php include_once('templates/sideNav.php') ?>
-		<div class="main-panel">
-			<div class="content" style="margin-top: 5px;">
-				<div class="container-fluid">
-					<div class="card">
-						<div class="content">
-							<div class="container-fluid">
-								<div class="card-header" data-background-color="brown">
-									<div class="nav-tabs-navigation">
-										<div class="nav-tabs-wrapper">
-										<ul class="nav nav-tabs" data-tabs="tabs" data-background-color="brown">
-										<li class="active">
-													<a href="http://www.illengan.com/admin/spoilages">
-														All Spoilages
-														<div class="ripple-container"></div>
-													</a>
-												</li>
-												<span></span>
-												<li>
-													<a href="http://www.illengan.com/admin/spoilages/menu">
-														Menu Spoilages
-														<div class="ripple-container"></div>
-													</a>
-												</li>
-												<span></span>
-												<li>
-													<a href="http://www.illengan.com/admin/spoilages/stock">
-														Stocks Spoilages
-														<div class="ripple-container"></div>
-													</a>
-												</li>
-												<span></span>
-												<li>
-													<a href="http://www.illengan.com/admin/spoilages/addons">
-														Add Ons Spoilages
-														<div class="ripple-container"></div>
-													</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+	<?php include_once('templates/sideNav.php') ?>
+	<!--End Side Bar-->
+	<div class="content">
+		<div class="container-fluid">
+			<br>
+			<p style="text-align:right; font-weight: regular; font-size: 16px">
+				<!-- Real Time Date & Time -->
+				<?php echo date("M j, Y -l"); ?>
+			</p>
+			<div class="main-panel">
+				<div class="content" style="margin-top: 5px;">
+					<div class="container-fluid">
 						<div class="content">
 							<div class="container-fluid">
 								<!--Table-->
 								<div class="card-content">
-									<table id="spoilages" class="table table-striped table-bordered dt-responsive nowrap"
-										cellspacing="0" width="100%">
+
+
+									<!--Search
+                            <div id ="example_filter" class="dataTables_filter">
+                                <label>
+                                    "Search:"
+                                    <div class="form-group form-group-sm is-empty">
+                                       <input type="search" class="form-control" placeholder aria-controls="example">
+                                       <span class="material-input"></span> 
+                                    </div>
+                                </label>
+                            </div>-->
+
+									<table id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
 										<thead>
 											<th><b class="pull-left">Code</b></th>
-											<th><b class="pull-left">Description</b></th> <!--menu id-->
-											<th><b class="pull-left">Quantity</b></th> <!--sqty-->
-											<th><b class="pull-left">Damage date</b></th> <!--sdate-->
-											<th><b class="pull-left">Date Recorded</b></th> <!--date_recorded-->
-											<th><b class="pull-left">Remarks</b></th> <!--remarks-->
+											<th><b class="pull-left">Description</b></th>
+											<!--menu id-->
+											<th><b class="pull-left">Quantity</b></th>
+											<!--sqty-->
+											<th><b class="pull-left">Damage date</b></th>
+											<!--sdate-->
+											<th><b class="pull-left">Date Recorded</b></th>
+											<!--date_recorded-->
+											<th><b class="pull-left">Remarks</b></th>
+											<!--remarks-->
 											<th><b class="pull-left">Operations</b></th>
 										</thead>
 										<tbody id="show_data">
