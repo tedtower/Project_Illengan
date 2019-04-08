@@ -148,11 +148,12 @@ class AdminUpdate extends CI_Controller{
     }    
     function editSource(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $source_id = trim($this->input->get('source_id'));
-            $source_name = trim($this->input->get('new_name'));
-            $contact_num = trim($this->input->get('new_num'));
-            $status = trim($this->input->get('new_status'));
-            $data['source'] = $this->adminmodel->edit_data($source_id, $source_name, $contact_num, $status);
+            $source_id = $this->input->get('source_id');
+            $source_name = $this->input->get('new_name');
+            $contact_num = $this->input->get('new_contact');
+            $email = $this->input->get('new_email');
+            $status = $this->input->get('new_status');
+            $this->adminmodel->edit_source($source_id, $source_name, $contact_num, $email, $status);
             redirect('admin/sources');
         }else{
             redirect('login');

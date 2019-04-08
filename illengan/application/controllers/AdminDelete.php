@@ -70,10 +70,16 @@ class AdminDelete extends CI_Controller{
             redirect('login');
         }
     }    
-    function deleteSource(){
-        $id = $this->uri->segment(3);
-        $this->adminmodel->delete_source($id);
-        $this->viewsources();
+    function deleteSource($source_id){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            if($this->adminmodel->delete_source($source_id)){
+                redirect('admin/sources');
+            }else{
+                echo "There was an error";
+            }
+        }else{
+            redirect('login');
+        }
     }    
     function delete_menu(){
         $id = $this->uri->segment(3);
