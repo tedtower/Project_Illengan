@@ -104,6 +104,7 @@ $route['admin/transactions/edit'] = "adminupdate/edittransactions";
 $route['admin/accounts/changepassword'] = "adminupdate/changeAccountPassword";
 $route['admin/accounts/edit'] = "adminview/vieweditAccounts";
 $route['admin/sources/edit'] = "adminupdate/editsource";
+$route['admin/tables/edit'] = "adminupdate/edittable";
 //End Admin Update Routes ---------------------------------------
 
 //Admin Delete Routes -------------------------------------------
@@ -125,6 +126,7 @@ $route['customer/menu/addOrder'] = "customer/addOrder";
 $route['customer/checkout'] = "customer/checkout";
 $route['customer/checkin'] = 'customer/checkIn';
 $route['customer/menu'] = "customer/view";
+$route['customer/json'] = "customer/json";
 
 // BARISTA ROUTES
 $route['barista/orders'] = "barista/index";

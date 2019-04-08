@@ -66,7 +66,7 @@ class AdminModel extends CI_Model{
         $query = "Insert into stockitems (stock_id,stock_name,stock_quantity,stock_unit,stock_minimum,stock_status,category_id) values (NULL,?,?,?,?,?,?);";
         return $this->db->query($query,array($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id));
     }
-    function add_table($table_no){
+    function add_table($table_code){
         $query = "Insert into tables (table_code) values (?);";
         return $this->db->query($query, array($table_code));
     }
@@ -338,6 +338,11 @@ class AdminModel extends CI_Model{
     function edit_menu($menu_id, $menu_name, $category_id, $menu_description, $menu_price, $menu_availability){
         $query = "update menu set menu_name = ?, category_id = ?, menu_description = ?, menu_price = ?, menu_availability = ? where menu_id = ?";
         return $this->db->query($query,array($menu_name, $category_id, $menu_description, $menu_price, $menu_availability, $menu_id));
+    }
+    
+    function edit_table($newTableCode, $previousTableCode){
+        $query = "Update tables set table_code = ? where table_code = ?;";
+        return $this->db->query($query, array($newTableCode, $previousTableCode));
     }
 
 }

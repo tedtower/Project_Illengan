@@ -129,7 +129,7 @@ class Customer extends CI_Controller {
 					'name' => $preference['order'],
 					'qty' => intval($this->input->post('quantity')),
 					'orderDesc' => $preference['order'],
-					'subtotal' => floatval($this->input->post('quantity')*$preference['pref_price']) ,
+					'subtotal' => floatval($this->input->post('subtotal')) ,
 					'remarks' => $this->input->post('remarks'),
 					'addons' => $rawAddons
 				);
@@ -218,15 +218,6 @@ class Customer extends CI_Controller {
 			$data['discounts'] = $this->customermodel->fetch_discounts($pref_id);
 	
 			echo json_encode($data);
-	}
-	function discounts() {
-		if($this->session->userdata('table_no')!= NULL){
-			$data = $this->customermodel->fetch_discounts();
-			echo json_encode($data);
-		}else{
-			redirect('customer/checkin');
-		}
-	
 	}
  }
 ?>
