@@ -20,8 +20,7 @@
                 </table>
                 <!--Modals-->
                 <!--Modal for Edit aria-hidden="true"-->
-                <div class="modal fade" id="updateTable" tabindex="-1" role="dialog" aria-labelledby="contactLabel"
-                    >
+                <div class="modal fade" id="updateTable" tabindex="-1" role="dialog" aria-labelledby="contactLabel">
                     <div class="modal-dialog">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
@@ -99,7 +98,7 @@
 </div>
 <?php include_once('templates/scripts.php') ?>
 </body>
-<script type="text/javascript">
+<script>
 var tables = [];
 $(function() {
     $.ajax({
@@ -136,11 +135,9 @@ function setTableData(tables) {
         </tr>`);
         $(".updateBtn").last().on('click', function() {
             $("input[name='tableCode']").val($(this).closest("tr").attr("data-id"));
-            $("#editModal").show();
         });
         $(".deleteBtn").last().on('click', function() {
             $("#deleteTableCode").text(`Delete table code ${$(this).closest("tr").attr("data-id")}`);
-            $("#deleteTable").show();
         });
     });
 }
