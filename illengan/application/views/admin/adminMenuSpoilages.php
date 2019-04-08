@@ -8,6 +8,14 @@
 <body>
     <?php include_once('templates/sideNav.php') ?>
     <!--End Side Bar-->
+    <div class="content">
+        <div class="container-fluid">
+            <br>
+            <p style="text-align:right; font-weight: regular; font-size: 16px">
+                <!-- Real Time Date & Time -->
+                <?php echo date("M j, Y -l"); ?>
+            </p>
+            <div class="row">
         <div class="main-panel">
             <div class="content" style="margin-top: 5px;">
                 <div class="container-fluid">
@@ -271,7 +279,9 @@
         </div>
         </div>
         </div>
-
+</div>
+</div>
+</div>
 
     </body>
 
