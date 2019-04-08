@@ -15,8 +15,7 @@
 				<!-- Real Time Date & Time -->
 				<?php echo date("M j, Y -l"); ?>
 			</p>
-			<div class="main-panel">
-				<div class="content" style="margin-top: 5px;">
+				<div class="content" style="margin-left:250px;">
 					<div class="container-fluid">
 						<div class="content">
 							<div class="container-fluid">
@@ -45,7 +44,7 @@
                                     </div>
                                 </label>
                             </div>-->
-									<br><br>
+									<br>
 									<table id="aospoilages" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
 										<thead>
 											<th><b class="pull-left">Code</b></th>
@@ -106,22 +105,15 @@
 									</div>
 									<form action="adminAddOnsSpoilage/insert" method="post" accept-charset="utf-8">
 										<div class="modal-body">
-											<!--Spoilage Code-->
+											<!--Add On Name-->
 											<div class="row">
-												<div class="col-md-6 form-group">
+												<div class="col-md-12 form-group">
 													<div class="form-group label-floating">
-														<label for="spoilageCode">Spoilage Code</label>
-														<input class="form-control" type="text" name="spoilageCode" value="" required pattern="[a-zA-Z][a-zA-Z\s][0-9]*" required title="Spoilage Code should contain letters and numbers">
+														<label for="spoilageAOName">Add On-Name</label>
+														<input class="form-control" type="text" name="spoilageAOName" value="" required pattern="[a-zA-Z][a-zA-Z\s]*" required title="Spoilage add on name should contain letters and numbers">
 													</div>
 												</div>
-											<!--Menu ID-->
-												<div class="col-md-6 form-group">
-													<div class="form-group label-floating">
-														<label for="menuId">Menu ID</label>
-														<input class="form-control" type="text" name="menuId" value="" required pattern="[0-9]*" required title="Menu ID should only contains numbers">
-													</div>
-												</div>
-											</div>
+											</div>	
 											<!--Spoilage Quantity-->
 											<div class="row">
 												<div class="col-md-6 form-group">
@@ -134,16 +126,7 @@
 												<div class="col-md-6 form-group">
 													<div class="form-group label-floating">
 														<label for="spoilageDate">Spoilage Date</label>
-														<!--Insert datepicker plugin-->
-													</div>
-												</div>
-											</div>
-											<!--Date Recorded-->
-											<div class="row">
-											<div class="col-md-12 form-group">
-													<div class="form-group label-floating">
-														<label for="spoilageDateRecorded">Date Recorded</label>
-														<!--Insert datepicker plugin-->
+														<input type="date" class="form-control" name="s_date" placeholder="Date" required>
 													</div>
 												</div>
 											</div>
@@ -192,7 +175,6 @@
 							</div>
 						</div>
 					</div>
-				</div>
 			</div>
 
 			<?php include_once('templates/scripts.php') ?>
@@ -202,6 +184,7 @@
 
 					});
 				});
+				
 			</script>
 
 </body>

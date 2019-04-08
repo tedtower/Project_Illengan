@@ -1,8 +1,21 @@
-<div class="main-panel">
-  <div class="container-fluid"></div>
-  <div class="navbar-header"></div>
+<!doctype html>
+<html lang="en">
 
-  <div class="content">
+<head>
+	<?php include_once('templates/head.php') ?>
+</head>
+
+<body>
+	<?php include_once('templates/sideNav.php') ?>
+	<!--End Side Bar-->
+<div class="content">
+		<div class="container-fluid">
+			<br>
+			<p style="text-align:right; font-weight: regular; font-size: 16px">
+				<!-- Real Time Date & Time -->
+				<?php echo date("M j, Y -l"); ?>
+			</p>
+  <div class="content" style="margin-left:250px;">
     <div class="container-fluid">
       <!--Table-->
       <div class="card-content">
@@ -114,13 +127,7 @@
   </div>
 </div>
 </div>
-</div>
 <?php include_once('templates/scripts.php') ?>
 </body>
-// $('table tbody tr td').on('click', function() {
-// $("#myModal").modal("show");
-// $("#txtfname").val($(this).closest('tr').children()[0].textContent);
-// $("#txtlname").val($(this).closest('tr').children()[1].textContent);
-// });
 
 </html>

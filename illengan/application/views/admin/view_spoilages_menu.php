@@ -15,8 +15,7 @@
 				<!-- Real Time Date & Time -->
 				<?php echo date("M j, Y -l"); ?>
 			</p>
-			<div class="main-panel">
-				<div class="content" style="margin-top: 5px;">
+				<div class="content" style="margin-left:250px;">
 					<div class="container-fluid">
 						<div class="content">
 							<div class="container-fluid">
@@ -135,7 +134,7 @@
 												<div class="col-md-6 form-group">
 													<div class="form-group label-floating">
 														<label for="spoilageDate">Spoilage Date</label>
-														<!--Insert datepicker plugin-->
+														<input type="date" class="form-control" name="spoilageDate" placeholder="Date" required>
 													</div>
 												</div>
 											</div>
@@ -144,7 +143,7 @@
 											<div class="col-md-12 form-group">
 													<div class="form-group label-floating">
 														<label for="spoilageDateRecorded">Date Recorded</label>
-														<!--Insert datepicker plugin-->
+														<input type="date" class="form-control" name="spoilageDateRecorded" placeholder="Date" required>
 													</div>
 												</div>
 											</div>
@@ -194,7 +193,6 @@
 						</div>
 					</div>
 				</div>
-			</div>
 
 			<?php include_once('templates/scripts.php') ?>
 			<script>
