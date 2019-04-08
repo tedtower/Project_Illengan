@@ -17,8 +17,8 @@
         echo form_hidden('date', $now);
         echo form_hidden('table_no', $table_no);
         echo form_hidden('cust_name', $cust_name);
-		echo '<strong>Customer Name:</strong>'.$cust_name.'
-        <br><strong>Table Number: </strong>'.$table_no['table_code'].'<br><b>Date:'.$now;
+		echo 'Customer Name: <strong>'.$cust_name.'</strong>
+        <br>Table Number: <strong>'.$table_no['table_code'].'</strong><br>Date: <b>'.$now.'</b>';
           if(empty($orders)) { //check if the customer did not order yet
             echo 'To order menu items click on "Save to Orderlist" Button';
 		  }else{

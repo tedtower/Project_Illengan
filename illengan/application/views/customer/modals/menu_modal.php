@@ -15,6 +15,7 @@
                 <hr>
                 <div id="order-details">
                     <h2 class="text-center gab">Order Details</h2>
+                    <p id="promo_description"></p>
                     <!--Quantity--> 
                     <div class="md-form input-group mb-3 m-0 p-0 delius">
                         <h4 class="gab m-0"><i class="far fa-sort-numeric-up"></i> Quantity</h4>
@@ -50,7 +51,8 @@
                     <!--Freebies-->
                     <div class="freebiemain">
                     <div class="freebie col-xs-12" id="freebie">
-                    <p class="please"><i>Please choose your freebie</i></p>
+                    <p class="freebieQty"></p>
+                    <span class="please"><i>Please choose your freebie</i></span>
                     </div>
                     </div>
                     <!--Addons-->
@@ -74,7 +76,7 @@
                 <div class="text-center float-right">
                     <button type="button" class="btn btn-outline-accent px-3" data-dismiss="modal"
                         id="close-menu">Close</button>
-                    <button type="submit" class="btn btn-accent px-3">Save To Order
+                    <button type="submit" onclick="order_freebies()" class="btn btn-accent px-3">Save To Order
                         List</button>
                 </div>
                 <?php echo form_close();?>

@@ -91,6 +91,7 @@ $route['admin/tables/add'] = "adminadd/addtable";
 $route['admin/addspoilagesmenu'] = "adminadd/addspoilagesmenu";
 $route['admin/insertspoilagesstock'] = "adminadd/insertspoilagesstock";
 $route['admin/insertspoilagesmenu'] = "adminadd/insertspoilagesmenu";
+$route['admin/sources/add'] = "adminadd/addsource";
 //End Admin Add Routes ------------------------------------------
 
 //Admin Update Routes -------------------------------------------
@@ -102,6 +103,7 @@ $route['admin/inventory/edit'] = "adminupdate/editstockitem";
 $route['admin/transactions/edit'] = "adminupdate/edittransactions";
 $route['admin/accounts/changepassword'] = "adminupdate/changeAccountPassword";
 $route['admin/accounts/edit'] = "adminview/vieweditAccounts";
+$route['admin/sources/edit'] = "adminupdate/editsource";
 $route['admin/tables/edit'] = "adminupdate/edittable";
 //End Admin Update Routes ---------------------------------------
 
@@ -111,6 +113,7 @@ $route['admin/menucategories/delete/(:num)'] = "admindelete/deletemenucategory/$
 $route['admin/stockcategories/delete/(:num)'] = "admindelete/deletestockcategory/$1";
 $route['admin/inventory/delete/(:num)'] = "admindelete/deletestockitem/$1";
 $route['admin/transactions/delete'] = "admindelete/deletetransactions";
+$route['admin/sources/delete/(:num)'] = "admindelete/deletesource/$1";
 //End Admin Delete Routes ---------------------------------------
 
 //CUSTOMER ROUTES
@@ -123,6 +126,7 @@ $route['customer/menu/addOrder'] = "customer/addOrder";
 $route['customer/checkout'] = "customer/checkout";
 $route['customer/checkin'] = 'customer/checkIn';
 $route['customer/menu'] = "customer/view";
+$route['customer/json'] = "customer/json";
 
 // BARISTA ROUTES
 $route['barista/orders'] = "barista/index";

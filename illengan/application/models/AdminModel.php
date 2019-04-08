@@ -319,16 +319,16 @@ class AdminModel extends CI_Model{
         $query = "Delete from transitems where trans_id=? and item_name=?";
         return $this->db->query($query, array($trans_id, $item_name));
     }
-    function insert_data($data){
+    function add_source($data){
         $this->db->insert("sources", $data);
     }
-    function edit_source($source_id, $source_name, $contact_num, $status){
-        $query = "update sources set source_name = ?, contact_num = ?, status = ?  where source_id = ?";
-        return $this->db->query($query,array($source_name,$contact_num,$status,$source_id));
+    function edit_source($source_id, $source_name, $contact_num, $email,$status){
+        $query = "update sources set source_name = ?, contact_num = ?, email = ?, status = ?  where source_id = ?";
+        return $this->db->query($query,array($source_name, $contact_num, $email,$status,$source_id));
     }
-    function delete_source($id){
-        $this->db->where("source_id", $id);
-        return $this->db->delete("sources");
+    function delete_source($source_id){
+        $query = "Delete from sources where source_id = ?";
+        return $this->db->query($query, array($source_id));
     }
 
     function delete_menu($id){
