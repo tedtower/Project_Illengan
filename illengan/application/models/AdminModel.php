@@ -66,7 +66,7 @@ class AdminModel extends CI_Model{
         $query = "Insert into stockitems (stock_id,stock_name,stock_quantity,stock_unit,stock_minimum,stock_status,category_id) values (NULL,?,?,?,?,?,?);";
         return $this->db->query($query,array($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id));
     }
-    function add_table($table_no){
+    function add_table($table_code){
         $query = "Insert into tables (table_code) values (?);";
         return $this->db->query($query, array($table_code));
     }
