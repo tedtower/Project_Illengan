@@ -45,9 +45,6 @@ class AdminModel extends CI_Model{
                 return false;
             }
         }
-
-
-
         $query = "insert into spoilage (s_id, s_type, s_date, date_recorded, remarks) values (Null,?,?,?,?)";
         if($this->db->query($query,array($s_type,$s_date,$date_recorded,$remarks))){ 
             $query = "insert into ao_spoil values (?,?)";
@@ -57,20 +54,20 @@ class AdminModel extends CI_Model{
         }
     }
 
-    function add_menucategory($category_name){
-        $query = "Insert into categories (category_id, category_name, category_type) values (NULL, ? ,'Menu')";
+    function add_menucategory($category_name, $superCategory){
+        $query = "Insert into categories (category_id, category_name, supcat_id, category_type) values (NULL, ?, ? ,'Menu')";
         return $this->db->query($query,array($category_name));
     }
-    function add_stockcategory($category_name){
-        $query = "Insert into categories (category_id, category_name, category_type) values (NULL, ? ,'Inventory')";
-        return $this->db->query($query,array($category_name));
+    function add_stockcategory($category_name, $superCategory){
+        $query = "Insert into categories (category_id, category_name, supcat_id, category_type) values (NULL, ? , ? ,'Inventory')";
+        return $this->db->query($query,array($category_name, $superCategory));
     }
     function add_stockitem($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id){
         $query = "Insert into stockitems (stock_id,stock_name,stock_quantity,stock_unit,stock_minimum,stock_status,category_id) values (NULL,?,?,?,?,?,?);";
         return $this->db->query($query,array($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id));
     }
-    function add_table($table_no){
-        $query = "Insert into tables (table_no) values (?);";
+    function add_table($table_code){
+        $query = "Insert into tables (table_code) values (?);";
         return $this->db->query($query, array($table_code));
     }
     function add_transaction($source_id, $receipt_no, $trans_amt, $trans_date, $date_recorded, $remarks, $transitems){
@@ -196,7 +193,7 @@ class AdminModel extends CI_Model{
     }
     //Menu management
     function get_menu(){
-        $query = "Select menu_id, menu_name, menu_description, menu_availability, menu_image, category_name, temp from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
+        $query = "Select * from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
         return $this->db->query($query)->result_array();
     }
     //for spoilage
@@ -325,13 +322,13 @@ class AdminModel extends CI_Model{
     function insert_data($data){
         $this->db->insert("sources", $data);
     }
-    function edit_data($source_id, $source_name, $contact_num, $status){
+    function edit_source($source_id, $source_name, $contact_num, $status){
         $query = "update sources set source_name = ?, contact_num = ?, status = ?  where source_id = ?";
         return $this->db->query($query,array($source_name,$contact_num,$status,$source_id));
     }
-    function delete_data($id){
+    function delete_source($id){
         $this->db->where("source_id", $id);
-        $this->db->delete("sources");
+        return $this->db->delete("sources");
     }
 
     function delete_menu($id){
@@ -341,6 +338,11 @@ class AdminModel extends CI_Model{
     function edit_menu($menu_id, $menu_name, $category_id, $menu_description, $menu_price, $menu_availability){
         $query = "update menu set menu_name = ?, category_id = ?, menu_description = ?, menu_price = ?, menu_availability = ? where menu_id = ?";
         return $this->db->query($query,array($menu_name, $category_id, $menu_description, $menu_price, $menu_availability, $menu_id));
+    }
+    
+    function edit_table($newTableCode, $previousTableCode){
+        $query = "Update tables set table_code = ? where table_code = ?;";
+        return $this->db->query($query, array($newTableCode, $previousTableCode));
     }
 
 }

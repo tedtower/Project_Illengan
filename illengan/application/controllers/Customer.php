@@ -219,13 +219,5 @@ class Customer extends CI_Controller {
 	
 			echo json_encode($data);
 	}
-
-	function json() {
-	
-		$menu = $this->customermodel->fetch_menu();
-		$cat = $this->customermodel->fetch_category();
-
-		echo json_encode(array_merge($menu, $cat));
-}
  }
 ?>

@@ -56,13 +56,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         function pending_orders(){
             $query = $this->db->query('SELECT * from orderslip join orderlist using (order_id) join preferences using (pref_id)
              where orderlist.item_status = "pending" ');
-            return $query->result();
+            return $query->result_array();
         }
 
         function served_orders(){
             $query = $this->db->query('SELECT * from orderslip join orderlist using (order_id) join preferences using (pref_id) 
             where orderlist.item_status = "served" ');
-            return $query->result();
+            return $query->result_array();
         }
 
         function get_bills(){
