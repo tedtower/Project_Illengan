@@ -129,7 +129,7 @@ class Customer extends CI_Controller {
 					'name' => $preference['order'],
 					'qty' => intval($this->input->post('quantity')),
 					'orderDesc' => $preference['order'],
-					'subtotal' => floatval($this->input->post('quantity')*$preference['pref_price']) ,
+					'subtotal' => floatval($this->input->post('subtotal')) ,
 					'remarks' => $this->input->post('remarks'),
 					'addons' => $rawAddons
 				);
@@ -219,5 +219,13 @@ class Customer extends CI_Controller {
 	
 			echo json_encode($data);
 	}
+
+	function json() {
+	
+		$menu = $this->customermodel->fetch_menu();
+		$cat = $this->customermodel->fetch_category();
+
+		echo json_encode(array_merge($menu, $cat));
+}
  }
 ?>

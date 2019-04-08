@@ -109,6 +109,7 @@ $route['customer/menu/addOrder'] = "customer/addOrder";
 $route['customer/checkout'] = "customer/checkout";
 $route['customer/checkin'] = 'customer/checkIn';
 $route['customer/menu'] = "customer/view";
+$route['customer/json'] = "customer/json";
 
 // BARISTA ROUTES
 $route['barista/orders'] = "barista/index";

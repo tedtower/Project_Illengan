@@ -112,10 +112,12 @@ $(document).ready(function(){
         }else{
             prefId = parseInt($("#sizeInput").attr('value'));
         }
+
         var qty = parseInt($("#quantity").val());
         var remarks = $("#menu_note").val();
         var addonIds = [];
         var addonQtys = [];
+        var subtotal = $("#menuSubtotal").text();
         for (var index = 0; index < $(this).find("select[name='addon[]']").length; index++) {
             addonIds.push($(this).find("select[name='addon[]']").eq(index).val());
             addonQtys.push($(this).find("input[name='addonQty[]']").eq(index).val());
@@ -126,6 +128,7 @@ $(document).ready(function(){
             url: "<?php echo site_url('customer/menu/addOrder')?>",
             data: {
                 preference: prefId,
+                subtotal: subtotal,
                 quantity: qty,
                 remarks: remarks,
                 addons: JSON.stringify({                
@@ -134,12 +137,8 @@ $(document).ready(function(){
                     "addonSubtotals" : []
                 })            
             },
-            beforeSend: function(){
-                console.log(prefId, qty, remarks);
-            },
             success: function(data) {
                 alert("Menu has been added in the orderlist.");
-                console.log(data);
             },
             error: function(response,setting, errorThrown) {
                 console.log(response.responseText);
@@ -187,6 +186,7 @@ function setModalContents(item_id){
             }
             $('#menu_price').text(menu[i].pref_price);
             $('#menu_description').text(menu[i].menu_description);
+            
             if(menu[i].menu_availability === 'available'){
                 $('#menu_status').text(menu[i].menu_availability.charAt(0).toUpperCase() + menu[i].menu_availability.slice(1));
                 $('#menu_status').attr("class","teal-text");
@@ -206,14 +206,15 @@ function setModalContents(item_id){
                 }
                 $("#sizeSelect").on('change',function(){
                     computeSubtotal();
-                    console.log($("#dc_subtotal").val());
                 });  
                 $(document).ready(function() {
                 if($('#dc_subtotal').val() != null) {
                 dc_subtotal = parseFloat($('#dc_subtotal').val());
                 $("#menuSubtotal").text(dc_subtotal);
+                $("#itemSubtotal").val(dc_subtotal);
                 } else {         
                 $("#menuSubtotal").text(parseFloat($("#sizeSelect > option:selected").attr("data-price")));
+                $("#itemSubtotal").val(parseFloat($("#sizeSelect > option:selected").attr("data-price")));
                 }
             });
             }else{
