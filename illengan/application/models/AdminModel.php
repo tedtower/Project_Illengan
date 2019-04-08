@@ -70,9 +70,9 @@ class AdminModel extends CI_Model{
         $query = "Insert into tables (table_code) values (?);";
         return $this->db->query($query, array($table_code));
     }
-    function add_transaction($source_id, $receipt_no, $trans_amt, $trans_date, $date_recorded, $remarks, $transitems){
-        $query = "Insert into transactions (source_id, receipt_no, trans_amt, trans_date, date_recorded, remarks) values (?,?,?,?,?,?)";
-        $bool = $this->db->query($query, array($source_id, $receipt_no, $trans_amt, $trans_date, $date_recorded, $remarks));
+    function add_transaction($source_id, $receipt_no, $total, $trans_date, $date_recorded, $remarks, $transitems){
+        $query = "Insert into transactions (source_id, receipt_no, total, trans_date, date_recorded, remarks) values (?,?,?,?,?,?)";
+        $bool = $this->db->query($query, array($source_id, $receipt_no, $total, $trans_date, $date_recorded, $remarks));
         if(!$bool){
             $trans_id = $this->db->insert_id();
             $query = "Insert into transitems values (?,?,?,?,?)";
@@ -161,9 +161,9 @@ class AdminModel extends CI_Model{
         $query = "Update stockitems set stock_name = ?, stock_quantity = ?, stock_unit = ?, stock_minimum = ?, stock_status = ?, category_id = ? where stock_id=?;";
         return $this->db->query($query,array($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id,$stock_id));
     }
-    function edit_transaction($trans_id, $source_id, $receipt_no, $trans_amt, $trans_date, $date_recorded, $remarks, $transitems){
-        $query = "Update transactions set source_id = ?, receipt_no = ?, trans_amt = ?, trans_date = ?, date_recorded = ?, remarks = ? where trans_id = ?";
-        $bool = $this->db->query($query, array($source_id, $receipt_no, $trans_amt, $trans_date, $date_recorded, $remarks, $trans_id));
+    function edit_transaction($trans_id, $source_id, $receipt_no, $total, $trans_date, $date_recorded, $remarks, $transitems){
+        $query = "Update transactions set source_id = ?, receipt_no = ?, total = ?, trans_date = ?, date_recorded = ?, remarks = ? where trans_id = ?";
+        $bool = $this->db->query($query, array($source_id, $receipt_no, $total, $trans_date, $date_recorded, $remarks, $trans_id));
         if(!$bool){
             //transitems array includes previous name and new name
             $query = "Update transitems set item_name = ?, item_qty = ?, item_unit = ?, item_price = ? where trans_id = ? and item_name = ?";
@@ -272,7 +272,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_transactions(){
-        $query = "Select trans_id, receipt_no, source_name, trans_amt, trans_date, date_recorded, remarks from transactions left join sources using (source_id)";
+        $query = "Select trans_id, receipt_no, source_name, total, trans_date, date_recorded, remarks from transactions left join sources using (source_id)";
         return $this->db->query($query)->result_array();
     }
     function get_transitems(){
@@ -314,7 +314,7 @@ class AdminModel extends CI_Model{
     function delete_transaction($trans_id){
         $query = "Delete from transactions where trans_id=?";
         return $this->db->query($query, array($trans_id));
-    }    
+    }
     function delete_transitem($trans_id, $item_name){
         $query = "Delete from transitems where trans_id=? and item_name=?";
         return $this->db->query($query, array($trans_id, $item_name));
