@@ -8,6 +8,7 @@
     <body>
         <?php include_once('templates/sideNav.php') ?>
         <!--End Side Bar-->
+        <div class="main-panel">
         <div class="content">
             <div class="container-fluid">
                 <!--Table-->
@@ -29,8 +30,8 @@
                         <thead>
                             <th><b class="pull-left">Account No.</b></th>
                             <th><b class="pull-left">Username</b></th>
-                            <th><b class="pull-left">Type</b></th>
                             <th><b class="pull-left">Password</b></th>
+                            <th><b class="pull-left">Type</b></th>
                             <th><b class="pull-left">Online</b></th>
                             <th><b class="pull-left">Actions</b></th>
                         </thead>
@@ -38,29 +39,30 @@
                             <!--Insert PHP-->
                             <tr>
                                 <td>
-                                <?php echo $row['account_id']; ?>
+                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
                                 </td>
                                 <td>
-                                <?php echo $row['account_username']; ?>
+                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
                                 </td>
                                 <td>
-                                <?php echo $row['account_type']; ?>
+                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
                                 </td>
                                 <td>
-                                <?php echo $row['account_password']; ?>
+                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
                                 </td>
                                 <td>
-                                <?php echo $row['is_online']; ?>
+                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
                                 </td>
                                 <td>
-                                <div class="onoffswitch">
+                                    <!--Action Buttons-->
+                                    <div class="onoffswitch">
                                         <!--Edit button-->
                                         <button class="btn btn-default btn-sm" data-toggle="modal" data-target="">Edit</button>
                                         <!--Delete button-->
                                         <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="">Delete</button>
                                         <!--Change Pass button-->
                                         <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="">Change Password</button>
-                                </div> 
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>

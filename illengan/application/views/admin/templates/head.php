@@ -7,20 +7,15 @@
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>Il-Lengan | <?= $title?></title>
-    <!--Bootstrap core CSS-->
-    <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/admin/bootstrap.min.css')?>">
-    <!--Animation library for notifications-->
-    <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/admin/animate.min.css')?>">
-    <!--  Light Bootstrap Table core CSS    -->
-    <link rel="stylesheet" type="text/css"
-        href="<?= base_url('assets/css/admin/light-bootstrap-dashboard.css?v=1.4.0')?>">
-    <!--CSS for Demo Purpose, don't include it in your project-->
-    <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/admin/demo.css')?>">
-    <!--Fonts and icons-->
-    <link rel="stylesheet" href="<?= base_url('assets/css/admin/font-awesome.min.css')?>">
-    <link rel="stylesheet" type="text/css" href='http://fonts.googleapis.com/css?family=Roboto:400,700,300'>
-    <link rel="stylesheet" type="text/css"
-        href="<?= base_url('assets/common/fontstyles/pre-icon-7/pe-icon-7-stroke.css')?>">
-    <link rel="stylesheet" type="text/css"
-        href="<?=base_url('assets/common/frameworks/bootstrap-plugins/light-bootstrap-dashboard.css')?>">
+    <link rel="stylesheet" type="text/css" href="<?= framework_url().'bootstrap-native/bootstrap.min.css'?>">
+    <link rel="stylesheet" type="text/css" href="<?= admin_css().'light-bootstrap-dashboard.css'?>">
+    <link rel="stylesheet" type="text/css" href="<?= admin_css().'sidenav.css'?>">
+    <link rel="stylesheet" type="text/css" href="<?= font_url().'pre-icon-7/pe-icon-7-stroke.css'?>">
+    <link rel="stylesheet" type="text/css" href="<?= font_url().'fontawesome/font-awesome.css'?>">
+    <link rel="stylesheet" type="text/css" href="<?= framework_url().'plugins/charts/chartist-bundle/chartist.css'?>">
+    <link rel="stylesheet" type="text/css" href="<?= framework_url().'datatables-bootstrap4/css/datatables.min.css';?>">
+    <link rel="stylesheet" type="text/css" href="<?= framework_url().'datatables-bootstrap4/css/dataTables.bootstrap4.min.css';?>">
+    <link rel="stylesheet" type="text/css" href="<?= framework_url().'datatables-bootstrap4/css/responsive.bootstrap4.min.css';?>">
+    <link rel="stylesheet" type="text/css" href="<?= framework_url().'datatables-bootstrap4/css/select.bootstrap4.min.css';?>">
+    <link rel="stylesheet" type="text/css" href="<?= framework_url().'datatables-bootstrap4/css/buttons.bootstrap4.min.css';?>">
 </head>
