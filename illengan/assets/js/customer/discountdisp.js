@@ -1,6 +1,4 @@
 promos();
-<<<<<<< HEAD
-=======
 
 function hide_freebies() {
     $('.please').hide();
@@ -19,20 +17,13 @@ function hide_freebies() {
 
 }
 
->>>>>>> 9f037054c5ee78f6f559115665130ea60012cedb
 function promos() {
     $(document).ready(function() {
         $.ajax({
             url: 'http://www.illengan.com/customer/promos',
             dataType : 'json',
             success: function(data) {
-<<<<<<< HEAD
-                var i;
-                var d_menu_id;
-                var menu_id;
-=======
                 var i, d_menu_id, menu_id;
->>>>>>> 9f037054c5ee78f6f559115665130ea60012cedb
                 $('.indicate_promo').hide();
 
                 for(i = 0; i < data.length ; i++) {
@@ -40,34 +31,16 @@ function promos() {
                     d_menu_id = data[i].menu_id; // Ito yung menu id na galing sa database
                     menu_id = document.getElementById(d_menu_id); // kinuha ko yung div na yon gamit yung value ng id
                     $('.' + d_menu_id).show();
-                    
                     }     
                 }
                 },
               failure: function() {
-                  alert('There are no current promo for today.');
+                  alert('There are no current discounts for today.');
               } 
                 
             });
                 }); 
      
-<<<<<<< HEAD
-    };
-
-    // function discounts(){
-    //     $document.ready(function(){
-    //         $.ajax({
-    //             url: 'http://www.illengan.com/customer/discounts',
-    //             dataType: 'json',
-    //             success: function(data){
-    //                 for(var i=0; x<data.length; i++){
-    //                     if(data[i].)
-                       
-    //             }
-    //         });
-    //     });
-    // }
-=======
             };
 
 function freebies_discounts() {  
@@ -155,4 +128,3 @@ function freebies_discounts() {
         });
     });
 }
->>>>>>> 9f037054c5ee78f6f559115665130ea60012cedb

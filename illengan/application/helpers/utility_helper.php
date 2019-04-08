@@ -32,4 +32,10 @@ function cmedia_url(){
 function logo_url(){
    return base_url().'assets/common/logo/';
 }
+function admin_css(){
+   return base_url().'assets/css/admin/';
+}
+function admin_js(){
+   return base_url().'assets/js/admin/';
+}
 ?>
