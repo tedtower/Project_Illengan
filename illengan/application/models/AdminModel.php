@@ -339,6 +339,11 @@ class AdminModel extends CI_Model{
         $query = "update menu set menu_name = ?, category_id = ?, menu_description = ?, menu_price = ?, menu_availability = ? where menu_id = ?";
         return $this->db->query($query,array($menu_name, $category_id, $menu_description, $menu_price, $menu_availability, $menu_id));
     }
+    
+    function edit_table($newTableCode, $previousTableCode){
+        $query = "Update tables set table_code = ? where table_code = ?;";
+        return $this->db->query($query, array($newTableCode, $previousTableCode));
+    }
 
 }
 ?>

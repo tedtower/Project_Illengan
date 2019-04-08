@@ -84,6 +84,7 @@
                                                 <div class="col-md-6 form-group">
                                                     <div class="form-group label-floating">
                                                         <label for="tableCode">Table Code</label>
+                                                        <input class="form-control" type="text" name="prevTableCode" hidden="hidden">
                                                         <input class="form-control" type="text" name="tableCode"
                                                             value="" required
                                                             title="Table Code should contain letters and numbers">
@@ -186,6 +187,7 @@ function setTableData(tables) {
             </td>
         </tr>`);
         $(".updateBtn").last().on('click', function() {
+            $("input[name='prevTableCode']").val($(this).closest("tr").attr("data-id"));
             $("input[name='tableCode']").val($(this).closest("tr").attr("data-id"));
         });
         $(".deleteBtn").last().on('click', function() {

@@ -102,6 +102,7 @@ $route['admin/inventory/edit'] = "adminupdate/editstockitem";
 $route['admin/transactions/edit'] = "adminupdate/edittransactions";
 $route['admin/accounts/changepassword'] = "adminupdate/changeAccountPassword";
 $route['admin/accounts/edit'] = "adminview/vieweditAccounts";
+$route['admin/tables/edit'] = "adminupdate/edittable";
 //End Admin Update Routes ---------------------------------------
 
 //Admin Delete Routes -------------------------------------------
