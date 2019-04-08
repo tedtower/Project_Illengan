@@ -61,215 +61,58 @@
 											<th><b class="pull-left">Remarks</b></th> <!--remarks-->
 											<th><b class="pull-left">Operations</b></th>
 										</thead>
-										<tbody>
-										<?php
-            
-											if (isset($spoilages)){
-												foreach ($spoilages as $row){
-													if($row['stype'] = 'm'){
-											?>
-											<!--Insert PHP-->
-											<tr>
-											<td><?php echo $row['s_id']; ?></td>
-											<td><?php echo $row['description']; ?></td>
-											<td><?php echo $row['s_qty']; ?></td>
-											<td><?php echo $row['s_date']; ?></td>
-											<td><?php echo $row['date_recorded']; ?></td>
-											<td><?php echo $row['remarks']; ?></td>
-													<!--Delete button-->
-											<td><a class="btn btn-default btn-sm" data-toggle="modal" href="<?php echo site_url('admin/deletespoilages/'.$row['s_id']);?>">Delete</a></td>
-												
-											</tr>
-											<?php
-													}
-											}
-											}else{
-												echo "There is no data";
-											}
-											?>
+										<tbody id="show_data">
+                    
+										</tbody>	
+									</table>							
 								</div>
 							</div>
 						</div>
 						</td>
 						<!--End Table Content-->
-						<!--Modal for Activation/Deactivation-->
-						<div class="modal fade" id="deactivate" tabindex="-1" data-backdrop="static"
-							data-keyboard="false" role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
-							<div class="modal-dialog">
-								<div class="panel panel-primary">
-									<div class="panel-heading">
-										<!--Close Button-->
-										<button type="button" class="close" data-dismiss="modal"
-											onclick="document.getElementById('').click()" aria-hidden="true">×</button>
-										<h4 class="panel-title" id="contactLabel"><span
-												class="glyphicon glyphicon-warning-sign"></span>
-											Activation/Deactivation
-										</h4>
-									</div>
-									<form action="adminMenuItems/activation" method="post" accept-charset="utf-8">
-										<div class="modal-body" style="padding: 5px;">
-											<div class="row" style="text-align: center">
-												<br>
-												<h4> Are you sure you want to 'deactivate' : 'activate'?> this
-													menu
-													item?</h4>
-												<br>
-											</div>
-											<div class="row">
-												<div class="col-md-12 form-group">
-													<div class="form-group label-floating">
-														<input class="form-control" type="hidden" name="deact_id"
-															value="" required>
-													</div>
-													<div class="form-group label-floating">
-														<input class="form-control" type="hidden" name="name" value=""
-															required>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="panel-footer" style="margin-bottom:-14px;">
-											<input type="submit" class="btn btn-success" value="Yes" />
-											<button type="button" class="btn btn-danger btn-close"
-												onclick="document.getElementById('').click()"
-												data-dismiss="modal">No</button>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-						<div class="modal fade" id="" tabindex="-1" role="dialog" aria-labelledby="contactLabel"
-							aria-hidden="true">
-							<div class="modal-dialog">
-								<div class="panel panel-primary">
-									<div class="panel-heading">
-										<button type="button" class="close" data-dismiss="modal"
-											aria-hidden="true">×</button>
-										<h4 class="panel-title" id="contactLabel"><span
-												class="glyphicon glyphicon-info-sign"></span> Update Menu Item
-										</h4>
-									</div>
-									<form action="" method="post" accept-charset="utf-8">
-										<div class="modal-body" style="padding: 5px;">
-											<!--Add Menu Item Modal-->
-											<div class="row">
-												<div class="col-md-12 form-group">
-													<div class="form-group label-floating">
-														<label for="email">Menu Name</label>
-														<input class="form-control" type="text" name="name" value=""
-															required pattern="[a-zA-Z][a-zA-Z\s]*" required
-															title="Menu name should only countain letters">
-													</div>
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-md-12 form-group">
-													<div class="form-group label-floating">
-
-														<input class="form-control" type="hidden" name="" value=""
-															required>
-													</div>
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-md-6 form-group">
-													<div class="form-group label-floating">
-														<label for="type">Category</label>
-														<select class="form-control" name="" type="textarea" value=""
-															id="example-number-input" required
-															pattern="[a-zA-Z][a-zA-Z\s]*" required
-															title="Category hould only countain letters">
-															<option disabled selected value></option>
-															<!--Insert PHP-->
-														</select>
-													</div>
-												</div>
-
-												<div class="col-md-6 form-group">
-													<div class="form-group label-floating">
-														<label for="email">Status</label>
-														<input class="form-control" value="" type="number" name="status"
-															min="0" oninput="validity.valid||(value='');"
-															data-validate="required" max="" required>
-													</div>
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-md-6 form-group">
-													<div class="form-group label-floating">
-														<label for="uploadImage">Upload Image</label>
-														<select class="form-control" name="sup_company" required>
-															<option disabled selected value></option>
-															<!--Insert PHP-->
-														</select>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-12 form-group">
-														<div class="form-group label-floating">
-															<label for="description">Description</label>
-															<input class="form-control" type="text" name="description"
-																value="" required pattern="[a-zA-Z][a-zA-Z\s]*" required
-																title="Description should only countain letters">
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-md-12 form-group">
-													<div class="form-group label-floating">
-														<label for="type">Sizeable</label>
-														<select class="form-control" name="" type="textarea" value=""
-															id="example-number-input" required
-															pattern="[a-zA-Z][a-zA-Z\s]*" required
-															title="Category hould only countain letters">
-															<option disabled selected value></option>
-															<!--Insert PHP-->
-														</select>
-													</div>
-												</div>
-											</div>
-
-											<div class="col-md-6 form-group">
-												<div class="form-group label-floating">
-													<label for="email">Price</label>
-													<input class="form-control" type="number" name="price" min="0"
-														oninput="validity.valid||(value='');" data-validate="required"
-														max="" required>
-												</div>
-											</div>
-
-											<div class="panel-footer" style="margin-bottom:-14px; align:right">
-												<input type="submit" class="btn btn-danger" value="Close" />
-												<input type="reset" class="btn btn-success" value="Add Menu Item" />
-											</div>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery-3.2.1.js'?>"></script>
-	<script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/bootstrap.js'?>"></script>
-	<script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.datatables.js'?>"></script>
-	<script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.bootstrap4.js'?>"></script>
-	<script>
-			$(document).ready(function() {
-		$('#spoilages').DataTable( {
-			responsive: {
-            details: false
-        }
 
-		} );
-	} );
-</script>
+		<script>
+var table = $('#spoilages');
+
+$(document).ready(function(){
+  var table = $('#spoilages').DataTable({
+      ajax: {
+      url: 'http://www.illengan.com/admin/spoilages',
+      dataSrc: ''
+    },
+    colReorder: {
+      realtime: true
+    },
+    "columns" : [
+			{"data" : "s_id"},
+			{"data" : "description"},
+			{"data" : "s_qty"},
+			{"data" : "s_date"},
+			{"data" : "date_recorded"},
+			{"data" : "remarks"},
+			{"data" : null,
+					render: function(data, type, row, meta){
+						return '<a href="javascirpt: void(0)" class="btn btn-warning btn-sm item_delete" data-s_id="'+data.s_id+'">Delete</a>';
+					}
+			}
+		]
+  });
+	
+	</script>
+
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery-3.2.1.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/bootstrap.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.dataTables.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.bootstrap4.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/tables.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.responsive.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.select.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.buttons.js'?>"></script>
+	
 <?php include_once('templates/scripts.php') ?>
-</body>
+

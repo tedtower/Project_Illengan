@@ -258,6 +258,59 @@
 			</div>
 		</div>
 	</div>
+	<!--MODAL DELETE-->
+	<form>
+            <div class="modal fade" id="Modal_Remove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Spoilage</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                       <strong>Are you sure to remove this record?</strong>
+                  </div>
+                  <div class="modal-footer">
+                    <input type="hidden" name="order_id_remove" id="order_id_remove" class="form-control">
+                    <button type="button" type="submit" id="btn_cancel" class="btn btn-primary">Yes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </form>
+    <!--END MODAL DELETE-->
+
+	//get data for delete record
+	<script>
+$('#show_data').on('click','.item_delete',function(){
+            var order_id = $(this).data('order_id');
+            
+            $('#Modal_Remove').modal('show');
+            $('[name="order_id_remove"]').val(order_id);
+        });
+
+        //delete record to database
+         $('#btn_cancel').on('click',function(){
+            var order_id = $('#order_id_remove').val();
+            $.ajax({
+                type : "POST",
+                url  : "<?php echo site_url('barista/cancel')?>",
+                dataType : "JSON",
+                data : {order_id:order_id},
+                success: function(data){
+                    $('[name="order_id_remove"]').val("");
+                    alert("Record removed successfully!");
+                    $('#Modal_Remove').modal('hide');
+                    
+                    table.DataTable(). ajax.reload(null, false);
+                }
+            });
+            return false;
+        });
+        </script>
 
 	<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery-3.2.1.js'?>"></script>
 	<script>
