@@ -43,7 +43,8 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form action="<?= site_url("admin/tables/add")?>" method="post" accept-charset="utf-8">
+                                    <form action="<?= site_url("admin/tables/add")?>" method="post"
+                                        accept-charset="utf-8">
                                         <div class="modal-body">
                                             <!--Table Code-->
                                             <div class="row">
@@ -77,14 +78,16 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form action="<?= site_url("admin/tables/edit")?>" method="post" accept-charset="utf-8">
+                                    <form action="<?= site_url("admin/tables/edit")?>" method="post"
+                                        accept-charset="utf-8">
                                         <div class="modal-body">
                                             <!--Table Code-->
                                             <div class="row">
                                                 <div class="col-md-6 form-group">
                                                     <div class="form-group label-floating">
                                                         <label for="tableCode">Table Code</label>
-                                                        <input class="form-control" type="text" name="prevTableCode" hidden="hidden">
+                                                        <input class="form-control" type="text" name="prevTableCode"
+                                                            hidden="hidden">
                                                         <input class="form-control" type="text" name="tableCode"
                                                             value="" required
                                                             title="Table Code should contain letters and numbers">

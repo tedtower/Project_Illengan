@@ -274,12 +274,14 @@ class AdminView extends CI_Controller{
     function viewTransactions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['title'] = "Admin Transactions";
-            $data['transactions'] = $this->adminmodel->get_transactions();
-            $data['transitems'] = $this->adminmodel->get_transitems();
-            $this->load->view('admin/templates/head');
-            $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/transactions',$data);
-            $this->load->view('admin/templates/scripts');
+            // $this->load->view('admin/templates/head');
+            // $this->load->view('admin/templates/sideNav');
+            $data['transactions'] = array(
+                "transaction" => $this->adminmodel->get_transactions(),
+                "transitem" => $this->adminmodel->get_transitems()
+            );
+            $this->load->view('admin/adminAllTransactions',$data);
+            // $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
