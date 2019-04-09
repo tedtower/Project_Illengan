@@ -155,7 +155,7 @@ function setTableData() {
         transactions.transaction[transLastIndex].transitems = [];
         tableRow = `
         <tr data-id="${transactions.transaction[transLastIndex].trans_id}" >
-            <td><button class="accordionBtn">+</button></td>
+            <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
             <td>${transactions.transaction[transLastIndex].receipt_no}</td>
             <td>${transactions.transaction[transLastIndex].source_name}</td>
             <td>${transactions.transaction[transLastIndex].total}</td>
