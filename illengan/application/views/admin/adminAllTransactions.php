@@ -194,7 +194,7 @@ var transLastIndex = 0;
 var transPerPage = 10;
 // $("#transTable").ready(function(){
 // });
-$(function() {
+$(function () {
     setTableData();
 });
 

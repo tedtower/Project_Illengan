@@ -82,12 +82,12 @@ class AdminAdd extends CI_Controller{
             if($this->form_validation->run()){
                 $tableCode = trim($this->input->post('tableCode'));
                 if($this->adminmodel->add_table($tableCode)){
-                    redirect('admin/tables');
+                    $this->output->set_output(json_encode($this->adminmodel->get_tables()));
                 }else{
-                    redirect('');
+                    redirect('admin/tables');
                 }
             }else{
-                redirect("admin/dashboard");
+                redirect("admin/tables");
             }
         }else{
             redirect('login');

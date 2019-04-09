@@ -75,6 +75,9 @@ $route['admin/spoilages/stock'] = "adminview/viewspoilagesstock";
 $route['admin/spoilages/menu/add'] ="adminview/viewInsertSpoilageMenu";
 $route['admin/spoilages/stock/add'] ="adminview/viewInsertSpoilageStock";
 $route['admin/spoilages/addons/add'] ="adminview/viewInsertSpoilageAo";
+$route['admin/spoilages'] = "adminview/viewspoilages";
+$route['admin/spoilagesjson'] = "adminview/viewSpoilagesJs";
+
 //End Viewing Routes
 
 //Not Sure Routes
@@ -109,7 +112,7 @@ $route['admin/tables/edit'] = "adminupdate/edittable";
 //End Admin Update Routes ---------------------------------------
 
 //Admin Delete Routes -------------------------------------------
-$route['admin/tables/delete/(:num)'] = "admindelete/deletetable/$1";
+$route['admin/tables/delete'] = "admindelete/deletetable";
 $route['admin/menucategories/delete/(:num)'] = "admindelete/deletemenucategory/$1";
 $route['admin/stockcategories/delete/(:num)'] = "admindelete/deletestockcategory/$1";
 $route['admin/inventory/delete/(:num)'] = "admindelete/deletestockitem/$1";

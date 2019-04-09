@@ -16,9 +16,9 @@ class AdminUpdate extends CI_Controller{
                 $prevTableCode = trim($this->input->post('prevTableCode'));
                 $tableCode = trim($this->input->post('tableCode'));
                 if($this->adminmodel->edit_table($tableCode,$prevTableCode)){
-                    redirect('admin/tables');
+                    $this->output->set_output(json_encode($this->adminmodel->get_tables()));
                 }else{
-                    redirect('');
+                    redirect('admin/tables');
                 }
             }else{
                redirect("admin/tables");

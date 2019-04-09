@@ -259,7 +259,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_spoilages(){
-        $query = "select s_id, menu_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN menuspoil USING (s_id) inner JOIN menu USING (menu_id) UNION select s_id, stock_name AS decription, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN stockspoil USING (s_id) inner JOIN stockitems USING (stock_id) UNION select s_id, ao_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN ao_spoil USING (s_id) inner JOIN addons USING (ao_id) ORDER BY date_recorded";
+        $query = "select s_id, s_type, menu_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN menuspoil USING (s_id) inner JOIN menu USING (menu_id) UNION select s_id, s_type, stock_name AS decription, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN stockspoil USING (s_id) inner JOIN stockitems USING (stock_id) UNION select s_id,s_type, ao_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN ao_spoil USING (s_id) inner JOIN addons USING (ao_id) ORDER BY date_recorded";
         return $this->db->query($query)->result_array();
     }
     function get_spoilages_menu(){
@@ -314,9 +314,9 @@ class AdminModel extends CI_Model{
         $query = "Delete from stockitems where stock_id=?;";
         return $this->db->query($query, array($stock_id));
     }
-    function delete_table($table_no){
-        $query = "Delete from tables where table_no= ?";
-        return $this->db->query($query, array($table_no));
+    function delete_table($tableCode){
+        $query = "Delete from tables where table_code= ?";
+        return $this->db->query($query, array($tableCode));
     }
     function delete_transaction($trans_id){
         $query = "Delete from transactions where trans_id=?";
