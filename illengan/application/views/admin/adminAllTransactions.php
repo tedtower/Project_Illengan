@@ -21,7 +21,7 @@
                         <div class="container-fluid">
                             <!--Table-->
                             <div class="card-content">
-                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newTransaction"
+                                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newTransaction"
                                     data-original-title style="float: left">Add Transaction</a>
                                 <!--Search
                             <div id ="example_filter" class="dataTables_filter">
@@ -35,10 +35,10 @@
                             </div>-->
                                 <br>
                                 <br>
-                                <table id="transTable" class="table table-striped  table-bordered dt-responsive nowrap"
+                                <table id="transTable" class="table table-bordered dt-responsive nowrap"
                                     cellspacing="0" width="100%">
                                     <thead>
-                                        <th></th>
+                                        <th style="width:10px"></th>
                                         <th><b class="pull-left">Receipt No.</b></th>
                                         <th><b class="pull-left">Supplier Name</b></th>
                                         <th><b class="pull-left">Total</b></th>
@@ -208,8 +208,8 @@ function setTableData() {
         }
         transactions.transaction[transLastIndex].transitems = [];
         tableRow = `
-        <tr data-id="${transactions.transaction[transLastIndex].trans_id}" >
-            <td><button class="accordionBtn">+</button></td>
+        <tr data-id="${transactions.transaction[transLastIndex].trans_id}">
+            <td><img class="accordionBtn center" src="/assets/media/admin/down-arrow%20(1).png" style="height:17px;width:17px" /></td>
             <td>${transactions.transaction[transLastIndex].receipt_no}</td>
             <td>${transactions.transaction[transLastIndex].source_name}</td>
             <td>${transactions.transaction[transLastIndex].total}</td>
