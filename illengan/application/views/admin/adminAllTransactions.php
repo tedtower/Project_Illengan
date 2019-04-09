@@ -45,9 +45,10 @@
                                     <br>
                                     <br>
                                     <table id="transTable"
-                                        class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0"
+                                        class="table table-striped  table-bordered dt-responsive nowrap" cellspacing="0"
                                         width="100%">
                                         <thead>
+                                            <th></th>
                                             <th><b class="pull-left">Receipt No.</b></th>
                                             <th><b class="pull-left">Supplier Name</b></th>
                                             <th><b class="pull-left">Total</b></th>
@@ -55,31 +56,34 @@
                                             <th><b class="pull-left">Actions</b></th>
                                         </thead>
                                         <tbody>
-                                            <!--Insert PHP-->
-                                            <tr>
-                                                <td>
-                                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
-                                                </td>
-                                                <td>
-                                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
-                                                </td>
-                                                <td>
-                                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
-                                                </td>
-                                                <td>
-                                                    <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
-                                                </td>
-                                                <td>
-                                                    <div class="onoffswitch">
-                                                        <!--View button-->
-                                                        <button class="btn btn-default btn-sm" data-toggle="modal"
-                                                            data-target="">Edit</button>
-                                                        <!--Delete button-->
-                                                        <button class="btn btn-danger btn-sm" data-toggle="modal"
-                                                            data-target="">Delete</button>
+                                            <!-- <tr style="display:none">
+                                                <td colspan="6">
+                                                    <div class="container" style="display:none"> Container ng accordion
+                                                        <span>Date Recorded: </span>
+                                                        <div>Remarks:<p></p></div>
+                                                        <table class="table">
+                                                            <tr>
+                                                                <thead style="background:white">
+                                                                    <th>Name</th>
+                                                                    <th>Qty</th>
+                                                                    <th>Unit</th>
+                                                                    <th>Price</th>
+                                                                    <th>Subtotal</th>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </tr>
+                                                        </table>
                                                     </div>
                                                 </td>
-                                            </tr>
+                                            </tr> -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -130,32 +134,92 @@
 </body>
 <script>
 var transactions = <?= json_encode($transactions)?>;
+var transLastIndex = 0;
+var transPerPage = 10;
+// $("#transTable").ready(function(){
+// });
 $(function() {
     setTableData();
 });
 
 function setTableData() {
-    var tableRow = `
-    <tr data-id="${}" >
-        <td>${}</td>
-        <td>${}</td>
-        <td>${}</td>
-        <td>${}</td>
-        <td>
-            <div class="onoffswitch">
-                <!--View button-->
-                <button class="btn btn-default btn-sm" data-toggle="modal"
-                    data-target="">Edit</button>
-                <!--Delete button-->
-                <button class="btn btn-danger btn-sm" data-toggle="modal"
-                    data-target="">Delete</button>
-            </div>
-        </td>
-    </tr>`;
-    var accordion = `
-    `;
-    $("#transTable").append(tableRow);
+    var count = 0;
+    var tableRow;
+    var accordion;
+    for(transLastIndex; transLastIndex < transactions.transaction.length; transLastIndex++){
+        if(!(count < transPerPage)){
+            break;
+        }
+        transactions.transaction[transLastIndex].transitems = [];
+        tableRow = `
+        <tr data-id="${transactions.transaction[transLastIndex].trans_id}" >
+            <td><button class="accordionBtn">+</button></td>
+            <td>${transactions.transaction[transLastIndex].receipt_no}</td>
+            <td>${transactions.transaction[transLastIndex].source_name}</td>
+            <td>${transactions.transaction[transLastIndex].total}</td>
+            <td>${transactions.transaction[transLastIndex].trans_date}</td>
+            <td>
+                <div class="onoffswitch">
+                    <!--View button-->
+                    <button class="btn btn-default btn-sm" data-toggle="modal"
+                        data-target="">Edit</button>
+                    <!--Delete button-->
+                    <button class="btn btn-danger btn-sm" data-toggle="modal"
+                        data-target="">Delete</button>
+                </div>
+            </td>
+        </tr>`;
+        $("#transTable > tbody").append(tableRow);
 
+        if(transactions.transaction[transLastIndex].transitems[0] == undefined){
+            transactions.transaction[transLastIndex].transitems = transactions.transitem.filter(item => item.trans_id == transactions.transaction[transLastIndex].trans_id);
+        }
+        accordion = `
+        <tr style="display:none">
+            <td colspan="6">
+                <div class="container" style="display:none"> <!-- Container ng accordion -->
+                    <span>Date Recorded: ${transactions.transaction[transLastIndex].date_recorded}</span>
+                    <div>Remarks:<p>${transactions.transaction[transLastIndex].remarks == null ? "No Remarks" : `${transactions.transaction[transLastIndex].remarks}`}</p></div>
+                    ${transactions.transaction[transLastIndex].transitems[0] == undefined ? "No items recorded!" : `
+                        <table class="table">
+                        <thead style="background:white">                            
+                            <tr>
+                                <th>Name</th>
+                                <th>Qty</th>
+                                <th>Unit</th>
+                                <th>Price</th>
+                                <th>Subtotal</th>                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${transactions.transaction[transLastIndex].transitems.map(transitem => {
+                                return `
+                                <tr>
+                                    <td>${transitem.item_name}</td>
+                                    <td>${transitem.item_qty}</td>
+                                    <td>${transitem.item_unit}</td>
+                                    <td>${transitem.item_price}</td>
+                                    <td>${transitem.subtotal}</td>                            
+                                </tr>`;
+                            }).join('')}
+                        </tbody>
+                    </table>`}                    
+                </div>
+            </td>
+        </tr>
+        `;
+        $("#transTable > tbody").append(accordion);
+        count++;
+    }
+    $(".accordionBtn").on('click', function(){
+        if($(this).closest("tr").next("tr").css('display') == "none"){
+            $(this).closest("tr").next("tr").css('display', 'table-row');
+            $(this).closest("tr").next("tr").find("td > div").slideDown('slow');
+        }else{
+            $(this).closest("tr").next("tr").find("td > div").slideUp('slow');
+            $(this).closest("tr").next("tr").hide("slow");
+        }
+    });
 }
 </script>
 

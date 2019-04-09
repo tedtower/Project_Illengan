@@ -276,7 +276,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_transitems(){
-        $query = "Select trans_id, item_name, item_qty, item_unit, item_price, item_qty*item_price as total_price from transitems";
+        $query = "Select trans_id, item_name, item_qty, item_unit, item_price, subtotal from transitems";
         return $this->db->query($query)->result_array();
     }
 
