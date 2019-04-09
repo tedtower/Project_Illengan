@@ -114,9 +114,14 @@ class AdminView extends CI_Controller{
             redirect('login');
         }
     }
-    function datatables_menu(){
+
+    function menuGetDetails(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data = $this->adminmodel->get_menu();
+            $data = array(
+                'menu' => $this->adminmodel->get_menu(),
+                'preferences' => $this->adminmodel->get_preferences(),
+                'addons' => $this->adminmodel->get_addons2()
+            );
             echo json_encode($data);
         }else{
             redirect('login');
@@ -280,12 +285,14 @@ class AdminView extends CI_Controller{
     function viewTransactions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['title'] = "Admin Transactions";
-            $data['transactions'] = $this->adminmodel->get_transactions();
-            $data['transitems'] = $this->adminmodel->get_transitems();
-            $this->load->view('admin/templates/head');
-            $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/transactions',$data);
-            $this->load->view('admin/templates/scripts');
+            // $this->load->view('admin/templates/head');
+            // $this->load->view('admin/templates/sideNav');
+            $data['transactions'] = array(
+                "transaction" => $this->adminmodel->get_transactions(),
+                "transitem" => $this->adminmodel->get_transitems()
+            );
+            $this->load->view('admin/adminAllTransactions',$data);
+            // $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }

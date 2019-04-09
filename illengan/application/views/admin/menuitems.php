@@ -1,33 +1,34 @@
 <div class="content">
-    <div class="container-fluid">
-        <p style="text-align:right; font-weight: regular; font-size: 16px">
-            <!-- Real Time Date & Time -->
-            <?php echo date("M j, Y -l"); ?>
-        </p>
-        <br>
-        <div class="main-panel">
-        <div class="row">
-
-            <div class="main-panel">
-                <div class="content" style="margin-top:5px;">
-                    <div class="container-fluid">
+        <div class="container-fluid">
+            <br>
+            <p style="text-align:right; font-weight: regular; font-size: 16px">
+                <!-- Real Time Date & Time -->
+                <?php echo date("M j, Y -l"); ?>
+            </p>
+            <div class="content" style="margin-left:250px;">
+                <div class="container-fluid">
+                    <div class="content">
+                        <div class="container-fluid">
+                            <!--Table-->
+                            <div class="card-content">
 
                     <div class="table-responsive" style="width:100%;">
-            <table class="dataTable  dtr-inline collapsed table stripe table display" id="mydata">
+            <table class="table" id="menuTable">
                 <thead>
                     <tr>
-                        <th style="width:3%"></th>
+                        <th></th>
                         <th>Menu Item</th>
                         <th>Category</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="show_data">
+                <tbody>
                     
                 </tbody>
 
             </table>
+        </div>
         </div>
    
     </div>
@@ -39,101 +40,136 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+
 <?php include_once('templates/scripts.php') ?>
 <script>
-
-$(document).ready(function() {
-    var table = $('#mydata').DataTable( {
-             ajax: {
-                 url: "http://www.illengan.com/admin/menu/datatables",
-                 dataSrc: ''
-             },
-		    colReorder: {
-			realtime: true
-		    },
-            "aoColumns" : [
-                {
-                "className":      'details-control',
-                "data":  null,
-                "defaultContent": ''
-                },
-                {data : 'menu_name'},
-                {data : 'category_name'},
-                {data : 'menu_availability'},
-                {
-                    data: null,
-                    render: function ( data, type, row, meta) {
-                        return '<div class="text-left mt-2">'+
-                        '<button name="editMenu" data-id="'+ data.menu_id +'" class="btn btn-primary btn-sm mb-2" style="margin-right:5px;">Edit</button>'+
-                        '<a href="#" class="delete_data" id="'+ data.menu_id +'"><button class="btn btn-danger btn-sm mb-2">Delete</button></a>'+
-                        '</div>';
-                        }
-                    }
-		        ]
-	        });
-
-
-// FOR SHOWING THE ACCORDION
-        $('#mydata tbody').on('click', 'td.details-control', function () {
-                var tr = $(this).closest('tr');
-                var row = table.row(tr);
-        
-                if ( row.child.isShown() ) {
-                    // This row is already open - close it
-                    row.child.hide();
-                    tr.removeClass('shown');
-                }
-                else {
-                    // Open this row
-                    row.child( format(row.data()) ).show();
-                    tr.addClass('shown');
-                }
-            } );
-        
-            table.rows().every( function () {
-                var tr = $(this.node());
-                this.child(format(table.row(tr).data())).show();
-                tr.addClass('shown');
+    var menu = [];
+    $(function(){
+        $.ajax({
+            url: '<?= base_url("admin/menu/getDetails")?>',
+            dataType: 'json',
+            success: function(data){
+                var prefLastIndex = 0;
+                var aoLastIndex = 0;
+                $.each(data.menu, function(index, item){
+                    menu.push({"menu" : item});
+                    menu[index].preferences = data.preferences.filter(pref => pref.menu_id == item.menu_id);
+                    menu[index].addons = data.addons.filter(ao => ao.menu_id == item.menu_id);
                 });
- 
-});
+                showTable();
+            },
+            error: function(response,setting, errorThrown){
+                console.log(errorThrown);
+                console.log(response.responseText);
+            }
+        });
 
-function format ( d ) {
+    });
+    function showTable(){
+        menu.forEach(function(item){
+            var tableRow = `                
+                <tr class="table_row" data-menuId="${item.menu.menu_id}">   <!-- table row ng table -->
+                    <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
+                    <td>${item.menu.menu_name}</td>
+                    <td>${item.menu.category_name}</td>
+                    <td>${item.menu.menu_availability}</td>
+                    <td>
+                        <button class="editBtn btn btn-sm btn-primary">Edit</button>
+                        <button class="deleteBtn btn btn-sm btn-danger">Delete</button>
+                    </td>
+                </tr>
+            `;
+            var preferencesDiv = `
+            <div class="preferences" style="width:45%;overflow:auto;float:left;margin-right:3%" > <!-- Preferences table container-->
+                ${item.preferences.length === 0 ? "Not Applicable" : 
+                `
+                <span><b>Preferences:</b></span> <!-- label-->
+                <table class="table table-bordered"> <!-- Preferences table-->
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Size Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    ${item.preferences.map(pref => {
+                        return `
+                        <tr>
+                            <td>${pref.size_name.toLowerCase() === 'normal' ? `${pref.temp == null ? "Regular" : pref.temp === 'h' ? "Hot" : pref.temp === 'c' ? "Cold" : "Hot and Cold" }` : `${pref.size_name+ " "+ `${pref.temp == null ? "" : pref.temp}`}`}</td>
+                            <td>&#8369; ${pref.pref_price}</td>
+                            <td>${pref.size_status}</td>
+                        </tr>
+                        `;
+                    }).join('')}
+                    </tbody>
+                </table>
+                `}
+            </div>
+            `;
+            var accordion = `
+            <tr class="accordion" style="display:none">
+                <td colspan="5"> <!-- table row ng accordion -->
+                    <div style="overflow:auto;display:none"> <!-- container ng accordion -->
+                        <div style="width:280px;overflow:auto;float:left;margin-right:3%"> <!-- image container -->
+                            <img src="<?=site_url('uploads/')?>${item.menu.menu_image}" style="width:280px;height:180px">
+                        </div>
+                        
+                        <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
+                            <div><b>Description:</b> <!-- label-->
+                                <p>${item.menu.menu_description}
+                                </p>
+                            </div>
+                            
+                            <div class="aoAndPreferences" style="overflow:auto;margin-top:1%"> <!-- Preferences and addons container-->
+                                
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            `;
+            var addonsDiv = `
+            <div class="addons" style="width:45%;overflow:auto" > <!-- Addons table container--><span><b>Addons:</b></span><br>
+                ${item.addons.length === 0 ? "No addons are set for this menu item." : 
+                    `<!-- label-->
+                    <table class="table table-bordered"> <!-- Addons table-->
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Addons Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        ${item.addons.map(addon => {
+                            return `<tr><td>${addon.ao_name}</td>
+                            <td>&#8369; ${addon.ao_price}</td>
+                            <td>${addon.ao_status}</td></tr>`;
+                            }).join('')}
+                        </tbody>
+                    </table>`
+                }
+            </div>`;
+            $("#menuTable > tbody").append(tableRow);
+            $("#menuTable > tbody").append(accordion);
+            $(".aoAndPreferences").last().append(preferencesDiv);
+            $(".aoAndPreferences").last().append(addonsDiv);
+        });
+        $(".accordionBtn").on('click', function(){
+            if($(this).closest("tr").next(".accordion").css("display") == 'none'){
+                $(this).closest("tr").next(".accordion").css("display","table-row");
+                $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
+            }else{
+                $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
+                $(this).closest("tr").next(".accordion").hide("slow");
+            }
+        });
+        $(".editBtn").on("click",function(){
+            var menuID = $(this).closest("tr").attr("data-menuID");
+            //set Modal contents;
 
-    // `d` is the original data object for the row
-    return'<div style="margin:1% 5% 1% 5%;overflow:auto;">'+
-            '<div style="width:30%;float:left">'+
-                '<img name="editImage" style="width:100%;height:180px" src="http://www.illengan.com/uploads/'+d.menu_image+'" />'+
-            '</div>'+
-            '<div style="width:65%;float:left;margin-left:3%;">'+
-                '<b>Additional Information:</b>'+
-                '<table>'+
-                    '<tr>'+
-                    '<td>Description:</td>'+
-                    '<td>'+d.menu_description+'</td>'+
-                    '<tr>'+
+        });
 
-                    '<tr>'+
-                    '<td>Preferences:</td>'+
-                    '<td></td>'+
-                    '<tr>'
-                '</table>'
-            '</div>'
-        // $.ajax({
-        //     url: "http://www.illengan.com/admin/preferences",
-        //     dataType: "json",
-        //     success:function(data){
-        //         '<div>'+
-                    
-        //         '<div>'
-        //     }
-
-        // })
-        
-    '</div>';
-    
-}
+    }  
 </script>

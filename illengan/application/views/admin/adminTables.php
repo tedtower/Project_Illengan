@@ -43,7 +43,8 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form action="adminTables/insert" method="post" accept-charset="utf-8">
+                                    <form action="<?= site_url("admin/tables/add")?>" method="post"
+                                        accept-charset="utf-8">
                                         <div class="modal-body">
                                             <!--Table Code-->
                                             <div class="row">
@@ -51,9 +52,8 @@
                                                     <div class="form-group label-floating">
                                                         <label for="tableCode">Table Code</label>
                                                         <input class="form-control" type="text" name="tableCode"
-                                                            value="" required pattern="[a-zA-Z][a-zA-Z\s][0-9]*"
-                                                            required
-                                                            title="Table Code shoule contain letters and numbers">
+                                                            value="" required
+                                                            title="Table Code should contain letters and numbers">
                                                     </div>
                                                 </div>
                                             </div>
@@ -61,7 +61,44 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                            <button type="submit" class="btn btn-primary">Add Table</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Modal for Edit Table-->
+                        <div class="modal fade" id="editTable" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Edit Table</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="<?= site_url("admin/tables/edit")?>" method="post"
+                                        accept-charset="utf-8">
+                                        <div class="modal-body">
+                                            <!--Table Code-->
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <div class="form-group label-floating">
+                                                        <label for="tableCode">Table Code</label>
+                                                        <input class="form-control" type="text" name="prevTableCode"
+                                                            hidden="hidden">
+                                                        <input class="form-control" type="text" name="tableCode"
+                                                            value="" required
+                                                            title="Table Code should contain letters and numbers">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Edit Table</button>
                                         </div>
                                     </form>
                                 </div>
@@ -145,7 +182,7 @@ function setTableData(tables) {
                 <div class="onoffswitch">
                     <!--Edit button-->
                     <button class="updateBtn btn btn-default btn-sm" data-toggle="modal"
-                        data-target="#updateTable">Edit</button>
+                        data-target="#editTable">Edit</button>
                     <!--Delete button-->
                     <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"
                         data-target="#deleteTable">Delete</button>
@@ -153,6 +190,7 @@ function setTableData(tables) {
             </td>
         </tr>`);
         $(".updateBtn").last().on('click', function() {
+            $("input[name='prevTableCode']").val($(this).closest("tr").attr("data-id"));
             $("input[name='tableCode']").val($(this).closest("tr").attr("data-id"));
         });
         $(".deleteBtn").last().on('click', function() {

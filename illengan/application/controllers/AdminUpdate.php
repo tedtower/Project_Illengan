@@ -10,31 +10,33 @@ class AdminUpdate extends CI_Controller{
     }
     function editTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]');
+            $this->form_validation->set_rules('prevTableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]');
+            $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
             if($this->form_validation->run()){
-                $tableCode = trim($this->input->get('tableCode'));
-                if($this->adminmodel->add_table($tableCode)){
+                $prevTableCode = trim($this->input->post('prevTableCode'));
+                $tableCode = trim($this->input->post('tableCode'));
+                if($this->adminmodel->edit_table($tableCode,$prevTableCode)){
                     redirect('admin/tables');
                 }else{
                     redirect('');
                 }
             }else{
-                $this->viewTables();
+               redirect("admin/tables");
             }
         }else{
             redirect('login');
         }        
     }
     function changeAccountPassword(){  
-    $this->load->library('form_validation');
+        $this->load->library('form_validation');
 
-    $account_id = $this->input->post('account_id');
-    $this->adminmodel->get_password($account_id);
-    $current_password = $this->adminmodel->get_password($account_id);
+        $account_id = $this->input->post('account_id');
+        $this->adminmodel->get_password($account_id);
+        $current_password = $this->adminmodel->get_password($account_id);
 
-    $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[3]|max_length[50]');
-    $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[3]|max_length[50]|matches[new_password]');
-    $this->form_validation->set_rules('old_password', 'Old Password', 'required');
+        $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[3]|max_length[50]');
+        $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[3]|max_length[50]|matches[new_password]');
+        $this->form_validation->set_rules('old_password', 'Old Password', 'required');
 
         if($this->form_validation->run()){
             $input_old_password = $this->input->post("old_password");
@@ -148,11 +150,12 @@ class AdminUpdate extends CI_Controller{
     }    
     function editSource(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $source_id = trim($this->input->get('source_id'));
-            $source_name = trim($this->input->get('new_name'));
-            $contact_num = trim($this->input->get('new_num'));
-            $status = trim($this->input->get('new_status'));
-            $data['source'] = $this->adminmodel->edit_data($source_id, $source_name, $contact_num, $status);
+            $source_id = $this->input->get('source_id');
+            $source_name = $this->input->get('new_name');
+            $contact_num = $this->input->get('new_contact');
+            $email = $this->input->get('new_email');
+            $status = $this->input->get('new_status');
+            $this->adminmodel->edit_source($source_id, $source_name, $contact_num, $email, $status);
             redirect('admin/sources');
         }else{
             redirect('login');
