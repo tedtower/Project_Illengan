@@ -57,6 +57,7 @@ $route['verifylogin'] = "login/check_cred";
 
 //Viewing Routes -----------------------------------------------
 $route['admin/menu'] = "adminview/viewmenu";
+$route['admin/menu/getDetails'] = "adminview/menuGetDetails";
 $route['admin/spoilages'] = "adminview/viewspoilages";
 $route['admin/sales'] = "adminview/viewSales";
 $route['admin/dashboard'] = "adminview/viewdashboard";

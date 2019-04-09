@@ -114,9 +114,14 @@ class AdminView extends CI_Controller{
             redirect('login');
         }
     }
-    function datatables_menu(){
+
+    function menuGetDetails(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data = $this->adminmodel->get_menu();
+            $data = array(
+                'menu' => $this->adminmodel->get_menu(),
+                'preferences' => $this->adminmodel->get_preferences(),
+                'addons' => $this->adminmodel->get_addons2()
+            );
             echo json_encode($data);
         }else{
             redirect('login');

@@ -191,9 +191,16 @@ class AdminModel extends CI_Model{
         $query = "Select log_id, stock_name, quantity, log_date, log_type, date_recorded from log inner join stockitems using (stock_id)";
         return $this->db->query($query)->result_array();
     }
-    //Menu management
     function get_menu(){
         $query = "Select * from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
+        return $this->db->query($query)->result_array();
+    }
+    function get_preferences(){
+        $query = "SELECT * from preferences";
+        return $this->db->query($query)->result_array();
+    }
+    function get_addons2(){
+        $query = "SELECT * from itemadd inner join addons using (ao_id)";
         return $this->db->query($query)->result_array();
     }
     //for spoilage
