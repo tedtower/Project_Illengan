@@ -57,7 +57,6 @@ $route['verifylogin'] = "login/check_cred";
 
 //Viewing Routes -----------------------------------------------
 $route['admin/menu'] = "adminview/viewmenu";
-$route['admin/spoilages'] = "adminview/viewspoilages";
 $route['admin/sales'] = "adminview/viewSales";
 $route['admin/dashboard'] = "adminview/viewdashboard";
 $route['admin/tables'] = "adminview/viewtables";
@@ -74,6 +73,9 @@ $route['admin/spoilages/stock'] = "adminview/viewspoilagesstock";
 $route['admin/spoilages/menu/add'] ="adminview/viewInsertSpoilageMenu";
 $route['admin/spoilages/stock/add'] ="adminview/viewInsertSpoilageStock";
 $route['admin/spoilages/addons/add'] ="adminview/viewInsertSpoilageAo";
+$route['admin/spoilages'] = "adminview/viewspoilages";
+$route['admin/spoilagesjson'] = "adminview/viewSpoilagesJs";
+
 //End Viewing Routes
 
 //Not Sure Routes
