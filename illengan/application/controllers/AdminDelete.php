@@ -59,12 +59,18 @@ class AdminDelete extends CI_Controller{
             redirect('login');
         }
     }    
-    function deleteTable($table_no){
+    function deleteTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            if($this->adminmodel->delete_table($table_no)){
-                redirect('admin/tables');
+            $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces');
+            if($this->form_validation->run()){
+                $tableCode = trim($this->input->post("tableCode"));
+                if($this->adminmodel->delete_table($tableCode)){
+                    $this->output->set_output(json_encode($this->adminmodel->get_tables()));
+                }else{
+                    redirect('admin/tables');
+                }
             }else{
-                echo "There was an error";
+                redirect('admin/tables');
             }
         }else{
             redirect('login');

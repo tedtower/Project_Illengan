@@ -314,9 +314,9 @@ class AdminModel extends CI_Model{
         $query = "Delete from stockitems where stock_id=?;";
         return $this->db->query($query, array($stock_id));
     }
-    function delete_table($table_no){
-        $query = "Delete from tables where table_no= ?";
-        return $this->db->query($query, array($table_no));
+    function delete_table($tableCode){
+        $query = "Delete from tables where table_code= ?";
+        return $this->db->query($query, array($tableCode));
     }
     function delete_transaction($trans_id){
         $query = "Delete from transactions where trans_id=?";

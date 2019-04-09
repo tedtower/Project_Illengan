@@ -44,6 +44,7 @@
                             </div>-->
                                     <br>
                                     <br>
+                                    <div class="pageButtons"></div>
                                     <table id="transTable"
                                         class="table table-striped  table-bordered dt-responsive nowrap" cellspacing="0"
                                         width="100%">
@@ -86,6 +87,7 @@
                                             </tr> -->
                                         </tbody>
                                     </table>
+                                    <div class="pageButtons"></div>
                                 </div>
                                 <!--End Table Content-->
                                 <!--Modal-->
@@ -138,7 +140,7 @@ var transLastIndex = 0;
 var transPerPage = 10;
 // $("#transTable").ready(function(){
 // });
-$(function() {
+$(function () {
     setTableData();
 });
 
@@ -146,8 +148,8 @@ function setTableData() {
     var count = 0;
     var tableRow;
     var accordion;
-    for(transLastIndex; transLastIndex < transactions.transaction.length; transLastIndex++){
-        if(!(count < transPerPage)){
+    for (transLastIndex; transLastIndex < transactions.transaction.length; transLastIndex++) {
+        if (!(count < transPerPage)) {
             break;
         }
         transactions.transaction[transLastIndex].transitems = [];
@@ -171,7 +173,7 @@ function setTableData() {
         </tr>`;
         $("#transTable > tbody").append(tableRow);
 
-        if(transactions.transaction[transLastIndex].transitems[0] == undefined){
+        if (transactions.transaction[transLastIndex].transitems[0] == undefined) {
             transactions.transaction[transLastIndex].transitems = transactions.transitem.filter(item => item.trans_id == transactions.transaction[transLastIndex].trans_id);
         }
         accordion = `
@@ -211,11 +213,11 @@ function setTableData() {
         $("#transTable > tbody").append(accordion);
         count++;
     }
-    $(".accordionBtn").on('click', function(){
-        if($(this).closest("tr").next("tr").css('display') == "none"){
+    $(".accordionBtn").on('click', function () {
+        if ($(this).closest("tr").next("tr").css('display') == "none") {
             $(this).closest("tr").next("tr").css('display', 'table-row');
             $(this).closest("tr").next("tr").find("td > div").slideDown('slow');
-        }else{
+        } else {
             $(this).closest("tr").next("tr").find("td > div").slideUp('slow');
             $(this).closest("tr").next("tr").hide("slow");
         }
