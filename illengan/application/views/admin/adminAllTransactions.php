@@ -40,7 +40,7 @@
                                     <thead>
                                         <th style="width:10px"></th>
                                         <th><b class="pull-left">Receipt No.</b></th>
-                                        <th><b class="pull-left">Supplier Name</b></th>
+                                        <th><b class="pull-left">Supplier</b></th>
                                         <th><b class="pull-left">Total</b></th>
                                         <th><b class="pull-left">Date</b></th>
                                         <th><b class="pull-left">Actions</b></th>
@@ -109,7 +109,7 @@
                                                         <div class="input-group mb-3 col">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                    style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                     Transaction Date</span>
                                                             </div>
                                                             <input type="date" name="transDate" id="transDate"
@@ -118,7 +118,7 @@
                                                     </div>
                                                     <!--Source Name-->
                                                     <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
+                                                        <div class="input-group-prepend">      
                                                             <span class="input-group-text" id="inputGroup-sizing-sm"
                                                                 style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Source</span>
@@ -147,7 +147,7 @@
                                                         <!--Table containing the different input fields in adding trans items -->
                                                         <thead class="thead-light">
                                                             <tr>
-                                                                <th>Name</th>
+                                                                <th width="40%">Name</th>
                                                                 <th>Qty</th>
                                                                 <th>Unit</th>
                                                                 <th>Price</th>
@@ -165,7 +165,7 @@
                                                         <button type="button" class="btn btn-danger btn-sm"
                                                             data-dismiss="modal">Cancel</button>
                                                         <button class="btn btn-success btn-sm"
-                                                            type="submit">Add</button>
+                                                            type="submit">Insert</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -173,6 +173,7 @@
                                     </div>
                                 </div>
                                 <!--End of Modal "Add Transaction"-->
+
                                 <!--Modal "Edit Transaction" -->
                                 <div class="modal fade bd-example-modal-lg" id="updateTransaction" tabindex="-1"
                                     role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -204,8 +205,7 @@
                                                         <!--Transaction date-->
                                                         <div class="input-group mb-3 col">
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                    style="width:250px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                <span class="input-group-text" id="inputGroup-sizing-sm">
                                                                     Transaction Date</span>
                                                             </div>
                                                             <input type="date" name="transDate" id="transDate"
@@ -243,7 +243,7 @@
                                                         <!--Table containing the different input fields in adding trans items -->
                                                         <thead class="thead-light">
                                                             <tr>
-                                                                <th>Name</th>
+                                                                <th width="40%">Name</th>
                                                                 <th>Qty</th>
                                                                 <th>Unit</th>
                                                                 <th>Price</th>
@@ -261,7 +261,7 @@
                                                         <button type="button" class="btn btn-danger btn-sm"
                                                             data-dismiss="modal">Cancel</button>
                                                         <button class="btn btn-success btn-sm"
-                                                            type="submit">Edit</button>
+                                                            type="submit">Update</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -446,7 +446,7 @@ function setTableData() {
                 <td>
                     <div class="onoffswitch">
                         <!--View button-->
-                        <button class="editBtn btn btn-default btn-sm" data-toggle="modal"
+                        <button class="editBtn btn btn-primary btn-sm" data-toggle="modal"
                             data-target="#updateTransaction">Edit</button>
                         <!--Delete button-->
                         <!-- <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"

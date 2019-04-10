@@ -19,8 +19,8 @@
                 <div class="card cd-mw" id="<?php echo $items->menu_id; ?>">
                     <span class="indicate_promo <?php echo $items->menu_id; ?>" style="position:absolute;right:0;top:0"><img style="width:60px;" src="<?php echo base_url('/assets/media/customer/banner.png')?>"></span>
                     <!-- Card image -->
-                    <a href="javascript:void(0)" class="menu_card" id="<?php echo $items->menu_id; ?>">
-                        <img onclick="hide_freebies();freebies_discounts()" data-menu_id="<?php echo $items->menu_id; ?>" class="card-img-top" src="
+                    <a href="javascript:void(0)" onclick="hide_freebies();freebies_discounts()" class="menu_card" id="<?php echo $items->menu_id; ?>">
+                        <img data-menu_id="<?php echo $items->menu_id; ?>" class="card-img-top" src="
                         <?php
                             if(isset($items->menu_image)){
                                 echo "".cmedia_url()."menu/".$items->menu_image;
