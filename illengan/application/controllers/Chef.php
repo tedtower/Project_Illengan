@@ -33,8 +33,11 @@ class Chef extends CI_Controller {
 
 	function get_orderlist() {
 		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Chef'){
-		$data['menu'] = $this->ChefModel->return_orderlist();
-		echo json_encode($data);
+			$data = array();
+			$data['data'] = $this->ChefModel->return_orderlist();
+
+			header('Content-Type: application/json');
+		echo json_encode($data, JSON_PRETTY_PRINT);
 		} else {
 			redirect('login');
 		}

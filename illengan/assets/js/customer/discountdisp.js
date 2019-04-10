@@ -113,14 +113,13 @@ function freebies_discounts() {
                 }
                 //console.log('Total Freebies(Late): ' + freeBQty +  data.freebies[0].menu_name + appendDivs.length);
                     
-                       
                 }
                 // For freebie promos which have self freebie
                else if(v_quantity >= pcQty && elective === 0) {
                 hide_freebies();
             
                 freeBQty = data.freebies[0].fb_qty * parseInt(v_quantity / pcQty);
-                var wrong = $('#freebie').append('<p class="freebieQty">You have <b id="fbQty">'+freeBQty+'</b> <b id="fbName">'+data.freebies[0].menu_name+'</b> for a freebie!</p>');
+                $('#freebie').append('<p class="freebieQty">You have <b id="fbQty">'+freeBQty+'</b> <b id="fbName">'+data.freebies[0].menu_name+'</b> for a freebie!</p>');
                }
 
                else if(v_quantity < pcQty) {
@@ -155,8 +154,8 @@ function order_freebies() {
     var qty = 0;
     var subtotal = 0;
     var remarks = 'freebie';
-
-    if($('#fbChoice') != null){
+  
+    if(index != 0) {
         for(var i = 0; i <= index-1; i++ ) {
             qty = 1;
             prefId = $("#option"+i+"").val();
@@ -173,8 +172,8 @@ function order_freebies() {
                 }
             });
         }
-    } else if($('#fbChoice') == null) { 
-        qty = parseInt($("#fbQty").text());
+    } else { 
+    qty = parseInt($("#fbQty").text());
     if($("#sizeInput").is(":disabled")){
         prefId = parseInt($("#sizeSelect").val());
     } else {
@@ -190,6 +189,10 @@ function order_freebies() {
             quantity: qty,
             remarks: remarks,
             menu_name: menu_name           
+        },
+        success: function() {
+            console.log(menu_name);
+            console.log($('#fbChoice') == null);
         }
     });
 }

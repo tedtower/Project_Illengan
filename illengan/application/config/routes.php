@@ -106,7 +106,7 @@ $route['admin/menu/edit_image'] = "adminupdate/edit_image";
 $route['admin/inventory/edit'] = "adminupdate/editstockitem";
 $route['admin/transactions/edit'] = "adminupdate/edittransactions";
 $route['admin/accounts/changepassword'] = "adminupdate/changeAccountPassword";
-$route['admin/accounts/edit'] = "adminview/vieweditAccounts";
+$route['admin/accounts/edit'] = "adminupdate/editAccounts";
 $route['admin/sources/edit'] = "adminupdate/editsource";
 $route['admin/tables/edit'] = "adminupdate/edittable";
 //End Admin Update Routes ---------------------------------------
