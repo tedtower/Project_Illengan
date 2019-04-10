@@ -499,53 +499,54 @@ function setTableData() {
                 $("#formEdit").find(".transItemsTable > tbody").empty();
             });
             count++;
+            $(".accordionBtn").on('click', function() {
+                if ($(this).closest("tr").next("tr").css('display') == "none") {
+                    $(this).closest("tr").next("tr").css('display', 'table-row');
+                    $(this).closest("tr").next("tr").find("td > div").slideDown('slow');
+                } else {
+                    $(this).closest("tr").next("tr").find("td > div").slideUp('slow');
+                    $(this).closest("tr").next("tr").hide("slow");
+                }
+            });
+            $(".editBtn").on('click', function(){
+                var transID = $(this).closest("tr").attr("data-id");
+                var transaction = transactions.transaction.filter(trans => trans.trans_id == transID)[0];
+                console.log(transaction);
+                $("#updateTransaction").find("input[name='transID']").val(transID);
+                $("#updateTransaction").find("input[name='receiptNo']").val(transaction.receipt_no);
+                $("#updateTransaction").find("input[name='transDate']").val(transaction.trans_date);
+                $("#updateTransaction").find("select[name='sourceName']").find(`option[value=${transaction.source_id}]`).attr("selected","selected");
+                $("#updateTransaction").find("textarea[name='remarks']").val(transaction.remarks);
+                for(var index = 0 ; index < transaction.transitems.length ; index++){
+                    $("#updateTransaction").find(".transItemsTable > tbody").append(`
+                    <tr class="transItem">
+                        <td><input type="text" name="itemName[]" id="itemName"
+                                class="form-control form-control-sm" value="${transaction.transitems[index].item_name}"></td>
+                        <td><input type="number" name="itemQty[]" id="itemQty"
+                                class="form-control form-control-sm" value="${transaction.transitems[index].item_qty}"></td>
+                        <td><input type="text" name="itemUnit[]" id="itemUnit"
+                                class="form-control form-control-sm" value="${transaction.transitems[index].item_unit}"></td>
+                        <td><input type="number" name="itemPrice[]"
+                                id="itemPrice"
+                                class="form-control form-control-sm" value="${transaction.transitems[index].item_price}"></td>
+                        <td><input type="number" name="subtotal[]" id="subtotal"
+                                class="form-control form-control-sm" value="${transaction.transitems[index].subtotal}"></td>
+                        <td><img class="exitBtn" id="exitBtn"
+                                src="/assets/media/admin/error.png"
+                                style="width:20px;height:20px"></td>
+                    </tr>`);
+                }
+                $("#updateTransaction").find(".exitBtn").on("click", function(){
+                    $(this).closest("tr").remove();
+                });
+            });
         }
     }else{
         $("#transTable").after("No Transaction Recorded");
     }
 }
-    $(".accordionBtn").on('click', function() {
-        if ($(this).closest("tr").next("tr").css('display') == "none") {
-            $(this).closest("tr").next("tr").css('display', 'table-row');
-            $(this).closest("tr").next("tr").find("td > div").slideDown('slow');
-        } else {
-            $(this).closest("tr").next("tr").find("td > div").slideUp('slow');
-            $(this).closest("tr").next("tr").hide("slow");
-        }
-    });
-    $(".editBtn").on('click', function(){
-        var transID = $(this).closest("tr").attr("data-id");
-        var transaction = transactions.transaction.filter(trans => trans.trans_id == transID)[0];
-        console.log(transaction);
-        $("#updateTransaction").find("input[name='transID']").val(transID);
-        $("#updateTransaction").find("input[name='receiptNo']").val(transaction.receipt_no);
-        $("#updateTransaction").find("input[name='transDate']").val(transaction.trans_date);
-        $("#updateTransaction").find("select[name='sourceName']").find(`option[value=${transaction.source_id}]`).attr("selected","selected");
-        $("#updateTransaction").find("textarea[name='remarks']").val(transaction.remarks);
-        for(var index = 0 ; index < transaction.transitems.length ; index++){
-            $("#updateTransaction").find(".transItemsTable > tbody").append(`
-            <tr class="transItem">
-                <td><input type="text" name="itemName[]" id="itemName"
-                        class="form-control form-control-sm" value="${transaction.transitems[index].item_name}"></td>
-                <td><input type="number" name="itemQty[]" id="itemQty"
-                        class="form-control form-control-sm" value="${transaction.transitems[index].item_qty}"></td>
-                <td><input type="text" name="itemUnit[]" id="itemUnit"
-                        class="form-control form-control-sm" value="${transaction.transitems[index].item_unit}"></td>
-                <td><input type="number" name="itemPrice[]"
-                        id="itemPrice"
-                        class="form-control form-control-sm" value="${transaction.transitems[index].item_price}"></td>
-                <td><input type="number" name="subtotal[]" id="subtotal"
-                        class="form-control form-control-sm" value="${transaction.transitems[index].subtotal}"></td>
-                <td><img class="exitBtn" id="exitBtn"
-                        src="/assets/media/admin/error.png"
-                        style="width:20px;height:20px"></td>
-            </tr>`);
-        }
-        $("#updateTransaction").find(".exitBtn").on("click", function(){
-            $(this).closest("tr").remove();
-        });
-    });
-}
+    
+
 </script>
 
 </html>
