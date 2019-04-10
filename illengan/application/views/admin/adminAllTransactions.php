@@ -78,7 +78,6 @@
                                 </table>
                                 <!--End Table Content-->
 
-
                                 <!--Start of Modal "Add Transaction"-->
                                 <div class="modal fade bd-example-modal-lg" id="newTransaction" tabindex="-1"
                                     role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -165,8 +164,8 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-danger btn-sm"
                                                             data-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn-success btn-sm"
-                                                            type="submit">Insert</button>
+                                                        <button class="btn btn-success btn-sm" data-dismiss="modal"
+                                                            type="submit">Add</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -262,7 +261,7 @@
                                                         <button type="button" class="btn btn-danger btn-sm"
                                                             data-dismiss="modal">Cancel</button>
                                                         <button class="btn btn-success btn-sm"
-                                                            type="submit">Insert</button>
+                                                            type="submit">Edit</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -356,17 +355,21 @@ $(function() {
             success: function(data){
                 console.log(data);
                 transactions = data;
+                transLastIndex = 0;
                 setTableData();
             },
             error: function(response, setting, errorThrown){
                 console.log(response.responseText);
                 console.log(errorThrown);
+            },
+            complete: function(){
+                $("#newTransaction").modal("hide");
             }
         });
     });
     $("#formEdit").on('submit',function(event){
         event.preventDefault();
-        var transId = $(this).find('input[name="transID"]').val()
+        var transID = $(this).find('input[name="transID"]').val()
         var receiptNo = $(this).find('input[name="receiptNo"]').val(); //input
         var transDate = $(this).find('input[name="transDate"]').val(); //input
         var sourceName = $(this).find('select[name="sourceName"]').val(); //select
@@ -376,7 +379,6 @@ $(function() {
         // var itemQty = []; //input
         // var itemUnit = []; //input
         // var itemPrice = []; //input
-        console.log($(this).html());
         for(var index = 0 ; index < $(this).find(".transItem").length ; index++){
             // if(!())
             transItems.push({
@@ -390,7 +392,7 @@ $(function() {
             method: 'post',
             url: '<?= site_url('admin/transactions/edit')?>',
             data: {
-                transId : transId,
+                transID : transID,
                 receiptNo : receiptNo,
                 transDate : transDate,
                 sourceName : sourceName,
@@ -398,14 +400,21 @@ $(function() {
                 transItems : JSON.stringify(transItems)
             },
             dataType: 'json',
+            beforeSend: function(){
+                console.log(transID, receiptNo, transDate, sourceName, remarks, JSON.stringify(transItems));
+            },
             success: function(data){
                 console.log(data);
                 transactions = data;
+                transLastIndex = 0;
                 setTableData();
             },
             error: function(response, setting, errorThrown){
                 console.log(errorThrown);
                 console.log(response.responseText);
+            },
+            complete: function(){
+                $("#updateTransaction").modal("hide");
             }
         });
     });
@@ -416,74 +425,83 @@ function setTableData() {
     var count = 0;
     var tableRow;
     var accordion;
-    if($("#transTable > tbody").children().length !== 0){
-        $("#transTable > tbody").empty();
-    }
-    for (transLastIndex; transLastIndex < transactions.transaction.length; transLastIndex++) {
-        if (!(count < transPerPage)) {
-            break;
+    if(transactions.transaction.length !== 0){
+        if($("#transTable > tbody").children().length !== 0){
+            $("#transTable > tbody").empty();
         }
-        transactions.transaction[transLastIndex].transitems = [];
-        tableRow = `
-        <tr data-id="${transactions.transaction[transLastIndex].trans_id}" >
-            <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
-            <td>${transactions.transaction[transLastIndex].receipt_no}</td>
-            <td>${transactions.transaction[transLastIndex].source_name}</td>
-            <td>${transactions.transaction[transLastIndex].total}</td>
-            <td>${transactions.transaction[transLastIndex].trans_date}</td>
-            <td>
-                <div class="onoffswitch">
-                    <!--View button-->
-                    <button class="editBtn btn btn-default btn-sm" data-toggle="modal"
-                        data-target="#updateTransaction">Edit</button>
-                    <!--Delete button-->
-                    <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"
-                        data-target="">Delete</button>
-                </div>
-            </td>
-        </tr>`;
-        $("#transTable > tbody").append(tableRow);
+        for (transLastIndex; transLastIndex < transactions.transaction.length; transLastIndex++) {
+            if (!(count < transPerPage)) {
+                break;
+            }
+            transactions.transaction[transLastIndex].transitems = [];
+            tableRow = `
+            <tr data-id="${transactions.transaction[transLastIndex].trans_id}" >
+                <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
+                <td>${transactions.transaction[transLastIndex].receipt_no}</td>
+                <td>${transactions.transaction[transLastIndex].source_name}</td>
+                <td>${transactions.transaction[transLastIndex].total}</td>
+                <td>${transactions.transaction[transLastIndex].trans_date}</td>
+                <td>
+                    <div class="onoffswitch">
+                        <!--View button-->
+                        <button class="editBtn btn btn-default btn-sm" data-toggle="modal"
+                            data-target="#updateTransaction">Edit</button>
+                        <!--Delete button-->
+                        <!-- <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"
+                            data-target="">Delete</button> -->
+                    </div>
+                </td>
+            </tr>`;
+            $("#transTable > tbody").append(tableRow);
 
-        if (transactions.transaction[transLastIndex].transitems[0] == undefined) {
-            transactions.transaction[transLastIndex].transitems = transactions.transitem.filter(item => item.trans_id ==
-                transactions.transaction[transLastIndex].trans_id);
-        }
-        accordion = `
-        <tr style="display:none">
-            <td colspan="6">
-                <div class="container" style="display:none"> <!-- Container ng accordion -->
-                    <span>Date Recorded: ${transactions.transaction[transLastIndex].date_recorded}</span>
-                    <div>Remarks:<p>${transactions.transaction[transLastIndex].remarks == null ? "No Remarks" : `${transactions.transaction[transLastIndex].remarks}`}</p></div>
-                    ${transactions.transaction[transLastIndex].transitems[0] == undefined ? "No items recorded!" : `
-                        <table class="table">
-                        <thead style="background:white">                            
-                            <tr>
-                                <th>Name</th>
-                                <th>Qty</th>
-                                <th>Unit</th>
-                                <th>Price</th>
-                                <th>Subtotal</th>                            
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${transactions.transaction[transLastIndex].transitems.map(transitem => {
-                                return `
+            if (transactions.transaction[transLastIndex].transitems[0] == undefined) {
+                transactions.transaction[transLastIndex].transitems = transactions.transitem.filter(item => item.trans_id ==
+                    transactions.transaction[transLastIndex].trans_id);
+            }
+            accordion = `
+            <tr style="display:none">
+                <td colspan="6">
+                    <div class="container" style="display:none"> <!-- Container ng accordion -->
+                        <span>Date Recorded: ${transactions.transaction[transLastIndex].date_recorded}</span>
+                        <div>Remarks:<p>${transactions.transaction[transLastIndex].remarks == null ? "No Remarks" : `${transactions.transaction[transLastIndex].remarks}`}</p></div>
+                        ${transactions.transaction[transLastIndex].transitems[0] == undefined ? "No items recorded!" : `
+                            <table class="table">
+                            <thead style="background:white">                            
                                 <tr>
-                                    <td>${transitem.item_name}</td>
-                                    <td>${transitem.item_qty}</td>
-                                    <td>${transitem.item_unit}</td>
-                                    <td>${transitem.item_price}</td>
-                                    <td>${transitem.subtotal}</td>                            
-                                </tr>`;
-                            }).join('')}
-                        </tbody>
-                    </table>`}                    
-                </div>
-            </td>
-        </tr>
-        `;
-        $("#transTable > tbody").append(accordion);
-        count++;
+                                    <th>Name</th>
+                                    <th>Qty</th>
+                                    <th>Unit</th>
+                                    <th>Price</th>
+                                    <th>Subtotal</th>                            
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${transactions.transaction[transLastIndex].transitems.map(transitem => {
+                                    return `
+                                    <tr>
+                                        <td>${transitem.item_name}</td>
+                                        <td>${transitem.item_qty}</td>
+                                        <td>${transitem.item_unit}</td>
+                                        <td>${transitem.item_price}</td>
+                                        <td>${transitem.subtotal}</td>                            
+                                    </tr>`;
+                                }).join('')}
+                            </tbody>
+                        </table>`}                    
+                    </div>
+                </td>
+            </tr>
+            `;
+            $("#transTable > tbody").append(accordion);
+            $(".editBtn").on('click', function(){
+                $("#formEdit")[0].reset();
+                $("#formEdit").find(".total").text(0.00);
+                $("#formEdit").find(".transItemsTable > tbody").empty();
+            });
+            count++;
+        }else{
+            $("#transTable").after("No Transaction Recorded");
+        }
     }
     $(".accordionBtn").on('click', function() {
         if ($(this).closest("tr").next("tr").css('display') == "none") {
@@ -522,6 +540,9 @@ function setTableData() {
                         style="width:20px;height:20px"></td>
             </tr>`);
         }
+        $("#updateTransaction").find(".exitBtn").on("click", function(){
+            $(this).closest("tr").remove();
+        });
     });
 }
 </script>

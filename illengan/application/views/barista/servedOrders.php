@@ -21,15 +21,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/style.css'?>">
   </head>
 <body>
-  <?php echo include_once('sideNavigation.php') ?>
-
-  <div class="container">
-            <div class="nav nav-tabs"><a href="<?php echo site_url('barista/orders'); ?>" class="nav nav-link" role="tab">Orderlist</a> &nbsp;
+<div class="nav nav-tabs"><a href="<?php echo site_url('barista/orders'); ?>" class="nav nav-link" role="tab">Orderlist</a> &nbsp;
               <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="nav nav-link" role="tab">Pending Orders</a> &nbsp;
             <a href="<?php echo site_url('barista/servedStatus'); ?>" class="nav nav-link active" role="tab">Served Orders</a>
             <a href="<?php echo site_url('barista/orderslip'); ?>" class="nav nav-link" role="tab">Orderslip</a>
             </div>
-            <br><br>
+            <br>
+  <div class="container">
             <table class="table table-striped" id="servedorders" >
                 <thead>
                     <tr>
@@ -40,7 +38,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <th>Order</th>
                         <th>Order Qty</th>
                         <th>Item Status</th>
-                        <th style="text-align: right;">Actions</th>
+                        <!--<th style="text-align: right;">Actions</th>-->
                     </tr>
                 </thead>
                 <tbody>
@@ -55,7 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <td><?= $row["order_desc"]?></td>  
                                     <td><?= $row["order_qty"]?></td>  
                                     <td><?= $row["item_status"]?></td>  
-                                    <td><button id="cancelOrder" class="btn btn-warning">Cancel</button></td>  
+                                   <!-- <td><button id="cancelOrder" class="btn btn-warning">Cancel</button></td>-->
                                </tr>    
                          
                           <?php } 
@@ -102,7 +100,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </form>
         END MODAL EDIT-->
 
-        <!--MODAL DELETE-->
+        <!--MODAL DELETE
         <form>
             <div class="modal fade" id="Modal_Remove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
@@ -125,7 +123,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               </div>
             </div>
             </form>
-        <!--END MODAL DELETE-->
+        END MODAL DELETE-->
 
         
 
@@ -169,7 +167,7 @@ $(document).ready(function(){
                 }
             });
             return false;
-        });*/
+        });
 
         //get data for delete record
         $('#show_data').on('click','.item_delete',function(){
@@ -184,7 +182,7 @@ $(document).ready(function(){
              var order_id = $('#order_id_remove').val();
              $.ajax({
                  type : "POST",
-                 url  : "<?php echo site_url('barista/cancel')?>",
+                 url  : "<//?php echo site_url('barista/cancel')?>",
                  dataType : "JSON",
                  data : {order_id:order_id},
                  success: function(data){
@@ -196,7 +194,7 @@ $(document).ready(function(){
                  }
             });
              return false;
-         });
+         }); */
 
 // //change status function
 // $('.status').on('click', function() {
