@@ -688,10 +688,6 @@ class Admin extends CI_Controller{
         $this->load->view('admin_module/edit_menuimage', $data);
         
     }
-    function deleteSpoilages(){
-        $data=$this->adminmodel->delete_spoilages();
-        echo json_encode($data);
-    }
 
 }
 

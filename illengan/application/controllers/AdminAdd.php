@@ -78,16 +78,16 @@ class AdminAdd extends CI_Controller{
     }
     function addTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]');
+            $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
             if($this->form_validation->run()){
-                $tableCode = trim($this->input->get('tableCode'));
+                $tableCode = trim($this->input->post('tableCode'));
                 if($this->adminmodel->add_table($tableCode)){
-                    redirect('admin/tables');
+                    $this->output->set_output(json_encode($this->adminmodel->get_tables()));
                 }else{
-                    redirect('');
+                    redirect('admin/tables');
                 }
             }else{
-                $this->viewTables();
+                redirect("admin/tables");
             }
         }else{
             redirect('login');
@@ -95,7 +95,26 @@ class AdminAdd extends CI_Controller{
     }
     function addTransactions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            
+            $receiptNo = trim($this->input->post('receiptNo'));
+            $transDate = trim($this->input->post('transDate'));
+            $source = trim($this->input->post('sourceName'));
+            $remarks = trim($this->input->post('remarks'));
+            $transItems = json_decode($this->input->post('transItems'), true);
+            $dateRecorded = date("Y-m-d");
+            $total = 0;
+            for ($index=0; $index < count($transItems); $index++) { 
+                $transItems[$index]['subtotal'] = (float) $transItems[$index]['itemQty'] * (float) $transItems[$index]['itemPrice']; 
+                $total += $transItems[$index]['subtotal'];
+            }
+            if($this->adminmodel->add_transaction($receiptNo, $transDate, $source, $remarks, $total, $dateRecorded, $transItems)){
+                $this->output->set_output(json_encode(array(
+                    "transaction" => $this->adminmodel->get_transactions(),
+                    "transitem" => $this->adminmodel->get_transitems(),
+                    "sources" => $this->adminmodel->get_sources()
+                )));
+            }else{
+                redirect(admin/transactions);
+            }
         }else{
             redirect('login');
         }
@@ -154,22 +173,20 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addSource(){
-        $this->form_validation->set_rules("source_name", "Source Name", 'required');
-        $this->form_validation->set_rules("contact_num", "Contact Number", 'required');
-        if($this->form_validation->run()){
-            $data = array(
-                "source_name" => trim($this->input->post("source_name")),
-                "contact_num" => trim($this->input->post("contact_num"))
-            );
-            if($this->input->post("insert")){
-                $this->adminmodel->insert_data($data);
-                redirect('admin/sources');
-            }
-        }else{
-            $this->viewsources();
-        }
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
 
-    }
+            $data = array(
+                'source_name' => $this->input->get('source_name'),
+                'contact_num' => $this->input->get('contact_num'),
+                'email' => $this->input->get('email')
+            );
+            $this->adminmodel->add_source($data);
+            redirect('admin/sources');
+
+        }else{
+            redirect('login');
+        }
+    } 
     function add_menu(){
         $config = array(
             'upload_path' => "./uploads/",

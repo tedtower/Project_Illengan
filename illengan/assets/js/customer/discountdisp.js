@@ -42,7 +42,7 @@ function promos() {
                 }); 
      
             };
-
+var index = 0;
 function freebies_discounts() {  
     $(document).ready(function() {
         var e = document.getElementById("sizeSelect");
@@ -67,16 +67,33 @@ function freebies_discounts() {
          success: function(data) {
              var freeBQty, freebieDrop;
 
+            if(data.freebies.length != 0 && data.freebies[0].elective == 0) {
+                $('#promo_description').text('This item is available for a freebie! BUY '+data.freebies[0].pc_qty+
+                ' '+$('#menu_name').text()+' then GET '+data.freebies[0].fb_qty+' '+$('#menu_name').text());
+            } else if(data.freebies.length != 0 && data.freebies[0].elective == 1) {
+                $('#promo_description').text('This item is available for a freebie! BUY '+data.freebies[0].pc_qty+
+                ' '+$('#menu_name').text()+' then GET '+data.freebies[0].fb_qty+' any of the choices!');
+            } else if(data.discounts.length != 0) {
+                $('#promo_description').text('Buying '+data.discounts[0].pc_qty+' will give you a '+data.discounts[0].dc_name+
+                ' discount!');
+            }
+
+            // FREEBIES AND DISCOUNTS PROCESSES
+
             if(data.freebies.length != 0) {
-                if(v_quantity >= data.freebies[0].pc_qty && data.freebies[0].elective == 1){
-                    freeBQty = data.freebies[0].fb_qty * parseInt(v_quantity / data.freebies[0].pc_qty);
-                    //console.log('Total Freebies(Early): ' + freeBQty + ' | View Qty Entered: ' + v_quantity + ' | Constraint: ' + data.freebie[0].pc_qty);
+                var elective = parseInt(data.freebies[0].elective);
+                var pcQty = parseInt(data.freebies[0].pc_qty);
+
+                // For freebie promos which have different freebie offers
+                if(v_quantity >= pcQty && elective == 1){
+                    freeBQty = data.freebies[0].fb_qty * parseInt(v_quantity / pcQty);
                     $('.please').show();
                     var appendDivs = []; 
 
                 for(var i = 0; i <= freeBQty - 1; i++ ) {
                     count = i+1;
-                    appendDivs.push('<select class="freeBOpt browser-default custom-select"><option>Freebie '+count+'</option></select>');
+                    index = count;
+                    appendDivs.push('<select id="option'+i+'" class="freeBOpt browser-default custom-select"><option>Freebie '+count+'</option></select>');
 
                 }
                 var elements = document.getElementsByClassName('freeBOpt');
@@ -88,25 +105,27 @@ function freebies_discounts() {
                 
                 try {
                 for(var i = 0; i <= data.freebies.length; i++) {
-                    optionsFB = '<option>'+data.freebies[i].fb_menuname+'</option>';
-                    console.log(optionsFB);
+                    optionsFB = '<option value="'+data.freebies[i].pref_id+'">'+data.freebies[i].fb_menuname+'</option>';
                     $('.freeBOpt').append(optionsFB);
                 }
                 } catch(err) {
 
                 }
-                console.log('Total Freebies(Late): ' + freeBQty + ' data.freebies[0].menu_name ' + appendDivs.length);
+                //console.log('Total Freebies(Late): ' + freeBQty +  data.freebies[0].menu_name + appendDivs.length);
                     
                        
                 }
-                // For freebie promos which have different freebie offers
-               else if(v_quantity >= data.freebies[0].pc_qty && data.freebies[0].elective == 0) {
+                // For freebie promos which have self freebie
+               else if(v_quantity >= pcQty && elective === 0) {
                 hide_freebies();
-
-                freeBQty = data.freebies[0].fb_qty * parseInt(v_quantity / data.freebies[0].pc_qty);
-                $('#freebie').append('<p class="freebieQty">You have '+freeBQty+' '+data.freebies[0].menu_name+' for a freebie!</p>');
-
+            
+                freeBQty = data.freebies[0].fb_qty * parseInt(v_quantity / pcQty);
+                var wrong = $('#freebie').append('<p class="freebieQty">You have <b id="fbQty">'+freeBQty+'</b> <b id="fbName">'+data.freebies[0].menu_name+'</b> for a freebie!</p>');
                }
+
+               else if(v_quantity < pcQty) {
+                hide_freebies();
+            }
             } else if(data.discounts.length != 0) {
                 if(v_quantity >= data.discounts[0].pc_qty){
                 hide_freebies();
@@ -127,4 +146,53 @@ function freebies_discounts() {
          }
         });
     });
+}
+
+function order_freebies() {
+    $(document).ready(function(){
+    var prefId;
+    var menu_name = $("#fbName").text();
+    var qty = 0;
+    var subtotal = 0;
+    var remarks = 'freebie';
+
+    if($('#fbChoice') != null){
+        for(var i = 0; i <= index-1; i++ ) {
+            qty = 1;
+            prefId = $("#option"+i+"").val();
+            console.log('d '+prefId);
+            $.ajax({
+                method: "post",
+                url: "menu/addOrder",
+                data: {
+                    preference: prefId,
+                    subtotal: subtotal,
+                    quantity: qty,
+                    remarks: remarks,
+                    menu_name: menu_name           
+                }
+            });
+        }
+    } else if($('#fbChoice') == null) { 
+        qty = parseInt($("#fbQty").text());
+    if($("#sizeInput").is(":disabled")){
+        prefId = parseInt($("#sizeSelect").val());
+    } else {
+        prefId = parseInt($("#sizeInput").attr('value'));
+    }
+
+    $.ajax({
+        method: "post",
+        url: "menu/addOrder",
+        data: {
+            preference: prefId,
+            subtotal: subtotal,
+            quantity: qty,
+            remarks: remarks,
+            menu_name: menu_name           
+        }
+    });
+}
+
+});
 }

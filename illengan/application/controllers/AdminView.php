@@ -114,9 +114,14 @@ class AdminView extends CI_Controller{
             redirect('login');
         }
     }
-    function datatables_menu(){
+
+    function menuGetDetails(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data = $this->adminmodel->get_menu();
+            $data = array(
+                'menu' => $this->adminmodel->get_menu(),
+                'preferences' => $this->adminmodel->get_preferences(),
+                'addons' => $this->adminmodel->get_addons2()
+            );
             echo json_encode($data);
         }else{
             redirect('login');
@@ -194,20 +199,31 @@ class AdminView extends CI_Controller{
             redirect('login');
         }
     }
-    function viewSpoilages(){
+    function viewSpoilagesJs(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
-            $data['spoilages'] = $this->adminmodel->get_spoilages();
-            $this->load->view('admin/view_spoilages', $data);
-            $this->load->view('admin/templates/scripts');
-            $this->load->view('admin/templates/footer');
+            $data= $this->adminmodel->get_spoilages();
+            echo json_encode($data);
+            
         }else{
             redirect('login');
         }
     }
+    function viewSpoilages(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->view('admin/view_spoilages');
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/templates/footer');
+            $this->load->view('admin/templates/scripts');
+        }else{
+            redirect('login');
+        }
+    }
+
+
     function viewSpoilagesMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
+            
             $data['spoilagesmenu'] = $this->adminmodel->get_spoilages_menu();
             $this->load->view('admin/view_spoilages_menu', $data);
         }else{
@@ -216,7 +232,7 @@ class AdminView extends CI_Controller{
     }
     function viewSpoilagesStock(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
+            
             $data['spoilagesstock'] = $this->adminmodel->get_spoilages_stock();
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
@@ -228,7 +244,7 @@ class AdminView extends CI_Controller{
     }
     function viewSpoilagesAo(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
+            
             $data['spoilagesao'] = $this->adminmodel->get_spoilages_ao();
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
@@ -269,12 +285,15 @@ class AdminView extends CI_Controller{
     function viewTransactions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['title'] = "Admin Transactions";
-            $data['transactions'] = $this->adminmodel->get_transactions();
-            $data['transitems'] = $this->adminmodel->get_transitems();
-            $this->load->view('admin/templates/head');
-            $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/transactions',$data);
-            $this->load->view('admin/templates/scripts');
+            // $this->load->view('admin/templates/head');
+            // $this->load->view('admin/templates/sideNav');
+            $data['transactions'] = array(
+                "transaction" => $this->adminmodel->get_transactions(),
+                "transitem" => $this->adminmodel->get_transitems(),
+                "sources" => $this->adminmodel->get_sources()
+            );
+            $this->load->view('admin/adminAllTransactions',$data);
+            // $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }

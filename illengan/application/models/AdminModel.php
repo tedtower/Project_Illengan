@@ -66,19 +66,17 @@ class AdminModel extends CI_Model{
         $query = "Insert into stockitems (stock_id,stock_name,stock_quantity,stock_unit,stock_minimum,stock_status,category_id) values (NULL,?,?,?,?,?,?);";
         return $this->db->query($query,array($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id));
     }
-    function add_table($table_no){
+    function add_table($table_code){
         $query = "Insert into tables (table_code) values (?);";
         return $this->db->query($query, array($table_code));
     }
-    function add_transaction($source_id, $receipt_no, $trans_amt, $trans_date, $date_recorded, $remarks, $transitems){
-        $query = "Insert into transactions (source_id, receipt_no, trans_amt, trans_date, date_recorded, remarks) values (?,?,?,?,?,?)";
-        $bool = $this->db->query($query, array($source_id, $receipt_no, $trans_amt, $trans_date, $date_recorded, $remarks));
-        if(!$bool){
-            $trans_id = $this->db->insert_id();
-            $query = "Insert into transitems values (?,?,?,?,?)";
-            foreach($transitems as $transitem){
-                $bool = $this->db->query($query,array($trans_id, $transitem['item_name'], $transitem['item_qty'], $transitem['item_unit'], $transitem['item_price']));
-            }
+    function add_transaction($receiptNo, $transDate, $source, $remarks, $total, $dateRecorded, $transItems){
+        $query = "Insert into transactions (source_id, receipt_no, total, trans_date, date_recorded, remarks) values (?,?,?,?,?,?)";
+        $bool = $this->db->query($query, array($source, $receiptNo, $total, $transDate, $dateRecorded, $remarks));
+        $trans_id = $this->db->insert_id();
+        $query = "Insert into transitems values (?,?,?,?,?,?)";
+        foreach($transItems as $transItem){
+            $this->db->query($query,array($trans_id, $transItem['itemName'], $transItem['itemQty'], $transItem['itemUnit'], $transItem['itemPrice'], $transItem['subtotal']));
         }
         return $bool;
     }
@@ -161,19 +159,17 @@ class AdminModel extends CI_Model{
         $query = "Update stockitems set stock_name = ?, stock_quantity = ?, stock_unit = ?, stock_minimum = ?, stock_status = ?, category_id = ? where stock_id=?;";
         return $this->db->query($query,array($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id,$stock_id));
     }
-    function edit_transaction($trans_id, $source_id, $receipt_no, $trans_amt, $trans_date, $date_recorded, $remarks, $transitems){
-        $query = "Update transactions set source_id = ?, receipt_no = ?, trans_amt = ?, trans_date = ?, date_recorded = ?, remarks = ? where trans_id = ?";
-        $bool = $this->db->query($query, array($source_id, $receipt_no, $trans_amt, $trans_date, $date_recorded, $remarks, $trans_id));
-        if(!$bool){
+    function edit_transaction($trans_id, $receiptNo, $transDate, $source, $remarks, $total, $dateRecorded, $transItems){
+        $query = "Delete from transitems where trans_id = ?";
+        $this->db->query($query, array($trans_id));
+        $query = "Update transactions set source_id = ?, receipt_no = ?, total = ?, trans_date = ?, date_recorded = ?, remarks = ? where trans_id = ?";
+        $bool = $this->db->query($query, array($source, $receiptNo, $total, $transDate, $dateRecorded, $remarks, $trans_id));
             //transitems array includes previous name and new name
-            $query = "Update transitems set item_name = ?, item_qty = ?, item_unit = ?, item_price = ? where trans_id = ? and item_name = ?";
-            foreach($transitems as $transitem){
-                $bool = $this->db->query($query, array($transitem['new_item_name'], $transitem['new_item_qty'], $transitem['new_item_unit'], $transitem['new_item_price'], $trans_id, $transitem['old_item_name']));
-            }
-        }else{
-            return false;
+        $query = "Insert into transitems (trans_id, item_name, item_qty, item_unit, item_price, subtotal)  values (?, ?, ?, ?, ?, ?)";
+        foreach($transitems as $transitem){
+            $this->db->query($query, array($trans_id, $transItem['itemName'], $transItem['itemQty'], $transItem['itemUnit'], $transItem['itemPrice'], $transItem['subtotal']));
         }
-        return $bool;
+        // return $bool;
     }
 
 
@@ -191,9 +187,16 @@ class AdminModel extends CI_Model{
         $query = "Select log_id, stock_name, quantity, log_date, log_type, date_recorded from log inner join stockitems using (stock_id)";
         return $this->db->query($query)->result_array();
     }
-    //Menu management
     function get_menu(){
         $query = "Select * from menu inner join categories using (category_id) order by category_name asc, menu_name asc";
+        return $this->db->query($query)->result_array();
+    }
+    function get_preferences(){
+        $query = "SELECT * from preferences";
+        return $this->db->query($query)->result_array();
+    }
+    function get_addons2(){
+        $query = "SELECT * from itemadd inner join addons using (ao_id)";
         return $this->db->query($query)->result_array();
     }
     //for spoilage
@@ -252,7 +255,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_spoilages(){
-        $query = "select s_id, menu_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN menuspoil USING (s_id) inner JOIN menu USING (menu_id) UNION select s_id, stock_name AS decription, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN stockspoil USING (s_id) inner JOIN stockitems USING (stock_id) UNION select s_id, ao_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN ao_spoil USING (s_id) inner JOIN addons USING (ao_id) ORDER BY date_recorded";
+        $query = "select s_id, s_type, menu_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN menuspoil USING (s_id) inner JOIN menu USING (menu_id) UNION select s_id, s_type, stock_name AS decription, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN stockspoil USING (s_id) inner JOIN stockitems USING (stock_id) UNION select s_id,s_type, ao_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN ao_spoil USING (s_id) inner JOIN addons USING (ao_id) ORDER BY date_recorded";
         return $this->db->query($query)->result_array();
     }
     function get_spoilages_menu(){
@@ -272,11 +275,11 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_transactions(){
-        $query = "Select trans_id, receipt_no, source_name, trans_amt, trans_date, date_recorded, remarks from transactions left join sources using (source_id)";
+        $query = "Select trans_id, receipt_no, source_id, source_name, total, trans_date, date_recorded, remarks from transactions left join sources using (source_id)";
         return $this->db->query($query)->result_array();
     }
     function get_transitems(){
-        $query = "Select trans_id, item_name, item_qty, item_unit, item_price, item_qty*item_price as total_price from transitems";
+        $query = "Select trans_id, item_name, item_qty, item_unit, item_price, subtotal from transitems";
         return $this->db->query($query)->result_array();
     }
 
@@ -307,28 +310,28 @@ class AdminModel extends CI_Model{
         $query = "Delete from stockitems where stock_id=?;";
         return $this->db->query($query, array($stock_id));
     }
-    function delete_table($table_no){
-        $query = "Delete from tables where table_no= ?";
-        return $this->db->query($query, array($table_no));
+    function delete_table($tableCode){
+        $query = "Delete from tables where table_code= ?";
+        return $this->db->query($query, array($tableCode));
     }
     function delete_transaction($trans_id){
         $query = "Delete from transactions where trans_id=?";
         return $this->db->query($query, array($trans_id));
-    }    
+    }
     function delete_transitem($trans_id, $item_name){
         $query = "Delete from transitems where trans_id=? and item_name=?";
         return $this->db->query($query, array($trans_id, $item_name));
     }
-    function insert_data($data){
+    function add_source($data){
         $this->db->insert("sources", $data);
     }
-    function edit_source($source_id, $source_name, $contact_num, $status){
-        $query = "update sources set source_name = ?, contact_num = ?, status = ?  where source_id = ?";
-        return $this->db->query($query,array($source_name,$contact_num,$status,$source_id));
+    function edit_source($source_id, $source_name, $contact_num, $email,$status){
+        $query = "update sources set source_name = ?, contact_num = ?, email = ?, status = ?  where source_id = ?";
+        return $this->db->query($query,array($source_name, $contact_num, $email,$status,$source_id));
     }
-    function delete_source($id){
-        $this->db->where("source_id", $id);
-        return $this->db->delete("sources");
+    function delete_source($source_id){
+        $query = "Delete from sources where source_id = ?";
+        return $this->db->query($query, array($source_id));
     }
 
     function delete_menu($id){
@@ -338,6 +341,11 @@ class AdminModel extends CI_Model{
     function edit_menu($menu_id, $menu_name, $category_id, $menu_description, $menu_price, $menu_availability){
         $query = "update menu set menu_name = ?, category_id = ?, menu_description = ?, menu_price = ?, menu_availability = ? where menu_id = ?";
         return $this->db->query($query,array($menu_name, $category_id, $menu_description, $menu_price, $menu_availability, $menu_id));
+    }
+    
+    function edit_table($newTableCode, $previousTableCode){
+        $query = "Update tables set table_code = ? where table_code = ?;";
+        return $this->db->query($query, array($newTableCode, $previousTableCode));
     }
 
 }
