@@ -27,8 +27,7 @@
                             </div>-->
                                 <br>
                                 <br>
-            <table id="menuTable" class="table dt-responsive nowrap"
-                                    cellspacing="0" width="100%">
+            <table id="menuTable" class="table dt-responsive nowrap" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th></th>
@@ -41,7 +40,6 @@
                 <tbody>
                     
                 </tbody>
-
             </table>
             <!--Start of Modal "Add Transaction"-->
             <div class="modal fade bd-example-modal-lg" id="newMenu" tabindex="-1" role="dialog"
@@ -58,7 +56,7 @@
                                             <form action="<?php echo base_url()?>admin/menu/add" method="get"
                                                 accept-charset="utf-8">
                                                 <div class="modal-body">
-                                                    <div class="input-group mb-3"> <!--RMenu Image-->
+                                                    <div class="input-group mb-3"> <!--Menu Image-->
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" style="width:105px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">Image</span>
                                                         </div>
@@ -67,21 +65,21 @@
                                                             <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                                                         </div>
                                                     </div> 
-                                                    <!--Source Name-->
+                                                    <!--Menu Name-->
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                             Name</span>
                                                         </div>
-                                                        <input type="text" name="receipt_no" id="receipt_no" class="form-control form-control-sm">
+                                                        <input type="text" name="menu_name" id="menu_name" class="form-control form-control-sm">
                                                     </div>  
-                                                    <!--Remarks-->
+                                                    <!--Description-->
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                             Description</span>
                                                         </div>
-                                                        <textarea type="text" name="remarks" id="remarks" class="form-control form-control-sm"></textarea>
+                                                        <textarea type="text" name="menu_description" id="menu_description" class="form-control form-control-sm"></textarea>
                                                     </div>                                                                                                                                                       
                                                     <div class="form-row"> <!--Container of receipt no. and transaction date-->
                                                         <!--Receipt no-->
@@ -90,7 +88,7 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                             Category</span>
                                                         </div>
-                                                        <select class="custom-select" name="source_name" id="source_name">
+                                                        <select class="custom-select" name="category_name" id="category_name">
                                                             <option selected>Choose</option>
                                                             <option></option>
                                                         </select>
@@ -101,7 +99,7 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                             Status</span>
                                                         </div>
-                                                        <select class="custom-select" name="source_name" id="source_name">
+                                                        <select class="custom-select" name="menu_availability" id="menu_availability">
                                                             <option selected>Choose</option>
                                                             <option></option>
                                                         </select>
@@ -125,10 +123,20 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td><input type="text" name="item_name" id="item_name" class="form-control form-control-sm"></td>
-                                                                <td><input type="number" name="item_qty" id="item_qty" class="form-control form-control-sm"></td>
-                                                                <td><input type="text" name="item_unit" id="item_unit" class="form-control form-control-sm"></td>
-                                                                <td><input type="number" name="item_price" id="item_price" class="form-control form-control-sm"></td>
+                                                                <td><input type="text" name="menu_name" id="menu_name" class="form-control form-control-sm"></td>
+                                                                <td>
+                                                                    <select class="form-control" name="menu_availability" id="menu_availability">
+                                                                        <option selected>Choose</option>
+                                                                        <option></option>
+                                                                    </select>
+                                                                </td>
+                                                                <td><input type="number" name="pref_price" id="pref_price" class="form-control form-control-sm"></td>
+                                                                <td>
+                                                                    <select class="form-control" name="menu_availability" id="menu_availability">
+                                                                        <option selected>Choose</option>
+                                                                        <option></option>
+                                                                    </select>
+                                                                </td>
                                                                 <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
                                                             </tr>
                                                     </table>
@@ -138,14 +146,19 @@
                                                     <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
                                                         <thead class="thead-light">
                                                             <tr>
-                                                                <th>Name</th>
-                                                                <th>Price</th>
+                                                                <th style="width:50%">Name</th>
+                                                                <th style="width:50%">Price</th>
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td><input type="text" name="item_name" id="item_name" class="form-control form-control-sm"></td>
+                                                                <td>
+                                                                    <select class="form-control" name="menu_availability" id="menu_availability">
+                                                                        <option selected>Choose</option>
+                                                                        <option></option>
+                                                                    </select>
+                                                                </td>
                                                                 <td><input type="number" name="item_qty" id="item_qty" class="form-control form-control-sm"></td>
                                                                 <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px;right:0"></td>
                                                             </tr>
