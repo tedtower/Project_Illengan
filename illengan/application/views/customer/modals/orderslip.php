@@ -9,7 +9,7 @@
         </div>
         <div class="modal-footer justify-content-center delius">
             <button type="button" class="btn btn-outline-dark-green" data-dismiss="modal">I'm Not Done Yet</button>
-            <button type="button" class="btn btn-dark-green" onclick="window.location.href='thankyou.html'">Proceed To Order</button>
+            <input type="submit" class="btn btn-dark-green" value="Proceed To Order"></input>
         </div>
         </div>
     </div>

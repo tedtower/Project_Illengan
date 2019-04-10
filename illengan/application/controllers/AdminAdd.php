@@ -82,12 +82,12 @@ class AdminAdd extends CI_Controller{
             if($this->form_validation->run()){
                 $tableCode = trim($this->input->post('tableCode'));
                 if($this->adminmodel->add_table($tableCode)){
-                    redirect('admin/tables');
+                    $this->output->set_output(json_encode($this->adminmodel->get_tables()));
                 }else{
-                    redirect('');
+                    redirect('admin/tables');
                 }
             }else{
-                redirect("admin/dashboard");
+                redirect("admin/tables");
             }
         }else{
             redirect('login');
@@ -95,7 +95,26 @@ class AdminAdd extends CI_Controller{
     }
     function addTransactions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            
+            $receiptNo = trim($this->input->post('receiptNo'));
+            $transDate = trim($this->input->post('transDate'));
+            $source = trim($this->input->post('sourceName'));
+            $remarks = trim($this->input->post('remarks'));
+            $transItems = !isset(json_decode($this->input->post('transItems'), true)[0]) ? NULL : json_decode($this->input->post('transItems'), true);
+            $dateRecorded = date("Y-m-d");
+            $total = 0;
+            for ($index=0; $index < count($transItems); $index++) { 
+                $transItems[$index]['subtotal'] = (float) $transItems[$index]['itemQty'] * (float) $transItems[$index]['itemPrice']; 
+                $total += $transItems[$index]['subtotal'];
+            }
+            if($this->adminmodel->add_transaction($receiptNo, $transDate, $source, $remarks, $total, $dateRecorded, $transItems)){
+                $this->output->set_output(json_encode(array(
+                    "transaction" => $this->adminmodel->get_transactions(),
+                    "transitem" => $this->adminmodel->get_transitems(),
+                    "sources" => $this->adminmodel->get_sources()
+                )));
+            }else{
+                redirect(admin/transactions);
+            }
         }else{
             redirect('login');
         }

@@ -289,7 +289,8 @@ class AdminView extends CI_Controller{
             // $this->load->view('admin/templates/sideNav');
             $data['transactions'] = array(
                 "transaction" => $this->adminmodel->get_transactions(),
-                "transitem" => $this->adminmodel->get_transitems()
+                "transitem" => $this->adminmodel->get_transitems(),
+                "sources" => $this->adminmodel->get_sources()
             );
             $this->load->view('admin/adminAllTransactions',$data);
             // $this->load->view('admin/templates/scripts');

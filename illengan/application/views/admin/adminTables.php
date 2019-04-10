@@ -43,7 +43,7 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form action="<?= site_url("admin/tables/add")?>" method="post"
+                                    <form id="formAdd" method="post"
                                         accept-charset="utf-8">
                                         <div class="modal-body">
                                             <!--Table Code-->
@@ -78,7 +78,7 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form action="<?= site_url("admin/tables/edit")?>" method="post"
+                                    <form id="formEdit" method="post"
                                         accept-charset="utf-8">
                                         <div class="modal-body">
                                             <!--Table Code-->
@@ -105,49 +105,48 @@
                             </div>
                         </div>
                         <!--Delete Confirmation Box-->
-                        <div class="modal fade" id="deleteTable" tabindex="-1" data-backdrop="static"
-                            data-keyboard="false" role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="panel panel-primary">
-                                    <div class="panel-heading">
-                                        <form action="adminAccount/delete" method="post" accept-charset="utf-8">
-                                            <div class="modal-body" style="padding: 5px;">
-                                                <div class="row" style="text-align: center">
-                                                    <br>
-                                                    <h4 id="deleteTableCode"></h4>
-                                                    <h4>Are you sure you want to delete this table?</h4>
-                                                    <br>
-                                                </div>
-                                            </div>
-                                        </form>
+                        <div class="modal fade" id="deleteTable" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Delete Table</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
-                                </div>
-                                <div class="panel-footer" style="margin-bottom:-14px;" align="right">
-                                    <input type="submit" class="btn btn-success" value="Yes" />
-                                    <button type="button" class="btn btn-danger btn-close"
-                                        onclick="document.getElementById('').click()" data-dismiss="modal">No</button>
+                                    <form id="confirmDelete">
+                                        <div class="modal-body">
+                                            <h6 id="deleteTableCode"></h6>
+                                            <p>Are you sure you want to delete this table?</p>
+                                            <input type="text" name="tableCode" hidden="hidden">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                            <!-- <div class="panel-footer" style="margin-bottom:-14px;" align="right">
-                            <input type="submit" class="btn btn-danger" value="Close" />
-                            <input type="reset" class="btn btn-success" value="Update Account" />
-                </div> -->
                         </div>
                     </div>
                 </div>
-                <?php
-    $error = $this->session->flashdata('error');
-    $success = $this->session->flashdata('success');
-    if (!empty($error)) {
+                <!-- <?php
+    // $error = $this->session->flashdata('error');
+    // $success = $this->session->flashdata('success');
+    // if (!empty($error)) {
       ?>
                 <div class="alert alert-danger" style="margin: 80px; text-align: center; ">
-                    <strong><?php echo $error; ?></strong>
+                    <strong><?php //echo $error; 
+                    ?></strong>
                 </div>
-                <?php } else if (!empty($success)) { ?>
+                <?php 
+            //} else if (!empty($success)) { ?>
                 <div class="alert alert-success" style="margin: 80px; text-align: center; ">
-                    <strong><?php echo $success; ?></strong>
+                    <strong><?php //echo $success; ?></strong>
                 </div>
-                <?php } ?>
+                <?php //} ?> -->
                 <!--End Confirmation Modal-->
             </div>
         </div>
@@ -157,9 +156,73 @@
 <script>
 var tables = [];
 $(function() {
+    getTables();
+    $("#confirmDelete").on('submit', function(event){
+        event.preventDefault();
+        var tableCode = $(this).find("input").val();
+        $.ajax({
+            url: '<?= site_url('admin/tables/delete')?>',
+            method: 'post',
+            data: {tableCode : tableCode},
+            dataType: 'json',
+            success: function(data){
+                tables = data;
+                setTableData();
+            },
+            error: function(response, setting, errorThrown){
+                console.log(response.responseText);
+                console.log(errorThrown);
+            }
+        });
+    });
+    $("#formEdit").on('submit', function(event){
+        event.preventDefault();
+        var tableCode = $(this).find("input[name='prevTableCode']").val();        
+        var newTableCode = $(this).find("input[name='tableCode']").val();
+        $.ajax({
+            url: '<?= site_url('admin/tables/edit')?>',
+            method: 'post',
+            data: {
+                prevTableCode: tableCode,
+                tableCode : newTableCode
+                },
+            dataType: 'json',
+            success: function(data){
+                tables = data;
+                setTableData();
+            },
+            error: function(response, setting, errorThrown){
+                console.log(response.responseText);
+                console.log(errorThrown);
+            }
+        });
+    });
+    $("#formAdd").on('submit', function(event){
+        event.preventDefault();
+        var tableCode = $(this).find("input[name='tableCode']").val();
+        $.ajax({
+            url: '<?= site_url('admin/tables/add')?>',
+            method: 'post',
+            data: {
+                tableCode : tableCode
+            },
+            dataType: 'json',
+            success: function(data){
+                tables = data;
+                setTableData();
+            },
+            error: function(response, setting, errorThrown){
+                console.log(response.responseText);
+                console.log(errorThrown);
+            }
+        });
+    });
+});
+
+function getTables(){
     $.ajax({
         url: "<?= site_url('admin/tables/getTables')?>",
-        method: "get",
+        method: "post",
         dataType: "json",
         success: function(data) {
             tables = data;
@@ -170,9 +233,12 @@ $(function() {
             console.log(errorThrown);
         }
     });
-});
+}
 
-function setTableData(tables) {
+function setTableData() {
+    if($("#tablesTable > tbody").children().length > 0){
+        $("#tablesTable > tbody").empty();
+    }
     tables.forEach(table => {
         $("#tablesTable > tbody").append(`
         <tr data-id="${table.table_code}">
@@ -191,10 +257,11 @@ function setTableData(tables) {
         </tr>`);
         $(".updateBtn").last().on('click', function() {
             $("input[name='prevTableCode']").val($(this).closest("tr").attr("data-id"));
-            $("input[name='tableCode']").val($(this).closest("tr").attr("data-id"));
+            $("#editTable").find("input[name='tableCode']").val($(this).closest("tr").attr("data-id"));
         });
         $(".deleteBtn").last().on('click', function() {
-            $("#deleteTableCode").text(`Delete table code ${$(this).closest("tr").attr("data-id")}`);
+            $("#deleteTableCode").text(`Delete table code ${$(this).closest("tr").attr("data-id")}`);            
+            $("#deleteTable").find("input[name='tableCode']").val($(this).closest("tr").attr("data-id"));
         });
     });
 }
