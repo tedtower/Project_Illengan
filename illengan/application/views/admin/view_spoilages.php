@@ -64,9 +64,21 @@
 			</div>
 		</div>
 
+		
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery-3.2.1.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/bootstrap.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.dataTables.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.bootstrap4.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/tables.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.responsive.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.select.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.buttons.js'?>"></script>
+	
+<?php include_once('templates/scripts.php') ?>
 
-		<script>
-var table = $('#spoilages');
+
+<script>
+//var table = $('#spoilages');
 
 $(document).ready(function(){
   var table = $('#spoilages').DataTable({
@@ -91,17 +103,7 @@ $(document).ready(function(){
 			}
 		]
   });
+});
 	
 	</script>
-
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery-3.2.1.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/bootstrap.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.dataTables.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.bootstrap4.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/tables.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.responsive.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.select.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.buttons.js'?>"></script>
-	
-<?php include_once('templates/scripts.php') ?>
 
