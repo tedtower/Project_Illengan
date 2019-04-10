@@ -59,11 +59,12 @@ class AdminUpdate extends CI_Controller{
     function editAccounts(){
         $this->form_validation->set_rules('account_username','Username','trim|required|is_unique[accounts.account_username]');
         $this->form_validation->set_rules('account_type','Account Type','trim|required');
-        $account_id = $this->input->post("account_id");
+        $this->form_validation->set_rules('account_id','Account ID','required');
 
         if($this->form_validation->run()){
             $account_username = $this->input->post("account_username");
             $account_type = $this->input->post("account_type");
+            $account_id = $this->input->post("account_id");
 
             $data =array(
                 'account_type' => $account_type,
@@ -72,9 +73,7 @@ class AdminUpdate extends CI_Controller{
             $data['account_id'] = $account_id;
             
             $this->adminmodel->edit_accounts($data,$account_id);
-            $this->viewAccounts();
-            }else{
-            $this->vieweditAccounts2($account_id);
+            }
         }
     }
     function editMenuCategory(){
@@ -161,5 +160,4 @@ class AdminUpdate extends CI_Controller{
             redirect('login');
         }
     }
-}
 ?>

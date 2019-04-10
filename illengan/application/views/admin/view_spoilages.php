@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 
 <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/bootstrap.css'?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/bootstrap.min.css'?>">
 <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/jquery.dataTables.css'?>">
 <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/dataTables.bootstrap4.css'?>">
 <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/responsive.bootstrap.css'?>">

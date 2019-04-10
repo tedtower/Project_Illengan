@@ -30,15 +30,15 @@ class AdminView extends CI_Controller{
             redirect('login'); 
         }
     }
-    function vieweditAccounts(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $account_id = $this->uri->segment('3');
-            $data['account_id'] = $account_id;
-            $this->load->view('admin/editAccounts',$data);  
-        }else{  
-            redirect('login'); 
-        }
-    }
+    // function vieweditAccounts(){
+    //     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+    //         $account_id = $this->uri->segment('3');
+    //         $data['account_id'] = $account_id;
+    //         $this->load->view('admin/view_accounts',$data);  
+    //     }else{  
+    //         redirect('login'); 
+    //     }
+    // }
     function vieweditAccounts2($account_id){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['account_id'] = $account_id;
