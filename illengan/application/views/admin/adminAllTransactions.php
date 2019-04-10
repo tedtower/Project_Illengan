@@ -109,7 +109,7 @@
                                                         <div class="input-group mb-3 col">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                    style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                     Transaction Date</span>
                                                             </div>
                                                             <input type="date" name="transDate" id="transDate"
@@ -118,7 +118,7 @@
                                                     </div>
                                                     <!--Source Name-->
                                                     <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
+                                                        <div class="input-group-prepend">      
                                                             <span class="input-group-text" id="inputGroup-sizing-sm"
                                                                 style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Source</span>
@@ -204,8 +204,7 @@
                                                         <!--Transaction date-->
                                                         <div class="input-group mb-3 col">
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                    style="width:250px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                <span class="input-group-text" id="inputGroup-sizing-sm">
                                                                     Transaction Date</span>
                                                             </div>
                                                             <input type="date" name="transDate" id="transDate"
