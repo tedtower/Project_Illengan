@@ -168,7 +168,7 @@ class AdminUpdate extends CI_Controller{
             $transDate = trim($this->input->post('transDate'));
             $source = trim($this->input->post('sourceName'));
             $remarks = trim($this->input->post('remarks'));
-            $transItems = json_decode($this->input->post('transItems'), true);
+            $transItems = !isset(json_decode($this->input->post('transItems'), true)[0]) ? NULL : json_decode($this->input->post('transItems'), true);
             $dateRecorded = date("Y-m-d");
             $total = 0;
             for ($index=0; $index < count($transItems); $index++) { 

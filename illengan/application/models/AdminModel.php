@@ -165,10 +165,13 @@ class AdminModel extends CI_Model{
         $query = "Update transactions set source_id = ?, receipt_no = ?, total = ?, trans_date = ?, date_recorded = ?, remarks = ? where trans_id = ?";
         $bool = $this->db->query($query, array($source, $receiptNo, $total, $transDate, $dateRecorded, $remarks, $trans_id));
             //transitems array includes previous name and new name
-        $query = "Insert into transitems (trans_id, item_name, item_qty, item_unit, item_price, subtotal)  values (?, ?, ?, ?, ?, ?)";
-        foreach($transitems as $transitem){
-            $this->db->query($query, array($trans_id, $transItem['itemName'], $transItem['itemQty'], $transItem['itemUnit'], $transItem['itemPrice'], $transItem['subtotal']));
+        if($transItems != NULL){
+            $query = "Insert into transitems (trans_id, item_name, item_qty, item_unit, item_price, subtotal)  values (?, ?, ?, ?, ?, ?)";
+            foreach($transItems as $transItem){
+                $this->db->query($query, array($trans_id, $transItem['itemName'], $transItem['itemQty'], $transItem['itemUnit'], $transItem['itemPrice'], $transItem['subtotal']));
+            }
         }
+        return true;
         // return $bool;
     }
 
