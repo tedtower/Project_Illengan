@@ -499,10 +499,11 @@ function setTableData() {
                 $("#formEdit").find(".transItemsTable > tbody").empty();
             });
             count++;
-        }else{
-            $("#transTable").after("No Transaction Recorded");
         }
+    }else{
+        $("#transTable").after("No Transaction Recorded");
     }
+}
     $(".accordionBtn").on('click', function() {
         if ($(this).closest("tr").next("tr").css('display') == "none") {
             $(this).closest("tr").next("tr").css('display', 'table-row');
