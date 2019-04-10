@@ -71,8 +71,8 @@
                                         <div  style="margin:0 4%"><!--Container OF ACCORDION-->
                                         <!--beginning and ending inventory-->
                                             <div style="overflow:auto;width:90%">
-                                                <div style="width:40%;float:left">Beginning:<span>20</span></div>
-                                                <div style="width:40%;float:right">Ending:<span>10</span></div>
+                                                <div style="width:40%;float:left;font-weight:bold">Beginning: <span>20</span></div>
+                                                <div style="width:40%;float:right;font-weight:bold">Ending: <span>10</span></div>
                                             </div>
                                             <br>
                                         <!--Consumed table-->

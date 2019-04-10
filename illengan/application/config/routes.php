@@ -69,6 +69,7 @@ $route['admin/sources'] = "adminview/viewsources";
 $route['admin/accounts'] = "adminview/viewaccounts";
 $route['admin/inventory'] = "adminview/viewinventory";
 $route['admin/transactions'] = "adminview/viewtransactions";
+$route['admin/purchaseorder'] = "adminview/viewPurchaseOrder";
 $route['admin/spoilages/addons'] = "adminview/viewspoilagesao";
 $route['admin/spoilages/menu'] = "adminview/viewspoilagesmenu";
 $route['admin/spoilages/stock'] = "adminview/viewspoilagesstock";
@@ -86,6 +87,7 @@ $route['admin/menu/datatables'] = "adminview/datatables_menu";
 
 //Admin Add Routes ----------------------------------------------
 $route['admin/transactions/add'] = "adminadd/addtransactions";
+$route['admin/purchaseorder/add'] = "adminview/addpurchaseorder";
 $route['admin/inventory/add'] = "adminadd/addstockitem";
 $route['admin/menu/add'] = "adminadd/add_menu";
 $route['admin/stockcategories/add'] = "adminadd/addstockcategory";

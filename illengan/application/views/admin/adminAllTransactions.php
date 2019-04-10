@@ -40,7 +40,7 @@
                                     <thead>
                                         <th style="width:10px"></th>
                                         <th><b class="pull-left">Receipt No.</b></th>
-                                        <th><b class="pull-left">Supplier Name</b></th>
+                                        <th><b class="pull-left">Supplier</b></th>
                                         <th><b class="pull-left">Total</b></th>
                                         <th><b class="pull-left">Date</b></th>
                                         <th><b class="pull-left">Actions</b></th>
@@ -147,7 +147,7 @@
                                                         <!--Table containing the different input fields in adding trans items -->
                                                         <thead class="thead-light">
                                                             <tr>
-                                                                <th>Name</th>
+                                                                <th width="40%">Name</th>
                                                                 <th>Qty</th>
                                                                 <th>Unit</th>
                                                                 <th>Price</th>
@@ -165,7 +165,7 @@
                                                         <button type="button" class="btn btn-danger btn-sm"
                                                             data-dismiss="modal">Cancel</button>
                                                         <button class="btn btn-success btn-sm"
-                                                            type="submit">Add</button>
+                                                            type="submit">Insert</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -173,6 +173,7 @@
                                     </div>
                                 </div>
                                 <!--End of Modal "Add Transaction"-->
+
                                 <!--Modal "Edit Transaction" -->
                                 <div class="modal fade bd-example-modal-lg" id="updateTransaction" tabindex="-1"
                                     role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -242,7 +243,7 @@
                                                         <!--Table containing the different input fields in adding trans items -->
                                                         <thead class="thead-light">
                                                             <tr>
-                                                                <th>Name</th>
+                                                                <th width="40%">Name</th>
                                                                 <th>Qty</th>
                                                                 <th>Unit</th>
                                                                 <th>Price</th>
@@ -260,7 +261,7 @@
                                                         <button type="button" class="btn btn-danger btn-sm"
                                                             data-dismiss="modal">Cancel</button>
                                                         <button class="btn btn-success btn-sm"
-                                                            type="submit">Edit</button>
+                                                            type="submit">Update</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -444,7 +445,7 @@ function setTableData() {
                 <td>
                     <div class="onoffswitch">
                         <!--View button-->
-                        <button class="editBtn btn btn-default btn-sm" data-toggle="modal"
+                        <button class="editBtn btn btn-primary btn-sm" data-toggle="modal"
                             data-target="#updateTransaction">Edit</button>
                         <!--Delete button-->
                         <!-- <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"
