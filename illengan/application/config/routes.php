@@ -57,6 +57,7 @@ $route['verifylogin'] = "login/check_cred";
 
 //Viewing Routes -----------------------------------------------
 $route['admin/menu'] = "adminview/viewmenu";
+$route['admin/menu/getDetails'] = "adminview/menuGetDetails";
 $route['admin/spoilages'] = "adminview/viewspoilages";
 $route['admin/sales'] = "adminview/viewSales";
 $route['admin/dashboard'] = "adminview/viewdashboard";
@@ -74,6 +75,9 @@ $route['admin/spoilages/stock'] = "adminview/viewspoilagesstock";
 $route['admin/spoilages/menu/add'] ="adminview/viewInsertSpoilageMenu";
 $route['admin/spoilages/stock/add'] ="adminview/viewInsertSpoilageStock";
 $route['admin/spoilages/addons/add'] ="adminview/viewInsertSpoilageAo";
+$route['admin/spoilages'] = "adminview/viewspoilages";
+$route['admin/spoilagesjson'] = "adminview/viewSpoilagesJs";
+
 //End Viewing Routes
 
 //Not Sure Routes
@@ -91,6 +95,7 @@ $route['admin/tables/add'] = "adminadd/addtable";
 $route['admin/addspoilagesmenu'] = "adminadd/addspoilagesmenu";
 $route['admin/insertspoilagesstock'] = "adminadd/insertspoilagesstock";
 $route['admin/insertspoilagesmenu'] = "adminadd/insertspoilagesmenu";
+$route['admin/sources/add'] = "adminadd/addsource";
 //End Admin Add Routes ------------------------------------------
 
 //Admin Update Routes -------------------------------------------
@@ -102,15 +107,17 @@ $route['admin/inventory/edit'] = "adminupdate/editstockitem";
 $route['admin/transactions/edit'] = "adminupdate/edittransactions";
 $route['admin/accounts/changepassword'] = "adminupdate/changeAccountPassword";
 $route['admin/accounts/edit'] = "adminview/vieweditAccounts";
+$route['admin/sources/edit'] = "adminupdate/editsource";
 $route['admin/tables/edit'] = "adminupdate/edittable";
 //End Admin Update Routes ---------------------------------------
 
 //Admin Delete Routes -------------------------------------------
-$route['admin/tables/delete/(:num)'] = "admindelete/deletetable/$1";
+$route['admin/tables/delete'] = "admindelete/deletetable";
 $route['admin/menucategories/delete/(:num)'] = "admindelete/deletemenucategory/$1";
 $route['admin/stockcategories/delete/(:num)'] = "admindelete/deletestockcategory/$1";
 $route['admin/inventory/delete/(:num)'] = "admindelete/deletestockitem/$1";
 $route['admin/transactions/delete'] = "admindelete/deletetransactions";
+$route['admin/sources/delete/(:num)'] = "admindelete/deletesource/$1";
 //End Admin Delete Routes ---------------------------------------
 
 //CUSTOMER ROUTES

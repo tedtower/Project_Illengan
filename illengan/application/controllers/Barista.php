@@ -19,7 +19,7 @@ class Barista extends CI_Controller{
 
     function orders_b(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
-            $data= $this->baristamodel->orderlist();
+            $data = $this->baristamodel->orderlist();
             echo json_encode($data);
             //Code Here
         }else{
@@ -28,6 +28,7 @@ class Barista extends CI_Controller{
     }
 
     function orderslip(){
+        $this->load->view('barista/sideNavigation');
         $this->load->view('barista/orderslip');
         //$data = $this->baristamodel->show_orderslip();
         //echo json_encode($data);
@@ -98,12 +99,14 @@ class Barista extends CI_Controller{
     }
 
     function pendingStatus(){
+        $this->load->view('barista/sideNavigation');
         //->load->view('barista/pending');
         $data['orders'] = $this->baristamodel->pending_orders();
         $this->load->view('barista/pendingOrders', $data);
     }
 
     function servedStatus(){
+        $this->load->view('barista/sideNavigation');
         //$this->load->view('barista/servedOrders');
         $data['served'] = $this->baristamodel->served_orders();
         $this->load->view('barista/servedOrders', $data);

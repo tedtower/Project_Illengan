@@ -30,7 +30,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         function cancelOrder(){
             $order_id=$this->input->post('order_id');
             $this->db->where('order_id', $order_id);
-            $result=$this->db->delete('orderslip');
+            $result=$this->db->delete('orderlist');
             return $result;
         }
         

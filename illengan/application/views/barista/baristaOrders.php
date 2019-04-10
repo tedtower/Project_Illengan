@@ -10,24 +10,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>Il-Lengan | Barista Orders</title>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/bootstrap.css'?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/jquery.dataTables.css'?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/dataTables.bootstrap4.css'?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/responsive.bootstrap.css'?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/select.bootstrap.css'?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/chef/buttons.bootstrap.css'?>">
-  <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/style.css'?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/bootstrap.css'?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/jquery.dataTables.css'?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/dataTables.bootstrap4.css'?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/responsive.bootstrap.css'?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/select.bootstrap.css'?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/buttons.bootstrap.css'?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/style.css'?>">
 </head>
 <body>
-  <!--//php echo include_once('sideNavigation.php') ?>-->
- <div class="container">
 
-            <div class="nav nav-tabs"><a href="<?php echo site_url('barista/orders'); ?>" class="nav nav-link active" role="tab">Orderlist</a> &nbsp;
+  <div class="nav nav-tabs"><a href="<?php echo site_url('barista/orders'); ?>" class="nav nav-link active" role="tab">Orderlist</a> &nbsp;
               <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="nav nav-link" role="tab">Pending Orders</a> &nbsp;
             <a href="<?php echo site_url('barista/servedStatus'); ?>" class="nav nav-link" role="tab">Served Orders</a>
             <a href="<?php echo site_url('barista/orderslip'); ?>" class="nav nav-link" role="tab">Orderslip</a>
             </div>
             <br>
+ <div class="container">
             <div><button class="btn btn-dark" id="btn-show-all-children" type="button">Expand All</button> &nbsp;
                   <button class="btn btn-dark" id="btn-hide-all-children" type="button">Collapse All</button>
             </div>
@@ -115,15 +114,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <!--END MODAL DELETE-->
 
         
-
-        <script type="text/javascript" src="<?php echo base_url().'assets/js/chef/jquery-3.2.1.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/chef/bootstrap.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/chef/jquery.dataTables.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/chef/dataTables.bootstrap4.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/chef/tables.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/chef/dataTables.responsive.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/chef/dataTables.select.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/chef/dataTables.buttons.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/jquery-3.2.1.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/bootstrap.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/jquery.dataTables.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/dataTables.bootstrap4.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/tables.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/dataTables.responsive.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/dataTables.select.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/dataTables.buttons.js'?>"></script>
 
 <script>
 var table = $('#mydata');
@@ -155,7 +153,7 @@ $(document).ready(function(){
       {
         "className": 'details-control',
         "data": null,
-        "defaultContent": 'button'
+        "defaultContent": 'click!'
       },
       {data : 'order_item_id'},
       {data : 'cust_name'},

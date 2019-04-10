@@ -1,14 +1,18 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <!doctype html>
 <html lang="en">
 
-<head>
-	<?php include_once('templates/head.php') ?>
-</head>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/bootstrap.css'?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/jquery.dataTables.css'?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/dataTables.bootstrap4.css'?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/responsive.bootstrap.css'?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/select.bootstrap.css'?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/buttons.bootstrap.css'?>">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/style.css'?>">
 
-<body>
-	<?php include_once('templates/sideNav.php') ?>
-	<!--End Side Bar-->
-	<div class="content">
+<div class="content">
 		<div class="container-fluid">
 			<br>
 			<p style="text-align:right; font-weight: regular; font-size: 16px">
@@ -22,78 +26,35 @@
 							<div class="container-fluid">
 								<!--Table-->
 								<div class="card-content">
-
-
-									<!--Search
-                            <div id ="example_filter" class="dataTables_filter">
-                                <label>
-                                    "Search:"
-                                    <div class="form-group form-group-sm is-empty">
-                                       <input type="search" class="form-control" placeholder aria-controls="example">
-                                       <span class="material-input"></span> 
-                                    </div>
-                                </label>
-                            </div>-->
-
-									<table id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+								<div><button class="btn btn-dark" id="btn-show-all-children" type="button">Expand All</button>&nbsp;
+								<button class="btn btn-dark" id="btn-hide-all-children" type="button">Collapse All</button></div>
+								<br>
+									<table id="mytable" class="table table-striped table-bordered ">
 										<thead>
-											<th><b class="pull-left">Code</b></th>
-											<th><b class="pull-left">Description</b></th>
-											<!--menu id-->
-											<th><b class="pull-left">Quantity</b></th>
-											<!--sqty-->
-											<th><b class="pull-left">Damage date</b></th>
-											<!--sdate-->
-											<th><b class="pull-left">Date Recorded</b></th>
-											<!--date_recorded-->
-											<th><b class="pull-left">Remarks</b></th>
-											<!--remarks-->
-											<th><b class="pull-left">Operations</b></th>
+											<th></th>
+											<th>Code</th>
+											<th>Type</th>
+											<th>Description</th><!--menu id-->
+											<th>Quantity</th><!--sqty-->
+											<th>Damage date</th><!--sdate-->
+											<th>Date Recorded</th><!--date_recorded-->
+											<th>Operations</th><!--remarks-->
+											<!--<th>Remarks</th>-->
 										</thead>
-										<tbody id="show_data">
-                    
-										</tbody>	
-									</table>							
+										<tbody>
+										</tbody>
+									</table>
 								</div>
 							</div>
 						</div>
-						</td>
 						<!--End Table Content-->
 					</div>
 				</div>
 			</div>
 		</div>
+</div>
 
-
-		<script>
-var table = $('#spoilages');
-
-$(document).ready(function(){
-  var table = $('#spoilages').DataTable({
-      ajax: {
-      url: 'http://www.illengan.com/admin/spoilages',
-      dataSrc: ''
-    },
-    colReorder: {
-      realtime: true
-    },
-    "columns" : [
-			{"data" : "s_id"},
-			{"data" : "description"},
-			{"data" : "s_qty"},
-			{"data" : "s_date"},
-			{"data" : "date_recorded"},
-			{"data" : "remarks"},
-			{"data" : null,
-					render: function(data, type, row, meta){
-						return '<a href="javascirpt: void(0)" class="btn btn-warning btn-sm item_delete" data-s_id="'+data.s_id+'">Delete</a>';
-					}
-			}
-		]
-  });
-	
-	</script>
-
+		
 <script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery-3.2.1.js'?>"></script>
 <script type="text/javascript" src="<?php echo base_url().'assets/js/admin/bootstrap.js'?>"></script>
 <script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.dataTables.js'?>"></script>
@@ -105,3 +66,96 @@ $(document).ready(function(){
 	
 <?php include_once('templates/scripts.php') ?>
 
+
+		<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery-3.2.1.js'?>"></script>
+		<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/bootstrap.js'?>"></script>
+		<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.dataTables.js'?>"></script>
+		<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.bootstrap4.js'?>"></script>
+		<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.dataTables.min.js'?>"></script>
+		<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.responsive.js'?>"></script>
+		<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.select.js'?>"></script>
+		<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.buttons.js'?>"></script>
+
+		<script>
+		var table = $('#mytable');
+		function format(d){
+  		return '<table>'+
+      '<tr>'+
+          '<td>Remarks</td>'+
+      '</tr>'+
+      '<tr>'+
+          '<td>'+d.remarks+'</td>'+
+      '</tr>'+
+      '</table>';
+
+}
+
+			$(document).ready(function(){
+			var table = $('#mytable').DataTable({
+				ajax: {
+				url: 'http://www.illengan.com/admin/spoilagesjson',
+				dataSrc: ''
+				},
+				colReorder: {
+				realtime: true
+				},
+				"columns": [
+					{
+					"className" : 'details-control',
+						"data": null,
+						"defaultContent": ''
+				},
+						{"data": "s_id"},
+						{"data" : "s_type"},
+						{"data": "description"},
+						{"data": "s_qty"},
+						{"data": "s_date"},
+						{"data": "date_recorded"},
+						{"data": null,
+							render: function (data, type, row, meta) {
+								return '<a href="javascript: void(0)" class="btn btn-warning btn-sm item_delete" data-s_id="' +
+									data.s_id + '">Delete</a>';
+							}
+						}
+						//{"data": "remarks"}
+					]
+			});
+
+			
+//For showing the accordion
+  $('#mytable tbody').on('click', 'td.details-control', function(){
+    var tr = $(this).closest('tr');
+    var row = table.row(tr);
+
+    if (row.child.isShown() ){
+      row.child.hide(); //to hide child row if open
+      tr.removeClass('shown');
+    }else{
+      row.child(format(row.data()) ).show(); //to open the child row
+      tr.addClass('shown');
+    }
+  });
+
+//function for 'Expand all' button
+$('#btn-show-all-children').on('click', function(){
+    table.rows().every(function(){
+      if(!this.child.isShown()){
+        this.child(format(this.data())).show();
+        $(this.node()).addClass('shown');
+      }
+    });
+});
+
+$('#btn-hide-all-children').on('click', function(){
+  table.rows().every(function(){
+    if(this.child.isShown()){
+      this.child.hide();
+      $(this.node()).removeClass('shown');
+    }
+  });
+});
+
+		});
+		</script>
+		
+		
