@@ -1,5 +1,6 @@
 let UPDATE = 5000;
 var table = $('#mydata');
+childRowsOpen();
 
 function orders() {
 $(document).ready(function() {
@@ -19,40 +20,38 @@ $(document).ready(function() {
             '<td>Remarks</td>'+
         '</tr>'+
         '<tr>'+
-            '<td>---</td>'+
+            '<td>'+d.ao_name+'</td>'+
             '<td>'+d.remarks+'</td>'+
         '</tr>'+
     '</table>';
 }
 
-$('#mydata').on('init.dt', function(e, settings){
-   var api = new $.fn.dataTable.Api( settings );
-   api.rows().every( function () {
-      var tr = $(this.node());
-      this.child(format(this.data())).show();
-      tr.addClass('shown');
-   });
+function childRowsOpen() {
+$(document).ready(function() {
+    $('#mydata').on('init.dt', function(e, settings){
+    var api = new $.fn.dataTable.Api( settings );
+    api.rows().every( function () {
+        var tr = $(this.node());
+        this.child(format(this.data())).show();
+        tr.addClass('shown');
+    });
+    });
 });
+}
 
 $(document).ready(function() {
     var table = $('#mydata').DataTable( {
-             ajax: {
-                 url: "http://www.illengan.com/chef/get_orderlist",
-                 dataSrc: ''
-             },
-		    colReorder: {
-			realtime: true
-		    },
-            "aoColumns" : [
+             "ajax": "http://www.illengan.com/chef/get_orderlist",
+            "columns" : [
                 {
                 "className":      'details-control',
                 "data":           null,
                 "defaultContent": ''
                 },
-                {data : 'menu_name'},
-                {data : 'cust_name'},
-                {data : 'table_code'},
-                {data : 'order_qty'},
+                {"data" : "menu_name"},
+                {"data" : "cust_name"},
+                {"data" : "table_code"},
+                {"data" : "order_qty"},
                 {
                     data: null,
                     render: function ( data, type, row, meta) {
@@ -97,8 +96,6 @@ function change_status() {
         var item_status;
 
         if(itemStatus === "pending") {
-            item_status = "ongoing";
-        } else if(itemStatus === "ongoing") {
             item_status = "done";
         } else if(itemStatus === "done") {
             item_status = "pending";
@@ -113,9 +110,16 @@ function change_status() {
             item_status: item_status
         },
         success: function() {
-            table.DataTable().ajax.reload(null, false);
+            table.DataTable().ajax.reload(childRowsOpen(), false);
+     
         }
             }); 
  
         });
 }
+
+setInterval(function()
+    { 
+        orders();
+        console.log('m'); 
+        }, 5000);

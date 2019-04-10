@@ -137,8 +137,12 @@ $(document).ready(function(){
                     "addonSubtotals" : []
                 })            
             },
+            beforeSend: function(){
+                console.log(prefId, qty, remarks);
+            },
             success: function(data) {
                 alert("Menu has been added in the orderlist.");
+                console.log(data);
             },
             error: function(response,setting, errorThrown) {
                 console.log(response.responseText);

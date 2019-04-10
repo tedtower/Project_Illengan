@@ -10,7 +10,6 @@
                     <p><span class="fs-24">₱</span><span id="menu_price"></span></p>
                 </div>
                 <p id="menu_description"></p>
-                <p id="promo_description"></p>
                 <h4 class="gab">Status: <span id="menu_status"></span></h4>
                 <hr>
                 <div id="order-details">
@@ -31,12 +30,7 @@
                                     onclick="freebies_discounts()">
                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                 </button>
-<<<<<<< HEAD
-                                <div class="freebie" id="freebie">
-                                </div>
-=======
                                
->>>>>>> 9f037054c5ee78f6f559115665130ea60012cedb
                             </div>
                         </div>
                     </div>
