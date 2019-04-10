@@ -74,11 +74,13 @@ class AdminModel extends CI_Model{
         $query = "Insert into transactions (source_id, receipt_no, total, trans_date, date_recorded, remarks) values (?,?,?,?,?,?)";
         $bool = $this->db->query($query, array($source, $receiptNo, $total, $transDate, $dateRecorded, $remarks));
         $trans_id = $this->db->insert_id();
-        $query = "Insert into transitems values (?,?,?,?,?,?)";
-        foreach($transItems as $transItem){
-            $this->db->query($query,array($trans_id, $transItem['itemName'], $transItem['itemQty'], $transItem['itemUnit'], $transItem['itemPrice'], $transItem['subtotal']));
+        if($transItems != NULL){
+            $query = "Insert into transitems values (?,?,?,?,?,?)";
+            foreach($transItems as $transItem){
+                $this->db->query($query,array($trans_id, $transItem['itemName'], $transItem['itemQty'], $transItem['itemUnit'], $transItem['itemPrice'], $transItem['subtotal']));
+            }
         }
-        return $bool;
+        return true;
     }
     
     
@@ -278,7 +280,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_transactions(){
-        $query = "Select trans_id, receipt_no, source_id, source_name, total, trans_date, date_recorded, remarks from transactions left join sources using (source_id)";
+        $query = "Select trans_id, receipt_no, source_id, source_name, total, trans_date, date_recorded, remarks from transactions left join sources using (source_id) order by trans_id desc";
         return $this->db->query($query)->result_array();
     }
     function get_transitems(){

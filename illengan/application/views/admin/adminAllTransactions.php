@@ -164,7 +164,7 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-danger btn-sm"
                                                             data-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn-success btn-sm" data-dismiss="modal"
+                                                        <button class="btn btn-success btn-sm"
                                                             type="submit">Add</button>
                                                     </div>
                                                 </div>
@@ -426,6 +426,7 @@ function setTableData() {
     var tableRow;
     var accordion;
     if(transactions.transaction.length !== 0){
+        $("#transTable").next('div');
         if($("#transTable > tbody").children().length !== 0){
             $("#transTable > tbody").empty();
         }
@@ -499,7 +500,7 @@ function setTableData() {
                 $("#formEdit").find(".transItemsTable > tbody").empty();
             });
             count++;
-            $(".accordionBtn").on('click', function() {
+            $(".accordionBtn").last().on('click', function() {
                 if ($(this).closest("tr").next("tr").css('display') == "none") {
                     $(this).closest("tr").next("tr").css('display', 'table-row');
                     $(this).closest("tr").next("tr").find("td > div").slideDown('slow');
@@ -542,7 +543,7 @@ function setTableData() {
             });
         }
     }else{
-        $("#transTable").after("No Transaction Recorded");
+        $("#transTable").after("<div>No Transactions Recorded</div>");
     }
 }
     
