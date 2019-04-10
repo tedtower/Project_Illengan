@@ -21,7 +21,7 @@
                         <div class="container-fluid">
                             <!--Table-->
                             <div class="card-content">
-                                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newTransaction"
+                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newTransaction"
                                     data-original-title style="float: left">Add Transaction</a>
                                 <!--Search
                             <div id ="example_filter" class="dataTables_filter">
@@ -91,7 +91,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="<?php echo base_url()?>admin/sources/edit" method="get"
+                                            <form action="<?php echo base_url()?>admin/transactions/add" method="get"
                                                 accept-charset="utf-8">
                                                 <div class="modal-body">
                                                     <div class="form-row"> <!--Container of receipt no. and transaction date-->
@@ -133,7 +133,7 @@
                                                     </div>
 
                                                     <!--Transaction Items-->
-                                                    <button class="btn btn-primary btn-sm">Add Trans Item</button> <!--Button to add row in the table-->
+                                                    <a class="btn btn-primary btn-sm" style="color:blue">Add Trans Item</a> <!--Button to add row in the table-->
                                                     <br><br>
                                                     <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
                                                         <thead class="thead-light">
@@ -217,7 +217,7 @@ function setTableData() {
             <td>
                 <div class="onoffswitch">
                     <!--View button-->
-                    <button class="btn btn-default btn-sm" data-toggle="modal"
+                    <button class="btn btn-primary btn-sm" data-toggle="modal"
                         data-target="">Edit</button>
                     <!--Delete button-->
                     <button class="btn btn-danger btn-sm" data-toggle="modal"

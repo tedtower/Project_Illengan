@@ -21,7 +21,7 @@
                         <div class="container-fluid">
                             <!--Table-->
                             <div class="card-content">
-                                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newStock"
+                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newStock"
                                     data-original-title style="float:left">Add Stock Item</a>
                         <!--Search
                             <div id ="example_filter" class="dataTables_filter">
@@ -54,7 +54,7 @@
                                     <td>Drinks</td>
                                     <td>Available</td>
                                     <td>
-                                        <button class="btn btn-default btn-sm" data-toggle="modal"
+                                        <button class="btn btn-primary btn-sm" data-toggle="modal"
                                             data-target="#editStock">Edit</button>
                                         <!--Delete button-->
                                         <button class="btn btn-danger btn-sm" data-toggle="modal"
@@ -76,7 +76,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="<?php echo base_url()?>admin/sources/edit" method="get"
+                                            <form action="<?php echo base_url()?>admin/inventory/add" method="get"
                                                 accept-charset="utf-8">
                                                 <div class="modal-body">
                                                     <!--Source Name-->
@@ -143,7 +143,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="<?php echo base_url()?>admin/sources/edit" method="get"
+                                            <form action="<?php echo base_url()?>admin/inventory/edit" method="get"
                                                 accept-charset="utf-8">
                                                 <div class="modal-body">
                                                     <!--Source Name-->
