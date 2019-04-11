@@ -27,12 +27,29 @@ class AdminDelete extends CI_Controller{
             redirect('login');
         }
     }
-    function deletespoilages($sid){
+    function deletestockspoilages($sid){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
             $this->adminmodel->delete_spoilages($sid); 
-            $data['spoilages']=$this->adminmodel->get_spoilages();
-            $this->load->view('admin/view_spoilages',$data);
+            redirect('admin/stock/spoilages');
+        }else{
+            redirect('login');
+        }
+    }
+    function deletemenuspoilages($sid){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
+            $this->adminmodel->delete_spoilages($sid); 
+            redirect('admin/menu/spoilages');
+        }else{
+            redirect('login');
+        }
+    }
+    function deleteaddonsspoilages($sid){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
+            $this->adminmodel->delete_spoilages($sid); 
+            redirect('admin/addons/spoilages');
         }else{
             redirect('login');
         }

@@ -119,7 +119,7 @@ class AdminAdd extends CI_Controller{
             redirect('login');
         }
     }
-    function insertspoilagesaddons(){
+    function addspoilagesaddons(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model('adminmodel');
 
@@ -137,7 +137,7 @@ class AdminAdd extends CI_Controller{
             redirect('login');
         }
     }
-    function insertspoilagesmenu(){
+    function addspoilagesmenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
 
             $s_type = $this->input->post("s_type");
@@ -154,20 +154,19 @@ class AdminAdd extends CI_Controller{
             redirect('login');
         }
     }
-    function insertspoilagesstock(){
+    function addspoilagesstock(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->load->model('adminmodel');
 
-            $s_type = $this->input->post("s_type");
-            $stock_name =$this->input->post("stock_name");
-            $s_qty =$this->input->post("s_qty");
-            $s_date =$this->input->post("s_date");
+            $s_type = $this->input->get("s_type");
+            $stock_name =$this->input->get("stock_name");
+            $s_qty =$this->input->get("s_qty");
+            $s_date =$this->input->get("s_date");
             $date_recorded = date("Y-m-d");
-            $remarks =$this->input->post("remarks");
+            $remarks =$this->input->get("remarks");
 
             $this->adminmodel->add_stockspoil($s_type,$stock_name,$s_qty,$s_date,$date_recorded,$remarks);
-            $data['spoilages'] = $this->adminmodel->get_spoilages();
-            $this->load->view('admin/view_spoilages', $data);
+            redirect('admin/stock/spoilages');
         }else{
             redirect('login');
         }

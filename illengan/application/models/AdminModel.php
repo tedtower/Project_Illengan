@@ -263,15 +263,15 @@ class AdminModel extends CI_Model{
         $query = "select s_id, s_type, menu_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN menuspoil USING (s_id) inner JOIN menu USING (menu_id) UNION select s_id, s_type, stock_name AS decription, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN stockspoil USING (s_id) inner JOIN stockitems USING (stock_id) UNION select s_id,s_type, ao_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN ao_spoil USING (s_id) inner JOIN addons USING (ao_id) ORDER BY date_recorded";
         return $this->db->query($query)->result_array();
     }
-    function get_spoilages_menu(){
+    function get_spoilagesmenu(){
         $query = "Select s_id, menu_name , s_qty, s_date, date_recorded, remarks from spoilage inner join menuspoil using (s_id) inner join menu using (menu_id)";
         return  $this->db->query($query)->result_array();
     }
-    function get_spoilages_stock(){
+    function get_spoilagesstock(){
         $query = "Select s_id, stock_name,s_qty,stock_unit,s_date, date_recorded, remarks from spoilage inner join stockspoil using (s_id) inner join stockitems using (stock_id)";
         return  $this->db->query($query)->result_array();
     }
-    function get_spoilages_ao(){
+    function get_spoilagesaddons(){
         $query = "Select s_id, ao_name,s_qty, ao_category,s_date, date_recorded, remarks from spoilage INNER JOIN ao_spoil using (s_id)INNER JOIN addons using (ao_id)";
         return  $this->db->query($query)->result_array();
     }
