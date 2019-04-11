@@ -1,120 +1,124 @@
+<html>
+<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" type="text/css" href="<?= admin_css().'style2.css'?>">
+        
+        </head>
 <body>
-    <div class="wrapper">
-        <div class="sidebar" data-color="brown" data-image="<?php echo base_url().'assets/media/admin/Coffee_1.jpg'?>">
-            <!--Left Navigation Bar-->
-            <div class="sidebar-wrapper" style="overflow: hidden">
-                <div class="logo">
-                    <img src="<?php echo base_url().'assets/media/admin/logo_lg.png' ?>"
-                        style="alt:il-lengan-logo; img-align: center; width:225px; height;135px;">
-                </div>
 
-                <ul class="nav">
-                    <li>
-                        <a href="<?php echo base_url('admin/dashboard') ?>">
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo base_url('admin/inventory')?>">
-                            <p>Inventory</p>
-                        </a>
-                    </li>
-                    <!--Sales : Dropdown-->
-                    <li>
-                        <a href="<?php echo base_url('admin/sales')?>">
-                            <p>Sales Records</p>
-                        </a>
-                        <!--Start-->
-                        <ul>
-                            <a href="<?php echo base_url('admin/sales')?>">
-                                <p>Sales</p>
-                            </a>
-                            <a href="<?php echo base_url('admin/addSales')?>">
-                                <p>Add Sales</p>
-                            </a>
-                        </ul>
-                        <!--End-->
-                    </li>
-                    <!--Spoilages : Dropdown-->
-                    <li>
-                        <a href="<?php echo base_url('admin/spoilages')?>">
-                            <p>Spoilages</p>
-                        </a>
-                        <!--Start Dropdown-->
-                        <ul>
-                            <a href="<?php echo base_url('admin/spoilages')?>">
-                                <p>All Spoilages</p>
-                            </a>
-                            <a href="<?php echo base_url('admin/addons/spoilages')?>">
-                                <p>Add Ons Spoilages</p>
-                            </a>
-                            <a href="<?php echo base_url('admin/menu/spoilages')?>">
-                                <p>Menu Spoilages</p>
-                            </a>
-                            <a href="<?php echo base_url('admin/stock/spoilages')?>">
-                                <p>Stock Spoilages</p>
-                            </a>
-                        </ul>
-                        <!--End Dropdown-->
-                    </li>
-                    <!--Sales : Dropdown-->
-                    <li>
-                        <a href="<?php echo base_url('admin/transactions')?>">
-                            <p>Transactions</p>
-                        </a>
-                        <!--Start-->
-                        <ul>
-                            <a href="<?php echo base_url('admin/spoilages')?>">
-                                <p>Purchased Orders</p>
-                            </a>
-                            <a href="<?php echo base_url('admin/spoilages')?>">
-                                <p>Transactions</p>
-                            </a>
-                        </ul>
-                        <!--End-->
-                    </li>
-                    <li>
-                        <a href="<?php echo base_url('admin/sources')?>">
-                            <p>Sources</p>
-                        </a>
-                    </li>
-                    <!--Menu Items : Dropdown-->
-                    <li>
-                        <a href="<?php echo base_url('admin/menu')?>">
-                            <p>Menu Items</p>
-                        </a>
-                        <!--Start Dropdown-->
-                        <ul>
-                            <a href="<?php echo base_url('admin/menuspoilages')?>">
-                                <p>All</p>
-                            </a>
-                            <a href="<?php echo base_url('admin/discounts')?>">
-                                <p>Discounts</p>
-                            </a>
-                            <a href="<?php echo base_url('admin/addOns')?>">
-                                <p>Add Ons</p>
-                            </a>
-                            <a href="<?php echo base_url('admin/categories')?>">
-                                <p>Categories</p>
-                            </a>
-                        </ul>
-                        <!--End Dropdown-->
-                    </li>
-                    <li>
-                        <a href="<?php echo base_url('admin/tables')?>">
-                            <p>Tables</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo base_url('admin/accounts')?>">
-                            <p>User Accounts</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo base_url('admin/reports')?>">
-                            <p>Reports</p>
-                        </a>
-                    </li>
+            <!-- Sidebar Holder -->
+            <nav id="sidebar">
+                <div class="sidebar-header">
+                    <img  class="logo" src="/assets/media/logo.png">
+                </div>
+<hr>
+                <ul class="list-unstyled">
+                                            <li>
+                            <a href="<?php echo base_url('admin/dashboard') ?>">Dashboard</a>
+                        </li>
+                <li class="active">
+                    <a href="#homeSubmenu" data-toggle="collapse"  class="dropdown-toggle" aria-expanded="false">Inventory</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                         <li>
+                            <a href="#logs" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Logs</a>
+                            <ul  class="collapse list-unstyled" id="logs">
+
+                                <li>
+                                    <a href="<?php echo base_url('admin/inventory')?>" ><span style="margin-left: 15%">All</span></a>
+                                </li>
+                                <li>
+                                   <a href="#" ><span style="margin-left: 15%">Restock</span></a>
+                                </li>
+                                 <li>
+                                   <a href="#" ><span style="margin-left: 15%">Destock</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="<?php echo base_url('admin/purchaseorder')?>">Purchase Order</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo base_url('admin/transactions')?>">Purchases</a>
+                        </li>
+                        <li>
+                            <a href="#">Consumed</a>
+                        </li>
+                        <li>
+                            <a href="#">Returns</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo base_url('admin/stock/spoilages')?>">Spoilages</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#Menu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Menu</a>
+                    <ul class="collapse list-unstyled" id="Menu">
+                        <li>
+                            <a href="<?php echo base_url('admin/menu') ?>">Menu</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo base_url('admin/addOns')?>">Addons</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo base_url('admin/categories')?>">Categories</a>
+                        </li>
+                        <li>
+                            <a href="#Promo" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Promo</a>
+                            <ul  class="collapse list-unstyled" id="Promo">
+
+                                <li>
+                                    <a href="<?php echo base_url('admin/discounts')?>"><span style="margin-left: 15%">Discount</span></a>
+                                </li>
+                                <li>
+                                   <a href="#" ><span style="margin-left: 15%">Freebie</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                         <li>
+                            <a href="#Spoilages" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Spoilages</a>
+                            <ul  class="collapse list-unstyled" id="Spoilages">
+
+                                <li>
+                                    <a href="<?php echo base_url('admin/addons/spoilages')?>"><span style="margin-left: 15%">Addons</span></a>
+                                </li>
+                                <li>
+                                   <a href="<?php echo base_url('admin/menu/spoilages')?>"><span style="margin-left: 15%">Menu</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                    </ul>
+                </li>
+                <li>
+                    <a href="<?php echo base_url('admin/sales')?>">Sales</a>
+                </li>
+                <li>
+                    <a href="<?php echo base_url('admin/sources') ?>">Sources</a>
+                </li>
+                <li>
+                    <a href="<?php echo base_url('admin/accounts') ?>">Accounts</a>
+                </li>
+                <li>
+                    <a  href="<?php echo base_url('admin/tables') ?>">Tables</a>
+                </li>
+                        <li>
+                            <a href="#Reports" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Reports</a>
+                            <ul  class="collapse list-unstyled" id="Reports">
+
+                                <li>
+                                    <a href="#" >Inventory</a>
+                                </li>
+                                <li>
+                                   <a href="#">Sales</a>
+                                </li>
+                            </ul>
+                        </li>
                 </ul>
-            </div>
-        </div>
+    
+            </nav>
+
+    </body>
+</html>

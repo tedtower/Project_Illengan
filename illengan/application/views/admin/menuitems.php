@@ -14,7 +14,7 @@
                             <!--Table-->
                             <div class="card-content">
                                 <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newMenu"
-                                    data-original-title style="float: left">Add Transaction</a>
+                                    data-original-title style="float: left">Add Menu Item</a>
                                 <!--Search
                             <div id ="example_filter" class="dataTables_filter">
                                 <label>
@@ -41,7 +41,7 @@
                     
                 </tbody>
             </table>
-            <!--Start of Modal "Add Transaction"-->
+            <!--Start of Modal "Add Menu"-->
             <div class="modal fade bd-example-modal-lg" id="newMenu" tabindex="-1" role="dialog"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
@@ -108,7 +108,7 @@
 
 
 
-                                                    <!--Transaction Items-->
+                                                    <!--Menu Items-->
                                                     <a class="btn btn-primary btn-sm" style="color:blue">Add Preferences</a> <!--Button to add row in the table-->
                                                     <br><br>
                                                     <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
@@ -140,7 +140,7 @@
                                                                 <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
                                                             </tr>
                                                     </table>
-                                                    <!--Transaction Items-->
+                                                    <!--Menu Items-->
                                                     <a class="btn btn-primary btn-sm" style="color:blue">Add Addons</a> <!--Button to add row in the table-->
                                                     <br><br>
                                                     <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->

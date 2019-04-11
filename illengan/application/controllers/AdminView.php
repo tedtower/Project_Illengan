@@ -193,7 +193,7 @@ class AdminView extends CI_Controller{
             $this->load->view('admin/templates/sideNav');
             $data['source'] = $this->adminmodel->get_sources();
             $this->load->view('admin/adminSources', $data);
-            $this->load->view('admin/templates/scripts');
+            // $this->load->view('admin/templates/scripts');
             $this->load->view('admin/templates/footer');
         }else{
             redirect('login');
@@ -214,7 +214,7 @@ class AdminView extends CI_Controller{
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/templates/footer');
-            $this->load->view('admin/templates/scripts');
+            // $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
@@ -235,7 +235,7 @@ function viewSpoilagesStock(){
         $this->load->view('admin/templates/head');
         $this->load->view('admin/templates/sideNav');
         $this->load->view('admin/templates/footer');
-        $this->load->view('admin/templates/scripts');
+        // $this->load->view('admin/templates/scripts');
     }else{
         redirect('login');
     }
@@ -256,7 +256,7 @@ function viewSpoilagesStock(){
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/templates/footer');
-            $this->load->view('admin/templates/scripts');
+            // $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }

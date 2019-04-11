@@ -23,20 +23,10 @@
                             <div class="card-content">
                                 <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newStock"
                                     data-original-title style="float:left">Add Stock Item</a>
-                        <!--Search
-                            <div id ="example_filter" class="dataTables_filter">
-                                <label>
-                                    "Search:"
-                                    <div class="form-group form-group-sm is-empty">
-                                       <input type="search" class="form-control" placeholder aria-controls="example">
-                                       <span class="material-input"></span> 
-                                    </div>
-                                </label>
-                            </div>-->
                             <br><br>
-                        <table id="example" class="table table-striped table-bordered dt-responsive nowrap"
-                            cellspacing="0" width="100%">
-                            <thead>
+                        <table id="example" class="table table-bordered dt-responsive nowrap"
+                            cellspacing="0" width="100%" style="background:#fcfcfc">
+                            <thead class="thead-light">
                             <tr>
                                 <th></th>
                                 <th><b class="pull-left">Name</b></th>
@@ -68,61 +58,69 @@
 
                                 <tr>
                                     <td colspan="8">
-                                        <div  style="margin:0 4%"><!--Container OF ACCORDION-->
+                                        <div  style="margin:1% 4%"><!--Container OF ACCORDION-->
                                         <!--beginning and ending inventory-->
-                                            <div style="overflow:auto;width:90%">
+                                            <div style="overflow:auto;">
                                                 <div style="width:40%;float:left;font-weight:bold">Beginning: <span>20</span></div>
-                                                <div style="width:40%;float:right;font-weight:bold">Ending: <span>10</span></div>
+                                                <div style="width:15%;float:right;font-weight:bold;">Ending: <span>10</span></div>
                                             </div>
                                             <br>
                                         <!--Consumed table-->
+                                    <div style="overflow:auto;">
+                                    <div style="overflow:auto;width:32%;float:left">
                                             <span>Consumed</span>
                                             <table class="table">
-                                                <thead style="background:#4CAF50">
+                                                <thead style="background:#008751">
                                                     <tr>
                                                         <th style="color:white">Qty</th>
                                                         <th style="color:white">Date</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody >
-                                                    <tr style="background:white">
+                                                    <tr>
                                                         <td>3</td>
                                                         <td>February 2, 2019</td>
                                                     </tr>
                                                 </tbody>                                        
                                             </table>
+</div>
                                         <!--Spoilages table-->
+                                        <div style="overflow:auto;width:32%;float:left;margin:0 2%">
                                             <span>Spoilages</span>
-                                            <table class="table">
-                                                <thead style="background:#ff6600">
+                                            <table class="table table-bordered">
+                                                <thead style="background:#FE653B">
                                                     <tr>
                                                         <th style="color:white">Qty</th>
                                                         <th style="color:white">Date</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody >
-                                                    <tr style="background:white">
+                                                    <tr>
                                                         <td>3</td>
                                                         <td>February 3, 2019</td>
                                                     </tr>
                                                 </tbody>                                        
                                             </table>
+</div>
                                         <!--Returns table-->
+                                        <div style="overflow:auto;width:32%;float:left">
                                             <span>Returns</span>
-                                            <table class="table">
-                                                <thead style="background:#3366ff">
+                                            <table class="table table-bordered">
+                                                <thead style="background:#2077BD">
                                                     <tr>
                                                         <th style="color:white">Qty</th>
                                                         <th style="color:white">Date</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody >
-                                                    <tr style="background:white">
+                                                    <tr>
                                                         <td>1</td>
                                                         <td>February 4, 2019</td>
                                                     </tr>
                                                 </tbody>                                        
                                             </table>
+</div>
+</div>
 
                                         </div><!--End of accordion container-->
                                     </td>

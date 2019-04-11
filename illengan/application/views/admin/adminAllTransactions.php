@@ -23,21 +23,11 @@
                             <div class="card-content">
                                 <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newTransaction"
                                     data-original-title style="float: left" id="addTransaction">Add Transaction</a>
-                                <!--Search
-                            <div id ="example_filter" class="dataTables_filter">
-                                <label>
-                                    "Search:"
-                                    <div class="form-group form-group-sm is-empty">
-                                       <input type="search" class="form-control" placeholder aria-controls="example">
-                                       <span class="material-input"></span> 
-                                    </div>
-                                </label>
-                            </div>-->
                                 <br>
                                 <br>
                                 <table id="transTable" class="table table-bordered dt-responsive nowrap"
                                     cellspacing="0" width="100%">
-                                    <thead>
+                                    <thead class="thead-light">
                                         <th style="width:10px"></th>
                                         <th><b class="pull-left">Receipt No.</b></th>
                                         <th><b class="pull-left">Supplier</b></th>
