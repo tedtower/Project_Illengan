@@ -37,6 +37,8 @@
                         <table id="example" class="table table-striped table-bordered dt-responsive nowrap"
                             cellspacing="0" width="100%">
                             <thead>
+                            <tr>
+                                <th></th>
                                 <th><b class="pull-left">Name</b></th>
                                 <th><b class="pull-left">Quantity</b></th>
                                 <th><b class="pull-left">Unit</b></th>
@@ -44,9 +46,11 @@
                                 <th><b class="pull-left">Category</b></th>
                                 <th><b class="pull-left">Status</b></th>
                                 <th><b class="pull-left">Action</b></th>
+                            </tr>
                             </thead>
                             <tbody>
                                 <tr>
+                                    <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width:15px"/></td>
                                     <td>Strawberry Syrup</td>
                                     <td>5</td>
                                     <td>bottle</td>
@@ -59,6 +63,68 @@
                                         <!--Delete button-->
                                         <button class="btn btn-danger btn-sm" data-toggle="modal"
                                             data-target="">Delete</button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="8">
+                                        <div  style="margin:0 4%"><!--Container OF ACCORDION-->
+                                        <!--beginning and ending inventory-->
+                                            <div style="overflow:auto;width:90%">
+                                                <div style="width:40%;float:left;font-weight:bold">Beginning: <span>20</span></div>
+                                                <div style="width:40%;float:right;font-weight:bold">Ending: <span>10</span></div>
+                                            </div>
+                                            <br>
+                                        <!--Consumed table-->
+                                            <span>Consumed</span>
+                                            <table class="table">
+                                                <thead style="background:#4CAF50">
+                                                    <tr>
+                                                        <th style="color:white">Qty</th>
+                                                        <th style="color:white">Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody >
+                                                    <tr style="background:white">
+                                                        <td>3</td>
+                                                        <td>February 2, 2019</td>
+                                                    </tr>
+                                                </tbody>                                        
+                                            </table>
+                                        <!--Spoilages table-->
+                                            <span>Spoilages</span>
+                                            <table class="table">
+                                                <thead style="background:#ff6600">
+                                                    <tr>
+                                                        <th style="color:white">Qty</th>
+                                                        <th style="color:white">Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody >
+                                                    <tr style="background:white">
+                                                        <td>3</td>
+                                                        <td>February 3, 2019</td>
+                                                    </tr>
+                                                </tbody>                                        
+                                            </table>
+                                        <!--Returns table-->
+                                            <span>Returns</span>
+                                            <table class="table">
+                                                <thead style="background:#3366ff">
+                                                    <tr>
+                                                        <th style="color:white">Qty</th>
+                                                        <th style="color:white">Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody >
+                                                    <tr style="background:white">
+                                                        <td>1</td>
+                                                        <td>February 4, 2019</td>
+                                                    </tr>
+                                                </tbody>                                        
+                                            </table>
+
+                                        </div><!--End of accordion container-->
                                     </td>
                                 </tr>
                             </tbody>

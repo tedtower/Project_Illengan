@@ -74,7 +74,6 @@ class AdminUpdate extends CI_Controller{
             
             $this->adminmodel->edit_accounts($data,$account_id);
             }
-        }
     }
     function editMenuCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){

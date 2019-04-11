@@ -329,6 +329,16 @@ function viewSpoilagesStock(){
             redirect('login');
         }
     }
+
+    function viewPurchaseOrder(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Admin Purchase Order";
+            $this->load->view('admin/adminPurchaseOrder',$data);
+
+        }else{
+            redirect('login');
+        }
+    }
     function samplemethod(){
         
         // $this->output->set_output(json_encode($this->adminmodel->get_samplemethod($this->input->get('id'))));
