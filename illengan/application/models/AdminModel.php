@@ -303,7 +303,8 @@ class AdminModel extends CI_Model{
         $query = "delete from categories where category_id = ? and category_type= 'menu'";
         return $this->db->query($query,array($category_id));
     }
-    function delete_spoilages($s_id){
+    function delete_spoilages(){
+        $s_id=$this->input->post('s_id');
         $this->db->where('s_id', $s_id);
         $this->db->delete('spoilage');
     }

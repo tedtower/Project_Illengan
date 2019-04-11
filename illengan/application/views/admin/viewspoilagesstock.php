@@ -33,7 +33,7 @@
 									<th>Date Recorded</th>
 									<th>Operations</th>
 								</thead>
-								<tbody>
+								<tbody id="spoilage_data">
 								</tbody>
 							</table>
 
@@ -129,7 +129,7 @@
 												<strong>Are you sure to remove this record?</strong>
 											</div>
 											<div class="modal-footer">
-												<input type="hidden" name="order_id_remove" id="order_id_remove"
+												<input type="hidden" name="s_id_remove" id="s_id_remove"
 													class="form-control">
 												<button type="button" type="submit" id="btn_cancel"
 													class="btn btn-primary">Yes</button>
@@ -161,58 +161,58 @@
 <script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.buttons.js'?>"></script>
 
 <script>
-	var table = $('#tablevalues');
+		var table = $('#tablevalues');
 
-	function format(d) {
-		return '<table>' +
-			'<tr>' +
-			'<td>Remarks</td>' +
-			'</tr>' +
-			'<tr>' +
-			'<td>' + d.remarks + '</td>' +
-			'</tr>' +
-			'</table>';
+		function format(d) {
+			return '<table>' +
+				'<tr>' +
+				'<td>Remarks</td>' +
+				'</tr>' +
+				'<tr>' +
+				'<td>' + d.remarks + '</td>' +
+				'</tr>' +
+				'</table>';
 
-	}
+		}
 
-	$(document).ready(function () {
-		var table = $('#tablevalues').DataTable({
-			ajax: {
-				url: 'http://www.illengan.com/admin/spoilagesstockjson',
-				dataSrc: ''
-			},
-			colReorder: {
-				realtime: true
-			},
-			"columns": [{
-					"className": 'details-control',
-					"data": null,
-					"defaultContent": ''
+		$(document).ready(function () {
+			var table = $('#tablevalues').DataTable({
+				ajax: {
+					url: 'http://www.illengan.com/admin/spoilagesstockjson',
+					dataSrc: ''
 				},
-				{
-					"data": "s_id"
+				colReorder: {
+					realtime: true
 				},
-				{
-					"data": "stock_name"
-				},
-				{
-					"data": "s_qty"
-				},
-				{
-					"data": "s_date"
-				},
-				{
-					"data": "date_recorded"
-				},
-				{
-					"data": null,
-					render: function (data, type, row, meta) {
-						return '<a href="javascript: void(0)" class="btn btn-warning btn-sm item_delete" data-s_id="' +
-							data.s_id + '">Delete</a>';
+				"columns": [{
+						"className": 'details-control',
+						"data": null,
+						"defaultContent": ''
+					},
+					{
+						"data": "s_id"
+					},
+					{
+						"data": "stock_name"
+					},
+					{
+						"data": "s_qty"
+					},
+					{
+						"data": "s_date"
+					},
+					{
+						"data": "date_recorded"
+					},
+					{
+						"data": null,
+						render: function (data, type, row, meta) {
+							return '<a href="javascript: void(0)" class="btn btn-warning btn-sm item_delete" data-s_id="' +
+								data.s_id + '">Delete</a>';
+						}
 					}
-				}
-			]
-		});
+				]
+			});
 
 
 		//For showing the accordion
@@ -249,34 +249,34 @@
 		});
 
 	});
+	// Function for Delete
+		$('#spoilage_data').on('click','.item_delete',function(){
+				var order_id = $(this).data('s_id');
+				
+				$('#Modal_Remove').modal('show');
+				$('[name="s_id_remove"]').val(order_id);
+			});
+
+			//delete record to database
+			$('#btn_cancel').on('click',function(){
+				var order_id = $('#s_id_remove').val();
+				$.ajax({
+					type : "POST",
+					url  : "<?php echo site_url('admin/stock/spoilage/delete')?>",
+					dataType : "JSON",
+					data : {s_id:s_id},
+					success: function(data){
+						$('[name="s_id_remove"]').val("");
+						alert("Record removed successfully!");
+						$('#Modal_Remove').modal('hide');
+						
+						table.DataTable(). ajax.reload(null, false);
+					}
+				});
+				return false;
+			});
+			//End Function Delete
+
 </script>
-
-
-
-
-
-<!-- <script>
-
-		
-
-		// var tuples = ((document.getElementById('tablevalues')).getElementsByTagName('tbody'))[0].getElementsByTagName(
-		//     'tr');
-		// var tupleNo = tuples.length;
-		// var editModal = document.getElementById('addStockSpoilage');
-		// for (var x = 0; x < tupleNo; x++) {
-		// 	var editButtons = document.getElementsByName('addStockSpoilage');
-		//     editButtons[x].addEventListener("click", showAddModal);
-		// }
-
-		// function showAddModal(event) {
-		//     var row = event.target.parentElement.parentElement.parentElement;
-		//     document.getElementById('stock_name').value = row.firstElementChild.innerHTML;
-		//     document.getElementById('s_qty').value = row.firstElementChild.nextElementSibling.innerHTML;
-		//     document.getElementById('s_date').value = row.firstElementChild.nextElementSibling.innerHTML;
-		//     document.getElementById('remarks').value = row.firstElementChild.nextElementSibling.innerHTML;
-		// 		document.getElementById('s_type').value = row.firstElementChild.nextElementSibling.innerHTML;
-		// }
-	</script> -->
-
 
 </html>
