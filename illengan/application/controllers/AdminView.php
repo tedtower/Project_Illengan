@@ -70,7 +70,7 @@ class AdminView extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['title'] = "Admin Dashboard";
             $this->load->view('admin/templates/head', $data);
-            $this->load->view('admin/templates/sideNavi');            
+            $this->load->view('admin/templates/sideNav');            
             $this->load->view('admin/adminDashboard');            
             $this->load->view('admin/templates/scripts');
             $this->load->view('admin/templates/footer');
