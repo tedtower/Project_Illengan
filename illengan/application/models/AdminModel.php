@@ -306,7 +306,8 @@ class AdminModel extends CI_Model{
     function delete_spoilages(){
         $s_id=$this->input->post('s_id');
         $this->db->where('s_id', $s_id);
-        $this->db->delete('spoilage');
+        $result = $this->db->delete('spoilage');
+        return $result;
     }
     function delete_stockcategory($category_id){
         $query = "delete from categories where category_id = ? and category_type= 'inventory'";
