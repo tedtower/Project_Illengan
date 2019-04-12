@@ -300,9 +300,49 @@ class AdminView extends CI_Controller{
     }
     function samplemethod(){
         
-        // $this->output->set_output(json_encode($this->adminmodel->get_samplemethod($this->input->get('id'))));
+        // $this->output->set_output(json_ encode($this->adminmodel->get_samplemethod($this->input->get('id'))));
         $this->output->set_output(json_encode($this->adminmodel->get_transactions()));
     }
+
+    function jsonLogStock() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data = $this->adminmodel->get_logs();
+
+            header('Content-Type: application/json');
+		    echo json_encode($data, JSON_PRETTY_PRINT);
+        }else {
+            redirect('login');
+        }  
+
+    }
+    function jsonStock() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data = array();
+            $data['stocks'] = $this->adminmodel->get_stock();
+            $data['transactions'] = $this->adminmodel->get_transactions();
+            header('Content-Type: application/json');
+		    echo json_encode($data, JSON_PRETTY_PRINT);
+        }else {
+            redirect('login');
+        }  
+
+
+    }
+
+    function viewLogStock() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Stock Logs";
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/stocklog');
+		    
+        }else {
+            redirect('login');
+        }
+
+    }
+
+
 }
 
 ?>

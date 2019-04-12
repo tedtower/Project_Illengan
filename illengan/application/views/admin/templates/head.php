@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="<?= framework_url().'bootstrap-native/bootstrap.min.css'?>">
     <link rel="stylesheet" type="text/css" href="<?= admin_css().'light-bootstrap-dashboard.css'?>">
     <link rel="stylesheet" type="text/css" href="<?= admin_css().'sidenav.css'?>">
+    <link rel="stylesheet" type="text/css" href="<?= admin_css().'table.css'?>">
     <link rel="stylesheet" type="text/css" href="<?= font_url().'pre-icon-7/pe-icon-7-stroke.css'?>">
     <link rel="stylesheet" type="text/css" href="<?= font_url().'fontawesome/font-awesome.css'?>">
     <link rel="stylesheet" type="text/css" href="<?= framework_url().'plugins/charts/chartist-bundle/chartist.css'?>">

@@ -188,5 +188,16 @@ class AdminUpdate extends CI_Controller{
             redirect('login');
         }
     }
+    
+    function editStockQty() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $stock_id = $this->input->post('stockId');
+            $stock_quantity = $this->input->post('stockQty');
+            echo $stock_id, $stock_quantity;
+            $this->adminmodel->edit_stockqty($stock_id, $stock_quantity);
+        }else{
+            redirect('login');
+        }
+    }
 }
 ?>

@@ -157,6 +157,10 @@ class AdminModel extends CI_Model{
         $query = "update categories set category_name = ?  where category_id = ? and category_type='inventory'";
         return $this->db->query($query,array($category_name,$category_id));
     }
+    function edit_stockqty($stock_id, $stock_quantity){
+        $query = "Update stockitems set stock_quantity = ? where stock_id= ?;";
+        return $this->db->query($query,array($stock_quantity, $stock_id));
+    }
     function edit_stockitem($stock_id,$stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id){
         $query = "Update stockitems set stock_name = ?, stock_quantity = ?, stock_unit = ?, stock_minimum = ?, stock_status = ?, category_id = ? where stock_id=?;";
         return $this->db->query($query,array($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id,$stock_id));
@@ -189,7 +193,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_logs(){
-        $query = "Select log_id, stock_name, quantity, log_date, log_type, date_recorded from log inner join stockitems using (stock_id)";
+        $query = "Select * from log inner join stockitems using (stock_id)";
         return $this->db->query($query)->result_array();
     }
     function get_menu(){
@@ -285,6 +289,10 @@ class AdminModel extends CI_Model{
     }
     function get_transitems(){
         $query = "Select trans_id, item_name, item_qty, item_unit, item_price, subtotal from transitems";
+        return $this->db->query($query)->result_array();
+    }
+    function get_inventorystock() {
+        $query = "SELECT * FROM stockitems INNER JOIN categories USING (category_id);";
         return $this->db->query($query)->result_array();
     }
 
