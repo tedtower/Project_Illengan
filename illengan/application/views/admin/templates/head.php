@@ -19,4 +19,5 @@
     <link rel="stylesheet" type="text/css" href="<?= framework_url().'datatables-bootstrap4/css/responsive.bootstrap4.min.css';?>">
     <link rel="stylesheet" type="text/css" href="<?= framework_url().'datatables-bootstrap4/css/select.bootstrap4.min.css';?>">
     <link rel="stylesheet" type="text/css" href="<?= framework_url().'datatables-bootstrap4/css/buttons.bootstrap4.min.css';?>">
+
 </head>

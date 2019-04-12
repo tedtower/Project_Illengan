@@ -68,7 +68,9 @@ $route['admin/stockcategories'] = "adminview/viewstockcategories";
 $route['admin/sources'] = "adminview/viewsources";
 $route['admin/accounts'] = "adminview/viewaccounts";
 $route['admin/inventory'] = "adminview/viewinventory";
+$route['admin/purchaseorders'] = "adminview/viewpurchaseorders";
 $route['admin/transactions'] = "adminview/viewtransactions";
+$route['admin/purchaseorder'] = "adminview/viewPurchaseOrder";
 $route['admin/spoilages/addons'] = "adminview/viewspoilagesao";
 $route['admin/spoilages/menu'] = "adminview/viewspoilagesmenu";
 $route['admin/spoilages/stock'] = "adminview/viewspoilagesstock";
@@ -77,6 +79,12 @@ $route['admin/spoilages/stock/add'] ="adminview/viewInsertSpoilageStock";
 $route['admin/spoilages/addons/add'] ="adminview/viewInsertSpoilageAo";
 $route['admin/spoilages'] = "adminview/viewspoilages";
 $route['admin/spoilagesjson'] = "adminview/viewSpoilagesJs";
+$route['admin/menu/spoilages'] = "adminview/viewspoilagesmenu";
+$route['admin/spoilagesmenujson'] = "adminview/viewSpoilagesMenuJs";
+$route['admin/stock/spoilages'] = "adminview/viewSpoilagesStock";
+$route['admin/spoilagesstockjson'] = "adminview/viewSpoilagesStockJs";
+$route['admin/addons/spoilages'] = "adminview/viewspoilagesaddons";
+$route['admin/spoilagesaddonsjson'] = "adminview/viewSpoilagesAddonsJs";
 $route['admin/logStock'] = "adminview/viewLogStock";
 
 //End Viewing Routes
@@ -87,15 +95,16 @@ $route['admin/menu/datatables'] = "adminview/datatables_menu";
 
 //Admin Add Routes ----------------------------------------------
 $route['admin/transactions/add'] = "adminadd/addtransactions";
+$route['admin/purchaseorder/add'] = "adminview/addpurchaseorder";
 $route['admin/inventory/add'] = "adminadd/addstockitem";
 $route['admin/menu/add'] = "adminadd/add_menu";
 $route['admin/stockcategories/add'] = "adminadd/addstockcategory";
 $route['admin/menucategories/add'] = "adminadd/addmenucategory";
 $route['admin/accounts/add'] = "adminadd/addaccounts";
 $route['admin/tables/add'] = "adminadd/addtable";
-$route['admin/addspoilagesmenu'] = "adminadd/addspoilagesmenu";
-$route['admin/insertspoilagesstock'] = "adminadd/insertspoilagesstock";
-$route['admin/insertspoilagesmenu'] = "adminadd/insertspoilagesmenu";
+$route['admin/addons/spoilages/add'] = "adminadd/addspoilagesaddons";
+$route['admin/stock/spoilages/add'] = "adminadd/addspoilagesstock";
+$route['admin/menu/spoilages/add'] = "adminadd/addspoilagesmenu";
 $route['admin/sources/add'] = "adminadd/addsource";
 //End Admin Add Routes ------------------------------------------
 
@@ -107,7 +116,7 @@ $route['admin/menu/edit_image'] = "adminupdate/edit_image";
 $route['admin/inventory/edit'] = "adminupdate/editstockitem";
 $route['admin/transactions/edit'] = "adminupdate/edittransactions";
 $route['admin/accounts/changepassword'] = "adminupdate/changeAccountPassword";
-$route['admin/accounts/edit'] = "adminview/vieweditAccounts";
+$route['admin/accounts/edit'] = "adminupdate/editAccounts";
 $route['admin/sources/edit'] = "adminupdate/editsource";
 $route['admin/tables/edit'] = "adminupdate/edittable";
 $route['admin/stockqty/edit'] = "adminupdate/editStockQty";
@@ -120,6 +129,9 @@ $route['admin/stockcategories/delete/(:num)'] = "admindelete/deletestockcategory
 $route['admin/inventory/delete/(:num)'] = "admindelete/deletestockitem/$1";
 $route['admin/transactions/delete'] = "admindelete/deletetransactions";
 $route['admin/sources/delete/(:num)'] = "admindelete/deletesource/$1";
+$route['admin/stock/spoilage/delete/(:num)'] ="admindelete/deletestockspoilages/$1";
+$route['admin/menu/spoilage/delete/(:num)'] ="admindelete/deletemenuspoilages/$1";
+$route['admin/addons/spoilage/delete/(:num)'] ="admindelete/deleteaddonsspoilages/$1";
 //End Admin Delete Routes ---------------------------------------
 
 //Admin Json Routes ------------------------------------------- 

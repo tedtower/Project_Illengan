@@ -1,67 +1,112 @@
-@media (min-width: 992px){
-    .typo-line{
-        padding-left: 140px;
-        margin-bottom: 40px;
-        position: relative;
-    }
+/*
+    DEMO STYLE
+*/
 
-    .typo-line .category{
-        transform: translateY(-50%);
-        top: 50%;
-        left: 0px;
-        position: absolute;
-    }
+
+a,
+a:hover,
+a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
 }
 
-.all-icons [class*="pe-"]{
-    font-size: 40px;
-}
-.all-icons input{
-    border: 0;
-}
-.all-icons .font-icon-detail{
-    text-align: center;
-    padding: 45px 0px 30px;
-    border: 1px solid #e5e5e5;
-    border-radius: 6px;
-    margin: 15px 0;
-}
-.all-icons .font-icon-detail input{
-    margin: 25px auto 0;
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+.wrapper {
+    display: flex;
     width: 100%;
-    text-align: center;
+    align-items: stretch;
+}
+
+.logo{
+    width: 120px;
+    height: 120px;
     display: block;
-    color: #aaa;
-    font-size: 13px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 3px solid grey;
+    border-radius: 130px;
+  
+    
 }
-
-#map{
-    position:relative;
-    width:100%;
-    height: calc(100% - 60px);
+hr{
+    border: 1px solid whitesmoke;margin: 0 5%;margin-bottom:10%;opacity: 0.2;
 }
-
-.places-buttons .btn{
-    margin-bottom: 30px
-}
-.sidebar .nav > li.active-pro{
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    min-height: 100%;
+    z-index: 1;
+    background: linear-gradient( rgba(0, 0, 0, 0.5) 100%, rgba(0, 0, 0, 0.5)100%),url('bg3.jpg');
+    color: #fff;
+    transition: all 0.3s;
+    background-size: cover;
+    background-position: center;
     position: absolute;
+}
+
+#sidebar.active {
+    margin-left: -250px;
+}
+
+#sidebar .sidebar-header {
+    padding: 5%;
+    margin-bottom: 5%;
+    margin-top: 3%;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #47748b;
+}
+
+
+
+#sidebar ul li a {
+    padding: 10px;
+    padding-left: 8%;
+    font-size: 16px;
+    display: block;
+    
+}
+
+
+#sidebar ul li a:hover {
+    color: darksalmon;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+}
+
+
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+#content {
     width: 100%;
-    bottom: 10px;
-}
-.sidebar .nav > li.active-pro a{
-    background: rgba(255, 255, 255, 0.14);
-    opacity: 1;
-    color: #FFFFFF;
-}
-
-.table-upgrade td:nth-child(2),
-.table-upgrade td:nth-child(3){
-    text-align: center;
-}
-
-@media all and (max-width: 991px)  {
-    .sidebar .nav > li.active-pro{
-        position: initial;
-    }
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s;
 }

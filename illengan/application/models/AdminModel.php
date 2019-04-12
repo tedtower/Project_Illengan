@@ -62,9 +62,9 @@ class AdminModel extends CI_Model{
         $query = "Insert into categories (category_id, category_name, supcat_id, category_type) values (NULL, ? , ? ,'Inventory')";
         return $this->db->query($query,array($category_name, $superCategory));
     }
-    function add_stockitem($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id){
+    function add_stockItem($stockName,$stockQty,$stockUnit,$stockMin,$stock_Status,$category_id){
         $query = "Insert into stockitems (stock_id,stock_name,stock_quantity,stock_unit,stock_minimum,stock_status,category_id) values (NULL,?,?,?,?,?,?);";
-        return $this->db->query($query,array($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id));
+        return $this->db->query($query,array($stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$category_id));
     }
     function add_table($table_code){
         $query = "Insert into tables (table_code) values (?);";
@@ -157,13 +157,13 @@ class AdminModel extends CI_Model{
         $query = "update categories set category_name = ?  where category_id = ? and category_type='inventory'";
         return $this->db->query($query,array($category_name,$category_id));
     }
+    function edit_stockItem($stockID,$stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$category_id){
+        $query = "Update stockitems set stock_name = ?, stock_quantity = ?, stock_unit = ?, stock_minimum = ?, stock_status = ?, category_id = ? where stock_id=?;";
+        return $this->db->query($query,array($stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$category_id,$stockID));
+    }
     function edit_stockqty($stock_id, $stock_quantity){
         $query = "Update stockitems set stock_quantity = ? where stock_id= ?;";
         return $this->db->query($query,array($stock_quantity, $stock_id));
-    }
-    function edit_stockitem($stock_id,$stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id){
-        $query = "Update stockitems set stock_name = ?, stock_quantity = ?, stock_unit = ?, stock_minimum = ?, stock_status = ?, category_id = ? where stock_id=?;";
-        return $this->db->query($query,array($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id,$stock_id));
     }
     function edit_transaction($trans_id, $receiptNo, $transDate, $source, $remarks, $total, $dateRecorded, $transItems){
         $query = "Delete from transitems where trans_id = ?";
@@ -239,23 +239,34 @@ class AdminModel extends CI_Model{
         $query = "Select order_id, order_date_time, order_payable, pay_date_time, date_recorded, menu_name, order_qty, order_total from orderslip inner join orderlist using (order_id) inner join menu using (menu_id) where payment_status = 'paid';";
         return $this->db->query($query)->result_array();
     }
-    function get_stock(){
-        $query = "Select * from stockitems";
+    function get_stocks(){
+        $query = "SELECT 
+            stock_id,
+            stock_name,
+            stock_quantity,
+            stock_unit,
+            stock_minimum,
+            stock_status,
+            category_name
+        FROM
+            stockitems
+                INNER JOIN
+            categories USING (category_id);";
         return $this->db->query($query)->result_array();
     }
     function get_addons(){
         $query = "Select * from addons";
         return $this->db->query($query)->result_array();
     }
-    function get_stockcategories(){
+    function get_stockCategories(){
         $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
     }
-    function get_stockmaincategories(){
+    function get_stockMainCategories(){
         $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' and supcat_id is null group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
     }
-    function get_stocksubcategories(){
+    function get_stockSubcategories(){
         $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' and supcat_id is not null group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
     }
@@ -267,15 +278,15 @@ class AdminModel extends CI_Model{
         $query = "select s_id, s_type, menu_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN menuspoil USING (s_id) inner JOIN menu USING (menu_id) UNION select s_id, s_type, stock_name AS decription, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN stockspoil USING (s_id) inner JOIN stockitems USING (stock_id) UNION select s_id,s_type, ao_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN ao_spoil USING (s_id) inner JOIN addons USING (ao_id) ORDER BY date_recorded";
         return $this->db->query($query)->result_array();
     }
-    function get_spoilages_menu(){
+    function get_spoilagesmenu(){
         $query = "Select s_id, menu_name , s_qty, s_date, date_recorded, remarks from spoilage inner join menuspoil using (s_id) inner join menu using (menu_id)";
         return  $this->db->query($query)->result_array();
     }
-    function get_spoilages_stock(){
+    function get_spoilagesstock(){
         $query = "Select s_id, stock_name,s_qty,stock_unit,s_date, date_recorded, remarks from spoilage inner join stockspoil using (s_id) inner join stockitems using (stock_id)";
         return  $this->db->query($query)->result_array();
     }
-    function get_spoilages_ao(){
+    function get_spoilagesaddons(){
         $query = "Select s_id, ao_name,s_qty, ao_category,s_date, date_recorded, remarks from spoilage INNER JOIN ao_spoil using (s_id)INNER JOIN addons using (ao_id)";
         return  $this->db->query($query)->result_array();
     }
@@ -311,7 +322,8 @@ class AdminModel extends CI_Model{
         $query = "delete from categories where category_id = ? and category_type= 'menu'";
         return $this->db->query($query,array($category_id));
     }
-    function delete_spoilages($s_id){
+    function delete_spoilages(){
+        $s_id=$this->input->post('s_id');
         $this->db->where('s_id', $s_id);
         $this->db->delete('spoilage');
     }

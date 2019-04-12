@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 
 <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/bootstrap.css'?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/bootstrap.min.css'?>">
 <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/jquery.dataTables.css'?>">
 <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/dataTables.bootstrap4.css'?>">
 <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/responsive.bootstrap.css'?>">
@@ -34,12 +35,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<th></th>
 											<th>Code</th>
 											<th>Type</th>
-											<th>Description</th><!--menu id-->
-											<th>Quantity</th><!--sqty-->
-											<th>Damage date</th><!--sdate-->
-											<th>Date Recorded</th><!--date_recorded-->
-											<th>Operations</th><!--remarks-->
-											<!--<th>Remarks</th>-->
+											<th>Description</th>
+											<th>Quantity</th>
+											<th>Damage date</th>
+											<th>Date Recorded</th>
+											<th>Operations</th>
 										</thead>
 										<tbody>
 										</tbody>
@@ -53,21 +53,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</div>
 </div>
-
-		
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery-3.2.1.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/bootstrap.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.dataTables.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.bootstrap4.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/tables.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.responsive.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.select.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.buttons.js'?>"></script>
-	
 <?php include_once('templates/scripts.php') ?>
-
-
-		<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery-3.2.1.js'?>"></script>
+	  <script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery-3.2.1.js'?>"></script>
 		<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/bootstrap.js'?>"></script>
 		<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.dataTables.js'?>"></script>
 		<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.bootstrap4.js'?>"></script>
