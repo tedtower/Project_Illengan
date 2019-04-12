@@ -62,9 +62,9 @@ class AdminModel extends CI_Model{
         $query = "Insert into categories (category_id, category_name, supcat_id, category_type) values (NULL, ? , ? ,'Inventory')";
         return $this->db->query($query,array($category_name, $superCategory));
     }
-    function add_stockitem($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id){
+    function add_stockItem($stockName,$stockQty,$stockUnit,$stockMin,$stock_Status,$category_id){
         $query = "Insert into stockitems (stock_id,stock_name,stock_quantity,stock_unit,stock_minimum,stock_status,category_id) values (NULL,?,?,?,?,?,?);";
-        return $this->db->query($query,array($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id));
+        return $this->db->query($query,array($stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$category_id));
     }
     function add_table($table_code){
         $query = "Insert into tables (table_code) values (?);";
@@ -157,9 +157,9 @@ class AdminModel extends CI_Model{
         $query = "update categories set category_name = ?  where category_id = ? and category_type='inventory'";
         return $this->db->query($query,array($category_name,$category_id));
     }
-    function edit_stockitem($stock_id,$stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id){
+    function edit_stockItem($stockID,$stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$category_id){
         $query = "Update stockitems set stock_name = ?, stock_quantity = ?, stock_unit = ?, stock_minimum = ?, stock_status = ?, category_id = ? where stock_id=?;";
-        return $this->db->query($query,array($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id,$stock_id));
+        $this->db->query($query,array($stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$category_id,$stockID));
     }
     function edit_transaction($trans_id, $receiptNo, $transDate, $source, $remarks, $total, $dateRecorded, $transItems){
         $query = "Delete from transitems where trans_id = ?";
@@ -235,23 +235,34 @@ class AdminModel extends CI_Model{
         $query = "Select order_id, order_date_time, order_payable, pay_date_time, date_recorded, menu_name, order_qty, order_total from orderslip inner join orderlist using (order_id) inner join menu using (menu_id) where payment_status = 'paid';";
         return $this->db->query($query)->result_array();
     }
-    function get_stock(){
-        $query = "Select * from stockitems";
+    function get_stocks(){
+        $query = "SELECT 
+            stock_id,
+            stock_name,
+            stock_quantity,
+            stock_unit,
+            stock_minimum,
+            stock_status,
+            category_name
+        FROM
+            stockitems
+                INNER JOIN
+            categories USING (category_id);";
         return $this->db->query($query)->result_array();
     }
     function get_addons(){
         $query = "Select * from addons";
         return $this->db->query($query)->result_array();
     }
-    function get_stockcategories(){
+    function get_stockCategories(){
         $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
     }
-    function get_stockmaincategories(){
+    function get_stockMainCategories(){
         $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' and supcat_id is null group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
     }
-    function get_stocksubcategories(){
+    function get_stockSubcategories(){
         $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' and supcat_id is not null group by category_id order by category_name asc";
         return $this->db->query($query)->result_array();
     }

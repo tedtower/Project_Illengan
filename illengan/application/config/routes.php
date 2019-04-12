@@ -68,6 +68,7 @@ $route['admin/stockcategories'] = "adminview/viewstockcategories";
 $route['admin/sources'] = "adminview/viewsources";
 $route['admin/accounts'] = "adminview/viewaccounts";
 $route['admin/inventory'] = "adminview/viewinventory";
+$route['admin/purchaseorders'] = "adminview/viewpurchaseorders";
 $route['admin/transactions'] = "adminview/viewtransactions";
 $route['admin/purchaseorder'] = "adminview/viewPurchaseOrder";
 $route['admin/spoilages/addons'] = "adminview/viewspoilagesao";

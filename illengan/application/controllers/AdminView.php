@@ -70,7 +70,7 @@ class AdminView extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['title'] = "Admin Dashboard";
             $this->load->view('admin/templates/head', $data);
-            $this->load->view('admin/templates/sideNav');            
+            $this->load->view('admin/templates/sideNavi');            
             $this->load->view('admin/adminDashboard');            
             $this->load->view('admin/templates/scripts');
             $this->load->view('admin/templates/footer');
@@ -81,12 +81,15 @@ class AdminView extends CI_Controller{
     function viewInventory($error = null){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['title'] = "Admin Inventory";
-            $this->load->view('admin/templates/head', $data);
-            $this->load->view('admin/templates/sideNav');
-            $data['stock'] = $this->adminmodel->get_inventory();
+            // $this->load->view('admin/templates/head', $data);
+            // $this->load->view('admin/templates/sideNav');
+            $data['inventory'] = array(
+                "stocks" => $this->adminmodel->get_inventory(),
+                "categories" => $this->adminmodel->get_stockCategories()
+            );
             $data['category'] = $this->adminmodel->get_stockcategories();
             $this->load->view('admin/adminInventory',$data);
-            $this->load->view('admin/templates/scripts');
+            // $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
@@ -299,7 +302,7 @@ class AdminView extends CI_Controller{
         }
     }
 
-    function viewPurchaseOrder(){
+    function viewPurchaseOrders(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['title'] = "Admin Purchase Order";
             $this->load->view('admin/adminPurchaseOrder',$data);

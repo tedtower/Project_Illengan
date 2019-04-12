@@ -427,7 +427,7 @@ function setTableData() {
     var tableRow;
     var accordion;
     if(transactions.transaction.length !== 0){
-        $("#transTable").next('div');
+        $("#transTable").next('div').text("");
         if($("#transTable > tbody").children().length !== 0){
             $("#transTable > tbody").empty();
         }

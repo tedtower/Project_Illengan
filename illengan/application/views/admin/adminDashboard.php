@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <?php include_once('templates/sideNav.php') ?>
+    <?php include_once('templates/sideNavi.php') ?>
     <!--End Sidebar-->
     <div class="content">
         <div class="container-fluid">

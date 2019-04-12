@@ -74,20 +74,20 @@ body {
 
 
 <div class="sidenav">
-    <a href="<?php echo base_url('admin/dashboard') ?>">
+    <a href="<?= site_url('admin/dashboard') ?>">
         <p>Dashboard</p>
     </a>
-    <a href="<?php echo base_url('admin/inventory')?>">
+    <a href="<?= site_url('admin/inventory')?>">
         <p>Inventory</p>
     </a>
     <button class="dropdown-btn">Sales Records
         <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-container">
-        <a href="<?php echo base_url('admin/sales')?>">
+        <a href="<?= site_url('admin/sales')?>">
             <p>Sales</p>
         </a>
-        <a href="<?php echo base_url('admin/addSales')?>">
+        <a href="<?= site_url('admin/addSales')?>">
             <p>Add Sales</p>
         </a>
     </div>
@@ -95,16 +95,16 @@ body {
         <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-container">
-        <a href="<?php echo base_url('admin/spoilages')?>">
+        <a href="<?= site_url('admin/spoilages')?>">
             <p>All Spoilages</p>
         </a>
-        <a href="<?php echo base_url('admin/addons/spoilages')?>">
+        <a href="<?= site_url('admin/addons/spoilages')?>">
             <p>Add Ons Spoilages</p>
         </a>
-        <a href="<?php echo base_url('admin/menu/spoilages')?>">
+        <a href="<?= site_url('admin/menu/spoilages')?>">
             <p>Menu Spoilages</p>
         </a>
-        <a href="<?php echo base_url('admin/stock/spoilages')?>">
+        <a href="<?= site_url('admin/stock/spoilages')?>">
             <p>Stock Spoilages</p>
         </a>
     </div>
@@ -112,40 +112,40 @@ body {
         <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-container">
-        <a href="<?php echo base_url('admin/transactions')?>">
+        <a href="<?= site_url('admin/transactions')?>">
             <p>Purchased Order</p>
         </a>
-        <a href="<?php echo base_url('admin/transactions')?>">
+        <a href="<?= site_url('admin/transactions')?>">
             <p>Transactions</p>
         </a>
     </div>
-    <a href="<?php echo base_url('admin/sources') ?>">
+    <a href="<?= site_url('admin/sources') ?>">
         <p>Sources</p>
     </a>
     <button class="dropdown-btn">Menu Items
         <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-container">
-        <a href="<?php echo base_url('admin/menuspoilages')?>">
+        <a href="<?= site_url('admin/menuspoilages')?>">
             <p>All</p>
         </a>
-        <a href="<?php echo base_url('admin/discounts')?>">
+        <a href="<?= site_url('admin/discounts')?>">
             <p>Discounts</p>
         </a>
-        <a href="<?php echo base_url('admin/addOns')?>">
+        <a href="<?= site_url('admin/addOns')?>">
             <p>Add Ons</p>
         </a>
-        <a href="<?php echo base_url('admin/categories')?>">
+        <a href="<?= site_url('admin/categories')?>">
             <p>Categories</p>
         </a>
     </div>
-    <a href="<?php echo base_url('admin/tables') ?>">
+    <a href="<?= site_url('admin/tables') ?>">
         <p>Tables</p>
     </a>
-    <a href="<?php echo base_url('admin/accounts') ?>">
+    <a href="<?= site_url('admin/accounts') ?>">
         <p>User Accounts</p>
     </a>
-    <a href="<?php echo base_url('admin/reports') ?>">
+    <a href="<?= site_url('admin/reports') ?>">
         <p>Reports</p>
     </a>
     </div>
