@@ -285,16 +285,16 @@ $(document).ready(function() {
             },
             success: function(data){
                 console.log(data);
-                // inventory = data;
-                // lastIndex = 0;
-                // setTableData();
+                inventory = data;
+                lastIndex = 0;
+                setTableData();
             },
             error: function(response, setting, error){
                 console.log(response.responseText);
                 console.log(error);
             },
             complete: function(){
-
+                $("#newStock").modal("hide");
             }
         });
     });
@@ -333,6 +333,9 @@ $(document).ready(function() {
             error: function(response, setting, error){
                 console.log(response.responseText);
                 console.log(error);
+            },
+            complete: function(){
+                $("#editStock").modal("hide");
             }
         });
     });
@@ -440,9 +443,10 @@ function setTableData(){
         $(".editBtn").on("click",function(){
             $("#editStock form")[0].reset();
             var stockID = $(this).closest("tr").attr("data-id");
-            console.log(inventory.stocks.filter(item => item.stock_id === stockID));
             setEditModal($("#editStock"), inventory.stocks.filter(item => item.stock_id === stockID)[0]);
         });
+    }else{
+        $("#stockTable > tbody").empty();
     }
 }
 function appendRow(stock){

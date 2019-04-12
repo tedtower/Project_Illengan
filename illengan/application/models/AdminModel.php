@@ -159,7 +159,7 @@ class AdminModel extends CI_Model{
     }
     function edit_stockItem($stockID,$stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$category_id){
         $query = "Update stockitems set stock_name = ?, stock_quantity = ?, stock_unit = ?, stock_minimum = ?, stock_status = ?, category_id = ? where stock_id=?;";
-        $this->db->query($query,array($stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$category_id,$stockID));
+        return $this->db->query($query,array($stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$category_id,$stockID));
     }
     function edit_transaction($trans_id, $receiptNo, $transDate, $source, $remarks, $total, $dateRecorded, $transItems){
         $query = "Delete from transitems where trans_id = ?";

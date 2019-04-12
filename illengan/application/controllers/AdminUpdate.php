@@ -115,12 +115,11 @@ class AdminUpdate extends CI_Controller{
                 $stockMin = $this->input->post('stockMin');
                 $stockStatus = $this->input->post('stockStatus');
                 $categoryName = $this->input->post('categoryName');
-                if($this->adminmodel->edit_stockitem($stockID,$stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$categoryName)){
+                if($this->adminmodel->edit_stockItem($stockID,$stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$categoryName)){
                     echo json_encode(array(
                         "stocks" => $this->adminmodel->get_stocks(),
-                        "categoroies" => $this->adminmodel->get_stockCategories()
+                        "categories" => $this->adminmodel->get_stockCategories()
                     ));
-                }else{
                 }
             }
 

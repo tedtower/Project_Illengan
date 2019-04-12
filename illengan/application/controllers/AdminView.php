@@ -311,11 +311,6 @@ class AdminView extends CI_Controller{
             redirect('login');
         }
     }
-    function samplemethod(){
-        
-        // $this->output->set_output(json_encode($this->adminmodel->get_samplemethod($this->input->get('id'))));
-        $this->output->set_output(json_encode($this->adminmodel->get_transactions()));
-    }
 }
 
 ?>
