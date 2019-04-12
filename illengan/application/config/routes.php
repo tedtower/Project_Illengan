@@ -79,6 +79,12 @@ $route['admin/spoilages/stock/add'] ="adminview/viewInsertSpoilageStock";
 $route['admin/spoilages/addons/add'] ="adminview/viewInsertSpoilageAo";
 $route['admin/spoilages'] = "adminview/viewspoilages";
 $route['admin/spoilagesjson'] = "adminview/viewSpoilagesJs";
+$route['admin/menu/spoilages'] = "adminview/viewspoilagesmenu";
+$route['admin/spoilagesmenujson'] = "adminview/viewSpoilagesMenuJs";
+$route['admin/stock/spoilages'] = "adminview/viewSpoilagesStock";
+$route['admin/spoilagesstockjson'] = "adminview/viewSpoilagesStockJs";
+$route['admin/addons/spoilages'] = "adminview/viewspoilagesaddons";
+$route['admin/spoilagesaddonsjson'] = "adminview/viewSpoilagesAddonsJs";
 
 //End Viewing Routes
 
@@ -95,9 +101,9 @@ $route['admin/stockcategories/add'] = "adminadd/addstockcategory";
 $route['admin/menucategories/add'] = "adminadd/addmenucategory";
 $route['admin/accounts/add'] = "adminadd/addaccounts";
 $route['admin/tables/add'] = "adminadd/addtable";
-$route['admin/addspoilagesmenu'] = "adminadd/addspoilagesmenu";
-$route['admin/insertspoilagesstock'] = "adminadd/insertspoilagesstock";
-$route['admin/insertspoilagesmenu'] = "adminadd/insertspoilagesmenu";
+$route['admin/addons/spoilages/add'] = "adminadd/addspoilagesaddons";
+$route['admin/stock/spoilages/add'] = "adminadd/addspoilagesstock";
+$route['admin/menu/spoilages/add'] = "adminadd/addspoilagesmenu";
 $route['admin/sources/add'] = "adminadd/addsource";
 //End Admin Add Routes ------------------------------------------
 
@@ -121,6 +127,9 @@ $route['admin/stockcategories/delete/(:num)'] = "admindelete/deletestockcategory
 $route['admin/inventory/delete/(:num)'] = "admindelete/deletestockitem/$1";
 $route['admin/transactions/delete'] = "admindelete/deletetransactions";
 $route['admin/sources/delete/(:num)'] = "admindelete/deletesource/$1";
+$route['admin/stock/spoilage/delete/(:num)'] ="admindelete/deletestockspoilages/$1";
+$route['admin/menu/spoilage/delete/(:num)'] ="admindelete/deletemenuspoilages/$1";
+$route['admin/addons/spoilage/delete/(:num)'] ="admindelete/deleteaddonsspoilages/$1";
 //End Admin Delete Routes ---------------------------------------
 
 //CUSTOMER ROUTES

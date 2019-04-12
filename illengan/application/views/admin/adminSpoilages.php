@@ -19,23 +19,33 @@
                 <div class="container-fluid">
                     <div class="content">
                         <div class="container-fluid">
-                            <!--Table-->
-                            <div class="card-content">
-                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newTransaction"
-                                    data-original-title style="float: left" id="addTransaction">Add Transaction</a>
-                                <br>
-                                <br>
-                                <table id="transTable" class="table table-bordered dt-responsive nowrap"
-                                    cellspacing="0" width="100%">
-                                    <thead class="thead-light">
-                                        <th style="width:10px"></th>
-                                        <th><b class="pull-left">Receipt No.</b></th>
-                                        <th><b class="pull-left">Supplier</b></th>
-                                        <th><b class="pull-left">Total</b></th>
-                                        <th><b class="pull-left">Date</b></th>
-                                        <th><b class="pull-left">Actions</b></th>
-                                    </thead>
-                                    <tbody>
+                        <!--Table-->
+                        <div class="card-content">
+                            <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newMenuSpoilage"
+                                data-original-title style="float: left">Add Menu Spoilage</a>
+                            <!--Search
+                            <div id ="example_filter" class="dataTables_filter">
+                                <label>
+                                    "Search:"
+                                    <div class="form-group form-group-sm is-empty">
+                                       <input type="search" class="form-control" placeholder aria-controls="example">
+                                       <span class="material-input"></span> 
+                                    </div>
+                                </label>
+                            </div>-->
+                            <br><br>
+                            <table id="example" class="table table-striped table-bordered dt-responsive nowrap"
+                                cellspacing="0" width="100%">
+                                <thead>
+                                    <th><b class="pull-left">Code</b></th>
+                                    <th><b class="pull-left">Description</b></th>
+                                    <th><b class="pull-left">Quantity</b></th>
+                                    <th><b class="pull-left">Damage Date</b></th>
+                                    <th><b class="pull-left">Date Recorder</b></th>
+                                    <th><b class="pull-left">Remarks</b></th>
+                                    <th><b class="pull-left">Operations</b></th>
+                                </thead>
+                                <tbody>
                                         <!-- <tr style="display:none">
                                                 <td colspan="6">
                                                     <div class="container" style="display:none"> Container ng accordion
@@ -68,19 +78,19 @@
                                 </table>
                                 <!--End Table Content-->
 
-                                <!--Start of Modal "Add Transaction"-->
-                                <div class="modal fade bd-example-modal-lg" id="newTransaction" tabindex="-1"
+                                <!--Start of Modal "Add New Stock Spoilages"-->
+                                <div class="modal fade bd-example-modal-lg" id="newStockSpoilages" tabindex="-1"
                                     role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Add Transaction</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel">Add New Stock Spoilages</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form id="formAdd" action="<?= site_url('admin/transactions/add')?>" method="post"
+                                            <form id="formAdd" action="<?= site_url('admin/spoilages/add')?>" method="post"
                                                 accept-charset="utf-8">
                                                 <div class="modal-body">
                                                     <div class="form-row">
@@ -267,7 +277,6 @@
             </div>
         </div>
     </div>
-    </div>
     <?php include_once('templates/scripts.php') ?>
 </body>
 <script>
@@ -417,7 +426,7 @@ function setTableData() {
     var tableRow;
     var accordion;
     if(transactions.transaction.length !== 0){
-        $("#transTable").next('div').text("");
+        $("#transTable").next('div');
         if($("#transTable > tbody").children().length !== 0){
             $("#transTable > tbody").empty();
         }

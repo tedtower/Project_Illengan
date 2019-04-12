@@ -138,30 +138,30 @@ class AdminView extends CI_Controller{
             redirect('login');
         }
     }
-    function viewInsertSpoilageMenu(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $result = array('menu' => $this->adminmodel->get_menu2());
-            json_encode($result);
-        }else{
-            redirect('login');
-        }
-    }
-    function viewInsertSpoilageStock(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['stockitems'] = $this->adminmodel->get_stock();
-            $this->load->view('admin/add_spoilagesstock',$data);
-        }else{
-            redirect('login');
-        }
-    }
-    function viewInsertSpoilageAo(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['addons'] = $this->adminmodel->get_addons();
-            $this->load->view('admin/add_spoilagesao', $data);
-        }else{
-            redirect('login');
-        }
-    }
+    // function viewInsertSpoilageMenu(){
+    //     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+    //         $result = array('menu' => $this->adminmodel->get_menu2());
+    //         json_encode($result);
+    //     }else{
+    //         redirect('login');
+    //     }
+    // }
+    // function viewInsertSpoilageStock(){
+    //     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+    //         $data['stockitems'] = $this->adminmodel->get_stock();
+    //         $this->load->view('admin/add_spoilagesstock',$data);
+    //     }else{
+    //         redirect('login');
+    //     }
+    // }
+    // function viewInsertSpoilageAo(){
+    //     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+    //         $data['addons'] = $this->adminmodel->get_addons();
+    //         $this->load->view('admin/add_spoilagesao', $data);
+    //     }else{
+    //         redirect('login');
+    //     }
+    // }
     // function viewReturns($method=null){        
     //     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
     //         switch($method){
@@ -196,7 +196,7 @@ class AdminView extends CI_Controller{
             $this->load->view('admin/templates/sideNav');
             $data['source'] = $this->adminmodel->get_sources();
             $this->load->view('admin/adminSources', $data);
-            $this->load->view('admin/templates/scripts');
+            // $this->load->view('admin/templates/scripts');
             $this->load->view('admin/templates/footer');
         }else{
             redirect('login');
@@ -213,7 +213,71 @@ class AdminView extends CI_Controller{
     }
     function viewSpoilages(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin/view_spoilages');
+            $this->load->view('admin/viewspoilages');
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/templates/footer');
+            // $this->load->view('admin/templates/scripts');
+        }else{
+            redirect('login');
+        }
+    }
+ //-----------Stock Spoilage------------------------- 
+ function viewSpoilagesStockJs(){
+    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        $data= $this->adminmodel->get_spoilagesstock();
+        echo json_encode($data);
+        
+    }else{
+        redirect('login');
+    }
+}
+function viewSpoilagesStock(){
+    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        $this->load->view('admin/viewspoilagesstock');
+        $this->load->view('admin/templates/head');
+        $this->load->view('admin/templates/sideNav');
+        $this->load->view('admin/templates/footer');
+        // $this->load->view('admin/templates/scripts');
+    }else{
+        redirect('login');
+    }
+}
+   //-----------Menu Spoilage------------------------- 
+    function viewSpoilagesMenuJs(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data= $this->adminmodel->get_spoilagesmenu();
+            echo json_encode($data);
+            
+        }else{
+            redirect('login');
+        }
+    }
+    function viewSpoilagesMenu(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->view('admin/viewspoilagesmenu');
+            $this->load->view('admin/templates/head');
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/templates/footer');
+            // $this->load->view('admin/templates/scripts');
+        }else{
+            redirect('login');
+        }
+    }
+ 
+    //-----------Addons Spoilage------------------------- 
+    function viewSpoilagesAddonsJs(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data= $this->adminmodel->$this->adminmodel->get_spoilagesaddons();
+            echo json_encode($data);
+            
+        }else{
+            redirect('login');
+        }
+    }
+    function viewSpoilagesAddons(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->load->view('admin/viewspoilagesaddons');
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/templates/footer');
@@ -222,40 +286,7 @@ class AdminView extends CI_Controller{
             redirect('login');
         }
     }
-
-
-    function viewSpoilagesMenu(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            
-            $data['spoilagesmenu'] = $this->adminmodel->get_spoilages_menu();
-            $this->load->view('admin/view_spoilages_menu', $data);
-        }else{
-            redirect('login');
-        }
-    }
-    function viewSpoilagesStock(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            
-            $data['spoilagesstock'] = $this->adminmodel->get_spoilages_stock();
-            $this->load->view('admin/templates/head');
-            $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/view_spoilages_stock', $data);
-            $this->load->view('admin/templates/footer');
-        }else{
-            redirect('login');
-        }
-    }
-    function viewSpoilagesAo(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            
-            $data['spoilagesao'] = $this->adminmodel->get_spoilages_ao();
-            $this->load->view('admin/templates/head');
-            $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/view_spoilages_ao', $data);
-        }else{
-            redirect('login');
-        }
-    }
+    //---------------------------------------------------
     function viewStockCategories(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['category'] = $this->adminmodel->get_stockcategories();
