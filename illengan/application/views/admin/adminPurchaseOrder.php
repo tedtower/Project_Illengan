@@ -276,7 +276,11 @@ $(function(){
     }
     setTableDate();
     $("#formAdd").on('submit', function(){
-        var
+        var supplier = ;
+        var poDate = ;
+        var edDate = ;
+        var status = ;
+        var 
     });
     $("#formEdit").on('submit', function(){
         
