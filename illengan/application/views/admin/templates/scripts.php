@@ -2,6 +2,7 @@
 <!--JQuery & Bootstrap JS--->
 <script src="<?= framework_url().'mdb/js/jquery-3.3.1.min.js';?>"></script>
 <script src="<?= framework_url().'bootstrap-native/bootstrap.bundle.min.js'?>"></script>
+<script src="<?= framework_url().'bootstrap-native/bootstrap.js'?>"></script>
 <!--Charts Plugin-->
 <script src="<?= framework_url().'plugins/charts/chartist-bundle/chartist.min.js'?>"></script>
 <!--Notifications Plugin-->

@@ -4,7 +4,6 @@
 <head>
     <?php include_once('templates/head.php') ?>
 </head>
-
 <body>
     <?php include_once('templates/sideNav.php') ?>
     <!--End Sidebar-->
@@ -15,14 +14,14 @@
                 <!-- Real Time Date & Time -->
                 <?php echo date("M j, Y -l"); ?>
             </p>
-            <!--Start Content-->
-            <div class="row">
-                <div class="main-panel">
+            <div class="content" style="margin-left:250px;">
+                <div class="container-fluid">
                     <div class="content">
-                        <div class="main-panel">
-                            <div class="container-fluid">
-                                <div class="row">
+                        <div class="container-fluid">
+                            <!--Table-->
+                            <div class="card-content">
                                     <!--Card 1-->
+                                    <div class="row">
                                     <div class="col-lg-3 col-md-6 col-sm-6">
                                         <div class="card card-stats">
                                             <div class="card-header" data-background="orange">
@@ -106,7 +105,9 @@
                                             </a>
                                         </div>
                                     </div>
+</div>
                                     <!--End Card 1 to 4 Dashboard-->
+                                <div class="row">
                                     <div class="col-md-4">
                                         <div class="card">
 
@@ -152,8 +153,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
+</div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="card ">
@@ -188,7 +189,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+</div>
+                               
                             </div>
                         </div>
                     </div>

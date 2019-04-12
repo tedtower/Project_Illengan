@@ -13,7 +13,8 @@
     <div class="content">
         <div class="container-fluid"><br>
             <p style="text-align:right; font-weight: regular; font-size: 16px">
-                <?php echo date("M j, Y -l"); ?><!-- Real Time Date & Time -->
+                <?php echo date("M j, Y -l"); ?>
+                <!-- Real Time Date & Time -->
             </p>
             <div class="content" style="margin-left:250px;">
                 <div class="container-fluid">
@@ -21,14 +22,14 @@
                         <div class="container-fluid">
                             <div class="card-content">
 
-                            <!--Add button-->
+                                <!--Add button-->
                                 <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addPO"
-                                    data-original-title style="float: left" id="addTransaction">Add Purchase Order</a>
+                                    data-original-title style="float: left" id="addPOBtn">Add Purchase Order</a>
                                 <br>
                                 <br>
-                            <!--Start of Table-->
-                                <table id="transTable" class="table table-bordered dt-responsive nowrap"
-                                    cellspacing="0" width="100%">
+                                <!--Start of Table-->
+                                <table id="poTable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
+                                    width="100%">
                                     <thead class="thead-light">
                                         <th style="width:10px"></th>
                                         <th><b class="pull-left">PO No.</b></th>
@@ -40,60 +41,14 @@
                                         <th><b class="pull-left">Actions</b></th>
                                     </thead>
                                     <tbody>
-                                       <tr>
-                                            <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width:15px"/></td>
-                                            <td>1</td>
-                                            <td>Tiongsan</td>
-                                            <td>April 9, 2019</td>
-                                            <td>April 11, 2019</td>
-                                            <td>Pending</td>
-                                            <td>5000</td>
-                                            <td>
-                                            <!--Edit button-->
-                                                <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                data-target="#editPO">Edit</button>
-                                            <!--Delete button-->
-                                                <button class="btn btn-danger btn-sm" data-toggle="modal"
-                                                data-target="">Delete</button>
-                                            </td>
-                                       </tr>
-                                       <tr>
-                                            <td colspan="8">
-                                            <div style="margin:1% 2%">
-                                                <table class="table">
-                                                    <thead style="background:white">
-                                                        <tr>
-                                                            <th>Name</th>
-                                                            <th>Qty</th>
-                                                            <th>Unit</th>
-                                                            <th>Price</th>
-                                                            <th>Subtotal</th>
-                                                            <th>Remarks</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Milk</td>
-                                                            <td>10</td>
-                                                            <td>bag</td>
-                                                            <td>100</td>
-                                                            <td>1000</td>
-                                                            <td>remarks...</td>
-
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            </td>
-                                       </tr>
                                     </tbody>
                                 </table>
-                            <!--End of Table Content-->
+                                <!--End of Table Content-->
 
 
-                            <!--Start of Modal "Add Purchase Order"-->
-                                <div class="modal fade bd-example-modal-lg" id="addPO" tabindex="-1"
-                                    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <!--Start of Modal "Add Purchase Order"-->
+                                <div class="modal fade bd-example-modal-lg" id="addPO" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -103,63 +58,71 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                        <!--Modal Content-->
-                                            <form id="formAdd" action="<?= site_url('admin/purchaseorder/add')?>" method="post" accept-charset="utf-8">
+                                            <!--Modal Content-->
+                                            <form id="formAdd" action="<?= site_url('admin/purchaseorder/add')?>"
+                                                method="post" accept-charset="utf-8">
                                                 <div class="modal-body">
-                                                    <div class="form-row"> <!--Container of Source. and Purchase date-->
-                                                    <!--Source-->
+                                                    <div class="form-row">
+                                                        <!--Container of Source. and Purchase date-->
+                                                        <!--Source-->
                                                         <div class="input-group mb-3 col">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="inputGroup-sizing-sm"
                                                                     style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                     Source</span>
                                                             </div>
-                                                            <select class="form-control form-control-sm" name="" id="">
-                                                                <option selected>Choose</option>
+                                                            <select class="form-control form-control-sm"
+                                                                name="poSupplier" id="poSupplier">
+                                                                <option value="" selected>Choose</option>
                                                             </select>
                                                         </div>
-                                                    <!--Purchase date-->
+                                                        <!--Purchase date-->
                                                         <div class="input-group mb-3 col">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="inputGroup-sizing-sm"
                                                                     style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                     Purchase Date</span>
                                                             </div>
-                                                            <input type="date" name="" id="" class="form-control form-control-sm">
+                                                            <input type="date" name="poDate" id="poDate"
+                                                                class="form-control form-control-sm">
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-row"> <!--Container of receipt no. and transaction date-->
-                                                    <!--Status-->
+                                                    <div class="form-row">
+                                                        <!--Container of receipt no. and transaction date-->
+                                                        <!--Status-->
                                                         <div class="input-group mb-3 col">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="inputGroup-sizing-sm"
                                                                     style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                     Status</span>
                                                             </div>
-                                                            <select class="form-control form-control-sm" name="" id="">
-                                                                <option selected>Choose</option>
-                                                                <option>Pending</option>
-                                                                <option>Delivered</option>
+                                                            <select class="form-control form-control-sm" name="status"
+                                                                id="status">
+                                                                <option value="pending" selected="selected">Pending
+                                                                </option>
+                                                                <option value="delivered">Delivered</option>
                                                             </select>
                                                         </div>
-                                                    <!--Delivery date-->
+                                                        <!--Delivery date-->
                                                         <div class="input-group mb-3 col">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="inputGroup-sizing-sm"
                                                                     style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                     Delivery Date</span>
                                                             </div>
-                                                            <input type="date" name="" id="" class="form-control form-control-sm">
+                                                            <input type="date" name="edDate" id="edDate"
+                                                                class="form-control form-control-sm">
                                                         </div>
                                                     </div>
 
-                                            <!--Transaction Items-->
-                                                <!--Button to add row in the table-->
-                                                    <button type="button" class="addTransItemBtn btn btn-primary btn-sm">Add Trans Item</button>
+                                                    <!--Transaction Items-->
+                                                    <!--Button to add row in the table-->
+                                                    <button type="button"
+                                                        class="addPoItemBtn btn btn-primary btn-sm">Add PO Item</button>
                                                     <br><br>
-                                                <!--Table containing the different input fields in adding PO items -->
-                                                    <table class="transItemsTable table table-sm table-borderless">
+                                                    <!--Table containing the different input fields in adding PO items -->
+                                                    <table class="poItemsTable table table-sm table-borderless">
                                                         <thead class="thead-light">
                                                             <tr>
                                                                 <th>Name</th>
@@ -173,100 +136,120 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td><input type="text" name="" id="" class="form-control form-control-sm"></td>
-                                                                <td><input type="number" name="" id="" class="form-control form-control-sm"></td>
-                                                                <td><input type="text" name="" id="" class="form-control form-control-sm"></td>
-                                                                <td><input type="number" name="" id="" class="form-control form-control-sm"></td>
-                                                                <td><input type="number" name="" id="" class="form-control form-control-sm"></td>
-                                                                <td><textarea type="text" name="" id="" class="form-control form-control-sm"></textarea></td>
-                                                                <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+                                                                <td><input type="text" name="itemName"
+                                                                        class="form-control form-control-sm"></td>
+                                                                <td><input type="number" name="itemQty"
+                                                                        class="form-control form-control-sm"></td>
+                                                                <td><input type="text" name="itemUnit"
+                                                                        class="form-control form-control-sm"></td>
+                                                                <td><input type="number" name="itemPrice"
+                                                                        class="form-control form-control-sm"></td>
+                                                                <td><input type="number" name="itemSubtotal"
+                                                                        class="form-control form-control-sm"></td>
+                                                                <td><textarea type="text" name="remarks"
+                                                                        class="form-control form-control-sm"></textarea>
+                                                                </td>
+                                                                <td><img class="exitBtn" id="exitBtn"
+                                                                        src="/assets/media/admin/error.png"
+                                                                        style="width:20px;height:20px"></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
 
-                                                <!--Total of the trans items-->
+                                                    <!--Total of the trans items-->
                                                     <span>Total: &#8369;<span class="total"> 0</span></span>
-                                                <!--Modal Footer-->
+                                                    <!--Modal Footer-->
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn-success btn-sm" type="submit">Insert</button>
+                                                        <button type="button" class="btn btn-danger btn-sm"
+                                                            data-dismiss="modal">Cancel</button>
+                                                        <button class="btn btn-success btn-sm"
+                                                            type="submit">Add</button>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
-                            <!--End of Modal "Add Purchase Order"-->
+                                <!--End of Modal "Add Purchase Order"-->
 
-                            <!--Start of Modal "Add Purchase Order"-->
-                                <div class="modal fade bd-example-modal-lg" id="editPO" tabindex="-1"
-                                    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <!--Start of Modal "Edit Purchase Order"-->
+                                <div class="modal fade bd-example-modal-lg" id="editPO" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Add Purchase Order</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel">Edit Purchase Order</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                        <!--Modal Content-->
-                                            <form id="formAdd" action="<?= site_url('admin/purchaseorder/add')?>" method="post" accept-charset="utf-8">
+                                            <!--Modal Content-->
+                                            <form id="formEdit" action="<?= site_url('admin/purchaseorder/edit')?>"
+                                                method="post" accept-charset="utf-8">
+                                                <input type="text" name="poID" hidden="hidden">
                                                 <div class="modal-body">
-                                                    <div class="form-row"> <!--Container of Source. and Purchase date-->
-                                                    <!--Source-->
+                                                    <div class="form-row">
+                                                        <!--Container of Source. and Purchase date-->
+                                                        <!--Source-->
                                                         <div class="input-group mb-3 col">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="inputGroup-sizing-sm"
                                                                     style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                     Source</span>
                                                             </div>
-                                                            <select class="form-control form-control-sm" name="" id="s">
-                                                                <option selected>Choose</option>
+                                                            <select class="form-control form-control-sm"
+                                                                name="poSupplier" id="poSupplier">
+                                                                <option value="" selected>Choose</option>
                                                             </select>
                                                         </div>
-                                                    <!--Purchase date-->
+                                                        <!--Purchase date-->
                                                         <div class="input-group mb-3 col">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="inputGroup-sizing-sm"
                                                                     style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                     Purchase Date</span>
                                                             </div>
-                                                            <input type="date" name="" id="" class="form-control form-control-sm">
+                                                            <input type="date" name="poDate" id="poDate"
+                                                                class="form-control form-control-sm">
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-row"> <!--Container of receipt no. and transaction date-->
-                                                    <!--Status-->
+                                                    <div class="form-row">
+                                                        <!--Container of receipt no. and transaction date-->
+                                                        <!--Status-->
                                                         <div class="input-group mb-3 col">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="inputGroup-sizing-sm"
                                                                     style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                     Status</span>
                                                             </div>
-                                                            <select class="form-control form-control-sm" name="" id="">
-                                                                <option selected>Choose</option>
-                                                                <option>Pending</option>
-                                                                <option>Delivered</option>
+                                                            <select class="form-control form-control-sm" name="status"
+                                                                id="status">
+                                                                <option value="pending" selected="selected">Pending
+                                                                </option>
+                                                                <option value="delivered">Delivered</option>
                                                             </select>
                                                         </div>
-                                                    <!--Delivery date-->
+                                                        <!--Delivery date-->
                                                         <div class="input-group mb-3 col">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="inputGroup-sizing-sm"
                                                                     style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                     Delivery Date</span>
                                                             </div>
-                                                            <input type="date" name="" id="" class="form-control form-control-sm">
+                                                            <input type="date" name="edDate" id="edDate"
+                                                                class="form-control form-control-sm">
                                                         </div>
                                                     </div>
 
-                                            <!--Transaction Items-->
-                                                <!--Button to add row in the table-->
-                                                    <button type="button" class="addTransItemBtn btn btn-primary btn-sm">Add Trans Item</button>
+                                                    <!--Transaction Items-->
+                                                    <!--Button to add row in the table-->
+                                                    <button type="button"
+                                                        class="addPoItemBtn btn btn-primary btn-sm">Add PO Item</button>
                                                     <br><br>
-                                                <!--Table containing the different input fields in adding PO items -->
-                                                    <table class="transItemsTable table table-sm table-borderless">
+                                                    <!--Table containing the different input fields in adding PO items -->
+                                                    <table class="poItemsTable table table-sm table-borderless">
                                                         <thead class="thead-light">
                                                             <tr>
                                                                 <th>Name</th>
@@ -280,23 +263,34 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td><input type="text" name="" id="" class="form-control form-control-sm"></td>
-                                                                <td><input type="number" name="" id="" class="form-control form-control-sm"></td>
-                                                                <td><input type="text" name="" id="" class="form-control form-control-sm"></td>
-                                                                <td><input type="number" name="" id="" class="form-control form-control-sm"></td>
-                                                                <td><input type="number" name="" id="" class="form-control form-control-sm"></td>
-                                                                <td><textarea type="text" name="" id="" class="form-control form-control-sm"></textarea></td>
-                                                                <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+                                                                <td><input type="text" name="itemName[]"
+                                                                        class="form-control form-control-sm"></td>
+                                                                <td><input type="number" name="itemQty[]"
+                                                                        class="form-control form-control-sm"></td>
+                                                                <td><input type="text" name="itemUnit[]"
+                                                                        class="form-control form-control-sm"></td>
+                                                                <td><input type="number" name="itemPrice[]"
+                                                                        class="form-control form-control-sm"></td>
+                                                                <td><input type="number" name="itemSubtotal[]"
+                                                                        class="form-control form-control-sm"></td>
+                                                                <td><textarea type="text" name="remarks[]"
+                                                                        class="form-control form-control-sm"></textarea>
+                                                                </td>
+                                                                <td><img class="exitBtn"
+                                                                        src="/assets/media/admin/error.png"
+                                                                        style="width:20px;height:20px"></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
 
-                                                <!--Total of the trans items-->
+                                                    <!--Total of the trans items-->
                                                     <span>Total: &#8369;<span class="total"> 0</span></span>
-                                                <!--Modal Footer-->
+                                                    <!--Modal Footer-->
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn-success btn-sm" type="submit">Update</button>
+                                                        <button type="button" class="btn btn-danger btn-sm"
+                                                            data-dismiss="modal">Cancel</button>
+                                                        <button class="btn btn-success btn-sm"
+                                                            type="submit">Edit</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -313,4 +307,216 @@
     </div>
     <?php include_once('templates/scripts.php') ?>
 </body>
+<script>
+var lastIndex = 0;
+var pos = <?= json_encode($pos)?>;
+var rowsPerPage = pos.pos.length;
+
+$(function() {
+    $("#addPOBtn").on('click', function()) {
+        unsetModal($("#addPO"));
+    }
+    setTableDate();
+    $("#formAdd").on('submit', function() {
+        var supplier = $(this).find("select[name='poSupplier']");
+        var poDate = $(this).find("input[name='poDate']");
+        var edDate = $(this).find("input[name='edDate']");
+        var status = $(this).find("select[name='status']");
+        var poItems = [];
+        for (var index = 0; index < $("#formAdd .poItemsTable > tbody").children().length; index++) {
+            poItems.push({
+                itemName : $(this).find("input[name='itemName[]']").val(),
+                itemQty : $(this).find("input[name='itemQty[]']").val(),             
+                itemUnit : $(this).find("input[name='itemUnit[]']").val(),
+                itemPrice : $(this).find("input[name='itemPrice[]']").val(),
+                remarks : $(this).find("textarea[name='remarks[]']").val()
+            });
+        }
+        $.ajax({
+            method : "post",
+            url: "<?= site_url('admin/purchaseorders/add')?>",
+            data : {
+                poSupplier : supplier,
+                poDate : poDate,
+                edDate : edDate,
+                poStatus : status,
+                poItems : JSON.stringify(poItems)
+            },
+            dataType : "json",
+            success: function(data){
+
+            },
+            error : function(response, setting, error){
+                console.log(response.responseText);
+                console.log(error);
+            },
+            complete : function(){
+
+            }
+        });
+    });
+    $("#formEdit").on('submit', function() {
+        var poID = $(this).find("input[name='poID']");
+        var supplier = $(this).find("select[name='poSupplier']");
+        var poDate = $(this).find("input[name='poDate']");
+        var edDate = $(this).find("input[name='edDate']");
+        var status = $(this).find("select[name='status']");
+        var poItems = [];
+        for (var index = 0; index < $("#formEdit .poItemsTable > tbody").children().length; index++) {
+            poItems.push({
+                itemName : $(this).find("input[name='itemName[]']").val(),
+                itemQty : $(this).find("input[name='itemQty[]']").val(),             
+                itemUnit : $(this).find("input[name='itemUnit[]']").val(),
+                itemPrice : $(this).find("input[name='itemPrice[]']").val(),
+                remarks : $(this).find("textarea[name='remarks[]']").val()
+            });
+        }
+        $.ajax({
+            method : "post",
+            url: "<?= site_url('admin/purchaseorders/edit')?>",
+            data : {
+                poID : poID,
+                poSupplier : supplier,
+                poDate : poDate,
+                edDate : edDate,
+                poStatus : status,
+                poItems : JSON.stringify(poItems)
+            },
+            dataType : "json",
+            success: function(data){
+
+            },
+            error : function(response, setting, error){
+                console.log(response.responseText);
+                console.log(error);
+            },
+            complete : function(){
+
+            }
+        });
+    });
+
+});
+
+function setTableData() {
+    var count = 0;
+    if ($("#poTable > tbody").children().length === 0) {
+        for (lastIndex; lastIndex < pos.pos.length; lastIndex++) {
+            if (!(count < rowsPerPage) {} else {
+                    appendRow(pos.pos[lastIndex]);
+                    appendAccordion(pos.pos[lastIndex].po_id);
+                }
+            }
+            $(".editBtn").on('click', function() {
+                $("#editPO form")[0].reset();
+                var poID = $(this).closest("tr").attr("data-id");
+                setEditModal($("#editPO"), pos.pos.filter(po => po.po_id === poID)[0], pos.poItems.filter(po =>
+                    po_id === poID));
+            });
+            $(".accordionBtn").on('click', function() {
+                if ($(this).closest("tr").next("tr").css('display') === 'none') {
+                    $(this).closest("tr").next("tr").show();
+                    $(this).closest("tr").next("tr").find("td > div").slideDown("slow");
+                } else {
+                    $(this).closest("tr").next("tr").find("td > div").slideUp("slow");
+                    $(this).closest("tr").next("tr").hide("slow");
+                }
+            });
+        } else {
+            $("#poTable stockTable > tbody").empty();
+        }
+    }
+
+    function appendRow(po) {
+        var row = `
+    <tr data-id="${po.po_id}">
+        <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width:15px"/></td>
+        <td>${po.po_id}</td>
+        <td>${po.source_name}</td>
+        <td>${po.po_date}</td>
+        <td>${po.ed_date}</td>
+        <td>${po.po_status}</td>
+        <td>${po.po_amt_payable}</td>
+        <td>
+        <!--Edit button-->
+            <button class="editBtn btn btn-primary btn-sm" data-toggle="modal"
+            data-target="#editPO">Edit</button>
+        <!--Delete button-->
+            <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"
+            data-target="">Delete</button>
+        </td>
+    </tr>
+    `;
+        $("#poTable > tbody").append(row);
+    }
+
+    function appendAccordion(poID) {
+        var items = pos.poItems.filter(item => item.po_id === poID);
+        var row = `
+    <tr style="display:none">
+        <td colspan="8">
+        <div style="margin:1% 2%;display:none">
+        ${items.length === 0 : "No items recorded!" : `
+            <table class="table">
+                <thead style="background:white">
+                    <tr>
+                        <th>Name</th>
+                        <th>Qty</th>
+                        <th>Unit</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                ${items.map(item => {
+                    return `
+                    <tr>
+                        <td>${item.item_name}</td>
+                        <td>${item.item_qty}</td>
+                        <td>${item.item_unit}</td>
+                        <td>${item.item_price}</td>
+                        <td>${parseFloat(item.item_price)*parseInt(item.item_qty)}</td>
+                        <td>${item.remarks}</td>
+                    </tr>
+                    `
+                }).join('')}
+                </tbody>
+            </table>
+        `}
+        </div>
+        </td>
+    </tr>
+    `;
+        $("#poTable > tbody").append(row);
+    }
+
+    function unsetModal(modal) {
+        modal.find("form")[0].reset();
+        modal.find(".poItemsTable >tbody").empty();
+    }
+
+    function setEditModal(modal, po, poItems) {
+        modal.find("input[name='poID']").val(po.po_id);
+        modal.find("select[name='poSupplier']").find(`option[value=${po.source_id}]`).attr("selected", "selected");
+        modal.find("input[name='poDate']").val(po.po_date);
+        modal.find("select[name='status']").find(`option[value='${po.po_status}']`).attr("selected", "selected");
+        modal.find("input[name='edDate']").val(po.ed_date);
+        modal.find(".poItemsTable > tbody").append(`
+    ${ poItems.length === 0 ? "" : poItems.map(item => {
+        return `<tr>
+                <td><input type="text" name="itemName[]" value="${item.item_name}" class="form-control form-control-sm"></td>
+                <td><input type="number" name="itemQty[]" value="${item.item_qty}" class="form-control form-control-sm"></td>
+                <td><input type="text" name="itemUnit[]" value="${item.item_unit}" class="form-control form-control-sm"></td>
+                <td><input type="number" name="itemPrice[]" value="${item.item_price}" class="form-control form-control-sm"></td>
+                <td><input type="number" name="itemSubtotal[]"  value="${parseFloat(item.item_price)*parseInt(item.item_qty)}" class="form-control form-control-sm"></td>
+                <td><textarea type="text" name="remarks[]" class="form-control form-control-sm">${item.remarks}</textarea></td>
+                <td><img class="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+            </tr>
+            `
+        }).join('')
+    }`);
+    }
+</script>
+
 </html>
