@@ -1,7 +1,3 @@
-<!doctype html>
-<html lang="en">
-<body>
-
 <!--End Side Bar-->
 <div class="content">
 	<div class="container-fluid">
@@ -19,11 +15,10 @@
 
 							<!--Add Stock Spoilage-->
 							<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addStockSpoilage"
-								data-original-title style="float: left">Add Stock Spoilage</a><br>
+								data-original-title style="margin:0">Add Stock Spoilage</a><br>
 
 							<br>
-							<table id="tablevalues" class="table table-striped table-bordered dt-responsive nowrap"
-								cellspacing="0" width="100%">
+							<table id="tablevalues" class="dataTable dtr-inline collapsed table display">
 								<thead>
 									<th></th>
 									<th>Code</th>
@@ -149,22 +144,13 @@
 	</div>
 </div>
 <!--End Table Content-->
-
-
 <?php include_once('templates/scripts.php') ?>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/bootstrap.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.dataTables.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.bootstrap4.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.dataTables.min.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.responsive.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.select.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/dataTables.buttons.js'?>"></script>
 
 <script>
 		var table = $('#tablevalues');
 
 		function format(d) {
-			return '<table>' +
+			return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
 				'<tr>' +
 				'<td>Remarks</td>' +
 				'</tr>' +
@@ -264,8 +250,4 @@
 
 </script>
 </body>
-<<<<<<< HEAD
-=======
-
->>>>>>> aaeeaa5c70252031230bb5bca15669ccf3dbc0ba
 </html>

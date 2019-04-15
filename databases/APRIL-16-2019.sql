@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 15, 2019 at 04:42 PM
+-- Generation Time: Apr 15, 2019 at 06:21 PM
 -- Server version: 5.7.19
 -- PHP Version: 5.6.31
 
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `activity_logs` (
   `actlog_type` enum('Add','Update','Delete') DEFAULT NULL,
   PRIMARY KEY (`actlog_id`),
   KEY `actlog_act_id_idx` (`  act_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -373,7 +373,14 @@ CREATE TABLE IF NOT EXISTS `orderlist` (
   PRIMARY KEY (`order_item_id`),
   KEY `orderslip_idx` (`order_id`),
   KEY `preferences_idx` (`pref_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orderlist`
+--
+
+INSERT INTO `orderlist` (`order_item_id`, `order_id`, `pref_id`, `order_desc`, `order_qty`, `subtotal`, `item_status`, `remarks`) VALUES
+(1, 1, 13, 'awan', 1, 100, 'pending', 'awan');
 
 -- --------------------------------------------------------
 
@@ -392,7 +399,14 @@ CREATE TABLE IF NOT EXISTS `orderslip` (
   `date_recorded` date NOT NULL,
   PRIMARY KEY (`order_id`),
   KEY `table_idx` (`table_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orderslip`
+--
+
+INSERT INTO `orderslip` (`order_id`, `table_code`, `cust_name`, `total`, `order_date`, `pay_date_time`, `date_recorded`) VALUES
+(1, 't1', 'Marvin', 100, '2019-04-16', NULL, '2019-04-16');
 
 -- --------------------------------------------------------
 
@@ -712,7 +726,7 @@ CREATE TABLE IF NOT EXISTS `tables` (
 --
 
 INSERT INTO `tables` (`table_code`) VALUES
-('T1');
+('t1');
 
 -- --------------------------------------------------------
 
@@ -785,6 +799,12 @@ CREATE TABLE IF NOT EXISTS `variance` (
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `activity_logs`
+--
+ALTER TABLE `activity_logs`
+  ADD CONSTRAINT `activity logs acct_id` FOREIGN KEY (`  act_id`) REFERENCES `accounts` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ao_spoil`
