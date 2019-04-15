@@ -42,7 +42,29 @@ hr{
     transition: all 0.3s;
     background-size: cover;
     background-position: center;
+    overflow-y: scroll !important;
 }
+
+/* width */
+nav#sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  /* Track */
+  nav#sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  nav#sidebar::-webkit-scrollbar-thumb {
+    border-radius: 15px;
+    background: #888;
+  }
+  
+  /* Handle on hover */
+  nav#sidebar::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
 
 #sidebar.active {
     margin-left: -250px;
