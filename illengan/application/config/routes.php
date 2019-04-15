@@ -85,7 +85,7 @@ $route['admin/stock/spoilages'] = "adminview/viewSpoilagesStock";
 $route['admin/spoilagesstockjson'] = "adminview/viewSpoilagesStockJs";
 $route['admin/addons/spoilages'] = "adminview/viewspoilagesaddons";
 $route['admin/spoilagesaddonsjson'] = "adminview/viewSpoilagesAddonsJs";
-$route['admin/logStock'] = "adminview/viewLogStock";
+$route['admin/log/stocks'] = "adminview/viewLogStock";
 
 //End Viewing Routes
 

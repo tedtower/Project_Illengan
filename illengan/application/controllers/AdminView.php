@@ -357,8 +357,8 @@ function viewSpoilagesStock(){
     function jsonStock() {
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data = array();
-            $data['stocks'] = $this->adminmodel->get_stock();
-            $data['transactions'] = $this->adminmodel->get_transactions();
+            $data['restock'] = $this->adminmodel->get_restock();
+            $data['destock'] = $this->adminmodel->get_transactions();
             header('Content-Type: application/json');
 		    echo json_encode($data, JSON_PRETTY_PRINT);
         }else {

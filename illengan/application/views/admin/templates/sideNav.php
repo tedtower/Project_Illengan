@@ -26,13 +26,13 @@
                             <ul  class="collapse list-unstyled" id="logs">
 
                                 <li>
-                                    <a href="<?php echo base_url('admin/inventory')?>" ><span style="margin-left: 15%">All</span></a>
+                                    <a href="<?php echo base_url('admin/log/stocks')?>" ><span style="margin-left: 15%">All</span></a>
                                 </li>
                                 <li>
-                                   <a href="#" ><span style="margin-left: 15%">Restock</span></a>
+                                   <a href="<?php echo base_url('admin/log/stocks')?>" ><span style="margin-left: 15%">Restock</span></a>
                                 </li>
                                  <li>
-                                   <a href="#" ><span style="margin-left: 15%">Destock</span></a>
+                                   <a href="<?php echo base_url('admin/log/stocks')?>" ><span style="margin-left: 15%">Destock</span></a>
                                 </li>
                             </ul>
                         </li>
