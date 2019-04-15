@@ -1,11 +1,7 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-	<?php include_once('templates/head.php') ?>
-</head>
 <body>
-	<?php include_once('templates/sideNav.php') ?>
+
 <!--End Side Bar-->
 <div class="content">
 	<div class="container-fluid">
@@ -118,7 +114,7 @@
 							<!--END ADD SPOILAGE MODAL-->
 							<!--MODAL DELETE-->
 							<form>
-								<div class="modal fade" id="Modal_Remove" tabindex="-1" role="dialog"
+								<div class="modal fade" id="deleteSpoilage" tabindex="-1" role="dialog"
 									aria-labelledby="exampleModalLabel" aria-hidden="true">
 									<div class="modal-dialog" role="document">
 										<div class="modal-content">
@@ -211,7 +207,7 @@
 					{
 						"data": null,
 						render: function (data, type, row, meta) {
-							return '<a href="javascript: void(0)" class="btn btn-warning btn-sm item_delete" data-s_id="' +
+							return '<a href="javascript: void(0)" class="btn btn-warning btn-sm delete_data" data-id="' +
 								data.s_id + '">Delete</a>';
 						}
 					}
@@ -254,34 +250,22 @@
 
 	});
 	// Function for Delete
-		$('#spoilage_data').on('click','.item_delete',function(){
-				var order_id = $(this).data('s_id');
-				
-				$('#Modal_Remove').modal('show');
-				$('[name="s_id_remove"]').val(order_id);
-			});
-
-			//delete record to database
-			$('#btn_cancel').on('click',function(){
-				var order_id = $('#s_id_remove').val();
-				$.ajax({
-					type : "POST",
-					url  : "<?php echo site_url('admin/stock/spoilage/delete')?>",
-					dataType : "JSON",
-					data : {s_id:s_id},
-					success: function(data){
-						$('[name="s_id_remove"]').val("");
-						alert("Record removed successfully!");
-						$('#Modal_Remove').modal('hide');
-						
-						table.DataTable(). ajax.reload(null, false);
-					}
-				});
-				return false;
-			});
+	$(document).ready(function () { 
+            $('.delete_data').click(function () {
+                var id = $(this).attr("id");
+                if (confirm("Are you sure you want to delete this?")) {
+                    window.location = "<?php echo base_url(); ?>admin/sources/delete/" + id;
+                } else {
+                    return false;
+                }
+            });
+        });
 			//End Function Delete
 
 </script>
 </body>
+<<<<<<< HEAD
+=======
 
+>>>>>>> aaeeaa5c70252031230bb5bca15669ccf3dbc0ba
 </html>

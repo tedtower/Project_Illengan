@@ -162,20 +162,16 @@ class AdminView extends CI_Controller{
     //         redirect('login');
     //     }
     // }
-    // function viewReturns($method=null){        
-    //     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-    //         switch($method){
-    //             "add":
-    //             break;
-    //             "edit":
-    //             break;
-    //             "delete":
-    //             break;
-    //         }
-    //     }else{
-    //         redirect('login');
-    //     }
-    // }
+    function viewReturns(){
+        $data['title'] = "Returns";
+        $data['returns'] = $this->adminmodel->get_returns();
+        $data['transactions'] = $this->adminmodel->get_transactions();
+        $data['stock'] = $this->adminmodel->get_stocks();
+        $this->load->view('admin/templates/head',$data);
+        $this->load->view('admin/templates/sideNav');
+        $this->load->view('admin/returns', $data);
+        $this->load->view('admin/templates/scripts');
+    }
     function viewSales(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['title'] = "Admin Sales";
@@ -234,9 +230,9 @@ class AdminView extends CI_Controller{
 }
 function viewSpoilagesStock(){
     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-        $this->load->view('admin/viewspoilagesstock');
         $this->load->view('admin/templates/head');
         $this->load->view('admin/templates/sideNav');
+        $this->load->view('admin/viewspoilagesstock');
         $this->load->view('admin/templates/footer');
         // $this->load->view('admin/templates/scripts');
     }else{
