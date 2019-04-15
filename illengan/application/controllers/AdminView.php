@@ -166,7 +166,7 @@ class AdminView extends CI_Controller{
         $data['title'] = "Returns";
         $data['returns'] = $this->adminmodel->get_returns();
         $data['transactions'] = $this->adminmodel->get_transactions();
-        $data['stock'] = $this->adminmodel->get_stock();
+        $data['stock'] = $this->adminmodel->get_stocks();
         $this->load->view('admin/templates/head',$data);
         $this->load->view('admin/templates/sideNav');
         $this->load->view('admin/returns', $data);
