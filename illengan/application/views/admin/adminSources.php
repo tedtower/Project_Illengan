@@ -34,7 +34,7 @@
                             </div>-->
                                 <!--Add Add Ons Spoilage-->
                                 <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewSource"
-                                    data-original-title style="float: left">Add New Source</a><br>
+                                    data-original-title style="margin:0;">Add New Source</a><br>
 
                                 <br>
                                 <table id="tablevalues" class="table table-striped table-bordered dt-responsive nowrap"

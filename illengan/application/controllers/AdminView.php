@@ -130,6 +130,17 @@ class AdminView extends CI_Controller{
             redirect('login');
         }
     }
+
+    function menuAddons(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Admin Menu/Addons";
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/addons');
+        }else{
+            redirect('login');
+        }
+    }
     function viewMenuCategories(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['category'] = $this->adminmodel->get_menucategories();

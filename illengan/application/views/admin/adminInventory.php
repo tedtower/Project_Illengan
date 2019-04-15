@@ -22,7 +22,7 @@
                             <!--Table-->
                             <div class="card-content">
                                 <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newStock"
-                                    data-original-title style="float:left" id="addBtn">Add Stock Item</a>
+                                    data-original-title style="margin:0;" id="addBtn">Add Stock Item</a>
                                 <!--Search
                             <div id ="example_filter" class="dataTables_filter">
                                 <label>

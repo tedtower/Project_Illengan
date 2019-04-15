@@ -20,7 +20,7 @@
                     <!--Table-->
                     <div class="card-content">
                         <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewTable"
-                            data-original-title style="float: left">Add New Table</a><br>
+                            data-original-title style="margin:0;">Add New Table</a><br>
                         <br>
                         <table id="tablesTable" class="table table-striped table-bordered dt-responsive nowrap"
                             cellspacing="0" width="100%">
