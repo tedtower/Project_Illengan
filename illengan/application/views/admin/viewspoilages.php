@@ -1,18 +1,3 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?>
-<!doctype html>
-<html lang="en">
-
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/bootstrap.css'?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/bootstrap.min.css'?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/jquery.dataTables.css'?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/dataTables.bootstrap4.css'?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/responsive.bootstrap.css'?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/select.bootstrap.css'?>">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/buttons.bootstrap.css'?>">
-  <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/admin/style.css'?>">
-
 <div class="content">
 		<div class="container-fluid">
 			<br>
@@ -41,10 +26,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<th>Date Recorded</th>
 											<th>Operations</th>
 										</thead>
-										<tbody>
+										<tbody id="spoilage_data">
 										</tbody>
 									</table>
 								</div>
+												<!--MODAL DELETE-->
+				<form>
+            <div class="modal fade" id="Modal_Remove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Stock</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                       <strong>Are you sure to remove this record?</strong>
+                  </div>
+                  <div class="modal-footer">
+                    <input type="hidden" name="order_id_remove" id="order_id_remove" class="form-control">
+                    <button type="button" type="submit" id="btn_cancel" class="btn btn-primary">Yes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        <!--END MODAL DELETE-->
 							</div>
 						</div>
 						<!--End Table Content-->
@@ -53,7 +62,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</div>
 </div>
-<?php include_once('templates/scripts.php') ?>
+
+
+</body>
 	  <script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery-3.2.1.js'?>"></script>
 		<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/bootstrap.js'?>"></script>
 		<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.dataTables.js'?>"></script>
@@ -143,6 +154,32 @@ $('#btn-hide-all-children').on('click', function(){
 });
 
 		});
+
+	//get data for delete record
+$('#spoilage_data').on('click','.item_delete',function(){
+            var s_id = $(this).data('s_id');
+            
+            $('#Modal_Remove').modal('show');
+            $('[name="order_id_remove"]').val(s_id);
+        });
+
+        //delete record to database
+         $('#btn_cancel').on('click',function(){
+            var s_id = $('#order_id_remove').val();
+            $.ajax({
+                type : "POST",
+                url  : "<?php echo site_url('admindelete/deletestockspoilages')?>",
+                dataType : "JSON",
+                data : {s_id:s_id},
+                success: function(data){
+                    $('[name="order_id_remove"]').val("");
+                    alert("Record removed successfully!");
+                    $('#Modal_Remove').modal('hide');
+                    
+                    table.DataTable(). ajax.reload(null, false);
+                }
+            });
+            return false;
+        });
 		</script>
-		
-		
+	</html>

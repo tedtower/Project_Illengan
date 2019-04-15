@@ -230,9 +230,9 @@ class AdminView extends CI_Controller{
 }
 function viewSpoilagesStock(){
     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-        $this->load->view('admin/viewspoilagesstock');
         $this->load->view('admin/templates/head');
         $this->load->view('admin/templates/sideNav');
+        $this->load->view('admin/viewspoilagesstock');
         $this->load->view('admin/templates/footer');
         // $this->load->view('admin/templates/scripts');
     }else{
