@@ -78,8 +78,8 @@ function updateStock() {
         var totalStockQty;
 
         if(action === 'Restock') {
-            totalStockQty = stockQty + dbStockQty;
-            console.log('Restock '+totalStockQty);
+            totalStockQty = parseInt(stockQty + dbStockQty);
+            console.log('Restock '+totalStockQty + ' '+dbStockQty);
         } else {
             totalStockQty = dbStockQty - stockQty;
             console.log('Restock '+totalStockQty);

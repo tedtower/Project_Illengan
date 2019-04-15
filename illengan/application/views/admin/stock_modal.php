@@ -23,7 +23,7 @@
                         <select class="browser-default custom-select" id="transSelect" name="transItem" style="margin: 5px;"></select>
                         </div>
                     </div>
-          
+          <div class="md-form input-group delius" style="margin-top: 10px;"><h5 id="orgQty" ></h5></div>
           <div class="md-form input-group delius" style="margin-top: 10px;">
                         <h5 class="gab m-0"><i class="far fa-sort-numeric-up"></i> Quantity</h5>
                         <div class="d-flex flex-row mr-5 w-100">

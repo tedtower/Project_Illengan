@@ -1,6 +1,6 @@
 let UPDATE = 5000;
 var table = $('#mydata');
-childRowsOpen();
+
 
 function orders() {
 $(document).ready(function() {
@@ -26,8 +26,6 @@ $(document).ready(function() {
     '</table>';
 }
 
-function childRowsOpen() {
-$(document).ready(function() {
     $('#mydata').on('init.dt', function(e, settings){
     var api = new $.fn.dataTable.Api( settings );
     api.rows().every( function () {
@@ -36,8 +34,7 @@ $(document).ready(function() {
         tr.addClass('shown');
     });
     });
-});
-}
+
 
 $(document).ready(function() {
     var table = $('#mydata').DataTable( {
@@ -46,7 +43,7 @@ $(document).ready(function() {
                 {
                 "className":      'details-control',
                 "data":           null,
-                "defaultContent": ''
+                "defaultContent": '' 
                 },
                 {"data" : "menu_name"},
                 {"data" : "cust_name"},
@@ -60,7 +57,7 @@ $(document).ready(function() {
                         ' data-item_status="'+ data.item_status +'" onclick="change_status()">'+ data.item_status +'</button>';
                         }
                     }
-		        ]
+            ]
 	        });
 
 // FOR SHOWING THE ACCORDION
@@ -110,16 +107,16 @@ function change_status() {
             item_status: item_status
         },
         success: function() {
-            table.DataTable().ajax.reload(childRowsOpen(), false);
-     
+            table.DataTable().ajax.reload(null, false);
+            
         }
             }); 
  
         });
 }
 
-setInterval(function()
-    { 
-        orders();
-        console.log('m'); 
-        }, 5000);
+// setInterval(function()
+//     { 
+//         orders();
+//         console.log('m'); 
+//         }, 5000);

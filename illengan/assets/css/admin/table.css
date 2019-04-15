@@ -3,6 +3,7 @@
     right: 0;
     float: right;
     width: 80%;
+    margin-top: 50px;
 }
 
 .stock-btn {
@@ -14,4 +15,5 @@
 
 .btn {
     margin-left: 10px;
+    scroll-behavior: auto;
 }
