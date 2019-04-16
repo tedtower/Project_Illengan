@@ -388,6 +388,27 @@ function viewSpoilagesStock(){
 
     }
 
+    function jsonActivityLogs() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data = $this->adminmodel->get_actlogs();
+            header('Content-Type: application/json');
+		    echo json_encode($data, JSON_PRETTY_PRINT);
+        }else {
+            redirect('login');
+        }  
+
+    }
+
+    function viewActivityLog() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Activity Logs";
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/activityLogs');
+		    
+        }else {
+            redirect('login');
+        }
 
 }
 
