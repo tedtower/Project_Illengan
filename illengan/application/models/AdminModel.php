@@ -312,6 +312,11 @@ class AdminModel extends CI_Model{
         return $this->db->query($query, array($id))->result_array();
     }
 
+    function get_actlogs() {
+        $query = "select * FROM activity_logs al INNER JOIN accounts ac USING (account_id)";
+        return $this->db->query($query)->result_array();
+    }
+
 //DELETE FUNCTIONS---------------------------------------------------------------------------
     function delete_account($account_id){
         $query = "delete from accounts where account_id = ?";

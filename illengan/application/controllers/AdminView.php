@@ -11,16 +11,17 @@ class AdminView extends CI_Controller{
 //VIEW FUNCTIONS--------------------------------------------------------------------------------
     function viewAccounts(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['account']= $this->adminmodel->get_accounts();
-            $this->load->view('admin/viewaccounts', $data);
+            $data['account'] = $this->adminmodel->get_accounts();
             $data['title'] = "Admin Accounts";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/view_accounts', $data);
             $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
-        }
+        }   
     }
+
 //Modal na ito
     function viewaddaccounts(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
@@ -388,6 +389,13 @@ function viewSpoilagesStock(){
     }
 
     function jsonActivityLogs() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data = $this->adminmodel->get_actlogs();
+            header('Content-Type: application/json');
+		    echo json_encode($data, JSON_PRETTY_PRINT);
+        }else {
+            redirect('login');
+        }  
 
     }
 
@@ -421,4 +429,6 @@ function viewSpoilagesStock(){
         }
     }
 }
+}
+
 ?>

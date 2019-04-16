@@ -33,7 +33,7 @@
                                 </label>
                             </div>-->
 									<!--Add Add Ons Spoilage-->
-									<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewMenuSpoilage" data-original-title style="float: left">Add Menu Spoilage</a><br>
+									<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewMenuSpoilage" data-original-title style="margin:0;">Add Menu Spoilage</a><br>
 									<!--Search
                             <div id ="example_filter" class="dataTables_filter">
                                 <label>
@@ -89,85 +89,104 @@
 						</td>
 						<!--End Table Content-->
 						<!--Modals-->
-						<!--Modal for Activation/Deactivation-->
-						<!--Modal for Add New Table-->
-						<div class="modal fade" id="addNewMenuSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h5 class="modal-title" id="exampleModalLabel">Add Menu Spoilage</h5>
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-									</div>
-									<form action="adminMenuSpoilage/insert" method="post" accept-charset="utf-8">
-										<div class="modal-body">
-											<!--Spoilage Code-->
-											<div class="row">
-												<div class="col-md-6 form-group">
-													<div class="form-group label-floating">
-														<label for="spoilageCode">Spoilage Code</label>
-														<input class="form-control" type="text" name="spoilageCode" value="" required pattern="[a-zA-Z][a-zA-Z\s][0-9]*" required title="Spoilage Code should contain letters and numbers">
-													</div>
-												</div>
-											</div>
-											<!--Menu Name-->
-											<div class="row">
-												<div class="col-md-12 form-group">
-													<div class="form-group label-floating">
-														<label for="menuName">Menu Name</label>
-														<input class="form-control" type="text" name="menuName" value=""
-															required pattern="[a-zA-Z][a-zA-Z\s]*" required
-															title="Menu Name should only countain letters">
-													</div>
-												</div>
-											</div>
-											<!--Spoilage Quantity-->
-											<div class="row">
-												<div class="col-md-6 form-group">
-													<div class="form-group label-floating">
-														<label for="spoilageQuantity">Spoilage Quantity</label>
-														<input class="form-control" type="text" name="spoilageQuantity" value="" required pattern="[0-9]*" required title="Spoilage quantity should only contains numbers">
-													</div>
-												</div>
-											<!--Spoilage Date-->
-												<div class="col-md-6 form-group">
-													<div class="form-group label-floating">
-														<label for="spoilageDate">Spoilage Date</label>
-														<input type="date" class="form-control" name="spoilageDate" placeholder="Date" required>
-													</div>
-												</div>
-											</div>
-											<!--Date Recorded-->
-											<div class="row">
-											<div class="col-md-12 form-group">
-													<div class="form-group label-floating">
-														<label for="spoilageDateRecorded">Date Recorded</label>
-														<input type="date" class="form-control" name="spoilageDateRecorded" placeholder="Date" required>
-													</div>
-												</div>
-											</div>
-											<!--Remarks-->
-											<div class="row">
-												<div class="col-md-12 form-group">
-													<div class="form-group label-floating">
-														<label for="remarks">Remarks</label>
-														<input class="form-control" type="text" name="name" value=""
-															required pattern="[a-zA-Z][a-zA-Z\s]*" required
-															title="Remarks should only countain letters">
-													</div>
-												</div>
-											</div>
-
-										</div>
-									</form>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-										<button type="button" class="btn btn-success btn-sm">Save changes</button>
-									</div>
+					<!--Start of Modal "Add Transaction"-->
+					<div class="modal fade bd-example-modal-lg" id="addNewMenuSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Add Menu Spoilage</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
 								</div>
+								<form id="formAdd" action="<?= site_url('admin/menu/spoilages/add') ?>" method="post" accept-charset="utf-8">
+									<div class="modal-body">
+										<div class="form-row">
+										<!--Container of Add On Name & Spoilage Qty-->
+										<!--Source Date-->
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+													Source Date</span>
+											</div>
+											<input type="date" name="transDate" id="transDate"
+												class="form-control form-control-sm">
+											</div>
+										</div>
+										<table class="menuSpoilageTable table table-sm table-borderless">
+											<!--Table containing the different input fields in adding AO spoilages -->
+											<thead class="thead-light">
+												<tr>
+													<th>Source Name</th>
+													<th width="20%">Qty</th>
+													<th>Remarks</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td><input type="text" name="" id="" class="form-control form-control-sm"></td>
+													<td><input type="number" name="" id="" class="form-control form-control-sm"></td>
+													<td><textarea name="" id=""  class="form-control form-control-sm"></textarea></td>
+											</tbody>
+										</table>
+										<!--Total of the trans items-->
+
+										<div class="modal-footer">
+											<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+											<button class="btn btn-success btn-sm" type="submit">Add</button>
+										</div>
+									</div>
+								</form>
 							</div>
 						</div>
+					</div>
+					<!--End of Modal "Add Menu Spoilage"-->
+
+					<!--Start of Modal "Edit Menu Spoilage"-->
+					<div class="modal fade bd-example-modal-lg" id="addMenuSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Edit Menu Spoilage</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<form id="formAdd" action="<?= site_url('admin/menu/spoilages/edit') ?>" method="post" accept-charset="utf-8">
+									<div class="modal-body">
+										<div class="form-row">
+										<!--Container of Add On Name & Spoilage Qty-->
+										<!--Source Date-->
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+													Source Date</span>
+											</div>
+											<input type="date" name="transDate" id="transDate"
+												class="form-control form-control-sm">
+											</div>
+										</div>
+										<table class="addOnSpoilageTable table table-sm table-borderless">
+											<!--Table containing the different input fields in adding AO spoilages -->
+											<thead class="thead-light">
+												<tr>
+													<th>Source Name</th>
+													<th width="20%">Qty</th>
+													<tH>Remarks</th>
+												</tr>
+											</thead>
+										</table>
+
+										<div class="modal-footer">
+											<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+											<button class="btn btn-success btn-sm" type="submit">Update</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<!--End of Modal "Edit AO Spoilage"-->
 						<!--Delete Confirmation Box-->
 						<div class="modal fade" id="deleteSpoilage" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
 							<div class="modal-dialog">
