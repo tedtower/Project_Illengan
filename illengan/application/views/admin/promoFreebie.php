@@ -14,7 +14,7 @@
                             <!--Table-->
                             <div class="card-content">
                                 <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newMenu"
-                                    data-original-title style="margin:0;">Add Menu Item</a>
+                                    data-original-title style="float: left">Add Menu Item</a>
                                 <!--Search
                             <div id ="example_filter" class="dataTables_filter">
                                 <label>

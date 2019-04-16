@@ -11,7 +11,7 @@ class AdminUpdate extends CI_Controller{
     function editTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->form_validation->set_rules('prevTableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]');
-            $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
+            $this->form_validation->set_rules('tableCode',   'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
             if($this->form_validation->run()){
                 $prevTableCode = trim($this->input->post('prevTableCode'));
                 $tableCode = trim($this->input->post('tableCode'));
@@ -65,15 +65,9 @@ class AdminUpdate extends CI_Controller{
             $account_username = $this->input->post("account_username");
             $account_type = $this->input->post("account_type");
             $account_id = $this->input->post("account_id");
-
-            $data =array(
-                'account_type' => $account_type,
-                'account_username' =>$account_username
-            );
-            $data['account_id'] = $account_id;
-            
-            $this->adminmodel->edit_accounts($data,$account_id);
+            $this->adminmodel->edit_accounts($account_username,$account_type,$account_id);
             }
+            redirect('admin/accounts');
     }
     function editMenuCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
@@ -96,29 +90,30 @@ class AdminUpdate extends CI_Controller{
         }
     }
     function editStockItem(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            
-            $this->form_validation->set_rules('new_stock_id','Stock ID','trim|required|numeric');
-            $this->form_validation->set_rules('new_stock_name','Stock Name','trim|required|alpha_numeric_spaces');
-            $this->form_validation->set_rules('new_stock_quantity','Stock Quantity','trim|required|numeric');
-            $this->form_validation->set_rules('new_stock_unit','Stock Unit','trim|required|alpha_numeric_spaces');
-            $this->form_validation->set_rules('new_stock_minqty','Minimum Quantity','trim|numeric');
-            $this->form_validation->set_rules('new_stock_status','Stock Status','trim|required|alpha');
-            $this->form_validation->set_rules('new_stock_category','Stock Category','trim|required|numeric');
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){            
+            $this->form_validation->set_rules('stockID','Stock ID','trim|required|numeric');
+            $this->form_validation->set_rules('stockName','Stock Name','trim|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('stockQty','Stock Quantity','trim|required|numeric');
+            $this->form_validation->set_rules('stockUnit','Stock Unit','trim|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('stockMin','Minimum Quantity','trim|numeric');
+            $this->form_validation->set_rules('stockStatus','Stock Status','trim|required|alpha');
+            $this->form_validation->set_rules('categoryName','Stock Category','trim|required|numeric');
             
             if($this->form_validation->run() == FALSE){
-                $this->viewInventory();
+                redirect("admin/inventory");
             }else{
-                $stock_id = $this->input->post('new_stock_id');
-                $stock_name = $this->input->post('new_stock_name');
-                $stock_quantity = $this->input->post('new_stock_quantity');
-                $stock_unit = $this->input->post('new_stock_unit');
-                $stock_minimum = $this->input->post('new_stock_minqty');
-                $stock_status = $this->input->post('new_stock_status');
-                $category_id = $this->input->post('new_stock_category');
-                if($this->adminmodel->edit_stockitem($stock_id,$stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id)){
-                    $this->viewInventory();
-                }else{
+                $stockID = $this->input->post('stockID');
+                $stockName = $this->input->post('stockName');
+                $stockQty = $this->input->post('stockQty');
+                $stockUnit = $this->input->post('stockUnit');
+                $stockMin = $this->input->post('stockMin');
+                $stockStatus = $this->input->post('stockStatus');
+                $categoryName = $this->input->post('categoryName');
+                if($this->adminmodel->edit_stockItem($stockID,$stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$categoryName)){
+                    echo json_encode(array(
+                        "stocks" => $this->adminmodel->get_stocks(),
+                        "categories" => $this->adminmodel->get_stockCategories()
+                    ));
                 }
             }
 
@@ -182,6 +177,18 @@ class AdminUpdate extends CI_Controller{
             }else{
                 redirect(admin/transactions);
             }
+        }else{
+            redirect('login');
+        }
+    }
+    
+    function editStockQty() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $stock_id = $this->input->post('stockId');
+            $stock_quantity = $this->input->post('stockQty');
+            echo $stock_id, $stock_quantity;
+            $this->adminmodel->edit_stockqty($stock_id, $stock_quantity);
+            redirect('admin/logStock');
         }else{
             redirect('login');
         }

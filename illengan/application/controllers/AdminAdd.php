@@ -43,28 +43,30 @@ class AdminAdd extends CI_Controller{
     }
     function addStockItem(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->form_validation->set_rules('stock_name','Stock Name','trim|required|alpha_numeric_spaces');
-            $this->form_validation->set_rules('stock_quantity','Stock Quantity','trim|required|numeric');
-            $this->form_validation->set_rules('stock_minqty','Minimum Quantity','trim|numeric');
-            $this->form_validation->set_rules('stock_status','Stock Status','trim|required|alpha');
-            $this->form_validation->set_rules('stock_category','Stock Status','trim|required|numeric');
+            $this->form_validation->set_rules('stockName','Stock Name','trim|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('stockQty','Stock Quantity','trim|required|numeric');
+            $this->form_validation->set_rules('stockUnit','Stock Unit','trim|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('stockMin','Minimum Quantity','trim|numeric');
+            $this->form_validation->set_rules('stockStatus','Stock Status','trim|required|alpha');
+            $this->form_validation->set_rules('categoryName','Stock Category','trim|required|numeric');
             
             if($this->form_validation->run() == FALSE){
-                $this->viewInventory();
+                redirect("admin/inventory");
             }else{
-                $stock_name = $this->input->post('stock_name');
-                $stock_quantity = $this->input->post('stock_quantity');
-                $stock_unit = $this->input->post('stock_unit');
-                $stock_minimum = $this->input->post('stock_minqty');
-                $stock_status = $this->input->post('stock_status');
-                $category_id = $this->input->post('stock_category');
-                if($this->adminmodel->add_stockitem($stock_name,$stock_quantity,$stock_unit,$stock_minimum,$stock_status,$category_id)){
-                    redirect('admin/inventory');
+                $stockName = $this->input->post('stockName');
+                $stockQty = $this->input->post('stockQty');
+                $stockUnit = $this->input->post('stockUnit');
+                $stockMin = $this->input->post('stockMin');
+                $stockStatus = $this->input->post('stockStatus');
+                $categoryName = $this->input->post('categoryName');
+                if($this->adminmodel->add_stockItem($stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$categoryName)){
+                    echo json_encode(array(
+                        "stocks" => $this->adminmodel->get_stocks(),
+                        "categories" => $this->adminmodel->get_stockCategories()
+                    ));
                 }else{
-                    redirect('admin/inventory');             }
+                }
             }
-        }else{
-            redirect('login');
         }
     }
     function addStockCategory(){
@@ -208,6 +210,15 @@ class AdminAdd extends CI_Controller{
         redirect('admin/menu');
         }
 
+    }
+    function addReturns(){
+        $now = date('Y-m-d');
+        $quantity = $this->input->post('quantity');
+        $trans = $this->input->post('trans');
+        $stock = $this->input->post('stock');
+        $stck_qty = $this->input->post('stck_qty');
+        $this->adminmodel->add_returns($trans, $stock, $quantity,  $now, $stck_qty);
+        redirect('adminview/viewReturns');
     }
 
 }

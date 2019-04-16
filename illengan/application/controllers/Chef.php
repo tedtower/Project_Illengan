@@ -56,4 +56,10 @@ class Chef extends CI_Controller {
 		}
 	}
 
+	function multi_json() {
+		$data['data'] = $this->ChefModel->return_orderlist();
+		 
+		
+	}
+
 }
