@@ -120,3 +120,5 @@ function change_status() {
 //         orders();
 //         console.log('m'); 
 //         }, 5000);
+
+// select * FROM activity_logs al INNER JOIN accounts ac USING (account_id)
