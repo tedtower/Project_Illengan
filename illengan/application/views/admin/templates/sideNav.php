@@ -15,7 +15,7 @@
                 </div>
 <hr>
                 <ul class="list-unstyled">
-                                            <li>
+                    <li>
                             <a href="<?php echo base_url('admin/dashboard') ?>">Dashboard</a>
                         </li>
                 <li class="active">
@@ -116,9 +116,9 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
-                            <a href="<?php echo base_url('admin/log/activity')?>">Activity Logs</a>
-                        </li>
+                <li>
+                    <a href="<?php echo base_url('admin/log/activity')?>">Activity Logs</a>
+                </li>
                 </ul>
     
             </nav>
