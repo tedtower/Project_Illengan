@@ -404,7 +404,7 @@ function viewSpoilagesStock(){
     }
     function viewConsumptions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Consumptions";
+            $data['title'] = "Admin Stock Consumption";
             /*$data['consumptions'] = array(
                 "destock" => $this->adminmodel->get_transactions(),
                 "" => $this->adminmodel->get_transitems(),
