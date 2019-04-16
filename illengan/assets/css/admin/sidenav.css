@@ -51,7 +51,6 @@ nav#sidebar::-webkit-scrollbar-thumb:hover {
     background-position: center;
     overflow-y: scroll !important;
     font-family: 'Roboto', sans-serif;
-    border: 1px solid whitesmoke;margin: 0 5%;margin-bottom:10%;opacity: 0.2;
 }
 
 #sidebar.active {
