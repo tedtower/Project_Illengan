@@ -410,6 +410,7 @@ function viewSpoilagesStock(){
             redirect('login');
         }
 
+    }
 }
 
 ?>

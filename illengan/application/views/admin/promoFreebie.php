@@ -31,7 +31,7 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Menu Item</th>
+                        <th>Promo</th>
                         <th>Category</th>
                         <th>Status</th>
                         <th>Actions</th>
