@@ -11,7 +11,7 @@ class AdminUpdate extends CI_Controller{
     function editTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->form_validation->set_rules('prevTableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]');
-            $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
+            $this->form_validation->set_rules('tableCode',   'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
             if($this->form_validation->run()){
                 $prevTableCode = trim($this->input->post('prevTableCode'));
                 $tableCode = trim($this->input->post('tableCode'));
@@ -65,15 +65,9 @@ class AdminUpdate extends CI_Controller{
             $account_username = $this->input->post("account_username");
             $account_type = $this->input->post("account_type");
             $account_id = $this->input->post("account_id");
-
-            $data =array(
-                'account_type' => $account_type,
-                'account_username' =>$account_username
-            );
-            $data['account_id'] = $account_id;
-            
-            $this->adminmodel->edit_accounts($data,$account_id);
+            $this->adminmodel->edit_accounts($account_username,$account_type,$account_id);
             }
+            redirect('admin/accounts');
     }
     function editMenuCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
@@ -183,6 +177,18 @@ class AdminUpdate extends CI_Controller{
             }else{
                 redirect(admin/transactions);
             }
+        }else{
+            redirect('login');
+        }
+    }
+    
+    function editStockQty() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $stock_id = $this->input->post('stockId');
+            $stock_quantity = $this->input->post('stockQty');
+            echo $stock_id, $stock_quantity;
+            $this->adminmodel->edit_stockqty($stock_id, $stock_quantity);
+            redirect('admin/logStock');
         }else{
             redirect('login');
         }

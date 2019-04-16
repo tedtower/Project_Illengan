@@ -58,6 +58,7 @@ $route['verifylogin'] = "login/check_cred";
 //Viewing Routes -----------------------------------------------
 $route['admin/menu'] = "adminview/viewmenu";
 $route['admin/menu/getDetails'] = "adminview/menuGetDetails";
+$route['admin/menu/addons'] = "adminview/menuAddons";
 $route['admin/spoilages'] = "adminview/viewspoilages";
 $route['admin/sales'] = "adminview/viewSales";
 $route['admin/dashboard'] = "adminview/viewdashboard";
@@ -85,6 +86,9 @@ $route['admin/stock/spoilages'] = "adminview/viewSpoilagesStock";
 $route['admin/spoilagesstockjson'] = "adminview/viewSpoilagesStockJs";
 $route['admin/addons/spoilages'] = "adminview/viewspoilagesaddons";
 $route['admin/spoilagesaddonsjson'] = "adminview/viewSpoilagesAddonsJs";
+$route['admin/log/stocks'] = "adminview/viewLogStock";
+$route['admin/log/activity'] = "adminview/viewActivityLog";
+$route['admin/consumption'] = "adminview/viewConsumptions";
 
 //End Viewing Routes
 
@@ -118,6 +122,7 @@ $route['admin/accounts/changepassword'] = "adminupdate/changeAccountPassword";
 $route['admin/accounts/edit'] = "adminupdate/editAccounts";
 $route['admin/sources/edit'] = "adminupdate/editsource";
 $route['admin/tables/edit'] = "adminupdate/edittable";
+$route['admin/stockqty/edit'] = "adminupdate/editStockQty";
 //End Admin Update Routes ---------------------------------------
 
 //Admin Delete Routes -------------------------------------------
@@ -131,6 +136,11 @@ $route['admin/stock/spoilage/delete/(:num)'] ="admindelete/deletestockspoilages/
 $route['admin/menu/spoilage/delete/(:num)'] ="admindelete/deletemenuspoilages/$1";
 $route['admin/addons/spoilage/delete/(:num)'] ="admindelete/deleteaddonsspoilages/$1";
 //End Admin Delete Routes ---------------------------------------
+
+//Admin Json Routes ------------------------------------------- 
+$route['admin/logJson'] = "adminview/jsonLogStock";
+$route['admin/jsonStock'] = "adminview/jsonStock";
+//End Admin Json Routes ---------------------------------------
 
 //CUSTOMER ROUTES
 $route['customer/processCheckIn'] = "customer/processCheckIn";

@@ -118,9 +118,9 @@ class AdminModel extends CI_Model{
     //     }
     // }
 
-    function edit_accounts($data,$account_id){
-        $this->db->where('account_id', $account_id);
-        $this->db->update('accounts', $data);
+    function edit_accounts($account_username,$account_type,$account_id){
+        $query = "update accounts set account_username = ?, account_type = ? where account_id = ?";
+        return $this->db->query($query,array($account_username, $account_type, $account_id));
     }
     function edit_menuspoilage($s_id,$menu_id,$s_type,$s_date,$date_recorded,$remarks){
         $query = "update spoilage set s_type = ?, s_date = ?, date_recorded = ?, remarks=? where s_id=?";
@@ -161,6 +161,10 @@ class AdminModel extends CI_Model{
         $query = "Update stockitems set stock_name = ?, stock_quantity = ?, stock_unit = ?, stock_minimum = ?, stock_status = ?, category_id = ? where stock_id=?;";
         return $this->db->query($query,array($stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$category_id,$stockID));
     }
+    function edit_stockqty($stock_id, $stock_quantity){
+        $query = "Update stockitems set stock_quantity = ? where stock_id= ?;";
+        return $this->db->query($query,array($stock_quantity, $stock_id));
+    }
     function edit_transaction($trans_id, $receiptNo, $transDate, $source, $remarks, $total, $dateRecorded, $transItems){
         $query = "Delete from transitems where trans_id = ?";
         $this->db->query($query, array($trans_id));
@@ -189,7 +193,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_logs(){
-        $query = "Select log_id, stock_name, quantity, log_date, log_type, date_recorded from log inner join stockitems using (stock_id)";
+        $query = "Select * from log inner join stockitems using (stock_id)";
         return $this->db->query($query)->result_array();
     }
     function get_menu(){
@@ -298,6 +302,10 @@ class AdminModel extends CI_Model{
         $query = "Select trans_id, item_name, item_qty, item_unit, item_price, subtotal from transitems";
         return $this->db->query($query)->result_array();
     }
+    function get_inventorystock() {
+        $query = "SELECT * FROM stockitems INNER JOIN categories USING (category_id);";
+        return $this->db->query($query)->result_array();
+    }
 
     function get_samplemethod($id){
         $query = "Select trans_id, item_name, item_qty, item_unit, item_price, item_qty*item_price as total_price from transitems where trans_id=?";
@@ -317,7 +325,8 @@ class AdminModel extends CI_Model{
     function delete_spoilages(){
         $s_id=$this->input->post('s_id');
         $this->db->where('s_id', $s_id);
-        $this->db->delete('spoilage');
+        $result = $this->db->delete('spoilage');
+        return $result;
     }
     function delete_stockcategory($category_id){
         $query = "delete from categories where category_id = ? and category_type= 'inventory'";
@@ -363,6 +372,26 @@ class AdminModel extends CI_Model{
     function edit_table($newTableCode, $previousTableCode){
         $query = "Update tables set table_code = ? where table_code = ?;";
         return $this->db->query($query, array($newTableCode, $previousTableCode));
+    }
+    //Return Function
+    function get_returns(){
+        $query = "SELECT returns.return_id, returns.trans_id, returns.stock_id, returns.return_qty, returns.remarks, returns.date_recorded, transactions.receipt_no, transactions.trans_date,
+        stockitems.stock_name, stockitems.stock_unit FROM transactions inner join returns on transactions.trans_id = returns.trans_id inner join stockitems on returns.stock_id = stockitems.stock_id";
+        return $this->db->query($query)->result_array();
+    }
+    function add_returns($trans, $stock, $quantity,  $now){
+        $stocks= "Select stock_quantity from stockitems where stock_id='$stock'";
+        $stocks = $this->db->query($stocks)->result_array();
+        foreach($stocks as $stck){
+            $stck = $stck['stock_quantity'];
+        }
+        $stck_qty = $stck - $quantity;
+        $query2 = "Update stockitems set stock_quantity = ? where stock_id = ?";
+        $this->db->query($query2, array( $stck_qty, $stock));
+
+        $query1 = "Insert into returns(trans_id, stock_id, return_qty, date_recorded) values (?,?,?,?)";
+        return $this->db->query($query1, array( $trans, $stock, $quantity,  $now));
+        
     }
 
 }

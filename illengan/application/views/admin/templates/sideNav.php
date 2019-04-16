@@ -26,13 +26,13 @@
                             <ul  class="collapse list-unstyled" id="logs">
 
                                 <li>
-                                    <a href="<?php echo base_url('admin/inventory')?>" ><span style="margin-left: 15%">All</span></a>
+                                    <a href="<?php echo base_url('admin/log/stocks')?>" ><span style="margin-left: 15%">All</span></a>
                                 </li>
                                 <li>
-                                   <a href="#" ><span style="margin-left: 15%">Restock</span></a>
+                                   <a href="<?php echo base_url('admin/log/stocks')?>" ><span style="margin-left: 15%">Restock</span></a>
                                 </li>
                                  <li>
-                                   <a href="#" ><span style="margin-left: 15%">Destock</span></a>
+                                   <a href="<?php echo base_url('admin/log/stocks')?>" ><span style="margin-left: 15%">Destock</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -46,7 +46,7 @@
                             <a href="#">Consumed</a>
                         </li>
                         <li>
-                            <a href="#">Returns</a>
+                            <a href="<?php echo base_url('admin/adminView/viewreturns')?>">Returns</a>
                         </li>
                         <li>
                             <a href="<?php echo base_url('admin/stock/spoilages')?>">Spoilages</a>
@@ -60,7 +60,7 @@
                             <a href="<?php echo base_url('admin/menu') ?>">Menu</a>
                         </li>
                         <li>
-                            <a href="<?php echo base_url('admin/addOns')?>">Addons</a>
+                            <a href="<?php echo base_url('admin/menu/addons')?>">Addons</a>
                         </li>
                         <li>
                             <a href="<?php echo base_url('admin/categories')?>">Categories</a>
@@ -115,6 +115,9 @@
                                    <a href="#">Sales</a>
                                 </li>
                             </ul>
+                        </li>
+                        <li>
+                            <a href="<?php echo base_url('admin/log/activity')?>">Activity Logs</a>
                         </li>
                 </ul>
     

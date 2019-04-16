@@ -22,7 +22,7 @@
                             <!--Table-->
                             <div class="card-content">
                                 <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newTransaction"
-                                    data-original-title style="float: left" id="addTransaction">Add Transaction</a>
+                                    data-original-title style="float: left" id="addTransaction">Add Purchases/Deliveries</a>
                                 <br>
                                 <br>
                                 <table id="transTable" class="table table-bordered dt-responsive nowrap"
@@ -74,7 +74,7 @@
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Add Transaction</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel">Add Purchases/Deliveries</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -130,7 +130,7 @@
                                                     </div>
 
                                                     <!--Transaction Items-->
-                                                    <button type="button" class="addTransItemBtn btn btn-primary btn-sm">Add Trans Item</button>
+                                                    <button type="button" class="addTransItemBtn btn btn-primary btn-sm">Add Purchase Item</button>
                                                     <!--Button to add row in the table-->
                                                     <br><br>
                                                     <table class="transItemsTable table table-sm table-borderless">
@@ -289,6 +289,8 @@ $(function() {
         $("#formAdd").find(".total").text(0.00);
         $("#formAdd").find(".transItemsTable > tbody").empty();
     });
+
+
     $(".addTransItemBtn").on('click', function(){
         $(this).closest("form").find(".transItemsTable > tbody").append(`
                                                             <tr class="transItem">
