@@ -33,7 +33,7 @@
                                 </label>
                             </div>-->
 								<!--Add Add Ons Spoilage-->
-								<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewAddOnsSpoilage" data-original-title style="float: left">Add Ons Spoilage</a><br>
+								<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewAddOnsSpoilage" data-original-title style="margin:0;">Add Ons Spoilage</a><br>
 								<!--Search
                             <div id ="example_filter" class="dataTables_filter">
                                 <label>
@@ -88,115 +88,112 @@
 									?>
 									</tbody>
 								</table>
-					<!--End Table Content-->
+								<!--End Table Content-->
 
-					<!--Modals-->
-					<!--Start of Modal "Add Transaction"-->
-					<div class="modal fade bd-example-modal-lg" id="addNewAddOnsSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-lg" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLabel">Add Add Ons Spoilage</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<form id="formAdd" action="<?= site_url('admin/addons/spoilages/add') ?>" method="post" accept-charset="utf-8">
-									<div class="modal-body">
-										<div class="form-row">
-										<!--Container of Add On Name & Spoilage Qty-->
-										<!--Source Date-->
-										<div class="input-group mb-3">
-											<div class="input-group-prepend">
-												<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-													Source Date</span>
+								<!--Modals-->
+								<!--Start of Modal "Add Transaction"-->
+								<div class="modal fade bd-example-modal-lg" id="addNewAddOnsSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+									<div class="modal-dialog modal-lg" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="exampleModalLabel">Add Ons Spoilage</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
 											</div>
-											<input type="date" name="transDate" id="transDate"
-												class="form-control form-control-sm">
-											</div>
-										</div>
-										<table class="addOnSpoilageTable table table-sm table-borderless">
-											<!--Table containing the different input fields in adding AO spoilages -->
-											<thead class="thead-light">
-												<tr>
-													<th>Source Name</th>
-													<th width="20%">Qty</th>
-													<th>Remarks</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td><input type="text" name="" id="" class="form-control form-control-sm"></td>
-													<td><input type="number" name="" id="" class="form-control form-control-sm"></td>
-													<td><textarea name="" id=""  class="form-control form-control-sm"></textarea></td>
-											</tbody>
-										</table>
-										<!--Total of the trans items-->
+											<form id="formAdd" action="<?= site_url('admin/addons/spoilages/add') ?>" method="post" accept-charset="utf-8">
+												<div class="modal-body">
+													<div class="form-row">
+														<!--Container of Source Date-->
+														<!--Source Date-->
+														<div class="input-group mb-3">
+															<div class="input-group-prepend">
+																<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+																	Source Date</span>
+															</div>
+															<input type="date" name="transDate" id="transDate" class="form-control form-control-sm">
+														</div>
+													</div>
+													<table class="addOnSpoilageTable table table-sm table-borderless">
+														<!--Table containing the different input fields in adding AO spoilages -->
+														<thead class="thead-light">
+															<tr>
+																<th>Source Name</th>
+																<th width="20%">Qty</th>
+																<th>Remarks</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td><input type="text" name="" id="" class="form-control form-control-sm"></td>
+																<td><input type="number" name="" id="" class="form-control form-control-sm"></td>
+																<td><textarea name="" id="" class="form-control form-control-sm"></textarea></td>
+														</tbody>
+													</table>
 
-										<div class="modal-footer">
-											<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-											<button class="btn btn-success btn-sm" type="submit">Add</button>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+														<button class="btn btn-success btn-sm" type="submit">Add</button>
+													</div>
+												</div>
+											</form>
 										</div>
 									</div>
-								</form>
+								</div>
+								<!--End of Modal "Add AO Spoilage"-->
+
+								<!--Start of Modal "Edit AO Spoilage"-->
+								<div class="modal fade bd-example-modal-lg" id="addNewAddOnsSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+									<div class="modal-dialog modal-lg" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="exampleModalLabel">Edit Add Ons Spoilage</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+											<form id="formAdd" action="<?= site_url('admin/addons/spoilages/edit') ?>" method="post" accept-charset="utf-8">
+												<div class="modal-body">
+													<div class="form-row">
+														<!--Container of Add On Name & Spoilage Qty-->
+														<!--Source Date-->
+														<div class="input-group mb-3">
+															<div class="input-group-prepend">
+																<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+																	Source Date</span>
+															</div>
+															<input type="date" name="transDate" id="transDate" class="form-control form-control-sm">
+														</div>
+													</div>
+													<table class="addOnSpoilageTable table table-sm table-borderless">
+														<!--Table containing the different input fields in adding AO spoilages -->
+														<thead class="thead-light">
+															<tr>
+																<th>Source Name</th>
+																<th width="20%">Qty</th>
+																<tH>Remarks</th>
+															</tr>
+														</thead>
+													</table>
+
+													<div class="modal-footer">
+														<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+														<button class="btn btn-success btn-sm" type="submit">Update</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+								<!--End of Modal "Edit AO Spoilage"-->
+
+
 							</div>
 						</div>
 					</div>
-					<!--End of Modal "Add AO Spoilage"-->
-
-					<!--Start of Modal "Edit AO Spoilage"-->
-					<div class="modal fade bd-example-modal-lg" id="addNewAddOnsSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-lg" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLabel">Edit Add Ons Spoilage</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<form id="formAdd" action="<?= site_url('admin/addons/spoilages/edit') ?>" method="post" accept-charset="utf-8">
-									<div class="modal-body">
-										<div class="form-row">
-											<!--Container of Add On Name & Spoilage Qty-->
-										<!--Source Date-->
-										<div class="input-group mb-3">
-											<div class="input-group-prepend">
-												<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-													Source Date</span>
-											</div>
-											<input type="date" name="transDate" id="transDate"
-												class="form-control form-control-sm">
-											</div>
-										</div>
-										<table class="addOnSpoilageTable table table-sm table-borderless">
-											<!--Table containing the different input fields in adding AO spoilages -->
-											<thead class="thead-light">
-												<tr>
-													<th>Source Name</th>
-													<th width="20%">Qty</th>
-													<tH>Remarks</th>
-												</tr>
-											</thead>
-										</table>
-
-										<div class="modal-footer">
-											<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-											<button class="btn btn-success btn-sm" type="submit">Update</button>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-					<!--End of Modal "Edit AO Spoilage"-->
-
-
 				</div>
 			</div>
 		</div>
-	</div>
-	</div>
-	</div>
 	</div>
 	</div>
 	<?php include_once('templates/scripts.php') ?>

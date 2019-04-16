@@ -411,5 +411,6 @@ function viewSpoilagesStock(){
         }
 
 }
+}
 
 ?>

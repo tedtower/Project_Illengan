@@ -33,7 +33,7 @@
                                 </label>
                             </div>-->
 									<!--Add Add Ons Spoilage-->
-									<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewMenuSpoilage" data-original-title style="float: left">Add Menu Spoilage</a><br>
+									<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewMenuSpoilage" data-original-title style="margin:0;">Add Menu Spoilage</a><br>
 									<!--Search
                             <div id ="example_filter" class="dataTables_filter">
                                 <label>
