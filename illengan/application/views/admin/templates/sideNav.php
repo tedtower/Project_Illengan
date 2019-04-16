@@ -116,6 +116,9 @@
                                 </li>
                             </ul>
                         </li>
+                        <li>
+                            <a href="<?php echo base_url('admin/log/activity')?>">Activity Logs</a>
+                        </li>
                 </ul>
     
             </nav>
