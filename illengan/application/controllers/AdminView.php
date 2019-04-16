@@ -220,11 +220,10 @@ class AdminView extends CI_Controller{
     }
     function viewSpoilages(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin/viewspoilages');
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/templates/footer');
-            // $this->load->view('admin/templates/scripts');
+            $this->load->view('admin/viewspoilages');
+            $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
@@ -245,7 +244,6 @@ function viewSpoilagesStock(){
         $this->load->view('admin/templates/head', $data);
         $this->load->view('admin/templates/sideNav');
         $this->load->view('admin/viewspoilagesstock');
-        $this->load->view('admin/templates/footer');
     }else{
         redirect('login');
     }
@@ -262,9 +260,9 @@ function viewSpoilagesStock(){
     }
     function viewSpoilagesMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin/viewspoilagesmenu');
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/viewspoilagesmenu');
             $this->load->view('admin/templates/footer');
             // $this->load->view('admin/templates/scripts');
         }else{
@@ -284,11 +282,11 @@ function viewSpoilagesStock(){
     }
     function viewSpoilagesAddons(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin/viewspoilagesaddons');
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/viewspoilagesaddons');
             $this->load->view('admin/templates/footer');
-            $this->load->view('admin/templates/scripts');
+            // $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
