@@ -344,6 +344,22 @@ function viewSpoilagesStock(){
         // $this->output->set_output(json_encode($this->adminmodel->get_samplemethod($this->input->get('id'))));
         $this->output->set_output(json_encode($this->adminmodel->get_transactions()));
     }
+    function viewConsumptions(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Admin Consumptions";
+            /*$data['consumptions'] = array(
+                "destock" => $this->adminmodel->get_transactions(),
+                "" => $this->adminmodel->get_transitems(),
+                "sources" => $this->adminmodel->get_sources()
+            );*/
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/consumption');
+            $this->load->view('admin/templates/scripts');
+            $this->load->view('admin/templates/footer');
+        }else{
+            redirect('login');
+        }
+    }
 }
-
 ?>
