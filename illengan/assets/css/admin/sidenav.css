@@ -11,9 +11,6 @@ a, a:hover, a:focus {
     transition: all 0.3s;
 }
 
-/* ---------------------------------------------------
-    SIDEBAR STYLE
------------------------------------------------------ */
 .logo{
     width: 120px;
     height: 120px;
@@ -21,18 +18,31 @@ a, a:hover, a:focus {
     margin-left: auto;
     margin-right: auto;
     border: 3px solid grey;
-    border-radius: 130px; 
+    border-radius: 130px;
 }
+
 hr{
-    border: 1px solid whitesmoke;margin: 0 5%;margin-bottom:15%;opacity: 0.2;
+    border: 1px solid whitesmoke;margin: 0 5%;margin-bottom:10%;opacity: 0.2;
 }
+
+nav#sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+nav#sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+nav#sidebar::-webkit-scrollbar-thumb {
+    border-radius: 15px;
+    background: #888;
+nav#sidebar::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
 #sidebar {
     width: 250px;
     position: fixed;
-    top: 0;
-    left: 0;
     height: 100vh;
-    z-index: 999;
+    z-index: 1;
     background: linear-gradient( rgba(0, 0, 0, 0.7) 100%, rgba(0, 0, 0, 0.5)100%),url('/assets/media/admin/bg3.jpg');
     color: #fff;
     transition: all 0.3s;
@@ -40,28 +50,8 @@ hr{
     background-position: center;
     overflow-y: scroll !important;
     font-family: 'Roboto', sans-serif;
+    border: 1px solid whitesmoke;margin: 0 5%;margin-bottom:10%;opacity: 0.2;
 }
-
-/* width */
-nav#sidebar::-webkit-scrollbar {
-    width: 6px;
-  }
-  
-  /* Track */
-  nav#sidebar::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-  
-  /* Handle */
-  nav#sidebar::-webkit-scrollbar-thumb {
-    border-radius: 15px;
-    background: #888;
-  }
-  
-  /* Handle on hover */
-  nav#sidebar::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-  }
 
 #sidebar.active {
     margin-left: -250px;
@@ -73,12 +63,18 @@ nav#sidebar::-webkit-scrollbar {
     margin-top: 5%;
 }
 
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #47748b;
+}
+
 #sidebar ul li a {
     padding: 10px;
     padding-left: 8%;
     display: block;
     letter-spacing: 1px;
 }
+
 
 #sidebar ul li a:hover {
     color: darksalmon;
@@ -100,11 +96,11 @@ a[data-toggle="collapse"] {
 li.has-oul ul li {
     margin-left: 20px;
 }
+
 li.has-oul ul li a {
     font-size: 12.5px !important;
 }
+
 ul#sidelist li {
     font-size: 14.5px;
 }
-
-

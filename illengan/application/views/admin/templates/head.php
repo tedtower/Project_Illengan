@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'>
@@ -19,4 +20,5 @@
     <link rel="stylesheet" type="text/css" href="<?= framework_url().'datatables-bootstrap4/css/responsive.bootstrap4.min.css';?>">
     <link rel="stylesheet" type="text/css" href="<?= framework_url().'datatables-bootstrap4/css/select.bootstrap4.min.css';?>">
     <link rel="stylesheet" type="text/css" href="<?= framework_url().'datatables-bootstrap4/css/buttons.bootstrap4.min.css';?>">
+
 </head>

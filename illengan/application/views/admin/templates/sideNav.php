@@ -1,4 +1,3 @@
-
 <!-- Sidebar Holder -->
 <nav id="sidebar">
     <div class="sidebar-header">
@@ -27,9 +26,7 @@
                 <li><a href="<?php echo base_url('admin/menu') ?>"><i class="far fa-book"></i> Menu Items</a></li>
                 <li><a href="<?php echo base_url('admin/menu/addons')?>"><i class="far fa-layer-group"></i> Addons</a></li>
                 <li><a href="<?php echo base_url('admin/categories')?>"><i class="far fa-bookmark"></i> Categories</a></li>
-                <li>
-                    <a href="#"><i class="far fa-gift"></i> Promos</a>
-                </li>
+                <li><a href="#"><i class="far fa-gift"></i> Promos</a></li>
                 <li>
                     <a href="#Spoilages" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="far fa-trash"></i> Spoilages</a>
                     <ul  class="collapse list-unstyled" id="Spoilages">
