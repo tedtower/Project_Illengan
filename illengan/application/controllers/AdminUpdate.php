@@ -65,15 +65,9 @@ class AdminUpdate extends CI_Controller{
             $account_username = $this->input->post("account_username");
             $account_type = $this->input->post("account_type");
             $account_id = $this->input->post("account_id");
-
-            $data =array(
-                'account_type' => $account_type,
-                'account_username' =>$account_username
-            );
-            $data['account_id'] = $account_id;
-            
-            $this->adminmodel->edit_accounts($data,$account_id);
+            $this->adminmodel->edit_accounts($account_username,$account_type,$account_id);
             }
+            redirect('admin/accounts');
     }
     function editMenuCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
