@@ -11,17 +11,16 @@ class AdminView extends CI_Controller{
 //VIEW FUNCTIONS--------------------------------------------------------------------------------
     function viewAccounts(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['account'] = $this->adminmodel->get_accounts();
+            $data['account']= $this->adminmodel->get_accounts();
+            $this->load->view('admin/viewaccounts', $data);
             $data['title'] = "Admin Accounts";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/view_accounts', $data);
             $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
-        }   
+        }
     }
-
 //Modal na ito
     function viewaddaccounts(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
@@ -388,7 +387,38 @@ function viewSpoilagesStock(){
 
     }
 
+    function jsonActivityLogs() {
 
+    }
+
+    function viewActivityLog() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Activity Logs";
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/activityLogs');
+		    
+        }else {
+            redirect('login');
+        }
+
+    }
+    function viewConsumptions(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Admin Stock Consumption";
+            /*$data['consumptions'] = array(
+                "destock" => $this->adminmodel->get_transactions(),
+                "" => $this->adminmodel->get_transitems(),
+                "sources" => $this->adminmodel->get_sources()
+            );*/
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/consumption');
+            $this->load->view('admin/templates/scripts');
+            $this->load->view('admin/templates/footer');
+        }else{
+            redirect('login');
+        }
+    }
 }
-
 ?>
