@@ -43,7 +43,7 @@
                             <a href="<?php echo base_url('admin/transactions')?>">Purchases</a>
                         </li>
                         <li>
-                            <a href="#">Consumed</a>
+                            <a href="<?= base_url('admin/consumption'); ?>">Consumption</a>
                         </li>
                         <li>
                             <a href="<?php echo base_url('admin/adminView/viewreturns')?>">Returns</a>
