@@ -429,6 +429,5 @@ function viewSpoilagesStock(){
         }
     }
 }
-}
 
 ?>
