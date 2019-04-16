@@ -60,7 +60,7 @@
                             <a href="<?php echo base_url('admin/menu') ?>">Menu</a>
                         </li>
                         <li>
-                            <a href="<?php echo base_url('admin/addOns')?>">Addons</a>
+                            <a href="<?php echo base_url('admin/menu/addons')?>">Addons</a>
                         </li>
                         <li>
                             <a href="<?php echo base_url('admin/categories')?>">Categories</a>
