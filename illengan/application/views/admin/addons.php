@@ -1,4 +1,4 @@
-<?php include_once('templates/sideNav.php') ?>
+
     <!--End Side Bar-->
     <div class="content">
         <div class="container-fluid">

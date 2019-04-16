@@ -15,7 +15,7 @@
                 </div>
 <hr>
                 <ul class="list-unstyled">
-                                            <li>
+                    <li>
                             <a href="<?php echo base_url('admin/dashboard') ?>">Dashboard</a>
                         </li>
                 <li class="active">
@@ -37,16 +37,16 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="<?php echo base_url('admin/purchaseorder')?>">Purchase Order</a>
+                            <a href="<?php echo base_url('admin/purchaseorders')?>">Purchase Order</a>
                         </li>
                         <li>
                             <a href="<?php echo base_url('admin/transactions')?>">Purchases</a>
                         </li>
                         <li>
-                            <a href="#">Consumed</a>
+                            <a href="<?= base_url('admin/consumption'); ?>">Consumption</a>
                         </li>
                         <li>
-                            <a href="#">Returns</a>
+                            <a href="<?php echo base_url('admin/returns')?>">Returns</a>
                         </li>
                         <li>
                             <a href="<?php echo base_url('admin/stock/spoilages')?>">Spoilages</a>
@@ -116,9 +116,9 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
-                            <a href="<?php echo base_url('admin/log/activity')?>">Activity Logs</a>
-                        </li>
+                <li>
+                    <a href="<?php echo base_url('admin/log/activity')?>">Activity Logs</a>
+                </li>
                 </ul>
     
             </nav>
