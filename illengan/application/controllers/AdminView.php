@@ -240,7 +240,8 @@ class AdminView extends CI_Controller{
 }
 function viewSpoilagesStock(){
     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-        $this->load->view('admin/templates/head');
+        $data['title'] = "Admin Spoilages/Stock";
+        $this->load->view('admin/templates/head', $data);
         $this->load->view('admin/templates/sideNav');
         $this->load->view('admin/viewspoilagesstock');
         $this->load->view('admin/templates/footer');
@@ -409,9 +410,22 @@ function viewSpoilagesStock(){
         }
 
     }
-
-
-
+    function viewConsumptions(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Admin Stock Consumption";
+            /*$data['consumptions'] = array(
+                "destock" => $this->adminmodel->get_transactions(),
+                "" => $this->adminmodel->get_transitems(),
+                "sources" => $this->adminmodel->get_sources()
+            );*/
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/consumption');
+            $this->load->view('admin/templates/scripts');
+            $this->load->view('admin/templates/footer');
+        }else{
+            redirect('login');
+        }
+    }
 }
-
 ?>
