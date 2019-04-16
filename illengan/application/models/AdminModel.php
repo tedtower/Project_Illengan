@@ -299,7 +299,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_transitems(){
-        $query = "Select trans_id, item_name, item_qty, item_unit, item_price, subtotal from transitems";
+        $query = "Select trans_id, stock_name, item_qty, item_unit, item_price, subtotal from transitems natural join variance natural join stockitems";
         return $this->db->query($query)->result_array();
     }
     function get_inventorystock() {
