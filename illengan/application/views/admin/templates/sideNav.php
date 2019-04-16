@@ -11,11 +11,11 @@
         <li class="has-oul">
             <a href="#homeSubmenu" data-toggle="collapse"  class="dropdown-toggle" aria-expanded="false"><i class="far fa-industry"></i> Inventory</a>
             <ul class="collapse list-unstyled" id="homeSubmenu">
-                <li><a href="#"><i class="far fa-boxes"></i> Stock Items</a></li>
+                <li><a href="<?php echo base_url('admin/inventory')?>"><i class="far fa-boxes"></i> Stock Items</a></li>
                 <li><a href="<?php echo base_url('admin/purchaseorders')?>"><i class="far fa-conveyor-belt-alt"></i> Purchase Order</a></li>
                 <li><a href="<?php echo base_url('admin/transactions')?>"><i class="far fa-truck-loading"></i> Purchases/Deliveries</a></li>
                 <li><a href="<?= base_url('admin/consumption'); ?>"><i class="far fa-calendar-minus"></i> Consumption</a></li>
-                <li><a href="<?php echo base_url('admin/adminView/viewreturns')?>"><i class="far fa-undo"></i> Returns</a></li>
+                <li><a href="<?php echo base_url('admin/returns')?>"><i class="far fa-undo"></i> Returns</a></li>
                 <li><a href="<?php echo base_url('admin/stock/spoilages')?>"><i class="far fa-trash"></i> Spoilages</a></li>
             </ul>
         </li>
@@ -26,7 +26,7 @@
                 <li><a href="<?php echo base_url('admin/menu') ?>"><i class="far fa-book"></i> Menu Items</a></li>
                 <li><a href="<?php echo base_url('admin/menu/addons')?>"><i class="far fa-layer-group"></i> Addons</a></li>
                 <li><a href="<?php echo base_url('admin/categories')?>"><i class="far fa-bookmark"></i> Categories</a></li>
-                <li><a href="#"><i class="far fa-gift"></i> Promos</a></li>
+                <li><a href="<?php echo base_url('admin/menu/promos')?>"><i class="far fa-gift"></i> Promos</a></li>
                 <li>
                     <a href="#Spoilages" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="far fa-trash"></i> Spoilages</a>
                     <ul  class="collapse list-unstyled" id="Spoilages">

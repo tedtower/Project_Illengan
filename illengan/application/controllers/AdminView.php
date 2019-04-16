@@ -81,8 +81,8 @@ class AdminView extends CI_Controller{
     function viewInventory($error = null){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['title'] = "Inventory";
-            // $this->load->view('admin/templates/head', $data);
-            // $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/templates/head', $data);
+            $this->load->view('admin/templates/sideNav');
             $data['inventory'] = array(
                 "stocks" => $this->adminmodel->get_inventory(),
                 "categories" => $this->adminmodel->get_stockCategories()
@@ -137,6 +137,16 @@ class AdminView extends CI_Controller{
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/addons');
+        }else{
+            redirect('login');
+        }
+    }
+    function menuPromos(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Menu - Promos";
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/promo');
         }else{
             redirect('login');
         }

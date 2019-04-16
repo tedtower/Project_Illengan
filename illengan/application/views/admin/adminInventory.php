@@ -1,243 +1,217 @@
-<!doctype html>
-<html lang="en">
+<div class="content">
+<div class="container-fluid">
+<br>
+    <p style="text-align:right; font-weight: regular; font-size: 16px">
+    <!-- Real Time Date & Time -->
+        <?php echo date("M j, Y -l"); ?>
+    </p>
+<div class="content" style="margin-left:250px;">
+<div class="container-fluid">
+<!--Table-->
+<div class="card-content">
+    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newStock" data-original-title style="margin:0;" id="addBtn">Add Stock Item</a>
+    <br><br>
+    <table id="stockTable" class="table table-striped table-bordered dt-responsive nowrap"
+        cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th></th>
+                <th><b class="pull-left">Name</b></th>
+                <th><b class="pull-left">Quantity</b></th>
+                <th><b class="pull-left">Unit</b></th>
+                <th><b class="pull-left">Minimum</b></th>
+                <th><b class="pull-left">Category</b></th>
+                <th><b class="pull-left">Status</b></th>
+                <th><b class="pull-left">Action</b></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
-<head>
-    <?php include_once('templates/head.php') ?>
-</head>
-
-<body>
-    <?php include_once('templates/sideNav.php') ?>
-
-    <div class="content">
-        <div class="container-fluid">
-            <br>
-            <p style="text-align:right; font-weight: regular; font-size: 16px">
-                <!-- Real Time Date & Time -->
-                <?php echo date("M j, Y -l"); ?>
-            </p>
-            <div class="content" style="margin-left:250px;">
-                <div class="container-fluid">
-                    <div class="content">
-                        <div class="container-fluid">
-                            <!--Table-->
-                            <div class="card-content">
-                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newStock"
-                                    data-original-title style="margin:0;" id="addBtn">Add Stock Item</a>
-                                <!--Search
-                            <div id ="example_filter" class="dataTables_filter">
-                                <label>
-                                    "Search:"
-                                    <div class="form-group form-group-sm is-empty">
-                                       <input type="search" class="form-control" placeholder aria-controls="example">
-                                       <span class="material-input"></span> 
-                                    </div>
-                                </label>
-                            </div>-->
-                                <br><br>
-                                <table id="stockTable" class="table table-striped table-bordered dt-responsive nowrap"
-                                    cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th><b class="pull-left">Name</b></th>
-                                            <th><b class="pull-left">Quantity</b></th>
-                                            <th><b class="pull-left">Unit</b></th>
-                                            <th><b class="pull-left">Minimum</b></th>
-                                            <th><b class="pull-left">Category</b></th>
-                                            <th><b class="pull-left">Status</b></th>
-                                            <th><b class="pull-left">Action</b></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-
-                                <!--Start of Modal "Add Stock Item"-->
-                                <div class="modal fade" id="newStock" tabindex="-1" role="dialog"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Add Stock Item</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <form id="formAdd" action="<?= site_url('admin/inventory/add')?>" method="post"
-                                                accept-charset="utf-8">
-                                                <div class="modal-body">
-                                                    <!--Source Name-->
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Name</span>
-                                                        </div>
-                                                        <input type="text" name="stockName" id="stockName"
-                                                            class="form-control form-control-sm">
-                                                    </div>
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Qty</span>
-                                                        </div>
-                                                        <input type="number" name="stockQty" id="stockQty"
-                                                            class="form-control form-control-sm">
-                                                    </div>
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Unit</span>
-                                                        </div>
-                                                        <input type="text" name="stockUnit" id="stockUnit"
-                                                            class="form-control form-control-sm">
-                                                    </div>
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Minimum</span>
-                                                        </div>
-                                                        <input type="number" name="stockMin" id="stockMin"
-                                                            class="form-control form-control-sm">
-                                                    </div>
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Category</span>
-                                                        </div>
-                                                        <select class="custom-select" name="categoryName"
-                                                            id="categoryName">
-                                                            <option value="" selected>Choose</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Status</span>
-                                                        </div>
-                                                        <select class="custom-select" name="stockStatus"
-                                                            id="stockStatus">
-                                                            <option value="available" selected>Available</option>
-                                                            <option value="temp unavailable">Temporary Unavailable</option>
-                                                            <option value="unavailable">Unavailable</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger btn-sm"
-                                                            data-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn-success btn-sm"
-                                                            type="submit">Add</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--End of Modal "Add Stock Item"-->
-
-                                <!--Start of Modal "Edit Stock Item"-->
-                                <div class="modal fade" id="editStock" tabindex="-1" role="dialog"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Edit Stock Item</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <form id="formEdit" action="<?= site_url('admin/inventory/edit')?>" method="post"
-                                                accept-charset="utf-8">
-                                                <input type="text" name="stockID" hidden="hidden" />
-                                                <div class="modal-body">
-                                                    <!--Source Name-->
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Name</span>
-                                                        </div>
-                                                        <input type="text" name="stockName" id="stockName"
-                                                            class="form-control form-control-sm">
-                                                    </div>
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Qty</span>
-                                                        </div>
-                                                        <input type="number" name="stockQty" id="stockQty"
-                                                            class="form-control form-control-sm">
-                                                    </div>
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Unit</span>
-                                                        </div>
-                                                        <input type="text" name="stockUnit" id="stockUnit"
-                                                            class="form-control form-control-sm">
-                                                    </div>
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Minimum</span>
-                                                        </div>
-                                                        <input type="number" name="stockMin" id="stockMin"
-                                                            class="form-control form-control-sm">
-                                                    </div>
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Category</span>
-                                                        </div>
-                                                        <select class="custom-select" name="categoryName"
-                                                            id="categoryName">
-                                                            <option value="" selected>Choose</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Status</span>
-                                                        </div>
-                                                        <select class="custom-select" name="stockStatus"
-                                                            id="stockStatus">
-                                                            <option value="available" selected>Available</option>
-                                                            <option value="temp unavailable">Temporary Unavailable</option>
-                                                            <option value="unavailable">Unavailable</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger btn-sm"
-                                                            data-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn-success btn-sm"
-                                                            type="submit">Edit</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--End of Modal "Edit Stock Item"-->
+    <!--Start of Modal "Add Stock Item"-->
+    <div class="modal fade" id="newStock" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Stock Item</h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="formAdd" action="<?= site_url('admin/inventory/add')?>" method="post"
+                    accept-charset="utf-8">
+                    <div class="modal-body">
+                        <!--Source Name-->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                    Name</span>
                             </div>
+                            <input type="text" name="stockName" id="stockName"
+                                class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                    Qty</span>
+                            </div>
+                            <input type="number" name="stockQty" id="stockQty"
+                                class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                    Unit</span>
+                            </div>
+                            <input type="text" name="stockUnit" id="stockUnit"
+                                class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                    Minimum</span>
+                            </div>
+                            <input type="number" name="stockMin" id="stockMin"
+                                class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                    Category</span>
+                            </div>
+                            <select class="custom-select" name="categoryName"
+                                id="categoryName">
+                                <option value="" selected>Choose</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                    Status</span>
+                            </div>
+                            <select class="custom-select" name="stockStatus"
+                                id="stockStatus">
+                                <option value="available" selected>Available</option>
+                                <option value="temp unavailable">Temporary Unavailable</option>
+                                <option value="unavailable">Unavailable</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btn-sm"
+                                data-dismiss="modal">Cancel</button>
+                            <button class="btn btn-success btn-sm"
+                                type="submit">Add</button>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
-</body>
+    <!--End of Modal "Add Stock Item"-->
+
+    <!--Start of Modal "Edit Stock Item"-->
+    <div class="modal fade" id="editStock" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Stock Item</h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="formEdit" action="<?= site_url('admin/inventory/edit')?>" method="post"
+                    accept-charset="utf-8">
+                    <input type="text" name="stockID" hidden="hidden" />
+                    <div class="modal-body">
+                        <!--Source Name-->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                    Name</span>
+                            </div>
+                            <input type="text" name="stockName" id="stockName"
+                                class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                    Qty</span>
+                            </div>
+                            <input type="number" name="stockQty" id="stockQty"
+                                class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                    Unit</span>
+                            </div>
+                            <input type="text" name="stockUnit" id="stockUnit"
+                                class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                    Minimum</span>
+                            </div>
+                            <input type="number" name="stockMin" id="stockMin"
+                                class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                    Category</span>
+                            </div>
+                            <select class="custom-select" name="categoryName"
+                                id="categoryName">
+                                <option value="" selected>Choose</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                    Status</span>
+                            </div>
+                            <select class="custom-select" name="stockStatus"
+                                id="stockStatus">
+                                <option value="available" selected>Available</option>
+                                <option value="temp unavailable">Temporary Unavailable</option>
+                                <option value="unavailable">Unavailable</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btn-sm"
+                                data-dismiss="modal">Cancel</button>
+                            <button class="btn btn-success btn-sm"
+                                type="submit">Edit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--End of Modal "Edit Stock Item"-->
+</div>
+</div>
+</div>
+</div>
+</div>
 
 <!--   Core JS Files   -->
 <script src="<?= framework_url().'mdb/js/jquery-3.3.1.min.js';?>"></script>
@@ -549,5 +523,3 @@ function setEditModal(modal, data){
     modal.find("select[name='stockStatus']").find(`option[value='${data.stock_status}']`).attr("selected","selected");
 }
 </script>
-
-</html>
