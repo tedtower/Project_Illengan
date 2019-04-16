@@ -37,7 +37,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="<?php echo base_url('admin/purchaseorder')?>">Purchase Order</a>
+                            <a href="<?php echo base_url('admin/purchaseorders')?>">Purchase Order</a>
                         </li>
                         <li>
                             <a href="<?php echo base_url('admin/transactions')?>">Purchases</a>
