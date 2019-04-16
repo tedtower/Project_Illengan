@@ -34,6 +34,7 @@ nav#sidebar::-webkit-scrollbar-track {
 nav#sidebar::-webkit-scrollbar-thumb {
     border-radius: 15px;
     background: #888;
+}
 nav#sidebar::-webkit-scrollbar-thumb:hover {
     background: #555; 
 }
