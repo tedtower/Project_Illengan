@@ -12,7 +12,7 @@ class AdminView extends CI_Controller{
     function viewAccounts(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['account'] = $this->adminmodel->get_accounts();
-            $data['title'] = "Admin Accounts";
+            $data['title'] = "Accounts";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/view_accounts', $data);
@@ -68,7 +68,7 @@ class AdminView extends CI_Controller{
 }
     function viewDashboard(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Dashboard";
+            $data['title'] = "Dashboard";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');            
             $this->load->view('admin/adminDashboard');            
@@ -80,7 +80,7 @@ class AdminView extends CI_Controller{
     }
     function viewInventory($error = null){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Inventory";
+            $data['title'] = "Inventory";
             // $this->load->view('admin/templates/head', $data);
             // $this->load->view('admin/templates/sideNav');
             $data['inventory'] = array(
@@ -109,7 +109,7 @@ class AdminView extends CI_Controller{
     }
     function viewMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Menu";
+            $data['title'] = "Menu";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/menuitems');
@@ -133,7 +133,7 @@ class AdminView extends CI_Controller{
 
     function menuAddons(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Menu/Addons";
+            $data['title'] = "Menu - Addons";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/addons');
@@ -185,7 +185,7 @@ class AdminView extends CI_Controller{
     }
     function viewSales(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Sales";
+            $data['title'] = "Sales";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             // $data['sales'] = $this->adminmodel->get_sales();
@@ -198,7 +198,7 @@ class AdminView extends CI_Controller{
     }
     function viewSources(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Sources";
+            $data['title'] = "Sources";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
             $data['source'] = $this->adminmodel->get_sources();
@@ -241,7 +241,7 @@ class AdminView extends CI_Controller{
 }
 function viewSpoilagesStock(){
     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-        $data['title'] = "Admin Spoilages/Stock";
+        $data['title'] = "Spoilages - Stock";
         $this->load->view('admin/templates/head', $data);
         $this->load->view('admin/templates/sideNav');
         $this->load->view('admin/viewspoilagesstock');
@@ -306,7 +306,7 @@ function viewSpoilagesStock(){
     }
     function viewTables(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Tables";
+            $data['title'] = "Tables";
             // $data['table'] = $this->adminmodel->get_tables();
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
@@ -325,7 +325,7 @@ function viewSpoilagesStock(){
     }
     function viewTransactions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Transactions";
+            $data['title'] = "Transactions";
             // $this->load->view('admin/templates/head');
             // $this->load->view('admin/templates/sideNav');
             $data['transactions'] = array(
@@ -342,7 +342,7 @@ function viewSpoilagesStock(){
 
     function viewPurchaseOrders(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Purchase Order";
+            $data['title'] = "Purchase Order";
             $this->load->view('admin/adminPurchaseOrder',$data);
 
         }else{
@@ -413,7 +413,7 @@ function viewSpoilagesStock(){
     }
     function viewConsumptions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Stock Consumption";
+            $data['title'] = "Stock Consumption";
             /*$data['consumptions'] = array(
                 "destock" => $this->adminmodel->get_transactions(),
                 "" => $this->adminmodel->get_transitems(),
