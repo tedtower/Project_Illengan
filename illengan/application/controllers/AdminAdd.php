@@ -211,6 +211,15 @@ class AdminAdd extends CI_Controller{
         }
 
     }
+    function addReturns(){
+        $now = date('Y-m-d');
+        $quantity = $this->input->post('quantity');
+        $trans = $this->input->post('trans');
+        $stock = $this->input->post('stock');
+        $stck_qty = $this->input->post('stck_qty');
+        $this->adminmodel->add_returns($trans, $stock, $quantity,  $now, $stck_qty);
+        redirect('adminview/viewReturns');
+    }
 
 }
 ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 12, 2019 at 06:26 AM
+-- Generation Time: Apr 15, 2019 at 06:21 PM
 -- Server version: 5.7.19
 -- PHP Version: 5.6.31
 
@@ -47,6 +47,23 @@ INSERT INTO `accounts` (`account_id`, `account_type`, `account_username`, `accou
 (2, 'Customer', 'customer', 'customer', 0),
 (3, 'Barista', 'barista', 'barista', 0),
 (4, 'Chef', 'chef', 'chef', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `activity_logs`
+--
+
+DROP TABLE IF EXISTS `activity_logs`;
+CREATE TABLE IF NOT EXISTS `activity_logs` (
+  `actlog_id` int(11) NOT NULL,
+  `  act_id` int(11) NOT NULL,
+  `actlog_date` date NOT NULL,
+  `actlog_desc` varchar(45) NOT NULL,
+  `actlog_type` enum('Add','Update','Delete') DEFAULT NULL,
+  PRIMARY KEY (`actlog_id`),
+  KEY `actlog_act_id_idx` (`  act_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -150,6 +167,23 @@ INSERT INTO `discounts` (`promo_id`, `dc_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `expiration`
+--
+
+DROP TABLE IF EXISTS `expiration`;
+CREATE TABLE IF NOT EXISTS `expiration` (
+  `exp_id` int(11) NOT NULL AUTO_INCREMENT,
+  `var_id` int(11) NOT NULL,
+  `exp_date` date NOT NULL,
+  `exp_qty` int(11) NOT NULL,
+  `max_time` int(11) NOT NULL,
+  PRIMARY KEY (`exp_id`),
+  KEY `exp_var_id_idx` (`var_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `freebie`
 --
 
@@ -235,11 +269,11 @@ CREATE TABLE IF NOT EXISTS `menu` (
 --
 
 INSERT INTO `menu` (`menu_id`, `category_id`, `menu_name`, `menu_description`, `menu_availability`, `menu_image`) VALUES
-(8, 5, 'Benguet', 'Brewed Benguet coffee beans (menu w/ size)', 'available', NULL),
-(9, 4, 'Animal Fries', 'Potato Fries', 'available', NULL),
-(10, 9, 'Pakpakyaw (Butterfly) Pea', 'tea siya (menu w/ temparature and different price)', 'available', NULL),
-(11, 8, 'Matcha', 'Matcha Frappe', 'available', NULL),
-(12, 10, 'Americano', 'americano espresso (menu w/ temperature)', 'available', NULL);
+(8, 5, 'Benguet', 'Brewed Benguet coffee beans (menu w/ size)', 'available', 'Coffee.jpg'),
+(9, 4, 'Animal Fries', 'Potato Fries', 'available', 'Animal.jpg'),
+(10, 9, 'Pakpakyaw (Butterfly) Pea', 'tea siya (menu w/ temparature and different price)', 'available', 'pakpakyaw.jpg'),
+(11, 8, 'Matcha', 'Matcha Frappe', 'available', 'Matcha.jpg'),
+(12, 10, 'Americano', 'americano espresso (menu w/ temperature)', 'available', 'Black.jpg');
 
 -- --------------------------------------------------------
 
@@ -339,7 +373,14 @@ CREATE TABLE IF NOT EXISTS `orderlist` (
   PRIMARY KEY (`order_item_id`),
   KEY `orderslip_idx` (`order_id`),
   KEY `preferences_idx` (`pref_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orderlist`
+--
+
+INSERT INTO `orderlist` (`order_item_id`, `order_id`, `pref_id`, `order_desc`, `order_qty`, `subtotal`, `item_status`, `remarks`) VALUES
+(1, 1, 13, 'awan', 1, 100, 'pending', 'awan');
 
 -- --------------------------------------------------------
 
@@ -358,7 +399,14 @@ CREATE TABLE IF NOT EXISTS `orderslip` (
   `date_recorded` date NOT NULL,
   PRIMARY KEY (`order_id`),
   KEY `table_idx` (`table_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orderslip`
+--
+
+INSERT INTO `orderslip` (`order_id`, `table_code`, `cust_name`, `total`, `order_date`, `pay_date_time`, `date_recorded`) VALUES
+(1, 't1', 'Marvin', 100, '2019-04-16', NULL, '2019-04-16');
 
 -- --------------------------------------------------------
 
@@ -368,23 +416,14 @@ CREATE TABLE IF NOT EXISTS `orderslip` (
 
 DROP TABLE IF EXISTS `po_items`;
 CREATE TABLE IF NOT EXISTS `po_items` (
-  `po_id` int(11) NOT NULL,
-  `item_name` varchar(45) NOT NULL,
+  `po_id` int(11) NOT NULL AUTO_INCREMENT,
+  `var_id` int(11) NOT NULL,
   `item_qty` int(11) NOT NULL,
   `item_unit` varchar(45) NOT NULL,
   `item_price` double NOT NULL,
   `remarks` longtext,
-  PRIMARY KEY (`po_id`,`item_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `po_items`
---
-
-INSERT INTO `po_items` (`po_id`, `item_name`, `item_qty`, `item_unit`, `item_price`, `remarks`) VALUES
-(1, 'Strawberry syrup', 10, 'bottle', 100, NULL),
-(2, 'Benguet coffee beans', 5, 'bag', 200, NULL),
-(2, 'Sagada coffee beans', 2, 'bag', 250, NULL);
+  PRIMARY KEY (`po_id`,`var_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -486,6 +525,7 @@ CREATE TABLE IF NOT EXISTS `purchase_orders` (
   `ed_date` date DEFAULT NULL,
   `po_status` enum('pending','delivered') NOT NULL DEFAULT 'pending',
   `po_amt_payable` double NOT NULL,
+  `po_type` enum('w/ OR','w/o OR') NOT NULL,
   PRIMARY KEY (`po_id`),
   KEY `supplier_idx` (`source_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
@@ -494,9 +534,9 @@ CREATE TABLE IF NOT EXISTS `purchase_orders` (
 -- Dumping data for table `purchase_orders`
 --
 
-INSERT INTO `purchase_orders` (`po_id`, `source_id`, `po_date`, `ed_date`, `po_status`, `po_amt_payable`) VALUES
-(1, 1, '2019-04-12', '2019-04-14', 'pending', 1000),
-(2, 2, '2019-04-12', '2019-04-15', 'pending', 1500);
+INSERT INTO `purchase_orders` (`po_id`, `source_id`, `po_date`, `ed_date`, `po_status`, `po_amt_payable`, `po_type`) VALUES
+(1, 1, '2019-04-12', '2019-04-14', 'pending', 1000, 'w/ OR'),
+(2, 2, '2019-04-12', '2019-04-15', 'pending', 1500, 'w/ OR');
 
 -- --------------------------------------------------------
 
@@ -511,10 +551,19 @@ CREATE TABLE IF NOT EXISTS `returns` (
   `stock_id` int(11) NOT NULL,
   `return_qty` int(11) NOT NULL,
   `date_recorded` date NOT NULL,
+  `status` enum('Pending','Partially resolved','Resolved') NOT NULL,
+  `remarks` longtext,
   PRIMARY KEY (`return_id`),
   KEY `return_transaction_idx` (`trans_id`),
   KEY `returnedStock_idx` (`stock_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `returns`
+--
+
+INSERT INTO `returns` (`return_id`, `trans_id`, `stock_id`, `return_qty`, `date_recorded`, `status`, `remarks`) VALUES
+(2, 2, 1, 1, '2019-04-12', 'Pending', NULL);
 
 -- --------------------------------------------------------
 
@@ -543,6 +592,22 @@ INSERT INTO `sources` (`source_id`, `source_name`, `contact_num`, `email`, `stat
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `source_varience`
+--
+
+DROP TABLE IF EXISTS `source_varience`;
+CREATE TABLE IF NOT EXISTS `source_varience` (
+  `source_id` int(11) NOT NULL,
+  `var_id` int(11) NOT NULL,
+  `description` varchar(45) NOT NULL,
+  `unit` double NOT NULL,
+  PRIMARY KEY (`source_id`,`var_id`),
+  KEY `variences_id_idx` (`var_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `spoilage`
 --
 
@@ -555,7 +620,14 @@ CREATE TABLE IF NOT EXISTS `spoilage` (
   `remarks` varchar(100) DEFAULT NULL,
   `s_qty` int(11) NOT NULL,
   PRIMARY KEY (`s_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `spoilage`
+--
+
+INSERT INTO `spoilage` (`s_id`, `s_type`, `s_date`, `date_recorded`, `remarks`, `s_qty`) VALUES
+(1, 's', '2019-04-12', '2019-04-12', 'This is a spoilage', 5);
 
 -- --------------------------------------------------------
 
@@ -572,6 +644,7 @@ CREATE TABLE IF NOT EXISTS `stockitems` (
   `stock_unit` varchar(10) NOT NULL,
   `stock_minimum` int(11) DEFAULT NULL,
   `stock_status` enum('available','temp unavailable','unavailable') NOT NULL,
+  `stock_type` enum('Liquid','Solid') NOT NULL,
   PRIMARY KEY (`stock_id`),
   KEY `categoryid_idx` (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
@@ -580,40 +653,40 @@ CREATE TABLE IF NOT EXISTS `stockitems` (
 -- Dumping data for table `stockitems`
 --
 
-INSERT INTO `stockitems` (`stock_id`, `category_id`, `stock_name`, `stock_quantity`, `stock_unit`, `stock_minimum`, `stock_status`) VALUES
-(1, 14, 'Chocolate', 0, 'Bottle', 0, 'available'),
-(2, 11, 'Caramel', 0, 'Bottle', 0, 'temp unavailable'),
-(3, 11, 'Strawberry', 0, 'Bottle', 0, 'temp unavailable'),
-(4, 12, 'Hazelnut', 0, 'Bottle', 0, 'temp unavailable'),
-(5, 12, 'Vanilla', 0, 'Bottle', 0, 'temp unavailable'),
-(6, 13, 'Matcha', 0, 'Bag', 0, 'temp unavailable'),
-(7, 14, 'Espresso', 0, 'Bag (kg.)', 0, 'temp unavailable'),
-(8, 14, 'Benguet', 0, 'Bag (kg.)', 0, 'temp unavailable'),
-(9, 14, 'Kalinga', 0, 'Bag (kg.)', 0, 'temp unavailable'),
-(10, 14, 'Sagada', 0, 'Bag (kg.)', 0, 'temp unavailable'),
-(11, 14, 'Cordillera City (Medium) Roast', 0, 'Bag (kg.)', 0, 'temp unavailable'),
-(12, 14, 'Vienna (Dark) Roast', 0, 'Bag (kg.)', 0, 'temp unavailable'),
-(13, 15, 'Honey-Coated Lemon', 0, 'Bag', 0, 'temp unavailable'),
-(14, 15, 'Chamomile', 0, 'Bag', 0, 'temp unavailable'),
-(15, 15, 'Pakpakyaw (Butterfly) Pea', 0, 'Bag', 0, 'temp unavailable'),
-(16, 16, 'Mango', 0, 'Bottle', 0, 'temp unavailable'),
-(17, 16, 'Pineapple', 0, 'Bottle', 0, 'temp unavailable'),
-(18, 16, 'Water', 0, 'Bottle', 0, 'temp unavailable'),
-(19, 16, 'Coke', 0, 'Bottle', 0, 'temp unavailable'),
-(20, 16, 'Sprite', 0, 'Bottle', 0, 'temp unavailable'),
-(21, 16, 'Royal', 0, 'Bottle', 0, 'temp unavailable'),
-(22, 17, 'Whipped Cream', 0, 'Bottle', 0, 'temp unavailable'),
-(23, 17, 'Milk', 0, 'Carton', 0, 'temp unavailable'),
-(24, 11, 'Pesto', 0, 'Pack', 0, 'temp unavailable'),
-(25, 11, 'Carbonara', 0, 'Pack', 0, 'temp unavailable'),
-(26, 11, 'Italian', 0, 'Pack', 0, 'temp unavailable'),
-(27, 19, 'Baby Back', 0, 'Piece', 0, 'temp unavailable'),
-(28, 19, 'Chicken', 0, 'Piece', 0, 'temp unavailable'),
-(29, 19, 'Chicken Wings', 0, 'Piece', 0, 'temp unavailable'),
-(30, 19, 'Burger Patty', 0, 'Piece', 0, 'temp unavailable'),
-(31, 20, 'Fettuccine', 0, 'Pack', 0, 'temp unavailable'),
-(32, 20, 'Linguine', 0, 'Pack', 0, 'temp unavailable'),
-(33, 20, 'Sphagetti', 0, 'Pack', 0, 'temp unavailable');
+INSERT INTO `stockitems` (`stock_id`, `category_id`, `stock_name`, `stock_quantity`, `stock_unit`, `stock_minimum`, `stock_status`, `stock_type`) VALUES
+(1, 14, 'Chocolate', 2, 'Bottle', 0, 'available', 'Liquid'),
+(2, 11, 'Caramel', -5, 'Bottle', 0, 'temp unavailable', 'Liquid'),
+(3, 11, 'Strawberry', 0, 'Bottle', 0, 'temp unavailable', 'Liquid'),
+(4, 12, 'Hazelnut', 0, 'Bottle', 0, 'temp unavailable', 'Liquid'),
+(5, 12, 'Vanilla', 0, 'Bottle', 0, 'temp unavailable', 'Liquid'),
+(6, 13, 'Matcha', 0, 'Bag', 0, 'temp unavailable', 'Liquid'),
+(7, 14, 'Espresso', 0, 'Bag (kg.)', 0, 'temp unavailable', 'Liquid'),
+(8, 14, 'Benguet', 0, 'Bag (kg.)', 0, 'temp unavailable', 'Liquid'),
+(9, 14, 'Kalinga', 0, 'Bag (kg.)', 0, 'temp unavailable', 'Liquid'),
+(10, 14, 'Sagada', 0, 'Bag (kg.)', 0, 'temp unavailable', 'Liquid'),
+(11, 14, 'Cordillera City (Medium) Roast', 0, 'Bag (kg.)', 0, 'temp unavailable', 'Liquid'),
+(12, 14, 'Vienna (Dark) Roast', 0, 'Bag (kg.)', 0, 'temp unavailable', 'Liquid'),
+(13, 15, 'Honey-Coated Lemon', 0, 'Bag', 0, 'temp unavailable', 'Liquid'),
+(14, 15, 'Chamomile', 0, 'Bag', 0, 'temp unavailable', 'Liquid'),
+(15, 15, 'Pakpakyaw (Butterfly) Pea', 0, 'Bag', 0, 'temp unavailable', 'Liquid'),
+(16, 16, 'Mango', 0, 'Bottle', 0, 'temp unavailable', 'Liquid'),
+(17, 16, 'Pineapple', 0, 'Bottle', 0, 'temp unavailable', 'Liquid'),
+(18, 16, 'Water', 0, 'Bottle', 0, 'temp unavailable', 'Liquid'),
+(19, 16, 'Coke', 0, 'Bottle', 0, 'temp unavailable', 'Liquid'),
+(20, 16, 'Sprite', 0, 'Bottle', 0, 'temp unavailable', 'Liquid'),
+(21, 16, 'Royal', 0, 'Bottle', 0, 'temp unavailable', 'Liquid'),
+(22, 17, 'Whipped Cream', 0, 'Bottle', 0, 'temp unavailable', 'Liquid'),
+(23, 17, 'Milk', 0, 'Carton', 0, 'temp unavailable', 'Liquid'),
+(24, 11, 'Pesto', 0, 'Pack', 0, 'temp unavailable', 'Liquid'),
+(25, 11, 'Carbonara', 0, 'Pack', 0, 'temp unavailable', 'Liquid'),
+(26, 11, 'Italian', 0, 'Pack', 0, 'temp unavailable', 'Liquid'),
+(27, 19, 'Baby Back', 0, 'Piece', 0, 'temp unavailable', 'Liquid'),
+(28, 19, 'Chicken', 0, 'Piece', 0, 'temp unavailable', 'Liquid'),
+(29, 19, 'Chicken Wings', 0, 'Piece', 0, 'temp unavailable', 'Liquid'),
+(30, 19, 'Burger Patty', 0, 'Piece', 0, 'temp unavailable', 'Liquid'),
+(31, 20, 'Fettuccine', 0, 'Pack', 0, 'temp unavailable', 'Liquid'),
+(32, 20, 'Linguine', 0, 'Pack', 0, 'temp unavailable', 'Liquid'),
+(33, 20, 'Sphagetti', 0, 'Pack', 0, 'temp unavailable', 'Liquid');
 
 -- --------------------------------------------------------
 
@@ -628,6 +701,13 @@ CREATE TABLE IF NOT EXISTS `stockspoil` (
   PRIMARY KEY (`s_id`),
   KEY `stockspoil_idx` (`stock_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `stockspoil`
+--
+
+INSERT INTO `stockspoil` (`s_id`, `stock_id`) VALUES
+(1, 1);
 
 -- --------------------------------------------------------
 
@@ -646,7 +726,7 @@ CREATE TABLE IF NOT EXISTS `tables` (
 --
 
 INSERT INTO `tables` (`table_code`) VALUES
-('T1');
+('t1');
 
 -- --------------------------------------------------------
 
@@ -663,9 +743,18 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   `trans_date` date NOT NULL,
   `date_recorded` date NOT NULL,
   `remarks` longtext,
+  `trans_type` enum('Purchase','Returns') NOT NULL,
   PRIMARY KEY (`trans_id`),
   KEY `source_idx` (`source_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`trans_id`, `source_id`, `receipt_no`, `total`, `trans_date`, `date_recorded`, `remarks`, `trans_type`) VALUES
+(1, 1, '2512441', 400, '2019-04-12', '2019-04-12', 'Tiongsan Harrison', 'Purchase'),
+(2, 1, '1234', 320, '2019-04-11', '2019-04-12', '', 'Purchase');
 
 -- --------------------------------------------------------
 
@@ -676,17 +765,46 @@ CREATE TABLE IF NOT EXISTS `transactions` (
 DROP TABLE IF EXISTS `transitems`;
 CREATE TABLE IF NOT EXISTS `transitems` (
   `trans_id` int(11) NOT NULL,
-  `item_name` varchar(45) NOT NULL,
+  `var_id` int(11) NOT NULL,
   `item_qty` int(11) NOT NULL,
   `item_unit` varchar(45) NOT NULL,
   `item_price` double NOT NULL,
   `subtotal` int(11) NOT NULL,
-  PRIMARY KEY (`trans_id`,`item_name`)
+  `po_id` int(11) NOT NULL,
+  PRIMARY KEY (`trans_id`,`var_id`,`po_id`),
+  KEY `variance_idx` (`var_id`),
+  KEY `purchase order_idx` (`po_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `variance`
+--
+
+DROP TABLE IF EXISTS `variance`;
+CREATE TABLE IF NOT EXISTS `variance` (
+  `var_id` int(11) NOT NULL AUTO_INCREMENT,
+  `stock_id` int(11) NOT NULL,
+  `var_unit` varchar(45) NOT NULL,
+  `var_size` varchar(45) DEFAULT NULL,
+  `var_min` int(11) NOT NULL,
+  `var_qty` int(11) NOT NULL,
+  `var_status` enum('Available','Unavailable') NOT NULL,
+  `var_type` enum('As-is','Non-as-is') NOT NULL,
+  PRIMARY KEY (`var_id`),
+  KEY `var_stock_id_idx` (`stock_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `activity_logs`
+--
+ALTER TABLE `activity_logs`
+  ADD CONSTRAINT `activity logs acct_id` FOREIGN KEY (`  act_id`) REFERENCES `accounts` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ao_spoil`
@@ -706,6 +824,12 @@ ALTER TABLE `categories`
 --
 ALTER TABLE `discounts`
   ADD CONSTRAINT `d_promo_id` FOREIGN KEY (`promo_id`) REFERENCES `promo` (`promo_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `expiration`
+--
+ALTER TABLE `expiration`
+  ADD CONSTRAINT `exp_var_id` FOREIGN KEY (`var_id`) REFERENCES `variance` (`var_id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `freebie`
@@ -775,12 +899,6 @@ ALTER TABLE `orderslip`
   ADD CONSTRAINT `table` FOREIGN KEY (`table_code`) REFERENCES `tables` (`table_code`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `po_items`
---
-ALTER TABLE `po_items`
-  ADD CONSTRAINT `purchase order` FOREIGN KEY (`po_id`) REFERENCES `purchase_orders` (`po_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `preferences`
 --
 ALTER TABLE `preferences`
@@ -829,7 +947,15 @@ ALTER TABLE `transactions`
 -- Constraints for table `transitems`
 --
 ALTER TABLE `transitems`
-  ADD CONSTRAINT `trans` FOREIGN KEY (`trans_id`) REFERENCES `transactions` (`trans_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `purchase order` FOREIGN KEY (`po_id`) REFERENCES `purchase_orders` (`po_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `transactions` FOREIGN KEY (`trans_id`) REFERENCES `transactions` (`trans_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `variance` FOREIGN KEY (`var_id`) REFERENCES `variance` (`var_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `variance`
+--
+ALTER TABLE `variance`
+  ADD CONSTRAINT `var_stock_id` FOREIGN KEY (`stock_id`) REFERENCES `stockitems` (`stock_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -11,7 +11,7 @@ class AdminUpdate extends CI_Controller{
     function editTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $this->form_validation->set_rules('prevTableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]');
-            $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
+            $this->form_validation->set_rules('tableCode',   'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
             if($this->form_validation->run()){
                 $prevTableCode = trim($this->input->post('prevTableCode'));
                 $tableCode = trim($this->input->post('tableCode'));
@@ -188,6 +188,7 @@ class AdminUpdate extends CI_Controller{
             $stock_quantity = $this->input->post('stockQty');
             echo $stock_id, $stock_quantity;
             $this->adminmodel->edit_stockqty($stock_id, $stock_quantity);
+            redirect('admin/logStock');
         }else{
             redirect('login');
         }

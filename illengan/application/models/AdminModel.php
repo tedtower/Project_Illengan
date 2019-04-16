@@ -373,6 +373,26 @@ class AdminModel extends CI_Model{
         $query = "Update tables set table_code = ? where table_code = ?;";
         return $this->db->query($query, array($newTableCode, $previousTableCode));
     }
+    //Return Function
+    function get_returns(){
+        $query = "SELECT returns.return_id, returns.trans_id, returns.stock_id, returns.return_qty, returns.remarks, returns.date_recorded, transactions.receipt_no, transactions.trans_date,
+        stockitems.stock_name, stockitems.stock_unit FROM transactions inner join returns on transactions.trans_id = returns.trans_id inner join stockitems on returns.stock_id = stockitems.stock_id";
+        return $this->db->query($query)->result_array();
+    }
+    function add_returns($trans, $stock, $quantity,  $now){
+        $stocks= "Select stock_quantity from stockitems where stock_id='$stock'";
+        $stocks = $this->db->query($stocks)->result_array();
+        foreach($stocks as $stck){
+            $stck = $stck['stock_quantity'];
+        }
+        $stck_qty = $stck - $quantity;
+        $query2 = "Update stockitems set stock_quantity = ? where stock_id = ?";
+        $this->db->query($query2, array( $stck_qty, $stock));
+
+        $query1 = "Insert into returns(trans_id, stock_id, return_qty, date_recorded) values (?,?,?,?)";
+        return $this->db->query($query1, array( $trans, $stock, $quantity,  $now));
+        
+    }
 
 }
 ?>

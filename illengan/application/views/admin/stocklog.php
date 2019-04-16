@@ -10,14 +10,7 @@
     
     <div class="content">
         <div class="container-fluid">
-        <div class="row stock-btn">
-            <div class="col-xs-1">
-            <a class="stock_modal" href="javascript:void(0)" data-action="restock">
-            <button class="btn btn-sm btn-success">Restock</button></a></div>
-            <div class="col-xs-1">
-            <a class="stock_modal" href="javascript:void(0)" data-action="destock">
-            <button class="btn btn-sm btn-primary">Destock</button></a></div></div>
-            <br>
+        
             <div class="table-cover">
             <table class="dataTable stripe table display" id="mydata">
                 <thead>
@@ -45,7 +38,7 @@
 <script src="<?php echo base_url().'assets/js/chef/bootstrap.js'?>"></script>
 <script src="<?php echo base_url().'assets/js/chef/jquery.dataTables.js'?>"></script>
 <script src="<?php echo base_url().'assets/js/chef/dataTables.bootstrap4.js'?>"></script>
-<script src="<?= framework_url().'bootstrap-native/bootstrap.js'?>"></script>
+<script src="<?php echo framework_url().'bootstrap-native/bootstrap.js'?>"></script>
 <script src="<?php echo base_url().'assets/js/chef/dataTables.buttons.js'?>"></script>
 <script src="<?php echo base_url().'assets/js/admin/stocklog.js'?>"></script>
 </html>
