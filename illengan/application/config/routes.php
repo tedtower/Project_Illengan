@@ -138,6 +138,7 @@ $route['admin/addons/spoilage/delete/(:num)'] ="admindelete/deleteaddonsspoilage
 
 //Admin Json Routes ------------------------------------------- 
 $route['admin/logJson'] = "adminview/jsonLogStock";
+$route['admin/activitylog'] = "adminview/jsonActivityLogs";
 $route['admin/jsonStock'] = "adminview/jsonStock";
 //End Admin Json Routes ---------------------------------------
 
