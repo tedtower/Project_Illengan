@@ -111,6 +111,8 @@ $route['admin/addons/spoilages/add'] = "adminadd/addspoilagesaddons";
 $route['admin/stock/spoilages/add'] = "adminadd/addspoilagesstock";
 $route['admin/menu/spoilages/add'] = "adminadd/addspoilagesmenu";
 $route['admin/sources/add'] = "adminadd/addsource";
+$route['admin/returns/add'] = "adminadd/addreturns";
+
 //End Admin Add Routes ------------------------------------------
 
 //Admin Update Routes -------------------------------------------

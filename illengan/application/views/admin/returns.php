@@ -18,10 +18,9 @@
                   <tr>  
                       <th scope="col"></th>
                       <th scope="col">Return No.</th>
-                      <th scope="col">Returned Date</th>
+                      <th scope="col">Date Returned</th>
                       <th scope="col">Date Recorded</th>
                       <th scope="col">Qty</th>
-                      <th scope="col">Total</th>
                       <th scope="col">Status</th>
                       <th scope="col">Actions</th>
                   </tr>
@@ -34,101 +33,119 @@
                     <td>April 17, 2019</td>
                     <td>10</td>
                     <td>pending</td>
-                    <td></td>
                     <td>                    
-                      <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editPromo">Edit</button>
-                      <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#deletePromo">Delete</button>
+                      <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editReturn">Edit</button>
+                      <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteReturn">Delete</button>
                     </td>
                   </tr>
 
-                  <tr>
+                  <tr class="accordion" style="display:none">
                     <td colspan="8">
-                      <div style="overflow:auto;border:1px solid red">
-                        <span style="float:left;border:1px solid blue">Remarks:</span>
-                        <p>No remarks</p>
+                      <div style="margin:1%">
+                        <div style="overflow:auto">
+                          <span class="mr-2" style="float:left">Remarks:</span>
+                          <p>No remarks</p>
+                        </div>
+                        <span>Returned Items</span>
+                        <table class="table table-bordered dt-responsive nowrap mt-2">
+                          <thead style="background:white">
+                            <tr>
+                              <th scope="col">Item</th>
+                              <th scope="col">Unit</th>
+                              <th scope="col">Size</th>
+                              <th scope="col">Qty</th>
+                              <th scope="col">Price</th>
+                              <th scope="col">Subtotal</th>
+                              <th scope="col">Remarks</th>
+                              <th scope="col">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Milk</td>
+                              <td>Bottle</td>
+                              <td>1 L</td>
+                              <td>3</td>
+                              <td>100</td>
+                              <td>300</td>
+                              <td></td>
+                              <td>pending</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <span>Total: </span>
                       </div>
-                      <span>Returned Items</span>
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Item</th>
-                            <th>Unit</th>
-                            <th>Size</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Subtotal</th>
-                            <th>Status</th>
-                          </tr>
-                        </thead>
-                      </table>
                     </td>
                   </tr>
+
               </tbody>
           </table>
-          <!--Start of Modal "Add Promo"-->
+      <!--Start of Modal "Add Returns"-->
         <div class="modal fade bd-example-modal-lg" id="newReturn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add Promo</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Add Return</h5>
                         <button type="button" class="close" data-dismiss="modal"aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="<?php echo base_url()?>admin/menu/promo/add" method="get" accept-charset="utf-8">
-                        <div class="modal-body">                                                                                                                                                      
-                            <div class="form-row"> <!--Container of promo name and promo type-->
-                            <!--Promo name-->
-                                <div class="input-group mb-3 col">
+                    <form action="<?php echo base_url()?>admin/returns/add" method="get" accept-charset="utf-8">
+                        <div class="modal-body">
+                            <!--Date Returned-->
+                            <div style="overflow:auto">
+                              <div style="width:45%;float:left">
+                                <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                        Promo Name</span>
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;mleftargin:0">
+                                        Date Returned</span>
                                     </div>
-                                    <input type="text" name="promo_name" id="promo_name" class="form-control form-control-sm">
+                                    <input type="date" name="" id="" class="form-control form-control-sm">
                                 </div>
-                                <!--Promo type-->
-                                <div class="input-group mb-3 col">
-                                    <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                    Promo Type</span>
+                            <!--Date Recorded-->
+                                <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Date Recorded</span>
+                                     </div>
+                                    <input type="date" name="" id="" class="form-control form-control-sm">
                                 </div>
-                                <select class="form-control" name="promo_type" id="promo_type">
-                                    <option selected>Choose</option>
-                                    <option>Discount</option>
-                                    <option>Freebie</option>
-                                    <option>Discount/Freebie</option>
-                                </select>
+
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                      <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                      Status</span>
+                                  </div>
+                                  <select class="form-control" name="promo_type" id="promo_type">
+                                      <option selected>Choose</option>
+                                      <option>Pending</option>
+                                      <option>Partially Resolved</option>
+                                      <option>Resolved</option>
+                                  </select>
                                 </div>
+                              </div>
+
+                              <div style="width:50%;float:left;margin-left:5%">
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                      <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                      Status</span>
+                                  </div>
+                                  <textarea class="form-control" ></textarea>
+                                </div>
+                              </div>
                             </div>
-                            
-                            <div class="form-row"> <!--Container of start date and end date-->
-                            <!--Start Date-->
-                                <div class="input-group mb-3 col">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                        Start Date</span>
-                                    </div>
-                                    <input type="date" name="start_date" id="start_date" class="form-control form-control-sm">
-                                </div>
-                            <!--End date-->
-                                <div class="input-group mb-3 col">
-                                        <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                        End Date</span>
-                                    </div>
-                                    <input type="date" name="end_date" id="end_date" class="form-control form-control-sm">
-                                </div>
-                            </div>
-                            <!--Discount-->
-                            <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Discount</a> <!--Button to add row in the table-->
+
+                            <!--Returns-->
+                            <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Items</a> <!--Button to add row in the table-->
                             <br><br>
                             <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Menu Item</th>
-                                        <th>Percentage</th>
-                                        <th>Contraint Menu</th>
-                                        <th>Contraint Qty</th>
+                                        <th>Stock Item</th>
+                                        <th>Varience</th>
+                                        <th>Quantity</th>
+                                        <th>Remarks</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -140,47 +157,15 @@
                                                 <option></option>
                                             </select>
                                         </td>
-                                        <td><input type="number" name="" id="" class="form-control form-control-sm"></td>
                                         <td>
                                             <select class="form-control" name="" id="">
                                                 <option selected>Choose</option>
                                                 <option></option>
                                             </select>
                                         </td>
-                                        <td><input type="number" name="" id="" class="form-control form-control-sm"></td>
-                                        <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
-                                    </tr>
-                            </table>
-                            <!--Freebie-->
-                            <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Freebies</a> <!--Button to add row in the table-->
-                            <br><br>
-                            <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Menu Item</th>
-                                        <th>Freebies</th>
-                                        <th>Contraint Menu</th>
-                                        <th>Contraint Qty</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <select class="form-control" name="" id="">
-                                                <option selected>Choose</option>
-                                                <option></option>
-                                            </select>
-                                        </td>
-                                        <td><input type="text" name="" id="" class="form-control form-control-sm"></td>
-                                        <td>
-                                            <select class="form-control" name="" id="">
-                                                <option selected>Choose</option>
-                                                <option></option>
-                                            </select>
-                                        </td>
-                                        <td><input type="number" name="" id="" class="form-control form-control-sm"></td>
-                                        <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px;right:0"></td>
+                                        <td style="width:100px"><input type="number" name="" id="" min="1" class="form-control form-control-sm"></td>
+                                        <td style="width:200px"><textarea class="form-control" rows="1"></textarea></td>
+                                        <td style="width:30px"><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
                                     </tr>
                             </table>
     
@@ -195,62 +180,135 @@
                 </div>
             </div>
         </div>
-    <!--End of Modal "Add Promo"-->
+    <!--End of Modal "Add Returns"-->
 
-
-            <!-----Add Return Modal-------------------------------------------------------------------------->
-            <!-- <div class="modal fade" id="addReturnForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-              aria-hidden="true">
-              <div class="modal-dialog" role="document">
-              <form method="post" action="<?php echo base_url('adminadd/addReturns');?>">
+      <!--Start of Modal "Edit Returns"-->
+      <div class="modal fade bd-example-modal-lg" id="editReturn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                  <div class="modal-header text-center">
-                    <h4 class="modal-title w-100 font-weight-bold">Add Return Stock Item</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body mx-3">
-                    <div class="md-form mb-5">
-
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-default">Receipt No.</span>
-              </div>
-              <select name="trans" required>
-                <option value="">Receipt No.</option>
-                        <?php foreach($transactions as $row){ 
-                            echo '<option value="'.$row['trans_id'].'">'.$row['receipt_no'].'</option>';
-                        }?>
-                </select>
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-default">Stock</span>
-              </div>
-              <select name="stock" required>
-              <option value="">Stock Name</option>
-                        <?php foreach($stock as $row){
-                            echo '<option value="'.$row['stock_id'].'">'.$row['stock_name'].'</option>';
-                        }?>
-                </select>
-            </div> 
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-default">Returned Quantity</span>
-              </div>
-                <input type="number" name="quantity" placeholder="quantity"/>
-                  </div>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Return</h5>
+                        <button type="button" class="close" data-dismiss="modal"aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                  <div class="modal-footer d-flex justify-content-center">
-                    
-                    <button type="submit" class="btn btn-deep-orange">Add</button>
-                  </div>
+                    <form action="<?php echo base_url()?>admin/returns/add" method="get" accept-charset="utf-8">
+                        <div class="modal-body">
+                            <!--Date Returned-->
+                            <div style="overflow:auto">
+                              <div style="width:45%;float:left">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;mleftargin:0">
+                                        Date Returned</span>
+                                    </div>
+                                    <input type="date" name="" id="" class="form-control form-control-sm">
+                                </div>
+                            <!--Date Recorded-->
+                                <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Date Recorded</span>
+                                     </div>
+                                    <input type="date" name="" id="" class="form-control form-control-sm">
+                                </div>
+
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                      <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                      Status</span>
+                                  </div>
+                                  <select class="form-control" name="promo_type" id="promo_type">
+                                      <option selected>Choose</option>
+                                      <option>Pending</option>
+                                      <option>Partially Resolved</option>
+                                      <option>Resolved</option>
+                                  </select>
+                                </div>
+                              </div>
+
+                              <div style="width:50%;float:left;margin-left:5%">
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                      <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                      Status</span>
+                                  </div>
+                                  <textarea class="form-control" ></textarea>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!--Returns-->
+                            <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Items</a> <!--Button to add row in the table-->
+                            <br><br>
+                            <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Stock Item</th>
+                                        <th>Varience</th>
+                                        <th>Quantity</th>
+                                        <th>Remarks</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <select class="form-control" name="" id="">
+                                                <option selected>Choose</option>
+                                                <option></option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="" id="">
+                                                <option selected>Choose</option>
+                                                <option></option>
+                                            </select>
+                                        </td>
+                                        <td style="width:100px"><input type="number" name="" id="" min="1" class="form-control form-control-sm"></td>
+                                        <td style="width:200px"><textarea class="form-control" rows="1"></textarea></td>
+                                        <td style="width:30px"><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+                                    </tr>
+                            </table>
+    
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btn-sm"
+                                    data-dismiss="modal">Cancel</button>
+                                <button class="btn btn-success btn-sm"
+                                    type="submit">Update</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-              </div>
             </div>
-            </form>
-            </div> -->
+        </div>
+    <!--End of Modal "Edit Returns"-->
+
+    <!--Start of Modal "Delete Return"-->
+    <div class="modal fade" id="deleteReturn" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Delete Return</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="confirmDelete">
+                        <div class="modal-body">
+                            <h6 id="deleteTableCode"></h6>
+                            <p>Are you sure you want to delete this return?</p>
+                            <input type="text" name="" hidden="hidden">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <!--End of Modal "Delete Return"-->
         </div>
       </div>
     </div>
