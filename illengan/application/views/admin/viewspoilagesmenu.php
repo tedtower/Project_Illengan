@@ -111,6 +111,7 @@
 													<th>Source Name</th>
 													<th width="20%">Qty</th>
 													<th>Remarks</th>
+													<th></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -118,6 +119,7 @@
 													<td><input type="text" name="" id="" class="form-control form-control-sm"></td>
 													<td><input type="number" name="" id="" class="form-control form-control-sm"></td>
 													<td><textarea name="" id=""  class="form-control form-control-sm"></textarea></td>
+													<img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px">
 											</tbody>
 										</table>
 										<!--Total of the trans items-->
@@ -164,6 +166,7 @@
 													<th>Source Name</th>
 													<th width="20%">Qty</th>
 													<tH>Remarks</th>
+													<th></th>
 												</tr>
 											</thead>
 										</table>
