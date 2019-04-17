@@ -19,7 +19,7 @@
                             <!--Table-->
                             <div class="card-content">
                                 <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewAccounts"
-                                    data-original-title style="float: left">Add New
+                                    data-original-title style="margin: 0;">Add New
                                     Account</a>
                                 
                                 <br><br>

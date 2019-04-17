@@ -80,7 +80,7 @@
 						</td>
 						<!--End Table Content-->
 						<!--Modals-->
-					<!--Start of Modal "Add Transaction"-->
+					<!--Start of Modal "Add Menu Spoilages"-->
 					<div class="modal fade bd-example-modal-lg" id="addNewMenuSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 						<div class="modal-dialog modal-lg" role="document">
 							<div class="modal-content">
@@ -93,7 +93,7 @@
 								<form id="formAdd" action="<?= site_url('admin/menu/spoilages/add') ?>" method="post" accept-charset="utf-8">
 									<div class="modal-body">
 										<div class="form-row">
-										<!--Container of Add On Name & Spoilage Qty-->
+										<!--Container of Source Date-->
 										<!--Source Date-->
 										<div class="input-group mb-3">
 											<div class="input-group-prepend">
@@ -111,6 +111,7 @@
 													<th>Source Name</th>
 													<th width="20%">Qty</th>
 													<th>Remarks</th>
+													<th></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -118,6 +119,7 @@
 													<td><input type="text" name="" id="" class="form-control form-control-sm"></td>
 													<td><input type="number" name="" id="" class="form-control form-control-sm"></td>
 													<td><textarea name="" id=""  class="form-control form-control-sm"></textarea></td>
+													<td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
 											</tbody>
 										</table>
 										<!--Total of the trans items-->
@@ -163,7 +165,8 @@
 												<tr>
 													<th>Source Name</th>
 													<th width="20%">Qty</th>
-													<tH>Remarks</th>
+													<th>Remarks</th>
+													<th></th>
 												</tr>
 											</thead>
 										</table>
@@ -178,7 +181,7 @@
 						</div>
 					</div>
 					<!--End of Modal "Edit AO Spoilage"-->
-						<!--Delete Confirmation Box-->
+					<!--Delete Confirmation Box-->
 						<div class="modal fade" id="deleteSpoilage" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="panel panel-primary">
