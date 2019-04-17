@@ -15,7 +15,7 @@ class AdminView extends CI_Controller{
             $data['title'] = "Accounts";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/view_accounts', $data);
+            $this->load->view('admin/viewaccounts', $data);
             $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');

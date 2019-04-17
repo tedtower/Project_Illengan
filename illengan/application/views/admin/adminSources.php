@@ -189,47 +189,47 @@
                                                             <button class="btn btn-success btn-sm" type="submit">Update</button>
                                                         </div>
                                                     </div>
-                                                </div>
+                                </div>
                                             </form>
-                                        </div>
                                     </div>
                                 </div>
-                                <!--End Modal-->
+                            </div>
+                            <!--End Modal-->
 
-                                <?php include_once('templates/scripts.php') ?>
+        <?php include_once('templates/scripts.php') ?>
 
-                                <script>
-                                    $(document).ready(function() {
-                                        $('.delete_data').click(function() {
-                                            var id = $(this).attr("id");
-                                            if (confirm("Are you sure you want to delete this?")) {
-                                                window.location = "<?php echo base_url(); ?>admin/sources/delete/" + id;
-                                            } else {
-                                                return false;
-                                            }
-                                        });
-                                    });
+        <script>
+            $(document).ready(function() {
+                $('.delete_data').click(function() {
+                    var id = $(this).attr("id");
+                    if (confirm("Are you sure you want to delete this?")) {
+                        window.location = "<?php echo base_url(); ?>admin/sources/delete/" + id;
+                    } else {
+                        return false;
+                    }
+                });
+            });
 
-                                    var tuples = ((document.getElementById('tablevalues')).getElementsByTagName('tbody'))[0].getElementsByTagName(
-                                        'tr');
-                                    var tupleNo = tuples.length;
-                                    var editButtons = document.getElementsByName('editSource');
-                                    var editModal = document.getElementById('editSource');
-                                    for (var x = 0; x < tupleNo; x++) {
-                                        editButtons[x].addEventListener("click", showEditModal);
-                                    }
+            var tuples = ((document.getElementById('tablevalues')).getElementsByTagName('tbody'))[0].getElementsByTagName(
+                'tr');
+            var tupleNo = tuples.length;
+            var editButtons = document.getElementsByName('editSource');
+            var editModal = document.getElementById('editSource');
+            for (var x = 0; x < tupleNo; x++) {
+                editButtons[x].addEventListener("click", showEditModal);
+            }
 
-                                    function showEditModal(event) {
-                                        var row = event.target.parentElement.parentElement.parentElement;
-                                        document.getElementById('new_name').value = row.firstElementChild.innerHTML;
-                                        document.getElementById('new_contact').value = row.firstElementChild.nextElementSibling.innerHTML;
-                                        document.getElementById('new_email').value = row.firstElementChild.nextElementSibling.nextElementSibling
-                                            .innerHTML;
-                                        document.getElementById('new_status').value = row.firstElementChild.nextElementSibling.nextElementSibling
-                                            .nextElementSibling.innerHTML;
-                                        document.getElementById('source_id').value = event.target.getAttribute('data-id');
-                                    }
-                                </script>
+            function showEditModal(event) {
+                var row = event.target.parentElement.parentElement.parentElement;
+                document.getElementById('new_name').value = row.firstElementChild.innerHTML;
+                document.getElementById('new_contact').value = row.firstElementChild.nextElementSibling.innerHTML;
+                document.getElementById('new_email').value = row.firstElementChild.nextElementSibling.nextElementSibling
+                    .innerHTML;
+                document.getElementById('new_status').value = row.firstElementChild.nextElementSibling.nextElementSibling
+                    .nextElementSibling.innerHTML;
+                document.getElementById('source_id').value = event.target.getAttribute('data-id');
+            }
+        </script>
 </body>
 
 </html>
