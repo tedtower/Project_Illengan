@@ -30,8 +30,7 @@ class AdminUpdate extends CI_Controller{
     function changeAccountPassword(){  
         $this->load->library('form_validation');
 
-        $account_id = $this->input->post('account_id');
-        $this->adminmodel->get_password($account_id);
+        $account_id = $this->input->post('accountId');
         $current_password = $this->adminmodel->get_password($account_id);
 
         $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[3]|max_length[50]');
@@ -39,33 +38,61 @@ class AdminUpdate extends CI_Controller{
         $this->form_validation->set_rules('old_password', 'Old Password', 'required');
 
         if($this->form_validation->run()){
-            $input_old_password = $this->input->post("old_password");
-            $new_password = password_hash($this->input->post("new_password"),PASSWORD_DEFAULT, ['cost' => 12]);
+            $old_password = $this->input->post("old_password");
+            $new_password = password_hash($this->input->post("new_password"),PASSWORD_DEFAULT);
 
             foreach($current_password AS $row) {
-                if (password_verify($input_old_password, $row['account_password'])){                 
+                if (password_verify($old_password, $row['account_password'])){                 
                     $this->adminmodel->change_account_password($new_password,$account_id);
                 }else{ 
-                    $data['account_id'] = $account_id;
-                    $this->viewChangePassword2($data);
-                }
-            }   
+                echo "Password incorrect";
+               }
+           }   
         }else{
-            $this->viewChangePassword($account_id);
+                echo "Form Validation is not working";
         }
-        // $data['account'] = $this->adminmodel->get_accounts();
-        // $this->load->view('admin/view_accounts',$data);
+       
+        redirect('admin/accounts');   
     }
+
+    // function changeAccountPassword(){  
+    //     $this->load->library('form_validation');
+
+    //     $account_id = $this->input->post('accountId');
+    //     $current_password = $this->adminmodel->get_password($accountId);
+
+    //     $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[3]|max_length[50]');
+    //     $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[3]|max_length[50]|matches[new_password]');
+    //     $this->form_validation->set_rules('old_password', 'Old Password', 'required');
+
+    //     if($this->form_validation->run()){
+    //         $old_password = $this->input->post("old_password");
+    //         $new_password = $this->input->post("new_password");
+
+    //         foreach($current_password AS $row) {
+    //             if ($old_password == $row['account_password']){                 
+    //                  $this->adminmodel->change_account_password($new_password,$account_id);
+    //             }else{ 
+    //                echo "Old password does not match with old password input";
+    //             }
+    //         }   
+    //     }else{
+    //                 echo "Form Validation is not working";
+    //     }
+    //                redirect('admin/accounts');
+    // }
     function editAccounts(){
-        $this->form_validation->set_rules('account_username','Username','trim|required|is_unique[accounts.account_username]');
-        $this->form_validation->set_rules('account_type','Account Type','trim|required');
-        $this->form_validation->set_rules('account_id','Account ID','required');
+        $this->form_validation->set_rules('new_account_username','Username','trim|required|is_unique[accounts.account_username]');
+        $this->form_validation->set_rules('new_account_type','Account Type','trim|required');
+        $this->form_validation->set_rules('accountId','Account ID','required');
 
         if($this->form_validation->run()){
-            $account_username = $this->input->post("account_username");
-            $account_type = $this->input->post("account_type");
-            $account_id = $this->input->post("account_id");
-            $this->adminmodel->edit_accounts($account_username,$account_type,$account_id);
+            $account_id = $this->input->post('accountId');
+            $account_type = $this->input->post('new_account_type');
+            $account_username = $this->input->post('new_account_username');
+            $this->adminmodel->edit_accounts($account_id,$account_type,$account_username);
+            }else{
+                echo "Form Validation is not Working.";
             }
             redirect('admin/accounts');
     }
