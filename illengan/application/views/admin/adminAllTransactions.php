@@ -473,7 +473,7 @@ function setTableData() {
                                 ${transactions.transaction[transLastIndex].transitems.map(transitem => {
                                     return `
                                     <tr>
-                                        <td>${transitem.item_name}</td>
+                                        <td>${transitem.stock_name}</td>
                                         <td>${transitem.item_qty}</td>
                                         <td>${transitem.item_unit}</td>
                                         <td>${transitem.item_price}</td>
@@ -515,7 +515,7 @@ function setTableData() {
                     $("#updateTransaction").find(".transItemsTable > tbody").append(`
                     <tr class="transItem">
                         <td><input type="text" name="itemName[]" id="itemName"
-                                class="form-control form-control-sm" value="${transaction.transitems[index].item_name}"></td>
+                                class="form-control form-control-sm" value="${transaction.transitems[index].stock_name}"></td>
                         <td><input type="number" name="itemQty[]" id="itemQty"
                                 class="form-control form-control-sm" value="${transaction.transitems[index].item_qty}"></td>
                         <td><input type="text" name="itemUnit[]" id="itemUnit"

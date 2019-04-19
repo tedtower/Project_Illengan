@@ -25,8 +25,9 @@ function viewAccountsJs(){
             $this->load->view('admin/viewaccounts');
         }else{
             redirect('login');
-        }
+        }   
     }
+
 //Modal na ito
     function viewaddaccounts(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
@@ -73,7 +74,7 @@ function viewAccountsJs(){
 // }
     function viewDashboard(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Dashboard";
+            $data['title'] = "Dashboard";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');            
             $this->load->view('admin/adminDashboard');            
@@ -85,9 +86,9 @@ function viewAccountsJs(){
     }
     function viewInventory($error = null){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Inventory";
-            // $this->load->view('admin/templates/head', $data);
-            // $this->load->view('admin/templates/sideNav');
+            $data['title'] = "Inventory";
+            $this->load->view('admin/templates/head', $data);
+            $this->load->view('admin/templates/sideNav');
             $data['inventory'] = array(
                 "stocks" => $this->adminmodel->get_inventory(),
                 "categories" => $this->adminmodel->get_stockCategories()
@@ -114,7 +115,7 @@ function viewAccountsJs(){
     }
     function viewMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Menu";
+            $data['title'] = "Menu";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/menuitems');
@@ -138,10 +139,20 @@ function viewAccountsJs(){
 
     function menuAddons(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Menu/Addons";
+            $data['title'] = "Menu - Addons";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/addons');
+        }else{
+            redirect('login');
+        }
+    }
+    function menuPromos(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Menu - Promos";
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/promo');
         }else{
             redirect('login');
         }
@@ -190,7 +201,7 @@ function viewAccountsJs(){
     }
     function viewSales(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Sales";
+            $data['title'] = "Sales";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             // $data['sales'] = $this->adminmodel->get_sales();
@@ -203,7 +214,7 @@ function viewAccountsJs(){
     }
     function viewSources(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Sources";
+            $data['title'] = "Sources";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
             $data['source'] = $this->adminmodel->get_sources();
@@ -225,11 +236,10 @@ function viewAccountsJs(){
     }
     function viewSpoilages(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin/viewspoilages');
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/templates/footer');
-            // $this->load->view('admin/templates/scripts');
+            $this->load->view('admin/viewspoilages');
+            $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
@@ -246,10 +256,10 @@ function viewAccountsJs(){
 }
 function viewSpoilagesStock(){
     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-        $this->load->view('admin/templates/head');
+        $data['title'] = "Spoilages - Stock";
+        $this->load->view('admin/templates/head', $data);
         $this->load->view('admin/templates/sideNav');
         $this->load->view('admin/viewspoilagesstock');
-        $this->load->view('admin/templates/footer');
     }else{
         redirect('login');
     }
@@ -266,9 +276,9 @@ function viewSpoilagesStock(){
     }
     function viewSpoilagesMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin/viewspoilagesmenu');
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/viewspoilagesmenu');
             $this->load->view('admin/templates/footer');
             // $this->load->view('admin/templates/scripts');
         }else{
@@ -288,11 +298,11 @@ function viewSpoilagesStock(){
     }
     function viewSpoilagesAddons(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->load->view('admin/viewspoilagesaddons');
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/viewspoilagesaddons');
             $this->load->view('admin/templates/footer');
-            $this->load->view('admin/templates/scripts');
+            // $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
@@ -310,7 +320,7 @@ function viewSpoilagesStock(){
     }
     function viewTables(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Tables";
+            $data['title'] = "Tables";
             // $data['table'] = $this->adminmodel->get_tables();
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
@@ -329,7 +339,7 @@ function viewSpoilagesStock(){
     }
     function viewTransactions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Transactions";
+            $data['title'] = "Transactions";
             // $this->load->view('admin/templates/head');
             // $this->load->view('admin/templates/sideNav');
             $data['transactions'] = array(
@@ -346,7 +356,7 @@ function viewSpoilagesStock(){
 
     function viewPurchaseOrders(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['title'] = "Admin Purchase Order";
+            $data['title'] = "Purchase Order";
             $this->load->view('admin/adminPurchaseOrder',$data);
 
         }else{
@@ -393,6 +403,13 @@ function viewSpoilagesStock(){
     }
 
     function jsonActivityLogs() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data = $this->adminmodel->get_actlogs();
+            header('Content-Type: application/json');
+		    echo json_encode($data, JSON_PRETTY_PRINT);
+        }else {
+            redirect('login');
+        }  
 
     }
 
@@ -408,8 +425,23 @@ function viewSpoilagesStock(){
         }
 
     }
-
-
+    function viewConsumptions(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Stock Consumption";
+            /*$data['consumptions'] = array(
+                "destock" => $this->adminmodel->get_transactions(),
+                "" => $this->adminmodel->get_transitems(),
+                "sources" => $this->adminmodel->get_sources()
+            );*/
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/consumption');
+            $this->load->view('admin/templates/scripts');
+            
+        }else{
+            redirect('login');
+        }
+    }
 }
 
 ?>

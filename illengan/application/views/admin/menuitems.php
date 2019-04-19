@@ -1,15 +1,14 @@
-<?php include_once('templates/sideNav.php') ?>
-    <!--End Side Bar-->
-    <div class="content">
-        <div class="container-fluid">
-            <br>
-            <p style="text-align:right; font-weight: regular; font-size: 16px">
-                <!-- Real Time Date & Time -->
-                <?php echo date("M j, Y -l"); ?>
-            </p>
-            <div class="content" style="margin-left:250px;">
-                <div class="container-fluid">
-                    <div class="content">
+<!--End Side Bar-->
+<div class="content">
+<div class="container-fluid">
+<br>
+    <p style="text-align:right; font-weight: regular; font-size: 16px">
+        <!-- Real Time Date & Time -->
+        <?php echo date("M j, Y -l"); ?>
+    </p>
+<div class="content" style="margin-left:250px;">
+<div class="container-fluid">
+<div class="content">
                         <div class="container-fluid">
                             <!--Table-->
                             <div class="card-content">
@@ -28,7 +27,7 @@
                                 <br>
                                 <br>
             <table id="menuTable" class="table dt-responsive nowrap" cellspacing="0" width="100%">
-                <thead>
+                <thead class="thead-light">
                     <tr>
                         <th></th>
                         <th>Menu Item</th>

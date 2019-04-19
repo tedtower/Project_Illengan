@@ -299,7 +299,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_transitems(){
-        $query = "Select trans_id, item_name, item_qty, item_unit, item_price, subtotal from transitems";
+        $query = "Select trans_id, stock_name, item_qty, item_unit, item_price, subtotal from transitems natural join variance natural join stockitems";
         return $this->db->query($query)->result_array();
     }
     function get_inventorystock() {
@@ -310,6 +310,11 @@ class AdminModel extends CI_Model{
     function get_samplemethod($id){
         $query = "Select trans_id, item_name, item_qty, item_unit, item_price, item_qty*item_price as total_price from transitems where trans_id=?";
         return $this->db->query($query, array($id))->result_array();
+    }
+
+    function get_actlogs() {
+        $query = "select * FROM activity_logs al INNER JOIN accounts ac USING (account_id)";
+        return $this->db->query($query)->result_array();
     }
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------

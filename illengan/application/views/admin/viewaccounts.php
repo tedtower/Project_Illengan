@@ -18,8 +18,7 @@
                         <div class="container-fluid">
                             <!--Table-->
                             <div class="card-content">
-                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewAccounts"
-                                    data-original-title style="float: left">Add New
+                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewAccounts" data-original-title style="margin: 0;">Add New
                                     Account</a>
 
                                 <br><br>
@@ -103,9 +102,8 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Edit Accounts</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
+                                                <h5 class="modal-title" id="exampleModalLabel">Edit Account</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -123,6 +121,7 @@
                                                                     id="new_account_username" required>
                                                             </div>
                                                         </div>
+                                                        <input type="text" name="account_username" id="account_username" class="form-control form-control-sm">
                                                     </div>
                                                     <div class="form-groups">
                                                         <label for="new_account_type">Account Type</label>
@@ -189,10 +188,8 @@
                                                     <input type="hidden" name="accountId" id="accountId" value="" />
 
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger btn-sm"
-                                                            data-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn-success btn-sm"
-                                                            type="submit">Update</button>
+                                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                                        <button class="btn btn-success btn-sm" type="submit">Update</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -268,6 +265,16 @@
                 }
             });
         });
+    });
+
+    var tuples = ((document.getElementById('accounts')).getElementsByTagName('tbody'))[0].getElementsByTagName(
+        'tr');
+    var tupleNo = tuples.length;
+    var editButtons = document.getElementsByName('editAccounts');
+    var editModal = document.getElementById('editAccounts');
+    for (var x = 0; x < tupleNo; x++) {
+        editButtons[x].addEventListener("click", showEditModal);
+    }
 
         // Edit Account Function====================================
         var tuples = ((document.getElementById('accountsTable')).getElementsByTagName('tbody'))[0]

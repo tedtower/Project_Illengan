@@ -59,6 +59,7 @@ $route['verifylogin'] = "login/check_cred";
 $route['admin/menu'] = "adminview/viewmenu";
 $route['admin/menu/getDetails'] = "adminview/menuGetDetails";
 $route['admin/menu/addons'] = "adminview/menuAddons";
+$route['admin/menu/promos'] = "adminview/menuPromos";
 $route['admin/spoilages'] = "adminview/viewspoilages";
 $route['admin/sales'] = "adminview/viewSales";
 $route['admin/dashboard'] = "adminview/viewdashboard";
@@ -84,6 +85,8 @@ $route['admin/stock/spoilages'] = "adminview/viewSpoilagesStock";
 $route['admin/addons/spoilages'] = "adminview/viewspoilagesaddons";
 $route['admin/log/stocks'] = "adminview/viewLogStock";
 $route['admin/log/activity'] = "adminview/viewActivityLog";
+$route['admin/consumption'] = "adminview/viewConsumptions";
+$route['admin/returns'] = "adminview/viewReturns";
 
 //End Viewing Routes
 
@@ -104,6 +107,8 @@ $route['admin/addons/spoilages/add'] = "adminadd/addspoilagesaddons";
 $route['admin/stock/spoilages/add'] = "adminadd/addspoilagesstock";
 $route['admin/menu/spoilages/add'] = "adminadd/addspoilagesmenu";
 $route['admin/sources/add'] = "adminadd/addsource";
+$route['admin/returns/add'] = "adminadd/addreturns";
+
 //End Admin Add Routes ------------------------------------------
 
 //Admin Update Routes -------------------------------------------
@@ -135,6 +140,7 @@ $route['admin/accounts/delete'] ="admindelete/deleteAccount";
 
 //Admin Json Routes ------------------------------------------- 
 $route['admin/logJson'] = "adminview/jsonLogStock";
+$route['admin/activitylog'] = "adminview/jsonActivityLogs";
 $route['admin/jsonStock'] = "adminview/jsonStock";
 $route['admin/spoilagesmenujson'] = "adminview/viewSpoilagesMenuJs";
 $route['admin/spoilagesaddonsjson'] = "adminview/viewSpoilagesAddonsJs";
