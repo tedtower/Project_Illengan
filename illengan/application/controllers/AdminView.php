@@ -9,14 +9,20 @@ class AdminView extends CI_Controller{
         // code for getting current date and time : date("Y-m-d 2H:i:s")
     }
 //VIEW FUNCTIONS--------------------------------------------------------------------------------
+function viewAccountsJs(){
+    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        echo json_encode($this->adminmodel->get_accounts());
+        
+    }else{
+        redirect('login');
+    }
+}
     function viewAccounts(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['account']= $this->adminmodel->get_accounts();
-            $this->load->view('admin/viewaccounts', $data);
             $data['title'] = "Admin Accounts";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/templates/scripts');
+            $this->load->view('admin/viewaccounts');
         }else{
             redirect('login');
         }
@@ -47,24 +53,24 @@ class AdminView extends CI_Controller{
         }
     }
 
-    function viewChangePassword(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $account_id = $this->uri->segment('3');
-            $data['account_id'] = $account_id;
-            $this->load->view('admin/changepassword', $data);
-        }else{  
-            redirect('login'); 
-        }
-   }
-   function viewChangePassword2($account_id){
-    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-        echo "Incorrect Current Password.";
-        $data['account_id'] = $account_id;
-        $this->load->view('admin/changepassword', $data);
-    }else{  
-        redirect('login'); 
-    }
-}
+//     function viewChangePassword(){
+//         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+//             $account_id = $this->uri->segment('3');
+//             $data['account_id'] = $account_id;
+//             $this->load->view('admin/changepassword', $data);
+//         }else{  
+//             redirect('login'); 
+//         }
+//    }
+//    function viewChangePassword2($account_id){
+//     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+//         echo "Incorrect Current Password.";
+//         $data['account_id'] = $account_id;
+//         $this->load->view('admin/changepassword', $data);
+//     }else{  
+//         redirect('login'); 
+//     }
+// }
     function viewDashboard(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
             $data['title'] = "Admin Dashboard";

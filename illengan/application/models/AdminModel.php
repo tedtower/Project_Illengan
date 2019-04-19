@@ -91,7 +91,7 @@ class AdminModel extends CI_Model{
     }
 
     function change_account_password($new_password, $account_id){
-        $query = "update accounts set account_password = ?  where account_id = ? ";
+        $query = "Update accounts set account_password = ?  where account_id = ? ";
         return $this->db->query($query,array($new_password, $account_id));  
            
     }
@@ -118,7 +118,7 @@ class AdminModel extends CI_Model{
     //     }
     // }
 
-    function edit_accounts($account_username,$account_type,$account_id){
+    function edit_accounts($account_id,$account_type,$account_username){
         $query = "update accounts set account_username = ?, account_type = ? where account_id = ?";
         return $this->db->query($query,array($account_username, $account_type, $account_id));
     }
@@ -313,10 +313,9 @@ class AdminModel extends CI_Model{
     }
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
-    function delete_account($account_id){
-        $query = "delete from accounts where account_id = ?";
-        return $this->db->query($query,array($account_id));
-
+    function delete_account($accountId){
+        $query = "Delete from accounts where account_id = ?";
+        return $this->db->query($query,array($accountId));
     }
     function delete_menucategory($category_id){
         $query = "delete from categories where category_id = ? and category_type= 'menu'";

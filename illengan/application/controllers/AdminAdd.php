@@ -16,7 +16,7 @@ class AdminAdd extends CI_Controller{
         $this->form_validation->set_rules('account_type','Account Type','trim|required');
 
         if($this->form_validation->run()){
-            $password = password_hash($this->input->post("password"),PASSWORD_DEFAULT, ['cost' => 12]);
+            $password = password_hash($this->input->post("password"),PASSWORD_DEFAULT);
             $username = $this->input->post("account_username");
             $account_type = $this->input->post("account_type");
             $data = array(
@@ -25,10 +25,11 @@ class AdminAdd extends CI_Controller{
                 'account_type'=>$account_type
             );
             $this->adminmodel->add_accounts($data);
-            $this->viewAccounts();
+            redirect('admin/accounts');
 
         }else{
-            $this->viewaddaccounts();
+            echo "There is an error";
+            
         }
     }
     function addMenuCategory(){
