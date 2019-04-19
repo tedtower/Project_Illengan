@@ -11,11 +11,11 @@ class AdminView extends CI_Controller{
 //VIEW FUNCTIONS--------------------------------------------------------------------------------
     function viewAccounts(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['account']= $this->adminmodel->get_accounts();
-            $this->load->view('admin/viewaccounts', $data);
+            $account['account']= $this->adminmodel->get_accounts();
             $data['title'] = "Admin Accounts";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/viewaccounts', $account);
             $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
@@ -124,7 +124,8 @@ class AdminView extends CI_Controller{
                 'preferences' => $this->adminmodel->get_preferences(),
                 'addons' => $this->adminmodel->get_addons2()
             );
-            echo json_encode($data);
+            header('Content-Type: application/json');
+            echo json_encode($data, JSON_PRETTY_PRINT);
         }else{
             redirect('login');
         }
@@ -426,6 +427,32 @@ function viewSpoilagesStock(){
         }else{
             redirect('login');
         }
+    }
+
+
+    function viewPromos() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Promos";
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/templates/scripts');
+            $this->load->view('admin/templates/footer');
+            $this->load->view('admin/adminPromo');
+        }else{
+            redirect('login');
+        }
+    }
+
+    function jsonPromos() {
+        $promo = array(
+            "promos" => $this->adminmodel->get_promos(),
+            "discounts" => $this->adminmodel->get_discounts(),
+            "freebies" => $this->adminmodel->get_freebies()
+        );
+
+        header('Content-Type: application/json');
+        echo json_encode($promo, JSON_PRETTY_PRINT);
+        
     }
 }
 ?>

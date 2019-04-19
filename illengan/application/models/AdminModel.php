@@ -188,6 +188,41 @@ class AdminModel extends CI_Model{
         $query = "Select * from accounts";
         return $this->db->query($query)->result_array();
     }
+    function get_discounts() {
+        $query = "SELECT *, CONCAT(mn.menu_name,' ',pref.size_name) AS menu_item  FROM promo_cons pc 
+        INNER JOIN preferences pref USING (pref_id) 
+        INNER JOIN menu mn USING (menu_id) 
+        INNER JOIN discounts USING (promo_id) 
+        INNER JOIN menu_discount USING (promo_id)";
+        return $this->db->query($query)->result_array(); 
+    }
+    function get_freebies() {
+        $query = "SELECT *, CONCAT(mn.menu_name,' ',pref.size_name) AS menu_item, 
+        CONCAT(me.menu_name,' ',pr.size_name) AS menu_freebie
+        FROM promo_cons pc 
+        INNER JOIN preferences pref USING (pref_id) 
+        INNER JOIN menu mn USING (menu_id) 
+        INNER JOIN freebie USING (promo_id) 
+        INNER JOIN menu_freebie mf USING (promo_id)
+        INNER JOIN preferences pr ON mf.pref_id = pr.pref_id
+        INNER JOIN menu me ON pr.menu_id = me.menu_id";
+        return $this->db->query($query)->result_array(); 
+    }
+    function get_menuItems() {
+        $query = "SELECT pr.pref_id, CONCAT(mn.menu_name,' ',pr.size_name) AS menu_item 
+        FROM preferences pr INNER JOIN menu mn USING (menu_id)";
+        return $this->db->query($query)->result_array(); 
+    }
+    function get_promos() {
+        $query = "SELECT * FROM promo";
+        return $this->db->query($query)->result_array(); 
+    }
+    function get_promoconst() {
+        $query = "SELECT pc.promo_id, pc.pc_type, pc.pc_qty, pref.pref_id, mn.menu_name, pref.size_name,
+        CONCAT(mn.menu_name,' ',pref.size_name) AS menu_item
+        FROM promo_cons pc INNER JOIN preferences pref USING (pref_id) INNER JOIN menu mn USING (menu_id)";
+        return $this->db->query($query)->result_array(); 
+    }
     function get_inventory(){
         $query = "Select stock_id, stock_name, stock_quantity, stock_unit, stock_minimum, stock_status, category_name from stockitems inner join categories using (category_id)";
         return $this->db->query($query)->result_array();

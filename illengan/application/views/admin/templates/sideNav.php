@@ -70,7 +70,7 @@
                             <ul  class="collapse list-unstyled" id="Promo">
 
                                 <li>
-                                    <a href="<?php echo base_url('admin/discounts')?>"><span style="margin-left: 15%">Discount</span></a>
+                                    <a href="<?php echo base_url('admin/promos')?>"><span style="margin-left: 15%">Discount</span></a>
                                 </li>
                                 <li>
                                    <a href="#" ><span style="margin-left: 15%">Freebie</span></a>

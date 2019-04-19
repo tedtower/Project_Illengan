@@ -58,14 +58,14 @@
                                             <td>
                                                     <div>
                                                     <!--Edit button-->
-                                                    <a id="edit" class="btn btn-info" data-toggle="modal" data-target="#editAccounts"
+                                                    <a id="edit" class="btn btn-info btn-sm" data-toggle="modal" data-target="#editAccounts"
                                                         data-original-title style="float: left" name="editAccounts"
                                                         data-id="<?php echo $row['account_id'] ?>">Edit</a>
                                                     <!--Delete button-->
-                                                    <a class="btn btn-danger" role="button" href=# data-role="delete"
+                                                    <a class="btn btn-danger btn-sm" role="button" href=# data-role="delete"
                                                         data-toggle="modal">Delete</a>
                                                     <!--Change Pass button-->
-                                                    <a class="btn btn-danger" data-toggle="modal" data-target="#editPassword"
+                                                    <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editPassword"
                                                         data-original-title style="float: left" name="editPassword"
                                                         data-id="<?php echo $row['account_id'] ?>">Change Password</a>
                                                     </div>

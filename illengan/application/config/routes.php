@@ -89,7 +89,7 @@ $route['admin/spoilagesaddonsjson'] = "adminview/viewSpoilagesAddonsJs";
 $route['admin/log/stocks'] = "adminview/viewLogStock";
 $route['admin/log/activity'] = "adminview/viewActivityLog";
 $route['admin/consumption'] = "adminview/viewConsumptions";
-
+$route['admin/promos'] = "adminview/viewPromos";
 //End Viewing Routes
 
 //Not Sure Routes
@@ -141,6 +141,8 @@ $route['admin/addons/spoilage/delete/(:num)'] ="admindelete/deleteaddonsspoilage
 $route['admin/logJson'] = "adminview/jsonLogStock";
 $route['admin/activitylog'] = "adminview/jsonActivityLogs";
 $route['admin/jsonStock'] = "adminview/jsonStock";
+$route['admin/jsonPromos'] = "adminview/jsonPromos";
+
 //End Admin Json Routes ---------------------------------------
 
 //CUSTOMER ROUTES
