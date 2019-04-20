@@ -35,7 +35,7 @@
                                         <th><b class="pull-left">PO No.</b></th>
                                         <th><b class="pull-left">Supplier</b></th>
                                         <th><b class="pull-left">Purchased Date</b></th>
-                                        <th><b class="pull-left">Delivery Date</b></th>
+                                        <th><b class="pull-left">Expected Date</b></th>
                                         <th><b class="pull-left">Status</b></th>
                                         <th><b class="pull-left">Total</b></th>
                                         <th><b class="pull-left">Actions</b></th>
@@ -429,14 +429,14 @@ function setTableData() {
 
     function appendRow(po) {
         var row = `
-    <tr data-id="${po.po_id}">
+    <tr data-id="${po.poID}">
         <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width:15px"/></td>
-        <td>${po.po_id}</td>
-        <td>${po.source_name}</td>
-        <td>${po.po_date}</td>
-        <td>${po.ed_date}</td>
-        <td>${po.po_status}</td>
-        <td>${po.po_amt_payable}</td>
+        <td>${po.poID}</td>
+        <td>${po.spName}</td>
+        <td>${po.poDate}</td>
+        <td>${po.edDate}</td>
+        <td>${po.poStatus}</td>
+        <td>${po.poTotal}</td>
         <td>
         <!--Edit button-->
             <button class="editBtn btn btn-primary btn-sm" data-toggle="modal"
@@ -457,12 +457,13 @@ function setTableData() {
         <td colspan="8">
         <div style="margin:1% 2%;display:none">
         ${items.length === 0 : "No items recorded!" : `
+            <span>Date Recorded: <span></span></span>
             <table class="table">
                 <thead style="background:white">
                     <tr>
-                        <th>Name</th>
-                        <th>Qty</th>
+                        <th>Item Name</th>
                         <th>Unit</th>
+                        <th>Qty</th>
                         <th>Price</th>
                         <th>Subtotal</th>
                         <th>Remarks</th>

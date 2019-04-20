@@ -142,6 +142,8 @@ function viewAccountsJs(){
         }
     }
 
+    
+
     function menuAddons(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data['title'] = "Menu - Addons";

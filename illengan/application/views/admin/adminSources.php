@@ -19,18 +19,20 @@
                                     <thead class="thead-light">
                                         <th style="width:3%"></th>
                                         <th><b class="pull-left">Name</b></th>
-                                        <th><b class="pull-left">Contact Number</b></th>
+                                        <th><b class="pull-left">Number</b></th>
                                         <th><b class="pull-left">Email</b></th>
+                                        <th><b class="pull-left">Address</b></th>
                                         <th><b class="pull-left">Status</b></th>
                                         <th><b class="pull-left">Actions</b></th>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
-                                            <td>Tiongsan</td>
-                                            <td>09997090529</td>
-                                            <td>email</td>
-                                            <td>Active</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                             <td>
                                                 <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editSource" >Edit</button>
                                                 <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteSource">Delete</button>
@@ -38,24 +40,20 @@
                                         </tr>
                                         <tr class="accordion" style="display:none">
                                             <td colspan="8">
-                                            <div style="margin:1%">
+                                            <div style="margin:1% 5%">
                                                 <span>Merchandise Items</span>
                                                 <table class="table table-bordered dt-responsive nowrap mt-2">
                                                     <thead style="background:white">
                                                         <tr>
-                                                        <th scope="col">Item</th>
-                                                        <th scope="col">Variance</th>
-                                                        <th scope="col">Description</th>
+                                                        <th scope="col">Item Name</th>
                                                         <th scope="col">Unit</th>
                                                         <th scope="col">Price</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                        <td>Milk</td>
-                                                        <td>Bottle 1L</td>
-                                                        <td>Nestle</td>
-                                                        <td></td>
+                                                        <td>Nestle Milk 1L</td>
+                                                        <td>Bottle</td>
                                                         <td>100</td>
                                                     </tbody>
                                                 </table>
@@ -65,7 +63,7 @@
                                     </tbody>
                                 </table>
                                 <!--End Table Content-->
-<!--Start of Add Modal-->
+    <!--Start of Add Modal-->
         <div class="modal fade bd-example-modal-lg" id="newSource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -118,37 +116,37 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                    Address</span>
+                                </div>
+                                <input type="text" name="supAddress" id="supAddress" class="form-control form-control-sm">
+                            </div>
                             <!--Merchandise-->
                             <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Merchandise Item</a> <!--Button to add row in the table-->
                             <br><br>
                             <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Item</th>
-                                        <th>Variance</th> 
-                                        <th style="width:20%">Description</th>
-                                        <th style="width:13%">Unit</th>
-                                        <th style="width:13%">Price</th>
+                                        <th>Item Name</th>
+                                        <th style="width:15%">Unit</th>
+                                        <th style="width:15%">Price</th>
+                                        <th style="width:35%">>Variance</th>
                                         <th style="width:4%"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
+                                        <td><input type="text" name="merchName" id="merchName" class="form-control form-control-sm"></td>
+                                        <td><input type="text" name="merchUnit" id="merchUnit" class="form-control form-control-sm"></td>
+                                        <td><input type="number" name="merchPrice" id="merchPrice" class="form-control form-control-sm"></td>
                                         <td>
-                                            <select class="form-control" name="" id="">
+                                            <select class="form-control" name="variance" id="variance">
                                                 <option selected>Choose</option>
                                                 <option></option>
                                             </select>
                                         </td>
-                                        <td>
-                                            <select class="form-control" name="" id="">
-                                                <option selected>Choose</option>
-                                                <option></option>
-                                            </select>
-                                        </td>
-                                        <td><input type="text" name="" id="" class="form-control form-control-sm"></td>
-                                        <td><input type="text" name="" id="" class="form-control form-control-sm"></td>
-                                        <td><input type="number" name="" id="" class="form-control form-control-sm"></td>
                                         <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
                                     </tr>
                             </table>
@@ -161,14 +159,14 @@
                 </div>
             </div>
         </div>
-        <!--End of Add Modal-->
+    <!--End of Add Modal-->
 
-        <!--Start of Edit Modal-->
+    <!--Start of Edit Modal-->
         <div class="modal fade bd-example-modal-lg" id="editSource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit Source</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Update Source</h5>
                         <button type="button" class="close" data-dismiss="modal"aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -216,45 +214,43 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                    Address</span>
+                                </div>
+                                <input type="text" name="supAddress" id="supAddress" class="form-control form-control-sm">
+                            </div>
                             <!--Merchandise-->
                             <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Merchandise Item</a> <!--Button to add row in the table-->
                             <br><br>
                             <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Item</th>
-                                        <th>Variance</th> 
-                                        <th style="width:20%">Description</th>
-                                        <th style="width:13%">Unit</th>
-                                        <th style="width:13%">Price</th>
+                                        <th>Item Name</th>
+                                        <th style="width:15%">Unit</th>
+                                        <th style="width:15%">Price</th>
+                                        <th style="width:35%">>Variance</th>
                                         <th style="width:4%"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
+                                        <td><input type="text" name="merchName" id="merchName" class="form-control form-control-sm"></td>
+                                        <td><input type="text" name="merchUnit" id="merchUnit" class="form-control form-control-sm"></td>
+                                        <td><input type="number" name="merchPrice" id="merchPrice" class="form-control form-control-sm"></td>
                                         <td>
-                                            <select class="form-control" name="" id="">
+                                            <select class="form-control" name="variance" id="variance">
                                                 <option selected>Choose</option>
                                                 <option></option>
                                             </select>
                                         </td>
-                                        <td>
-                                            <select class="form-control" name="" id="">
-                                                <option selected>Choose</option>
-                                                <option></option>
-                                            </select>
-                                        </td>
-                                        <td><input type="text" name="" id="" class="form-control form-control-sm"></td>
-                                        <td><input type="text" name="" id="" class="form-control form-control-sm"></td>
-                                        <td><input type="number" name="" id="" class="form-control form-control-sm"></td>
                                         <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
                                     </tr>
                             </table>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger btn-sm"
-                                    data-dismiss="modal">Cancel</button>
-                                <button class="btn btn-success btn-sm"
-                                    type="submit">Insert</button>
+                                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                <button class="btn btn-success btn-sm" type="submit">Update</button>
                             </div>
                         </form>
                     </div>
@@ -262,6 +258,8 @@
             </div>
         </div>
         <!--End of Edit Modal-->
+
+ 
 
         <!--Start of Delete Modal-->
         <div class="modal fade" id="deleteSource" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -278,6 +276,9 @@
                             <h6 id="deleteTableCode"></h6>
                             <p>Are you sure you want to delete this source?</p>
                             <input type="text" name="" hidden="hidden">
+                            <div>         
+                                Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm">               
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
