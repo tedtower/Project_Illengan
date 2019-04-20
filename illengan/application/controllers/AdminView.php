@@ -92,8 +92,10 @@ function viewAccountsJs(){
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $data['inventory'] = array(
-                "stocks" => $this->adminmodel->get_inventory(),
-                "categories" => $this->adminmodel->get_stockCategories()
+                "stocks" => $this->adminmodel->get_stocks(),
+                "categories" => $this->adminmodel->get_stockSubCategories(),
+                "variances" => $this->adminmodel->get_stockVariance(),
+                "expirations" => $this->adminmodel->get_stockExpiration()
             );
             $data['category'] = $this->adminmodel->get_stockcategories();
             $this->load->view('admin/adminInventory',$data);

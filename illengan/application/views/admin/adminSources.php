@@ -300,6 +300,15 @@
         <?php include_once('templates/scripts.php') ?>
 
 <script>
+var suppliers = <?= json_encode()?>;
+    $(function(){
+        setTableData();
+    });
+    function setTableData(){
+        suppliers.supplier.forEach(element => {
+            
+        });
+        appendRow();
         $(".accordionBtn").on('click', function(){
             if($(this).closest("tr").next(".accordion").css("display") == 'none'){
                 $(this).closest("tr").next(".accordion").css("display","table-row");
@@ -309,6 +318,23 @@
                 $(this).closest("tr").next(".accordion").hide("slow");
             }
         });
+    }
+    function appendRow(){
+        var row = `
+        <tr data-id='${}'>
+            <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
+            <td>${}</td>
+            <td>${}09997090529</td>
+            <td>${}email</td>
+            <td>${}Active</td>
+            <td>
+                <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editSource" >Edit</button>
+                <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteSource">Delete</button>
+            </td>
+        </tr>`;
+    }
+    function setModalData(){
+    }
 </script>
 
     <!-- <script>

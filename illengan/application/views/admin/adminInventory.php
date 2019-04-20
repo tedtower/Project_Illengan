@@ -17,9 +17,6 @@
             <tr>
                 <th></th>
                 <th><b class="pull-left">Name</b></th>
-                <th><b class="pull-left">Quantity</b></th>
-                <th><b class="pull-left">Unit</b></th>
-                <th><b class="pull-left">Minimum</b></th>
                 <th><b class="pull-left">Category</b></th>
                 <th><b class="pull-left">Status</b></th>
                 <th><b class="pull-left">Action</b></th>
