@@ -224,7 +224,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array(); 
     }
     function get_inventory(){
-        $query = "Select stock_id, stock_name, stock_quantity, stock_unit, stock_minimum, stock_status, category_name from stockitems inner join categories using (category_id)";
+        $query = "Select * from stockitems inner join categories using (ctID)";
         return $this->db->query($query)->result_array();
     }
     function get_logs(){
@@ -275,18 +275,11 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_stocks(){
-        $query = "SELECT 
-            stock_id,
-            stock_name,
-            stock_quantity,
-            stock_unit,
-            stock_minimum,
-            stock_status,
-            category_name
+        $query = "SELECT *
         FROM
             stockitems
                 INNER JOIN
-            categories USING (category_id);";
+            categories USING (ctID);";
         return $this->db->query($query)->result_array();
     }
     function get_addons(){
@@ -294,15 +287,15 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_stockCategories(){
-        $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' group by category_id order by category_name asc";
+        $query = "select ctID, ctName, ctType, COUNT(stID) as stock_no from categories left join stockitems using (ctID) where ctType = 'Inventory' group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
     }
     function get_stockMainCategories(){
-        $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' and supcat_id is null group by category_id order by category_name asc";
+        $query = "select ctID, ctName, ctType, COUNT(stID) as stock_no from categories left join stockitems using (ctID) where ctType = 'Inventory' and supcatID is null group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
     }
     function get_stockSubcategories(){
-        $query = "Select category_id, category_name, category_type, COUNT(stock_id) as stock_no from categories left join stockitems using (category_id) where category_type = 'Inventory' and supcat_id is not null group by category_id order by category_name asc";
+        $query = "select ctID, ctName, ctType, COUNT(stID) as stock_no from categories left join stockitems using (ctID) where ctType = 'Inventory' and supcatID is not null group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
     }
     function get_sources(){
@@ -338,7 +331,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_inventorystock() {
-        $query = "SELECT * FROM stockitems INNER JOIN categories USING (category_id);";
+        $query = "SELECT * FROM stockitems INNER JOIN categories USING (ctID);";
         return $this->db->query($query)->result_array();
     }
 
