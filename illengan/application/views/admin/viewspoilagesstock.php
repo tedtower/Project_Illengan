@@ -61,7 +61,7 @@
 															<th>Name</th>
 															<th width="20%">Qty</th>
 															<th>Remarks</th>
-															<th>Type</th>
+															<th></th>
 														</tr>
 													</thead>
 													<tbody>

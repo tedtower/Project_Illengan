@@ -297,7 +297,7 @@
 </div>
 </div>
 
-    <?php include_once('templates/scripts.php') ?>
+        <?php include_once('templates/scripts.php') ?>
 
 <script>
         $(".accordionBtn").on('click', function(){
@@ -321,16 +321,6 @@
                     return false;
                 }
             });
-        });
-        
-        var tuples = ((document.getElementById('tablevalues')).getElementsByTagName('tbody'))[0].getElementsByTagName(
-            'tr');
-        var tupleNo = tuples.length;
-        var editButtons = document.getElementsByName('editSource');
-        var editModal = document.getElementById('editSource');
-        for (var x = 0; x < tupleNo; x++) {
-            editButtons[x].addEventListener("click", showEditModal);
-        }
 
         function showEditModal(event) {
             var row = event.target.parentElement.parentElement.parentElement;

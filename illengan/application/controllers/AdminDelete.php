@@ -8,13 +8,18 @@ class AdminDelete extends CI_Controller{
         // code for getting current date : date("Y-m-d")
         // code for getting current date and time : date("Y-m-d 2H:i:s")
     }
-    function deleteAccount($account_id){
-        
-        if($this->adminmodel->delete_account($account_id)){
-            $this->viewAccounts();
+    function deleteAccount(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $this->form_validation->set_rules('accountId', 'Account Id', 'trim|required');
+            if($this->form_validation->run()){
+                $accountId = trim($this->input->post("accountId"));
+                $this->adminmodel->delete_account($accountId);
+            }else{
+               redirect('admin/accounts');
+            } 
         }else{
-            //error
-        }; 
+            redirect('login');
+        }  
     }
     function deleteMenuCategory($category_id){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){

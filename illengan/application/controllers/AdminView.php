@@ -9,6 +9,14 @@ class AdminView extends CI_Controller{
         // code for getting current date and time : date("Y-m-d 2H:i:s")
     }
 //VIEW FUNCTIONS--------------------------------------------------------------------------------
+function viewAccountsJs(){
+    if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        echo json_encode($this->adminmodel->get_accounts());
+        
+    }else{
+        redirect('login');
+    }
+}
     function viewAccounts(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data['account'] = $this->adminmodel->get_accounts();
@@ -125,7 +133,8 @@ class AdminView extends CI_Controller{
                 'preferences' => $this->adminmodel->get_preferences(),
                 'addons' => $this->adminmodel->get_addons2()
             );
-            echo json_encode($data);
+            header('Content-Type: application/json');
+            echo json_encode($data, JSON_PRETTY_PRINT);
         }else{
             redirect('login');
         }
@@ -435,6 +444,32 @@ function viewSpoilagesStock(){
         }else{
             redirect('login');
         }
+    }
+
+
+    function viewPromos() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+            $data['title'] = "Promos";
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/templates/scripts');
+            $this->load->view('admin/templates/footer');
+            $this->load->view('admin/adminPromo');
+        }else{
+            redirect('login');
+        }
+    }
+
+    function jsonPromos() {
+        $promo = array(
+            "promos" => $this->adminmodel->get_promos(),
+            "discounts" => $this->adminmodel->get_discounts(),
+            "freebies" => $this->adminmodel->get_freebies()
+        );
+
+        header('Content-Type: application/json');
+        echo json_encode($promo, JSON_PRETTY_PRINT);
+        
     }
 }
 

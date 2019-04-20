@@ -80,18 +80,18 @@ $route['admin/spoilages/menu/add'] ="adminview/viewInsertSpoilageMenu";
 $route['admin/spoilages/stock/add'] ="adminview/viewInsertSpoilageStock";
 $route['admin/spoilages/addons/add'] ="adminview/viewInsertSpoilageAo";
 $route['admin/spoilages'] = "adminview/viewspoilages";
-$route['admin/spoilagesjson'] = "adminview/viewSpoilagesJs";
 $route['admin/menu/spoilages'] = "adminview/viewspoilagesmenu";
-$route['admin/spoilagesmenujson'] = "adminview/viewSpoilagesMenuJs";
 $route['admin/stock/spoilages'] = "adminview/viewSpoilagesStock";
-$route['admin/spoilagesstockjson'] = "adminview/viewSpoilagesStockJs";
 $route['admin/addons/spoilages'] = "adminview/viewspoilagesaddons";
-$route['admin/spoilagesaddonsjson'] = "adminview/viewSpoilagesAddonsJs";
 $route['admin/log/stocks'] = "adminview/viewLogStock";
 $route['admin/log/activity'] = "adminview/viewActivityLog";
 $route['admin/consumption'] = "adminview/viewConsumptions";
+<<<<<<< HEAD
+$route['admin/promos'] = "adminview/viewPromos";
+=======
 $route['admin/returns'] = "adminview/viewReturns";
 
+>>>>>>> dcfe7f5ba172564150bc9c8cca95319b8f409e70
 //End Viewing Routes
 
 //Not Sure Routes
@@ -139,12 +139,20 @@ $route['admin/sources/delete/(:num)'] = "admindelete/deletesource/$1";
 $route['admin/stock/spoilage/delete/(:num)'] ="admindelete/deletestockspoilages/$1";
 $route['admin/menu/spoilage/delete/(:num)'] ="admindelete/deletemenuspoilages/$1";
 $route['admin/addons/spoilage/delete/(:num)'] ="admindelete/deleteaddonsspoilages/$1";
+$route['admin/accounts/delete'] ="admindelete/deleteAccount";
 //End Admin Delete Routes ---------------------------------------
 
 //Admin Json Routes ------------------------------------------- 
 $route['admin/logJson'] = "adminview/jsonLogStock";
 $route['admin/activitylog'] = "adminview/jsonActivityLogs";
 $route['admin/jsonStock'] = "adminview/jsonStock";
+$route['admin/jsonPromos'] = "adminview/jsonPromos";
+$route['admin/spoilagesmenujson'] = "adminview/viewSpoilagesMenuJs";
+$route['admin/spoilagesaddonsjson'] = "adminview/viewSpoilagesAddonsJs";
+$route['admin/spoilagesjson'] = "adminview/viewSpoilagesJs";
+$route['admin/spoilagesstockjson'] = "adminview/viewSpoilagesStockJs";
+$route['admin/accounts/viewAccountsJs'] ="adminview/viewAccountsJs";
+
 //End Admin Json Routes ---------------------------------------
 
 //CUSTOMER ROUTES
