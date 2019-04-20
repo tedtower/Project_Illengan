@@ -271,7 +271,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_sources(){
-        $query = "Select source_id, source_name, contact_num, email, status from sources order by source_name asc";
+        $query = "Select * from supplier order by spName";
         return $this->db->query($query)->result_array();
     }
     function get_spoilages(){

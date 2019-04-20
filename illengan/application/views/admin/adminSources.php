@@ -1,13 +1,4 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <?php include_once('templates/head.php') ?>
-</head>
-
-<body>
-    <?php include_once('templates/sideNav.php') ?>
-    <!--End Side Bar-->
+<!--End Side Bar-->
     <div class="content">
         <div class="container-fluid">
             <br>
@@ -21,23 +12,12 @@
                         <div class="container-fluid">
                             <!--Table-->
                             <div class="card-content">
-
-                                <!--Search
-                            <div id ="example_filter" class="dataTables_filter">
-                                <label>
-                                    "Search:"
-                                    <div class="form-group form-group-sm is-empty">
-                                       <input type="search" class="form-control" placeholder aria-controls="example">
-                                       <span class="material-input"></span> 
-                                    </div>
-                                </label>
-                            </div>-->
-                                <!--Add Add Ons Spoilage-->
-                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewSource" data-original-title style="margin:0;">Add New Source</a><br>
+                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newSource" data-original-title style="margin:0;">Add New Source</a><br>
 
                                 <br>
-                                <table id="tablevalues" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                                    <thead>
+                                <table id="tablevalues" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                                    <thead class="thead-light">
+                                        <th style="width:3%"></th>
                                         <th><b class="pull-left">Name</b></th>
                                         <th><b class="pull-left">Contact Number</b></th>
                                         <th><b class="pull-left">Email</b></th>
@@ -45,167 +25,293 @@
                                         <th><b class="pull-left">Actions</b></th>
                                     </thead>
                                     <tbody>
-                                        <?php if (isset($source)) {
-                                            foreach ($source as $item) {
-                                                ?>
-                                                <tr>
-                                                    <td><?php echo $item['source_name'] ?></td>
-                                                    <td><?php echo $item['contact_num'] ?></td>
-                                                    <td><?php echo $item['email'] ?></td>
-                                                    <td><?php echo $item['status'] ?></td>
-                                                    <td>
-                                                        <div>
-                                                            <a data-toggle="modal" data-target="#editSource" data-original-title style="float: left" name="editSource" data-id="<?php echo $item['source_id'] ?>" class="btn btn-primary btn-sm mb-2">Edit</a>
-
-                                                            <a href="#" class="delete_data" id="<?php echo $item['source_id']; ?>"><button class="btn btn-danger btn-sm mb-2">Delete</button></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            <?php
-
-                                        }
-                                    } else {
-                                        echo 'no data';
-                                    }
-                                    ?>
+                                        <tr>
+                                            <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
+                                            <td>Tiongsan</td>
+                                            <td>09997090529</td>
+                                            <td>email</td>
+                                            <td>Active</td>
+                                            <td>
+                                                <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editSource" >Edit</button>
+                                                <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteSource">Delete</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="accordion" style="display:none">
+                                            <td colspan="8">
+                                            <div style="margin:1%">
+                                                <span>Merchandise Items</span>
+                                                <table class="table table-bordered dt-responsive nowrap mt-2">
+                                                    <thead style="background:white">
+                                                        <tr>
+                                                        <th scope="col">Item</th>
+                                                        <th scope="col">Variance</th>
+                                                        <th scope="col">Description</th>
+                                                        <th scope="col">Unit</th>
+                                                        <th scope="col">Price</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                        <td>Milk</td>
+                                                        <td>Bottle 1L</td>
+                                                        <td>Nestle</td>
+                                                        <td></td>
+                                                        <td>100</td>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <!--End Table Content-->
-
-                                <!-- Start of "Add Sources" Modal-->
-                                <div class="modal fade bd-example-modal-lg" id="addNewSource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-									<div class="modal-dialog modal-lg" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="exampleModalLabel">Add New Source</h5>
-												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-											<form id="formAdd" action="<?= site_url('admin/sources/add') ?>" method="post" accept-charset="utf-8">
-												<div class="modal-body">
-													<div class="form-row">
-														<!--Container of Source Date-->
-														<!--Source Name-->
-														<div class="input-group mb-3">
-															<div class="input-group-prepend">
-																<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-																	Name</span>
-															</div>
-															<input type="text" name="sourceName" id="sourceName" class="form-control form-control-sm">
-                                                        </div>
-                                                         <!--Contact Number-->
-                                                         <div class="input-group mb-3">
-															<div class="input-group-prepend">
-																<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-																	Contact Number</span>
-															</div>
-															<input type="number" name="contact_num" id="sourceName" class="form-control form-control-sm">
-                                                        </div>
-                                                        <!--Email Address-->
-                                                        <div class="input-group mb-3">
-															<div class="input-group-prepend">
-																<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-																	Email</span>
-															</div>
-															<input type="text_area" name="email" id="email" class="form-control form-control-sm">
-                                                        </div>
-                                                        <!--Status-->
-                                                    </div>	
-                                                    
-                                                    <div class="modal-footer">
-														<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-														<button class="btn btn-success btn-sm" type="submit">Add</button>
-													</div>
-                                                </div>
-                                            </form>
-                                        </div>
+<!--Start of Add Modal-->
+        <div class="modal fade bd-example-modal-lg" id="newSource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Source</h5>
+                        <button type="button" class="close" data-dismiss="modal"aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="<?php echo base_url()?>admin/source/add" method="get" accept-charset="utf-8">
+                        <div class="modal-body">                                                                                                                                                      
+                            <div class="form-row">
+                            <!--Source name-->
+                                <div class="input-group mb-3 col">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Source Name</span>
                                     </div>
+                                    <input type="text" name="source_name" id="source_name" class="form-control form-control-sm">
                                 </div>
-                                <!--End Modal "Add Source"-->
-
-                                <!-- Edit Modal "Add Source-->
-                                <div class="modal fade bd-example-modal-lg" id="addNewSource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-									<div class="modal-dialog modal-lg" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="exampleModalLabel">Add New Source</h5>
-												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-											<form id="formAdd" action="<?= site_url('admin/sources/add') ?>" method="post" accept-charset="utf-8">
-												<div class="modal-body">
-													<div class="form-row">
-														<!--Container of Source Date-->
-														<!--Source Name-->
-														<div class="input-group mb-3">
-															<div class="input-group-prepend">
-																<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-																	Name</span>
-															</div>
-															<input type="text" name="sourceName" id="sourceName" class="form-control form-control-sm">
-                                                        </div>
-                                                         <!--Contact Number-->
-                                                         <div class="input-group mb-3">
-															<div class="input-group-prepend">
-																<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-																	Contact Number</span>
-															</div>
-															<input type="number" name="contact_num" id="sourceName" class="form-control form-control-sm">
-                                                        </div>
-                                                        <!--Email Address-->
-                                                        <div class="input-group mb-3">
-															<div class="input-group-prepend">
-																<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-																	Email</span>
-															</div>
-															<input type="text_area" name="email" id="email" class="form-control form-control-sm">
-                                                        </div>
-                                                    </div>	
-                                                    
-                                                    <div class="modal-footer">
-														<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-														<button class="btn btn-success btn-sm" type="submit">Add</button>
-													</div>
-                                                </div>
-                                            </form>
-                                        </div>
+                            <!--Contact Number-->
+                                <div class="input-group mb-3 col">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Contact No.</span>
                                     </div>
-                                </div>                    <!--Status-->
-                                                    <div class="row">
-                                                        <div class="col-md-6 form-group">
-                                                            <div class="form-group label-floating">
-                                                                <label for="status">Status</label>
-                                                                <select class="form-control" type="text" name="new_status" id="new_status" required pattern="[a-zA-Z][a-zA-Z\s]*" required title="Status should only countain letters" required>
-                                                                    <option value="active" Selected>Active</option>
-                                                                    <option value="inactive">Inactive</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn-success btn-sm" type="submit">Insert</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
+                                    <input type="number" name="contact_num" id="contact_num" class="form-control form-control-sm">
                                 </div>
-
                             </div>
-                        </div>
+                            
+                            <div class="form-row">
+                            <!--Email-->
+                                <div class="input-group mb-3 col">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Email</span>
+                                    </div>
+                                    <input type="text" name="email" id="email" class="form-control form-control-sm">
+                                </div>
+                            <!--Status-->
+                                <div class="input-group mb-3 col">
+                                        <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Status</span>
+                                    </div>
+                                    <select name="status" id="status" class="form-control form-control-sm">
+                                        <option>Choose</option>
+                                        <option>Active</option>
+                                        <option>Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--Merchandise-->
+                            <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Merchandise Item</a> <!--Button to add row in the table-->
+                            <br><br>
+                            <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Variance</th> 
+                                        <th style="width:20%">Description</th>
+                                        <th style="width:13%">Unit</th>
+                                        <th style="width:13%">Price</th>
+                                        <th style="width:4%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <select class="form-control" name="" id="">
+                                                <option selected>Choose</option>
+                                                <option></option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="" id="">
+                                                <option selected>Choose</option>
+                                                <option></option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" name="" id="" class="form-control form-control-sm"></td>
+                                        <td><input type="text" name="" id="" class="form-control form-control-sm"></td>
+                                        <td><input type="number" name="" id="" class="form-control form-control-sm"></td>
+                                        <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+                                    </tr>
+                            </table>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                <button class="btn btn-success btn-sm" type="submit">Insert</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        <!--End of Add Modal-->
+
+        <!--Start of Edit Modal-->
+        <div class="modal fade bd-example-modal-lg" id="editSource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Source</h5>
+                        <button type="button" class="close" data-dismiss="modal"aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="<?php echo base_url()?>admin/source/add" method="get" accept-charset="utf-8">
+                        <div class="modal-body">                                                                                                                                                      
+                            <div class="form-row">
+                            <!--Source name-->
+                                <div class="input-group mb-3 col">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Source Name</span>
+                                    </div>
+                                    <input type="text" name="source_name" id="source_name" class="form-control form-control-sm">
+                                </div>
+                            <!--Contact Number-->
+                                <div class="input-group mb-3 col">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Contact No.</span>
+                                    </div>
+                                    <input type="number" name="contact_num" id="contact_num" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                            <!--Email-->
+                                <div class="input-group mb-3 col">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Email</span>
+                                    </div>
+                                    <input type="text" name="email" id="email" class="form-control form-control-sm">
+                                </div>
+                            <!--Status-->
+                                <div class="input-group mb-3 col">
+                                        <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Status</span>
+                                    </div>
+                                    <select name="status" id="status" class="form-control form-control-sm">
+                                        <option>Choose</option>
+                                        <option>Active</option>
+                                        <option>Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--Merchandise-->
+                            <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Merchandise Item</a> <!--Button to add row in the table-->
+                            <br><br>
+                            <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Variance</th> 
+                                        <th style="width:20%">Description</th>
+                                        <th style="width:13%">Unit</th>
+                                        <th style="width:13%">Price</th>
+                                        <th style="width:4%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <select class="form-control" name="" id="">
+                                                <option selected>Choose</option>
+                                                <option></option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="" id="">
+                                                <option selected>Choose</option>
+                                                <option></option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" name="" id="" class="form-control form-control-sm"></td>
+                                        <td><input type="text" name="" id="" class="form-control form-control-sm"></td>
+                                        <td><input type="number" name="" id="" class="form-control form-control-sm"></td>
+                                        <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+                                    </tr>
+                            </table>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btn-sm"
+                                    data-dismiss="modal">Cancel</button>
+                                <button class="btn btn-success btn-sm"
+                                    type="submit">Insert</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End of Edit Modal-->
+
+        <!--Start of Delete Modal-->
+        <div class="modal fade" id="deleteSource" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Delete Source</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="confirmDelete">
+                        <div class="modal-body">
+                            <h6 id="deleteTableCode"></h6>
+                            <p>Are you sure you want to delete this source?</p>
+                            <input type="text" name="" hidden="hidden">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <!--End of Delete Modal-->
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 
     <?php include_once('templates/scripts.php') ?>
 
-    <script>
+<script>
+        $(".accordionBtn").on('click', function(){
+            if($(this).closest("tr").next(".accordion").css("display") == 'none'){
+                $(this).closest("tr").next(".accordion").css("display","table-row");
+                $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
+            }else{
+                $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
+                $(this).closest("tr").next(".accordion").hide("slow");
+            }
+        });
+</script>
+
+    <!-- <script>
         $(document).ready(function() {
             $('.delete_data').click(function() {
                 var id = $(this).attr("id");
@@ -236,7 +342,7 @@
                 .nextElementSibling.innerHTML;
             document.getElementById('source_id').value = event.target.getAttribute('data-id');
         }
-    </script>
+    </script> -->
 </body>
 
 </html>

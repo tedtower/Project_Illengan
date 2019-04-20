@@ -143,7 +143,7 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>Stock Item</th>
-                                        <th>Varience</th>
+                                        <th>Variance</th>
                                         <th>Quantity</th>
                                         <th>Remarks</th>
                                         <th></th>
