@@ -53,10 +53,10 @@
                                                 <div class="modal-body">
                                                     <div class="form-group">
                                                         <label for="formGroupExampleInput2">Username</label>
-                                                        <input type="text" class="form-control" name="account_username"
+                                                        <input type="text" class="form-control" name="aUsername"
                                                             placeholder="username">
                                                         <span
-                                                            class="text-danger"><?php echo form_error("account_username"); ?></span>
+                                                            class="text-danger"><?php echo form_error("aUsername"); ?></span>
                                                     </div>
 
                                                     <div class="form-group">
@@ -77,10 +77,11 @@
 
                                                     <div class="form-groups">
                                                         <label for="formGroupExampleInput4">Account Type</label>
-                                                        <select name="account_type">
+                                                        <select name="aType">
                                                             <option value="Admin">Admin</option>
                                                             <option value="Barista" post>Barista</option>
                                                             <option value="Chef" post>Chef</option>
+                                                            <option value="Chef" post>Customer</option>
                                                         </select>
                                                     </div>
 
@@ -115,17 +116,16 @@
                                                     <div class="row">
                                                         <div class="col-md-12 form-group">
                                                             <div class="form-group label-floating">
-                                                                <label for="new_account_username">Username</label>
+                                                                <label for="new_aUsername">Username</label>
                                                                 <input class="form-control" type="text"
-                                                                    name="new_account_username"
-                                                                    id="new_account_username" required>
+                                                                    name="new_aUsername"
+                                                                    id="new_aUsername" required>
                                                             </div>
                                                         </div>
-                                                        <input type="text" name="account_username" id="account_username" class="form-control form-control-sm">
                                                     </div>
                                                     <div class="form-groups">
-                                                        <label for="new_account_type">Account Type</label>
-                                                        <select name="new_account_type" value="">
+                                                        <label for="new_aType">Account Type</label>
+                                                        <select name="new_aType" value="">
                                                             <option value="Admin">Admin</option>
                                                             <option value="Barista">Barista</option>
                                                             <option value="Chef">Chef</option>
@@ -196,9 +196,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--End of Change Password Modal-->
+                                <!-- End of Change Password Modal-->
                                 <!--Delete Modal-->
-                                <!--Delete Confirmation Box-->
                                 <div class="modal fade" id="deleteAccount" tabindex="-1" role="dialog"
                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -214,7 +213,7 @@
                                                 <div class="modal-body">
                                                     <h6 id="deleteAccountId"></h6>
                                                     <p>Are you sure you want to delete this table?</p>
-                                                    <input type="text" name="accountId" hidden="hidden">
+                                                    <input name="accountId" hidden="hidden">
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
@@ -225,7 +224,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--End of Delete Modal-->
+                                <!--End of Delete Modal -->
                             </div>
                         </div>
                     </div>
@@ -246,6 +245,7 @@
         $("#confirmDelete").on('submit', function (event) {
             event.preventDefault();
             var accountId = $(this).find("input").val();
+            console.log(accountId);
             $.ajax({
                 url: '<?= site_url('admin/accounts/delete')?>',
                 method: 'POST',
@@ -256,27 +256,13 @@
                 success: function (data) {
                     accounts = data;
                     setAccountData();
-                    $('#deletemodal').modal('hide');
-
-                },
-                error: function (response, setting, errorThrown) {
-                    console.log(response.responseText);
-                    console.log(errorThrown);
+                    location.reload();
                 }
             });
         });
-    });
+     });
 
-    var tuples = ((document.getElementById('accounts')).getElementsByTagName('tbody'))[0].getElementsByTagName(
-        'tr');
-    var tupleNo = tuples.length;
-    var editButtons = document.getElementsByName('editAccounts');
-    var editModal = document.getElementById('editAccounts');
-    for (var x = 0; x < tupleNo; x++) {
-        editButtons[x].addEventListener("click", showEditModal);
-    }
-
-        // Edit Account Function====================================
+        // Edit Account Info Function====================================
         var tuples = ((document.getElementById('accountsTable')).getElementsByTagName('tbody'))[0]
             .getElementsByTagName('tr');
         var tupleNo = tuples.length;
@@ -288,10 +274,10 @@
 
         function showEditModal(event) {
             var row = event.target.parentElement.parentElement.parentElement;
-            document.getElementById('account_id').value = parseInt(row.firstElementChild.innerHTML);
-            document.getElementById('account_username').value = (row.firstElementChild.nextElementSibling
+            document.getElementById('aID').value = parseInt(row.firstElementChild.innerHTML);
+            document.getElementById('aUsername').value = (row.firstElementChild.nextElementSibling
                 .innerHTML).trim();
-            document.getElementById('account_type').value = capitalizeFirstLetter((row.firstElementChild
+            document.getElementById('aType').value = capitalizeFirstLetter((row.firstElementChild
                 .nextElementSibling.nextElementSibling.innerHTML).trim());
         }
 
@@ -299,14 +285,14 @@
 
         // Edit Account Password===========================================
         $('#show_data').on('click', '.item_edit', function () {
-            var account_id = $(this).data('account_id');
+            var aID = $(this).data('aID');
 
             $('#editPassword').modal('show');
         });
 
 
         $('#btn_update').on('click', function () {
-            var account_id = $('#account_id').val();
+            var aID = $('#aID').val();
             var old_password = $('#old_password').val();
             var new_password = $('#new_password').val();
             var new_password_confirmation = $('#new_password_confirmation').val();
@@ -315,13 +301,13 @@
                 url: "http://illengan.com/admin/accounts/changepassword",
                 dataType: "JSON",
                 data: {
-                    account_id: account_id,
+                    aID: aID,
                     old_password: old_password,
                     new_password: new_password,
                     new_password_confirmation: new_password_confirmation
                 },
                 success: function (data) {
-                    $('[name="account_id"]').val("");
+                    $('[name="aID"]').val("");
                     $('[name="old_password"]').val("");
                     $('[name="new_password"]').val("");
                     $('[name="new_password_confirmation"]').val("");
@@ -333,7 +319,6 @@
             return false;
         });
 
-    });
 
     //Display data to table====================================================
     function viewAccountsJs() {
@@ -358,12 +343,12 @@
         }
         accounts.forEach(table => {
             $("#accountsTable> tbody").append(`
-            <tr data-id="${table.account_id}">
-                <td>${table.account_id}</td>
-                <td>${table.account_type}</td>
-                <td>${table.account_username}</td>
-                <td>${table.account_password}</td>
-                <td>${table.is_online}</td>
+            <tr data-id="${table.aID}">
+                <td>${table.aID}</td>
+                <td>${table.aType}</td>
+                <td>${table.aUsername}</td>
+                <td>${table.aPassword}</td>
+                <td>${table.aIsOnline}</td>
                 <td>
                         <!--Action Buttons-->
                         <div class="onoffswitch">

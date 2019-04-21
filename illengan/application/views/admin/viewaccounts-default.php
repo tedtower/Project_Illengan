@@ -2,24 +2,24 @@ $(function() {
     viewAccountsJs();
     //get data for delete record
     $('#show_data').on('click', '.item_delete', function() {
-        var account_id = $(this).data('account_id');
-        console.log('account_id ' + account_id);
+        var aID = $(this).data('aID');
+        console.log('aID ' + aID);
         $('#Modal_Remove').modal('show');
-        $('[name="account_id_remove"]').val(account_id);
+        $('[name="aID_remove"]').val(aID);
     });
 
     //delete record to database
     $('#btn_cancel').on('click', function () {
-        var account_id = $('#account_id_remove').val();
+        var aID = $('#aID_remove').val();
         $.ajax({
             type: "POST",
             url: "<?php echo site_url('admin/accounts/delete')?>",
             dataType: "JSON",
             data: {
-                account_id: account_id
+                aID: aID
             },
             success: function (data) {
-                $('[name="account_id_remove"]').val("");
+                $('[name="aID_remove"]').val("");
                 alert("Record removed successfully!");
                 $('#Modal_Remove').modal('hide');
                 table.DataTable().ajax.reload(null, false);
@@ -66,10 +66,10 @@ $(function() {
 
     // function showEditModal(event) {
     //     var row = event.target.parentElement.parentElement.parentElement;
-    //     document.getElementById('account_id').value = parseInt(row.firstElementChild.innerHTML);
-    //     document.getElementById('account_username').value = (row.firstElementChild.nextElementSibling
+    //     document.getElementById('aID').value = parseInt(row.firstElementChild.innerHTML);
+    //     document.getElementById('aUsername').value = (row.firstElementChild.nextElementSibling
     //         .innerHTML).trim();
-    //     document.getElementById('account_type').value = capitalizeFirstLetter((row.firstElementChild
+    //     document.getElementById('aType').value = capitalizeFirstLetter((row.firstElementChild
     //         .nextElementSibling
     //         .nextElementSibling.innerHTML).trim());
 
@@ -77,16 +77,16 @@ $(function() {
 
     //function for editing Account Password
     $('#show_data').on('click', '.item_edit', function () {
-        var account_id = $(this).data('account_id');
+        var aID = $(this).data('aID');
         //document.getElementById("User_Id").value.
 
         $('#editPasswordModal').modal('show');
-        $('[name="account_id"]').val(account_id);
+        $('[name="aID"]').val(aID);
     });
 
     //update record to database
     $('#btn_update').on('click', function () {
-        var account_id = $('#account_id').val();
+        var aID = $('#aID').val();
         var old_password = $('#old_password').val();
         var new_password = $('#new_password').val();
         var new_password_confirmation = $('#new_password_confirmation').val();
@@ -95,13 +95,13 @@ $(function() {
             url: "http://illengan.com/admin/accounts/changepassword",
             dataType: "JSON",
             data: {
-                account_id: account_id,
+                aID: aID,
                 old_password: old_password,
                 new_password: new_password,
                 new_password_confirmation: new_password_confirmation
             },
             success: function (data) {
-                $('[name="account_id"]').val("");
+                $('[name="aID"]').val("");
                 $('[name="old_password"]').val("");
                 $('[name="new_password"]').val("");
                 $('[name="new_password_confirmation"]').val("");
@@ -115,7 +115,7 @@ $(function() {
 
     // function for editing Table code
     //     function submitform(){
-    // 	var User_Id=document.getElementById("account_id").value
+    // 	var User_Id=document.getElementById("aID").value
     // 	var User_pass1=document.getElementById("old_password").value
     //     var User_pass2=document.getElementById("new_password").value
     //     var confirm_password =document.getElementById("new_password_confirmation").value
@@ -127,12 +127,12 @@ $(function() {
     //    		type: "POST",
     //    		url: "http://illengan.com/admin/accounts/changepassword",
     //         dataType:"JSON"
-    //         data:{account_id:account_id , 
+    //         data:{aID:aID , 
     //             old_password:old_password, 
     //             new_password:new_password, 
     //             new_password_confirmation:new_password_confirmation}
     //    		success: function(data){
-    //                $('[name="account_id')
+    //                $('[name="aID')
     //      	alert( "Password Succcessfully Updated" );
     // 		document.getElementById("err").innerHTML=msg;		
     //    		}
@@ -144,9 +144,9 @@ $(function() {
     //                 type : "POST",
     //                 url  : "http://illengan.com/barista/editTableNumber",
     //                 dataType : "JSON",
-    //                 data : {account_id:account_id , table_code:table_code},
+    //                 data : {aID:aID , table_code:table_code},
     //                 success: function(data){
-    //                     $('[name="account_id_edit"]').val("");
+    //                     $('[name="aID_edit"]').val("");
     //                     $('[name="table_code_edit"]').val("");
     //                     $('#editPasswordModal').modal('hide');
     //                     alert("Table Code was successfully updated!");

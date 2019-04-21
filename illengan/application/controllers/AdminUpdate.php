@@ -30,8 +30,8 @@ class AdminUpdate extends CI_Controller{
     function changeAccountPassword(){  
         $this->load->library('form_validation');
 
-        $account_id = $this->input->post('accountId');
-        $current_password = $this->adminmodel->get_password($account_id);
+        $aID = $this->input->post('accountId');
+        $current_password = $this->adminmodel->get_password($aID);
 
         $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[3]|max_length[50]');
         $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[3]|max_length[50]|matches[new_password]');
@@ -42,8 +42,8 @@ class AdminUpdate extends CI_Controller{
             $new_password = password_hash($this->input->post("new_password"),PASSWORD_DEFAULT);
 
             foreach($current_password AS $row) {
-                if (password_verify($old_password, $row['account_password'])){                 
-                    $this->adminmodel->change_account_password($new_password,$account_id);
+                if (password_verify($old_password, $row['aPassword'])){                 
+                    $this->adminmodel->change_aPassword($new_password,$aID);
                 }else{ 
                 echo "Password incorrect";
                }
@@ -58,7 +58,7 @@ class AdminUpdate extends CI_Controller{
     // function changeAccountPassword(){  
     //     $this->load->library('form_validation');
 
-    //     $account_id = $this->input->post('accountId');
+    //     $aID = $this->input->post('accountId');
     //     $current_password = $this->adminmodel->get_password($accountId);
 
     //     $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[3]|max_length[50]');
@@ -70,8 +70,8 @@ class AdminUpdate extends CI_Controller{
     //         $new_password = $this->input->post("new_password");
 
     //         foreach($current_password AS $row) {
-    //             if ($old_password == $row['account_password']){                 
-    //                  $this->adminmodel->change_account_password($new_password,$account_id);
+    //             if ($old_password == $row['aPassword']){                 
+    //                  $this->adminmodel->change_aPassword($new_password,$aID);
     //             }else{ 
     //                echo "Old password does not match with old password input";
     //             }
@@ -82,15 +82,15 @@ class AdminUpdate extends CI_Controller{
     //                redirect('admin/accounts');
     // }
     function editAccounts(){
-        $this->form_validation->set_rules('new_account_username','Username','trim|required|is_unique[accounts.account_username]');
-        $this->form_validation->set_rules('new_account_type','Account Type','trim|required');
+        $this->form_validation->set_rules('new_aUsername','Username','trim|required|is_unique[accounts.aUsername]');
+        $this->form_validation->set_rules('new_aType','Account Type','trim|required');
         $this->form_validation->set_rules('accountId','Account ID','required');
 
         if($this->form_validation->run()){
-            $account_id = $this->input->post('accountId');
-            $account_type = $this->input->post('new_account_type');
-            $account_username = $this->input->post('new_account_username');
-            $this->adminmodel->edit_accounts($account_id,$account_type,$account_username);
+            $aID = $this->input->post('accountId');
+            $aType = $this->input->post('new_aType');
+            $aUsername = $this->input->post('new_aUsername');
+            $this->adminmodel->edit_accounts($aID,$aType,$aUsername);
             }else{
                 echo "Form Validation is not Working.";
             }

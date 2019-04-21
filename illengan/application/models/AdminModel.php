@@ -5,7 +5,7 @@ class AdminModel extends CI_Model{
 
     //INSERT FUNCTIONS----------------------------------------------------------------
     function add_accounts($data){
-        $this->db->insert('Accounts',$data);
+        $this->db->insert('accounts',$data);
     }
     function add_menuspoil($s_type,$menu_name,$s_qty,$s_date,$date_recorded,$remarks){
         $query1 = "select menu_id from `menu` where menu_name = ? ";
@@ -85,42 +85,42 @@ class AdminModel extends CI_Model{
     
     
     // UPDATE FUNCTIONS-------------------------------------------------------------
-    function get_password($account_id){
-        $query = "select account_password from accounts where account_id = ? ";
-        return $this->db->query($query,array($account_id))->result_array();
+    function get_password($aID){
+        $query = "select aPassword from accounts where aID = ? ";
+        return $this->db->query($query,array($aID))->result_array();
     }
 
-    function change_account_password($new_password, $account_id){
-        $query = "Update accounts set account_password = ?  where account_id = ? ";
-        return $this->db->query($query,array($new_password, $account_id));  
+    function change_aPassword($new_password, $aID){
+        $query = "Update accounts set aPassword = ?  where aID = ? ";
+        return $this->db->query($query,array($new_password, $aID));  
            
     }
 
-    // function change_account_password($old_password,$new_password, $account_id){
+    // function change_aPassword($old_password,$new_password, $aID){
 
-    //     $query2 = "select account_password from accounts where account_id = ? ";
-    //     $current_password = $this->db->query($query2,array($account_id));
+    //     $query2 = "select aPassword from accounts where aID = ? ";
+    //     $current_password = $this->db->query($query2,array($aID));
     //         foreach($current_password->result() AS $row) {
 
-    //         if(password_verify($row->account_password,$old_password)){
-    //             $query = "update accounts set account_password = ?  where account_id = ? ";
-    //             return $this->db->query($query,array($new_password, $account_id));  
+    //         if(password_verify($row->aPassword,$old_password)){
+    //             $query = "update accounts set aPassword = ?  where aID = ? ";
+    //             return $this->db->query($query,array($new_password, $aID));  
     //         }else{
                 
     //             echo $old_password;
     //             echo "====";
-    //             echo $row->account_password;
+    //             echo $row->aPassword;
                 
     //             echo "there is a problem in model";
-    //             // $data['account_id'] = $account_id;
+    //             // $data['aID'] = $aID;
     //             // $this->load->view('admin/changepassword', $data);
     //         }
     //     }
     // }
 
-    function edit_accounts($account_id,$account_type,$account_username){
-        $query = "update accounts set account_username = ?, account_type = ? where account_id = ?";
-        return $this->db->query($query,array($account_username, $account_type, $account_id));
+    function edit_accounts($aID,$aType,$aUsername){
+        $query = "update accounts set aUsername = ?, aType = ? where aID = ?";
+        return $this->db->query($query,array($aUsername, $aType, $aID));
     }
     function edit_menuspoilage($s_id,$menu_id,$s_type,$s_date,$date_recorded,$remarks){
         $query = "update spoilage set s_type = ?, s_date = ?, date_recorded = ?, remarks=? where s_id=?";
@@ -318,7 +318,7 @@ class AdminModel extends CI_Model{
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesstock(){
-        $query = "Select s_id, stock_name,s_qty,stock_unit,s_date, date_recorded, remarks from spoilage inner join stockspoil using (s_id) inner join stockitems using (stock_id)";
+        $query = "Select ssID,stName,ssQty,vUnit,ssDate,ssDateRecorded,ssRemarks from stockspoil inner join varspoilitems using (ssID) inner join variance using (vID) inner join stockitems using (stID)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesaddons(){
@@ -348,14 +348,14 @@ class AdminModel extends CI_Model{
     }
 
     function get_actlogs() {
-        $query = "select * FROM activity_logs al INNER JOIN accounts ac USING (account_id)";
+        $query = "select * FROM activity_logs al INNER JOIN accounts ac USING (aID)";
         return $this->db->query($query)->result_array();
     }
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
     function delete_account($accountId){
-        $query = "Delete from accounts where account_id = ?";
-        return $this->db->query($query,array($accountId));
+        $query = "Delete from accounts where aID = ?";
+        return $this->db->query($query, array($accountId));
     }
     function delete_menucategory($category_id){
         $query = "delete from categories where category_id = ? and category_type= 'menu'";
