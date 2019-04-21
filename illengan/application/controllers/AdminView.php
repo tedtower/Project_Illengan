@@ -113,7 +113,7 @@ function viewAccountsJs(){
             $data['title'] = "Menu - Promos";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/promo');
+            $this->load->view('admin/adminPromo');
         }else{
             redirect('login');
         }
@@ -403,6 +403,13 @@ function viewSpoilagesStock(){
         header('Content-Type: application/json');
         echo json_encode($promo, JSON_PRETTY_PRINT);
         
+    }
+
+    function jsonMenu() {
+        $data = $this->adminmodel->get_menu_items();
+
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
     }
 }
 
