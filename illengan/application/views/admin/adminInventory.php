@@ -10,6 +10,7 @@
 <!--Table-->
 <div class="card-content">
     <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newStock" data-original-title style="margin:0;" id="addBtn">Add Stock Item</a>
+    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#reStock" data-original-title style="margin:0;" id="addBtn">Restock</a>
     <br><br>
     <table id="stockTable" class="table table-striped table-bordered dt-responsive nowrap"
         cellspacing="0" width="100%">
