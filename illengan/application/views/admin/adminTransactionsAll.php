@@ -361,8 +361,8 @@
                                             <div class="modal-body">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">      
-                                                        <span class="input-group-text" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                            Supplier</span>
+                                                        <span class="input-group-text" style="width:120px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Purchase Order</span>
                                                     </div>
                                                     <select class="form-control form-control-sm" name="PO" id="PO">
                                                         <option selected>Choose</option>
