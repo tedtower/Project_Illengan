@@ -24,6 +24,7 @@
 
                                 <!--Add button-->
                                 <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addPO"
+                                    data-original-title style="margin:0" id="addPOBtn">Add Purchase Order</a>
                                 <br>
                                 <br>
                                 <!--Start of Table-->
