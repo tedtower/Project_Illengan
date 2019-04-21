@@ -12,17 +12,17 @@ class AdminAdd extends CI_Controller{
 
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[50]');
         $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
-        $this->form_validation->set_rules('account_username','Username','trim|required|is_unique[accounts.account_username]');
-        $this->form_validation->set_rules('account_type','Account Type','trim|required');
+        $this->form_validation->set_rules('aUsername','Username','trim|required|is_unique[accounts.aUsername]');
+        $this->form_validation->set_rules('aType','Account Type','trim|required');
 
         if($this->form_validation->run()){
             $password = password_hash($this->input->post("password"),PASSWORD_DEFAULT);
-            $username = $this->input->post("account_username");
-            $account_type = $this->input->post("account_type");
+            $username = $this->input->post("aUsername");
+            $aType = $this->input->post("aType");
             $data = array(
-                'account_password'=>$password,
-                'account_username'=>$username,
-                'account_type'=>$account_type
+                'aPassword'=>$password,
+                'aUsername'=>$username,
+                'aType'=>$aType
             );
             $this->adminmodel->add_accounts($data);
             redirect('admin/accounts');

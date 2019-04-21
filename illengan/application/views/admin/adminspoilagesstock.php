@@ -54,6 +54,10 @@
 														<input type="date" name="transDate" id="transDate" class="form-control form-control-sm">
 													</div>
 												</div>
+												<!--Add Stock Item-->
+												<!--Button to add row in the table-->
+												<a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Row</a>
+												<br><br>
 												<table class="stockSpoilageTable table table-sm table-borderless">
 													<!--Table containing the different input fields in adding AO spoilages -->
 													<thead class="thead-light">
@@ -109,8 +113,6 @@
 									</div>
 								</div>
 							</div>
-
-
 						</div>
 					</div>
 				</div>
@@ -130,7 +132,7 @@
 			'<td>Remarks</td>' +
 			'</tr>' +
 			'<tr>' +
-			'<td>' + d.remarks + '</td>' +
+			'<td>' + d.ssRemarks + '</td>' +
 			'</tr>' +
 			'</table>';
 
@@ -151,19 +153,19 @@
 					"defaultContent": ''
 				},
 				{
-					"data": "s_id"
+					"data": "ssID"
 				},
 				{
-					"data": "stock_name"
+					"data": "stName"
 				},
 				{
-					"data": "s_qty"
+					"data": "ssQty"
 				},
 				{
-					"data": "s_date"
+					"data": "ssDate"
 				},
 				{
-					"data": "date_recorded"
+					"data": "ssDateRecorded"
 				},
 				{
 					"data": null,

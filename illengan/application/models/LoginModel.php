@@ -7,7 +7,7 @@ class LoginModel extends CI_Model{
         $query = "select * from accounts where BINARY aUsername = ?";
         $qresult = $this->db->query($query, array($username));
         if($qresult->num_rows() === 1){
-            $query = "select * from accounts where BINARY aUsername= ? and aPassword= ?;";
+            $query = "select * from accounts where BINARY aUsername = ? and aPassword = ?;";
             $qresult = $this->db->query($query, array($username,$password));
             if($qresult->num_rows() === 1){
                 return $qresult->result_array();

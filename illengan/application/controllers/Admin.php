@@ -32,16 +32,16 @@ class Admin extends CI_Controller{
     }
     function vieweditAccounts(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $account_id = $this->uri->segment('3');
-            $data['account_id'] = $account_id;
+            $aID = $this->uri->segment('3');
+            $data['aID'] = $aID;
             $this->load->view('admin/editAccounts',$data);  
         }else{  
             redirect('login'); 
         }
     }
-    function vieweditAccounts2($account_id){
+    function vieweditAccounts2($aID){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $data['account_id'] = $account_id;
+            $data['aID'] = $aID;
             $this->load->view('admin/editAccounts',$data);  
         }else{  
             redirect('login'); 
@@ -50,17 +50,17 @@ class Admin extends CI_Controller{
 
     function viewChangePassword(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $account_id = $this->uri->segment('3');
-            $data['account_id'] = $account_id;
+            $aID = $this->uri->segment('3');
+            $data['aID'] = $aID;
             $this->load->view('admin/changepassword', $data);
         }else{  
             redirect('login'); 
         }
    }
-   function viewChangePassword2($account_id){
+   function viewChangePassword2($aID){
     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
         echo "Incorrect Current Password.";
-        $data['account_id'] = $account_id;
+        $data['aID'] = $aID;
         $this->load->view('admin/changepassword', $data);
     }else{  
         redirect('login'); 
@@ -285,17 +285,17 @@ class Admin extends CI_Controller{
 
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[50]');
         $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
-        $this->form_validation->set_rules('account_username','Username','trim|required|is_unique[accounts.account_username]');
-        $this->form_validation->set_rules('account_type','Account Type','trim|required');
+        $this->form_validation->set_rules('aUsername','Username','trim|required|is_unique[accounts.aUsername]');
+        $this->form_validation->set_rules('aType','Account Type','trim|required');
 
         if($this->form_validation->run()){
             $password = password_hash($this->input->post("password"),PASSWORD_DEFAULT, ['cost' => 12]);
-            $username = $this->input->post("account_username");
-            $account_type = $this->input->post("account_type");
+            $username = $this->input->post("aUsername");
+            $aType = $this->input->post("aType");
             $data = array(
-                'account_password'=>$password,
-                'account_username'=>$username,
-                'account_type'=>$account_type
+                'aPassword'=>$password,
+                'aUsername'=>$username,
+                'aType'=>$aType
             );
             $this->adminmodel->add_accounts($data);
             $this->viewAccounts();
@@ -431,9 +431,9 @@ class Admin extends CI_Controller{
     function changeAccountPassword(){  
     $this->load->library('form_validation');
 
-    $account_id = $this->input->post('account_id');
-    $this->adminmodel->get_password($account_id);
-    $current_password = $this->adminmodel->get_password($account_id);
+    $aID = $this->input->post('aID');
+    $this->adminmodel->get_password($aID);
+    $current_password = $this->adminmodel->get_password($aID);
 
     $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[3]|max_length[50]');
     $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[3]|max_length[50]|matches[new_password]');
@@ -444,38 +444,38 @@ class Admin extends CI_Controller{
             $new_password = password_hash($this->input->post("new_password"),PASSWORD_DEFAULT, ['cost' => 12]);
 
             foreach($current_password AS $row) {
-                if (password_verify($input_old_password, $row['account_password'])){                 
-                    $this->adminmodel->change_account_password($new_password,$account_id);
+                if (password_verify($input_old_password, $row['aPassword'])){                 
+                    $this->adminmodel->change_account_password($new_password,$aID);
                 }else{ 
-                    $data['account_id'] = $account_id;
+                    $data['aID'] = $aID;
                     $this->viewChangePassword2($data);
                 }
             }   
         }else{
-            $this->viewChangePassword($account_id);
+            $this->viewChangePassword($aID);
         }
         // $data['account'] = $this->adminmodel->get_accounts();
         // $this->load->view('admin/view_accounts',$data);
     }
     function editAccounts(){
-        $this->form_validation->set_rules('account_username','Username','trim|required|is_unique[accounts.account_username]');
-        $this->form_validation->set_rules('account_type','Account Type','trim|required');
-        $account_id = $this->input->post("account_id");
+        $this->form_validation->set_rules('aUsername','Username','trim|required|is_unique[accounts.aUsername]');
+        $this->form_validation->set_rules('aType','Account Type','trim|required');
+        $aID = $this->input->post("aID");
 
         if($this->form_validation->run()){
-            $account_username = $this->input->post("account_username");
-            $account_type = $this->input->post("account_type");
+            $aUsername = $this->input->post("aUsername");
+            $aType = $this->input->post("aType");
 
             $data =array(
-                'account_type' => $account_type,
-                'account_username' =>$account_username
+                'aType' => $aType,
+                'aUsername' =>$aUsername
             );
-            $data['account_id'] = $account_id;
+            $data['aID'] = $aID;
             
-            $this->adminmodel->edit_accounts($data,$account_id);
+            $this->adminmodel->edit_accounts($data,$aID);
             $this->viewAccounts();
             }else{
-            $this->vieweditAccounts2($account_id);
+            $this->vieweditAccounts2($aID);
         }
     }
     function editMenuCategory(){
@@ -535,9 +535,9 @@ class Admin extends CI_Controller{
     // }
 
 //DELETE FUNCTIONS-------------------------------------------------------------------
-    function deleteAccount($account_id){
+    function deleteAccount($aID){
         $this->load->model("adminmodel"); //Bakit niyo paulit-ulit na linalagay to e meron na siya sa topmost method, Check the __construct method for more info!!
-        if($this->adminmodel->delete_account($account_id)){
+        if($this->adminmodel->delete_account($aID)){
             $this->viewAccounts();
         }else{
             //error

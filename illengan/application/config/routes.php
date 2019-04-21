@@ -73,22 +73,17 @@ $route['admin/inventory'] = "adminview/viewinventory";
 $route['admin/purchaseorders'] = "adminview/viewpurchaseorders";
 $route['admin/transactions'] = "adminview/viewtransactions";
 $route['admin/purchaseorder'] = "adminview/viewPurchaseOrder";
-$route['admin/spoilages/addons'] = "adminview/viewspoilagesao";
-$route['admin/spoilages/menu'] = "adminview/viewspoilagesmenu";
-$route['admin/spoilages/stock'] = "adminview/viewspoilagesstock";
 $route['admin/spoilages/menu/add'] ="adminview/viewInsertSpoilageMenu";
 $route['admin/spoilages/stock/add'] ="adminview/viewInsertSpoilageStock";
 $route['admin/spoilages/addons/add'] ="adminview/viewInsertSpoilageAo";
 $route['admin/spoilages'] = "adminview/viewspoilages";
 $route['admin/menu/spoilages'] = "adminview/viewspoilagesmenu";
-$route['admin/stock/spoilages'] = "adminview/viewSpoilagesStock";
+$route['admin/stock/spoilages'] = "adminview/viewSpoilagesstock";
 $route['admin/addons/spoilages'] = "adminview/viewspoilagesaddons";
 $route['admin/log/stocks'] = "adminview/viewLogStock";
 $route['admin/log/activity'] = "adminview/viewActivityLog";
 $route['admin/consumption'] = "adminview/viewConsumptions";
-$route['admin/promos'] = "adminview/viewPromos";
 $route['admin/returns'] = "adminview/viewReturns";
-
 //End Viewing Routes
 
 //Not Sure Routes
@@ -149,6 +144,7 @@ $route['admin/spoilagesaddonsjson'] = "adminview/viewSpoilagesAddonsJs";
 $route['admin/spoilagesjson'] = "adminview/viewSpoilagesJs";
 $route['admin/spoilagesstockjson'] = "adminview/viewSpoilagesStockJs";
 $route['admin/accounts/viewAccountsJs'] ="adminview/viewAccountsJs";
+$route['admin/jsonMenu'] ="adminview/jsonMenu";
 
 //End Admin Json Routes ---------------------------------------
 

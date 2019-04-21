@@ -5,16 +5,16 @@ class AdminModel extends CI_Model{
 
     //INSERT FUNCTIONS----------------------------------------------------------------
     function add_accounts($data){
-        $this->db->insert('Accounts',$data);
+        $this->db->insert('accounts',$data);
     }
-    function add_menuspoil($s_type,$menu_name,$s_qty,$s_date,$date_recorded,$remarks){
-        $query1 = "select menu_id from `menu` where menu_name = ? ";
-        $menu_id = $this->db->query($query1,array($menu_name));
-        foreach($menu_id->result_array() AS $row) {
+    function add_menuspoil($s_type,$mName,$s_qty,$s_date,$date_recorded,$remarks){
+        $query1 = "select mID from `menu` where mName = ? ";
+        $mID = $this->db->query($query1,array($mName));
+        foreach($mID->result_array() AS $row) {
             $query = "insert into spoilage (s_id, s_type, s_qty, s_date, date_recorded, remarks) values (NULL,?,?,?,?,?)";
             if($this->db->query($query,array($s_type,$s_qty,$s_date,$date_recorded,$remarks))){ 
                 $query = "insert into menuspoil values (?,?)";
-                return $this->db->query($query,array($this->db->insert_id(),$row['menu_id']));
+                return $this->db->query($query,array($this->db->insert_id(),$row['mID']));
             }else{
                 return false;
             }
@@ -77,56 +77,46 @@ class AdminModel extends CI_Model{
         if($transItems != NULL){
             $query = "Insert into transitems values (?,?,?,?,?,?)";
             foreach($transItems as $transItem){
-                $this->db->query($query,array($trans_id, $transItem['itemName'], $transItem['itemQty'], $transItem['itemUnit'], $transItem['itemPrice'], $transItem['subtotal']));
+                $this->db->query($query,array($trans_id, $transItem['itemName'], $transItem['itemQty'], $transItem['itemUnit'], $transItem['imTemprice'], $transItem['subtotal']));
             }
         }
         return true;
     }
+    function add_promo($s_type,$mName,$s_qty,$s_date,$date_recorded,$remarks){
+        $query1 = "select mID from `menu` where mName = ? ";
+        $mID = $this->db->query($query1,array($mName));
+        foreach($mID->result_array() AS $row) {
+            $query = "insert into spoilage (s_id, s_type, s_qty, s_date, date_recorded, remarks) values (NULL,?,?,?,?,?)";
+            if($this->db->query($query,array($s_type,$s_qty,$s_date,$date_recorded,$remarks))){ 
+                $query = "insert into menuspoil values (?,?)";
+                return $this->db->query($query,array($this->db->insert_id(),$row['mID']));
+            }else{
+                return false;
+            }
+        }
+    }
     
     
     // UPDATE FUNCTIONS-------------------------------------------------------------
-    function get_password($account_id){
-        $query = "select account_password from accounts where account_id = ? ";
-        return $this->db->query($query,array($account_id))->result_array();
+    function get_password($aID){
+        $query = "select aPassword from accounts where aID = ? ";
+        return $this->db->query($query,array($aID))->result_array();
     }
 
-    function change_account_password($new_password, $account_id){
-        $query = "Update accounts set account_password = ?  where account_id = ? ";
-        return $this->db->query($query,array($new_password, $account_id));  
+    function change_aPassword($new_password, $aID){
+        $query = "Update accounts set aPassword = ?  where aID = ? ";
+        return $this->db->query($query,array($new_password, $aID));  
            
     }
-
-    // function change_account_password($old_password,$new_password, $account_id){
-
-    //     $query2 = "select account_password from accounts where account_id = ? ";
-    //     $current_password = $this->db->query($query2,array($account_id));
-    //         foreach($current_password->result() AS $row) {
-
-    //         if(password_verify($row->account_password,$old_password)){
-    //             $query = "update accounts set account_password = ?  where account_id = ? ";
-    //             return $this->db->query($query,array($new_password, $account_id));  
-    //         }else{
-                
-    //             echo $old_password;
-    //             echo "====";
-    //             echo $row->account_password;
-                
-    //             echo "there is a problem in model";
-    //             // $data['account_id'] = $account_id;
-    //             // $this->load->view('admin/changepassword', $data);
-    //         }
-    //     }
-    // }
-
-    function edit_accounts($account_id,$account_type,$account_username){
-        $query = "update accounts set account_username = ?, account_type = ? where account_id = ?";
-        return $this->db->query($query,array($account_username, $account_type, $account_id));
+    function edit_accounts($aID,$aType,$aUsername){
+        $query = "update accounts set aUsername = ?, aType = ? where aID = ?";
+        return $this->db->query($query,array($aUsername, $aType, $aID));
     }
-    function edit_menuspoilage($s_id,$menu_id,$s_type,$s_date,$date_recorded,$remarks){
+    function edit_menuspoilage($s_id,$mID,$s_type,$s_date,$date_recorded,$remarks){
         $query = "update spoilage set s_type = ?, s_date = ?, date_recorded = ?, remarks=? where s_id=?";
         if($this->db->query($query,array($stype,$s_date,$date_recorded,$remarks,$s_id))){
-            $query = "Update menuspoil set menu_id = ? where s_id = ?";
-            return $this->db->query($query,array($menu_id,$s_id));
+            $query = "Update menuspoil set mID = ? where s_id = ?";
+            return $this->db->query($query,array($mID,$s_id));
         }else{
             return false;
         }
@@ -174,7 +164,7 @@ class AdminModel extends CI_Model{
         if($transItems != NULL){
             $query = "Insert into transitems (trans_id, item_name, item_qty, item_unit, item_price, subtotal)  values (?, ?, ?, ?, ?, ?)";
             foreach($transItems as $transItem){
-                $this->db->query($query, array($trans_id, $transItem['itemName'], $transItem['itemQty'], $transItem['itemUnit'], $transItem['itemPrice'], $transItem['subtotal']));
+                $this->db->query($query, array($trans_id, $transItem['itemName'], $transItem['itemQty'], $transItem['itemUnit'], $transItem['imTemprice'], $transItem['subtotal']));
             }
         }
         return true;
@@ -189,38 +179,43 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_discounts() {
-        $query = "SELECT *, CONCAT(mn.menu_name,' ',pref.size_name) AS menu_item  FROM promo_cons pc 
-        INNER JOIN preferences pref USING (pref_id) 
-        INNER JOIN menu mn USING (menu_id) 
-        INNER JOIN discounts USING (promo_id) 
-        INNER JOIN menu_discount USING (promo_id)";
+        $query = "SELECT *, CONCAT(mn.mName,' ',pref.prName) AS menu_item  FROM promoconstraint pc 
+        INNER JOIN preferences pref USING (prID) 
+        INNER JOIN menu mn USING (mID) 
+        INNER JOIN discounts USING (pmID) 
+        INNER JOIN menudiscount USING (pmID)";
         return $this->db->query($query)->result_array(); 
     }
     function get_freebies() {
-        $query = "SELECT *, CONCAT(mn.menu_name,' ',pref.size_name) AS menu_item, 
-        CONCAT(me.menu_name,' ',pr.size_name) AS menu_freebie
-        FROM promo_cons pc 
-        INNER JOIN preferences pref USING (pref_id) 
-        INNER JOIN menu mn USING (menu_id) 
-        INNER JOIN freebie USING (promo_id) 
-        INNER JOIN menu_freebie mf USING (promo_id)
-        INNER JOIN preferences pr ON mf.pref_id = pr.pref_id
-        INNER JOIN menu me ON pr.menu_id = me.menu_id";
+        $query = "SELECT *, CONCAT(mn.mName,' ',pref.prName) AS menu_item, CONCAT(me.mName,' ',pr.prName) AS menu_freebie 
+        FROM promoconstraint pc 
+        INNER JOIN preferences pref USING (prID) 
+        INNER JOIN menu mn USING (mID) 
+        INNER JOIN freebies USING (pmID) 
+        INNER JOIN menufreebie mf USING (pmID) 
+        INNER JOIN preferences pr ON mf.prID = pr.prID 
+        INNER JOIN menu me ON pr.mID = me.mID";
         return $this->db->query($query)->result_array(); 
     }
+    function get_menu_items() {
+        $query = "SELECT CONCAT(mn.mName,' ',pref.prName) 
+        AS pref_menu, pref.mTemp, pref.prID 
+        FROM menu mn INNER JOIN preferences pref USING (mID)";
+        return $this->db->query($query)->result_array();
+    }
     function get_menuItems() {
-        $query = "SELECT pr.pref_id, CONCAT(mn.menu_name,' ',pr.size_name) AS menu_item 
-        FROM preferences pr INNER JOIN menu mn USING (menu_id)";
+        $query = "SELECT pr.prID, CONCAT(mn.mName,' ',pr.prName) AS menu_item 
+        FROM preferences pr INNER JOIN menu mn USING (mID)";
         return $this->db->query($query)->result_array(); 
     }
     function get_promos() {
-        $query = "SELECT * FROM promo";
+        $query = "SELECT * FROM promos";
         return $this->db->query($query)->result_array(); 
     }
     function get_promoconst() {
-        $query = "SELECT pc.promo_id, pc.pc_type, pc.pc_qty, pref.pref_id, mn.menu_name, pref.size_name,
-        CONCAT(mn.menu_name,' ',pref.size_name) AS menu_item
-        FROM promo_cons pc INNER JOIN preferences pref USING (pref_id) INNER JOIN menu mn USING (menu_id)";
+        $query = "SELECT pc.pmID, pc.pc_type, pc.pcQty, pref.prID, mn.mName, pref.prName,
+        CONCAT(mn.mName,' ',pref.prName) AS menu_item
+        FROM promoconstraint pc INNER JOIN preferences pref USING (prID) INNER JOIN menu mn USING (mID)";
         return $this->db->query($query)->result_array(); 
     }
     function get_inventory(){
@@ -249,7 +244,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_menuprices(){
-        $query = "select menu_id, size_name, size_price from sizes";
+        $query = "select mID, prName, prPrice from sizes";
         return $this->db->query($query)->result_array();
     }
     function get_menucategories(){
@@ -271,7 +266,7 @@ class AdminModel extends CI_Model{
 
     }
     function get_sales(){
-        $query = "Select order_id, order_date_time, order_payable, pay_date_time, date_recorded, menu_name, order_qty, order_total from orderslip inner join orderlist using (order_id) inner join menu using (menu_id) where payment_status = 'paid';";
+        $query = "Select order_id, order_date_time, order_payable, pay_date_time, date_recorded, mName, order_qty, order_total from orderslip inner join orderlist using (order_id) inner join menu using (mID) where payment_status = 'paid';";
         return $this->db->query($query)->result_array();
     }
     function get_stocks(){
@@ -353,11 +348,11 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_spoilagesmenu(){
-        $query = "Select s_id, menu_name , s_qty, s_date, date_recorded, remarks from spoilage inner join menuspoil using (s_id) inner join menu using (menu_id)";
+        $query = "Select s_id, mName , s_qty, s_date, date_recorded, remarks from spoilage inner join menuspoil using (s_id) inner join menu using (mID)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesstock(){
-        $query = "Select s_id, stock_name,s_qty,stock_unit,s_date, date_recorded, remarks from spoilage inner join stockspoil using (s_id) inner join stockitems using (stID)";
+        $query = "Select ssID,stName,ssQty,vUnit,ssDate,ssDateRecorded,ssRemarks from stockspoil inner join varspoilitems using (ssID) inner join variance using (vID) inner join stockitems using (stID)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesaddons(){
@@ -387,14 +382,14 @@ class AdminModel extends CI_Model{
     }
 
     function get_actlogs() {
-        $query = "select * FROM activity_logs al INNER JOIN accounts ac USING (account_id)";
+        $query = "select * FROM activity_logs al INNER JOIN accounts ac USING (aID)";
         return $this->db->query($query)->result_array();
     }
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
     function delete_account($accountId){
-        $query = "Delete from accounts where account_id = ?";
-        return $this->db->query($query,array($accountId));
+        $query = "Delete from accounts where aID = ?";
+        return $this->db->query($query, array($accountId));
     }
     function delete_menucategory($ctID){
         $query = "delete from categories where ctID = ? and ctType= 'menu'";
@@ -439,7 +434,7 @@ class AdminModel extends CI_Model{
     }
 
     function delete_menu($id){
-        $this->db->where("menu_id", $id);
+        $this->db->where("mID", $id);
         $this->db->delete("menu");
     }
     function edit_menu($menu_id, $menu_name, $ctID, $menu_description, $menu_price, $menu_availability){

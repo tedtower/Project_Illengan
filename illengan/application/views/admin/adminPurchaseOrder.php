@@ -31,16 +31,58 @@
                                 <table id="poTable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                                     width="100%">
                                     <thead class="thead-light">
-                                        <th style="width:10px"></th>
-                                        <th><b class="pull-left">PO No.</b></th>
-                                        <th><b class="pull-left">Supplier</b></th>
-                                        <th><b class="pull-left">Purchased Date</b></th>
-                                        <th><b class="pull-left">Expected Date</b></th>
-                                        <th><b class="pull-left">Status</b></th>
-                                        <th><b class="pull-left">Total</b></th>
-                                        <th><b class="pull-left">Actions</b></th>
+                                        <tr>
+                                            <th style="width:10px"></th>
+                                            <th><b class="pull-left">PO No.</b></th>
+                                            <th><b class="pull-left">Supplier</b></th>
+                                            <th><b class="pull-left">Purchased Date</b></th>
+                                            <th><b class="pull-left">Expected Date</b></th>
+                                            <th><b class="pull-left">Status</b></th>
+                                            <th><b class="pull-left">Total</b></th>
+                                            <th><b class="pull-left">Actions</b></th>
+                                        </tr>
                                     </thead>
                                     <tbody>
+                                        <tr>
+                                            <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width:15px"/></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <button class="editBtn btn btn-primary btn-sm" data-toggle="modal" data-target="#editPO">Edit</button>
+                                                <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal" data-target="">Delete</button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="8">
+                                                <div style="margin:1% 3%">
+                                                    <table class="table dt-responsive nowrap">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Item Name</th><!--Concat ng Product name and var size-->
+                                                                <th>Unit</th>
+                                                                <th>Qty</th>
+                                                                <th>Price</th>
+                                                                <th>Subtotal</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <!--End of Table Content-->
@@ -99,8 +141,8 @@
                                                             </div>
                                                             <select class="form-control form-control-sm" name="status"
                                                                 id="status">
-                                                                <option value="pending" selected="selected">Pending
-                                                                </option>
+                                                                <option selected="selected">Choose</option>
+                                                                <option value="pending">Pending</option>
                                                                 <option value="delivered">Delivered</option>
                                                             </select>
                                                         </div>
@@ -116,7 +158,15 @@
                                                         </div>
                                                     </div>
 
-                                                    <!--Transaction Items-->
+                                                    <!--Remarks-->
+                                                    <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                                    style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                    Remarks</span>
+                                                            </div>
+                                                            <textarea class="form-control form-control-sm"></textarea>
+                                                        </div>
                                                     <!--Button to add row in the table-->
                                                     <button type="button"
                                                         class="addPoItemBtn btn btn-primary btn-sm">Add PO Item</button>
@@ -125,17 +175,17 @@
                                                     <table class="poItemsTable table table-sm table-borderless">
                                                         <thead class="thead-light">
                                                             <tr>
-                                                                <th>Name</th>
-                                                                <th width="10%">Qty</th>
+                                                                <th>Item Name</th>
                                                                 <th width="15%">Unit</th>
+                                                                <th width="10%">Qty</th>
                                                                 <th width="15%">Price</th>
                                                                 <th width="15%">Subtotal</th>
-                                                                <th>Remarks</th>
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr>
+                                                                <input type="hidden" name="">
                                                                 <td><input type="text" name="itemName"
                                                                         class="form-control form-control-sm"></td>
                                                                 <td><input type="number" name="itemQty"
@@ -146,9 +196,6 @@
                                                                         class="form-control form-control-sm"></td>
                                                                 <td><input type="number" name="itemSubtotal"
                                                                         class="form-control form-control-sm"></td>
-                                                                <td><textarea type="text" name="remarks"
-                                                                        class="form-control form-control-sm"></textarea>
-                                                                </td>
                                                                 <td><img class="exitBtn" id="exitBtn"
                                                                         src="/assets/media/admin/error.png"
                                                                         style="width:20px;height:20px"></td>
@@ -307,7 +354,7 @@
     </div>
     <?php include_once('templates/scripts.php') ?>
 </body>
-<script>
+<!-- <script>
 var lastIndex = 0;
 var pos = <?= json_encode($pos)?>;
 var rowsPerPage = pos.pos.length;
@@ -438,19 +485,19 @@ function setTableData() {
         <td>${po.poStatus}</td>
         <td>${po.poTotal}</td>
         <td>
-        <!--Edit button-->
-            <button class="editBtn btn btn-primary btn-sm" data-toggle="modal"
-            data-target="#editPO">Edit</button>
+        <!-Edit button-->
+            <!-- <button class="editBtn btn btn-primary btn-sm" data-toggle="modal"
+            data-target="#editPO">Edit</button> -->
         <!--Delete button-->
-            <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"
-            data-target="">Delete</button>
-        </td>
+            <!-- <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"
+            data-target="">Delete</button> -->
+        <!-- </td>
     </tr>
     `;
         $("#poTable > tbody").append(row);
-    }
+    } -->
 
-    function appendAccordion(poID) {
+    <!-- function appendAccordion(poID) {
         var items = pos.poItems.filter(item => item.po_id === poID);
         var row = `
     <tr style="display:none">
@@ -517,7 +564,7 @@ function setTableData() {
             `
         }).join('')
     }`);
-    }
-</script>
+    } 
+</script> -->
 
 </html>
