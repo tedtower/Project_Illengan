@@ -16,9 +16,9 @@ class Login extends CI_Controller{
         $loginAttempt = $this->loginmodel->validate($uname,$pword);
         if(is_array($loginAttempt)){
             $user_data = array(
-                'user_id' => $loginAttempt[0]['account_id'],
-                'user_name' => ucfirst($loginAttempt[0]['account_username']),
-                'user_type' => $loginAttempt[0]['account_type']
+                'user_id' => $loginAttempt[0]['aID'],
+                'user_name' => ucfirst($loginAttempt[0]['aUsername']),
+                'user_type' => $loginAttempt[0]['aType']
             );
             $this->session->set_userdata($user_data);
             $this->homeRedirect();
@@ -30,16 +30,16 @@ class Login extends CI_Controller{
 
     function homeRedirect(){        
         switch ($this->session->userdata('user_type')){
-            case 'Admin':
+            case 'admin':
                 redirect('admin/dashboard');
                 break;
-            case 'Barista':
+            case 'barista':
                 redirect('barista/billings');
                 break;
-            case 'Chef':
+            case 'chef':
                 redirect('chef');
                 break;
-            case 'Customer':
+            case 'customer':
                 redirect('customer/menu');
                 break;
         }

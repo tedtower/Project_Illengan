@@ -109,8 +109,6 @@
 									</div>
 								</div>
 							</div>
-
-
 						</div>
 					</div>
 				</div>
@@ -130,7 +128,7 @@
 			'<td>Remarks</td>' +
 			'</tr>' +
 			'<tr>' +
-			'<td>' + d.remarks + '</td>' +
+			'<td>' + d.ssRemarks + '</td>' +
 			'</tr>' +
 			'</table>';
 
@@ -151,19 +149,19 @@
 					"defaultContent": ''
 				},
 				{
-					"data": "s_id"
+					"data": "ssID"
 				},
 				{
-					"data": "stock_name"
+					"data": "stName"
 				},
 				{
-					"data": "s_qty"
+					"data": "ssQty"
 				},
 				{
-					"data": "s_date"
+					"data": "ssDate"
 				},
 				{
-					"data": "date_recorded"
+					"data": "ssDateRecorded"
 				},
 				{
 					"data": null,

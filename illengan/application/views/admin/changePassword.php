@@ -20,7 +20,7 @@
 		<input type="password" class="form-control"  name="new_password_confirmation" placeholder="Confirm Password" >
 		<span class="text-danger"><?php echo form_error("new_password_confirmation"); ?></span>
 	</div>
-		<input type='hidden' name="account_id" value='<?php  echo $account_id;  ?>'/> 
+		<input type='hidden' name="aID" value='<?php  echo $aID;  ?>'/> 
 	
 	<div class="form-group">
 		<input type="submit" class="btn btn-info" name="submit_password" value="Update">

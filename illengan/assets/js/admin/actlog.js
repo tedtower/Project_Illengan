@@ -12,7 +12,7 @@ $(document).ready(function() {
                 {
                     data: null,
                     render: function ( data, type, row, meta) {
-                        return data.account_type+' '+lowerLetter(data.actlog_type)+'ed in the '+data.actlog_desc;
+                        return data.aType+' '+lowerLetter(data.actlog_type)+'ed in the '+data.actlog_desc;
                         }
                     }
 		        ]
