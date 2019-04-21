@@ -108,32 +108,6 @@ class AdminModel extends CI_Model{
         return $this->db->query($query,array($new_password, $aID));  
            
     }
-
-    function edit_accounts($account_id,$account_type,$account_username){
-        $query = "update accounts set account_username = ?, account_type = ? where account_id = ?";
-        return $this->db->query($query,array($account_username, $account_type, $account_id));
-    // function change_aPassword($old_password,$new_password, $aID){
-
-    //     $query2 = "select aPassword from accounts where aID = ? ";
-    //     $current_password = $this->db->query($query2,array($aID));
-    //         foreach($current_password->result() AS $row) {
-
-    //         if(password_verify($row->aPassword,$old_password)){
-    //             $query = "update accounts set aPassword = ?  where aID = ? ";
-    //             return $this->db->query($query,array($new_password, $aID));  
-    //         }else{
-                
-    //             echo $old_password;
-    //             echo "====";
-    //             echo $row->aPassword;
-                
-    //             echo "there is a problem in model";
-    //             // $data['aID'] = $aID;
-    //             // $this->load->view('admin/changepassword', $data);
-    //         }
-    //     }
-    // }
-
     function edit_accounts($aID,$aType,$aUsername){
         $query = "update accounts set aUsername = ?, aType = ? where aID = ?";
         return $this->db->query($query,array($aUsername, $aType, $aID));
