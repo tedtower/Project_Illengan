@@ -98,10 +98,11 @@
                                             </div>
                                         </div>
                                         <!--Add Stock Item-->
-                                        <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Item Variance</a>
+                                        <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Item
+                                            Variance</a>
                                         <!--Button to add row in the table-->
                                         <br><br>
-                                        <table class="table table-sm table-borderless">
+                                        <table class="varianceTable table table-sm table-borderless">
                                             <!--Table containing the different input fields in adding trans items -->
                                             <thead class="thead-light">
                                                 <tr>
@@ -115,18 +116,17 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td><input type="text" name="varUnit" id="varUnit"
+                                                    <td><input type="text" name="varUnit[]"
                                                             class="form-control form-control-sm"></td>
-                                                    <td><input type="text" name="varSize" id="varSize"
+                                                    <td><input type="text" name="varSize[]"
                                                             class="form-control form-control-sm"></td>
-                                                    <td><input type="number" name="varMinimun" id="varMinimun"
+                                                    <td><input type="number" name="varMinimun[]"
                                                             class="form-control form-control-sm"></td>
-                                                    <td><input type="number" name="varQty" id="varQty"
+                                                    <td><input type="number" name="varQty[]"
                                                             class="form-control form-control-sm"></td>
                                                     <td>
-                                                        <select class="form-control" name="varStatus" id="varStatus">
+                                                        <select class="form-control" name="varStatus[]">
                                                             <option value="" selected>Choose</option>
-                                                            <option></option>
                                                         </select>
                                                     </td>
                                                     <td><img class="exitBtn" id="exitBtn"
@@ -161,6 +161,8 @@
                                     accept-charset="utf-8">
                                     <div class="modal-body">
                                         <div class="form-row">
+                                            <input type="text" name="stockName" id="stockID"
+                                                class="form-control form-control-sm" hidden="hidden">
                                             <!--Container of promo name and promo type-->
                                             <!--Stock name-->
                                             <div class="input-group mb-3 col">
@@ -218,7 +220,7 @@
                                         <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Variance</a>
                                         <!--Button to add row in the table-->
                                         <br><br>
-                                        <table class="table table-sm table-borderless">
+                                        <table class="varianceTable table table-sm table-borderless">
                                             <!--Table containing the different input fields in adding trans items -->
                                             <thead class="thead-light">
                                                 <tr>
@@ -232,18 +234,17 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td><input type="text" name="varUnit" id="varUnit"
+                                                    <td><input type="text" name="varUnit[]"
                                                             class="form-control form-control-sm"></td>
-                                                    <td><input type="text" name="varSize" id="varSize"
+                                                    <td><input type="text" name="varSize[]"
                                                             class="form-control form-control-sm"></td>
-                                                    <td><input type="number" name="varMinimun" id="varMinimun"
+                                                    <td><input type="number" name="varMinimun[]"
                                                             class="form-control form-control-sm"></td>
-                                                    <td><input type="number" name="varQty" id="varQty"
+                                                    <td><input type="number" name="varQty[]"
                                                             class="form-control form-control-sm"></td>
                                                     <td>
-                                                        <select class="form-control" name="varStatus" id="varStatus">
+                                                        <select class="form-control" name="varStatus[]">
                                                             <option value="" selected>Choose</option>
-                                                            <!-- <option value=""></option> -->
                                                         </select>
                                                     </td>
                                                     <td><img class="exitBtn" id="exitBtn"
@@ -317,49 +318,56 @@
 var inventory = <?= json_encode($inventory)?>;
 var lastIndex = 0;
 var rowsPerPage = inventory.stocks.length;
-$(document).ready(function(){
+$(document).ready(function() {
     $("#addBtn").on('click', function() {
         $("#newStock form")[0].reset();
     });
     setTableData();
-    // $("#formAdd").on('submit', function(event) {
-    //     event.preventDefault();
-    //     var name = $(this).find("input[name='stockName']").val();
-    //     var qty = $(this).find("input[name='stockQty']").val();
-    //     var unit = $(this).find("input[name='stockUnit']").val();
-    //     var min = $(this).find("input[name='stockMin']").val();
-    //     var category = $(this).find("select[name='categoryName']").val();
-    //     var status = $(this).find("select[name='stockStatus']").val();
-    //     $.ajax({
-    //         url: "<?= site_url("admin/inventory/add")?>",
-    //         method: "post",
-    //         data: {
-    //             stockName: name,
-    //             stockQty: qty,
-    //             stockUnit: unit,
-    //             stockMin: min,
-    //             categoryName: category,
-    //             stockStatus: status
-    //         },
-    //         dataType: "json",
-    //         beforeSend: function() {
-    //             console.log(name, qty, unit, min, category, status);
-    //         },
-    //         success: function(data) {
-    //             console.log(data);
-    //             inventory = data;
-    //             lastIndex = 0;
-    //             setTableData();
-    //         },
-    //         error: function(response, setting, error) {
-    //             console.log(response.responseText);
-    //             console.log(error);
-    //         },
-    //         complete: function() {
-    //             $("#newStock").modal("hide");
-    //         }
-    //     });
-    // });
+    $("#formAdd").on('submit', function(event) {
+        event.preventDefault();
+        var name = $(this).find("input[name='stockName']").val();
+        var type = $(this).find("select[name='stockType']").val();
+        var category = $(this).find("select[name='stockCategory']").val();
+        var status = $(this).find("select[name='stockStatus']").val();
+        var stockVariances = [];
+        for(var index = 0; index < $(this).find(".varianceTable > tbody").children().length; index++){
+            stockVariances.push({
+                varName : $(this).find("input[name='varUnit[]']").eq(index).val(),
+                varSize : $(this).find("input[name='varSize[]']").eq(index).val(),
+                varMin : $(this).find("input[name='varMinimum[]']").eq(index).val(),
+                varQty : $(this).find("input[name='varQty[]']").eq(index).val(),
+                varStatus : $(this).find("input[name='varStatus[]']").eq(index).val()
+            });
+        }
+        $.ajax({
+            url: "<?= site_url("admin/inventory/add")?>",
+            method: "post",
+            data: {
+                name : name,
+                type : type,
+                category : category,
+                status : status,
+                variances : JSON.stringify(stockVariances)
+            },
+            dataType: "json",
+            beforeSend: function() {
+                console.log(name, type, category, status, variances);
+            },
+            success: function(data) {
+                console.log(data);
+                // inventory = data;
+                // lastIndex = 0;
+                // setTableData();
+            },
+            error: function(response, setting, error) {
+                console.log(response.responseText);
+                console.log(error);
+            },
+            complete: function() {
+                $("#newStock").modal("hide");
+            }
+        });
+    });
     // $("#formEdit").on('submit', function(event) {
     //     event.preventDefault();
     //     var ID = $(this).find("input[name='stockID']").val();
@@ -502,15 +510,16 @@ function setTableData() {
         for (lastIndex; lastIndex < inventory.stocks.length; lastIndex++) {
             if (count < rowsPerPage) {
                 appendRow(inventory.stocks[lastIndex]);
-                appendAccordion(inventory.variances.filter(variance => variance.stID === inventory.stocks[lastIndex].stID));
+                appendAccordion(inventory.variances.filter(variance => variance.stID === inventory.stocks[lastIndex]
+                    .stID));
             }
         }
         //Set accordion icon event to show accordion
-        $(".accordionBtn").on('click',function(){
-            if($(this).closest("tr").next(".accordion").css("display") == 'none'){
-                $(this).closest("tr").next(".accordion").css("display","table-row");
+        $(".accordionBtn").on('click', function() {
+            if ($(this).closest("tr").next(".accordion").css("display") == 'none') {
+                $(this).closest("tr").next(".accordion").css("display", "table-row");
                 $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
-            }else{
+            } else {
                 $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
                 $(this).closest("tr").next(".accordion").hide("slow");
             }
@@ -543,9 +552,9 @@ function appendRow(stock) {
                 data-target="#deleteStock">Delete</button>
         </td>
     </tr>`}`;
-    if(nullVal){
+    if (nullVal) {
         $("#note").text("No stock items recorded!");
-    }else{
+    } else {
         $("#note").text("");
         $("#stockTable > tbody").append(row);
     }
