@@ -253,11 +253,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_menu(){
-<<<<<<< HEAD
-        $query = "Select * from menu inner join categories using (category_id) order by category_name asc, mName asc";
-=======
         $query = "Select * from menu inner join categories using (ctID) order by ctName asc, menu_name asc";
->>>>>>> 4c2b0d935debb08d87d96098e05255d1b791d665
         return $this->db->query($query)->result_array();
     }
     function get_preferences(){
@@ -278,23 +274,6 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_menucategories(){
-<<<<<<< HEAD
-        $query = "Select category_id, category_name, category_type, COUNT(mID) as menu_no from categories left join menu using (category_id) where category_type = 'menu' group by category_id order by category_name asc";
-        return $this->db->query($query)->result_array();
-    }
-    function get_menumaincategories(){
-        $query = "Select category_id, category_name, category_type, COUNT(mID) as menu_no from categories left join menu using (category_id) where category_type = 'menu' and supcat_id is null group by category_id order by category_name asc";
-        return $this->db->query($query)->result_array();
-    }
-    function get_menusubcategories(){
-        $query = "Select category_id, category_name, category_type, COUNT(mID) as menu_no from categories left join menu using (category_id) where category_type = 'menu' and supcat_id is not null group by category_id order by category_name asc";
-        return $this->db->query($query)->result_array();
-    }
-
-    function add_menu($mName, $menu_description, $category_id, $menu_price, $picture){
-        $query = "Insert into menu (mID, mName, menu_description, category_id, menu_price, menu_image, size, menu_availability) values (NULL,?,?,?,?,?, NULL,'Available')";
-        return $this->db->query($query,array($mName, $menu_description, $category_id, $menu_price, $picture));
-=======
         $query = "Select ctID, ctName, ctType, COUNT(menu_id) as menu_no from categories left join menu using (ctID) where ctType = 'menu' group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
     }
@@ -310,7 +289,6 @@ class AdminModel extends CI_Model{
     function add_menu($menu_name, $menu_description, $ctID, $menu_price, $picture){
         $query = "Insert into menu (menu_id, menu_name, menu_description, ctID, menu_price, menu_image, size, menu_availability) values (NULL,?,?,?,?,?, NULL,'Available')";
         return $this->db->query($query,array($menu_name, $menu_description, $ctID, $menu_price, $picture));
->>>>>>> 4c2b0d935debb08d87d96098e05255d1b791d665
 
     }
     function get_sales(){
@@ -384,11 +362,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_spoilages(){
-<<<<<<< HEAD
-        $query = "select s_id, s_type, mName AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN menuspoil USING (s_id) inner JOIN menu USING (mID) UNION select s_id, s_type, stock_name AS decription, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN stockspoil USING (s_id) inner JOIN stockitems USING (stock_id) UNION select s_id,s_type, ao_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN ao_spoil USING (s_id) inner JOIN addons USING (ao_id) ORDER BY date_recorded";
-=======
         $query = "select s_id, s_type, menu_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN menuspoil USING (s_id) inner JOIN menu USING (menu_id) UNION select s_id, s_type, stock_name AS decription, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN stockspoil USING (s_id) inner JOIN stockitems USING (stID) UNION select s_id,s_type, ao_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN ao_spoil USING (s_id) inner JOIN addons USING (ao_id) ORDER BY date_recorded";
->>>>>>> 4c2b0d935debb08d87d96098e05255d1b791d665
         return $this->db->query($query)->result_array();
     }
     function get_spoilagesmenu(){
@@ -481,15 +455,9 @@ class AdminModel extends CI_Model{
         $this->db->where("mID", $id);
         $this->db->delete("menu");
     }
-<<<<<<< HEAD
-    function edit_menu($mID, $mName, $category_id, $menu_description, $menu_price, $menu_availability){
-        $query = "update menu set mName = ?, category_id = ?, menu_description = ?, menu_price = ?, menu_availability = ? where mID = ?";
-        return $this->db->query($query,array($mName, $category_id, $menu_description, $menu_price, $menu_availability, $mID));
-=======
     function edit_menu($menu_id, $menu_name, $ctID, $menu_description, $menu_price, $menu_availability){
         $query = "update menu set menu_name = ?, ctID = ?, menu_description = ?, menu_price = ?, menu_availability = ? where menu_id = ?";
         return $this->db->query($query,array($menu_name, $ctID, $menu_description, $menu_price, $menu_availability, $menu_id));
->>>>>>> 4c2b0d935debb08d87d96098e05255d1b791d665
     }
     
     function edit_table($newTableCode, $previousTableCode){
