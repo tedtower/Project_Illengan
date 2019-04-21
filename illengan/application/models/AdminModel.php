@@ -63,14 +63,18 @@ class AdminModel extends CI_Model{
         return $this->db->query($query,array($ctName, $superCategory));
     }
     function add_stockItem($stockName,$stockType,$stockCategory,$stockStatus,$stockVariance){
-        $query = "Insert into stockitems (stID,stName,stType,ctID,stStatus) values (NULL,?,?,?,?);";
-        $this->db->query($query,array($stockName,$stockType,$stockCategory,$stockStatus));
-        $this->add_stockVariances($this->db->insert_id(), $stockVariance);
+        $query = "Insert into stockitems (stID,stName,stType,ctID,stStatus) values (NULL,?,?,?,?)";
+        if($this->db->query($query,array($stockName,$stockType,$stockCategory,$stockStatus))){
+            $this->add_stockVariances($this->db->insert_id(), $stockVariance);
+        }
+        return true;
     }
     function add_stockVariances($stockID,$stockVariance){
-        $query = "Insert into variance (stID, vName, vQty, vMin, vUnit, vSize, vStatus, bQty) values (?,?,?,?,?,?,?,?)";
-        for($index = 0; $index < count($stockVariance) ; $index++){
-            $this->db->query($query, array($stockID, $stockVariance[$index]['varName'],$stockVariance[$index]['varQty'],$stockVariance[$index]['varMin'],$stockVariance[$index]['varUnit'],$stockVariance[$index]['varSize'],$stockVariance[$index]['varStatus'],0));
+        $query = "Insert into variance (stID, vUnit, vQty, vMin, vSize, vStatus, bQty) values (?,?,?,?,?,?,?)";
+        if(count($stockVariance) > 0){
+            for($index = 0; $index < count($stockVariance) ; $index++){
+                $this->db->query($query, array($stockID, $stockVariance[$index]['varUnit'],$stockVariance[$index]['varQty'],$stockVariance[$index]['varMin'],$stockVariance[$index]['varSize'],$stockVariance[$index]['varStatus'],0));
+            }
         }
     }
     function add_table($table_code){
@@ -287,10 +291,11 @@ class AdminModel extends CI_Model{
             ctID
         FROM
             stockitems
-                INNER JOIN
+                LEFT JOIN
             variance USING (stID)
                 INNER JOIN
-            categories USING (ctID);";
+            categories USING (ctID)
+        GROUP BY stID;";
         return $this->db->query($query)->result_array();
     }
     function get_stockVariance(){
@@ -305,7 +310,8 @@ class AdminModel extends CI_Model{
             vMin,
             vQty,
             bQty,
-            vStatus
+            vStatus, 
+            stID
         FROM
             variance
                 INNER JOIN
@@ -343,7 +349,17 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_stockSubcategories(){
-        $query = "Select ctID, ctName, ctType, COUNT(stID) as stockCount from categories left join stockitems using (ctID) where ctType = 'inventory' and supcatID is not null group by ctID order by ctName asc";
+        $query = "SELECT 
+            ctID, ctName, ctType, COUNT(stID) AS stockCount
+        FROM
+            categories
+                LEFT JOIN
+            stockitems USING (ctID)
+        WHERE
+            ctType = 'inventory'
+                AND supcatID IS NOT NULL
+        GROUP BY ctID
+        ORDER BY ctName ASC;";
         return $this->db->query($query)->result_array();
     }
     function get_sources(){

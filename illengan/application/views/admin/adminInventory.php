@@ -98,8 +98,8 @@
                                             </div>
                                         </div>
                                         <!--Add Stock Item-->
-                                        <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Item
-                                            Variance</a>
+                                        <a class="addItemVarianceBtn btn btn-primary btn-sm"
+                                            style="color:blue;margin:0">Add Item Variance</a>
                                         <!--Button to add row in the table-->
                                         <br><br>
                                         <table class="varianceTable table table-sm table-borderless">
@@ -115,24 +115,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td><input type="text" name="varUnit[]"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><input type="text" name="varSize[]"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><input type="number" name="varMinimun[]"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><input type="number" name="varQty[]"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td>
-                                                        <select class="form-control" name="varStatus[]">
-                                                            <option value="" selected>Choose</option>
-                                                        </select>
-                                                    </td>
-                                                    <td><img class="exitBtn" id="exitBtn"
-                                                            src="/assets/media/admin/error.png"
-                                                            style="width:20px;height:20px"></td>
-                                                </tr>
+                                            </tbody>
                                         </table>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger btn-sm"
@@ -217,7 +200,8 @@
                                             </div>
                                         </div>
                                         <!--Add Stock Item-->
-                                        <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Variance</a>
+                                        <a class="addItemVarianceBtn btn btn-primary btn-sm"
+                                            style="color:blue;margin:0">Add Item Variance</a>
                                         <!--Button to add row in the table-->
                                         <br><br>
                                         <table class="varianceTable table table-sm table-borderless">
@@ -233,24 +217,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td><input type="text" name="varUnit[]"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><input type="text" name="varSize[]"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><input type="number" name="varMinimun[]"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><input type="number" name="varQty[]"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td>
-                                                        <select class="form-control" name="varStatus[]">
-                                                            <option value="" selected>Choose</option>
-                                                        </select>
-                                                    </td>
-                                                    <td><img class="exitBtn" id="exitBtn"
-                                                            src="/assets/media/admin/error.png"
-                                                            style="width:20px;height:20px"></td>
-                                                </tr>
+                                            </tbody>
                                         </table>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger btn-sm"
@@ -321,37 +288,66 @@ var rowsPerPage = inventory.stocks.length;
 $(document).ready(function() {
     $("#addBtn").on('click', function() {
         $("#newStock form")[0].reset();
+        console.log(inventory);
+    });
+    $(".addItemVarianceBtn").on('click',function(){
+        var row=`
+        <tr>
+            <td><input type="text" name="varUnit[]"
+                    class="form-control form-control-sm"></td>
+            <td><input type="text" name="varSize[]"
+                    class="form-control form-control-sm"></td>
+            <td><input type="number" name="varMinimum[]"
+                    class="form-control form-control-sm"></td>
+            <td><input type="number" name="varQty[]"
+                    class="form-control form-control-sm"></td>
+            <td>
+                <select class="form-control" name="varStatus[]">
+                    <option value="" selected>Choose</option>
+                    <option value="available">available</option>
+                    <option value="unavailable">unavailable</option>
+                </select>
+            </td>
+            <td><img class="exitBtn"
+                    src="/assets/media/admin/error.png"
+                    style="width:20px;height:20px"></td>
+        </tr>
+        `;
+        $(this).closest(".modal").find(".varianceTable > tbody").append(row);
+        $(this).closest(".modal").find(".exitBtn").last().on('click',function(){
+            $(this).closest("tr").remove();
+        });
     });
     setTableData();
-    $("#formAdd").on('submit', function(event) {
+    $("#newStock form").on('submit', function(event) {
         event.preventDefault();
         var name = $(this).find("input[name='stockName']").val();
         var type = $(this).find("select[name='stockType']").val();
         var category = $(this).find("select[name='stockCategory']").val();
         var status = $(this).find("select[name='stockStatus']").val();
         var stockVariances = [];
-        for(var index = 0; index < $(this).find(".varianceTable > tbody").children().length; index++){
+        for (var index = 0; index < $(this).find(".varianceTable > tbody").children().length; index++) {
             stockVariances.push({
-                varName : $(this).find("input[name='varUnit[]']").eq(index).val(),
-                varSize : $(this).find("input[name='varSize[]']").eq(index).val(),
-                varMin : $(this).find("input[name='varMinimum[]']").eq(index).val(),
-                varQty : $(this).find("input[name='varQty[]']").eq(index).val(),
-                varStatus : $(this).find("input[name='varStatus[]']").eq(index).val()
+                varUnit: $(this).find("input[name='varUnit[]']").eq(index).val(),
+                varSize: $(this).find("input[name='varSize[]']").eq(index).val(),
+                varMin: $(this).find("input[name='varMinimum[]']").eq(index).val(),
+                varQty: $(this).find("input[name='varQty[]']").eq(index).val(),
+                varStatus: $(this).find("select[name='varStatus[]']").eq(index).val()
             });
         }
         $.ajax({
             url: "<?= site_url("admin/inventory/add")?>",
             method: "post",
             data: {
-                name : name,
-                type : type,
-                category : category,
-                status : status,
-                variances : JSON.stringify(stockVariances)
+                name: name,
+                type: type,
+                category: category,
+                status: status,
+                variances: JSON.stringify(stockVariances)
             },
             dataType: "json",
             beforeSend: function() {
-                console.log(name, type, category, status, variances);
+                console.log(name, type, category, status, stockVariances);
             },
             success: function(data) {
                 console.log(data);
@@ -368,7 +364,7 @@ $(document).ready(function() {
             }
         });
     });
-    // $("#formEdit").on('submit', function(event) {
+    // $("#editStock form").on('submit', function(event) {
     //     event.preventDefault();
     //     var ID = $(this).find("input[name='stockID']").val();
     //     var name = $(this).find("input[name='stockName']").val();
@@ -527,7 +523,7 @@ function setTableData() {
         $(".editBtn").on("click", function() {
             $("#editStock form")[0].reset();
             var stockID = $(this).closest("tr").attr("data-id");
-            setEditModal($("#editStock"), inventory.stocks.filter(item => item.stock_id === stockID)[0]);
+            setEditModal($("#editStock"), inventory.stocks.filter(item => item.stock_id === stockID)[0], inventory.variances.filter(variance => variance.stID === stockID));
         });
     } else {
         $("#stockTable > tbody").empty();
@@ -657,15 +653,41 @@ function appendAccordion(variances) {
         </td>
     </tr>
     `;
+    $("#stockTable > tbody").append(row);
 }
 
-function setEditModal(modal, data) {
-    modal.find("input[name='stockID']").val(data.stock_id);
-    modal.find("input[name='stockName']").val(data.stock_name);
-    modal.find("input[name='stockQty']").val(data.stock_quantity);
-    modal.find("input[name='stockUnit']").val(data.stock_unit);
-    modal.find("input[name='stockMin']").val(data.stock_minimum);
-    modal.find("select[name='categoryName']").find(`option[value=${data.category_id}]`).attr("selected", "selected");
-    modal.find("select[name='stockStatus']").find(`option[value='${data.stock_status}']`).attr("selected", "selected");
+function setEditModal(modal, stock, variances) {
+    modal.find("input[name='stockID']").val(stock.stID);
+    modal.find("input[name='stockName']").val(stock.stName);
+    modal.find("select[name='stockType']").val(stock.stType);
+    modal.find("select[name='stockCategory']").find(`option[value=${stock.ctID}]`).attr("selected","selected");
+    modal.find("select[name='stockStatus']").find(`option[value='${stock.stStatus}']`).attr("selected", "selected");
+    
+    variances.forEach(variance => {
+        modal.find(".varianceTable > tbody").append(`
+        <tr>
+            <td><input type="text" name="varUnit[]" value="${}"
+                    class="form-control form-control-sm"></td>
+            <td><input type="text" name="varSize[]"
+                    class="form-control form-control-sm"></td>
+            <td><input type="number" name="varMinimum[]"
+                    class="form-control form-control-sm"></td>
+            <td><input type="number" name="varQty[]"
+                    class="form-control form-control-sm"></td>
+            <td>
+                <select class="form-control" name="varStatus[]">
+                    <option value="" selected>Choose</option>
+                    <option value="available">available</option>
+                    <option value="unavailable">unavailable</option>
+                </select>
+            </td>
+            <td><img class="exitBtn"
+                    src="/assets/media/admin/error.png"
+                    style="width:20px;height:20px"></td>
+        </tr>
+        `);        
+    });
+    // modal.find("select[name='categoryName']").find(`option[value=${data.category_id}]`).attr("selected", "selected");
+    // modal.find("select[name='stockStatus']").find(`option[value='${data.stock_status}']`).attr("selected", "selected");
 }
 </script>
