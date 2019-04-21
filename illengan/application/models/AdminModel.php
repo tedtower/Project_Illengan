@@ -271,9 +271,17 @@ class AdminModel extends CI_Model{
     }
     function get_stocks(){
         $query = "SELECT 
-            stID, stName, stStatus, stType, ctName, ctID
+            stID,
+            stName,
+            SUM(vQty) AS 'stQty',
+            stStatus,
+            stType,
+            ctName,
+            ctID
         FROM
             stockitems
+                INNER JOIN
+            variance USING (stID)
                 INNER JOIN
             categories USING (ctID);";
         return $this->db->query($query)->result_array();

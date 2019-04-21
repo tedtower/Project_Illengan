@@ -1,266 +1,304 @@
 <div class="content">
-<div class="container-fluid">
-<br>
-    <p style="text-align:right; font-weight: regular; font-size: 16px">
-    <!-- Real Time Date & Time -->
-        <?php echo date("M j, Y -l"); ?>
-    </p>
-<div class="content" style="margin-left:250px;">
-<div class="container-fluid">
-<!--Table-->
-<div class="card-content">
-    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newStock" data-original-title style="margin:0;" id="addBtn">Add Stock Item</a>
-    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#reStock" data-original-title style="margin:0;" id="addBtn">Restock</a>
-    <br><br>
-    <table id="stockTable" class="table table-striped table-bordered dt-responsive nowrap"
-        cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th></th>
-                <th><b class="pull-left">Item Name</b></th>
-                <th><b class="pull-left">Category</b></th>
-                <th><b class="pull-left">Quantity</b></th>
-                <th><b class="pull-left">Type</b></th>
-                <th><b class="pull-left">Status</b></th>
-                <th><b class="pull-left">Action</b></th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-<!--Start of Modal "Add Stock Item"-->
-     <div class="modal fade bd-example-modal-lg" id="newStock" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add Stock Item</h5>
-                        <button type="button" class="close" data-dismiss="modal"aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form action="<?php echo base_url()?>admin/inventory/add" method="get" accept-charset="utf-8">
-                        <div class="modal-body">                                                                                                                                                      
-                            <div class="form-row"> <!--Container of promo name and promo type-->
-                            <!--Stock name-->
-                                <div class="input-group mb-3 col">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                        Stock Name</span>
+    <div class="container-fluid">
+        <br>
+        <p style="text-align:right; font-weight: regular; font-size: 16px">
+            <!-- Real Time Date & Time -->
+            <?php echo date("M j, Y -l"); ?>
+        </p>
+        <div class="content" style="margin-left:250px;">
+            <div class="container-fluid">
+                <!--Table-->
+                <div class="card-content">
+                    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newStock" data-original-title
+                        style="margin:0;" id="addBtn">Add Stock Item</a>
+                    <br><br>
+                    <table id="stockTable" class="table table-striped table-bordered dt-responsive nowrap"
+                        cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th><b class="pull-left">Item Name</b></th>
+                                <th><b class="pull-left">Category</b></th>
+                                <th><b class="pull-left">Quantity</b></th>
+                                <th><b class="pull-left">Type</b></th>
+                                <th><b class="pull-left">Status</b></th>
+                                <th><b class="pull-left">Action</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <p id="note"></p>
+                    <!--Start of Modal "Add Stock Item"-->
+                    <div class="modal fade bd-example-modal-lg" id="newStock" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add Stock Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="<?php echo base_url('admin/inventory/add')?>" method="get"
+                                    accept-charset="utf-8">
+                                    <div class="modal-body">
+                                        <div class="form-row">
+                                            <!--Container of promo name and promo type-->
+                                            <!--Stock name-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Stock Name</span>
+                                                </div>
+                                                <input type="text" name="stockName" id="stockName"
+                                                    class="form-control form-control-sm">
+                                            </div>
+                                            <!--Stock type-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Stock Type</span>
+                                                </div>
+                                                <select class="form-control" name="stockType" id="stockType">
+                                                    <option value="" selected>Choose</option>
+                                                    <option value="liquid">Liquid</option>
+                                                    <option value="solid">Solid</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <!--Container of start date and end date-->
+                                            <!--Category-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Category</span>
+                                                </div>
+                                                <select class="form-control" name="stockCategory" id="stockCategory">
+                                                    <option value="" selected>Choose</option>
+                                                </select>
+                                            </div>
+                                            <!--Status-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Status</span>
+                                                </div>
+                                                <select class="form-control" name="stockStatus" id="stockStatus">
+                                                    <option value="" selected>Choose</option>
+                                                    <option value="available">Available</option>
+                                                    <option value="unavailable">Unavailable</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--Add Stock Item-->
+                                        <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Item Variance</a>
+                                        <!--Button to add row in the table-->
+                                        <br><br>
+                                        <table class="table table-sm table-borderless">
+                                            <!--Table containing the different input fields in adding trans items -->
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Unit</th>
+                                                    <th>Size</th>
+                                                    <th>Minimum</th>
+                                                    <th>Qty</th>
+                                                    <th style="width:27%">Status</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><input type="text" name="varUnit" id="varUnit"
+                                                            class="form-control form-control-sm"></td>
+                                                    <td><input type="text" name="varSize" id="varSize"
+                                                            class="form-control form-control-sm"></td>
+                                                    <td><input type="number" name="varMinimun" id="varMinimun"
+                                                            class="form-control form-control-sm"></td>
+                                                    <td><input type="number" name="varQty" id="varQty"
+                                                            class="form-control form-control-sm"></td>
+                                                    <td>
+                                                        <select class="form-control" name="varStatus" id="varStatus">
+                                                            <option value="" selected>Choose</option>
+                                                            <option></option>
+                                                        </select>
+                                                    </td>
+                                                    <td><img class="exitBtn" id="exitBtn"
+                                                            src="/assets/media/admin/error.png"
+                                                            style="width:20px;height:20px"></td>
+                                                </tr>
+                                        </table>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                data-dismiss="modal">Cancel</button>
+                                            <button class="btn btn-success btn-sm" type="submit">Insert</button>
+                                        </div>
                                     </div>
-                                    <input type="text" name="stockName" id="stockName" class="form-control form-control-sm">
-                                </div>
-                            <!--Stock type-->
-                                <div class="input-group mb-3 col">
-                                    <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                    Promo Type</span>
-                                </div>
-                                <select class="form-control" name="stockType" id="stockType">
-                                    <option selected>Choose</option>
-                                    <option>Liquid</option>
-                                    <option>Solid</option>
-                                </select>
-                                </div>
-                            </div>
-                            
-                            <div class="form-row"> <!--Container of start date and end date-->
-                            <!--Category-->
-                                <div class="input-group mb-3 col">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                        Category</span>
-                                    </div>
-                                    <select class="form-control" name="stockCategory" id="stockCategory">
-                                        <option selected>Choose</option>
-                                    </select>
-                                </div>
-                            <!--Status-->
-                                <div class="input-group mb-3 col">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                        Status</span>
-                                    </div>
-                                    <select class="form-control" name="stockStatus" id="stockStatus">
-                                        <option selected>Choose</option>
-                                    </select>
-                                </div>
-                            </div>
-                        <!--Add Stock Item-->
-                            <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Variance</a> <!--Button to add row in the table-->
-                            <br><br>
-                            <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Unit</th>
-                                        <th>Size</th>
-                                        <th>Minimum</th>
-                                        <th>Qty</th>
-                                        <th style="width:27%">Status</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><input type="text" name="varUnit" id="varUnit" class="form-control form-control-sm"></td>
-                                        <td><input type="text" name="varSize" id="varSize" class="form-control form-control-sm"></td>
-                                        <td><input type="number" name="varMinimun" id="varMinimun" class="form-control form-control-sm"></td>
-                                        <td><input type="number" name="varQty" id="varQty" class="form-control form-control-sm"></td>
-                                        <td>
-                                            <select class="form-control" name="varStatus" id="varStatus">
-                                                <option selected>Choose</option>
-                                                <option></option>
-                                            </select>
-                                        </td>
-                                        <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
-                                    </tr>
-                            </table>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger btn-sm"
-                                    data-dismiss="modal">Cancel</button>
-                                <button class="btn btn-success btn-sm"
-                                    type="submit">Insert</button>
+                                </form>
                             </div>
                         </div>
-                    </form>
+                    </div>
+                    <!--End of Modal "Add Stock item"-->
+
+                    <!--Start of Modal "Edit Stock Item"-->
+                    <div class="modal fade bd-example-modal-lg" id="editStock" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Update Stock Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="<?php echo base_url('admin/inventory/edit')?>" method="get"
+                                    accept-charset="utf-8">
+                                    <div class="modal-body">
+                                        <div class="form-row">
+                                            <!--Container of promo name and promo type-->
+                                            <!--Stock name-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Stock Name</span>
+                                                </div>
+                                                <input type="text" name="stockName" id="stockName"
+                                                    class="form-control form-control-sm">
+                                            </div>
+                                            <!--Stock type-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Stock Type</span>
+                                                </div>
+                                                <select class="form-control" name="stockType" id="stockType">
+                                                    <option value="" selected>Choose</option>
+                                                    <option value="liquid">Liquid</option>
+                                                    <option value="solid">Solid</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <!--Container of start date and end date-->
+                                            <!--Category-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Category</span>
+                                                </div>
+                                                <select class="form-control" name="stockCategory" id="stockCategory">
+                                                    <option value="" selected>Choose</option>
+                                                </select>
+                                            </div>
+                                            <!--Status-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Status</span>
+                                                </div>
+                                                <select class="form-control" name="stockStatus" id="stockStatus">
+                                                    <option value="" selected>Choose</option>
+                                                    <option value="available">Available</option>
+                                                    <option value="unavailable">Unavailable</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--Add Stock Item-->
+                                        <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Variance</a>
+                                        <!--Button to add row in the table-->
+                                        <br><br>
+                                        <table class="table table-sm table-borderless">
+                                            <!--Table containing the different input fields in adding trans items -->
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Unit</th>
+                                                    <th>Size</th>
+                                                    <th>Minimum</th>
+                                                    <th>Qty</th>
+                                                    <th style="width:27%">Status</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><input type="text" name="varUnit" id="varUnit"
+                                                            class="form-control form-control-sm"></td>
+                                                    <td><input type="text" name="varSize" id="varSize"
+                                                            class="form-control form-control-sm"></td>
+                                                    <td><input type="number" name="varMinimun" id="varMinimun"
+                                                            class="form-control form-control-sm"></td>
+                                                    <td><input type="number" name="varQty" id="varQty"
+                                                            class="form-control form-control-sm"></td>
+                                                    <td>
+                                                        <select class="form-control" name="varStatus" id="varStatus">
+                                                            <option value="" selected>Choose</option>
+                                                            <!-- <option value=""></option> -->
+                                                        </select>
+                                                    </td>
+                                                    <td><img class="exitBtn" id="exitBtn"
+                                                            src="/assets/media/admin/error.png"
+                                                            style="width:20px;height:20px"></td>
+                                                </tr>
+                                        </table>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                data-dismiss="modal">Cancel</button>
+                                            <button class="btn btn-success btn-sm" type="submit">Update</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End of Modal "Edit Stock Item"-->
+
+                    <!--Start of Modal "Delete Stock Item"-->
+                    <div class="modal fade" id="deleteStock" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Delete Stock Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form id="confirmDelete">
+                                    <div class="modal-body">
+                                        <h6 id="deleteTableCode"></h6>
+                                        <p>Are you sure you want to delete this stock item?</p>
+                                        <input type="text" name="" hidden="hidden">
+                                        <div>
+                                            Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks"
+                                                class="form-control form-control-sm">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary btn-sm"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End of Modal "Delete Stock Item"-->
                 </div>
             </div>
         </div>
-<!--End of Modal "Add Stock item"-->
-
-<!--Start of Modal "Edit Stock Item"-->
-        <div class="modal fade bd-example-modal-lg" id="editStock" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Update Stock Item</h5>
-                        <button type="button" class="close" data-dismiss="modal"aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form action="<?php echo base_url()?>admin/inventory/add" method="get" accept-charset="utf-8">
-                        <div class="modal-body">                                                                                                                                                      
-                            <div class="form-row"> <!--Container of promo name and promo type-->
-                            <!--Stock name-->
-                                <div class="input-group mb-3 col">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                        Stock Name</span>
-                                    </div>
-                                    <input type="text" name="stockName" id="stockName" class="form-control form-control-sm">
-                                </div>
-                            <!--Stock type-->
-                                <div class="input-group mb-3 col">
-                                    <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                    Promo Type</span>
-                                </div>
-                                <select class="form-control" name="stockType" id="stockType">
-                                    <option selected>Choose</option>
-                                    <option>Liquid</option>
-                                    <option>Solid</option>
-                                </select>
-                                </div>
-                            </div>
-                            
-                            <div class="form-row"> <!--Container of start date and end date-->
-                            <!--Category-->
-                                <div class="input-group mb-3 col">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                        Category</span>
-                                    </div>
-                                    <select class="form-control" name="stockCategory" id="stockCategory">
-                                        <option selected>Choose</option>
-                                    </select>
-                                </div>
-                            <!--Status-->
-                                <div class="input-group mb-3 col">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                        Status</span>
-                                    </div>
-                                    <select class="form-control" name="stockStatus" id="stockStatus">
-                                        <option selected>Choose</option>
-                                    </select>
-                                </div>
-                            </div>
-                        <!--Add Stock Item-->
-                            <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Variance</a> <!--Button to add row in the table-->
-                            <br><br>
-                            <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Unit</th>
-                                        <th>Size</th>
-                                        <th>Minimum</th>
-                                        <th>Qty</th>
-                                        <th style="width:27%">Status</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><input type="text" name="varUnit" id="varUnit" class="form-control form-control-sm"></td>
-                                        <td><input type="text" name="varSize" id="varSize" class="form-control form-control-sm"></td>
-                                        <td><input type="number" name="varMinimun" id="varMinimun" class="form-control form-control-sm"></td>
-                                        <td><input type="number" name="varQty" id="varQty" class="form-control form-control-sm"></td>
-                                        <td>
-                                            <select class="form-control" name="varStatus" id="varStatus">
-                                                <option selected>Choose</option>
-                                                <option></option>
-                                            </select>
-                                        </td>
-                                        <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
-                                    </tr>
-                            </table>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger btn-sm"
-                                    data-dismiss="modal">Cancel</button>
-                                <button class="btn btn-success btn-sm"
-                                    type="submit">Update</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-<!--End of Modal "Edit Stock Item"-->
-
-<!--Start of Modal "Delete Stock Item"-->
-        <div class="modal fade" id="deleteStock" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Delete Stock Item</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form id="confirmDelete">
-                        <div class="modal-body">
-                            <h6 id="deleteTableCode"></h6>
-                            <p>Are you sure you want to delete this stock item?</p>
-                            <input type="text" name="" hidden="hidden">
-                            <div>         
-                                Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm">               
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-<!--End of Modal "Delete Stock Item"-->
-
-   
-</div>
-</div>
-</div>
-</div>
+    </div>
 </div>
 
 <!--   Core JS Files   -->
@@ -279,90 +317,91 @@
 var inventory = <?= json_encode($inventory)?>;
 var lastIndex = 0;
 var rowsPerPage = inventory.stocks.length;
-$(document).ready(function() {
-    $("#addBtn").on('click',function(){
+$(document).ready(function(){
+    $("#addBtn").on('click', function() {
         $("#newStock form")[0].reset();
     });
     setTableData();
-    $("#formAdd").on('submit', function(event){
-        event.preventDefault();
-        var name = $(this).find("input[name='stockName']").val();
-        var qty = $(this).find("input[name='stockQty']").val();
-        var unit = $(this).find("input[name='stockUnit']").val();
-        var min = $(this).find("input[name='stockMin']").val();
-        var category = $(this).find("select[name='categoryName']").val();
-        var status = $(this).find("select[name='stockStatus']").val();
-        $.ajax({
-            url : "<?= site_url("admin/inventory/add")?>",
-            method : "post",
-            data : {
-                stockName : name,
-                stockQty : qty,
-                stockUnit : unit,
-                stockMin : min,
-                categoryName : category,
-                stockStatus : status
-            },
-            dataType: "json",
-            beforeSend : function(){
-                console.log(name, qty, unit, min, category, status);
-            },
-            success: function(data){
-                console.log(data);
-                inventory = data;
-                lastIndex = 0;
-                setTableData();
-            },
-            error: function(response, setting, error){
-                console.log(response.responseText);
-                console.log(error);
-            },
-            complete: function(){
-                $("#newStock").modal("hide");
-            }
-        });
-    });
-    $("#formEdit").on('submit', function(event){
-        event.preventDefault();
-        var ID = $(this).find("input[name='stockID']").val();
-        var name = $(this).find("input[name='stockName']").val();
-        var qty = $(this).find("input[name='stockQty']").val();
-        var unit = $(this).find("input[name='stockUnit']").val();
-        var min = $(this).find("input[name='stockMin']").val();
-        var category = $(this).find("select[name='categoryName']").val();
-        var status = $(this).find("select[name='stockStatus']").val();
-        console.log(ID, name, qty, unit, min, category, status);
-        $.ajax({
-            url : "<?= site_url("admin/inventory/edit")?>",
-            method : "post",
-            data : {
-                stockID : ID,
-                stockName : name,
-                stockQty : qty,
-                stockUnit : unit,
-                stockMin : min,
-                categoryName : category,
-                stockStatus : status
-            },
-            dataType: "json",
-            beforeSend : function(){
-                console.log($(this).attr("action"),ID, name, qty, unit, min, category, status);
-            },
-            success: function(data){
-                console.log(data);
-                inventory = data;
-                lastIndex = 0;
-                setTableData();
-            },
-            error: function(response, setting, error){
-                console.log(response.responseText);
-                console.log(error);
-            },
-            complete: function(){
-                $("#editStock").modal("hide");
-            }
-        });
-    });
+    // $("#formAdd").on('submit', function(event) {
+    //     event.preventDefault();
+    //     var name = $(this).find("input[name='stockName']").val();
+    //     var qty = $(this).find("input[name='stockQty']").val();
+    //     var unit = $(this).find("input[name='stockUnit']").val();
+    //     var min = $(this).find("input[name='stockMin']").val();
+    //     var category = $(this).find("select[name='categoryName']").val();
+    //     var status = $(this).find("select[name='stockStatus']").val();
+    //     $.ajax({
+    //         url: "<?= site_url("admin/inventory/add")?>",
+    //         method: "post",
+    //         data: {
+    //             stockName: name,
+    //             stockQty: qty,
+    //             stockUnit: unit,
+    //             stockMin: min,
+    //             categoryName: category,
+    //             stockStatus: status
+    //         },
+    //         dataType: "json",
+    //         beforeSend: function() {
+    //             console.log(name, qty, unit, min, category, status);
+    //         },
+    //         success: function(data) {
+    //             console.log(data);
+    //             inventory = data;
+    //             lastIndex = 0;
+    //             setTableData();
+    //         },
+    //         error: function(response, setting, error) {
+    //             console.log(response.responseText);
+    //             console.log(error);
+    //         },
+    //         complete: function() {
+    //             $("#newStock").modal("hide");
+    //         }
+    //     });
+    // });
+    // $("#formEdit").on('submit', function(event) {
+    //     event.preventDefault();
+    //     var ID = $(this).find("input[name='stockID']").val();
+    //     var name = $(this).find("input[name='stockName']").val();
+    //     var qty = $(this).find("input[name='stockQty']").val();
+    //     var unit = $(this).find("input[name='stockUnit']").val();
+    //     var min = $(this).find("input[name='stockMin']").val();
+    //     var category = $(this).find("select[name='categoryName']").val();
+    //     var status = $(this).find("select[name='stockStatus']").val();
+    //     console.log(ID, name, qty, unit, min, category, status);
+    //     $.ajax({
+    //         url: "<?= site_url("admin/inventory/edit")?>",
+    //         method: "post",
+    //         data: {
+    //             stockID: ID,
+    //             stockName: name,
+    //             stockQty: qty,
+    //             stockUnit: unit,
+    //             stockMin: min,
+    //             categoryName: category,
+    //             stockStatus: status
+    //         },
+    //         dataType: "json",
+    //         beforeSend: function() {
+    //             console.log($(this).attr("action"), ID, name, qty, unit, min, category,
+    //                 status);
+    //         },
+    //         success: function(data) {
+    //             console.log(data);
+    //             inventory = data;
+    //             lastIndex = 0;
+    //             setTableData();
+    //         },
+    //         error: function(response, setting, error) {
+    //             console.log(response.responseText);
+    //             console.log(error);
+    //         },
+    //         complete: function() {
+    //             $("#editStock").modal("hide");
+    //         }
+    //     });
+    // });
     // $('#example').DataTable({
     //         "dom": ' fBrtip',
     //         "lengthChange": false,
@@ -449,76 +488,102 @@ $(document).ready(function() {
     // });
 });
 
-function setTableData(){
-    var count = 0 ;
-    //set modal categories
-    $("select[name='categoryName']").append(`
+function setTableData() {
+    var count = 0;
+    //Set Modals Stock Category Select elements' options
+    $("select[name='stockCategory']").first().siblings().remove();
+    $("select[name='stockCategory']").append(`
     ${inventory.categories.length === 0 ? "" : inventory.categories.map(category => {
-        return `<option value="${category.category_id}">${category.category_name}</option>`
+        return `<option value="${category.ctID}">${category.ctName}</option>`
     }).join('')}`);
 
-    if($("#stockTable > tbody").children().length === 0){
-        for(lastIndex; lastIndex < inventory.stocks.length ; lastIndex++){
-            if(count < rowsPerPage){
+    //Populate Stock Table
+    if ($("#stockTable > tbody").children().length === 0) {
+        for (lastIndex; lastIndex < inventory.stocks.length; lastIndex++) {
+            if (count < rowsPerPage) {
                 appendRow(inventory.stocks[lastIndex]);
-                // appendAccordion();
+                appendAccordion(inventory.variances.filter(variance => variance.stID === inventory.stocks[lastIndex].stID));
             }
         }
-        $(".editBtn").on("click",function(){
+        //Set accordion icon event to show accordion
+        $(".accordionBtn").on('click',function(){
+            if($(this).closest("tr").next(".accordion").css("display") == 'none'){
+                $(this).closest("tr").next(".accordion").css("display","table-row");
+                $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
+            }else{
+                $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
+                $(this).closest("tr").next(".accordion").hide("slow");
+            }
+        });
+        $(".editBtn").on("click", function() {
             $("#editStock form")[0].reset();
             var stockID = $(this).closest("tr").attr("data-id");
             setEditModal($("#editStock"), inventory.stocks.filter(item => item.stock_id === stockID)[0]);
         });
-    }else{
+    } else {
         $("#stockTable > tbody").empty();
     }
 }
-function appendRow(stock){
-    var row = `
-    <tr data-id="${stock.stock_id}">
+
+function appendRow(stock) {
+    var nullVal = false;
+    var row = `${stock.stID == null ? nullVal = true : `
+    <tr data-id="${stock.stID}">
         <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png"
                 style="height:15px;width:15px" /></td>
         <td>${stock.stName}</td>
-        <td>${stock.stqty}</td>
-        <td>${stock.stock_minimum}</td>
         <td>${stock.ctName}</td>
+        <td>${stock.stQty}</td>
+        <td>${stock.stType}</td>
         <td>${stock.stStatus}</td>
         <td>
             <button class="editBtn btn btn-primary btn-sm" data-toggle="modal"
                 data-target="#editStock">Edit</button>
-            <!--Delete button-->
             <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"
                 data-target="#deleteStock">Delete</button>
         </td>
-    </tr>`;
-    $("#stockTable > tbody").append(row);
+    </tr>`}`;
+    if(nullVal){
+        $("#note").text("No stock items recorded!");
+    }else{
+        $("#note").text("");
+        $("#stockTable > tbody").append(row);
+    }
 }
-function appendAccordion(card){
+
+function appendAccordion(variances) {
     var row = `
-    <tr>
+    <tr class="accordion" style="display:none">
         <td colspan="7">
-            <div style="margin:1% 4%;overflow:auto">
+            <div style="margin:1% 4%;overflow:auto;display:none">
                 <div>
                     <div>Beginning Inventory: <span><span></div>
-                    <span>Variance</span>
+                    <span>Variances</span>
                     <table class="table table-bordered dt-responsive nowrap">
                         <thead style="background:white">
                             <tr>
+                                <th>Name</th>
                                 <th>Unit</th>
                                 <th>Size</th>
+                                <th>Beginning Qty</th>
                                 <th>Minimum Qty</th>
                                 <th>Qty</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            ${variances.length === 0 ? "No item variances" : variances.map(variance => {
+                                return `
+                                <tr>
+                                    <td>${variance.vName}</td>
+                                    <td>${variance.vUnit}</td>
+                                    <td>${variance.vSize}</td>
+                                    <td>${variance.bQty}</td>
+                                    <td>${variance.vMin}</td>
+                                    <td>${variance.vQty}</td>
+                                    <td>${variance.vStatus}</td>
+                                </tr>`;
+                            }).join('')}
                         </tbody>
                     </table>
                 </div>
@@ -583,16 +648,15 @@ function appendAccordion(card){
         </td>
     </tr>
     `;
-    
 }
-function setEditModal(modal, data){
+
+function setEditModal(modal, data) {
     modal.find("input[name='stockID']").val(data.stock_id);
     modal.find("input[name='stockName']").val(data.stock_name);
     modal.find("input[name='stockQty']").val(data.stock_quantity);
     modal.find("input[name='stockUnit']").val(data.stock_unit);
     modal.find("input[name='stockMin']").val(data.stock_minimum);
-    modal.find("select[name='categoryName']").find(`option[value=${data.category_id}]`).attr("selected","selected");
-    modal.find("select[name='stockStatus']").find(`option[value='${data.stock_status}']`).attr("selected","selected");
+    modal.find("select[name='categoryName']").find(`option[value=${data.category_id}]`).attr("selected", "selected");
+    modal.find("select[name='stockStatus']").find(`option[value='${data.stock_status}']`).attr("selected", "selected");
 }
-
 </script>

@@ -42,7 +42,7 @@ function viewAccountsJs(){
     }
     function viewInventory($error = null){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $data['title'] = "Inventory";
+            $data['title'] = "Admin Stock Items";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $data['inventory'] = array(
@@ -53,7 +53,6 @@ function viewAccountsJs(){
             );
             $data['category'] = $this->adminmodel->get_stockcategories();
             $this->load->view('admin/adminInventory',$data);
-            // $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
