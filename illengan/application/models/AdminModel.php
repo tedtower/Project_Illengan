@@ -37,7 +37,7 @@ class AdminModel extends CI_Model{
         $query1 = "select ao_id from `addons` where ao_name = ? ";
         $ao_id = $this->db->query($query1,array($ao_name));
         foreach($ao_id->result_array() AS $row) {
-            $query = "insert into spoilage (s_id, s_type, s_qty, s_date, date_recorded, remarks) values (NULL,?,?,?,?,?)";
+            $query  = "insert into spoilage (s_id, s_type, s_qty, s_date, date_recorded, remarks) values (NULL,?,?,?,?,?)";
             if($this->db->query($query,array($s_type,$s_qty,$s_date,$date_recorded,$remarks))){ 
                 $query = "insert into ao_spoil values (?,?)";
                 return $this->db->query($query,array($this->db->insert_id(),$row['ao_id']));
@@ -82,18 +82,9 @@ class AdminModel extends CI_Model{
         }
         return true;
     }
-    function add_promo($s_type,$mName,$s_qty,$s_date,$date_recorded,$remarks){
-        $query1 = "select mID from `menu` where mName = ? ";
-        $mID = $this->db->query($query1,array($mName));
-        foreach($mID->result_array() AS $row) {
-            $query = "insert into spoilage (s_id, s_type, s_qty, s_date, date_recorded, remarks) values (NULL,?,?,?,?,?)";
-            if($this->db->query($query,array($s_type,$s_qty,$s_date,$date_recorded,$remarks))){ 
-                $query = "insert into menuspoil values (?,?)";
-                return $this->db->query($query,array($this->db->insert_id(),$row['mID']));
-            }else{
-                return false;
-            }
-        }
+    function add_promo($pmName, $pmStartDate, $pmEndDate){
+        $query = "insert into promos (pmName, pmStartDate, pmEndDate) values (?,?,?)";
+        return $this->db->query($query,array($pmName, $pmStartDate, $pmEndDate));
     }
     
     

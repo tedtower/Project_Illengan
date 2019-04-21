@@ -33,7 +33,7 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addMenuCategory(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $superCategory = trim($this->input->post('super_category'));
             $category_name = trim($this->input->post('category_name'));
             $this->adminmodel->add_menucategory($category_name, $superCategory);
@@ -41,6 +41,27 @@ class AdminAdd extends CI_Controller{
         }else{
             redirect('login');
         }
+    }
+    function addPromo() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $pmName = $this->input->post('pmName');
+            $pmStartDate = $this->input->post('pmStartDate');
+            $pmEndDate = $this->input->post('pmEndDate');
+
+            $this->adminmodel->add_promo($pmName, $pmStartDate, $pmEndDate);
+            // var pmName = $('#pmName').val();
+            // var pmStartDate = $('#pmStartDate').val();
+            // var pmEndDate = $('#pmEndDate').val();
+            // var elective = $('#isElective').val();
+            // var fbName = $('#fbName').val();
+            // var menuName = $('#menu_name').val();
+            // var pcQty = $('#pcQty').val();
+            // var menuFB = $('#fb_item').val();
+            // var fbQty = $('#fbQty').val();
+        } else {
+            redirect('login');
+        }
+
     }
     function addStockItem(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
