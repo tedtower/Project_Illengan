@@ -54,6 +54,9 @@
 														<input type="date" name="transDate" id="transDate" class="form-control form-control-sm">
 													</div>
 												</div>
+												<!--Button to add row in the table-->
+												<a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Row</a>
+												<br><br>
 												<table class="menuSpoilageTable table table-sm table-borderless">
 													<!--Table containing the different input fields in adding AO spoilages -->
 													<thead class="thead-light">
