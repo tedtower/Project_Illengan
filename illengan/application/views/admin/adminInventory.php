@@ -522,6 +522,7 @@ function setTableData() {
         });
         $(".editBtn").on("click", function() {
             $("#editStock form")[0].reset();
+            $("#editStock .varianceTable > tbody").empty();
             var stockID = $(this).closest("tr").attr("data-id");
             setEditModal($("#editStock"), inventory.stocks.filter(item => item.stock_id === stockID)[0], inventory.variances.filter(variance => variance.stID === stockID));
         });
@@ -666,13 +667,13 @@ function setEditModal(modal, stock, variances) {
     variances.forEach(variance => {
         modal.find(".varianceTable > tbody").append(`
         <tr>
-            <td><input type="text" name="varUnit[]" value="${}"
+            <td><input type="text" name="varUnit[]" value="${variance.vUnit}"
                     class="form-control form-control-sm"></td>
-            <td><input type="text" name="varSize[]"
+            <td><input type="text" name="varSize[]" value="${variance.vSize}"
                     class="form-control form-control-sm"></td>
-            <td><input type="number" name="varMinimum[]"
+            <td><input type="number" name="varMinimum[]" value="${variance.vMin}"
                     class="form-control form-control-sm"></td>
-            <td><input type="number" name="varQty[]"
+            <td><input type="number" name="varQty[]" value="${variance.vQty}"
                     class="form-control form-control-sm"></td>
             <td>
                 <select class="form-control" name="varStatus[]">
@@ -685,9 +686,8 @@ function setEditModal(modal, stock, variances) {
                     src="/assets/media/admin/error.png"
                     style="width:20px;height:20px"></td>
         </tr>
-        `);        
+        `);
+        modal.find("select[name='varStatus[]']").last().find(`option[value='${variance.vStatus}']`).attr("selected","selected");       
     });
-    // modal.find("select[name='categoryName']").find(`option[value=${data.category_id}]`).attr("selected", "selected");
-    // modal.find("select[name='stockStatus']").find(`option[value='${data.stock_status}']`).attr("selected", "selected");
 }
 </script>
