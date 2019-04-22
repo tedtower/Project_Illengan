@@ -132,7 +132,7 @@
                                         <th>Item Name</th>
                                         <th style="width:15%">Unit</th>
                                         <th style="width:15%">Price</th>
-                                        <th style="width:35%">>Variance</th>
+                                        <th style="width:35%">Variance</th>
                                         <th style="width:4%"></th>
                                     </tr>
                                 </thead>
@@ -230,7 +230,7 @@
                                         <th>Item Name</th>
                                         <th style="width:15%">Unit</th>
                                         <th style="width:15%">Price</th>
-                                        <th style="width:35%">>Variance</th>
+                                        <th style="width:35%">Variance</th>
                                         <th style="width:4%"></th>
                                     </tr>
                                 </thead>

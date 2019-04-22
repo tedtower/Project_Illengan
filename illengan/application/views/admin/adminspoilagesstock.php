@@ -21,9 +21,9 @@
 								<thead>
 									<th></th>
 									<th>Code</th>
-									<th>Description</th>
+									<th>Item Name</th>
 									<th>Quantity</th>
-									<th>Damage date</th>
+									<th>Date Spoiled</th>
 									<th>Date Recorded</th>
 									<th>Operations</th>
 								</thead>
@@ -56,10 +56,11 @@
 												</div>
 												<!--Add Stock Item-->
 												<!--Button to add row in the table-->
-												<a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Row</a>
+												<!--Button to add launce the brochure modal-->
+												<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#brochureSS" data-original-title style="margin:0" id="addStockSpoilage">Add Spoilage Items</a>
 												<br><br>
 												<table class="stockSpoilageTable table table-sm table-borderless">
-													<!--Table containing the different input fields in adding AO spoilages -->
+													<!--Table containing the different input fields in adding stock spoilages -->
 													<thead class="thead-light">
 														<tr>
 															<th>Name</th>
@@ -89,6 +90,35 @@
 							</div>
 							<!--End of Modal "Add Stock Spoilage"-->
 
+							<!--Start of Brochure Modal"-->
+                            <div class="modal fade bd-example-modal" id="brochureSS" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background:rgba(0, 0, 0, 0.3)">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Select Variance</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form id="formAdd" action="<?= site_url('admin/stock/spoilages/add')?>" method="post" accept-charset="utf-8">
+                                            <div class="modal-body">
+                                                <div style="margin:1% 3%">
+                                                <!--checkboxes-->
+                                                    <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 1</label>
+													<label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 2</label>
+													<label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 3</label>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                                    <button class="btn btn-success btn-sm" type="submit">Ok</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        <!--End of Brochure Modal"-->
+
 							<!--Delete Confirmation Box-->
 							<div class="modal fade" id="deleteSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 								<div class="modal-dialog modal-dialog-centered" role="document">
@@ -104,6 +134,9 @@
 												<h6 id="deleteTableCode"></h6>
 												<p>Are you sure you want to delete the selected stock spoilages?</p>
 												<input type="text" name="tableCode" hidden="hidden">
+												<div>
+													Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm">
+												</div>
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>

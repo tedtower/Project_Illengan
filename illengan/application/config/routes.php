@@ -71,7 +71,6 @@ $route['admin/sources'] = "adminview/viewsources";
 $route['admin/accounts'] = "adminview/viewaccounts";
 $route['admin/inventory'] = "adminview/viewinventory";
 $route['admin/purchaseorders'] = "adminview/viewpurchaseorders";
-$route['admin/transactions'] = "adminview/viewtransactions";
 $route['admin/purchaseorder'] = "adminview/viewPurchaseOrder";
 $route['admin/spoilages/menu/add'] ="adminview/viewInsertSpoilageMenu";
 $route['admin/spoilages/stock/add'] ="adminview/viewInsertSpoilageStock";
@@ -83,7 +82,10 @@ $route['admin/addons/spoilages'] = "adminview/viewspoilagesaddons";
 $route['admin/log/stocks'] = "adminview/viewLogStock";
 $route['admin/log/activity'] = "adminview/viewActivityLog";
 $route['admin/consumption'] = "adminview/viewConsumptions";
-$route['admin/returns'] = "adminview/viewReturns";
+$route['admin/transactions'] = "adminview/viewalltransactions";
+$route['admin/transactions/delivery'] = "adminview/viewdeliverytransactions";
+$route['admin/transactions/purchase'] = "adminview/viewpurchasetransactions";
+$route['admin/transactions/return'] = "adminview/viewreturntransactions";
 //End Viewing Routes
 
 //Not Sure Routes
@@ -104,6 +106,7 @@ $route['admin/stock/spoilages/add'] = "adminadd/addspoilagesstock";
 $route['admin/menu/spoilages/add'] = "adminadd/addspoilagesmenu";
 $route['admin/sources/add'] = "adminadd/addsource";
 $route['admin/returns/add'] = "adminadd/addreturns";
+$route['admin/promos/add'] = "adminadd/addPromo";
 
 //End Admin Add Routes ------------------------------------------
 

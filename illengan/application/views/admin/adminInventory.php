@@ -79,8 +79,9 @@
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Category</span>
                                                 </div>
-                                                <select class="form-control" name="stockCategory" id="stockCategory">
+                                                <select class="form-control">
                                                     <option value="" selected>Choose</option>
+                                                    <option value=""></option>
                                                 </select>
                                             </div>
                                             <!--Status-->
@@ -90,7 +91,7 @@
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Status</span>
                                                 </div>
-                                                <select class="form-control" name="stockStatus" id="stockStatus">
+                                                <select class="form-control">
                                                     <option value="" selected>Choose</option>
                                                     <option value="available">Available</option>
                                                     <option value="unavailable">Unavailable</option>
@@ -364,132 +365,6 @@ $(document).ready(function() {
             }
         });
     });
-    // $("#editStock form").on('submit', function(event) {
-    //     event.preventDefault();
-    //     var ID = $(this).find("input[name='stockID']").val();
-    //     var name = $(this).find("input[name='stockName']").val();
-    //     var qty = $(this).find("input[name='stockQty']").val();
-    //     var unit = $(this).find("input[name='stockUnit']").val();
-    //     var min = $(this).find("input[name='stockMin']").val();
-    //     var category = $(this).find("select[name='categoryName']").val();
-    //     var status = $(this).find("select[name='stockStatus']").val();
-    //     console.log(ID, name, qty, unit, min, category, status);
-    //     $.ajax({
-    //         url: "<?= site_url("admin/inventory/edit")?>",
-    //         method: "post",
-    //         data: {
-    //             stockID: ID,
-    //             stockName: name,
-    //             stockQty: qty,
-    //             stockUnit: unit,
-    //             stockMin: min,
-    //             categoryName: category,
-    //             stockStatus: status
-    //         },
-    //         dataType: "json",
-    //         beforeSend: function() {
-    //             console.log($(this).attr("action"), ID, name, qty, unit, min, category,
-    //                 status);
-    //         },
-    //         success: function(data) {
-    //             console.log(data);
-    //             inventory = data;
-    //             lastIndex = 0;
-    //             setTableData();
-    //         },
-    //         error: function(response, setting, error) {
-    //             console.log(response.responseText);
-    //             console.log(error);
-    //         },
-    //         complete: function() {
-    //             $("#editStock").modal("hide");
-    //         }
-    //     });
-    // });
-    // $('#example').DataTable({
-    //         "dom": ' fBrtip',
-    //         "lengthChange": false,
-    //         "info": true,
-    //         buttons: [{
-    //                 "extend": 'excel',
-    //                 "text": '<i class="fa fa-file-excel-o"></i> CSV',
-    //                 "className": 'btn btn-success btn-xs',
-    //                 exportOptions: {
-    //                     columns: [0, 1, 2, 3, 4, 5]
-    //                 }
-    //             },
-
-    //             "extend": 'pdf',
-    //             "text": '<i class="fa fa-file-pdf-o"></i> PDF',
-    //             "className": 'btn btn-danger btn-xs',
-    //             "orientation": 'portrait',
-    //             "title": 'Il-Lengan Inventory',
-    //             "download": 'open',
-
-    //             "messageBottom":
-    //             "\n \n \n \n \n Prepared by:  <?php //echo $object->u_fname  . ' ' . $object->u_lname; ?>",
-    //             styles: {
-    //                 "messageBottom": {
-    //                     bold: true,
-    //                     fontSize: 15
-    //                 }
-    //             },
-    //             "exportOptions": {
-    //                 columns: [0, 1, 2, 3, 4, 5],
-
-    //             },
-
-    //             "header": true,
-    //             customize: function(doc) {
-    //                 var now = new Date();
-    //                 var jsDate = now.getDate() + '-' + (now.getMonth() + 1) + '-' + now
-    //                     .getFullYear();
-    //                 var logo = 'data:assets/img/logo.png';
-    //                 doc.content.splice(0, 1, {
-    //                     text: [{
-    //                         text: 'Il-Lengan Cafe.\n',
-    //                         bold: true,
-    //                         fontSize: 15
-    //                     }, {
-    //                         text: ' \n',
-    //                         bold: true,
-    //                         fontSize: 11
-    //                     }, {
-    //                         text: '',
-    //                         bold: true,
-    //                         fontSize: 11
-    //                     }],
-    //                     margin: [0, 0, 0, 20],
-    //                     alignment: 'center',
-    //                     image: logo
-    //                 });
-    //                 doc.content[1].table.widths = ['14%', '14%', '20%', '24%', '14%', '14%'];
-    //                 doc.pageMargins = [40, 40, 40, 40];
-    //                 doc['footer'] = (function(page, pages) {
-    //                     return {
-    //                         columns: [{
-    //                                 alignment: 'left',
-    //                                 text: ['Date Downloaded: ', {
-    //                                     text: jsDate.toString()
-    //                                 }]
-    //                             },
-    //                             {
-    //                                 alignment: 'right',
-    //                                 text: ['page ', {
-    //                                     text: page.toString()
-    //                                 }, ' of ', {
-    //                                     text: pages.toString()
-    //                                 }]
-    //                             }
-    //                         ],
-    //                         margin: 20
-    //                     }
-    //                 });
-    //             }
-
-    //         }
-    //     ]
-    // });
 });
 
 function setTableData() {

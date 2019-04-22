@@ -24,7 +24,7 @@
 
                                 <!--Add button-->
                                 <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addPO"
-                                    data-original-title style="float: left" id="addPOBtn">Add Purchase Order</a>
+                                    data-original-title style="margin:0" id="addPOBtn">Add Purchase Order</a>
                                 <br>
                                 <br>
                                 <!--Start of Table-->
@@ -53,10 +53,10 @@
                                             <td></td>
                                             <td>
                                                 <button class="editBtn btn btn-primary btn-sm" data-toggle="modal" data-target="#editPO">Edit</button>
-                                                <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal" data-target="">Delete</button>
+                                                <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal" data-target="#delete">Delete</button>
                                             </td>
                                         </tr>
-
+                                        
                                         <tr>
                                             <td colspan="8">
                                                 <div style="margin:1% 3%">
@@ -111,7 +111,136 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="inputGroup-sizing-sm"
                                                                     style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                    Source</span>
+                                                                    Supplier</span>
+                                                            </div>
+                                                            <select class="form-control form-control-sm"
+                                                                name="poSupplier" id="poSupplier">
+                                                                <option value="" selected>Choose</option>
+                                                            </select>
+                                                        </div>
+                                                        <!--Purchase date-->
+                                                        <div class="input-group mb-3 col">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                                    style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                    Purchase Date</span>
+                                                            </div>
+                                                            <input type="date" name="poDate" id="poDate"
+                                                                class="form-control form-control-sm">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-row">
+                                                        <!--Container of receipt no. and transaction date-->
+                                                        <!--Status-->
+                                                        <div class="input-group mb-3 col">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                                    style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                    Status</span>
+                                                            </div>
+                                                            <select class="form-control form-control-sm" name="status"
+                                                                id="status">
+                                                                <option selected="selected">Choose</option>
+                                                                <option value="pending">Pending</option>
+                                                                <option value="delivered">Delivered</option>
+                                                            </select>
+                                                        </div>
+                                                        <!--Delivery date-->
+                                                        <div class="input-group mb-3 col">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                                    style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                    Delivery Date</span>
+                                                            </div>
+                                                            <input type="date" name="edDate" id="edDate"
+                                                                class="form-control form-control-sm">
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Remarks-->
+                                                    <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                                    style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                    Remarks</span>
+                                                            </div>
+                                                            <textarea class="form-control form-control-sm"></textarea>
+                                                        </div>
+                                                    <!--Button to add row in the table-->
+                                                    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#brochure" data-original-title style="margin:0" id="addTransaction">Add Items</a>
+                                                    <br><br>
+                                                    <!--Table containing the different input fields in adding PO items -->
+                                                    <table class="poItemsTable table table-sm table-borderless">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Item Name</th>
+                                                                <th width="15%">Unit</th>
+                                                                <th width="10%">Qty</th>
+                                                                <th width="15%">Price</th>
+                                                                <th width="15%">Subtotal</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <input type="hidden" name="">
+                                                                <td><input type="text" name="itemName"
+                                                                        class="form-control form-control-sm"></td>
+                                                                <td><input type="number" name="itemQty"
+                                                                        class="form-control form-control-sm"></td>
+                                                                <td><input type="text" name="itemUnit"
+                                                                        class="form-control form-control-sm"></td>
+                                                                <td><input type="number" name="itemPrice"
+                                                                        class="form-control form-control-sm"></td>
+                                                                <td><input type="number" name="itemSubtotal"
+                                                                        class="form-control form-control-sm"></td>
+                                                                <td><img class="exitBtn" id="exitBtn"
+                                                                        src="/assets/media/admin/error.png"
+                                                                        style="width:20px;height:20px"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                    <!--Total of the trans items-->
+                                                    <span>Total: &#8369;<span class="total"> 0</span></span>
+                                                    <!--Modal Footer-->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger btn-sm"
+                                                            data-dismiss="modal">Cancel</button>
+                                                        <button class="btn btn-success btn-sm"
+                                                            type="submit">Add</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End of Modal "Add Purchase Order"-->
+
+                                <!--Start of Modal "Add Purchase Order"-->
+                                 <div class="modal fade bd-example-modal-lg" id="editPO" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Update Purchase Order</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <!--Modal Content-->
+                                            <form id="formAdd" action="<?= site_url('admin/purchaseorder/add')?>"
+                                                method="post" accept-charset="utf-8">
+                                                <div class="modal-body">
+                                                    <div class="form-row">
+                                                        <!--Container of Source. and Purchase date-->
+                                                        <!--Source-->
+                                                        <div class="input-group mb-3 col">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                                    style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                    Supplier</span>
                                                             </div>
                                                             <select class="form-control form-control-sm"
                                                                 name="poSupplier" id="poSupplier">
@@ -168,8 +297,7 @@
                                                             <textarea class="form-control form-control-sm"></textarea>
                                                         </div>
                                                     <!--Button to add row in the table-->
-                                                    <button type="button"
-                                                        class="addPoItemBtn btn btn-primary btn-sm">Add PO Item</button>
+                                                    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#brochure" data-original-title style="margin:0" id="addTransaction">Add Items</a>
                                                     <br><br>
                                                     <!--Table containing the different input fields in adding PO items -->
                                                     <table class="poItemsTable table table-sm table-borderless">
@@ -210,141 +338,75 @@
                                                         <button type="button" class="btn btn-danger btn-sm"
                                                             data-dismiss="modal">Cancel</button>
                                                         <button class="btn btn-success btn-sm"
-                                                            type="submit">Add</button>
+                                                            type="submit">Update</button>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
-                                <!--End of Modal "Add Purchase Order"-->
+                                <!--End of Modal "Edit Purchase Order"-->
 
-                                <!--Start of Modal "Edit Purchase Order"-->
-                                <div class="modal fade bd-example-modal-lg" id="editPO" tabindex="-1" role="dialog"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg" role="document">
+                             <!--Start of Brochure Modal"-->
+                                <div class="modal fade bd-example-modal" id="brochure" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background:rgba(0, 0, 0, 0.3)">
+                                    <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Edit Purchase Order</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
+                                                <h5 class="modal-title" id="exampleModalLabel">Select Stock Item</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <!--Modal Content-->
-                                            <form id="formEdit" action="<?= site_url('admin/purchaseorder/edit')?>"
-                                                method="post" accept-charset="utf-8">
-                                                <input type="text" name="poID" hidden="hidden">
+                                            <form id="formAdd" action="<?= site_url('admin/transactions/add')?>" method="post" accept-charset="utf-8">
                                                 <div class="modal-body">
-                                                    <div class="form-row">
-                                                        <!--Container of Source. and Purchase date-->
-                                                        <!--Source-->
-                                                        <div class="input-group mb-3 col">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                    style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                    Source</span>
-                                                            </div>
-                                                            <select class="form-control form-control-sm"
-                                                                name="poSupplier" id="poSupplier">
-                                                                <option value="" selected>Choose</option>
-                                                            </select>
-                                                        </div>
-                                                        <!--Purchase date-->
-                                                        <div class="input-group mb-3 col">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                    style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                    Purchase Date</span>
-                                                            </div>
-                                                            <input type="date" name="poDate" id="poDate"
-                                                                class="form-control form-control-sm">
-                                                        </div>
+                                                    <div style="margin:1% 3%">
+                                                    <!--checkboxes-->
+                                                        <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 1</label>
+                                                        <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 2</label>
                                                     </div>
-
-                                                    <div class="form-row">
-                                                        <!--Container of receipt no. and transaction date-->
-                                                        <!--Status-->
-                                                        <div class="input-group mb-3 col">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                    style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                    Status</span>
-                                                            </div>
-                                                            <select class="form-control form-control-sm" name="status"
-                                                                id="status">
-                                                                <option value="pending" selected="selected">Pending
-                                                                </option>
-                                                                <option value="delivered">Delivered</option>
-                                                            </select>
-                                                        </div>
-                                                        <!--Delivery date-->
-                                                        <div class="input-group mb-3 col">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                    style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                    Delivery Date</span>
-                                                            </div>
-                                                            <input type="date" name="edDate" id="edDate"
-                                                                class="form-control form-control-sm">
-                                                        </div>
-                                                    </div>
-
-                                                    <!--Transaction Items-->
-                                                    <!--Button to add row in the table-->
-                                                    <button type="button"
-                                                        class="addPoItemBtn btn btn-primary btn-sm">Add PO Item</button>
-                                                    <br><br>
-                                                    <!--Table containing the different input fields in adding PO items -->
-                                                    <table class="poItemsTable table table-sm table-borderless">
-                                                        <thead class="thead-light">
-                                                            <tr>
-                                                                <th>Name</th>
-                                                                <th width="10%">Qty</th>
-                                                                <th width="15%">Unit</th>
-                                                                <th width="15%">Price</th>
-                                                                <th width="15%">Subtotal</th>
-                                                                <th>Remarks</th>
-                                                                <th></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td><input type="text" name="itemName[]"
-                                                                        class="form-control form-control-sm"></td>
-                                                                <td><input type="number" name="itemQty[]"
-                                                                        class="form-control form-control-sm"></td>
-                                                                <td><input type="text" name="itemUnit[]"
-                                                                        class="form-control form-control-sm"></td>
-                                                                <td><input type="number" name="itemPrice[]"
-                                                                        class="form-control form-control-sm"></td>
-                                                                <td><input type="number" name="itemSubtotal[]"
-                                                                        class="form-control form-control-sm"></td>
-                                                                <td><textarea type="text" name="remarks[]"
-                                                                        class="form-control form-control-sm"></textarea>
-                                                                </td>
-                                                                <td><img class="exitBtn"
-                                                                        src="/assets/media/admin/error.png"
-                                                                        style="width:20px;height:20px"></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-
-                                                    <!--Total of the trans items-->
-                                                    <span>Total: &#8369;<span class="total"> 0</span></span>
-                                                    <!--Modal Footer-->
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger btn-sm"
-                                                            data-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn-success btn-sm"
-                                                            type="submit">Edit</button>
-                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                                        <button class="btn btn-success btn-sm" type="submit">Ok</button>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
-                                <!--End of Modal "Add Purchase Order"-->
+                            <!--End of Brochure Modal"-->
+
+                            <!--Start of Modal "Delete Stock Item"-->
+                                <div class="modal fade" id="delete" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Delete Purchase Order</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form id="confirmDelete">
+                                                <div class="modal-body">
+                                                    <h6 id="deleteTableCode"></h6>
+                                                    <p>Are you sure you want to delete this item?</p>
+                                                    <input type="text" name="" hidden="hidden">
+                                                    <div>
+                                                        Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks"
+                                                            class="form-control form-control-sm">
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary btn-sm"
+                                                        data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            <!--End of Modal "Delete Stock Item"-->
                             </div>
                         </div>
                     </div>
