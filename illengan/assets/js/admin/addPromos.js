@@ -105,7 +105,9 @@ function addPromos() {
             data: {
                 pmName: pmName,
                 pmStartDate: pmStartDate,
-                pmEndDate: pmEndDate
+                pmEndDate: pmEndDate,
+                fbName: fbName,
+                isElective: elective
             },
             success: function(data) {
                 alert('Promo added');
