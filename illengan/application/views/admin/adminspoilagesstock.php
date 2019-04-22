@@ -134,6 +134,9 @@
 												<h6 id="deleteTableCode"></h6>
 												<p>Are you sure you want to delete the selected stock spoilages?</p>
 												<input type="text" name="tableCode" hidden="hidden">
+												<div>
+													Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm">
+												</div>
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
