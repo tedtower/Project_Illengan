@@ -64,35 +64,38 @@ class AdminAdd extends CI_Controller{
 
     }
     function addStockItem(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
-            $this->form_validation->set_rules('stockName','Stock Name','trim|required|alpha_numeric_spaces');
-            $this->form_validation->set_rules('stockQty','Stock Quantity','trim|required|numeric');
-            $this->form_validation->set_rules('stockUnit','Stock Unit','trim|required|alpha_numeric_spaces');
-            $this->form_validation->set_rules('stockMin','Minimum Quantity','trim|numeric');
-            $this->form_validation->set_rules('stockStatus','Stock Status','trim|required|alpha');
-            $this->form_validation->set_rules('categoryName','Stock Category','trim|required|numeric');
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $this->form_validation->set_rules('name','Stock Name','trim|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('type','Stock Type','trim|required|alpha');
+            $this->form_validation->set_rules('category','Stock Category','trim|required|alpha_numeric');
+            $this->form_validation->set_rules('status','Stock Status','trim|required|alpha');
             
             if($this->form_validation->run() == FALSE){
                 redirect("admin/inventory");
             }else{
-                $stockName = $this->input->post('stockName');
-                $stockQty = $this->input->post('stockQty');
-                $stockUnit = $this->input->post('stockUnit');
-                $stockMin = $this->input->post('stockMin');
-                $stockStatus = $this->input->post('stockStatus');
-                $categoryName = $this->input->post('categoryName');
-                if($this->adminmodel->add_stockItem($stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$categoryName)){
+                $stockName = $this->input->post('name');
+                $stockType = $this->input->post('type');
+                $stockCategory = $this->input->post('category');
+                $stockStatus = $this->input->post('status');
+                $stockVariance = json_decode($this->input->post('variances'),true);
+                if($this->adminmodel->add_stockItem($stockName,$stockType,$stockCategory,$stockStatus,$stockVariance)){
                     echo json_encode(array(
                         "stocks" => $this->adminmodel->get_stocks(),
-                        "categories" => $this->adminmodel->get_stockCategories()
+                        "categories" => $this->adminmodel->get_stockSubCategories(),
+                        "variances" => $this->adminmodel->get_stockVariance(),
+                        "expirations" => $this->adminmodel->get_stockExpiration()
                     ));
                 }else{
+                    // redirect("login");
+                    // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
                 }
             }
+        }else{
+            redirect("login");
         }
     }
     function addStockCategory(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $category_name = $this->input->get('category_name');
             $data['category'] = $this->adminmodel->add_stockcategory($category_name);
             $this->viewStockCategories();
@@ -101,7 +104,7 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addTable(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
             if($this->form_validation->run()){
                 $tableCode = trim($this->input->post('tableCode'));
@@ -118,7 +121,7 @@ class AdminAdd extends CI_Controller{
         }        
     }
     function addTransactions(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $receiptNo = trim($this->input->post('receiptNo'));
             $transDate = trim($this->input->post('transDate'));
             $source = trim($this->input->post('sourceName'));
@@ -144,7 +147,7 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addspoilagesaddons(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
 
             $s_type = $this->input->post("s_type");
@@ -162,7 +165,7 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addspoilagesmenu(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
 
             $s_type = $this->input->post("s_type");
             $menu_name =$this->input->post("menu_name");
@@ -179,7 +182,7 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addspoilagesstock(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
 
             $s_type = $this->input->get("s_type");
@@ -196,7 +199,7 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addSource(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
 
             $data = array(
                 'source_name' => $this->input->get('source_name'),

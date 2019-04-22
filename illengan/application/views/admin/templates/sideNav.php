@@ -13,9 +13,16 @@
             <ul class="collapse list-unstyled" id="homeSubmenu">
                 <li><a href="<?php echo base_url('admin/inventory')?>"><i class="far fa-boxes"></i> Stock Items</a></li>
                 <li><a href="<?php echo base_url('admin/purchaseorders')?>"><i class="far fa-conveyor-belt-alt"></i> Purchase Order</a></li>
-                <li><a href="<?php echo base_url('admin/transactions')?>"><i class="far fa-truck-loading"></i> Purchases/Deliveries</a></li>
+                <li>
+                    <a href="#Invoice" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="far fa-truck-loading"></i> Purchases/Deliveries</a>
+                    <ul  class="collapse list-unstyled" id="Invoice">
+                        <li><a href="<?php echo base_url('admin/transactions')?>"><span class="ml-4">All</span></a></li>
+                        <li><a href="<?php echo base_url('admin/transactions/delivery')?>"><span class="ml-4">Deliveries</span></a></li>
+                        <li><a href="<?php echo base_url('admin/transactions/purchase')?>"><span class="ml-4">Purchases</span></a></li>
+                        <li><a href="<?php echo base_url('admin/transactions/return')?>"><span class="ml-4">Returns</span></a></li>
+                    </ul>
+                </li>
                 <li><a href="<?= base_url('admin/consumption'); ?>"><i class="far fa-calendar-minus"></i> Consumption</a></li>
-                <li><a href="<?php echo base_url('admin/returns')?>"><i class="far fa-undo"></i> Returns</a></li>
                 <li><a href="<?php echo base_url('admin/stock/spoilages')?>"><i class="far fa-trash"></i> Spoilages</a></li>
             </ul>
         </li>

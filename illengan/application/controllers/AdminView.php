@@ -42,7 +42,7 @@ function viewAccountsJs(){
     }
     function viewInventory($error = null){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $data['title'] = "Inventory";
+            $data['title'] = "Admin Stock Items";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $data['inventory'] = array(
@@ -53,7 +53,6 @@ function viewAccountsJs(){
             );
             $data['category'] = $this->adminmodel->get_stockcategories();
             $this->load->view('admin/adminInventory',$data);
-            // $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
@@ -273,18 +272,59 @@ function viewSpoilagesStock(){
             redirect('login');
         }
     }
-    function viewTransactions(){
+    // function viewTransactions(){
+    //     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+    //         $data['title'] = "Transactions";
+    //         // $this->load->view('admin/templates/head');
+    //         // $this->load->view('admin/templates/sideNav');
+    //         $data['transactions'] = array(
+    //             "transaction" => $this->adminmodel->get_transactions(),
+    //             "transitem" => $this->adminmodel->get_transitems(),
+    //             "sources" => $this->adminmodel->get_sources()
+    //         );
+    //         $this->load->view('admin/adminAllTransactions',$data);
+    //         // $this->load->view('admin/templates/scripts');
+    //     }else{
+    //         redirect('login');
+    //     }
+    // }
+
+    function viewAllTransactions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $data['title'] = "Transactions";
-            // $this->load->view('admin/templates/head');
-            // $this->load->view('admin/templates/sideNav');
-            $data['transactions'] = array(
-                "transaction" => $this->adminmodel->get_transactions(),
-                "transitem" => $this->adminmodel->get_transitems(),
-                "sources" => $this->adminmodel->get_sources()
-            );
-            $this->load->view('admin/adminAllTransactions',$data);
-            // $this->load->view('admin/templates/scripts');
+            $data['title'] = "Transactions - All";
+            $this->load->view('admin/templates/head', $data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/adminTransactionsAll');
+        }else{
+            redirect('login');
+        }
+    }
+    function viewDeliveryTransactions(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['title'] = "Transactions - Deliveries";
+            $this->load->view('admin/templates/head', $data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/adminTransactionsDeliveries');
+        }else{
+            redirect('login');
+        }
+    }
+    function viewPurchaseTransactions(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['title'] = "Transactions - Purchases";
+            $this->load->view('admin/templates/head', $data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/adminTransactionsPurchases');
+        }else{
+            redirect('login');
+        }
+    }
+    function viewReturnTransactions(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['title'] = "Transactions - Returns";
+            $this->load->view('admin/templates/head', $data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/adminTransactionsReturns');
         }else{
             redirect('login');
         }
