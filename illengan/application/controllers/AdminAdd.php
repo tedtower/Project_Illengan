@@ -42,6 +42,27 @@ class AdminAdd extends CI_Controller{
             redirect('login');
         }
     }
+    function addPromo() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $pmName = $this->input->post('pmName');
+            $pmStartDate = $this->input->post('pmStartDate');
+            $pmEndDate = $this->input->post('pmEndDate');
+
+            $this->adminmodel->add_promo($pmName, $pmStartDate, $pmEndDate);
+            // var pmName = $('#pmName').val();
+            // var pmStartDate = $('#pmStartDate').val();
+            // var pmEndDate = $('#pmEndDate').val();
+            // var elective = $('#isElective').val();
+            // var fbName = $('#fbName').val();
+            // var menuName = $('#menu_name').val();
+            // var pcQty = $('#pcQty').val();
+            // var menuFB = $('#fb_item').val();
+            // var fbQty = $('#fbQty').val();
+        } else {
+            redirect('login');
+        }
+
+    }
     function addStockItem(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('name','Stock Name','trim|required|alpha_numeric_spaces');
