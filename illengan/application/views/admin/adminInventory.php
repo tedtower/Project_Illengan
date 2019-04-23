@@ -79,8 +79,9 @@
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Category</span>
                                                 </div>
-                                                <select class="form-control" name="stockCategory" id="stockCategory">
+                                                <select class="form-control">
                                                     <option value="" selected>Choose</option>
+                                                    <option value=""></option>
                                                 </select>
                                             </div>
                                             <!--Status-->
@@ -90,7 +91,7 @@
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Status</span>
                                                 </div>
-                                                <select class="form-control" name="stockStatus" id="stockStatus">
+                                                <select class="form-control">
                                                     <option value="" selected>Choose</option>
                                                     <option value="available">Available</option>
                                                     <option value="unavailable">Unavailable</option>
@@ -364,132 +365,6 @@ $(document).ready(function() {
             }
         });
     });
-    // $("#editStock form").on('submit', function(event) {
-    //     event.preventDefault();
-    //     var ID = $(this).find("input[name='stockID']").val();
-    //     var name = $(this).find("input[name='stockName']").val();
-    //     var qty = $(this).find("input[name='stockQty']").val();
-    //     var unit = $(this).find("input[name='stockUnit']").val();
-    //     var min = $(this).find("input[name='stockMin']").val();
-    //     var category = $(this).find("select[name='categoryName']").val();
-    //     var status = $(this).find("select[name='stockStatus']").val();
-    //     console.log(ID, name, qty, unit, min, category, status);
-    //     $.ajax({
-    //         url: "<?= site_url("admin/inventory/edit")?>",
-    //         method: "post",
-    //         data: {
-    //             stockID: ID,
-    //             stockName: name,
-    //             stockQty: qty,
-    //             stockUnit: unit,
-    //             stockMin: min,
-    //             categoryName: category,
-    //             stockStatus: status
-    //         },
-    //         dataType: "json",
-    //         beforeSend: function() {
-    //             console.log($(this).attr("action"), ID, name, qty, unit, min, category,
-    //                 status);
-    //         },
-    //         success: function(data) {
-    //             console.log(data);
-    //             inventory = data;
-    //             lastIndex = 0;
-    //             setTableData();
-    //         },
-    //         error: function(response, setting, error) {
-    //             console.log(response.responseText);
-    //             console.log(error);
-    //         },
-    //         complete: function() {
-    //             $("#editStock").modal("hide");
-    //         }
-    //     });
-    // });
-    // $('#example').DataTable({
-    //         "dom": ' fBrtip',
-    //         "lengthChange": false,
-    //         "info": true,
-    //         buttons: [{
-    //                 "extend": 'excel',
-    //                 "text": '<i class="fa fa-file-excel-o"></i> CSV',
-    //                 "className": 'btn btn-success btn-xs',
-    //                 exportOptions: {
-    //                     columns: [0, 1, 2, 3, 4, 5]
-    //                 }
-    //             },
-
-    //             "extend": 'pdf',
-    //             "text": '<i class="fa fa-file-pdf-o"></i> PDF',
-    //             "className": 'btn btn-danger btn-xs',
-    //             "orientation": 'portrait',
-    //             "title": 'Il-Lengan Inventory',
-    //             "download": 'open',
-
-    //             "messageBottom":
-    //             "\n \n \n \n \n Prepared by:  <?php //echo $object->u_fname  . ' ' . $object->u_lname; ?>",
-    //             styles: {
-    //                 "messageBottom": {
-    //                     bold: true,
-    //                     fontSize: 15
-    //                 }
-    //             },
-    //             "exportOptions": {
-    //                 columns: [0, 1, 2, 3, 4, 5],
-
-    //             },
-
-    //             "header": true,
-    //             customize: function(doc) {
-    //                 var now = new Date();
-    //                 var jsDate = now.getDate() + '-' + (now.getMonth() + 1) + '-' + now
-    //                     .getFullYear();
-    //                 var logo = 'data:assets/img/logo.png';
-    //                 doc.content.splice(0, 1, {
-    //                     text: [{
-    //                         text: 'Il-Lengan Cafe.\n',
-    //                         bold: true,
-    //                         fontSize: 15
-    //                     }, {
-    //                         text: ' \n',
-    //                         bold: true,
-    //                         fontSize: 11
-    //                     }, {
-    //                         text: '',
-    //                         bold: true,
-    //                         fontSize: 11
-    //                     }],
-    //                     margin: [0, 0, 0, 20],
-    //                     alignment: 'center',
-    //                     image: logo
-    //                 });
-    //                 doc.content[1].table.widths = ['14%', '14%', '20%', '24%', '14%', '14%'];
-    //                 doc.pageMargins = [40, 40, 40, 40];
-    //                 doc['footer'] = (function(page, pages) {
-    //                     return {
-    //                         columns: [{
-    //                                 alignment: 'left',
-    //                                 text: ['Date Downloaded: ', {
-    //                                     text: jsDate.toString()
-    //                                 }]
-    //                             },
-    //                             {
-    //                                 alignment: 'right',
-    //                                 text: ['page ', {
-    //                                     text: page.toString()
-    //                                 }, ' of ', {
-    //                                     text: pages.toString()
-    //                                 }]
-    //                             }
-    //                         ],
-    //                         margin: 20
-    //                     }
-    //                 });
-    //             }
-
-    //         }
-    //     ]
-    // });
 });
 
 function setTableData() {
@@ -522,6 +397,7 @@ function setTableData() {
         });
         $(".editBtn").on("click", function() {
             $("#editStock form")[0].reset();
+            $("#editStock .varianceTable > tbody").empty();
             var stockID = $(this).closest("tr").attr("data-id");
             setEditModal($("#editStock"), inventory.stocks.filter(item => item.stock_id === stockID)[0], inventory.variances.filter(variance => variance.stID === stockID));
         });
@@ -666,13 +542,13 @@ function setEditModal(modal, stock, variances) {
     variances.forEach(variance => {
         modal.find(".varianceTable > tbody").append(`
         <tr>
-            <td><input type="text" name="varUnit[]" value="${}"
+            <td><input type="text" name="varUnit[]" value="${variance.vUnit}"
                     class="form-control form-control-sm"></td>
-            <td><input type="text" name="varSize[]"
+            <td><input type="text" name="varSize[]" value="${variance.vSize}"
                     class="form-control form-control-sm"></td>
-            <td><input type="number" name="varMinimum[]"
+            <td><input type="number" name="varMinimum[]" value="${variance.vMin}"
                     class="form-control form-control-sm"></td>
-            <td><input type="number" name="varQty[]"
+            <td><input type="number" name="varQty[]" value="${variance.vQty}"
                     class="form-control form-control-sm"></td>
             <td>
                 <select class="form-control" name="varStatus[]">
@@ -685,9 +561,8 @@ function setEditModal(modal, stock, variances) {
                     src="/assets/media/admin/error.png"
                     style="width:20px;height:20px"></td>
         </tr>
-        `);        
+        `);
+        modal.find("select[name='varStatus[]']").last().find(`option[value='${variance.vStatus}']`).attr("selected","selected");       
     });
-    // modal.find("select[name='categoryName']").find(`option[value=${data.category_id}]`).attr("selected", "selected");
-    // modal.find("select[name='stockStatus']").find(`option[value='${data.stock_status}']`).attr("selected", "selected");
 }
 </script>
