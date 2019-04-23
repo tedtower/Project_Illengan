@@ -27,6 +27,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                        
                                             <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
                                             <td></td>
                                             <td></td>
@@ -298,68 +299,17 @@
 </div>
 </div>
 
-        <?php include_once('templates/scripts.php') ?>
+<?php include_once('templates/scripts.php') ?>
 
 <script>
-var suppliers = <?= json_encode()?>;
-    $(function(){
-        setTableData();
-    });
-    function setTableData(){
-        suppliers.supplier.forEach(element => {
-            
-        });
-        appendRow();
-        $(".accordionBtn").on('click', function(){
-            if($(this).closest("tr").next(".accordion").css("display") == 'none'){
-                $(this).closest("tr").next(".accordion").css("display","table-row");
+        //Set accordion icon event to show accordion
+        $(".accordionBtn").on('click', function() {
+            if ($(this).closest("tr").next(".accordion").css("display") == 'none') {
+                $(this).closest("tr").next(".accordion").css("display", "table-row");
                 $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
-            }else{
+            } else {
                 $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
                 $(this).closest("tr").next(".accordion").hide("slow");
             }
         });
-    }
-    function appendRow(){
-        var row = `
-        <tr data-id='${}'>
-            <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
-            <td>${}</td>
-            <td>${}09997090529</td>
-            <td>${}email</td>
-            <td>${}Active</td>
-            <td>
-                <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editSource" >Edit</button>
-                <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteSource">Delete</button>
-            </td>
-        </tr>`;
-    }
-    function setModalData(){
-    }
 </script>
-
-    <!-- <script>
-        $(document).ready(function() {
-            $('.delete_data').click(function() {
-                var id = $(this).attr("id");
-                if (confirm("Are you sure you want to delete this?")) {
-                    window.location = "<?php echo base_url(); ?>admin/sources/delete/" + id;
-                } else {
-                    return false;
-                }
-            });
-
-        function showEditModal(event) {
-            var row = event.target.parentElement.parentElement.parentElement;
-            document.getElementById('new_name').value = row.firstElementChild.innerHTML;
-            document.getElementById('new_contact').value = row.firstElementChild.nextElementSibling.innerHTML;
-            document.getElementById('new_email').value = row.firstElementChild.nextElementSibling.nextElementSibling
-                .innerHTML;
-            document.getElementById('new_status').value = row.firstElementChild.nextElementSibling.nextElementSibling
-                .nextElementSibling.innerHTML;
-            document.getElementById('source_id').value = event.target.getAttribute('data-id');
-        }
-    </script> -->
-</body>
-
-</html>

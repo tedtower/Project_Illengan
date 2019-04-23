@@ -46,7 +46,7 @@
         <!--Sales-->
         <li><a href="<?php echo base_url('admin/sales')?>"><i class="far fa-receipt"></i> Sales</a></li>
         <!--Sources-->
-        <li><a href="<?php echo base_url('admin/sources') ?>"><i class="far fa-user-tag"></i> Sources</a></li>
+        <li><a href="<?php echo base_url('admin/supplier') ?>"><i class="far fa-user-tag"></i> Sources</a></li>
         <!--Accounts-->
         <li><a href="<?php echo base_url('admin/accounts') ?>"><i class="far fa-users"></i> Accounts</a></li>
         <!--Tables-->
