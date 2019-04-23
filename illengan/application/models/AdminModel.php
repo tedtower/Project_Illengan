@@ -93,9 +93,21 @@ class AdminModel extends CI_Model{
         }
         return true;
     }
-    function add_promo($pmName, $pmStartDate, $pmEndDate){
-        $query = "insert into promos (pmName, pmStartDate, pmEndDate) values (?,?,?)";
-        return $this->db->query($query,array($pmName, $pmStartDate, $pmEndDate));
+    function add_promo($pmName, $pmStartDate, $pmEndDate, $fbName, $isElective, $prID, $pcType, $pcQty, $prIDfb, $fbQty){
+        $query = "insert into promos (pmID, pmName, pmStartDate, pmEndDate) values (NULL,?,?,?)";
+        if($this->db->query($query,array($pmName, $pmStartDate, $pmEndDate))) {
+            $query = "insert into freebies (pmID, fbName, isElective) values (?,?,?)";
+            $poID = $this->db->insert_id();
+            if($this->db->query($query,array($this->db->insert_id(), $fbName, $isElective))) {
+                $query = "insert into promoconstraint (pmID, prID, pcType, pcQty) values (?,?,?,?)";
+                if($this->db->query($query,array($poID, $prID, $pcType, $pcQty))) {
+                    $query1 = "select pmID from promos where pmName = ? ";
+                    $pmID2 = $this->db->query($query1,array($pmName));
+                    $query = "insert into menufreebie (pmID, prID, fbQty) values (?,?,?)";
+                    return $this->db->query($query,array($pmID2, $prIDfb, $fbQty));
+                }
+            }
+        }
     }
     
     

@@ -94,11 +94,13 @@ function addPromos() {
         var pcQty = $('#pcQty').val();
         var menuFB = $('#fb_item').val();
         var fbQty = $('#fbQty').val();
+        var pcType = 'f';
+        
 
         console.log('---------------------------------------------------');
         console.log(pmName + ' '+ pmStartDate+ ' '+pmEndDate);
         console.log(elective+' '+fbName)
-        console.log('constraints'+pcQty+' '+menuFB+' '+fbQty);
+        console.log('constraints'+pcQty+' '+menuFB+' '+fbQty+' menuwithFB '+menuName);
         $.ajax({
             type: 'POST',
             url: 'http://www.illengan.com/admin/promos/add',
@@ -107,7 +109,13 @@ function addPromos() {
                 pmStartDate: pmStartDate,
                 pmEndDate: pmEndDate,
                 fbName: fbName,
-                isElective: elective
+                isElective: elective,
+                prID: menuName,
+                pcType: pcType,
+                pcQty: pcQty,
+                prIDfb: menuFB,
+                fbQty: fbQty
+
             },
             success: function(data) {
                 alert('Promo added');
