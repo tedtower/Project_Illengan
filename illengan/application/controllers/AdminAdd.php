@@ -47,8 +47,15 @@ class AdminAdd extends CI_Controller{
             $pmName = $this->input->post('pmName');
             $pmStartDate = $this->input->post('pmStartDate');
             $pmEndDate = $this->input->post('pmEndDate');
+            $fbName = $this->input->post('fbName');
+            $isElective = $this->input->post('isElective');
+            $prID = $this->input->post('prID');
+            $pcType = $this->input->post('pcType');
+            $pcQty = $this->input->post('pcQty');
+            $prIDfb = $this->input->post('prIDfb');
+            $fbQty = $this->input->post('fbQty');
 
-            $this->adminmodel->add_promo($pmName, $pmStartDate, $pmEndDate);
+            $this->adminmodel->add_promo($pmName, $pmStartDate, $pmEndDate, $fbName, $isElective, $prID, $pcType, $pcQty, $prIDfb, $fbQty);
             // var pmName = $('#pmName').val();
             // var pmStartDate = $('#pmStartDate').val();
             // var pmEndDate = $('#pmEndDate').val();
