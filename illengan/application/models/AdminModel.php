@@ -353,8 +353,12 @@ class AdminModel extends CI_Model{
         ORDER BY ctName ASC;";
         return $this->db->query($query)->result_array();
     }
-    function get_sources(){
+    function get_supplier(){
         $query = "Select * from supplier order by spName";
+        return $this->db->query($query)->result_array();
+    }
+    function get_suppliermerch(){
+        $query = "Select * from suppliermerchandise";
         return $this->db->query($query)->result_array();
     }
     function get_spoilages(){
