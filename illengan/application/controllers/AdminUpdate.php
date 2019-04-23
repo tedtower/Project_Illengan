@@ -117,29 +117,28 @@ class AdminUpdate extends CI_Controller{
         }
     }
     function editStockItem(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){            
-            $this->form_validation->set_rules('stockID','Stock ID','trim|required|numeric');
-            $this->form_validation->set_rules('stockName','Stock Name','trim|required|alpha_numeric_spaces');
-            $this->form_validation->set_rules('stockQty','Stock Quantity','trim|required|numeric');
-            $this->form_validation->set_rules('stockUnit','Stock Unit','trim|required|alpha_numeric_spaces');
-            $this->form_validation->set_rules('stockMin','Minimum Quantity','trim|numeric');
-            $this->form_validation->set_rules('stockStatus','Stock Status','trim|required|alpha');
-            $this->form_validation->set_rules('categoryName','Stock Category','trim|required|numeric');
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){   
+            $this->form_validation->set_rules('id','Stock ID','trim|required|numeric');
+            $this->form_validation->set_rules('name','Stock Name','trim|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('type','Stock Type','trim|required|alpha');
+            $this->form_validation->set_rules('category','Stock Category','trim|required|alpha_numeric');
+            $this->form_validation->set_rules('status','Stock Status','trim|required|alpha');
             
             if($this->form_validation->run() == FALSE){
                 redirect("admin/inventory");
             }else{
-                $stockID = $this->input->post('stockID');
-                $stockName = $this->input->post('stockName');
-                $stockQty = $this->input->post('stockQty');
-                $stockUnit = $this->input->post('stockUnit');
-                $stockMin = $this->input->post('stockMin');
-                $stockStatus = $this->input->post('stockStatus');
-                $categoryName = $this->input->post('categoryName');
-                if($this->adminmodel->edit_stockItem($stockID,$stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$categoryName)){
+                $stockID = $this->input->post('id');
+                $stockName = $this->input->post('name');
+                $stockType = $this->input->post('type');
+                $stockCategory = $this->input->post('category');
+                $stockStatus = $this->input->post('status');
+                $stockVariance = json_decode($this->input->post('variances'),true);
+                if($this->adminmodel->edit_stockItem($stockID,$stockName,$stockType,$stockCategory,$stockStatus,$stockVariance)){
                     echo json_encode(array(
                         "stocks" => $this->adminmodel->get_stocks(),
-                        "categories" => $this->adminmodel->get_stockCategories()
+                        "categories" => $this->adminmodel->get_stockSubCategories(),
+                        "variances" => $this->adminmodel->get_stockVariance(),
+                        "expirations" => $this->adminmodel->get_stockExpiration()
                     ));
                 }
             }

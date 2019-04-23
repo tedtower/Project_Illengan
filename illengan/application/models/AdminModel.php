@@ -275,7 +275,7 @@ class AdminModel extends CI_Model{
         $query = "SELECT 
             stID,
             stName,
-            SUM(vQty) AS 'stQty',
+            IF(SUM(vQty) IS NULL, 0, SUM(vQty)) AS 'stQty',
             stStatus,
             stType,
             ctName,
