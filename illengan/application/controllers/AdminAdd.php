@@ -15,10 +15,11 @@ class AdminAdd extends CI_Controller{
         $this->form_validation->set_rules('aUsername','Username','trim|required|is_unique[accounts.aUsername]');
         $this->form_validation->set_rules('aType','Account Type','trim|required');
 
-        if($this->form_validation->run()){
             $password = password_hash($this->input->post("password"),PASSWORD_DEFAULT);
             $username = $this->input->post("aUsername");
             $aType = $this->input->post("aType");
+
+        if($this->form_validation->run()){
             $data = array(
                 'aPassword'=>$password,
                 'aUsername'=>$username,
@@ -28,12 +29,16 @@ class AdminAdd extends CI_Controller{
             redirect('admin/accounts');
 
         }else{
-            echo "There is an error";
-            
+            $data = array(
+                'aPassword'=>$password,
+                'aUsername'=>$username,
+                'aType'=>$aType
+            );
+            echo json_encode($data);
         }
     }
     function addMenuCategory(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $superCategory = trim($this->input->post('super_category'));
             $category_name = trim($this->input->post('category_name'));
             $this->adminmodel->add_menucategory($category_name, $superCategory);
@@ -43,7 +48,7 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addStockItem(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('stockName','Stock Name','trim|required|alpha_numeric_spaces');
             $this->form_validation->set_rules('stockQty','Stock Quantity','trim|required|numeric');
             $this->form_validation->set_rules('stockUnit','Stock Unit','trim|required|alpha_numeric_spaces');
@@ -71,7 +76,7 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addStockCategory(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $category_name = $this->input->get('category_name');
             $data['category'] = $this->adminmodel->add_stockcategory($category_name);
             $this->viewStockCategories();
@@ -80,7 +85,7 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addTable(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
             if($this->form_validation->run()){
                 $tableCode = trim($this->input->post('tableCode'));
@@ -97,7 +102,7 @@ class AdminAdd extends CI_Controller{
         }        
     }
     function addTransactions(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $receiptNo = trim($this->input->post('receiptNo'));
             $transDate = trim($this->input->post('transDate'));
             $source = trim($this->input->post('sourceName'));
@@ -123,7 +128,7 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addspoilagesaddons(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
 
             $s_type = $this->input->post("s_type");
@@ -141,7 +146,7 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addspoilagesmenu(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
 
             $s_type = $this->input->post("s_type");
             $menu_name =$this->input->post("menu_name");
@@ -158,7 +163,7 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addspoilagesstock(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
 
             $s_type = $this->input->get("s_type");
@@ -175,7 +180,7 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addSource(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
 
             $data = array(
                 'source_name' => $this->input->get('source_name'),
