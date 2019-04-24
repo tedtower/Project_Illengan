@@ -14,16 +14,6 @@
                             <div class="card-content">
                                 <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newMenu"
                                     data-original-title style="margin:0;">Add Menu Item</a>
-                                <!--Search
-                            <div id ="example_filter" class="dataTables_filter">
-                                <label>
-                                    "Search:"
-                                    <div class="form-group form-group-sm is-empty">
-                                       <input type="search" class="form-control" placeholder aria-controls="example">
-                                       <span class="material-input"></span> 
-                                    </div>
-                                </label>
-                            </div>-->
                                 <br>
                                 <br>
             <table id="menuTable" class="table dt-responsive nowrap" cellspacing="0" width="100%">
