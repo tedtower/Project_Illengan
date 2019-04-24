@@ -113,7 +113,57 @@ class AdminModel extends CI_Model{
             }
         }
     }
+    function add_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch){
+        $query = "insert into supplier (spName, spContactNum, spEmail, spStatus, spAddress) values (?,?,?,?,?);";
+        if($this->db->query($query,array($spName, $spContactNum, $spEmail, $spStatus, $spAddress))){
+            if(count($spMerch) > 0){
+                foreach ($spMerch as $merch) {
+                    $this->add_supplierMerchandise($merch);
+                }
+            }
+            return true;            
+        }
+        return false;
+    }
+    function add_supplierMerchandise($merch){
+        $query = "insert into suppliermerchandise (vID, spID, spmDesc, spmUnit, spmPrice) values (?,?,?,?,?);";
+        $this->db->query($query,array($merch['varID'],$merch['suppID'],$merch['merchDesc'],$merch['merchUnit'],$merch['merchPrice']);
+    }
+    function edit_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch, $spID){
+        $query = "UPDATE supplier 
+            SET 
+                spName = ?,
+                spContactNum = ?,
+                spEmail = ?,
+                spStatus = ?,
+                spAddress = ?
+            WHERE
+                spID = ?;";
+        if($this->db->query($query, array($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spID))){
+            foreach($spMerch as $merch){
+                if($merch[merchID] == NULL){
+                    $this->add_supplierMerchandise($merch);
+                }else{
+                    $this->edit_supplierMerchandise($merch);
+                }
+            }
+            return true;
+        }
+        return false;
+    }
     
+    function edit_supplierMerchandise($merch){
+        $query = "UPDATE suppliermerchandise 
+            SET 
+                vID = ?,
+                spID = ?,
+                spmDesc = ?,
+                spmUnit = ?,
+                spmPrice = ?
+            WHERE
+                spmID = ?;";
+        $this->db->query($query,array($merch['varID'],$merch['suppID'],$merch['merchDesc'],$merch['merchUnit'],$merch['merchPrice'], $merch['merchID']);
+    }   
     
     // UPDATE FUNCTIONS-------------------------------------------------------------
     function get_password($aID){
@@ -177,7 +227,7 @@ class AdminModel extends CI_Model{
         if($this->db->query($query,array($stockName,$stockType,$stockCategory,$stockStatus,$stockID))){
             if(count($stockVariance) > 0){
                 foreach($stockVariance as $variance){
-                    if($variance['varID'] === NULL){
+                    if($variance['varID'] == NULL){
                         $this->add_stockVariance($stockID, $variance);
                     }else{
                         $this->edit_stockVariance($variance);
@@ -405,7 +455,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_suppliermerch(){
-        $query = "SELECT *, CONCAT(spmDesc,' ',stName) as merchandise from supplier natural join suppliermerchandise natural join variance natural join stockitems";
+        $query = "Select * from suppliermerchandise";
         return $this->db->query($query)->result_array();
     }
     function get_spoilages(){
