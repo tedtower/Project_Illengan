@@ -11,9 +11,10 @@
                 <!--Table-->
                 <div class="card-content">
                     <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addPO" data-original-title
-                        style="margin:0" onclick="addSupplierOpts();removeOptions()" id="addPOBtn">Add Purchase
+                        style="margin:0" onclick="" id="addPOBtn">Add Purchase
                         Order</a>
                     <br>
+                    <!-- addSupplierOpts();removeOptions() -->
                     <br>
                     <table id="poTable" class="table dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead class="thead-light">
@@ -55,7 +56,7 @@
                                                         style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Supplier</span>
                                                 </div>
-                                                <select class="form-control form-control-sm" name="supID">
+                                                <select class="form-control form-control-sm" name="spID">
                                                 </select>
                                             </div>
                                             <!--Purchase date-->
@@ -107,8 +108,8 @@
                                             <textarea class="form-control form-control-sm" name="poRemarks"></textarea>
                                         </div>
                                         <!--Button to add row in the table-->
-                                        <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#brochure"
-                                            data-original-title style="margin:0" id="addPOItem">Add Items</a>
+                                        <a class="addPOItem btn btn-default btn-sm" data-toggle="modal" data-target="#brochure"
+                                            data-original-title style="margin:0" id="">Add Items</a>
                                         <br><br>
                                         <!--Table containing the different input fields in adding PO items -->
                                         <table class="poItemsTable table table-sm table-borderless">
@@ -123,9 +124,9 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
+                                                <tr data-id="" data-varid="">
                                                     <input type="hidden" name="">
-                                                    <td><input type="text" name="stName[]"
+                                                    <td><input type="text" name="merchName[]"
                                                             class="form-control form-control-sm" readonly="readonly"></td>
                                                     <td><input type="number" name="poiQty[]"
                                                             class="form-control form-control-sm"></td>
@@ -180,7 +181,7 @@
                                                         style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Supplier</span>
                                                 </div>
-                                                <select class="form-control form-control-sm" name="spName" id="spName">
+                                                <select class="form-control form-control-sm" name="spID">
                                                     <option value="" selected>Choose</option>
                                                 </select>
                                             </div>
@@ -234,8 +235,8 @@
                                             <textarea class="form-control form-control-sm"></textarea>
                                         </div>
                                         <!--Button to add row in the table-->
-                                        <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#brochure"
-                                            data-original-title style="margin:0" id="addTransaction">Add Items</a>
+                                        <a class="addPOItem btn btn-default btn-sm" data-toggle="modal" data-target="#brochure"
+                                            data-original-title style="margin:0">Add Items</a>
                                         <br><br>
                                         <!--Table containing the different input fields in adding PO items -->
                                         <table class="poItemsTable table table-sm table-borderless">
@@ -294,13 +295,11 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form id="formAdd" action="<?= site_url('admin/transactions/add')?>" method="post"
+                                <form id="brochureForm" method="post"
                                     accept-charset="utf-8">
                                     <div class="modal-body">
-                                        <div style="margin:1% 3%">
+                                        <div style="margin:1% 3%" id="list">
                                             <!--checkboxes-->
-                                            <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample
-                                                data 1</label>
                                             <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample
                                                 data 2</label>
                                         </div>
@@ -356,9 +355,11 @@
 </div>
 
 <?php include_once('templates/scripts.php') ?>
-<script src="<?= admin_js().'addPO.js'?>"></script>
+<!-- <script src="<?= admin_js().'addPO.js'?>"></script> -->
 <script>
     var purOrders = [];
+    var suppliers = [];
+    var suppMerch = [];
     $(function () {
         $.ajax({
             url: '/admin/jsonPOrders',
@@ -372,6 +373,9 @@
                     purOrders[index].poItems = data.poItems.filter(po => po.poID == item
                         .poID);
                 });
+                suppliers = data.suppliers;
+                suppMerch = data.supplierMerch;
+                setSupplierChoices(suppliers);
                 showTable();
             },
             failure: function () {
@@ -383,11 +387,28 @@
             }
         });
 
+        $(".addPOItem").on('click',function(){
+            var supID = parseInt($(this).closest(".modal").find("select[name='spID']").val());
+            console.log(supID);
+            setBrochureContent(suppMerch.filter(merch => parseInt(merch.spID) == supID));
+        });
     });
-
+    function setSupplierChoices(suppliers){
+        $("select[name='spID']").children().first().siblings().remove();
+        $("select[name='spID']").append(`
+        ${suppliers.map(supplier => {
+            return `<option value="${supplier.spID}">${supplier.spName}</option>`;
+        }).join('')}`);
+    }
+    function setBrochureContent(merchandise){
+        $("#list").empty();
+        $("#list").append(`${merchandise.map(merch => {
+            return `<label style="width:96%"><input type="checkbox" name="suppMerch[]" class="mr-2" value="${merch.spmID}"> ${merch.spmDesc} - ${parseFloat(merch.spmPrice).toFixed(2)}</label>`
+        }).join('')}`);
+    }
     function showTable() {
         purOrders.forEach(function (item) {
-            var tableRow = `                
+            var tableRow = `
                 <tr class="table_row" data-id="${item.purOrders.poID}">   <!-- table row ng table -->
                     <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
                     <td>${item.purOrders.poID}</td>
@@ -395,7 +416,7 @@
                     <td>${item.purOrders.poDate}</td>
                     <td>${item.purOrders.edDate}</td>
                     <td>${item.purOrders.poStatus}</td>
-                    <td>${item.purOrders.poTotal}</td>
+                    <td>${(parseFloat(item.purOrders.poTotal)).toFixed(2)}</td>
                     <td>
                         <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editPO" id="editPOBtn">Edit</button>
                         <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#delete">Delete</button>
@@ -425,7 +446,7 @@
                             <td>&#8369; ${po.poiQty}</td>
                             <td>${po.poiUnit}</td>
                             <td>&#8369; ${po.poiPrice}</td>
-                            <td>${parseFloat(po.poiPrice)*parseInt(po.poiQty)}</td>
+                            <td>${(parseFloat(po.poiPrice)*parseInt(po.poiQty)).toFixed(2)}</td>
                             <td>${po.poiRemarks}</td>
                         </tr>
                         `;
@@ -442,7 +463,7 @@
                         
                         <div style="width:100%;overflow:auto;padding-left: 5%"> <!-- description, preferences, and addons container -->
                             
-                            <div class="aoAndPreferences" style="overflow:auto;margin-top:1%"> <!-- Preferences and addons container-->
+                            <div class="poAccordionContent" style="overflow:auto;margin-top:1%"> <!-- Preferences and addons container-->
                                 
                             </div>
                         </div>
@@ -452,7 +473,7 @@
             `;
             $("#poTable > tbody").append(tableRow);
             $("#poTable > tbody").append(accordion);
-            $(".aoAndPreferences").last().append(preferencesDiv);
+            $(".poAccordionContent").last().append(preferencesDiv);
         });
         $(".accordionBtn").on('click', function () {
             if ($(this).closest("tr").next(".accordion").css("display") == 'none') {

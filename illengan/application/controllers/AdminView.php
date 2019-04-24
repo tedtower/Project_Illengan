@@ -348,7 +348,7 @@ function viewSpoilagesStock(){
             $data['title'] = "Purchase Order";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/adminPurchaseOrder',$data);
+            $this->load->view('admin/adminPurchaseOrder');
 
         }else{
             redirect('login');
@@ -471,15 +471,17 @@ function viewSpoilagesStock(){
         $data = array();
         $data['purOrders'] = $this->adminmodel->get_purchOrders();
         $data['poItems'] = $this->adminmodel->get_poItemVariance();
+        $data['suppliers'] = $this->adminmodel->get_supplier();
+        $data['supplierMerch'] = $this->adminmodel->get_suppliermerch();
 
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
-    function jsonSuppliers() {
-        $data =  $this->adminmodel->get_sources();
-        header('Content-Type: application/json');
-        echo json_encode($data, JSON_PRETTY_PRINT);
-    }
+    // function jsonSuppliers() {
+    //     $data =  $this->adminmodel->get_sources();
+    //     header('Content-Type: application/json');
+    //     echo json_encode($data, JSON_PRETTY_PRINT);
+    // }
 
 }
 
