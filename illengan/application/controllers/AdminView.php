@@ -148,19 +148,32 @@ function viewAccountsJs(){
             redirect('login');
         }
     }
-    function viewSources(){
+    function viewSupplier(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data['title'] = "Sources";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
-            $data['source'] = $this->adminmodel->get_sources();
-            $this->load->view('admin/adminSources', $data);
+            $this->load->view('admin/adminSources');
             // $this->load->view('admin/templates/scripts');
-            $this->load->view('admin/templates/footer');
         }else{
             redirect('login');
         }
     }
+
+    function supplierGetDetails(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data = array(
+                'supplier' => $this->adminmodel->get_supplier(),
+                'suppliermerch' => $this->adminmodel->get_suppliermerch(),
+                'stockvariance' => $this->adminmodel->get_stockVariance()
+            );
+            header('Content-Type: application/json');
+            echo json_encode($data, JSON_PRETTY_PRINT);
+        }else{
+            redirect('login');
+        }
+    }
+
     function viewSpoilagesJs(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data= $this->adminmodel->get_spoilages();

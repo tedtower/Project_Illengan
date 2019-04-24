@@ -443,20 +443,41 @@ class Admin extends CI_Controller{
             $input_old_password = $this->input->post("old_password");
             $new_password = password_hash($this->input->post("new_password"),PASSWORD_DEFAULT, ['cost' => 12]);
 
-            foreach($current_password AS $row) {
+            foreach($current_password AS  $row) {
                 if (password_verify($input_old_password, $row['aPassword'])){                 
                     $this->adminmodel->change_account_password($new_password,$aID);
                 }else{ 
-                    $data['aID'] = $aID;
-                    $this->viewChangePassword2($data);
-                }
             }   
         }else{
             $this->viewChangePassword($aID);
         }
+                    $data['aID'] = $aID;
+                    $this->viewChangePassword2($data);
+                }
         // $data['account'] = $this->adminmodel->get_accounts();
         // $this->load->view('admin/view_accounts',$data);
     }
+    // function editAccounts(){
+    //     $this->form_validation->set_rules('aUsername','Username','trim|required|is_unique[accounts.aUsername]');
+    //     $this->form_validation->set_rules('aType','Account Type','trim|required');
+    //     $aID = $this->input->post("aID");
+
+    //     if($this->form_validation->run()){
+    //         $aUsername = $this->input->post("aUsername");
+    //         $aType = $this->input->post("aType");
+
+    //         $data =array(
+    //             'aType' => $aType,
+    //             'aUsername' =>$aUsername
+    //         );
+    //         $data['aID'] = $aID;
+            
+    //         $this->adminmodel->edit_accounts($data,$aID);
+    //         $this->viewAccounts();
+    //         }else{
+    //         $this->vieweditAccounts2($aID);
+    //     }
+    // }
     function editAccounts(){
         $this->form_validation->set_rules('aUsername','Username','trim|required|is_unique[accounts.aUsername]');
         $this->form_validation->set_rules('aType','Account Type','trim|required');

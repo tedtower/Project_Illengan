@@ -79,9 +79,8 @@
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Category</span>
                                                 </div>
-                                                <select class="form-control">
+                                                <select name="stockCategory" class="form-control">
                                                     <option value="" selected>Choose</option>
-                                                    <option value=""></option>
                                                 </select>
                                             </div>
                                             <!--Status-->
@@ -145,7 +144,7 @@
                                     accept-charset="utf-8">
                                     <div class="modal-body">
                                         <div class="form-row">
-                                            <input type="text" name="stockName" id="stockID"
+                                            <input type="text" name="stockID"
                                                 class="form-control form-control-sm" hidden="hidden">
                                             <!--Container of promo name and promo type-->
                                             <!--Stock name-->
@@ -182,7 +181,7 @@
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Category</span>
                                                 </div>
-                                                <select class="form-control" name="stockCategory" id="stockCategory">
+                                                <select class="form-control" name="stockCategory">
                                                     <option value="" selected>Choose</option>
                                                 </select>
                                             </div>
@@ -253,7 +252,6 @@
                                                 class="form-control form-control-sm">
                                         </div>
                                     </div>
-
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary btn-sm"
                                             data-dismiss="modal">Close</button>
@@ -293,7 +291,7 @@ $(document).ready(function() {
     });
     $(".addItemVarianceBtn").on('click',function(){
         var row=`
-        <tr>
+        <tr data-id="">
             <td><input type="text" name="varUnit[]"
                     class="form-control form-control-sm"></td>
             <td><input type="text" name="varSize[]"
@@ -365,12 +363,63 @@ $(document).ready(function() {
             }
         });
     });
+    
+    $("#editStock form").on('submit', function(event) {
+        event.preventDefault();
+        var id = $(this).find("input[name='stockID']").val();
+        var name = $(this).find("input[name='stockName']").val();
+        var type = $(this).find("select[name='stockType']").val();
+        var category = $(this).find("select[name='stockCategory']").val();
+        var status = $(this).find("select[name='stockStatus']").val();
+        var stockVariances = [];
+        for (var index = 0; index < $(this).find(".varianceTable > tbody").children().length; index++) {
+            var row = $(this).find(".varianceTable > tbody > tr").eq(index);
+            stockVariances.push({
+                varID : isNaN(parseInt(row.attr('data-id'))) ? NULL : parseInt(row.attr('data-id')),
+                varUnit: row.find("input[name='varUnit[]']").val(),
+                varSize: row.find("input[name='varSize[]']").val(),
+                varMin: parseInt(row.find("input[name='varMinimum[]']").val()),
+                varQty: parseInt(row.find("input[name='varQty[]']").val()),
+                varStatus: row.find("select[name='varStatus[]']").val()
+            });
+        }
+        console.log(id, name, type, category, status, stockVariances);
+        $.ajax({
+            url: "<?= site_url("admin/inventory/edit")?>",
+            method: "post",
+            data: {
+                id : id,
+                name: name,
+                type: type,
+                category: category,
+                status: status,
+                variances: JSON.stringify(stockVariances)
+            },
+            dataType: "json",
+            beforeSend: function() {
+                console.log(name, type, category, status, stockVariances);
+            },
+            success: function(data) {
+                console.log(data);
+                // inventory = data;
+                // lastIndex = 0;
+                // setTableData();
+            },
+            error: function(response, setting, error) {
+                console.log(response.responseText);
+                console.log(error);
+            },
+            complete: function() {
+                $("#newStock").modal("hide");
+            }
+        });
+    });
 });
 
 function setTableData() {
     var count = 0;
     //Set Modals Stock Category Select elements' options
-    $("select[name='stockCategory']").first().siblings().remove();
+    $("select[name='stockCategory']").children().first().siblings().remove();
     $("select[name='stockCategory']").append(`
     ${inventory.categories.length === 0 ? "" : inventory.categories.map(category => {
         return `<option value="${category.ctID}">${category.ctName}</option>`
@@ -399,7 +448,7 @@ function setTableData() {
             $("#editStock form")[0].reset();
             $("#editStock .varianceTable > tbody").empty();
             var stockID = $(this).closest("tr").attr("data-id");
-            setEditModal($("#editStock"), inventory.stocks.filter(item => item.stock_id === stockID)[0], inventory.variances.filter(variance => variance.stID === stockID));
+            setEditModal($("#editStock"), inventory.stocks.filter(item => item.stID === stockID)[0], inventory.variances.filter(variance => variance.stID === stockID));
         });
     } else {
         $("#stockTable > tbody").empty();
@@ -541,7 +590,7 @@ function setEditModal(modal, stock, variances) {
     
     variances.forEach(variance => {
         modal.find(".varianceTable > tbody").append(`
-        <tr>
+        <tr data-id="${variance.vID}">
             <td><input type="text" name="varUnit[]" value="${variance.vUnit}"
                     class="form-control form-control-sm"></td>
             <td><input type="text" name="varSize[]" value="${variance.vSize}"

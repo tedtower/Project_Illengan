@@ -15,10 +15,11 @@ class AdminAdd extends CI_Controller{
         $this->form_validation->set_rules('aUsername','Username','trim|required|is_unique[accounts.aUsername]');
         $this->form_validation->set_rules('aType','Account Type','trim|required');
 
-        if($this->form_validation->run()){
             $password = password_hash($this->input->post("password"),PASSWORD_DEFAULT);
             $username = $this->input->post("aUsername");
             $aType = $this->input->post("aType");
+
+        if($this->form_validation->run()){
             $data = array(
                 'aPassword'=>$password,
                 'aUsername'=>$username,
@@ -28,8 +29,12 @@ class AdminAdd extends CI_Controller{
             redirect('admin/accounts');
 
         }else{
-            echo "There is an error";
-            
+            $data = array(
+                'aPassword'=>$password,
+                'aUsername'=>$username,
+                'aType'=>$aType
+            );
+            echo json_encode($data);
         }
     }
     function addMenuCategory(){

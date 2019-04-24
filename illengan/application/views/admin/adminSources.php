@@ -26,40 +26,6 @@
                                         <th><b class="pull-left">Actions</b></th>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>
-                                                <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editSource" >Edit</button>
-                                                <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteSource">Delete</button>
-                                            </td>
-                                        </tr>
-                                        <tr class="accordion" style="display:none">
-                                            <td colspan="8">
-                                            <div style="margin:1% 5%">
-                                                <span>Merchandise Items</span>
-                                                <table class="table table-bordered dt-responsive nowrap mt-2">
-                                                    <thead style="background:white">
-                                                        <tr>
-                                                        <th scope="col">Item Name</th>
-                                                        <th scope="col">Unit</th>
-                                                        <th scope="col">Price</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                        <td>Nestle Milk 1L</td>
-                                                        <td>Bottle</td>
-                                                        <td>100</td>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                                 <!--End Table Content-->
@@ -124,9 +90,9 @@
                                 <input type="text" name="supAddress" id="supAddress" class="form-control form-control-sm">
                             </div>
                             <!--Merchandise-->
-                            <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Merchandise Item</a> <!--Button to add row in the table-->
+                            <a id="addMerchandise" class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Merchandise Item</a> <!--Button to add row in the table-->
                             <br><br>
-                            <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
+                            <table id="merchandisetable" class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
                                 <thead class="thead-light">
                                     <tr>
                                         <th>Item Name</th>
@@ -137,18 +103,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><input type="text" name="merchName" id="merchName" class="form-control form-control-sm"></td>
-                                        <td><input type="text" name="merchUnit" id="merchUnit" class="form-control form-control-sm"></td>
-                                        <td><input type="number" name="merchPrice" id="merchPrice" class="form-control form-control-sm"></td>
-                                        <td>
-                                            <select class="form-control" name="variance" id="variance">
-                                                <option selected>Choose</option>
-                                                <option></option>
-                                            </select>
-                                        </td>
-                                        <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
-                                    </tr>
+
+                                </tbody>
                             </table>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
@@ -298,68 +254,117 @@
 </div>
 </div>
 
-        <?php include_once('templates/scripts.php') ?>
+<?php include_once('templates/scripts.php') ?>
 
 <script>
-var suppliers = <?= json_encode()?>;
+    var supplier = [];
+    var variance = [];
     $(function(){
-        setTableData();
-    });
-    function setTableData(){
-        suppliers.supplier.forEach(element => {
-            
+        $.ajax({
+            url: '<?= base_url("admin/supplier/getDetails")?>',
+            dataType: 'json',
+            success: function(data){
+                var spmLastIndex = 0;
+                $.each(data.supplier, function(index, item){
+                    supplier.push({"supplier" : item});
+                    supplier[index].suppliermerch = data.suppliermerch.filter(spm =>  spm.spID ==  item.spID);
+
+                    variance = data.stockvariance;
+
+                });
+                showTable();
+            },
+            error: function(response,setting, errorThrown){
+                console.log(errorThrown);
+                console.log(response.responseText);
+            }
         });
-        appendRow();
-        $(".accordionBtn").on('click', function(){
-            if($(this).closest("tr").next(".accordion").css("display") == 'none'){
-                $(this).closest("tr").next(".accordion").css("display","table-row");
+
+    });
+    function showTable(){
+        supplier.forEach(function(item){
+            var tableRow = `                
+                <tr class="table_row" data-supplierID="${item.supplier.spID}">   <!-- table row ng table -->
+                    <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
+                    <td>${item.supplier.spName}</td>
+                    <td>${item.supplier.spContactNum}</td>
+                    <td>${item.supplier.spEmail}</td>
+                    <td>${item.supplier.spAddress}</td>
+                    <td>${item.supplier.spStatus}</td>
+                    <td>
+                        <button class="editBtn btn btn-sm btn-primary">Edit</button>
+                        <button class="deleteBtn btn btn-sm btn-danger">Delete</button>
+                    </td>
+                </tr>
+            `;
+            var suppliermerchDiv = `
+            <div class="suppliermerch" style="margin:1% 5%">
+                ${item.suppliermerch.length === 0 ? "No merchandise products are set for this supplier." : 
+                `<span>Merchandise Items</span>
+                    <table class="table table-bordered dt-responsive nowrap mt-2">
+                        <thead style="background:white">
+                            <tr>
+                            <th scope="col">Item Name</th>
+                            <th scope="col">Unit</th>
+                            <th scope="col">Price</th>
+                            </tr>
+                        </thead>
+                    <tbody>
+                    ${item.suppliermerch.map(spm => {
+                        return `
+                        <tr>
+                        <td>${spm.merchandise}</td>
+                        <td>${spm.spmUnit}</td>
+                        <td>${spm.spmPrice}</td>
+                        </tr> 
+                        `;
+                    }).join('')}
+                    </tbody>
+                </table>
+                `}
+            </div>
+            `;
+            var accordion = `
+            <tr class="accordion" style="display:none">
+                <td colspan="8">
+                    <div class="contain">
+                    </div>
+                </td>
+            </tr>
+            `;
+            $("#tablevalues > tbody").append(tableRow);
+            $("#tablevalues > tbody").append(accordion);
+            $(".contain").last().append(suppliermerchDiv);
+        });
+        //Set accordion icon event to show accordion
+        $(".accordionBtn").on('click', function() {
+            if ($(this).closest("tr").next(".accordion").css("display") == 'none') {
+                $(this).closest("tr").next(".accordion").css("display", "table-row");
                 $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
-            }else{
+            } else {
                 $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
                 $(this).closest("tr").next(".accordion").hide("slow");
             }
         });
     }
-    function appendRow(){
-        var row = `
-        <tr data-id='${}'>
-            <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
-            <td>${}</td>
-            <td>${}09997090529</td>
-            <td>${}email</td>
-            <td>${}Active</td>
+
+    $("#addMerchandise").on('click', function(){
+        $(this).closest("form").find("#merchandisetable > tbody").append(`
+        <tr>
+            <td><input type="text" name="merchName" id="merchName" class="form-control form-control-sm"></td>
+            <td><input type="text" name="merchUnit" id="merchUnit" class="form-control form-control-sm"></td>
+            <td><input type="number" name="merchPrice" id="merchPrice" class="form-control form-control-sm"></td>
             <td>
-                <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editSource" >Edit</button>
-                <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteSource">Delete</button>
+                <select class="form-control" name="variance" id="variance">
+                ${variance.map(variance => {
+                    return `<option value = "${variance.vID}">${variance.vName}</option>`
+                }).join('')}
+                </select>
             </td>
-        </tr>`;
-    }
-    function setModalData(){
-    }
+            <td><img class="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+        </tr>`);
+        $("#newSource").find(".exitBtn").last().on("click", function(){
+            $(this).closest("tr").remove();
+        });
+    });
 </script>
-
-    <!-- <script>
-        $(document).ready(function() {
-            $('.delete_data').click(function() {
-                var id = $(this).attr("id");
-                if (confirm("Are you sure you want to delete this?")) {
-                    window.location = "<?php echo base_url(); ?>admin/sources/delete/" + id;
-                } else {
-                    return false;
-                }
-            });
-
-        function showEditModal(event) {
-            var row = event.target.parentElement.parentElement.parentElement;
-            document.getElementById('new_name').value = row.firstElementChild.innerHTML;
-            document.getElementById('new_contact').value = row.firstElementChild.nextElementSibling.innerHTML;
-            document.getElementById('new_email').value = row.firstElementChild.nextElementSibling.nextElementSibling
-                .innerHTML;
-            document.getElementById('new_status').value = row.firstElementChild.nextElementSibling.nextElementSibling
-                .nextElementSibling.innerHTML;
-            document.getElementById('source_id').value = event.target.getAttribute('data-id');
-        }
-    </script> -->
-</body>
-
-</html>
