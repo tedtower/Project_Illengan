@@ -127,7 +127,7 @@ class AdminModel extends CI_Model{
     }
     function add_supplierMerchandise($merch){
         $query = "insert into suppliermerchandise (vID, spID, spmDesc, spmUnit, spmPrice) values (?,?,?,?,?);";
-        $this->db->query($query,array($merch['varID'],$merch['suppID'],$merch['merchDesc'],$merch['merchUnit'],$merch['merchPrice']);
+        $this->db->query($query,array($merch['varID'],$merch['suppID'],$merch['merchDesc'],$merch['merchUnit'],$merch['merchPrice']));
     }
     function edit_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch, $spID){
         $query = "UPDATE supplier 
@@ -162,7 +162,7 @@ class AdminModel extends CI_Model{
                 spmPrice = ?
             WHERE
                 spmID = ?;";
-        $this->db->query($query,array($merch['varID'],$spID,$merch['merchDesc'],$merch['merchUnit'],$merch['merchPrice'], $merch['merchID']);
+        $this->db->query($query,array($merch['varID'],$spID,$merch['merchDesc'],$merch['merchUnit'],$merch['merchPrice'], $merch['merchID']));
     }   
     
     function add_purchaseOrder(){
@@ -201,7 +201,7 @@ class AdminModel extends CI_Model{
 
     function edit_poItem($spmID, $spID, $poItem){
         $query = "";
-        $this->db->query($query, array())
+        $this->db->query($query, array());
     }
     // UPDATE FUNCTIONS-------------------------------------------------------------
     function get_password($aID){
@@ -502,6 +502,10 @@ class AdminModel extends CI_Model{
     }
     function get_suppliermerch(){
         $query = "Select * from suppliermerchandise";
+        return $this->db->query($query)->result_array();
+    }
+    function get_suppMerchandise(){
+        $query = "Select * from suppliermerchandise INNER JOIN supplier USING (spID) INNER JOIN variance USING (vID) INNER JOIN stockitems USING (stID)";
         return $this->db->query($query)->result_array();
     }
     function get_spoilages(){

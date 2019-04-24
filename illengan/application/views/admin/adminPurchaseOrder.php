@@ -300,8 +300,7 @@
                                                 <div class="modal-body">
                                                     <div style="margin:1% 3%">
                                                     <!--checkboxes-->
-                                                        <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 1</label>
-                                                        <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 2</label>
+                                                        
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">

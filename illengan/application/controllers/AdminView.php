@@ -476,7 +476,12 @@ function viewSpoilagesStock(){
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
     function jsonSuppliers() {
-        $data =  $this->adminmodel->get_sources();
+        $data =  $this->adminmodel->get_supplier();
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+    function jsonSuppMerchandise() {
+        $data =  $this->adminmodel->get_suppMerchandise();
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }

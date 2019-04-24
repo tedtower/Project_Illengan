@@ -1,4 +1,4 @@
-
+function addSupplierOpts();
 function removeOptions() {
     $(document).ready(function() {
         var opt_elements = document.getElementsByClassName('options');
@@ -53,4 +53,29 @@ function addSupplierOpts() {
         }
     });
 });
+}
+
+function setSuppMerchandise() {
+    $(document).ready(function() {
+        $.ajax({
+            url: 'http://www.illengan.com/admin/jsonMerchandise',
+            dataType: 'json',
+            success: function(data) {
+                var optArr = [];
+                for(var i = 0; i <= data.length-1; i++) {
+                    var options = '<label style="width:96%">'+
+                    '<input type="checkbox" class="mr-2" value="'+data[i].spmID+'">'+
+                    data[i].stName+' per '+data[i].spmUnit+'</label>';
+                    optArr.push(options);
+    
+                }
+                
+                $('#spName').append(optArr);
+            },
+            failure: function() {
+                console.error('oh no');
+            }
+        });
+    });
+    
 }

@@ -151,6 +151,7 @@ $route['admin/accounts/viewAccountsJs'] ="adminview/viewAccountsJs";
 $route['admin/jsonMenu'] ="adminview/jsonMenu";
 $route['admin/jsonPOrders'] ="adminview/jsonPurchaseOrders";
 $route['admin/jsonSupp'] ="adminview/jsonSuppliers";
+$route['admin/jsonMerchandise'] ="adminview/jsonSuppMerchandise";
 
 //End Admin Json Routes ---------------------------------------
 
