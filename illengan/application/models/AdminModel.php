@@ -370,7 +370,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_suppliermerch(){
-        $query = "Select * from suppliermerchandise";
+        $query = "SELECT *, CONCAT(spmDesc,' ',stName) as merchandise from supplier natural join suppliermerchandise natural join variance natural join stockitems";
         return $this->db->query($query)->result_array();
     }
     function get_spoilages(){

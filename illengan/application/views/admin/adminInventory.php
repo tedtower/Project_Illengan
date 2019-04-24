@@ -79,9 +79,8 @@
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Category</span>
                                                 </div>
-                                                <select class="form-control">
+                                                <select class="form-control" name="stockCategory" id="stockCategory">
                                                     <option value="" selected>Choose</option>
-                                                    <option value=""></option>
                                                 </select>
                                             </div>
                                             <!--Status-->

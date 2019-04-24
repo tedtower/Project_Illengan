@@ -153,12 +153,22 @@ function viewAccountsJs(){
             $data['title'] = "Sources";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
-            $details = array(
-                'supplier' => $this->adminmodel->get_supplier(),
-                'suppliermerch' => $this->adminmodel->get_suppliermerch()
-            );
-            $this->load->view('admin/adminSources', $details);
+            $this->load->view('admin/adminSources');
             // $this->load->view('admin/templates/scripts');
+        }else{
+            redirect('login');
+        }
+    }
+
+    function supplierGetDetails(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data = array(
+                'supplier' => $this->adminmodel->get_supplier(),
+                'suppliermerch' => $this->adminmodel->get_suppliermerch(),
+                'stockvariance' => $this->adminmodel->get_stockVariance()
+            );
+            header('Content-Type: application/json');
+            echo json_encode($data, JSON_PRETTY_PRINT);
         }else{
             redirect('login');
         }
