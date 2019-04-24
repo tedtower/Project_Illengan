@@ -416,111 +416,217 @@
     </div>
     <?php include_once('templates/scripts.php') ?>
 </body>
-<script>
- var purOrders = [];
-    $(function(){
+<!-- <script>
+var lastIndex = 0;
+var pos = <?= json_encode($pos)?>;
+var rowsPerPage = pos.pos.length;
+
+$(function() {
+    $("#addPOBtn").on('click', function()) {
+        unsetModal($("#addPO"));
+    }
+    setTableDate();
+    $("#formAdd").on('submit', function() {
+        var supplier = $(this).find("select[name='poSupplier']");
+        var poDate = $(this).find("input[name='poDate']");
+        var edDate = $(this).find("input[name='edDate']");
+        var status = $(this).find("select[name='status']");
+        var poItems = [];
+        for (var index = 0; index < $("#formAdd .poItemsTable > tbody").children().length; index++) {
+            poItems.push({
+                itemName : $(this).find("input[name='itemName[]']").val(),
+                itemQty : $(this).find("input[name='itemQty[]']").val(),             
+                itemUnit : $(this).find("input[name='itemUnit[]']").val(),
+                itemPrice : $(this).find("input[name='itemPrice[]']").val(),
+                remarks : $(this).find("textarea[name='remarks[]']").val()
+            });
+        }
         $.ajax({
-            url: '/admin/jsonPOrders',
-            dataType: 'json',
+            method : "post",
+            url: "<?= site_url('admin/purchaseorders/add')?>",
+            data : {
+                poSupplier : supplier,
+                poDate : poDate,
+                edDate : edDate,
+                poStatus : status,
+                poItems : JSON.stringify(poItems)
+            },
+            dataType : "json",
             success: function(data){
-                var poLastIndex = 0;
-                $.each(data.purOrders, function(index, item){
-                    purOrders.push({"purOrders" : item});
-                    purOrders[index].poItems = data.poItems.filter(po => po.poID == item.poID);
-                });
-                showTable();
+
             },
-            failure: function(){
-                console.log('None');
-            },
-            error: function(response,setting, errorThrown){
-                console.log(errorThrown);
+            error : function(response, setting, error){
                 console.log(response.responseText);
+                console.log(error);
+            },
+            complete : function(){
+
             }
         });
-
     });
-    function showTable(){
-        purOrders.forEach(function(item){
-            var tableRow = `                
-                <tr class="table_row" data-menuId="${item.purOrders.poID}">   <!-- table row ng table -->
-                    <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
-                    <td>${item.purOrders.poID}</td>
-                    <td>${item.purOrders.spName}</td>
-                    <td>${item.purOrders.poDate}</td>
-                    <td>${item.purOrders.edDate}</td>
-                    <td>${item.purOrders.poStatus}</td>
-                    <td>${item.purOrders.poTotal}</td>
-                    <td>
-                        <button class="editBtn btn btn-sm btn-primary">Edit</button>
-                        <button class="deleteBtn btn btn-sm btn-danger">Delete</button>
-                    </td>
-                </tr>
-            `;
+    $("#formEdit").on('submit', function() {
+        var poID = $(this).find("input[name='poID']");
+        var supplier = $(this).find("select[name='poSupplier']");
+        var poDate = $(this).find("input[name='poDate']");
+        var edDate = $(this).find("input[name='edDate']");
+        var status = $(this).find("select[name='status']");
+        var poItems = [];
+        for (var index = 0; index < $("#formEdit .poItemsTable > tbody").children().length; index++) {
+            poItems.push({
+                itemName : $(this).find("input[name='itemName[]']").val(),
+                itemQty : $(this).find("input[name='itemQty[]']").val(),             
+                itemUnit : $(this).find("input[name='itemUnit[]']").val(),
+                itemPrice : $(this).find("input[name='itemPrice[]']").val(),
+                remarks : $(this).find("textarea[name='remarks[]']").val()
+            });
+        }
+        $.ajax({
+            method : "post",
+            url: "<?= site_url('admin/purchaseorders/edit')?>",
+            data : {
+                poID : poID,
+                poSupplier : supplier,
+                poDate : poDate,
+                edDate : edDate,
+                poStatus : status,
+                poItems : JSON.stringify(poItems)
+            },
+            dataType : "json",
+            success: function(data){
 
-            var preferencesDiv = `
-            <div class="preferences" style="width:45%;overflow:auto;float:left;margin-right:3%" > <!-- Preferences table container-->
-                ${item.poItems.length === 0 ? "Not Applicable" : 
-                `
-                <span><b>Preferences:</b></span> <!-- label-->
-                <table class="table table-bordered"> <!-- Preferences table-->
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col">Stock Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Quantity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    ${item.poItems.map(po => {
-                        return `
-                        <tr>
-                            <td>${po.poItem}</td>
-                            <td>&#8369; ${po.poiPrice}</td>
-                            <td>${po.poiPrice}</td>
-                        </tr>
-                        `;
-                    }).join('')}
-                    </tbody>
-                </table>
-                `}
-            </div>
-            `;
-            var accordion = `
-            <tr class="accordion" style="display:none">
-                <td colspan="5"> <!-- table row ng accordion -->
-                    <div style="overflow:auto;display:none"> <!-- container ng accordion -->
-                        
-                        <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
-                            
-                            <div class="aoAndPreferences" style="overflow:auto;margin-top:1%"> <!-- Preferences and addons container-->
-                                
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            `;
-            $("#menuTable > tbody").append(tableRow);
-            $("#menuTable > tbody").append(accordion);
-            $(".aoAndPreferences").last().append(preferencesDiv);
-        });
-        $(".accordionBtn").on('click', function(){
-            if($(this).closest("tr").next(".accordion").css("display") == 'none'){
-                $(this).closest("tr").next(".accordion").css("display","table-row");
-                $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
-            }else{
-                $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
-                $(this).closest("tr").next(".accordion").hide("slow");
+            },
+            error : function(response, setting, error){
+                console.log(response.responseText);
+                console.log(error);
+            },
+            complete : function(){
+
             }
         });
-        $(".editBtn").on("click",function(){
-            var menuID = $(this).closest("tr").attr("data-menuID");
-            //set Modal contents;
+    });
 
-        });
+});
 
-    }  
+function setTableData() {
+    var count = 0;
+    if ($("#poTable > tbody").children().length === 0) {
+        for (lastIndex; lastIndex < pos.pos.length; lastIndex++) {
+            if (!(count < rowsPerPage) {} else {
+                    appendRow(pos.pos[lastIndex]);
+                    appendAccordion(pos.pos[lastIndex].po_id);
+                }
+            }
+            $(".editBtn").on('click', function() {
+                $("#editPO form")[0].reset();
+                var poID = $(this).closest("tr").attr("data-id");
+                setEditModal($("#editPO"), pos.pos.filter(po => po.po_id === poID)[0], pos.poItems.filter(po =>
+                    po_id === poID));
+            });
+            $(".accordionBtn").on('click', function() {
+                if ($(this).closest("tr").next("tr").css('display') === 'none') {
+                    $(this).closest("tr").next("tr").show();
+                    $(this).closest("tr").next("tr").find("td > div").slideDown("slow");
+                } else {
+                    $(this).closest("tr").next("tr").find("td > div").slideUp("slow");
+                    $(this).closest("tr").next("tr").hide("slow");
+                }
+            });
+        } else {
+            $("#poTable stockTable > tbody").empty();
+        }
+    }
+
+    function appendRow(po) {
+        var row = `
+    <tr data-id="${po.poID}">
+        <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width:15px"/></td>
+        <td>${po.poID}</td>
+        <td>${po.spName}</td>
+        <td>${po.poDate}</td>
+        <td>${po.edDate}</td>
+        <td>${po.poStatus}</td>
+        <td>${po.poTotal}</td>
+        <td>
+        <!-Edit button-->
+            <!-- <button class="editBtn btn btn-primary btn-sm" data-toggle="modal"
+            data-target="#editPO">Edit</button> -->
+        <!--Delete button-->
+            <!-- <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"
+            data-target="">Delete</button> -->
+        <!-- </td>
+    </tr>
+    `;
+        $("#poTable > tbody").append(row);
+    } -->
+
+    <!-- function appendAccordion(poID) {
+        var items = pos.poItems.filter(item => item.po_id === poID);
+        var row = `
+    <tr style="display:none">
+        <td colspan="8">
+        <div style="margin:1% 2%;display:none">
+        ${items.length === 0 : "No items recorded!" : `
+            <span>Date Recorded: <span></span></span>
+            <table class="table">
+                <thead style="background:white">
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Unit</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                ${items.map(item => {
+                    return `
+                    <tr>
+                        <td>${item.item_name}</td>
+                        <td>${item.item_qty}</td>
+                        <td>${item.item_unit}</td>
+                        <td>${item.item_price}</td>
+                        <td>${parseFloat(item.item_price)*parseInt(item.item_qty)}</td>
+                        <td>${item.remarks}</td>
+                    </tr>
+                    `
+                }).join('')}
+                </tbody>
+            </table>
+        `}
+        </div>
+        </td>
+    </tr>
+    `;
+        $("#poTable > tbody").append(row);
+    }
+
+    function unsetModal(modal) {
+        modal.find("form")[0].reset();
+        modal.find(".poItemsTable >tbody").empty();
+    }
+
+    function setEditModal(modal, po, poItems) {
+        modal.find("input[name='poID']").val(po.po_id);
+        modal.find("select[name='poSupplier']").find(`option[value=${po.source_id}]`).attr("selected", "selected");
+        modal.find("input[name='poDate']").val(po.po_date);
+        modal.find("select[name='status']").find(`option[value='${po.po_status}']`).attr("selected", "selected");
+        modal.find("input[name='edDate']").val(po.ed_date);
+        modal.find(".poItemsTable > tbody").append(`
+    ${ poItems.length === 0 ? "" : poItems.map(item => {
+        return `<tr>
+                <td><input type="text" name="itemName[]" value="${item.item_name}" class="form-control form-control-sm"></td>
+                <td><input type="number" name="itemQty[]" value="${item.item_qty}" class="form-control form-control-sm"></td>
+                <td><input type="text" name="itemUnit[]" value="${item.item_unit}" class="form-control form-control-sm"></td>
+                <td><input type="number" name="itemPrice[]" value="${item.item_price}" class="form-control form-control-sm"></td>
+                <td><input type="number" name="itemSubtotal[]"  value="${parseFloat(item.item_price)*parseInt(item.item_qty)}" class="form-control form-control-sm"></td>
+                <td><textarea type="text" name="remarks[]" class="form-control form-control-sm">${item.remarks}</textarea></td>
+                <td><img class="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+            </tr>
+            `
+        }).join('')
+    }`);
+    } 
 </script> -->
 
 </html>

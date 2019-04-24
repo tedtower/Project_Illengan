@@ -343,6 +343,14 @@ class AdminModel extends CI_Model{
         $query = "Select * from addons";
         return $this->db->query($query)->result_array();
     }
+    function get_purchOrders() {
+        $query ="Select * FROM purchaseorder INNER JOIN supplier USING (spID)";
+        return $this->db->query($query)->result_array();
+    }
+    function get_poItemVariance() {
+        $query ="SELECT *, CONCAT(st.stName,' ',var.vUnit,' ',var.vSize) AS poItem FROM poitems po INNER JOIN variance var USING (vID) INNER JOIN stockitems st USING (stID)";
+        return $this->db->query($query)->result_array();
+    }
     function get_stockCategories(){
         $query = "Select ctID, ctName, ctType, COUNT(stID) as stockCount from categories left join stockitems using (ctID) where ctType = 'inventory' group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
