@@ -168,6 +168,7 @@ class AdminModel extends CI_Model{
     function add_purchaseOrder(){
         $query = "insert into purchaseorder (spID, poDate, edDate, poTotal, poDateRecorded, poRemarks, poStatus) values (?,?,?,?,?,?,?)";
         if($this->db->query($query, array())){
+            
             return true;
         }
         return false;
