@@ -144,7 +144,7 @@ class AdminModel extends CI_Model{
                 if($merch[merchID] == NULL){
                     $this->add_supplierMerchandise($merch);
                 }else{
-                    $this->edit_supplierMerchandise($merch);
+                    $this->edit_supplierMerchandise($merch,$spID);
                 }
             }
             return true;
@@ -152,7 +152,7 @@ class AdminModel extends CI_Model{
         return false;
     }
     
-    function edit_supplierMerchandise($merch){
+    function edit_supplierMerchandise($merch, $spID){
         $query = "UPDATE suppliermerchandise 
             SET 
                 vID = ?,
@@ -162,9 +162,47 @@ class AdminModel extends CI_Model{
                 spmPrice = ?
             WHERE
                 spmID = ?;";
-        $this->db->query($query,array($merch['varID'],$merch['suppID'],$merch['merchDesc'],$merch['merchUnit'],$merch['merchPrice'], $merch['merchID']);
+        $this->db->query($query,array($merch['varID'],$spID,$merch['merchDesc'],$merch['merchUnit'],$merch['merchPrice'], $merch['merchID']);
     }   
     
+    function add_purchaseOrder(){
+        $query = "insert into purchaseorder (spID, poDate, edDate, poTotal, poDateRecorded, poRemarks, poStatus) values (?,?,?,?,?,?,?)";
+        if($this->db->query($query, array())){
+            return true;
+        }
+        return false;
+    }
+
+    function add_poItem(){
+        $query = "insert into poitems (vID, poID, poiQTY, poiUnit, poiPrice, poiStatus) values (?,?,?,?,?,?);";
+        $this->db->query($query, array());
+    }
+
+    function edit_purchaseOrder(){
+        $query = "UPDATE purchaseorder 
+            SET 
+                spID = ?,
+                poDate = ?,
+                edDate = ?,
+                poTotal = ?,
+                poDateRecorded = ?,
+                poRemarks = ?,
+                poStatus = ?
+            WHERE
+                poID = ?;";
+        if($this->db->query($query, array())){
+            foreach($poItems as $item){
+
+            }
+            return true;
+        }
+        return false;
+    }
+
+    function edit_poItem($spmID, $spID, $poItem){
+        $query = "";
+        $this->db->query($query, array())
+    }
     // UPDATE FUNCTIONS-------------------------------------------------------------
     function get_password($aID){
         $query = "select aPassword from accounts where aID = ? ";
