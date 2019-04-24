@@ -77,6 +77,10 @@ class AdminModel extends CI_Model{
             }
         }
     }
+    function add_stockVariance($stockID,$stockVariance){
+        $query = "Insert into variance (stID, vUnit, vQty, vMin, vSize, vStatus, bQty) values (?,?,?,?,?,?,?)";
+        return $this->db->query($query, array($stockID, $stockVariance['varUnit'],$stockVariance['varQty'],$stockVariance['varMin'],$stockVariance['varSize'],$stockVariance['varStatus'],0));
+    }
     function add_table($table_code){
         $query = "Insert into tables (table_code) values (?);";
         return $this->db->query($query, array($table_code));
@@ -161,9 +165,40 @@ class AdminModel extends CI_Model{
         $query = "update categories set ctName = ?  where ctID = ? and ctType='inventory'";
         return $this->db->query($query,array($ctName,$ctID));
     }
-    function edit_stockItem($stockID,$stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$ctID){
-        $query = "Update stockitems set stName = ?, stock_quantity = ?, stock_unit = ?, stock_minimum = ?, stock_status = ?, ctID = ? where stID=?;";
-        return $this->db->query($query,array($stockName,$stockQty,$stockUnit,$stockMin,$stockStatus,$ctID,$stockID));
+    function edit_stockItem($stockID,$stockName,$stockType,$stockCategory,$stockStatus,$stockVariance){
+        $query = "UPDATE stockitems 
+            SET 
+                stName = ?,
+                stType = ?,
+                ctID = ?,
+                stStatus = ?
+            WHERE
+                stID = ?;";
+        if($this->db->query($query,array($stockName,$stockType,$stockCategory,$stockStatus,$stockID))){
+            if(count($stockVariance) > 0){
+                foreach($stockVariance as $variance){
+                    if($variance['varID'] === NULL){
+                        $this->add_stockVariance($stockID, $variance);
+                    }else{
+                        $this->edit_stockVariance($variance);
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+    function edit_stockVariance($variance){
+        $query = "UPDATE variance 
+            SET 
+                vUnit = ?,
+                vSize = ?,
+                vMin = ?,
+                vQty = ?,
+                vStatus = ?
+            WHERE
+                vID = ?;";
+        return $this->db->query($query, array($variance['varUnit'],$variance['varSize'],$variance['varMin'],$variance['varQty'],$variance['varStatus'],$variance['varID']));
     }
     function edit_stockqty($stID, $stock_quantity){
         $query = "Update stockitems set stock_quantity = ? where stID= ?;";

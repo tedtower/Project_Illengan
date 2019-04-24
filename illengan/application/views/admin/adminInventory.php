@@ -144,7 +144,7 @@
                                     accept-charset="utf-8">
                                     <div class="modal-body">
                                         <div class="form-row">
-                                            <input type="text" name="stockName" id="stockID"
+                                            <input type="text" name="stockID"
                                                 class="form-control form-control-sm" hidden="hidden">
                                             <!--Container of promo name and promo type-->
                                             <!--Stock name-->
@@ -291,7 +291,7 @@ $(document).ready(function() {
     });
     $(".addItemVarianceBtn").on('click',function(){
         var row=`
-        <tr>
+        <tr data-id="">
             <td><input type="text" name="varUnit[]"
                     class="form-control form-control-sm"></td>
             <td><input type="text" name="varSize[]"
@@ -372,17 +372,18 @@ $(document).ready(function() {
         var category = $(this).find("select[name='stockCategory']").val();
         var status = $(this).find("select[name='stockStatus']").val();
         var stockVariances = [];
-        $(this).find(".varianceTable > tbody").children().forEach(row => {
+        for (var index = 0; index < $(this).find(".varianceTable > tbody").children().length; index++) {
+            var row = $(this).find(".varianceTable > tbody > tr").eq(index);
             stockVariances.push({
-                varID : parseInt(row.attr('data-id')) ? NULL : parseInt(row.attr('data-id')),
+                varID : isNaN(parseInt(row.attr('data-id'))) ? NULL : parseInt(row.attr('data-id')),
                 varUnit: row.find("input[name='varUnit[]']").val(),
                 varSize: row.find("input[name='varSize[]']").val(),
                 varMin: parseInt(row.find("input[name='varMinimum[]']").val()),
                 varQty: parseInt(row.find("input[name='varQty[]']").val()),
                 varStatus: row.find("select[name='varStatus[]']").val()
             });
-            
-        });
+        }
+        console.log(id, name, type, category, status, stockVariances);
         $.ajax({
             url: "<?= site_url("admin/inventory/edit")?>",
             method: "post",

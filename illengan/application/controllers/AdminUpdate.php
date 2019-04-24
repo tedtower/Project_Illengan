@@ -1,5 +1,5 @@
 <?php
-class AdminUpdate extends CI_Controller{
+class adminUpdate extends CI_Controller{
 
     function __construct(){
         parent:: __construct();
@@ -9,7 +9,7 @@ class AdminUpdate extends CI_Controller{
         // code for getting current date and time : date("Y-m-d 2H:i:s")
     }
     function editTable(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('prevTableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]');
             $this->form_validation->set_rules('tableCode',   'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
             if($this->form_validation->run()){
@@ -97,7 +97,7 @@ class AdminUpdate extends CI_Controller{
             redirect('admin/accounts');
     }
     function editMenuCategory(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $category_id = $this->input->get('category_id');
             $category_name = $this->input->get('new_name');
             $data['category'] = $this->adminmodel->edit_menucategory($category_id, $category_name);
@@ -107,7 +107,7 @@ class AdminUpdate extends CI_Controller{
         }
     }
     function editStockCategory(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $category_id = $this->input->post('category_id');
             $category_name = $this->input->post('new_name');
             $data['category'] = $this->adminmodel->edit_stockcategory($category_id, $category_name);
@@ -117,7 +117,7 @@ class AdminUpdate extends CI_Controller{
         }
     }
     function editStockItem(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){   
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){   
             $this->form_validation->set_rules('id','Stock ID','trim|required|numeric');
             $this->form_validation->set_rules('name','Stock Name','trim|required|alpha_numeric_spaces');
             $this->form_validation->set_rules('type','Stock Type','trim|required|alpha');
@@ -148,7 +148,7 @@ class AdminUpdate extends CI_Controller{
         }
     }
     function edit_menu(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $menu_id = $this->input->post('menu_id');
             $menu_name = $this->input->post('new_name');
             $menu_description = $this->input->post('new_description');
@@ -168,7 +168,7 @@ class AdminUpdate extends CI_Controller{
         
     }    
     function editSource(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $source_id = $this->input->get('source_id');
             $source_name = $this->input->get('new_name');
             $contact_num = $this->input->get('new_contact');
@@ -181,7 +181,7 @@ class AdminUpdate extends CI_Controller{
         }
     }
     function editTransactions(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $transID = trim($this->input->post('transID'));
             $receiptNo = trim($this->input->post('receiptNo'));
             $transDate = trim($this->input->post('transDate'));
@@ -209,7 +209,7 @@ class AdminUpdate extends CI_Controller{
     }
     
     function editStockQty() {
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Admin'){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $stock_id = $this->input->post('stockId');
             $stock_quantity = $this->input->post('stockQty');
             echo $stock_id, $stock_quantity;
