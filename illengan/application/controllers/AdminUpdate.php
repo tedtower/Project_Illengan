@@ -49,7 +49,8 @@ class adminUpdate extends CI_Controller{
                }
            }   
         }else{
-                echo "Form Validation is not working";
+            
+                // echo "Form Validation is not working";
         }
        
         redirect('admin/accounts');   
