@@ -252,6 +252,7 @@
                 $("input[name='prevTableCode']").val($(this).closest("tr").attr("data-id"));
                 $("#editTable").find("input[name='tableCode']").val($(this).closest("tr").attr("data-id"));
             });
+            
             $(".deleteBtn").last().on('click', function() {
                 $("#deleteTableCode").text(`Delete table code ${$(this).closest("tr").attr("data-id")}`);
                 $("#deleteTable").find("input[name='tableCode']").val($(this).closest("tr").attr("data-id"));

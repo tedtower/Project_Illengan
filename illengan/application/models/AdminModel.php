@@ -69,6 +69,7 @@ class AdminModel extends CI_Model{
         }
         return true;
     }
+
     function add_stockVariances($stockID,$stockVariance){
         $query = "Insert into variance (stID, vUnit, vQty, vMin, vSize, vStatus, bQty) values (?,?,?,?,?,?,?)";
         if(count($stockVariance) > 0){
@@ -111,6 +112,13 @@ class AdminModel extends CI_Model{
                     return $this->db->query($query,array($pmID2, $prIDfb, $fbQty));
                 }
             }
+        }
+    }
+    function add_supplierMerchandise($spName, $spContactNum, $spEmail, $spStatus, $spAddress,$vID, $spmDesc, $spmUnit, $spmPrice){
+        $query = "INSERT into supplier (spID, spName, spContactNum, spEmail,  spStatus, spAddress) values (NULL,?,?,?,?,?)";
+        if($this->db->query($query,array($spName, $spContactNum, $spEmail, $spStatus, $spAddress))) {
+            $query = "insert into suppliermerchandise (spID, vID, spmDesc, spmUnit, spmPrice) values (?,?,?,?,?)";
+            return $this->db->query($query,array($this->db->insert_id(), $vID, $spmDesc, $spmUnit, $spmPrice));
         }
     }
     
@@ -405,7 +413,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_suppliermerch(){
-        $query = "SELECT *, CONCAT(spmDesc,' ',stName) as merchandise from supplier natural join suppliermerchandise natural join variance natural join stockitems";
+        $query = "SELECT *, CONCAT(spmDesc,' ',stName,' ',(vSize)) as merchandise from supplier natural join suppliermerchandise natural join variance natural join stockitems";
         return $this->db->query($query)->result_array();
     }
     function get_spoilages(){
