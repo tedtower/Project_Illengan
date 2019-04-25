@@ -11,7 +11,7 @@
                 <!--Table-->
                 <div class="card-content">
                     <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addPO" data-original-title
-                        style="margin:0" onclick="" id="addPOBtn">Add Purchase
+                        style="margin:0" onclick="removeOptions()" id="addPOBtn">Add Purchase
                         Order</a>
                     <br>
                     <!-- addSupplierOpts();removeOptions() -->
@@ -124,22 +124,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr data-id="" data-varid="">
-                                                    <input type="hidden" name="">
-                                                    <td><input type="text" name="merchName[]"
-                                                            class="form-control form-control-sm" readonly="readonly"></td>
-                                                    <td><input type="number" name="poiQty[]"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><input type="text" name="poiUnit[]"
-                                                            class="form-control form-control-sm" readonly="readonly"></td>
-                                                    <td><input type="number" name="poiPrice[]"
-                                                            class="form-control form-control-sm" readonly="readonly"></td>
-                                                    <td><input type="number" name="itemSubtotal[]"
-                                                            class="form-control form-control-sm" readonly="readonly"></td>
-                                                    <td><img class="exitBtn"
-                                                            src="/assets/media/admin/error.png"
-                                                            style="width:20px;height:20px"></td>
-                                                </tr>
+                                                
                                             </tbody>
                                         </table>
 
@@ -307,7 +292,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger btn-sm"
                                             data-dismiss="modal">Cancel</button>
-                                        <button class="btn btn-success btn-sm" type="submit">Ok</button>
+                                        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal" onclick="getSelectedMerch()">Ok</button>
                                     </div>
                                 </form>
                             </div>
@@ -355,7 +340,7 @@
 </div>
 
 <?php include_once('templates/scripts.php') ?>
-<!-- <script src="<?= admin_js().'addPO.js'?>"></script> -->
+<script src="<?= admin_js().'addPO.js'?>"></script>
 <script>
     var purOrders = [];
     var suppliers = [];
@@ -403,7 +388,7 @@
     function setBrochureContent(merchandise){
         $("#list").empty();
         $("#list").append(`${merchandise.map(merch => {
-            return `<label style="width:96%"><input type="checkbox" name="suppMerch[]" class="mr-2" value="${merch.spmID}"> ${merch.spmDesc} - ${parseFloat(merch.spmPrice).toFixed(2)}</label>`
+            return `<label style="width:96%"><input type="checkbox" id="JAJA" name="suppMerch[]" class="merchChoice mr-2" value="${merch.spmID}"> ${merch.spmDesc} - ${parseFloat(merch.spmPrice).toFixed(2)}</label>`
         }).join('')}`);
     }
     function showTable() {
@@ -490,5 +475,6 @@
         });
     }
 
+    
 
 </script>
