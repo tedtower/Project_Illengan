@@ -105,7 +105,7 @@ $route['admin/tables/add'] = "adminadd/addtable";
 $route['admin/addons/spoilages/add'] = "adminadd/addspoilagesaddons";
 $route['admin/stock/spoilages/add'] = "adminadd/addspoilagesstock";
 $route['admin/menu/spoilages/add'] = "adminadd/addspoilagesmenu";
-$route['admin/sources/add'] = "adminadd/addsource";
+$route['admin/supplier/add'] = "adminadd/addSupplierMerchandise";
 $route['admin/returns/add'] = "adminadd/addreturns";
 $route['admin/promos/add'] = "adminadd/addPromo";
 

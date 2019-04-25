@@ -103,7 +103,7 @@ class AdminDelete extends CI_Controller{
     }    
     function deleteSource($source_id){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            if($this->adminmodel->delete_source($source_id)){
+            if($this->adminmodel->delete_supplier($source_id)){
                 redirect('admin/sources');
             }else{
                 echo "There was an error";
