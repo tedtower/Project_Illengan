@@ -149,6 +149,7 @@ $route['admin/spoilagesjson'] = "adminview/viewSpoilagesJs";
 $route['admin/spoilagesstockjson'] = "adminview/viewSpoilagesStockJs";
 $route['admin/accounts/viewAccountsJs'] ="adminview/viewAccountsJs";
 $route['admin/jsonMenu'] ="adminview/jsonMenu";
+$route['admin/stock/spoilages/viewStockJS'] ="adminview/viewStockJS";
 
 //End Admin Json Routes ---------------------------------------
 

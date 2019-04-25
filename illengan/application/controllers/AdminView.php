@@ -163,7 +163,10 @@ function viewAccountsJs(){
             redirect('login');
         }
     }
-
+    function viewStockJS() {
+        $data=$this->adminmodel->get_stockVariance();
+        echo json_encode($data);
+    }
     function viewSpoilagesJs(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data= $this->adminmodel->get_spoilages();
@@ -421,8 +424,6 @@ function viewSpoilagesStock(){
             redirect('login');
         }
     }
-
-
     function viewPromos() {
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data['title'] = "Promos";
