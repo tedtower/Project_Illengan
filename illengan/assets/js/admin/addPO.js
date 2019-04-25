@@ -78,7 +78,6 @@ function getSelectedMerch() {
             async: false,
             success: function(data) {
                 for(var i = 0; i <= data.length-1; i++) {
-                    var merchArr = [];
                     var merchChecked;
                     if(data[i].spmID === value) {
                         merchChecked = `<tr class="merchelem" data-id="`+data[i].spmID+`" data-varid="`+data[i].vID+`">
@@ -108,6 +107,29 @@ function getSelectedMerch() {
 
         
     }
+}
 
-    
+function addPurchaseOrder() {
+    var spID = $('#spID').val();
+    var poDate = $('#poDate').val();
+    var edDate = $('#edDate').val();
+    var poStatus = $('#poStatus').val();
+    var poRemarks = $('#poRemarks').val();
+     
+    $.ajax({
+        type: 'POST',
+        url: 'http://www.illengan.com/admin/purchaseorder/add',
+        data: {
+            spID: spID,
+            poDate: poDate,
+            edDate: edDate,
+            poStatus: poStatus,
+            poRemarks: poRemarks
+        },
+        success: function() {
+            alert('Purchase Order added');
+        }
+    })
+
+
 }
