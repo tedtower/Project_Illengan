@@ -551,6 +551,10 @@ class AdminModel extends CI_Model{
         $query = "select * FROM activity_logs al INNER JOIN accounts ac USING (aID)";
         return $this->db->query($query)->result_array();
     }
+    function get_consumption(){
+       $query = "SELECT * FROM consumption";
+       return $this->db->query($query)->result_array();
+    }
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
     function delete_account($accountId){
