@@ -90,7 +90,7 @@
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Status</span>
                                                 </div>
-                                                <select class="form-control">
+                                                <select name="stockStatus" class="form-control">
                                                     <option value="" selected>Choose</option>
                                                     <option value="available">Available</option>
                                                     <option value="unavailable">Unavailable</option>
@@ -192,7 +192,7 @@
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Status</span>
                                                 </div>
-                                                <select class="form-control" name="stockStatus" id="stockStatus">
+                                                <select class="form-control" name="stockStatus">
                                                     <option value="" selected>Choose</option>
                                                     <option value="available">Available</option>
                                                     <option value="unavailable">Unavailable</option>
@@ -375,7 +375,7 @@ $(document).ready(function() {
         for (var index = 0; index < $(this).find(".varianceTable > tbody").children().length; index++) {
             var row = $(this).find(".varianceTable > tbody > tr").eq(index);
             stockVariances.push({
-                varID : isNaN(parseInt(row.attr('data-id'))) ? NULL : parseInt(row.attr('data-id')),
+                varID : isNaN(parseInt(row.attr('data-id'))) ?  : parseInt(row.attr('data-id')),
                 varUnit: row.find("input[name='varUnit[]']").val(),
                 varSize: row.find("input[name='varSize[]']").val(),
                 varMin: parseInt(row.find("input[name='varMinimum[]']").val()),

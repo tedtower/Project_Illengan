@@ -66,8 +66,9 @@ class AdminModel extends CI_Model{
         $query = "Insert into stockitems (stID,stName,stType,ctID,stStatus) values (NULL,?,?,?,?)";
         if($this->db->query($query,array($stockName,$stockType,$stockCategory,$stockStatus))){
             $this->add_stockVariances($this->db->insert_id(), $stockVariance);
+            return true;
         }
-        return true;
+        return false;
     }
     function add_stockVariances($stockID,$stockVariance){
         $query = "Insert into variance (stID, vUnit, vQty, vMin, vSize, vStatus, bQty) values (?,?,?,?,?,?,?)";

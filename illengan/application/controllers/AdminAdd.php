@@ -83,7 +83,7 @@ class AdminAdd extends CI_Controller{
             $this->form_validation->set_rules('status','Stock Status','trim|required|alpha');
             
             if($this->form_validation->run() == FALSE){
-                redirect("admin/inventory");
+                redirect("admin/dashboard");
             }else{
                 $stockName = $this->input->post('name');
                 $stockType = $this->input->post('type');
@@ -98,7 +98,7 @@ class AdminAdd extends CI_Controller{
                         "expirations" => $this->adminmodel->get_stockExpiration()
                     ));
                 }else{
-                    // redirect("login");
+                    redirect("admin/dashboard");
                     // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
                 }
             }
