@@ -504,7 +504,6 @@ class AdminModel extends CI_Model{
     }
     function get_suppliermerch(){
         $query = "SELECT *, CONCAT(spmDesc,' ',stName,' ',(vSize)) as merchandise from supplier natural join suppliermerchandise natural join variance natural join stockitems";
-        $query = "Select * from suppliermerchandise";
         return $this->db->query($query)->result_array();
     }
     function get_suppMerchandise(){
