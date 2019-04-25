@@ -346,7 +346,9 @@ function viewSpoilagesStock(){
     function viewPurchaseOrders(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data['title'] = "Purchase Order";
-            $this->load->view('admin/adminPurchaseOrder',$data);
+            $this->load->view('admin/templates/head', $data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/adminPurchaseOrder');
 
         }else{
             redirect('login');
@@ -417,16 +419,14 @@ function viewSpoilagesStock(){
     function viewConsumptions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data['title'] = "Stock Consumption";
-            /*$data['consumptions'] = array(
-                "destock" => $this->adminmodel->get_transactions(),
-                "" => $this->adminmodel->get_transitems(),
-                "sources" => $this->adminmodel->get_sources()
-            );*/
+            $data['consumptions'] = array(
+                "destockLog" 	=> $this->adminmodel->get_consumption(),
+                "stockItems" 	=> $this->adminmodel->get_stocks(),
+                "stockVariance" => $this->adminmodel->get_stockVariance()
+            );
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/consumption');
-            $this->load->view('admin/templates/scripts');
-            
         }else{
             redirect('login');
         }
@@ -464,6 +464,28 @@ function viewSpoilagesStock(){
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
+
+    function jsonPurchaseOrders() {
+        $data = array();
+        $data['purOrders'] = $this->adminmodel->get_purchOrders();
+        $data['poItems'] = $this->adminmodel->get_poItemVariance();
+        $data['suppliers'] = $this->adminmodel->get_supplier();
+        $data['supplierMerch'] = $this->adminmodel->get_suppliermerch();
+
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+    function jsonSuppliers() {
+        $data =  $this->adminmodel->get_supplier();
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+    function jsonSuppMerchandise() {
+        $data =  $this->adminmodel->get_suppMerchandise();
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+
 }
 
 ?>

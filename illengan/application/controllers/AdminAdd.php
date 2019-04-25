@@ -115,6 +115,17 @@ class AdminAdd extends CI_Controller{
             redirect('login');
         }
     }
+    function addPurchaseOrder() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $spName = $this->input->post('spName');
+            $poDate = $this->input->post('poDate');
+            $edDate = $this->input->post('edDate');
+            $poStatus = $this->input->post('poStatus');
+        }else{
+            redirect('login');
+        }
+        
+    }
     function addTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');

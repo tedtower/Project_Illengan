@@ -95,7 +95,7 @@ $route['admin/menu/datatables'] = "adminview/datatables_menu";
 
 //Admin Add Routes ----------------------------------------------
 $route['admin/transactions/add'] = "adminadd/addtransactions";
-$route['admin/purchaseorder/add'] = "adminview/addpurchaseorder";
+$route['admin/purchaseorder/add'] = "adminadd/addPurchaseOrder";
 $route['admin/inventory/add'] = "adminadd/addstockitem";
 $route['admin/menu/add'] = "adminadd/add_menu";
 $route['admin/stockcategories/add'] = "adminadd/addstockcategory";
@@ -149,6 +149,9 @@ $route['admin/spoilagesjson'] = "adminview/viewSpoilagesJs";
 $route['admin/spoilagesstockjson'] = "adminview/viewSpoilagesStockJs";
 $route['admin/accounts/viewAccountsJs'] ="adminview/viewAccountsJs";
 $route['admin/jsonMenu'] ="adminview/jsonMenu";
+$route['admin/jsonPOrders'] ="adminview/jsonPurchaseOrders";
+$route['admin/jsonSupp'] ="adminview/jsonSuppliers";
+$route['admin/jsonMerchandise'] ="adminview/jsonSuppMerchandise";
 
 //End Admin Json Routes ---------------------------------------
 

@@ -114,15 +114,97 @@ class AdminModel extends CI_Model{
             }
         }
     }
-    function add_supplierMerchandise($spName, $spContactNum, $spEmail, $spStatus, $spAddress,$vID, $spmDesc, $spmUnit, $spmPrice){
-        $query = "INSERT into supplier (spID, spName, spContactNum, spEmail,  spStatus, spAddress) values (NULL,?,?,?,?,?)";
-        if($this->db->query($query,array($spName, $spContactNum, $spEmail, $spStatus, $spAddress))) {
-            $query = "insert into suppliermerchandise (spID, vID, spmDesc, spmUnit, spmPrice) values (?,?,?,?,?)";
-            return $this->db->query($query,array($this->db->insert_id(), $vID, $spmDesc, $spmUnit, $spmPrice));
+    function add_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch){
+        $query = "insert into supplier (spName, spContactNum, spEmail, spStatus, spAddress) values (?,?,?,?,?);";
+        if($this->db->query($query,array($spName, $spContactNum, $spEmail, $spStatus, $spAddress))){
+            if(count($spMerch) > 0){
+                foreach ($spMerch as $merch) {
+                    $this->add_supplierMerchandise($merch);
+                }
+            }
+            return true;            
         }
+        return false;
+    }
+    function add_supplierMerchandise($merch){
+        $query = "insert into suppliermerchandise (vID, spID, spmDesc, spmUnit, spmPrice) values (?,?,?,?,?);";
+        $this->db->query($query,array($merch['varID'],$merch['suppID'],$merch['merchDesc'],$merch['merchUnit'],$merch['merchPrice']));
+    }
+    function edit_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch, $spID){
+        $query = "UPDATE supplier 
+            SET 
+                spName = ?,
+                spContactNum = ?,
+                spEmail = ?,
+                spStatus = ?,
+                spAddress = ?
+            WHERE
+                spID = ?;";
+        if($this->db->query($query, array($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spID))){
+            foreach($spMerch as $merch){
+                if($merch[merchID] == NULL){
+                    $this->add_supplierMerchandise($merch);
+                }else{
+                    $this->edit_supplierMerchandise($merch,$spID);
+                }
+            }
+            return true;
+        }
+        return false;
     }
     
+    function edit_supplierMerchandise($merch, $spID){
+        $query = "UPDATE suppliermerchandise 
+            SET 
+                vID = ?,
+                spID = ?,
+                spmDesc = ?,
+                spmUnit = ?,
+                spmPrice = ?
+            WHERE
+                spmID = ?;";
+        $this->db->query($query,array($merch['varID'],$spID,$merch['merchDesc'],$merch['merchUnit'],$merch['merchPrice'], $merch['merchID']));
+    }   
     
+    function add_purchaseOrder(){
+        $query = "insert into purchaseorder (spID, poDate, edDate, poTotal, poDateRecorded, poRemarks, poStatus) values (?,?,?,?,?,?,?)";
+        if($this->db->query($query, array())){
+            
+            return true;
+        }
+        return false;
+    }
+
+    function add_poItem(){
+        $query = "insert into poitems (vID, poID, poiQTY, poiUnit, poiPrice, poiStatus) values (?,?,?,?,?,?);";
+        $this->db->query($query, array());
+    }
+
+    function edit_purchaseOrder(){
+        $query = "UPDATE purchaseorder 
+            SET 
+                spID = ?,
+                poDate = ?,
+                edDate = ?,
+                poTotal = ?,
+                poDateRecorded = ?,
+                poRemarks = ?,
+                poStatus = ?
+            WHERE
+                poID = ?;";
+        if($this->db->query($query, array())){
+            foreach($poItems as $item){
+
+            }
+            return true;
+        }
+        return false;
+    }
+
+    function edit_poItem($spmID, $spID, $poItem){
+        $query = "";
+        $this->db->query($query, array());
+    }
     // UPDATE FUNCTIONS-------------------------------------------------------------
     function get_password($aID){
         $query = "select aPassword from accounts where aID = ? ";
@@ -185,7 +267,7 @@ class AdminModel extends CI_Model{
         if($this->db->query($query,array($stockName,$stockType,$stockCategory,$stockStatus,$stockID))){
             if(count($stockVariance) > 0){
                 foreach($stockVariance as $variance){
-                    if($variance['varID'] === NULL){
+                    if($variance['varID'] == NULL){
                         $this->add_stockVariance($stockID, $variance);
                     }else{
                         $this->edit_stockVariance($variance);
@@ -386,6 +468,14 @@ class AdminModel extends CI_Model{
         $query = "Select * from addons";
         return $this->db->query($query)->result_array();
     }
+    function get_purchOrders() {
+        $query ="Select * FROM purchaseorder INNER JOIN supplier USING (spID)";
+        return $this->db->query($query)->result_array();
+    }
+    function get_poItemVariance() {
+        $query ="SELECT *, CONCAT(st.stName,' ',var.vUnit,' ',var.vSize) AS poItem FROM poitems po INNER JOIN variance var USING (vID) INNER JOIN stockitems st USING (stID)";
+        return $this->db->query($query)->result_array();
+    }
     function get_stockCategories(){
         $query = "Select ctID, ctName, ctType, COUNT(stID) as stockCount from categories left join stockitems using (ctID) where ctType = 'inventory' group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
@@ -414,6 +504,11 @@ class AdminModel extends CI_Model{
     }
     function get_suppliermerch(){
         $query = "SELECT *, CONCAT(spmDesc,' ',stName,' ',(vSize)) as merchandise from supplier natural join suppliermerchandise natural join variance natural join stockitems";
+        $query = "Select * from suppliermerchandise";
+        return $this->db->query($query)->result_array();
+    }
+    function get_suppMerchandise(){
+        $query = "Select * from suppliermerchandise INNER JOIN supplier USING (spID) INNER JOIN variance USING (vID) INNER JOIN stockitems USING (stID)";
         return $this->db->query($query)->result_array();
     }
     function get_spoilages(){
@@ -457,6 +552,10 @@ class AdminModel extends CI_Model{
     function get_actlogs() {
         $query = "select * FROM activity_logs al INNER JOIN accounts ac USING (aID)";
         return $this->db->query($query)->result_array();
+    }
+    function get_consumption(){
+       $query = "SELECT * FROM consumption";
+       return $this->db->query($query)->result_array();
     }
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
