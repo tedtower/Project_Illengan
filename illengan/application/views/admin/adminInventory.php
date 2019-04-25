@@ -11,6 +11,8 @@
                 <div class="card-content">
                     <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newStock" data-original-title
                         style="margin:0;" id="addBtn">Add Stock Item</a>
+                    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#restock" data-original-title
+                        style="margin:0;" id="addBtn">Restock</a>
                     <br><br>
                     <table id="stockTable" class="table table-striped table-bordered dt-responsive nowrap"
                         cellspacing="0" width="100%">
@@ -29,6 +31,79 @@
                         </tbody>
                     </table>
                     <p id="note"></p>
+                <!--Start of Modal "Restock Item"-->
+                     <div class="modal fade bd-example-modal-lg" id="restock" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Restock Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="<?php echo base_url('admin/inventory/add')?>" method="get"
+                                    accept-charset="utf-8">
+                                    <div class="modal-body">
+                                        <!--Add Stock Item-->
+                                        <a class="btn btn-primary btn-sm"style="color:blue;margin:0" data-toggle="modal" data-target="#brochure" >Add Item</a>
+                                        <!--Button to add row in the table-->
+                                        <br><br>
+                                        <table class="varianceTable table table-sm table-borderless">
+                                            <!--Table containing the different input fields in adding trans items -->
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Unit</th>
+                                                    <th>Size</th>
+                                                    <th>Minimum</th>
+                                                    <th>Qty</th>
+                                                    <th style="width:27%">Status</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                data-dismiss="modal">Cancel</button>
+                                            <button class="btn btn-success btn-sm" type="submit">Insert</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End of Modal "Retock item"-->
+
+                    <!--Start of Brochure Modal"-->
+                    <div class="modal fade bd-example-modal" id="brochure" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background:rgba(0, 0, 0, 0.3)">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Select Stock Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form id="formAdd" action="<?= site_url('admin/transactions/add')?>" method="post" accept-charset="utf-8">
+                                    <div class="modal-body">
+                                        <div style="margin:1% 3%">
+                                        <!--checkboxes-->
+                                            <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 1</label>
+                                            <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 2</label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                            <button class="btn btn-success btn-sm" type="submit">Ok</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End of Brochure Modal"-->
+
                     <!--Start of Modal "Add Stock Item"-->
                     <div class="modal fade bd-example-modal-lg" id="newStock" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -90,7 +165,7 @@
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Status</span>
                                                 </div>
-                                                <select class="form-control">
+                                                <select name="stockStatus" class="form-control">
                                                     <option value="" selected>Choose</option>
                                                     <option value="available">Available</option>
                                                     <option value="unavailable">Unavailable</option>
@@ -192,7 +267,7 @@
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Status</span>
                                                 </div>
-                                                <select class="form-control" name="stockStatus" id="stockStatus">
+                                                <select class="form-control" name="stockStatus">
                                                     <option value="" selected>Choose</option>
                                                     <option value="available">Available</option>
                                                     <option value="unavailable">Unavailable</option>
@@ -375,7 +450,7 @@ $(document).ready(function() {
         for (var index = 0; index < $(this).find(".varianceTable > tbody").children().length; index++) {
             var row = $(this).find(".varianceTable > tbody > tr").eq(index);
             stockVariances.push({
-                varID : isNaN(parseInt(row.attr('data-id'))) ? NULL : parseInt(row.attr('data-id')),
+                varID : isNaN(parseInt(row.attr('data-id'))) ?  : parseInt(row.attr('data-id')),
                 varUnit: row.find("input[name='varUnit[]']").val(),
                 varSize: row.find("input[name='varSize[]']").val(),
                 varMin: parseInt(row.find("input[name='varMinimum[]']").val()),

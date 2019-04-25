@@ -31,7 +31,7 @@
 								</tbody>
 							</table>
 							<!--End Table Content-->
-							<!--Start of Modal "Add Menu Spoilages"-->
+							<!--Start of Modal "Add Stock Spoilages"-->
 							<div class="modal fade bd-example-modal-lg" id="addStockSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 								<div class="modal-dialog modal-lg" role="document">
 									<div class="modal-content">
@@ -41,7 +41,7 @@
 												<span aria-hidden="true">&times;</span>
 											</button>
 										</div>
-										<form id="formAdd" action="<?= site_url('admin/stock/spoilages/add') ?>" method="post" accept-charset="utf-8">
+										<form id="formAdd" accept-charset="utf-8">
 											<div class="modal-body">
 												<div class="form-row">
 													<!--Container of Source Date-->
@@ -56,7 +56,7 @@
 												</div>
 												<!--Add Stock Item-->
 												<!--Button to add row in the table-->
-												<!--Button to add launce the brochure modal-->
+												<!--Button to add launche the brochure modal-->
 												<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#brochureSS" data-original-title style="margin:0" id="addStockSpoilage">Add Spoilage Items</a>
 												<br><br>
 												<table class="stockSpoilageTable table table-sm table-borderless">
@@ -70,11 +70,6 @@
 														</tr>
 													</thead>
 													<tbody>
-														<tr>
-															<td><input type="text" name="stock_name" id="stock_name" class="form-control form-control-sm"></td>
-															<td><input type="number" name="s_qty" id="s_qty" class="form-control form-control-sm"></td>
-															<td><textarea name="date" id="s_date" class="form-control form-control-sm"></textarea></td>
-															<td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
 													</tbody>
 												</table>
 												<!--Total of the trans items-->
@@ -104,9 +99,14 @@
                                             <div class="modal-body">
                                                 <div style="margin:1% 3%">
                                                 <!--checkboxes-->
-                                                    <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 1</label>
-													<label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 2</label>
-													<label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 3</label>
+                                                    <!-- <label style="width:96%"><input type="checkbox" class="mr-2" value=""></label> -->
+													<table id="stocksTable" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+														<thead>
+															<th>Stocks</th>
+														</thead>
+														<tbody id="show_data">
+														</tbody>
+													</table>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -157,6 +157,9 @@
 <?php include_once('templates/scripts.php') ?>
 
 <script>
+	 $(function() {
+        viewStocksJs();
+	 })
 	var table = $('#tablevalues');
 
 	function format(d) {
@@ -257,6 +260,60 @@
 		});
 	});
 	//End Function Delete
+
+	function viewStocksJs() {
+        $.ajax({
+            url: "<?= site_url('admin/stock/spoilages/viewStockJS') ?>",
+            method: "post",
+            dataType: "json",
+            success: function(data) {
+                stocks = data;
+                setStockData(stocks);
+            },
+            error: function(response, setting, errorThrown) {
+                console.log(response.responseText);
+                console.log(errorThrown);
+            }
+        });
+    }
+
+    function setStockData() {
+        if ($("#stocksTable> tbody").children().length > 0) {
+            $("#stocksTable> tbody").empty();
+        }
+        stocks.forEach(table => {
+            $("#stocksTable> tbody").append(`
+            <tr data-id="${table.stID}">
+                <td>
+					<label style="width:96%"><input type="checkbox" class="stockchoice" value="${table.stID}">${table.vName}</label>
+                </td>
+            </tr>`);
+        });
+    }
+	$(document).ready(function() {
+		$('.stockchoice').click(function(){
+			var text = "";
+			
+		if ($("#stockSpoilageTable> tbody").children().length > 0) {
+            $("#stockSpoilageTable> tbody").empty();
+        }
+        stocks.forEach(table => {
+            $("#stockSpoilageTable> tbody").append(`
+            <tr data-id="${table.stID}">
+			<td><input type="text" name="stName" id="stock_name" value="${table.stName}" class="form-control form-control-sm"></td>
+			<td><input type="number" name="ssQty" id="s_qty" value="${table.ssQty}"  class="form-control form-control-sm"></td>
+			<td><textarea name="date" id="ssRemarks" value="${table.ssRemarks}" class="form-control form-control-sm" row="1"></textarea></td>
+			<td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+            </tr>`);
+        });
+	}
+	else{
+		$('.hidden').hide();
+	}
+	
+	});
+});
+
 </script>
 </body>
 

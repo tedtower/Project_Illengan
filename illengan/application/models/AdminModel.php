@@ -66,9 +66,11 @@ class AdminModel extends CI_Model{
         $query = "Insert into stockitems (stID,stName,stType,ctID,stStatus) values (NULL,?,?,?,?)";
         if($this->db->query($query,array($stockName,$stockType,$stockCategory,$stockStatus))){
             $this->add_stockVariances($this->db->insert_id(), $stockVariance);
+            return true;
         }
-        return true;
+        return false;
     }
+
     function add_stockVariances($stockID,$stockVariance){
         $query = "Insert into variance (stID, vUnit, vQty, vMin, vSize, vStatus, bQty) values (?,?,?,?,?,?,?)";
         if(count($stockVariance) > 0){
@@ -502,7 +504,7 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_suppliermerch(){
-        $query = "Select * from suppliermerchandise";
+        $query = "SELECT *, CONCAT(spmDesc,' ',stName,' ',(vSize)) as merchandise from supplier natural join suppliermerchandise natural join variance natural join stockitems";
         return $this->db->query($query)->result_array();
     }
     function get_suppMerchandise(){
@@ -550,6 +552,10 @@ class AdminModel extends CI_Model{
     function get_actlogs() {
         $query = "select * FROM activity_logs al INNER JOIN accounts ac USING (aID)";
         return $this->db->query($query)->result_array();
+    }
+    function get_consumption(){
+       $query = "SELECT * FROM consumption";
+       return $this->db->query($query)->result_array();
     }
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------

@@ -39,16 +39,16 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="<?php echo base_url()?>admin/source/add" method="get" accept-charset="utf-8">
+                    <form action="<?php echo base_url()?>admin/supplier/add" method="get" accept-charset="utf-8">
                         <div class="modal-body">                                                                                                                                                      
                             <div class="form-row">
                             <!--Source name-->
                                 <div class="input-group mb-3 col">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                        Source Name</span>
+                                        Supplier Name</span>
                                     </div>
-                                    <input type="text" name="source_name" id="source_name" class="form-control form-control-sm">
+                                    <input type="text" name="supplierName" id="supplierName" class="form-control form-control-sm">
                                 </div>
                             <!--Contact Number-->
                                 <div class="input-group mb-3 col">
@@ -56,7 +56,7 @@
                                         <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                         Contact No.</span>
                                     </div>
-                                    <input type="number" name="contact_num" id="contact_num" class="form-control form-control-sm">
+                                    <input type="number" name="contactNum" id="contactNum" class="form-control form-control-sm">
                                 </div>
                             </div>
                             
@@ -77,8 +77,8 @@
                                     </div>
                                     <select name="status" id="status" class="form-control form-control-sm">
                                         <option>Choose</option>
-                                        <option>Active</option>
-                                        <option>Inactive</option>
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
                                     </select>
                                 </div>
                             </div>
@@ -87,7 +87,7 @@
                                     <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                     Address</span>
                                 </div>
-                                <input type="text" name="supAddress" id="supAddress" class="form-control form-control-sm">
+                                <input type="text" name="supplierAddress" id="supplierAddress" class="form-control form-control-sm">
                             </div>
                             <!--Merchandise-->
                             <a id="addMerchandise" class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Merchandise Item</a> <!--Button to add row in the table-->
@@ -136,7 +136,7 @@
                                         <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                         Source Name</span>
                                     </div>
-                                    <input type="text" name="source_name" id="source_name" class="form-control form-control-sm">
+                                    <input type="text" name="s" id="source_name" class="form-control form-control-sm">
                                 </div>
                             <!--Contact Number-->
                                 <div class="input-group mb-3 col">
@@ -293,7 +293,7 @@
                     <td>${item.supplier.spStatus}</td>
                     <td>
                         <button class="editBtn btn btn-sm btn-primary">Edit</button>
-                        <button class="deleteBtn btn btn-sm btn-danger">Delete</button>
+                        <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteSource">Delete</button>
                     </td>
                 </tr>
             `;
