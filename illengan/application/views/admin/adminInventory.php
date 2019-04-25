@@ -11,6 +11,8 @@
                 <div class="card-content">
                     <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newStock" data-original-title
                         style="margin:0;" id="addBtn">Add Stock Item</a>
+                    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#restock" data-original-title
+                        style="margin:0;" id="addBtn">Restock</a>
                     <br><br>
                     <table id="stockTable" class="table table-striped table-bordered dt-responsive nowrap"
                         cellspacing="0" width="100%">
@@ -29,6 +31,79 @@
                         </tbody>
                     </table>
                     <p id="note"></p>
+                <!--Start of Modal "Restock Item"-->
+                     <div class="modal fade bd-example-modal-lg" id="restock" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Restock Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="<?php echo base_url('admin/inventory/add')?>" method="get"
+                                    accept-charset="utf-8">
+                                    <div class="modal-body">
+                                        <!--Add Stock Item-->
+                                        <a class="btn btn-primary btn-sm"style="color:blue;margin:0" data-toggle="modal" data-target="#brochure" >Add Item</a>
+                                        <!--Button to add row in the table-->
+                                        <br><br>
+                                        <table class="varianceTable table table-sm table-borderless">
+                                            <!--Table containing the different input fields in adding trans items -->
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Unit</th>
+                                                    <th>Size</th>
+                                                    <th>Minimum</th>
+                                                    <th>Qty</th>
+                                                    <th style="width:27%">Status</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                data-dismiss="modal">Cancel</button>
+                                            <button class="btn btn-success btn-sm" type="submit">Insert</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End of Modal "Retock item"-->
+
+                    <!--Start of Brochure Modal"-->
+                    <div class="modal fade bd-example-modal" id="brochure" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background:rgba(0, 0, 0, 0.3)">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Select Stock Item</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form id="formAdd" action="<?= site_url('admin/transactions/add')?>" method="post" accept-charset="utf-8">
+                                    <div class="modal-body">
+                                        <div style="margin:1% 3%">
+                                        <!--checkboxes-->
+                                            <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 1</label>
+                                            <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 2</label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                            <button class="btn btn-success btn-sm" type="submit">Ok</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End of Brochure Modal"-->
+
                     <!--Start of Modal "Add Stock Item"-->
                     <div class="modal fade bd-example-modal-lg" id="newStock" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -79,9 +154,8 @@
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Category</span>
                                                 </div>
-                                                <select class="form-control">
+                                                <select name="stockCategory" class="form-control">
                                                     <option value="" selected>Choose</option>
-                                                    <option value=""></option>
                                                 </select>
                                             </div>
                                             <!--Status-->
@@ -91,7 +165,7 @@
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Status</span>
                                                 </div>
-                                                <select class="form-control">
+                                                <select name="stockStatus" class="form-control">
                                                     <option value="" selected>Choose</option>
                                                     <option value="available">Available</option>
                                                     <option value="unavailable">Unavailable</option>
@@ -145,7 +219,7 @@
                                     accept-charset="utf-8">
                                     <div class="modal-body">
                                         <div class="form-row">
-                                            <input type="text" name="stockName" id="stockID"
+                                            <input type="text" name="stockID"
                                                 class="form-control form-control-sm" hidden="hidden">
                                             <!--Container of promo name and promo type-->
                                             <!--Stock name-->
@@ -182,7 +256,7 @@
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Category</span>
                                                 </div>
-                                                <select class="form-control" name="stockCategory" id="stockCategory">
+                                                <select class="form-control" name="stockCategory">
                                                     <option value="" selected>Choose</option>
                                                 </select>
                                             </div>
@@ -193,7 +267,7 @@
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Status</span>
                                                 </div>
-                                                <select class="form-control" name="stockStatus" id="stockStatus">
+                                                <select class="form-control" name="stockStatus">
                                                     <option value="" selected>Choose</option>
                                                     <option value="available">Available</option>
                                                     <option value="unavailable">Unavailable</option>
@@ -253,7 +327,6 @@
                                                 class="form-control form-control-sm">
                                         </div>
                                     </div>
-
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary btn-sm"
                                             data-dismiss="modal">Close</button>
@@ -293,7 +366,7 @@ $(document).ready(function() {
     });
     $(".addItemVarianceBtn").on('click',function(){
         var row=`
-        <tr>
+        <tr data-id="">
             <td><input type="text" name="varUnit[]"
                     class="form-control form-control-sm"></td>
             <td><input type="text" name="varSize[]"
@@ -365,12 +438,63 @@ $(document).ready(function() {
             }
         });
     });
+    
+    $("#editStock form").on('submit', function(event) {
+        event.preventDefault();
+        var id = $(this).find("input[name='stockID']").val();
+        var name = $(this).find("input[name='stockName']").val();
+        var type = $(this).find("select[name='stockType']").val();
+        var category = $(this).find("select[name='stockCategory']").val();
+        var status = $(this).find("select[name='stockStatus']").val();
+        var stockVariances = [];
+        for (var index = 0; index < $(this).find(".varianceTable > tbody").children().length; index++) {
+            var row = $(this).find(".varianceTable > tbody > tr").eq(index);
+            stockVariances.push({
+                varID : isNaN(parseInt(row.attr('data-id'))) ?  : parseInt(row.attr('data-id')),
+                varUnit: row.find("input[name='varUnit[]']").val(),
+                varSize: row.find("input[name='varSize[]']").val(),
+                varMin: parseInt(row.find("input[name='varMinimum[]']").val()),
+                varQty: parseInt(row.find("input[name='varQty[]']").val()),
+                varStatus: row.find("select[name='varStatus[]']").val()
+            });
+        }
+        console.log(id, name, type, category, status, stockVariances);
+        $.ajax({
+            url: "<?= site_url("admin/inventory/edit")?>",
+            method: "post",
+            data: {
+                id : id,
+                name: name,
+                type: type,
+                category: category,
+                status: status,
+                variances: JSON.stringify(stockVariances)
+            },
+            dataType: "json",
+            beforeSend: function() {
+                console.log(name, type, category, status, stockVariances);
+            },
+            success: function(data) {
+                console.log(data);
+                // inventory = data;
+                // lastIndex = 0;
+                // setTableData();
+            },
+            error: function(response, setting, error) {
+                console.log(response.responseText);
+                console.log(error);
+            },
+            complete: function() {
+                $("#newStock").modal("hide");
+            }
+        });
+    });
 });
 
 function setTableData() {
     var count = 0;
     //Set Modals Stock Category Select elements' options
-    $("select[name='stockCategory']").first().siblings().remove();
+    $("select[name='stockCategory']").children().first().siblings().remove();
     $("select[name='stockCategory']").append(`
     ${inventory.categories.length === 0 ? "" : inventory.categories.map(category => {
         return `<option value="${category.ctID}">${category.ctName}</option>`
@@ -399,7 +523,7 @@ function setTableData() {
             $("#editStock form")[0].reset();
             $("#editStock .varianceTable > tbody").empty();
             var stockID = $(this).closest("tr").attr("data-id");
-            setEditModal($("#editStock"), inventory.stocks.filter(item => item.stock_id === stockID)[0], inventory.variances.filter(variance => variance.stID === stockID));
+            setEditModal($("#editStock"), inventory.stocks.filter(item => item.stID === stockID)[0], inventory.variances.filter(variance => variance.stID === stockID));
         });
     } else {
         $("#stockTable > tbody").empty();
@@ -541,7 +665,7 @@ function setEditModal(modal, stock, variances) {
     
     variances.forEach(variance => {
         modal.find(".varianceTable > tbody").append(`
-        <tr>
+        <tr data-id="${variance.vID}">
             <td><input type="text" name="varUnit[]" value="${variance.vUnit}"
                     class="form-control form-control-sm"></td>
             <td><input type="text" name="varSize[]" value="${variance.vSize}"
