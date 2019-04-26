@@ -14,7 +14,6 @@
                         style="margin:0" onclick="removeOptions()" id="addPOBtn">Add Purchase
                         Order</a>
                     <br>
-                    <!-- addSupplierOpts();removeOptions() -->
                     <br>
                     <table id="poTable" class="table dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead class="thead-light">
@@ -56,7 +55,7 @@
                                                         style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Supplier</span>
                                                 </div>
-                                                <select class="form-control form-control-sm" name="spID">
+                                                <select class="form-control form-control-sm" id="spID" name="spID">
                                                 </select>
                                             </div>
                                             <!--Purchase date-->
@@ -66,7 +65,7 @@
                                                         style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Purchase Date</span>
                                                 </div>
-                                                <input type="date" name="poDate"
+                                                <input type="date" name="poDate" id="poDate"
                                                     class="form-control form-control-sm">
                                             </div>
                                         </div>
@@ -80,7 +79,7 @@
                                                         style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Status</span>
                                                 </div>
-                                                <select class="form-control form-control-sm" name="poStatus">
+                                                <select class="form-control form-control-sm" name="poStatus" id="poStatus">
                                                     <option value="" selected="selected">Choose</option>
                                                     <option value="pending">Pending</option>
                                                     <option value="delivered">Delivered</option>
@@ -93,7 +92,7 @@
                                                         style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Delivery Date</span>
                                                 </div>
-                                                <input type="date" name="edDate"
+                                                <input type="date" name="edDate" id="edDate"
                                                     class="form-control form-control-sm">
                                             </div>
                                         </div>
@@ -105,7 +104,7 @@
                                                     style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                     Remarks</span>
                                             </div>
-                                            <textarea class="form-control form-control-sm" name="poRemarks"></textarea>
+                                            <textarea class="form-control form-control-sm" id="poRemarks" name="poRemarks"></textarea>
                                         </div>
                                         <!--Button to add row in the table-->
                                         <a class="addPOItem btn btn-default btn-sm" data-toggle="modal" data-target="#brochure"
@@ -134,7 +133,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger btn-sm"
                                                 data-dismiss="modal">Cancel</button>
-                                            <button class="btn btn-success btn-sm" type="submit">Add</button>
+                                            <button class="btn btn-success btn-sm" id="submitPOrder" onclick="addPurchaseOrder()" type="button">Add</button>
                                         </div>
                                     </div>
                                 </form>

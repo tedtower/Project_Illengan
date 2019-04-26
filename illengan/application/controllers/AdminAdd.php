@@ -117,10 +117,15 @@ class AdminAdd extends CI_Controller{
     }
     function addPurchaseOrder() {
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $spName = $this->input->post('spName');
+            $spID = $this->input->post('spID');
             $poDate = $this->input->post('poDate');
             $edDate = $this->input->post('edDate');
+            $poTotal = 100;
+            $poDateRecorded = date('Y-m-d');
             $poStatus = $this->input->post('poStatus');
+            $poRemarks = $this->input->post('poRemarks');
+            echo $poDateRecorded, $poDate, $edDate, $poStatus;
+            $this->adminmodel->add_PurchaseOrder($poDate, $edDate, $poTotal, $poDateRecorded, $poStatus, $poRemarks, $spID);
         }else{
             redirect('login');
         }

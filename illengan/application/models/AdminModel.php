@@ -127,7 +127,12 @@ class AdminModel extends CI_Model{
         }
         return false;
     }
-    function add_supplierMerchandise($merch){
+    function add_PurchaseOrder($poDate,$edDate,$poTotal,$poDateRecorded,$poStatus, $poRemarks, $spID){
+        $query = "insert into purchaseorder (poID, poDate, edDate, poTotal, poDateRecorded, poStatus, 
+        poRemarks, spID) values (NULL,?,?,?,?,?,?,?);";
+        $this->db->query($query,array($poDate,$edDate,$poTotal,$poDateRecorded,$poStatus, $poRemarks, $spID));
+    }
+    function add_supplierMerchandise() {
         $query = "insert into suppliermerchandise (vID, spID, spmDesc, spmUnit, spmPrice) values (?,?,?,?,?);";
         $this->db->query($query,array($merch['varID'],$merch['suppID'],$merch['merchDesc'],$merch['merchUnit'],$merch['merchPrice']));
     }
@@ -166,15 +171,6 @@ class AdminModel extends CI_Model{
                 spmID = ?;";
         $this->db->query($query,array($merch['varID'],$spID,$merch['merchDesc'],$merch['merchUnit'],$merch['merchPrice'], $merch['merchID']));
     }   
-    
-    function add_purchaseOrder(){
-        $query = "insert into purchaseorder (spID, poDate, edDate, poTotal, poDateRecorded, poRemarks, poStatus) values (?,?,?,?,?,?,?)";
-        if($this->db->query($query, array())){
-            
-            return true;
-        }
-        return false;
-    }
 
     function add_poItem(){
         $query = "insert into poitems (vID, poID, poiQTY, poiUnit, poiPrice, poiStatus) values (?,?,?,?,?,?);";
