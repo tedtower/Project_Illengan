@@ -175,11 +175,11 @@ function viewAccountsJs(){
     }
     function viewStockJS() {
         $data=$this->adminmodel->get_stockVariance();
-        echo json_encode($data);
+        echo json_encode($data, JSON_PRETTY_PRINT);
     }
     function viewSpoilagesJs(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $data= $this->adminmodel->get_spoilages();
+            $data['stocks']= $this->adminmodel->get_spoilages();
             echo json_encode($data);
             
         }else{
