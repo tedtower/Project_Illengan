@@ -447,7 +447,8 @@ class Admin extends CI_Controller{
                 if (password_verify($input_old_password, $row['aPassword'])){                 
                     $this->adminmodel->change_account_password($new_password,$aID);
                 }else{ 
-            }   
+            } 
+        }  
         }else{
             $this->viewChangePassword($aID);
         }
@@ -710,6 +711,5 @@ class Admin extends CI_Controller{
         
     }
 
-}
 
 ?>

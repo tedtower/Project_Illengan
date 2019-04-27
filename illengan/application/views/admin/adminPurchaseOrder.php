@@ -11,10 +11,9 @@
                 <!--Table-->
                 <div class="card-content">
                     <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addPO" data-original-title
-                        style="margin:0" onclick="" id="addPOBtn">Add Purchase
+                        style="margin:0" onclick="removeOptions()" id="addPOBtn">Add Purchase
                         Order</a>
                     <br>
-                    <!-- addSupplierOpts();removeOptions() -->
                     <br>
                     <table id="poTable" class="table dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead class="thead-light">
@@ -56,7 +55,7 @@
                                                         style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Supplier</span>
                                                 </div>
-                                                <select class="form-control form-control-sm" name="spID">
+                                                <select class="form-control form-control-sm" id="spID" name="spID">
                                                 </select>
                                             </div>
                                             <!--Purchase date-->
@@ -66,7 +65,7 @@
                                                         style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Purchase Date</span>
                                                 </div>
-                                                <input type="date" name="poDate"
+                                                <input type="date" name="poDate" id="poDate"
                                                     class="form-control form-control-sm">
                                             </div>
                                         </div>
@@ -80,7 +79,7 @@
                                                         style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Status</span>
                                                 </div>
-                                                <select class="form-control form-control-sm" name="poStatus">
+                                                <select class="form-control form-control-sm" name="poStatus" id="poStatus">
                                                     <option value="" selected="selected">Choose</option>
                                                     <option value="pending">Pending</option>
                                                     <option value="delivered">Delivered</option>
@@ -93,7 +92,7 @@
                                                         style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Delivery Date</span>
                                                 </div>
-                                                <input type="date" name="edDate"
+                                                <input type="date" name="edDate" id="edDate"
                                                     class="form-control form-control-sm">
                                             </div>
                                         </div>
@@ -105,7 +104,7 @@
                                                     style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                     Remarks</span>
                                             </div>
-                                            <textarea class="form-control form-control-sm" name="poRemarks"></textarea>
+                                            <textarea class="form-control form-control-sm" id="poRemarks" name="poRemarks"></textarea>
                                         </div>
                                         <!--Button to add row in the table-->
                                         <a class="addPOItem btn btn-default btn-sm" data-toggle="modal" data-target="#brochure"
@@ -124,22 +123,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr data-id="" data-varid="">
-                                                    <input type="hidden" name="">
-                                                    <td><input type="text" name="merchName[]"
-                                                            class="form-control form-control-sm" readonly="readonly"></td>
-                                                    <td><input type="number" name="poiQty[]"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><input type="text" name="poiUnit[]"
-                                                            class="form-control form-control-sm" readonly="readonly"></td>
-                                                    <td><input type="number" name="poiPrice[]"
-                                                            class="form-control form-control-sm" readonly="readonly"></td>
-                                                    <td><input type="number" name="itemSubtotal[]"
-                                                            class="form-control form-control-sm" readonly="readonly"></td>
-                                                    <td><img class="exitBtn"
-                                                            src="/assets/media/admin/error.png"
-                                                            style="width:20px;height:20px"></td>
-                                                </tr>
+                                                
                                             </tbody>
                                         </table>
 
@@ -149,7 +133,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger btn-sm"
                                                 data-dismiss="modal">Cancel</button>
-                                            <button class="btn btn-success btn-sm" type="submit">Add</button>
+                                            <button class="btn btn-success btn-sm" id="submitPOrder" onclick="addPurchaseOrder()" type="button">Add</button>
                                         </div>
                                     </div>
                                 </form>
@@ -307,7 +291,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger btn-sm"
                                             data-dismiss="modal">Cancel</button>
-                                        <button class="btn btn-success btn-sm" type="submit">Ok</button>
+                                        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal" onclick="getSelectedMerch()">Ok</button>
                                     </div>
                                 </form>
                             </div>
@@ -355,7 +339,7 @@
 </div>
 
 <?php include_once('templates/scripts.php') ?>
-<!-- <script src="<?= admin_js().'addPO.js'?>"></script> -->
+<script src="<?= admin_js().'addPO.js'?>"></script>
 <script>
     var purOrders = [];
     var suppliers = [];
@@ -403,7 +387,7 @@
     function setBrochureContent(merchandise){
         $("#list").empty();
         $("#list").append(`${merchandise.map(merch => {
-            return `<label style="width:96%"><input type="checkbox" name="suppMerch[]" class="mr-2" value="${merch.spmID}"> ${merch.spmDesc} - ${parseFloat(merch.spmPrice).toFixed(2)}</label>`
+            return `<label style="width:96%"><input type="checkbox" id="JAJA" name="suppMerch[]" class="merchChoice mr-2" value="${merch.spmID}"> ${merch.spmDesc} - ${parseFloat(merch.spmPrice).toFixed(2)}</label>`
         }).join('')}`);
     }
     function showTable() {
@@ -490,5 +474,6 @@
         });
     }
 
+    
 
 </script>

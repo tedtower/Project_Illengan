@@ -173,7 +173,10 @@ function viewAccountsJs(){
             redirect('login');
         }
     }
-
+    function viewStockJS() {
+        $data=$this->adminmodel->get_stockVariance();
+        echo json_encode($data);
+    }
     function viewSpoilagesJs(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data= $this->adminmodel->get_spoilages();
@@ -431,8 +434,6 @@ function viewSpoilagesStock(){
             redirect('login');
         }
     }
-
-
     function viewPromos() {
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data['title'] = "Promos";
@@ -475,11 +476,13 @@ function viewSpoilagesStock(){
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
+    
     function jsonSuppliers() {
         $data =  $this->adminmodel->get_supplier();
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
+
     function jsonSuppMerchandise() {
         $data =  $this->adminmodel->get_suppMerchandise();
         header('Content-Type: application/json');
