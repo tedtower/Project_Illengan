@@ -340,11 +340,11 @@ $(document).ready(function() {
             var row = $(this).find(".merchandisetable > tbody > tr").eq(index);
             console.log(row);
             supplierMerchandise.push({
-                spmID : isNaN(parseInt(row.attr('data-id'))) ?  (undefined) : parseInt(row.attr('data-id')),
+                spmID : isNaN(parseInt(row.attr('data-id'))) ?  (null) : parseInt(row.attr('data-id')),
                 merchName: row.find("input[name='merchName[]']").val(),
                 merchUnit: row.find("input[name='merchUnit[]']").val(),
                 merchPrice: parseFloat(row.find("input[name='merchPrice[]']").val()),
-                varID: $(this).find("select[name='variance[]']").val()
+                varID: parseInt(row.find("select[name='variance[]']").val())
             });
         }
 

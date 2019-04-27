@@ -153,7 +153,7 @@ class AdminModel extends CI_Model{
    
     }
     
-    function add_supplierMerchandise() {
+    function add_supplierMerchandise($merch, $id) {
         $query = "insert into suppliermerchandise (vID, spID, spmDesc, spmUnit, spmPrice) values (?,?,?,?,?);";
         $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
     }
@@ -172,7 +172,7 @@ class AdminModel extends CI_Model{
             if(count($spMerch) > 0){
                 foreach($spMerch as $merch){
                     if($merch['spmID'] == NULL){
-                        $this->add_supplierMerchandise($spID,$merch);
+                        $this->add_supplierMerchandise($merch, $spID);
                     }else{
                         $this->edit_supplierMerchandise($merch);
                     }
