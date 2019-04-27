@@ -8,7 +8,7 @@ class AdminView extends CI_Controller{
         // code for getting current date : date("Y-m-d")
         // code for getting current date and time : date("Y-m-d 2H:i:s")
     }
-//VIEW FUNCTIONS--------------------------------------------------------------------------------
+//VIEW FUNCTIONS------- -------------------------------------------------------------------------
 function viewAccountsJs(){
     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
         echo json_encode($this->adminmodel->get_accounts());

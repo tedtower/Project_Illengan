@@ -128,7 +128,7 @@
                                         </table>
 
                                         <!--Total of the trans items-->
-                                        <span>Total: &#8369;<span class="total"> 0</span></span>
+                                        <span>Total: &#8369;<span id="total" class="total"> </span></span>
                                         <!--Modal Footer-->
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger btn-sm"
@@ -426,8 +426,8 @@
                     ${item.poItems.map(po => {
                         return `
                         <tr>
-                            <td>${po.poiName}</td>
-                            <td>&#8369; ${po.poiQty}</td>
+                            <td>${po.stName}</td>
+                            <td>${po.poiQty}</td>
                             <td>${po.poiUnit}</td>
                             <td>&#8369; ${po.poiPrice}</td>
                             <td>${(parseFloat(po.poiPrice)*parseInt(po.poiQty)).toFixed(2)}</td>
