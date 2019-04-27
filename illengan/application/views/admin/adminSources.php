@@ -12,10 +12,10 @@
                         <div class="container-fluid">
                             <!--Table-->
                             <div class="card-content">
-                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newSource" data-original-title style="margin:0;">Add New Source</a><br>
+                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newSupplier" id="addBtn" data-original-title style="margin:0;">Add New Source</a><br>
 
                                 <br>
-                                <table id="tablevalues" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                                <table id="suppliertable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                     <thead class="thead-light">
                                         <th style="width:3%"></th>
                                         <th><b class="pull-left">Name</b></th>
@@ -28,9 +28,11 @@
                                     <tbody>
                                     </tbody>
                                 </table>
+                                <p id="note"></p>
                                 <!--End Table Content-->
-    <!--Start of Add Modal-->
-        <div class="modal fade bd-example-modal-lg" id="newSource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <!--Start of Add Modal--> 
+        <div class="modal fade bd-example-modal-lg" id="newSupplier" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -46,9 +48,9 @@
                                 <div class="input-group mb-3 col">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                        Supplier Name</span>
+                                        Supplier</span>
                                     </div>
-                                    <input type="text" name="supplierName" id="supplierName" class="form-control form-control-sm">
+                                    <input type="text" name="supplierName" id="supplierName" class="form-control form-control-sm" required>
                                 </div>
                             <!--Contact Number-->
                                 <div class="input-group mb-3 col">
@@ -56,7 +58,7 @@
                                         <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                         Contact No.</span>
                                     </div>
-                                    <input type="number" name="contactNum" id="contactNum" class="form-control form-control-sm">
+                                    <input type="number" name="contactNum" id="contactNum" class="form-control form-control-sm" required>
                                 </div>
                             </div>
                             
@@ -75,8 +77,8 @@
                                         <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                         Status</span>
                                     </div>
-                                    <select name="status" id="status" class="form-control form-control-sm">
-                                        <option>Choose</option>
+                                    <select name="status" id="status" class="form-control form-control-sm" required>
+                                        <option value="">Choose</option>
                                         <option value="active">Active</option>
                                         <option value="inactive">Inactive</option>
                                     </select>
@@ -90,9 +92,9 @@
                                 <input type="text" name="supplierAddress" id="supplierAddress" class="form-control form-control-sm">
                             </div>
                             <!--Merchandise-->
-                            <a id="addMerchandise" class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Merchandise Item</a> <!--Button to add row in the table-->
+                            <a class="addMerchandise btn btn-primary btn-sm" style="color:blue;margin:0">Add Merchandise Item</a> <!--Button to add row in the table-->
                             <br><br>
-                            <table id="merchandisetable" class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
+                            <table class="merchandisetable table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
                                 <thead class="thead-light">
                                     <tr>
                                         <th>Item Name</th>
@@ -117,8 +119,8 @@
         </div>
     <!--End of Add Modal-->
 
-    <!--Start of Edit Modal-->
-        <div class="modal fade bd-example-modal-lg" id="editSource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!--Start of Add Modal--> 
+    <div class="modal fade bd-example-modal-lg" id="editSupplier" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -127,24 +129,25 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="<?php echo base_url()?>admin/source/add" method="get" accept-charset="utf-8">
-                        <div class="modal-body">                                                                                                                                                      
+                    <form action="<?php echo base_url()?>admin/supplier/edit" method="get" accept-charset="utf-8">
+                        <div class="modal-body"> 
+                            <input type="text" name="sourceID" class="form-control form-control-sm" hidden="hidden">                                                                                                                                                     
                             <div class="form-row">
                             <!--Source name-->
                                 <div class="input-group mb-3 col">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                        Source Name</span>
+                                        Supplier</span>
                                     </div>
-                                    <input type="text" name="s" id="source_name" class="form-control form-control-sm">
+                                    <input type="text" name="supplierName" id="supplierName" class="form-control form-control-sm" required>
                                 </div>
                             <!--Contact Number-->
                                 <div class="input-group mb-3 col">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                        Contact No.</span>
+                                        Contact No.</span> 
                                     </div>
-                                    <input type="number" name="contact_num" id="contact_num" class="form-control form-control-sm">
+                                    <input type="number" name="contactNum" id="contactNum" class="form-control form-control-sm" required>
                                 </div>
                             </div>
                             
@@ -163,10 +166,10 @@
                                         <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                         Status</span>
                                     </div>
-                                    <select name="status" id="status" class="form-control form-control-sm">
-                                        <option>Choose</option>
-                                        <option>Active</option>
-                                        <option>Inactive</option>
+                                    <select name="status" id="status" class="form-control form-control-sm" required>
+                                        <option value="">Choose</option>
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
                                     </select>
                                 </div>
                             </div>
@@ -175,12 +178,12 @@
                                     <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                     Address</span>
                                 </div>
-                                <input type="text" name="supAddress" id="supAddress" class="form-control form-control-sm">
+                                <input type="text" name="supplierAddress" id="supplierAddress" class="form-control form-control-sm">
                             </div>
                             <!--Merchandise-->
-                            <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Merchandise Item</a> <!--Button to add row in the table-->
+                            <a class="addMerchandise btn btn-primary btn-sm" style="color:blue;margin:0">Add Merchandise Item</a> <!--Button to add row in the table-->
                             <br><br>
-                            <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
+                            <table class="merchandisetable table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
                                 <thead class="thead-light">
                                     <tr>
                                         <th>Item Name</th>
@@ -191,33 +194,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><input type="text" name="merchName" id="merchName" class="form-control form-control-sm"></td>
-                                        <td><input type="text" name="merchUnit" id="merchUnit" class="form-control form-control-sm"></td>
-                                        <td><input type="number" name="merchPrice" id="merchPrice" class="form-control form-control-sm"></td>
-                                        <td>
-                                            <select class="form-control" name="variance" id="variance">
-                                                <option selected>Choose</option>
-                                                <option></option>
-                                            </select>
-                                        </td>
-                                        <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
-                                    </tr>
+
+                                </tbody>
                             </table>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                <button class="btn btn-success btn-sm" type="submit">Update</button>
+                                <button class="btn btn-success btn-sm" type="submit">Insert</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        <!--End of Edit Modal-->
+    <!--End of Add Modal-->
 
- 
-
-        <!--Start of Delete Modal-->
+    <!--Start of Delete Modal-->
         <div class="modal fade" id="deleteSource" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -257,85 +248,150 @@
 <?php include_once('templates/scripts.php') ?>
 
 <script>
-    var supplier = [];
-    var variance = [];
-    $(function(){
+var supplier = <?= json_encode($supplier)?>;
+console.log(supplier);
+var lastIndex = 0;
+var rowsPerPage = supplier.sources.length;
+$(document).ready(function() {
+    $("#addBtn").on('click', function() {
+        $("#newSupplier form")[0].reset();
+        console.log(supplier);
+    });
+    $(".addMerchandise").on('click',function(){
+        var row=`
+        <tr data-id="">
+            <td><input type="text" name="merchName[]" class="form-control form-control-sm" required></td>
+            <td><input type="text" name="merchUnit[]" class="form-control form-control-sm"></td>
+            <td><input type="number" name="merchPrice[]" class="form-control form-control-sm" required></td>
+            <td>
+                <select class="form-control" name="variance[]" required>
+                <option value="">Choose</option>
+                    ${supplier.stockvariances.map(variance => {
+                        return `
+                        <option value="${variance.vID}">${variance.vName}</option>`
+                    }).join('')}
+                </select>
+            </td>
+            <td><img class="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+        </tr>
+        `;
+        $(this).closest(".modal").find(".merchandisetable > tbody").append(row);
+        $(this).closest(".modal").find(".exitBtn").last().on('click',function(){
+            $(this).closest("tr").remove();
+        });
+    });
+    setTableData();
+    $("#newSupplier form").on('submit', function(event) {
+        event.preventDefault();
+        var name = $(this).find("input[name='supplierName']").val();
+        var contactNum = $(this).find("input[name='contactNum']").val();
+        var email = $(this).find("input[name='email']").val();
+        var address = $(this).find("input[name='supplierAddress']").val();
+        var status = $(this).find("select[name='status']").val();
+        var supplierMerchandise = [];
+        for (var index = 0; index < $(this).find(".merchandisetable > tbody").children().length; index++) {
+            supplierMerchandise.push({
+                merchName: $(this).find("input[name='merchName[]']").eq(index).val(),
+                merchUnit: $(this).find("input[name='merchUnit[]']").eq(index).val(),
+                merchPrice: $(this).find("input[name='merchPrice[]']").eq(index).val(),
+                varID: $(this).find("select[name='variance[]']").eq(index).val()
+            });
+        }
         $.ajax({
-            url: '<?= base_url("admin/supplier/getDetails")?>',
-            dataType: 'json',
-            success: function(data){
-                var spmLastIndex = 0;
-                $.each(data.supplier, function(index, item){
-                    supplier.push({"supplier" : item});
-                    supplier[index].suppliermerch = data.suppliermerch.filter(spm =>  spm.spID ==  item.spID);
-
-                    variance = data.stockvariance;
-
-                });
-                showTable();
+            url: "<?= site_url("admin/supplier/add")?>",
+            method: "post",
+            data: {
+                name: name,
+                contactNum: contactNum,
+                email: email,
+                address: address,
+                status: status,
+                merchandises: JSON.stringify(supplierMerchandise)
             },
-            error: function(response,setting, errorThrown){
-                console.log(errorThrown);
-                console.log(response.responseText);
+            dataType: "json",
+            beforeSend: function() {
+                console.log(name, contactNum, email, address, status, supplierMerchandise);
+            },
+            success: function(data) {
+                console.log(data);
+                // inventory = data;
+                // lastIndex = 0;
+                // setTableData();
+            },
+            error: function(response, setting, error) {
+                console.log(error);
+            },
+            complete: function() {
+                $("#newSupplier").modal("hide");
             }
         });
-
     });
-    function showTable(){
-        supplier.forEach(function(item){
-            var tableRow = `                
-                <tr class="table_row" data-supplierID="${item.supplier.spID}">   <!-- table row ng table -->
-                    <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
-                    <td>${item.supplier.spName}</td>
-                    <td>${item.supplier.spContactNum}</td>
-                    <td>${item.supplier.spEmail}</td>
-                    <td>${item.supplier.spAddress}</td>
-                    <td>${item.supplier.spStatus}</td>
-                    <td>
-                        <button class="editBtn btn btn-sm btn-primary">Edit</button>
-                        <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteSource">Delete</button>
-                    </td>
-                </tr>
-            `;
-            var suppliermerchDiv = `
-            <div class="suppliermerch" style="margin:1% 5%">
-                ${item.suppliermerch.length === 0 ? "No merchandise products are set for this supplier." : 
-                `<span>Merchandise Items</span>
-                    <table class="table table-bordered dt-responsive nowrap mt-2">
-                        <thead style="background:white">
-                            <tr>
-                            <th scope="col">Item Name</th>
-                            <th scope="col">Unit</th>
-                            <th scope="col">Price</th>
-                            </tr>
-                        </thead>
-                    <tbody>
-                    ${item.suppliermerch.map(spm => {
-                        return `
-                        <tr>
-                        <td>${spm.merchandise}</td>
-                        <td>${spm.spmUnit}</td>
-                        <td>${spm.spmPrice}</td>
-                        </tr> 
-                        `;
-                    }).join('')}
-                    </tbody>
-                </table>
-                `}
-            </div>
-            `;
-            var accordion = `
-            <tr class="accordion" style="display:none">
-                <td colspan="8">
-                    <div class="contain">
-                    </div>
-                </td>
-            </tr>
-            `;
-            $("#tablevalues > tbody").append(tableRow);
-            $("#tablevalues > tbody").append(accordion);
-            $(".contain").last().append(suppliermerchDiv);
+
+    $("#editSupplier form").on('submit', function(event) {
+        event.preventDefault();
+        var id = $(this).find("input[name='sourceID']").val();
+        var name = $(this).find("input[name='supplierName']").val();
+        var contactNum = $(this).find("input[name='contactNum']").val();
+        var email = $(this).find("input[name='email']").val();
+        var address = $(this).find("input[name='supplierAddress']").val();
+        var status = $(this).find("select[name='status']").val();
+        var supplierMerchandise = [];
+        for (var index = 0; index < $(this).find(".merchandisetable > tbody").children().length; index++) {
+            var row = $(this).find(".merchandisetable > tbody > tr").eq(index);
+            console.log(row);
+            supplierMerchandise.push({
+                spmID : isNaN(parseInt(row.attr('data-id'))) ?  (undefined) : parseInt(row.attr('data-id')),
+                merchName: row.find("input[name='merchName[]']").val(),
+                merchUnit: row.find("input[name='merchUnit[]']").val(),
+                merchPrice: parseFloat(row.find("input[name='merchPrice[]']").val()),
+                varID: $(this).find("select[name='variance[]']").val()
+            });
+        }
+
+        console.log(id, name, contactNum, email, address, status, supplierMerchandise);
+        $.ajax({
+            url: "<?= site_url("admin/supplier/edit")?>",
+            method: "post",
+            data: {
+                id : id,
+                name: name,
+                contactNum: contactNum,
+                email: email,
+                address: address,
+                status: status,
+                merchandises: JSON.stringify(supplierMerchandise)
+            },
+            dataType: "json",
+            beforeSend: function() {
+                console.log(name, contactNum, email, address, status, supplierMerchandise);
+            },
+            success: function(data) {
+                console.log(data);
+                // inventory = data;
+                // lastIndex = 0;
+                // setTableData();
+            },
+            error: function(response, setting, error) {
+                console.log(error);
+                console.log(response.responseText);
+            },
+            complete: function() {
+                $("#editSupplier").modal("hide");
+            }
         });
+    });
+});
+
+function setTableData() {
+    var count = 0;
+    //Populate Stock Table
+    if ($("#suppliertable > tbody").children().length === 0) {
+        for (lastIndex; lastIndex < supplier.sources.length; lastIndex++) {
+            if (count < rowsPerPage) {
+                appendRow(supplier.sources[lastIndex]);
+                appendAccordion(supplier.merchandises.filter(merchandise => merchandise.spID === supplier.sources[lastIndex].spID));
+            }
+        }
         //Set accordion icon event to show accordion
         $(".accordionBtn").on('click', function() {
             if ($(this).closest("tr").next(".accordion").css("display") == 'none') {
@@ -346,25 +402,103 @@
                 $(this).closest("tr").next(".accordion").hide("slow");
             }
         });
+        $(".editBtn").on("click", function() {
+            $("#editSupplier form")[0].reset();
+            $("#editSupplier .merchandisetable > tbody").empty();
+            var sourceID = $(this).closest("tr").attr("data-id");
+            setEditModal($("#editSupplier"), supplier.sources.filter(item => item.spID === sourceID)[0], supplier.merchandises.filter(merchandise => merchandise.spID === sourceID));
+        });
+    } else {
+        $("#suppliertable > tbody").empty();
     }
+}
 
-    $("#addMerchandise").on('click', function(){
-        $(this).closest("form").find("#merchandisetable > tbody").append(`
-        <tr>
-            <td><input type="text" name="merchName" id="merchName" class="form-control form-control-sm"></td>
-            <td><input type="text" name="merchUnit" id="merchUnit" class="form-control form-control-sm"></td>
-            <td><input type="number" name="merchPrice" id="merchPrice" class="form-control form-control-sm"></td>
+function appendRow(source) {
+    var nullVal = false;
+    var row = `${source.spID == null ? nullVal = true : `
+    <tr data-id="${source.spID}">
+    <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png"
+                style="height:15px;width:15px" /></td>
+        <td>${source.spName}</td>
+        <td>${source.spContactNum}</td>
+        <td>${source.spEmail}</td>
+        <td>${source.spAddress}</td>
+        <td>${source.spStatus}</td>
+        <td>
+            <button class="editBtn btn btn-primary btn-sm" data-toggle="modal"
+                data-target="#editSupplier">Edit</button>
+            <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"
+                data-target="#deleteStock">Delete</button>
+        </td>
+    </tr>`}`;
+    if (nullVal) {
+        $("#note").text("No supplier items recorded!");
+    } else {
+        $("#note").text("");
+        $("#suppliertable > tbody").append(row);
+    }
+}
+function appendAccordion(merchandises) {
+    var row = `
+    <tr class="accordion" style="display:none">
+        <td colspan="7">
+        <div class="suppliermerch" style="margin:1% 5%">
+                ${merchandises.length === 0 ? "No merchandise products are set for this supplier." : 
+                `<span>Merchandise Items</span>
+                    <table class="table table-bordered dt-responsive nowrap mt-2">
+                        <thead style="background:white">
+                            <tr>
+                            <th scope="col">Item Name</th>
+                            <th scope="col">Unit</th>
+                            <th scope="col">Price</th>
+                            </tr>
+                        </thead>
+                    <tbody>
+                    ${merchandises.map(merchandise => {
+                        return `
+                        <tr>
+                        <td>${merchandise.merchandise}</td>
+                        <td>${merchandise.spmUnit}</td>
+                        <td>${merchandise.spmPrice}</td>
+                        </tr> 
+                        `;
+                    }).join('')}
+                    </tbody>
+                </table>
+                `}
+        </div>
+        </td>
+    </tr>
+    `;
+    $("#suppliertable > tbody").append(row);
+}
+
+function setEditModal(modal, source, merchandises) {
+    modal.find("input[name='sourceID']").val(source.spID);
+    modal.find("input[name='supplierName']").val(source.spName);
+    modal.find("input[name='contactNum']").val(source.spContactNum);
+    modal.find("input[name='email']").val(source.spEmail);
+    modal.find("input[name='supplierAddress']").val(source.spAddress);
+    modal.find("select[name='status']").find(`option[value='${source.spStatus}']`).attr("selected", "selected");
+    
+    merchandises.forEach(merchandise => {
+        modal.find(".merchandisetable > tbody").append(`
+        <tr data-id="${merchandise.spmID}">
+            <td><input type="text" name="merchName[]" value="${merchandise.spmDesc}" class="form-control form-control-sm" required></td>
+            <td><input type="text" name="merchUnit[]" value="${merchandise.spmUnit}" class="form-control form-control-sm"></td>
+            <td><input type="number" name="merchPrice[]" value="${merchandise.spmPrice}" class="form-control form-control-sm" required></td>
             <td>
-                <select class="form-control" name="variance" id="variance">
-                ${variance.map(variance => {
-                    return `<option value = "${variance.vID}">${variance.vName}</option>`
-                }).join('')}
-                </select>
+            <select class="form-control" name="variance[]" required>
+                ${supplier.stockvariances.map(variance => {
+                        return `
+                        <option value="${variance.vID}">${variance.vName}</option>`
+                    }).join('')}
+            </select>
             </td>
             <td><img class="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
-        </tr>`);
-        $("#newSource").find(".exitBtn").last().on("click", function(){
-            $(this).closest("tr").remove();
-        });
+        </tr>
+        `);
+        modal.find("select[name='variance[]']").last().find(`option[value='${merchandise.vID}']`).attr("selected", "selected");  
     });
+}
 </script>
