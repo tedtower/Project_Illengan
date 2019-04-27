@@ -109,11 +109,11 @@ class AdminAdd extends CI_Controller{
     function addStockCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $category_name = $this->input->get('category_name');
-            $data['category'] = $this->adminmodel->add_stockcategory($category_name);
+            $data['category'] = $->adminmodel->add_stockcategory($category_name);
             $this->viewStockCategories();
         }else{
             redirect('login');
-        }
+        }this
     }
     function addPurchaseOrder() {
             $spID = $this->input->post('spID');
@@ -211,11 +211,12 @@ class AdminAdd extends CI_Controller{
             $this->load->model('adminmodel');
 
             $variance_id =$this->input->post("vID");
-            $stock_name =$this->input->post("stName");
             $stock_qty =$this->input->post("ssQty");
-            $stock_date =$this->input->post("ssDate");
+            $stock_spoil_date =$this->input->post("ssDate");
             $date_recorded = date("Y-m-d");
             $remarks =$this->input->post("ssRemarks");
+
+            echo "$variance_id";
 
             $this->adminmodel->add_stockspoil($variance_id,$stock_name,$stock_qty,$stock_date,$date_recorded,$remarks);
             redirect('admin/stock/spoilages');

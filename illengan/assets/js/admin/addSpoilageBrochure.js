@@ -16,12 +16,13 @@ function getSelectedStocks() {
                 for(var i = 0; i <= data.length-1; i++) {
                     if(data[i].vID === value) {
                         console.log(data[i].vID === value);
-                        stockChecked = `<tr class="stockelem" data-id="`+data[i].vID+`" data-varid="`+data[i].vID+`">
+                        stockChecked = `<tr class="stockelem" id="vID`+i+`" data-id="`+data[i].vID+`" data-varid="`+data[i].vID+`">
+                            <input type="hidden" id="vID`+i+`" name="vID" class="form-control form-control-sm" data-vID="`+data[i].vID+`" value="`+data[i].vID+`">
                             <td><input type="text" id="stName`+i+`" name="stName"
-                                    class="form-control form-control-sm" data-stName="`+data[i].stName+`" value="`+data[i].vName+`" readonly="readonly"></td>
-                            <td><input type="number" id="ssQty" name="ssQty"
+                                    class="form-control form-control-sm" data-stNameID="`+data[i].stName+`" value="`+data[i].vName+`" readonly="readonly"></td>
+                            <td><input type="number" id="ssQty`+i+`" name="ssQty"
                                     class="form-control form-control-sm" value="" ></td>
-                            <td><input type="text" id="ssRemarks" name="ssRemarks"
+                            <td><input type="text" id="ssRemarks`+i+`" name="ssRemarks"
                                     class="form-control form-control-sm"  value=""></td>
                             <td><img class="exitBtn"
                                     src="/assets/media/admin/error.png"
@@ -37,11 +38,10 @@ function getSelectedStocks() {
         }
     }
 }
-function addPurchaseOrder() {
+function addStockItems() {
         for(var i = 0; i <= countTr-1; i++) {
             count = i + 1;
-            vID = $('#vID'+count).data('varid');
-            stName = $('#stName'+count).val();
+            vID = $('#vID'+count).val();
             ssQty = $('#ssQty'+count).val();
             ssDate = $('#spoilDate'+count).val();
             ssRemarks = $('#ssRemarks' +count).val();
@@ -53,7 +53,6 @@ function addPurchaseOrder() {
             url: 'http://www.illengan.com/admin/stock/spoilages/add',
             data: {
                 'vID' : vID,
-                'stName' : stName,
                 'ssQty' : ssQty,
                 'ssDate' : ssDate,
                 'ssRemarks' : ssRemarks

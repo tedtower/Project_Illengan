@@ -20,19 +20,37 @@ class AdminModel extends CI_Model{
             }
         }
     }
-    function add_stockspoil($variance_id,$stock_name,$stock_qty,$stock_date,$date_recorded,$remarks){
-        $query1 = "select stID from `stockitems` where stName = ? ";
-        $stID = $this->db->query($query1,array($stock_name));
-        foreach($stID->result_array() AS $row) {
-            $query = "insert into varspoilitems (ssID, vID, ssQty, ssDate, ssRemarks) values (NULL,?,?,?,?)";
-            if($this->db->query($query,array($variance_id,$stock_qty,$stock_date,$remarks))){ 
-                $query = "insert into stockspoil values (?,?)";
-                return $this->db->query($query,array($this->db->insert_id(),$row['date_recorded']));
-            }else{
-                return false;
-            }
+    // function add_stockspoil($variance_id,$stock_name,$stock_qty,$stock_date,$date_recorded,$remarks){
+    //     $query1 = "select stID from `stockitems` where stName = ? ";
+    //     $stID = $this->db->query($query1,array($stock_name));
+    //     foreach($stID->result_array() AS $row) {
+    //         $query = "insert into varspoilitems (ssID, vID, ssQty, ssDate, ssRemarks) values (NULL,?,?,?,?)";
+    //         if($this->db->query($query,array($variance_id,$stock_qty,$stock_date,$remarks))){ 
+    //             $query = "insert into stockspoil values (?,?)";
+    //             return $this->db->query($query,array($this->db->insert_id(),$row['date_recorded']));
+    //         }else{
+    //             return false;
+    //         }
+    //     }
+    // }
+    function add_stockspoil($variance_id,$stock_qty,$stock_spoil_date,$date_recorded,$remarks){
+        $query = "insert into stockspoil (ssID,ssDateRecorded) values (NULL,?)";
+        if($this->db->query($query,array($date_recorded))){ 
+            $query = "insert into varspoilitems (ssID, vID, ssQty, ssDate, ssRemarks) values (?,?,?,?,?)";
+            return $this->db->query($query,array($this->db->insert_id(),$variance_id,$stock_qty,$stock_spoil_date,$remarks));
+        }else{
+            return false;
         }
     }
+    // function add_PurchaseOrder($poDate,$edDate,$poTotal,$poDateRecorded,$poStatus, $poRemarks, $spID, $merchandise){
+    //     $query = "insert into purchaseorder (poID, poDate, edDate, poTotal, poDateRecorded, poStatus, 
+    //     poRemarks, spID) values (NULL,?,?,?,?,?,?,?);";
+    //     if($this->db->query($query,array($poDate,$edDate,$poTotal,$poDateRecorded,$poStatus, $poRemarks, $spID))) {
+    //         $this->add_poItems($this->db->insert_id(), $merchandise);
+    //         return true;
+    //         }
+
+    // }
     function add_aospoil($s_type,$ao_name,$s_qty,$s_date,$date_recorded,$remarks){
         $query1 = "select ao_id from `addons` where ao_name = ? ";
         $ao_id = $this->db->query($query1,array($ao_name));

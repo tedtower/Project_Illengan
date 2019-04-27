@@ -41,7 +41,7 @@
 												<span aria-hidden="true">&times;</span>
 											</button>
 										</div>
-										<form id="formAdd" accept-charset="utf-8">
+										<form id="formAdd" action="<?= site_url('admin/stock/spoilages/add')?>" accept-charset="utf-8">
 											<div class="modal-body">
 												<div class="form-row">
 													<!--Container of Source Date-->
@@ -73,10 +73,10 @@
 													</tbody>
 												</table>
 												<!--Total of the trans items-->
-
+					
 												<div class="modal-footer">
 													<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-													<button class="btn btn-success btn-sm" type="submit">Add</button>
+													<button class="btn btn-success btn-sm" onclick="addStockItems()" type="submit">Add</button>
 												</div>
 											</div>
 										</form>
@@ -95,15 +95,16 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <form id="formAdd" action="<?= site_url('admin/stock/spoilages/add')?>" method="post" accept-charset="utf-8">
+                                        <form id="formAdd"  method="post" accept-charset="utf-8">
                                             <div class="modal-body">
                                                 <div style="margin:1% 3%" id="list">
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-													<button type="button" class="btn btn-success btn-sm" data-dismiss="modal" onclick="getSelectedStocks()">Ok</button>
-                                            </div>
+												<button type="button" class="btn btn-danger btn-sm"
+													data-dismiss="modal">Cancel</button>
+												<button type="button" class="btn btn-success btn-sm" data-dismiss="modal" onclick="getSelectedStocks()">Ok</button>
+											</div>
                                         </form>
                                     </div>
                                 </div>
