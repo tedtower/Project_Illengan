@@ -100,7 +100,7 @@ class AdminAdd extends CI_Controller{
                 }else{
                     redirect("admin/dashboard");
                     // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
-                }
+                } 
             }
         }else{
             redirect("login");
@@ -116,7 +116,6 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addPurchaseOrder() {
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $spID = $this->input->post('spID');
             $poDate = $this->input->post('poDate');
             $edDate = $this->input->post('edDate');
@@ -124,11 +123,9 @@ class AdminAdd extends CI_Controller{
             $poDateRecorded = date('Y-m-d');
             $poStatus = $this->input->post('poStatus');
             $poRemarks = $this->input->post('poRemarks');
-            echo $poDateRecorded, $poDate, $edDate, $poStatus;
-            $this->adminmodel->add_PurchaseOrder($poDate, $edDate, $poTotal, $poDateRecorded, $poStatus, $poRemarks, $spID);
-        }else{
-            redirect('login');
-        }
+            $merchandise = json_decode($this->input->post('merchandise'), true);
+            echo json_encode($merchandise, true);
+            $this->adminmodel->add_PurchaseOrder($poDate, $edDate, $poTotal, $poDateRecorded, $poStatus, $poRemarks, $spID, $merchandise);
         
     }
     function addTable(){
