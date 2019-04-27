@@ -28,11 +28,124 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php foreach($inventory['stocks'] as $stock){?>
+                            <tr data-id="<?= $stock['stID']?>">
+                                <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png"
+                                        style="height:15px;width:15px" /></td>
+                                <td><?= $stock['stName']?></td>
+                                <td><?= $stock['ctName']?></td>
+                                <td><?= $stock['stQty']?></td>
+                                <td><?= $stock['stType']?></td>
+                                <td><?= $stock['stStatus']?></td>
+                                <td>
+                                    <button class="editBtn btn btn-primary btn-sm" data-toggle="modal"
+                                        data-target="#editStock">Edit</button>
+                                    <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"
+                                        data-target="#deleteStock">Delete</button>
+                                </td>
+                            </tr>
+
+                            <tr class="accordion" style="display:none">
+                                <td colspan="7">
+                                    <div style="margin:1% 4%;overflow:auto;display:none">
+                                        <div>
+                                            <span>Variances</span>
+                                            <table class="table table-bordered dt-responsive nowrap">
+                                                <thead style="background:white">
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Unit</th>
+                                                        <th>Size</th>
+                                                        <th>Beginning Qty</th>
+                                                        <th>Minimum Qty</th>
+                                                        <th>Qty</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php foreach($inventory['variances'] as $variance){ 
+                                                    if($variance['stID'] == $stock['stID']){
+                                                    ?>
+                                                    <tr> 
+                                                        <td><?=$variance['vName']?></td>
+                                                        <td><?=$variance['vUnit']?></td>
+                                                        <td><?=$variance['vSize']?></td>
+                                                        <td><?=$variance['bQty']?></td>
+                                                        <td><?=$variance['vMin']?></td>
+                                                        <td><?=$variance['vQty']?></td>
+                                                        <td><?=$variance['vStatus']?></td>
+                                                    </tr>
+                                                <?php }
+                                                } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div style="overflow:auto">
+                                            <!--Consumed table-->
+                                            <div style="width:30%;float:left">
+                                                <span>Consumed</span>
+                                                <table class="table table-bordered">
+                                                    <thead style="background:#4CAF50">
+                                                        <tr>
+                                                            <th style="color:white">Qty</th>
+                                                            <th style="color:white">Date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr style="background:white">
+                                                            <td>3</td>
+                                                            <td>February 2, 2019</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!--Spoilages table-->
+                                            <div style="width:30%;float:left;margin:0 5%">
+                                                <span>Spoilages</span>
+                                                <table class="table table-bordered">
+                                                    <thead style="background:#ff6600">
+                                                        <tr>
+                                                            <th style="color:white">Qty</th>
+                                                            <th style="color:white">Date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr style="background:white">
+                                                            <td>3</td>
+                                                            <td>February 3, 2019</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!--Returns table-->
+                                            <div style="width:30%;float:left">
+                                                <span>Returns</span>
+                                                <table class="table table-bordered">
+                                                    <thead style="background:#3366ff">
+                                                        <tr>
+                                                            <th style="color:white">Qty</th>
+                                                            <th style="color:white">Date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr style="background:white">
+                                                            <td>1</td>
+                                                            <td>February 4, 2019</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php } ?>
                         </tbody>
                     </table>
                     <p id="note"></p>
-                <!--Start of Modal "Restock Item"-->
-                     <div class="modal fade bd-example-modal-lg" id="restock" tabindex="-1" role="dialog"
+                    <!--Start of Modal "Restock Item"-->
+                    <div class="modal fade bd-example-modal-lg" id="restock" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
@@ -46,7 +159,8 @@
                                     accept-charset="utf-8">
                                     <div class="modal-body">
                                         <!--Add Stock Item-->
-                                        <a class="btn btn-primary btn-sm"style="color:blue;margin:0" data-toggle="modal" data-target="#brochure" >Add Item</a>
+                                        <a class="btn btn-primary btn-sm" style="color:blue;margin:0"
+                                            data-toggle="modal" data-target="#brochure">Add Item</a>
                                         <!--Button to add row in the table-->
                                         <br><br>
                                         <table class="varianceTable table table-sm table-borderless">
@@ -77,7 +191,8 @@
                     <!--End of Modal "Retock item"-->
 
                     <!--Start of Brochure Modal"-->
-                    <div class="modal fade bd-example-modal" id="brochure" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background:rgba(0, 0, 0, 0.3)">
+                    <div class="modal fade bd-example-modal" id="brochure" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true" style="background:rgba(0, 0, 0, 0.3)">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -86,17 +201,21 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form id="formAdd" action="<?= site_url('admin/transactions/add')?>" method="post" accept-charset="utf-8">
+                                <form id="formAdd" action="<?= site_url('admin/transactions/add')?>" method="post"
+                                    accept-charset="utf-8">
                                     <div class="modal-body">
                                         <div style="margin:1% 3%">
-                                        <!--checkboxes-->
-                                            <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 1</label>
-                                            <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample data 2</label>
+                                            <!--checkboxes-->
+                                            <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample
+                                                data 1</label>
+                                            <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample
+                                                data 2</label>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                            <button class="btn btn-success btn-sm" type="submit">Ok</button>
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            data-dismiss="modal">Cancel</button>
+                                        <button class="btn btn-success btn-sm" type="submit">Ok</button>
                                     </div>
                                 </form>
                             </div>
@@ -219,8 +338,8 @@
                                     accept-charset="utf-8">
                                     <div class="modal-body">
                                         <div class="form-row">
-                                            <input type="text" name="stockID"
-                                                class="form-control form-control-sm" hidden="hidden">
+                                            <input type="text" name="stockID" class="form-control form-control-sm"
+                                                hidden="hidden">
                                             <!--Container of promo name and promo type-->
                                             <!--Stock name-->
                                             <div class="input-group mb-3 col">
@@ -360,12 +479,41 @@ var inventory = <?= json_encode($inventory)?>;
 var lastIndex = 0;
 var rowsPerPage = inventory.stocks.length;
 $(document).ready(function() {
+    $(".accordionBtn").on('click', function() {
+        if ($(this).closest("tr").next(".accordion").css("display") == 'none') {
+            $(this).closest("tr").next(".accordion").css("display", "table-row");
+            $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
+        } else {
+            $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
+            $(this).closest("tr").next(".accordion").hide("slow");
+        }
+    });
     $("#addBtn").on('click', function() {
         $("#newStock form")[0].reset();
         console.log(inventory);
     });
-    $(".addItemVarianceBtn").on('click',function(){
-        var row=`
+    $(".editBtn").on("click", function() {
+        $("#editStock form")[0].reset();
+        var id = $(this).closest("tr").attr("data-id")
+        $.ajax({
+            method : 'post',
+            url : '<?=site_url('admin/inventory/getitem')?>',
+            data : {
+                id : id
+            },
+            dataType : "json",
+            success : function (data){
+                console.log(data);
+                $("#editStock .varianceTable > tbody").empty();
+                setEditModal($("#editStock"), data.stock[0], data.variances);
+            },
+            error : function(response, setting, error){
+                console.log(response.responseText);
+            }
+        });
+    });
+    $(".addItemVarianceBtn").on('click', function() {
+        var row = `
         <tr data-id="">
             <td><input type="text" name="varUnit[]"
                     class="form-control form-control-sm"></td>
@@ -388,11 +536,11 @@ $(document).ready(function() {
         </tr>
         `;
         $(this).closest(".modal").find(".varianceTable > tbody").append(row);
-        $(this).closest(".modal").find(".exitBtn").last().on('click',function(){
+        $(this).closest(".modal").find(".exitBtn").last().on('click', function() {
             $(this).closest("tr").remove();
         });
     });
-    setTableData();
+    // setTableData();
     $("#newStock form").on('submit', function(event) {
         event.preventDefault();
         var name = $(this).find("input[name='stockName']").val();
@@ -438,7 +586,7 @@ $(document).ready(function() {
             }
         });
     });
-    
+
     $("#editStock form").on('submit', function(event) {
         event.preventDefault();
         var id = $(this).find("input[name='stockID']").val();
@@ -450,7 +598,8 @@ $(document).ready(function() {
         for (var index = 0; index < $(this).find(".varianceTable > tbody").children().length; index++) {
             var row = $(this).find(".varianceTable > tbody > tr").eq(index);
             stockVariances.push({
-                varID : isNaN(parseInt(row.attr('data-id'))) ?  (null) : parseInt(row.attr('data-id')),
+                varID: isNaN(parseInt(row.attr('data-id'))) ? (null) : parseInt(row.attr(
+                    'data-id')),
                 varUnit: row.find("input[name='varUnit[]']").val(),
                 varSize: row.find("input[name='varSize[]']").val(),
                 varMin: parseInt(row.find("input[name='varMinimum[]']").val()),
@@ -463,7 +612,7 @@ $(document).ready(function() {
             url: "<?= site_url("admin/inventory/edit")?>",
             method: "post",
             data: {
-                id : id,
+                id: id,
                 name: name,
                 type: type,
                 category: category,
@@ -491,178 +640,59 @@ $(document).ready(function() {
     });
 });
 
-function setTableData() {
-    var count = 0;
-    //Set Modals Stock Category Select elements' options
-    $("select[name='stockCategory']").children().first().siblings().remove();
-    $("select[name='stockCategory']").append(`
-    ${inventory.categories.length === 0 ? "" : inventory.categories.map(category => {
-        return `<option value="${category.ctID}">${category.ctName}</option>`
-    }).join('')}`);
+// function setTableData() {
+//     var count = 0;
+//     //Set Modals Stock Category Select elements' options
+//     $("select[name='stockCategory']").children().first().siblings().remove();
+//     $("select[name='stockCategory']").append(`
+//     ${inventory.categories.length === 0 ? "" : inventory.categories.map(category => {
+//         return `<option value="${category.ctID}">${category.ctName}</option>`
+//     }).join('')}`);
 
-    //Populate Stock Table
-    if ($("#stockTable > tbody").children().length === 0) {
-        for (lastIndex; lastIndex < inventory.stocks.length; lastIndex++) {
-            if (count < rowsPerPage) {
-                appendRow(inventory.stocks[lastIndex]);
-                appendAccordion(inventory.variances.filter(variance => variance.stID === inventory.stocks[lastIndex]
-                    .stID));
-            }
-        }
-        //Set accordion icon event to show accordion
-        $(".accordionBtn").on('click', function() {
-            if ($(this).closest("tr").next(".accordion").css("display") == 'none') {
-                $(this).closest("tr").next(".accordion").css("display", "table-row");
-                $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
-            } else {
-                $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
-                $(this).closest("tr").next(".accordion").hide("slow");
-            }
-        });
-        $(".editBtn").on("click", function() {
-            $("#editStock form")[0].reset();
-            $("#editStock .varianceTable > tbody").empty();
-            var stockID = $(this).closest("tr").attr("data-id");
-            setEditModal($("#editStock"), inventory.stocks.filter(item => item.stID === stockID)[0], inventory.variances.filter(variance => variance.stID === stockID));
-        });
-    } else {
-        $("#stockTable > tbody").empty();
-    }
-}
-
-function appendRow(stock) {
-    var nullVal = false;
-    var row = `${stock.stID == null ? nullVal = true : `
-    <tr data-id="${stock.stID}">
-        <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png"
-                style="height:15px;width:15px" /></td>
-        <td>${stock.stName}</td>
-        <td>${stock.ctName}</td>
-        <td>${stock.stQty}</td>
-        <td>${stock.stType}</td>
-        <td>${stock.stStatus}</td>
-        <td>
-            <button class="editBtn btn btn-primary btn-sm" data-toggle="modal"
-                data-target="#editStock">Edit</button>
-            <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"
-                data-target="#deleteStock">Delete</button>
-        </td>
-    </tr>`}`;
-    if (nullVal) {
-        $("#note").text("No stock items recorded!");
-    } else {
-        $("#note").text("");
-        $("#stockTable > tbody").append(row);
-    }
-}
-
-function appendAccordion(variances) {
-    var row = `
-    <tr class="accordion" style="display:none">
-        <td colspan="7">
-            <div style="margin:1% 4%;overflow:auto;display:none">
-                <div>
-                    <div>Beginning Inventory: <span><span></div>
-                    <span>Variances</span>
-                    <table class="table table-bordered dt-responsive nowrap">
-                        <thead style="background:white">
-                            <tr>
-                                <th>Name</th>
-                                <th>Unit</th>
-                                <th>Size</th>
-                                <th>Beginning Qty</th>
-                                <th>Minimum Qty</th>
-                                <th>Qty</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${variances.length === 0 ? "No item variances" : variances.map(variance => {
-                                return `
-                                <tr>
-                                    <td>${variance.vName}</td>
-                                    <td>${variance.vUnit}</td>
-                                    <td>${variance.vSize}</td>
-                                    <td>${variance.bQty}</td>
-                                    <td>${variance.vMin}</td>
-                                    <td>${variance.vQty}</td>
-                                    <td>${variance.vStatus}</td>
-                                </tr>`;
-                            }).join('')}
-                        </tbody>
-                    </table>
-                </div>
-
-                <div style="overflow:auto">
-                    <!--Consumed table-->
-                    <div style="width:30%;float:left">
-                    <span>Consumed</span>
-                    <table class="table table-bordered">
-                        <thead style="background:#4CAF50">
-                            <tr>
-                                <th style="color:white">Qty</th>
-                                <th style="color:white">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background:white">
-                                <td>3</td>
-                                <td>February 2, 2019</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                    <!--Spoilages table-->
-                    <div style="width:30%;float:left;margin:0 5%">
-                    <span>Spoilages</span>
-                    <table class="table table-bordered">
-                        <thead style="background:#ff6600">
-                            <tr>
-                                <th style="color:white">Qty</th>
-                                <th style="color:white">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background:white">
-                                <td>3</td>
-                                <td>February 3, 2019</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                    <!--Returns table-->
-                    <div style="width:30%;float:left">
-                    <span>Returns</span>
-                    <table class="table table-bordered">
-                        <thead style="background:#3366ff">
-                            <tr>
-                                <th style="color:white">Qty</th>
-                                <th style="color:white">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background:white">
-                                <td>1</td>
-                                <td>February 4, 2019</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                </div>
-            </div>
-        </td>
-    </tr>
-    `;
-    $("#stockTable > tbody").append(row);
-}
+//     //Populate Stock Table
+//     if ($("#stockTable > tbody").children().length === 0) {
+//         for (lastIndex; lastIndex < inventory.stocks.length; lastIndex++) {
+//             if (count < rowsPerPage) {
+//                 appendRow(inventory.stocks[lastIndex]);
+//                 appendAccordion(inventory.variances.filter(variance => variance.stID === inventory.stocks[lastIndex]
+//                     .stID));
+//             }
+//         }
+//         //Set accordion icon event to show accordion
+//         $(".editBtn").on("click", function() {
+//             $("#editStock form")[0].reset();
+//             $.ajax({
+//                 method : 'post',
+//                 url : '<?=site_url('admin/inventory/getitem')?>',
+//                 data : {
+//                     id : $(this).closest("tr").attr("data-id")
+//                 },
+//                 dataType : "json",
+//                 success : function (data){
+//                     setEditModal($("#editStock"), data.stock, data.variances);
+//                 },
+//                 error : function(response, setting, error){
+//                     console.log(response.responseText);
+//                 }
+//             });
+//             $("#editStock .varianceTable > tbody").empty();
+//             var stockID = $(this).closest("tr").attr("data-id");
+//             setEditModal($("#editStock"), inventory.stocks.filter(item => item.stID === stockID)[0], inventory
+//                 .variances.filter(variance => variance.stID === stockID));
+//         });
+//     } else {
+//         $("#stockTable > tbody").empty();
+//     }
+// }
 
 function setEditModal(modal, stock, variances) {
+    console.log(stock);
     modal.find("input[name='stockID']").val(stock.stID);
     modal.find("input[name='stockName']").val(stock.stName);
     modal.find("select[name='stockType']").val(stock.stType);
-    modal.find("select[name='stockCategory']").find(`option[value=${stock.ctID}]`).attr("selected","selected");
+    modal.find("select[name='stockCategory']").find(`option[value=${stock.ctID}]`).attr("selected", "selected");
     modal.find("select[name='stockStatus']").find(`option[value="${stock.stStatus}"]`).attr("selected", "selected");
-    
+
     variances.forEach(variance => {
         modal.find(".varianceTable > tbody").append(`
         <tr data-id="${variance.vID}">
@@ -686,7 +716,8 @@ function setEditModal(modal, stock, variances) {
                     style="width:20px;height:20px"></td>
         </tr>
         `);
-        modal.find("select[name='varStatus[]']").last().find(`option[value='${variance.vStatus}']`).attr("selected","selected");       
+        modal.find("select[name='varStatus[]']").last().find(`option[value='${variance.vStatus}']`).attr(
+            "selected", "selected");
     });
 }
 </script>

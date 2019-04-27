@@ -191,7 +191,7 @@ class AdminModel extends CI_Model{
                 poID = ?;";
         if($this->db->query($query, array())){
             foreach($poItems as $item){
-                
+
             }
             return true;
         }
@@ -251,6 +251,32 @@ class AdminModel extends CI_Model{
     function edit_stockcategory($ctID,$ctName){
         $query = "update categories set ctName = ?  where ctID = ? and ctType='inventory'";
         return $this->db->query($query,array($ctName,$ctID));
+    }
+    function get_stockDetails($id){
+        $query = "SELECT 
+            stID, stName, stStatus, stType, ctID
+        FROM
+            stockitems
+        WHERE
+            stID = ?;";
+        return $this->db->query($query, array($id))->result_array();
+    }
+    function get_variances($id){
+        $query = "SELECT 
+            vID,
+            vUnit,
+            vSize,
+            vMin,
+            vQty,
+            vStatus,
+            stID
+        FROM
+            variance
+                INNER JOIN
+            stockitems USING (stID)
+        WHERE
+            stID = ?;";
+        return $this->db->query($query, array($id))->result_array();
     }
     function edit_stockItem($stockID,$stockName,$stockType,$stockCategory,$stockStatus,$stockVariance){
         $query = "UPDATE stockitems 
@@ -549,6 +575,24 @@ class AdminModel extends CI_Model{
     function get_consumption(){
        $query = "SELECT * FROM consumption";
        return $this->db->query($query)->result_array();
+    }
+    function get_invoices(){
+        $query = "SELECT 
+            iID,
+            spID,
+            spName,
+            iType,
+            iNumber,
+            iTotal,
+            iRemarks,
+            iDate,
+            iDateRecorded,
+            resolvedStatus
+        FROM
+            invoice
+                INNER JOIN
+            supplier USING (spID);";
+        return $this->db->query($query);
     }
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
