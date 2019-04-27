@@ -519,9 +519,9 @@ class AdminModel extends CI_Model{
         $query = "SELECT *, CONCAT(spmDesc,' ',stName,' ',(vSize)) as merchandise from supplier natural join suppliermerchandise natural join variance natural join stockitems";
         return $this->db->query($query)->result_array();
     }
-    function get_suppMerchandise(){
-        $query = "Select * from suppliermerchandise INNER JOIN supplier USING (spID) INNER JOIN variance USING (vID) INNER JOIN stockitems USING (stID)";
-        return $this->db->query($query)->result_array();
+    function get_suppMerchandise($spmID){
+        $query = "Select * from suppliermerchandise spm INNER JOIN supplier USING (spID) INNER JOIN variance USING (vID) INNER JOIN stockitems USING (stID) WHERE spm.spmID = ?";
+        return $this->db->query($query, array($spmID))->result_array();
     }
     function get_spoilages(){
         $query = "select s_id, s_type, menu_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN menuspoil USING (s_id) inner JOIN menu USING (menu_id) UNION select s_id, s_type, stName AS decription, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN stockspoil USING (s_id) inner JOIN stockitems USING (stID) UNION select s_id,s_type, ao_name AS description, s_qty, s_date, date_recorded,remarks FROM spoilage left JOIN ao_spoil USING (s_id) inner JOIN addons USING (ao_id) ORDER BY date_recorded";

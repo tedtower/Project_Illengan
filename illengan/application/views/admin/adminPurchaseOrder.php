@@ -437,6 +437,7 @@ var suppMerch = [];
 
 function setEditModal(modal, purchOr, poitems) {
     console.log(`${purchOr.spID}`);
+    var count = 0;
     modal.find("input[name='poID']").val(purchOr.poID);
     modal.find("input[name='poDate']").val(purchOr.poDate);
     modal.find("input[name='edDate']").val(purchOr.edDate);
@@ -445,7 +446,7 @@ function setEditModal(modal, purchOr, poitems) {
     
     poitems.forEach(poi => {
         modal.find(".poItemsTables > tbody").append(`
-        <tr class="merchelem" id="vID" data-id="${poi.poID}" data-varid="">
+        <tr class="merchelem" id="vID" data-id="${poi.poID}" data-varid="${poi.vID}">
             <input type="hidden" name="poID" value="${poi.poID}">
             <td><input type="text" id="stName" name="stName" class="form-control form-control-sm" data-stID="${poi.stID}" 
             value="${poi.stName}" readonly="readonly"></td>
@@ -461,6 +462,8 @@ function setEditModal(modal, purchOr, poitems) {
         </tr>
         `);
     });
+
+    
 }
 
 

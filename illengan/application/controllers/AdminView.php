@@ -490,7 +490,8 @@ function viewSpoilagesStock(){
     }
 
     function jsonSuppMerchandise() {
-        $data =  $this->adminmodel->get_suppMerchandise();
+        $spmID = $this->input->post('spmID');
+        $data = $this->adminmodel->get_suppMerchandise($spmID);
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
