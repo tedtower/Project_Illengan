@@ -111,7 +111,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                     <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                                    <button class="btn btn-success btn-sm" type="submit">Ok</button>
+													<button type="button" class="btn btn-success btn-sm" data-dismiss="modal" onclick="getSelectedStocks()">Ok</button>
                                             </div>
                                         </form>
                                     </div>
@@ -155,7 +155,7 @@
 </div>
 <!--End Table Content-->
 <?php include_once('templates/scripts.php') ?>
-
+<script src="<?= admin_js().'addSpoilageBrochure.js'?>"></script>
 <script>
 var stockchoice = [];
 	 $(function() {

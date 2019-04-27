@@ -11,7 +11,7 @@ class AdminAdd extends CI_Controller{
     function addaccounts(){
 
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[50]');
-        $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
+        // $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
         $this->form_validation->set_rules('aUsername','Username','trim|required|is_unique[accounts.aUsername]');
         $this->form_validation->set_rules('aType','Account Type','trim|required');
 

@@ -175,6 +175,7 @@ function viewAccountsJs(){
     }
     function viewStockJS() {
         $data=$this->adminmodel->get_stockVariance();
+        header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
     function viewSpoilagesJs(){

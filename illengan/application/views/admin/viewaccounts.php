@@ -45,7 +45,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form id="formAdd" action="<?= site_url('admin/accounts/add') ?>" method="post" accept-charset="utf-8">
+                                            <form id="formAdd" name="AddForm" action="<?= site_url('admin/accounts/add') ?>" method="post" accept-charset="utf-8">
                                                 <div class="modal-body">
                                                     <!--End "Add Account" Modal-->
                                                     <!--Username-->
@@ -65,15 +65,6 @@
                                                         </div>
                                                         <input type="text" name="password" id="password" class="form-control form-control-sm">
                                                         <span class="text-danger"><?php echo form_error("password"); ?></span>
-                                                    </div>
-                                                    <!--Confirm Password-->
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Confirm Password</span>
-                                                        </div>
-                                                        <input type="text" name="confirm_password" id="confirm_password" class="form-control form-control-sm">
-                                                        <span class="text-danger"><?php echo form_error("confirm_password"); ?></span>
                                                     </div>
                                                     <!--Account Type-->
                                                     <div class="input-group mb-3">
@@ -227,18 +218,62 @@
 </body>
 
 <?php include_once('templates/scripts.php') ?>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.validate.min.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.validate.js'?>"></script>
 <script>
     var accounts = [];
     $(function() {
         viewAccountsJs();
 
+    $("#formAdd").validate({
+    rules: {
+        aUsername: {
+        required: true,
+        },
+        action: "required"
+    },
+    messages: {
+        aUsername: {
+        required: "Please enter some data",
+        },
+        action: "Please provide some data"
+    },
+    rules: {
+        password: {
+        required: true,
+        rangelenght:[4,20]
+        },
+        action: "required"
+    },
+    messages: {
+        password: {
+        required: "Please enter some data",
+        minlength: "Your data must be at least 4 characters"
+        },
+        action: "Please provide some data"
+    },
+    rules: {
+        aType: {
+        required: true,
+        },
+        action: "required"
+    },
+    messages: {
+        aType: {
+        required: "Please enter some data",
+        },
+        action: "Please provide some data"
+    }
+
+    });
+
         // Delete Account Function====================================
 
-        $("#confirmDelete").on('submit', function(event) {
-            event.preventDefault();
-            var accountId = $(this).find("input").val();
-            console.log(accountId);
-            $.ajax({
+    $("#confirmDelete").on('submit', function(event) {
+        event.preventDefault();
+        var accountId = $(this).find("input").val();
+        console.log(accountId);
+        $.ajax({
                 url: '<?= site_url('admin/accounts/delete') ?>',
                 method: 'POST',
                 data: {
