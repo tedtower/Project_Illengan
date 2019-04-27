@@ -210,14 +210,14 @@ class AdminAdd extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
 
-            $s_type = $this->input->get("s_type");
-            $stock_name =$this->input->get("stock_name");
-            $s_qty =$this->input->get("s_qty");
-            $s_date =$this->input->get("s_date");
+            $variance_id =$this->input->post("vID");
+            $stock_name =$this->input->post("stName");
+            $stock_qty =$this->input->post("ssQty");
+            $stock_date =$this->input->post("ssDate");
             $date_recorded = date("Y-m-d");
-            $remarks =$this->input->get("remarks");
+            $remarks =$this->input->post("ssRemarks");
 
-            $this->adminmodel->add_stockspoil($s_type,$stock_name,$s_qty,$s_date,$date_recorded,$remarks);
+            $this->adminmodel->add_stockspoil($variance_id,$stock_name,$stock_qty,$stock_date,$date_recorded,$remarks);
             redirect('admin/stock/spoilages');
         }else{
             redirect('login');

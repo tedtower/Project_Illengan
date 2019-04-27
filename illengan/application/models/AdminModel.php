@@ -20,14 +20,14 @@ class AdminModel extends CI_Model{
             }
         }
     }
-    function add_stockspoil($s_type,$stName,$s_qty,$s_date,$date_recorded,$remarks){
+    function add_stockspoil($variance_id,$stock_name,$stock_qty,$stock_date,$date_recorded,$remarks){
         $query1 = "select stID from `stockitems` where stName = ? ";
-        $stID = $this->db->query($query1,array($stName));
+        $stID = $this->db->query($query1,array($stock_name));
         foreach($stID->result_array() AS $row) {
-            $query = "insert into spoilage (s_id, s_type, s_qty, s_date, date_recorded, remarks) values (NULL,?,?,?,?,?)";
-            if($this->db->query($query,array($s_type,$s_qty,$s_date,$date_recorded,$remarks))){ 
+            $query = "insert into varspoilitems (ssID, vID, ssQty, ssDate, ssRemarks) values (NULL,?,?,?,?)";
+            if($this->db->query($query,array($variance_id,$stock_qty,$stock_date,$remarks))){ 
                 $query = "insert into stockspoil values (?,?)";
-                return $this->db->query($query,array($this->db->insert_id(),$row['stID']));
+                return $this->db->query($query,array($this->db->insert_id(),$row['date_recorded']));
             }else{
                 return false;
             }
@@ -442,6 +442,7 @@ class AdminModel extends CI_Model{
     function get_stockVariance(){
         $query = "SELECT 
             vID,
+            stName,
             CONCAT(stName,
                     ' ',
                     vUnit,
@@ -532,7 +533,7 @@ class AdminModel extends CI_Model{
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesstock(){
-        $query = "Select ssID,stName,ssQty,vUnit,ssDate,ssDateRecorded,ssRemarks from stockspoil inner join varspoilitems using (ssID) inner join variance using (vID) inner join stockitems using (stID)";
+        $query = "Select ssID,CONCAT(stName,' ',vUnit, IF(vSize = NULL, '', CONCAT(' ', vSize))) AS vName,ssQty,vUnit,ssDate,ssDateRecorded,ssRemarks from stockspoil inner join varspoilitems using (ssID) inner join variance using (vID) inner join stockitems using (stID)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesaddons(){

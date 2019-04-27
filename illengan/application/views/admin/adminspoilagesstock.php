@@ -51,7 +51,7 @@
 															<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
 																Source Date</span>
 														</div>
-														<input type="date" name="transDate" id="transDate" class="form-control form-control-sm">
+														<input type="date" name="spoilDate" id="spoilDate" class="form-control form-control-sm">
 													</div>
 												</div>
 												<!--Add Stock Item-->
@@ -97,16 +97,7 @@
                                         </div>
                                         <form id="formAdd" action="<?= site_url('admin/stock/spoilages/add')?>" method="post" accept-charset="utf-8">
                                             <div class="modal-body">
-                                                <div style="margin:1% 3%">
-                                                <!--checkboxes-->
-                                                    <!-- <label style="width:96%"><input type="checkbox" class="mr-2" value=""></label> -->
-													<table id="stocksTable" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-														<thead>
-															<th>Stocks</th>
-														</thead>
-														<tbody id="show_data">
-														</tbody>
-													</table>
+                                                <div style="margin:1% 3%" id="list">
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -158,9 +149,9 @@
 <script src="<?= admin_js().'addSpoilageBrochure.js'?>"></script>
 <script>
 var stockchoice = [];
-	 $(function() {
-        viewStocksJs();
-	 })
+	//  $(function() {
+    //     viewStocksJs();
+	//  })
 	var table = $('#tablevalues');
 
 	function format(d) {
@@ -193,7 +184,7 @@ var stockchoice = [];
 					"data": "ssID"
 				},
 				{
-					"data": "stName"
+					"data": "vName"
 				},
 				{
 					"data": "ssQty"
@@ -262,38 +253,32 @@ var stockchoice = [];
 	});
 	//End Function Delete
 
-	//set brochure checkboxes
-	function viewStocksJs() {
-        $.ajax({
-            url: "<?= site_url('admin/stock/spoilages/viewStockJS') ?>",
-            method: "post",
-            dataType: "json",
-            success: function(data) {
+	
+	$(function () {
+	$.ajax({
+            url: '<?= site_url('admin/stock/spoilages/viewStockJS') ?>',
+            dataType: 'json',
+            success: function (data) {
+                var poLastIndex = 0;
                 stocks = data;
                 setStockData(stocks);
             },
-            error: function(response, setting, errorThrown) {
-                console.log(response.responseText);
+            failure: function () {
+                console.log('None');
+            },
+            error: function (response, setting, errorThrown) {
                 console.log(errorThrown);
+                console.log(response.responseText);
             }
-        });
-    }
+		});
 
-    function setStockData() {
-        if ($("#stocksTable> tbody").children().length > 0) {
-            $("#stocksTable> tbody").empty();
-        }
-        stocks.forEach(table => {
-            $("#stocksTable> tbody").append(`
-            <tr data-id="${table.stID}">
-                <td>
-					<label style="width:96%"><input type="checkbox" name="stockchoice[]" class="choiceStock mr-2" value="${table.stID}">${table.vName}</label>
-                </td>
-            </tr>`);
-        });
-	}
-	
-
+	});
+	function setStockData(stocks){
+        $("#list").empty();
+        $("#list").append(`${stocks.map(stock => {
+            return `<label style="width:96%"><input type="checkbox" name="stockchoice[]" class="choiceStock mr-2" value="${stock.vID}">${stock.vName}</label>`
+        }).join('')}`);
+    	}
 </script> 
 </body>
 
