@@ -450,7 +450,7 @@ $(document).ready(function() {
         for (var index = 0; index < $(this).find(".varianceTable > tbody").children().length; index++) {
             var row = $(this).find(".varianceTable > tbody > tr").eq(index);
             stockVariances.push({
-                varID : isNaN(parseInt(row.attr('data-id'))) ?  (undefined) : parseInt(row.attr('data-id')),
+                varID : isNaN(parseInt(row.attr('data-id'))) ?  (null) : parseInt(row.attr('data-id')),
                 varUnit: row.find("input[name='varUnit[]']").val(),
                 varSize: row.find("input[name='varSize[]']").val(),
                 varMin: parseInt(row.find("input[name='varMinimum[]']").val()),
@@ -661,7 +661,7 @@ function setEditModal(modal, stock, variances) {
     modal.find("input[name='stockName']").val(stock.stName);
     modal.find("select[name='stockType']").val(stock.stType);
     modal.find("select[name='stockCategory']").find(`option[value=${stock.ctID}]`).attr("selected","selected");
-    modal.find("select[name='stockStatus']").find(`option[value='${stock.stStatus}']`).attr("selected", "selected");
+    modal.find("select[name='stockStatus']").find(`option[value="${stock.stStatus}"]`).attr("selected", "selected");
     
     variances.forEach(variance => {    
         modal.find(".varianceTable > tbody").append(`

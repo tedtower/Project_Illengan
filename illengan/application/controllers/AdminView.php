@@ -8,7 +8,7 @@ class AdminView extends CI_Controller{
         // code for getting current date : date("Y-m-d")
         // code for getting current date and time : date("Y-m-d 2H:i:s")
     }
-//VIEW FUNCTIONS--------------------------------------------------------------------------------
+//VIEW FUNCTIONS------- -------------------------------------------------------------------------
 function viewAccountsJs(){
     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
         echo json_encode($this->adminmodel->get_accounts());
@@ -168,11 +168,12 @@ function viewAccountsJs(){
     }
     function viewStockJS() {
         $data=$this->adminmodel->get_stockVariance();
-        echo json_encode($data);
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
     }
     function viewSpoilagesJs(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $data= $this->adminmodel->get_spoilages();
+            $data['stocks']= $this->adminmodel->get_spoilages();
             echo json_encode($data);
             
         }else{
@@ -324,6 +325,7 @@ function viewSpoilagesStock(){
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminTransactionsPurchases');
+            
         }else{
             redirect('login');
         }
@@ -344,7 +346,11 @@ function viewSpoilagesStock(){
             $data['title'] = "Purchase Order";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/adminPurchaseOrder');
+            $data['purchaseOrders'] = array(
+                "purchorders" => $this->adminmodel->get_purchOrders(),
+                "poitems" => $this->adminmodel->get_poItemVariance()
+            );
+            $this->load->view('admin/adminPurchaseOrder',$data);
 
         }else{
             redirect('login');
@@ -477,7 +483,8 @@ function viewSpoilagesStock(){
     }
 
     function jsonSuppMerchandise() {
-        $data =  $this->adminmodel->get_suppMerchandise();
+        $spmID = $this->input->post('spmID');
+        $data = $this->adminmodel->get_suppMerchandise($spmID);
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }

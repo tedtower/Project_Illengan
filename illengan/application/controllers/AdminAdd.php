@@ -11,7 +11,7 @@ class AdminAdd extends CI_Controller{
     function addaccounts(){
 
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[50]');
-        $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
+        // $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
         $this->form_validation->set_rules('aUsername','Username','trim|required|is_unique[accounts.aUsername]');
         $this->form_validation->set_rules('aType','Account Type','trim|required');
 
@@ -125,7 +125,7 @@ class AdminAdd extends CI_Controller{
                 }else{
                     redirect("admin/dashboard");
                     // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
-                }
+                } 
             }
         }else{
             redirect("login");
@@ -141,19 +141,16 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addPurchaseOrder() {
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $spID = $this->input->post('spID');
             $poDate = $this->input->post('poDate');
             $edDate = $this->input->post('edDate');
-            $poTotal = 100;
+            $poTotal = $this->input->post('poTotal');
             $poDateRecorded = date('Y-m-d');
-            $poStatus = $this->input->post('poStatus');
+            $poStatus = 'pending';
             $poRemarks = $this->input->post('poRemarks');
-            echo $poDateRecorded, $poDate, $edDate, $poStatus;
-            $this->adminmodel->add_PurchaseOrder($poDate, $edDate, $poTotal, $poDateRecorded, $poStatus, $poRemarks, $spID);
-        }else{
-            redirect('login');
-        }
+            $merchandise = json_decode($this->input->post('merchandise'), true);
+            echo json_encode($merchandise, true);
+            $this->adminmodel->add_PurchaseOrder($poDate, $edDate, $poTotal, $poDateRecorded, $poStatus, $poRemarks, $spID, $merchandise);
         
     }
     function addTable(){
