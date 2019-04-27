@@ -75,6 +75,31 @@ class AdminAdd extends CI_Controller{
         }
 
     }
+    function addSupplierMerchandise(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+           
+            $spName = $this->input->post('name');
+            $spContactNum = $this->input->post('contactNum');
+            $spEmail= $this->input->post('email');
+            $spStatus = $this->input->post('status');
+            $spAddress = $this->input->post('address');
+            $spMerch = json_decode($this->input->post('merchandises'),true);
+            if($this->adminmodel->add_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch)){
+                echo json_encode(array(
+                    'sources' => $this->adminmodel->get_supplier(),
+                    'merchandises' => $this->adminmodel->get_suppliermerch(),
+                    'stockvariances' => $this->adminmodel->get_stockVariance()
+                ));
+            }else{
+                redirect("admin/dashboard");
+                // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
+            }
+        }else{
+            redirect('login');
+        }
+        // redirect("login");
+        // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
+    }
     function addStockItem(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('name','Stock Name','trim|required|alpha_numeric_spaces');
@@ -257,26 +282,5 @@ class AdminAdd extends CI_Controller{
         redirect('adminview/viewReturns');
     }
 
-    function addSupplierMerchandise(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $this->load->model('adminmodel');
-            $spName = $this->input->get("supplierName");
-            $spContactNum =$this->input->get("contactNum");
-            $spEmail =$this->input->get("email");
-            $spStatus =$this->input->get("status");
-            $spAddress =$this->input->get("supplierAddress");
-
-            $vID = $this->input->get("variance");
-            $spmDesc = $this->input->get("merchName");
-            $spmUnit = $this->input->get("merchUnit");
-            $spmPrice = $this->input->get("merchPrice");
-            $this->adminmodel->add_supplierMerchandise($spName, $spContactNum, $spEmail, $spStatus, $spAddress,$vID, $spmDesc, $spmUnit, $spmPrice);
-            redirect('admin/supplier');
-        }else{
-            redirect('login');
-        }
-        // redirect("login");
-        // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
-    }
 }
 ?>

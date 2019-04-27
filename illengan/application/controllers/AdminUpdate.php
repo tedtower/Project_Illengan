@@ -148,6 +148,27 @@ class adminUpdate extends CI_Controller{
             redirect('login');
         }
     }
+
+    function editSupplierMerchandise(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $spID = $this->input->post('id');
+            $spName = $this->input->post('name');
+            $spContactNum = $this->input->post('contactNum');
+            $spEmail= $this->input->post('email');
+            $spStatus = $this->input->post('status');
+            $spAddress = $this->input->post('address');
+            $spMerch = json_decode($this->input->post('merchandises'),true);
+            if($this->adminmodel->edit_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch, $spID)){
+                echo json_encode(array(
+                    'sources' => $this->adminmodel->get_supplier(),
+                    'merchandises' => $this->adminmodel->get_suppliermerch(),
+                    'stockvariances' => $this->adminmodel->get_stockVariance()
+                ));
+            }
+        }else{
+            redirect('login');
+        }
+    }
     function edit_menu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $menu_id = $this->input->post('menu_id');
@@ -168,19 +189,6 @@ class adminUpdate extends CI_Controller{
         $this->load->view('admin_module/edit_menuimage', $data);
         
     }    
-    function editSource(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $source_id = $this->input->get('source_id');
-            $source_name = $this->input->get('new_name');
-            $contact_num = $this->input->get('new_contact');
-            $email = $this->input->get('new_email');
-            $status = $this->input->get('new_status');
-            $this->adminmodel->edit_source($source_id, $source_name, $contact_num, $email, $status);
-            redirect('admin/sources');
-        }else{
-            redirect('login');
-        }
-    }
     function editTransactions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $transID = trim($this->input->post('transID'));
