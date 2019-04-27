@@ -195,7 +195,7 @@ class AdminModel extends CI_Model{
                 poID = ?;";
         if($this->db->query($query, array())){
             foreach($poItems as $item){
-
+                
             }
             return true;
         }
@@ -291,10 +291,7 @@ class AdminModel extends CI_Model{
                 vID = ?;";
         return $this->db->query($query, array($variance['varUnit'],$variance['varSize'],$variance['varMin'],$variance['varQty'],$variance['varStatus'],$variance['varID']));
     }
-    function edit_stockqty($stID, $stock_quantity){
-        $query = "Update stockitems set stock_quantity = ? where stID= ?;";
-        return $this->db->query($query,array($stock_quantity, $stID));
-    }
+
     function edit_transaction($trans_id, $receiptNo, $transDate, $source, $remarks, $total, $dateRecorded, $transItems){
         $query = "Delete from transitems where trans_id = ?";
         $this->db->query($query, array($trans_id));
