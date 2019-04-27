@@ -119,9 +119,9 @@ class AdminAdd extends CI_Controller{
             $spID = $this->input->post('spID');
             $poDate = $this->input->post('poDate');
             $edDate = $this->input->post('edDate');
-            $poTotal = 100;
+            $poTotal = $this->input->post('poTotal');
             $poDateRecorded = date('Y-m-d');
-            $poStatus = $this->input->post('poStatus');
+            $poStatus = 'pending';
             $poRemarks = $this->input->post('poRemarks');
             $merchandise = json_decode($this->input->post('merchandise'), true);
             echo json_encode($merchandise, true);

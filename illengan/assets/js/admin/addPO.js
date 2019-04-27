@@ -1,4 +1,6 @@
 addSupplierOpts();
+
+var total = 0;
 function removeOptions() {
     $(document).ready(function() {
         var opt_elements = document.getElementsByClassName('options');
@@ -32,9 +34,6 @@ function addSupplierOpts() {
 
             }
             $('#spName').append(optArr);
-        },
-        failure: function() {
-            console.error('oh no');
         }
     });
 });
@@ -56,9 +55,6 @@ function setSuppMerchandise() {
                 }
                 
                 $('#spName').append(optArr);
-            },
-            failure: function() {
-                console.error('oh no');
             }
         });
     });
@@ -81,19 +77,18 @@ function getSelectedMerch() {
             success: function(data) {
                 for(var i = 0; i <= data.length-1; i++) {
                     if(data[i].spmID === value) {
-                        console.log(data[i].spmID === value);
                         merchChecked = `<tr class="merchelem" id="vID`+i+`" data-id="`+data[i].spmID+`" data-varid="`+data[i].vID+`">
-                            <input type="hidden" name="">
-                            <td><input type="text" id="stName`+i+`" name="merchName[]"
+                            <input type="hidden" name="poID" value="`+data[i].poID+`">
+                            <td><input type="text" id="stName`+i+`" name="stName"
                                     class="form-control form-control-sm"  data-stID="`+data[i].stID+`" value="`+data[i].stName+`" readonly="readonly"></td>
-                            <td><input type="number" id="vQty`+i+`" name="poiQty[]"
-                                    class="form-control form-control-sm" value="`+data[i].vQty+`" ></td>
-                            <td><input type="text" id="vUnit`+i+`" name="poiUnit[]"
+                            <td><input type="text" id="vQty`+i+`" onchange="setSubtotal()" name="vQty"
+                                    class="vQty form-control form-control-sm" value="`+data[i].vQty+`" ></td>
+                            <td><input type="text" id="vUnit`+i+`" name="vUnit"
                                     class="form-control form-control-sm"  value="`+data[i].vUnit+`" readonly="readonly"></td>
-                            <td><input type="number" id="spmPrice`+i+`" name="poiPrice[]"
-                                    class="form-control form-control-sm"  value="`+data[i].spmPrice+`" readonly="readonly"></td>
-                            <td><input type="number" id="subtotal`+i+`" name="itemSubtotal[]"
-                                    class="subtotal form-control form-control-sm" value="" readonly="readonly"></td>
+                            <td><input type="number" id="spmPrice`+i+`" name="spmPrice"
+                                    class="spmPrice form-control form-control-sm"  value="`+data[i].spmPrice+`" readonly="readonly"></td>
+                            <td><input type="number" id="subtotal`+i+`"
+                            class="subtotal form-control form-control-sm" value="" readonly="readonly"></td>
                             <td><img class="exitBtn"
                                     src="/assets/media/admin/error.png"
                                     style="width:20px;height:20px"></td>
@@ -102,7 +97,8 @@ function getSelectedMerch() {
                             countTr = countTr + 1;
                     }
                 }
-               
+                setSubtotal();
+                setTotal();
             }
         });
         }
@@ -115,7 +111,6 @@ function addPurchaseOrder() {
     var spID = $('#spID').val();
     var poDate = $('#poDate').val();
     var edDate = $('#edDate').val();
-    var poStatus = $('#poStatus').val();
     var poRemarks = $('#poRemarks').val();
     var stID, poiQty, poiUnit, poiPrice, poiStatus;
 
@@ -127,16 +122,15 @@ function addPurchaseOrder() {
         poiQty = $('#vQty'+count).val();
         poiUnit = $('#vUnit'+count).val();
         poiPrice = $('#spmPrice'+count).val();
-        poiStatus = poStatus;
-        poiRemarks = 'HAHAHAHAHHA UY ITO NA LORD THHANK YOU';
+        poTotal = total;
 
         itemMerch = {
             'vID' : vID,
             'poiQty' : poiQty,
             'poiUnit' : poiUnit,
             'poiPrice' : poiPrice,
-            'poiStatus' : poiStatus,
-            'poiRemarks' : poiRemarks
+            'poiStatus' : 'pending',
+            'poiRemarks' : poRemarks
         };
 
         merch.push(itemMerch);
@@ -149,32 +143,45 @@ function addPurchaseOrder() {
             spID: spID,
             poDate: poDate,
             edDate: edDate,
-            poStatus: poStatus,
+            poTotal: poTotal,
             poRemarks: poRemarks,
             merchandise: JSON.stringify(merch)
         },
         dataType : 'json',
         success: function(data) {
-            alert('Purchase Order added');
-
+                alert('Purchase Order added');
+                
         }
     })
 }
-function setSubtotal() {
-    eVqty = document.getElementsByClassName('subtotal');
 
-    for(var i = 0; i <= eVqty.length-1; i++) {
-        var vQtyElem = document.getElementById('#vQty'+i);
-        vQtyElem.onchange = function() {
-            var vQty = parseInt($('#vQty').val());
-            var spmPrice = parseInt($('#spmSprice').val());
-            var subtotal = spmPrice * vQty;
-        
-        }
-    }
+
     
+function setSubtotal() {
+    var spmPrice, vQty;
+        var count = 0;
+    for(var i = 0; i <= countTr-1; i++) {
+        count = count+1;
+        spmPrice = parseInt(document.getElementById('spmPrice'+ count).value);
+        vQty = parseInt(document.getElementById('vQty'+count).value);
+        document.getElementById('subtotal'+count).value = vQty * spmPrice;
+    }
+    setTotal();
+}
+
+
+function setTotal() {
+    var count = 0;
+    for(var i = 0; i <= countTr-1; i++) {
+        count = count+1;
+        subtotal = parseInt(document.getElementById('subtotal'+ count).value);
+        total = total + subtotal;
+    }
+    $('#total').text(total);
     
 }
+
+
 
 
 

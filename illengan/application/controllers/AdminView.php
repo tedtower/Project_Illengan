@@ -332,6 +332,7 @@ function viewSpoilagesStock(){
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminTransactionsPurchases');
+            
         }else{
             redirect('login');
         }
@@ -352,7 +353,11 @@ function viewSpoilagesStock(){
             $data['title'] = "Purchase Order";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/adminPurchaseOrder');
+            $data['purchaseOrders'] = array(
+                "purchorders" => $this->adminmodel->get_purchOrders(),
+                "poitems" => $this->adminmodel->get_poItemVariance()
+            );
+            $this->load->view('admin/adminPurchaseOrder',$data);
 
         }else{
             redirect('login');
