@@ -33,13 +33,20 @@ class AdminModel extends CI_Model{
     //         }
     //     }
     // }
-    function add_stockspoil($variance_id,$stock_qty,$stock_spoil_date,$date_recorded,$remarks){
+    function add_stockspoil($date_recorded,$stocks){
         $query = "insert into stockspoil (ssID,ssDateRecorded) values (NULL,?)";
         if($this->db->query($query,array($date_recorded))){ 
-            $query = "insert into varspoilitems (ssID, vID, ssQty, ssDate, ssRemarks) values (?,?,?,?,?)";
-            return $this->db->query($query,array($this->db->insert_id(),$variance_id,$stock_qty,$stock_spoil_date,$remarks));
-        }else{
-            return false;
+            $this->add_varspoilitems($this->db->insert_id(),$stocks);
+            return true;
+        }
+    }
+    function add_varspoilitems($ssID,$stocks){
+        $query = "insert into varspoilitems (ssID,vID,ssQty,ssDate,ssRemarks) values (?,?,?,?,?)";
+        if(count($stocks) > 0){
+            for($in = 0; $in < count($stocks) ; $in++){
+                $this->db->query($query, array($ssID, $stocks[$in]['vID'], $stocks[$in]['ssQty'],
+                $stocks[$in]['ssDate'],$stocks[$in]['ssRemarks']));
+            }    
         }
     }
     // function add_PurchaseOrder($poDate,$edDate,$poTotal,$poDateRecorded,$poStatus, $poRemarks, $spID, $merchandise){
@@ -50,6 +57,20 @@ class AdminModel extends CI_Model{
     //         return true;
     //         }
 
+    // }
+    // function add_poItems($poID, $merchandise) {
+    //     $query = "insert into poitems (poiID, vID, poID, poiQty, poiUnit, poiPrice, poiRemarks, poiStatus) values
+    //     (NULL,?,?,?,?,?,?,?)";
+    //     if(count($merchandise) > 0){
+    //     for($in = 0; $in < count($merchandise) ; $in++){
+    //         $this->db->query($query, array($merchandise[$in]['vID'], $poID, $merchandise[$in]['poiQty'],
+    //         $merchandise[$in]['poiUnit'],$merchandise[$in]['poiPrice'],$merchandise[$in]['poiRemarks'], 
+    //         $merchandise[$in]['poiStatus']));
+    //     }
+    // } else {
+    //     return false;
+    // }
+   
     // }
     function add_aospoil($s_type,$ao_name,$s_qty,$s_date,$date_recorded,$remarks){
         $query1 = "select ao_id from `addons` where ao_name = ? ";

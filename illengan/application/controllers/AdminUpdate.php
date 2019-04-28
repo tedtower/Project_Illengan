@@ -8,6 +8,17 @@ class adminUpdate extends CI_Controller{
         // code for getting current date : date("Y-m-d")
         // code for getting current date and time : date("Y-m-d 2H:i:s")
     }
+    function editStockSpoil(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $ssQty=$this->input->post('ssQty');
+            $ssDate=$this->input->post('ssDate');
+            $ssRemarks=$this->input->post('ssRemarks');
+
+            $this->adminmodel->editstockspoilage($ssQty,ssDate,$ssRemarks);
+        }else{
+            redirect('login');
+        } 
+    }
     function editTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('prevTableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]');
@@ -34,7 +45,7 @@ class adminUpdate extends CI_Controller{
         $current_password = $this->adminmodel->get_password($aID);
 
         $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[3]|max_length[50]');
-        $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[3]|max_length[50]|matches[new_password]');
+        $this->form_validation->set_rules('new_confirm_password', 'Confirm password', 'required|min_length[3]|max_length[50]|matches[new_password]');
         $this->form_validation->set_rules('old_password', 'Old Password', 'required');
 
         if($this->form_validation->run()){
@@ -56,32 +67,6 @@ class adminUpdate extends CI_Controller{
         redirect('admin/accounts');   
     }
 
-    // function changeAccountPassword(){  
-    //     $this->load->library('form_validation');
-
-    //     $aID = $this->input->post('accountId');
-    //     $current_password = $this->adminmodel->get_password($accountId);
-
-    //     $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[3]|max_length[50]');
-    //     $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[3]|max_length[50]|matches[new_password]');
-    //     $this->form_validation->set_rules('old_password', 'Old Password', 'required');
-
-    //     if($this->form_validation->run()){
-    //         $old_password = $this->input->post("old_password");
-    //         $new_password = $this->input->post("new_password");
-
-    //         foreach($current_password AS $row) {
-    //             if ($old_password == $row['aPassword']){                 
-    //                  $this->adminmodel->change_aPassword($new_password,$aID);
-    //             }else{ 
-    //                echo "Old password does not match with old password input";
-    //             }
-    //         }   
-    //     }else{
-    //                 echo "Form Validation is not working";
-    //     }
-    //                redirect('admin/accounts');
-    // }
     function editAccounts(){
         $this->form_validation->set_rules('new_aUsername','Username','trim|required|is_unique[accounts.aUsername]');
         $this->form_validation->set_rules('new_aType','Account Type','trim|required');

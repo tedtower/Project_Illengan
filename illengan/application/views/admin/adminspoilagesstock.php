@@ -25,7 +25,9 @@
 									<th>Quantity</th>
 									<th>Date Spoiled</th>
 									<th>Date Recorded</th>
-									<th>Operations</th>
+									<th>Operation</th>
+									<th>Operation</th>
+									
 								</thead>
 								<tbody id="spoilage_data">
 								</tbody>
@@ -36,7 +38,7 @@
 								<div class="modal-dialog modal-lg" role="document">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLabel">Add Stock Spoilage</h5>
+											<h5 class="modal-title" id="exampleModalLabel">Add Spoilage</h5>
 											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 												<span aria-hidden="true">&times;</span>
 											</button>
@@ -44,12 +46,12 @@
 										<form id="formAdd" action="<?= site_url('admin/stock/spoilages/add')?>" accept-charset="utf-8">
 											<div class="modal-body">
 												<div class="form-row">
-													<!--Container of Source Date-->
+													<!--Container of Stock Spoilage Date-->
 													<!--Spoilage Date-->
 													<div class="input-group mb-3">
 														<div class="input-group-prepend">
 															<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-																Source Date</span>
+																Spoilage Date</span>
 														</div>
 														<input type="date" name="spoilDate" id="spoilDate" class="form-control form-control-sm">
 													</div>
@@ -76,7 +78,7 @@
 					
 												<div class="modal-footer">
 													<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-													<button class="btn btn-success btn-sm" onclick="addStockItems()" type="submit">Add</button>
+													<button type="button" class="btn btn-success btn-sm" onclick="addStockItems()">Add</button>
 												</div>
 											</div>
 										</form>
@@ -138,6 +140,57 @@
 									</div>
 								</div>
 							</div>
+							<!--End of Delete Modal-->
+							<!--Edit Spoilage-->
+							<div class="modal fade" id="editSpoil" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Edit Spoilage</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form id="formEdit" action="<?= site_url('admin/accounts/edit') ?>" method="post" accept-charset="utf-8">
+                                                
+												<div class="modal-body">
+                                                    <!--Quantity-->
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                Quantity</span>
+                                                        </div>
+                                                        <input type="number" min="1" name="ssQty" id="ssQty" class="form-control form-control-sm">
+                                                        <span class="text-danger"><?php echo form_error("ssQty"); ?></span>
+                                                    </div>
+                                                    <!--Date Spoiled-->
+													<div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                Date Spoiled</span>
+                                                        </div>
+                                                        <input type="date" name="ssDate" id="ssDate" class="form-control form-control-sm">
+                                                        <span class="text-danger"><?php echo form_error("ssDate"); ?></span>
+                                                    </div>
+													<div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                Remarks</span>
+                                                        </div>
+                                                        <input type="text" name="ssRemarks" id="ssRemarks" class="form-control form-control-sm">
+                                                        <span class="text-danger"><?php echo form_error("ssRemarks"); ?></span>
+                                                    </div>
+                                                    <!--Footer-->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                                        <button class="btn btn-success btn-sm" type="submit">Update</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                            </div>
+							<!--End of Edit Modal-->
 						</div>
 					</div>
 				</div>
@@ -202,9 +255,16 @@ var stockchoice = [];
 						return '<a href="javascript: void(0)" class="btn btn-warning btn-sm delete_data" data-id="' +
 							data.s_id + '">Delete</a>';
 					}
+				},
+				{
+					"data": null,
+					render: function(data, type, row, meta) {
+						return '<button class="updateBtn btn btn-default btn-sm" data-toggle="modal" data-target="#editSpoil">Edit</button>';
+					}
 				}
 			]
 		});
+
 
 
 		//For showing the accordion
