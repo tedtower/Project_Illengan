@@ -57,7 +57,7 @@
 												<!--Add Stock Item-->
 												<!--Button to add row in the table-->
 												<!--Button to add launche the brochure modal-->
-												<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#brochureSS" data-original-title style="margin:0" id="addStockSpoilage">Add Spoilage Items</a>
+												<a class="addSpoilageItem btn btn-default btn-sm" data-toggle="modal" data-target="#brochureSS" data-original-title style="margin:0" id="addStockSpoilage">Add Spoilage Items</a>
 												<br><br>
 												<table class="stockSpoilageTable table table-sm table-borderless">
 													<!--Table containing the different input fields in adding stock spoilages -->
@@ -111,7 +111,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                     <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                                    <button class="btn btn-success btn-sm" type="submit">Ok</button>
+													<button type="button" class="btn btn-success btn-sm" data-dismiss="modal" onclick="getSelectedStocks()">Ok</button>
                                             </div>
                                         </form>
                                     </div>
@@ -155,8 +155,9 @@
 </div>
 <!--End Table Content-->
 <?php include_once('templates/scripts.php') ?>
-
+<script src="<?= admin_js().'addSpoilageBrochure.js'?>"></script>
 <script>
+var stockchoice = [];
 	 $(function() {
         viewStocksJs();
 	 })
@@ -261,6 +262,7 @@
 	});
 	//End Function Delete
 
+	//set brochure checkboxes
 	function viewStocksJs() {
         $.ajax({
             url: "<?= site_url('admin/stock/spoilages/viewStockJS') ?>",
@@ -285,36 +287,14 @@
             $("#stocksTable> tbody").append(`
             <tr data-id="${table.stID}">
                 <td>
-					<label style="width:96%"><input type="checkbox" class="stockchoice" value="${table.stID}">${table.vName}</label>
+					<label style="width:96%"><input type="checkbox" name="stockchoice[]" class="choiceStock mr-2" value="${table.stID}">${table.vName}</label>
                 </td>
             </tr>`);
         });
-    }
-	$(document).ready(function() {
-		$('.stockchoice').click(function(){
-			var text = "";
-			
-		if ($("#stockSpoilageTable> tbody").children().length > 0) {
-            $("#stockSpoilageTable> tbody").empty();
-        }
-        stocks.forEach(table => {
-            $("#stockSpoilageTable> tbody").append(`
-            <tr data-id="${table.stID}">
-			<td><input type="text" name="stName" id="stock_name" value="${table.stName}" class="form-control form-control-sm"></td>
-			<td><input type="number" name="ssQty" id="s_qty" value="${table.ssQty}"  class="form-control form-control-sm"></td>
-			<td><textarea name="date" id="ssRemarks" value="${table.ssRemarks}" class="form-control form-control-sm" row="1"></textarea></td>
-			<td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
-            </tr>`);
-        });
-	}
-	else{
-		$('.hidden').hide();
 	}
 	
-	});
-});
 
-</script>
+</script> 
 </body>
 
 </html>

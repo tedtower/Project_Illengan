@@ -6,12 +6,12 @@ class AdminAdd extends CI_Controller{
         $this->load->model('adminmodel'); 
         date_default_timezone_set('Asia/Manila');  
         // code for getting current date : date("Y-m-d")
-        // code for getting current date and time : date("Y-m-d 2H:i:s")
+        // code for getting current date and time : date("Y-m-d H:i:s")
     }
     function addaccounts(){
 
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[50]');
-        $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
+        // $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
         $this->form_validation->set_rules('aUsername','Username','trim|required|is_unique[accounts.aUsername]');
         $this->form_validation->set_rules('aType','Account Type','trim|required');
 
@@ -100,7 +100,7 @@ class AdminAdd extends CI_Controller{
                 }else{
                     redirect("admin/dashboard");
                     // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
-                }
+                } 
             }
         }else{
             redirect("login");
@@ -116,7 +116,6 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addPurchaseOrder() {
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $spID = $this->input->post('spID');
             $poDate = $this->input->post('poDate');
             $edDate = $this->input->post('edDate');
@@ -124,11 +123,9 @@ class AdminAdd extends CI_Controller{
             $poDateRecorded = date('Y-m-d');
             $poStatus = $this->input->post('poStatus');
             $poRemarks = $this->input->post('poRemarks');
-            echo $poDateRecorded, $poDate, $edDate, $poStatus;
-            $this->adminmodel->add_PurchaseOrder($poDate, $edDate, $poTotal, $poDateRecorded, $poStatus, $poRemarks, $spID);
-        }else{
-            redirect('login');
-        }
+            $merchandise = json_decode($this->input->post('merchandise'), true);
+            echo json_encode($merchandise, true);
+            $this->adminmodel->add_PurchaseOrder($poDate, $edDate, $poTotal, $poDateRecorded, $poStatus, $poRemarks, $spID, $merchandise);
         
     }
     function addTable(){
@@ -147,32 +144,6 @@ class AdminAdd extends CI_Controller{
         }else{
             redirect('login');
         }        
-    }
-    function addTransactions(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $receiptNo = trim($this->input->post('receiptNo'));
-            $transDate = trim($this->input->post('transDate'));
-            $source = trim($this->input->post('sourceName'));
-            $remarks = trim($this->input->post('remarks'));
-            $transItems = !isset(json_decode($this->input->post('transItems'), true)[0]) ? NULL : json_decode($this->input->post('transItems'), true);
-            $dateRecorded = date("Y-m-d");
-            $total = 0;
-            for ($index=0; $index < count($transItems); $index++) { 
-                $transItems[$index]['subtotal'] = (float) $transItems[$index]['itemQty'] * (float) $transItems[$index]['itemPrice']; 
-                $total += $transItems[$index]['subtotal'];
-            }
-            if($this->adminmodel->add_transaction($receiptNo, $transDate, $source, $remarks, $total, $dateRecorded, $transItems)){
-                $this->output->set_output(json_encode(array(
-                    "transaction" => $this->adminmodel->get_transactions(),
-                    "transitem" => $this->adminmodel->get_transitems(),
-                    "sources" => $this->adminmodel->get_sources()
-                )));
-            }else{
-                redirect(admin/transactions);
-            }
-        }else{
-            redirect('login');
-        }
     }
     function addspoilagesaddons(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
@@ -279,6 +250,26 @@ class AdminAdd extends CI_Controller{
         }
         // redirect("login");
         // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
+    }
+    function addTransaction(){
+        $transID = $this->input->post('transID');
+        $spID = $this->input->post('spID');
+        $transType = $this->input->post('transType');
+        $receiptNum = $this->input->post('receiptNum');
+        $transDate = $this->input->post('transDate');
+        $resStatus = $this->input->post('resStatus');
+        $remarks = $this->input->post('remarks');
+        $transitems = json_decode($this->input->post('transitems'),true);
+        $dateRecorded = date("Y-m-d");
+        $total = 0.00;
+        for($index = 0 ; $index < count($transitems) ; $index++){
+            $transitems[$index]['subtotal'] = (float) $transitems[$index]['itemPrice'] * (float) $transitems[$index]['itemQty'];
+            $total += $transitems[$index]['subtotal'];
+        }
+        if($this->adminmodel->add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks,$total, $transitems)){
+            
+        }else{
+        }
     }
 }
 ?>

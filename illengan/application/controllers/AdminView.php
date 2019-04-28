@@ -16,14 +16,14 @@ class AdminView extends CI_Controller{
     }
 //VIEW FUNCTIONS--------------------------------------------------------------------------------
     function viewAccountsJs(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             echo json_encode($this->adminmodel->get_accounts());
         }else{
             redirect('login');
         }
     }
     function viewAccounts(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Admin Accounts";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
@@ -34,7 +34,7 @@ class AdminView extends CI_Controller{
         }   
     }
     function viewDashboard(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Dashboard";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');            
@@ -46,7 +46,7 @@ class AdminView extends CI_Controller{
         }
     }
     function viewInventory($error = null){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Admin Stock Items";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
@@ -62,11 +62,8 @@ class AdminView extends CI_Controller{
             redirect('login');
         }
     }
-    function viewInvoices(){
-        
-    }
     function getStockDetails(){        
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $id = $this->input->post("id");
             echo json_encode(array(
                 "stock" => $this->adminmodel->get_stockDetails($id),
@@ -77,7 +74,7 @@ class AdminView extends CI_Controller{
         }
     }
     function viewLogs(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Admin Logs";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
@@ -90,7 +87,7 @@ class AdminView extends CI_Controller{
         }
     }
     function viewMenu(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Menu";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
@@ -101,7 +98,7 @@ class AdminView extends CI_Controller{
     }
 
     function menuGetDetails(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data = array(
                 'menu' => $this->adminmodel->get_menu(),
                 'preferences' => $this->adminmodel->get_preferences(),
@@ -117,7 +114,7 @@ class AdminView extends CI_Controller{
     
 
     function menuAddons(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Menu - Addons";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
@@ -127,7 +124,7 @@ class AdminView extends CI_Controller{
         }
     }
     function menuPromos(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Menu - Promos";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
@@ -137,7 +134,7 @@ class AdminView extends CI_Controller{
         }
     }
     function viewMenuCategories(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['category'] = $this->adminmodel->get_menucategories();
             $this->load->view('admin/menucategories',$data);
         }else{
@@ -155,7 +152,7 @@ class AdminView extends CI_Controller{
         $this->load->view('admin/templates/scripts');
     }
     function viewSales(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Sales";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
@@ -168,7 +165,7 @@ class AdminView extends CI_Controller{
         }
     }
     function viewSupplier(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Sources";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
@@ -180,7 +177,7 @@ class AdminView extends CI_Controller{
     }
 
     function supplierGetDetails(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data = array(
                 'supplier' => $this->adminmodel->get_supplier(),
                 'suppliermerch' => $this->adminmodel->get_suppliermerch(),
@@ -194,11 +191,12 @@ class AdminView extends CI_Controller{
     }
     function viewStockJS() {
         $data=$this->adminmodel->get_stockVariance();
-        echo json_encode($data);
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
     }
     function viewSpoilagesJs(){
-        if(checkIfLoggedIn()){
-            $data= $this->adminmodel->get_spoilages();
+        if($this->checkIfLoggedIn()){
+            $data['stocks']= $this->adminmodel->get_spoilages();
             echo json_encode($data);
             
         }else{
@@ -206,7 +204,7 @@ class AdminView extends CI_Controller{
         }
     }
     function viewSpoilages(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminspoilages');
@@ -216,7 +214,7 @@ class AdminView extends CI_Controller{
     }
  //-----------Stock Spoilage------------------------- 
  function viewSpoilagesStockJs(){
-    if(checkIfLoggedIn()){
+    if($this->checkIfLoggedIn()){
         $data= $this->adminmodel->get_spoilagesstock();
         echo json_encode($data);
         
@@ -225,7 +223,7 @@ class AdminView extends CI_Controller{
     }
 }
 function viewSpoilagesStock(){
-    if(checkIfLoggedIn()){
+    if($this->checkIfLoggedIn()){
         $data['title'] = "Spoilages - Stock";
         $this->load->view('admin/templates/head', $data);
         $this->load->view('admin/templates/sideNav');
@@ -236,7 +234,7 @@ function viewSpoilagesStock(){
 }
    //-----------Menu Spoilage------------------------- 
     function viewSpoilagesMenuJs(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data= $this->adminmodel->get_spoilagesmenu();
             echo json_encode($data);
             
@@ -245,7 +243,7 @@ function viewSpoilagesStock(){
         }
     }
     function viewSpoilagesMenu(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminspoilagesmenu');
@@ -258,7 +256,7 @@ function viewSpoilagesStock(){
  
     //-----------Addons Spoilage------------------------- 
     function viewSpoilagesAddonsJs(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data= $this->adminmodel->$this->adminmodel->get_spoilagesaddons();
             echo json_encode($data);
             
@@ -267,7 +265,7 @@ function viewSpoilagesStock(){
         }
     }
     function viewSpoilagesAddons(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminspoilagesaddons');
@@ -279,7 +277,7 @@ function viewSpoilagesStock(){
     }
     //---------------------------------------------------
     function viewStockCategories(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['category'] = $this->adminmodel->get_stockcategories();
             $this->load->view('admin/templates/head');
             $this->load->view('admin/templates/sideNav');
@@ -289,7 +287,7 @@ function viewSpoilagesStock(){
         }
     }
     function viewTables(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Tables";
             // $data['table'] = $this->adminmodel->get_tables();
             $this->load->view('admin/templates/head', $data);
@@ -301,14 +299,14 @@ function viewSpoilagesStock(){
         }
     }
     function getTables(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             echo json_encode($this->adminmodel->get_tables());
         }else{
             redirect('login');
         }
     }
     // function viewTransactions(){
-    //     if(checkIfLoggedIn()){
+    //     if($this->checkIfLoggedIn()){
     //         $data['title'] = "Transactions";
     //         // $this->load->view('admin/templates/head');
     //         // $this->load->view('admin/templates/sideNav');
@@ -325,7 +323,7 @@ function viewSpoilagesStock(){
     // }
 
     function viewAllTransactions(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Transactions - All";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
@@ -335,17 +333,19 @@ function viewSpoilagesStock(){
         }
     }
     function viewDeliveryTransactions(){
-        if(checkIfLoggedIn()){
-            $data['title'] = "Transactions - Deliveries";
+        if($this->checkIfLoggedIn()){
+            $data['title'] = "Admin Deliveries";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/adminTransactionsDeliveries');
+            $data['deliveries'] = $this->adminmodel->get_deliveryTransactions();
+            $data['items'] = $this->adminmodel->get_deliveryTransactionsDeliveriesItems();
+            $this->load->view('admin/adminTransactionsDeliveries',$data);
         }else{
             redirect('login');
         }
     }
     function viewPurchaseTransactions(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Transactions - Purchases";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
@@ -355,7 +355,7 @@ function viewSpoilagesStock(){
         }
     }
     function viewReturnTransactions(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Transactions - Returns";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
@@ -366,7 +366,7 @@ function viewSpoilagesStock(){
     }
 
     function viewPurchaseOrders(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Purchase Order";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
@@ -378,7 +378,7 @@ function viewSpoilagesStock(){
     }
 
     function jsonLogStock() {
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data = $this->adminmodel->get_logs();
 
             header('Content-Type: application/json');
@@ -389,7 +389,7 @@ function viewSpoilagesStock(){
 
     }
     function jsonStock() {
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data = array();
             $data['restock'] = $this->adminmodel->get_restock();
             $data['destock'] = $this->adminmodel->get_transactions();
@@ -403,7 +403,7 @@ function viewSpoilagesStock(){
     }
 
     function viewLogStock() {
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Stock Logs";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
@@ -416,7 +416,7 @@ function viewSpoilagesStock(){
     }
 
     function jsonActivityLogs() {
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data = $this->adminmodel->get_actlogs();
             header('Content-Type: application/json');
 		    echo json_encode($data, JSON_PRETTY_PRINT);
@@ -427,7 +427,7 @@ function viewSpoilagesStock(){
     }
 
     function viewActivityLog() {
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Activity Logs";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
@@ -439,7 +439,7 @@ function viewSpoilagesStock(){
 
     }
     function viewConsumptions(){
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Stock Consumption";
             $data['consumptions'] = array(
                 "destockLog" 	=> $this->adminmodel->get_consumption(),
@@ -454,7 +454,7 @@ function viewSpoilagesStock(){
         }
     }
     function viewPromos() {
-        if(checkIfLoggedIn()){
+        if($this->checkIfLoggedIn()){
             $data['title'] = "Promos";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
@@ -480,7 +480,6 @@ function viewSpoilagesStock(){
 
     function jsonMenu() {
         $data = $this->adminmodel->get_menu_items();
-
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
@@ -498,7 +497,6 @@ function viewSpoilagesStock(){
     
     function jsonSuppliers() {
         $data =  $this->adminmodel->get_supplier();
-        header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
 
