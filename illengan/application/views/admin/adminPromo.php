@@ -147,6 +147,8 @@
                     promos.push({"promos" : item});
                     promos[index].freebies = data.freebies.filter(fb =>  fb.pmID ==  item.pmID);
                     promos[index].discounts = data.discounts.filter(disc =>  disc.pmID==  item.pmID);
+                    
+
                 });
                 showTable();
             },

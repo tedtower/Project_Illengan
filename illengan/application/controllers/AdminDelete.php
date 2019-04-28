@@ -15,9 +15,10 @@ class AdminDelete extends CI_Controller{
             if($this->form_validation->run()){
                 $accountId = trim($this->input->post("accountId"));
                 $this->adminmodel->delete_account($accountId);
-                redirect('admin/accounts');
+                // redirect('admin/accounts');
             }else{
-               redirect('admin/accounts');
+                echo $accountID;
+               //redirect('admin/accounts');
             } 
 
         }else{

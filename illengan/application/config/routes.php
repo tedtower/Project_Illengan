@@ -120,7 +120,7 @@ $route['admin/inventory/edit'] = "adminupdate/editstockitem";
 $route['admin/transactions/edit'] = "adminupdate/edittransactions";
 $route['admin/accounts/changepassword'] = "adminupdate/changeAccountPassword";
 $route['admin/accounts/edit'] = "adminupdate/editAccounts";
-$route['admin/sources/edit'] = "adminupdate/editsource";
+$route['admin/supplier/edit'] = "adminupdate/editSupplierMerchandise";
 $route['admin/tables/edit'] = "adminupdate/edittable";
 $route['admin/stockqty/edit'] = "adminupdate/editStockQty";
 //End Admin Update Routes ---------------------------------------

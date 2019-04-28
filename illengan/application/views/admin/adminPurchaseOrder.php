@@ -51,7 +51,7 @@
                                             <!--Source-->
                                             <div class="input-group mb-3 col">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                    <span class="input-group-text" id="inputGroup-sizing-lg"
                                                         style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Supplier</span>
                                                 </div>
@@ -71,20 +71,6 @@
                                         </div>
 
                                         <div class="form-row">
-                                            <!--Container of receipt no. and transaction date-->
-                                            <!--Status-->
-                                            <div class="input-group mb-3 col">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                        style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                        Status</span>
-                                                </div>
-                                                <select class="form-control form-control-sm" name="poStatus" id="poStatus">
-                                                    <option value="" selected="selected">Choose</option>
-                                                    <option value="pending">Pending</option>
-                                                    <option value="delivered">Delivered</option>
-                                                </select>
-                                            </div>
                                             <!--Delivery date-->
                                             <div class="input-group mb-3 col">
                                                 <div class="input-group-prepend">
@@ -153,7 +139,7 @@
                                     </button>
                                 </div>
                                 <!--Modal Content-->
-                                <form id="formAdd" action="<?= site_url('admin/purchaseorder/edit')?>" method="post"
+                                <form id="formEdit" action="<?= site_url('admin/purchaseorder/edit')?>" method="post"
                                     accept-charset="utf-8">
                                     <div class="modal-body">
                                         <div class="form-row">
@@ -165,8 +151,7 @@
                                                         style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Supplier</span>
                                                 </div>
-                                                <select class="form-control form-control-sm" name="spID">
-                                                    <option value="" selected>Choose</option>
+                                                <select class="form-control form-control-sm" id="spName" name="spName">
                                                 </select>
                                             </div>
                                             <!--Purchase date-->
@@ -183,20 +168,6 @@
 
                                         <div class="form-row">
                                             <!--Container of receipt no. and transaction date-->
-                                            <!--Status-->
-                                            <div class="input-group mb-3 col">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                        style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                        Status</span>
-                                                </div>
-                                                <select class="form-control form-control-sm" name="poStatus"
-                                                    id="poStatus">
-                                                    <option selected="selected">Choose</option>
-                                                    <option value="pending">Pending</option>
-                                                    <option value="delivered">Delivered</option>
-                                                </select>
-                                            </div>
                                             <!--Delivery date-->
                                             <div class="input-group mb-3 col">
                                                 <div class="input-group-prepend">
@@ -216,14 +187,14 @@
                                                     style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                     Remarks</span>
                                             </div>
-                                            <textarea class="form-control form-control-sm"></textarea>
+                                            <textarea name="poRemarks" class="form-control form-control-sm"></textarea>
                                         </div>
                                         <!--Button to add row in the table-->
                                         <a class="addPOItem btn btn-default btn-sm" data-toggle="modal" data-target="#brochure"
                                             data-original-title style="margin:0">Add Items</a>
                                         <br><br>
                                         <!--Table containing the different input fields in adding PO items -->
-                                        <table class="poItemsTable table table-sm table-borderless">
+                                        <table class="poItemsTables table table-sm table-borderless">
                                             <thead class="thead-light">
                                                 <tr>
                                                     <th>Item Name</th>
@@ -235,22 +206,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <input type="hidden" name="">
-                                                    <td><input type="text" name="itemName"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><input type="number" name="itemQty"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><input type="text" name="itemUnit"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><input type="number" name="itemPrice"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><input type="number" name="itemSubtotal"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><img class="exitBtn" id="exitBtn"
-                                                            src="/assets/media/admin/error.png"
-                                                            style="width:20px;height:20px"></td>
-                                                </tr>
+                                            
                                             </tbody>
                                         </table>
 
@@ -341,9 +297,10 @@
 <?php include_once('templates/scripts.php') ?>
 <script src="<?= admin_js().'addPO.js'?>"></script>
 <script>
-    var purOrders = [];
-    var suppliers = [];
-    var suppMerch = [];
+var POs = <?= json_encode($purchaseOrders) ?>;
+var purOrders = [];
+var suppliers = [];
+var suppMerch = [];
     $(function () {
         $.ajax({
             url: '/admin/jsonPOrders',
@@ -402,7 +359,7 @@
                     <td>${item.purOrders.poStatus}</td>
                     <td>${(parseFloat(item.purOrders.poTotal)).toFixed(2)}</td>
                     <td>
-                        <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editPO" id="editPOBtn">Edit</button>
+                        <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editPO" onclick="setSubtotal()" id="editPOBtn">Edit</button>
                         <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#delete">Delete</button>
                     </td>
                 </tr>
@@ -468,12 +425,49 @@
                 $(this).closest("tr").next(".accordion").hide("slow");
             }
         });
-        $(".editBtn").on("click", function () {
-            var menuID = $(this).closest("tr").attr("data-id");
-            //set Modal contents;
-        });
+
+        $(".editBtn").on("click", function() {
+        $("#editPO form")[0].reset();
+        $("#editPO .poItemsTables > tbody").empty();
+        var poID = $(this).closest("tr").attr("data-id");
+        setEditModal($("#editPO"), POs.purchorders.filter(item => item.poID === poID)[0], POs.poitems.filter(poi => poi.poID === poID));
+    });
     }
 
+
+function setEditModal(modal, purchOr, poitems) {
+    console.log(`${purchOr.spID}`);
+    var count = 0;
+    modal.find("input[name='poID']").val(purchOr.poID);
+    modal.find("input[name='poDate']").val(purchOr.poDate);
+    modal.find("input[name='edDate']").val(purchOr.edDate);
+    modal.find("input[name='poRemarks']").val(purchOr.poRemarks);
+    modal.find("select[name='spName']").find(`option[value=${purchOr.spID}]`).attr("selected","selected");
     
+    poitems.forEach(poi => {
+        modal.find(".poItemsTables > tbody").append(`
+        <tr class="merchelem" id="vID" data-id="${poi.poID}" data-varid="${poi.vID}">
+            <input type="hidden" name="poID" value="${poi.poID}">
+            <td><input type="text" id="stName" name="stName" class="form-control form-control-sm" data-stID="${poi.stID}" 
+            value="${poi.stName}" readonly="readonly"></td>
+            <td><input type="text" id="vQty" onchange="setSubtotal()" name="vQty"
+                    class="vQty form-control form-control-sm" value="${poi.vQty}"></td>
+            <td><input type="text" id="vUnit" name="vUnit" class="form-control form-control-sm" value="${poi.vUnit}"
+                    readonly="readonly"></td>
+            <td><input type="number" id="spmPrice" name="spmPrice" class="spmPrice form-control form-control-sm"
+                    value="${poi.spmPrice}" readonly="readonly"></td>
+            <td><input type="number" id="subtotal" class="subtotal form-control form-control-sm" value=""
+                    readonly="readonly"></td>
+            <td><img class="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+        </tr>
+        `);
+    });
+
+    
+}
+
+
+
+
 
 </script>

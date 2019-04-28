@@ -75,6 +75,31 @@ class AdminAdd extends CI_Controller{
         }
 
     }
+    function addSupplierMerchandise(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+           
+            $spName = $this->input->post('name');
+            $spContactNum = $this->input->post('contactNum');
+            $spEmail= $this->input->post('email');
+            $spStatus = $this->input->post('status');
+            $spAddress = $this->input->post('address');
+            $spMerch = json_decode($this->input->post('merchandises'),true);
+            if($this->adminmodel->add_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch)){
+                echo json_encode(array(
+                    'sources' => $this->adminmodel->get_supplier(),
+                    'merchandises' => $this->adminmodel->get_suppliermerch(),
+                    'stockvariances' => $this->adminmodel->get_stockVariance()
+                ));
+            }else{
+                redirect("admin/dashboard");
+                // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
+            }
+        }else{
+            redirect('login');
+        }
+        // redirect("login");
+        // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
+    }
     function addStockItem(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('name','Stock Name','trim|required|alpha_numeric_spaces');
@@ -119,9 +144,9 @@ class AdminAdd extends CI_Controller{
             $spID = $this->input->post('spID');
             $poDate = $this->input->post('poDate');
             $edDate = $this->input->post('edDate');
-            $poTotal = 100;
+            $poTotal = $this->input->post('poTotal');
             $poDateRecorded = date('Y-m-d');
-            $poStatus = $this->input->post('poStatus');
+            $poStatus = 'pending';
             $poRemarks = $this->input->post('poRemarks');
             $merchandise = json_decode($this->input->post('merchandise'), true);
             echo json_encode($merchandise, true);
@@ -183,16 +208,11 @@ class AdminAdd extends CI_Controller{
     function addspoilagesstock(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
-
-            $s_type = $this->input->get("s_type");
-            $stock_name =$this->input->get("stock_name");
-            $s_qty =$this->input->get("s_qty");
-            $s_date =$this->input->get("s_date");
             $date_recorded = date("Y-m-d");
-            $remarks =$this->input->get("remarks");
-
-            $this->adminmodel->add_stockspoil($s_type,$stock_name,$s_qty,$s_date,$date_recorded,$remarks);
-            redirect('admin/stock/spoilages');
+            $stocks = json_decode($this->input->post('stocks'), true);
+            echo json_encode($stocks, true);
+            $this->adminmodel->add_stockspoil($date_recorded,$stocks);
+           
         }else{
             redirect('login');
         }

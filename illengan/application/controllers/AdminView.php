@@ -62,13 +62,19 @@ class AdminView extends CI_Controller{
             redirect('login');
         }
     }
-    function getStockDetails(){        
-        if($this->checkIfLoggedIn()){
-            $id = $this->input->post("id");
-            echo json_encode(array(
-                "stock" => $this->adminmodel->get_stockDetails($id),
-                "variances" => $this->adminmodel->get_variances($id)
-            ));
+    function viewSupplier(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['title'] = "Sources";
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
+
+            $data['supplier'] = array(
+                'sources' => $this->adminmodel->get_supplier(),
+                'merchandises' => $this->adminmodel->get_suppliermerch(),
+                'stockvariances' => $this->adminmodel->get_stockVariance()
+            );
+            $this->load->view('admin/adminSources', $data);
+            // $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
@@ -160,31 +166,6 @@ class AdminView extends CI_Controller{
             $this->load->view('admin/adminSales',$data);
             $this->load->view('admin/templates/scripts');
             $this->load->view('admin/templates/footer');
-        }else{
-            redirect('login');
-        }
-    }
-    function viewSupplier(){
-        if($this->checkIfLoggedIn()){
-            $data['title'] = "Sources";
-            $this->load->view('admin/templates/head',$data);
-            $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/adminSources');
-            // $this->load->view('admin/templates/scripts');
-        }else{
-            redirect('login');
-        }
-    }
-
-    function supplierGetDetails(){
-        if($this->checkIfLoggedIn()){
-            $data = array(
-                'supplier' => $this->adminmodel->get_supplier(),
-                'suppliermerch' => $this->adminmodel->get_suppliermerch(),
-                'stockvariance' => $this->adminmodel->get_stockVariance()
-            );
-            header('Content-Type: application/json');
-            echo json_encode($data, JSON_PRETTY_PRINT);
         }else{
             redirect('login');
         }
@@ -350,6 +331,7 @@ function viewSpoilagesStock(){
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminTransactionsPurchases');
+            
         }else{
             redirect('login');
         }
@@ -370,7 +352,11 @@ function viewSpoilagesStock(){
             $data['title'] = "Purchase Order";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/adminPurchaseOrder');
+            $data['purchaseOrders'] = array(
+                "purchorders" => $this->adminmodel->get_purchOrders(),
+                "poitems" => $this->adminmodel->get_poItemVariance()
+            );
+            $this->load->view('admin/adminPurchaseOrder',$data);
 
         }else{
             redirect('login');
@@ -501,7 +487,8 @@ function viewSpoilagesStock(){
     }
 
     function jsonSuppMerchandise() {
-        $data =  $this->adminmodel->get_suppMerchandise();
+        $spmID = $this->input->post('spmID');
+        $data = $this->adminmodel->get_suppMerchandise($spmID);
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }

@@ -692,8 +692,13 @@ function setEditModal(modal, stock, variances) {
     modal.find("select[name='stockType']").val(stock.stType);
     modal.find("select[name='stockCategory']").find(`option[value=${stock.ctID}]`).attr("selected", "selected");
     modal.find("select[name='stockStatus']").find(`option[value="${stock.stStatus}"]`).attr("selected", "selected");
+<<<<<<< HEAD
 
     variances.forEach(variance => {
+=======
+    
+    variances.forEach(variance => {    
+>>>>>>> a323ea5f0a578100bf65e4221221840f9505cd06
         modal.find(".varianceTable > tbody").append(`
         <tr data-id="${variance.vID}">
             <td><input type="text" name="varUnit[]" value="${variance.vUnit}"
