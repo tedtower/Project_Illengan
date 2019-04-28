@@ -84,7 +84,7 @@ $route['admin/log/stocks'] = "adminview/viewLogStock";
 $route['admin/log/activity'] = "adminview/viewActivityLog";
 $route['admin/consumption'] = "adminview/viewConsumptions";
 $route['admin/transactions'] = "adminview/viewalltransactions";
-$route['admin/transactions/delivery'] = "adminview/viewdeliverytransactions";
+$route['admin/transactions/delivery'] = "adminview/viewDeliveryTransactions";
 $route['admin/transactions/purchase'] = "adminview/viewpurchasetransactions";
 $route['admin/transactions/return'] = "adminview/viewreturntransactions";
 //End Viewing Routes
@@ -94,7 +94,7 @@ $route['admin/menu/datatables'] = "adminview/datatables_menu";
 //End Note Sure Routes
 
 //Admin Add Routes ----------------------------------------------
-$route['admin/transactions/add'] = "adminadd/addtransactions";
+$route['admin/transactions/add'] = "adminadd/addtransaction";
 $route['admin/purchaseorder/add'] = "adminadd/addPurchaseOrder";
 $route['admin/inventory/add'] = "adminadd/addstockitem";
 $route['admin/menu/add'] = "adminadd/add_menu";
@@ -154,7 +154,7 @@ $route['admin/stock/spoilages/viewStockJS'] ="adminview/viewStockJS";
 $route['admin/jsonPOrders'] ="adminview/jsonPurchaseOrders";
 $route['admin/jsonSupp'] ="adminview/jsonSuppliers";
 $route['admin/jsonMerchandise'] ="adminview/jsonSuppMerchandise";
-
+$route['admin/inventory/getitem'] = "adminview/getStockDetails";
 //End Admin Json Routes ---------------------------------------
 
 //CUSTOMER ROUTES

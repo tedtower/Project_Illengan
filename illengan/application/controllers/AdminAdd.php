@@ -6,7 +6,7 @@ class AdminAdd extends CI_Controller{
         $this->load->model('adminmodel'); 
         date_default_timezone_set('Asia/Manila');  
         // code for getting current date : date("Y-m-d")
-        // code for getting current date and time : date("Y-m-d 2H:i:s")
+        // code for getting current date and time : date("Y-m-d H:i:s")
     }
     function addaccounts(){
 
@@ -170,32 +170,6 @@ class AdminAdd extends CI_Controller{
             redirect('login');
         }        
     }
-    function addTransactions(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $receiptNo = trim($this->input->post('receiptNo'));
-            $transDate = trim($this->input->post('transDate'));
-            $source = trim($this->input->post('sourceName'));
-            $remarks = trim($this->input->post('remarks'));
-            $transItems = !isset(json_decode($this->input->post('transItems'), true)[0]) ? NULL : json_decode($this->input->post('transItems'), true);
-            $dateRecorded = date("Y-m-d");
-            $total = 0;
-            for ($index=0; $index < count($transItems); $index++) { 
-                $transItems[$index]['subtotal'] = (float) $transItems[$index]['itemQty'] * (float) $transItems[$index]['itemPrice']; 
-                $total += $transItems[$index]['subtotal'];
-            }
-            if($this->adminmodel->add_transaction($receiptNo, $transDate, $source, $remarks, $total, $dateRecorded, $transItems)){
-                $this->output->set_output(json_encode(array(
-                    "transaction" => $this->adminmodel->get_transactions(),
-                    "transitem" => $this->adminmodel->get_transitems(),
-                    "sources" => $this->adminmodel->get_sources()
-                )));
-            }else{
-                redirect(admin/transactions);
-            }
-        }else{
-            redirect('login');
-        }
-    }
     function addspoilagesaddons(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
@@ -276,5 +250,46 @@ class AdminAdd extends CI_Controller{
         redirect('adminview/viewReturns');
     }
 
+    function addSupplierMerchandise(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $this->load->model('adminmodel');
+            $spName = $this->input->get("supplierName");
+            $spContactNum =$this->input->get("contactNum");
+            $spEmail =$this->input->get("email");
+            $spStatus =$this->input->get("status");
+            $spAddress =$this->input->get("supplierAddress");
+
+            $vID = $this->input->get("variance");
+            $spmDesc = $this->input->get("merchName");
+            $spmUnit = $this->input->get("merchUnit");
+            $spmPrice = $this->input->get("merchPrice");
+            $this->adminmodel->add_supplierMerchandise($spName, $spContactNum, $spEmail, $spStatus, $spAddress,$vID, $spmDesc, $spmUnit, $spmPrice);
+            redirect('admin/supplier');
+        }else{
+            redirect('login');
+        }
+        // redirect("login");
+        // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
+    }
+    function addTransaction(){
+        $transID = $this->input->post('transID');
+        $spID = $this->input->post('spID');
+        $transType = $this->input->post('transType');
+        $receiptNum = $this->input->post('receiptNum');
+        $transDate = $this->input->post('transDate');
+        $resStatus = $this->input->post('resStatus');
+        $remarks = $this->input->post('remarks');
+        $transitems = json_decode($this->input->post('transitems'),true);
+        $dateRecorded = date("Y-m-d");
+        $total = 0.00;
+        for($index = 0 ; $index < count($transitems) ; $index++){
+            $transitems[$index]['subtotal'] = (float) $transitems[$index]['itemPrice'] * (float) $transitems[$index]['itemQty'];
+            $total += $transitems[$index]['subtotal'];
+        }
+        if($this->adminmodel->add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks,$total, $transitems)){
+            
+        }else{
+        }
+    }
 }
 ?>
