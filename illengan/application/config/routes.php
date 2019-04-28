@@ -123,6 +123,7 @@ $route['admin/accounts/edit'] = "adminupdate/editAccounts";
 $route['admin/supplier/edit'] = "adminupdate/editSupplierMerchandise";
 $route['admin/tables/edit'] = "adminupdate/edittable";
 $route['admin/stockqty/edit'] = "adminupdate/editStockQty";
+$route['admin/stock/spoilage/edit'] = "adminupdate/editStockSpoil";
 //End Admin Update Routes ---------------------------------------
 
 //Admin Delete Routes -------------------------------------------

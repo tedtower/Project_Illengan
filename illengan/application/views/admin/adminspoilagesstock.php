@@ -235,7 +235,7 @@ var stockchoice = [];
 					"defaultContent": ''
 				},
 				{
-					"data": "ssID"
+					"data": "vID"
 				},
 				{
 					"data": "vName"
@@ -259,7 +259,7 @@ var stockchoice = [];
 				{
 					"data": null,
 					render: function(data, type, row, meta) {
-						return '<button class="updateBtn btn btn-default btn-sm" data-toggle="modal" data-target="#editSpoil">Edit</button>';
+						return '<button class="updateBtn btn btn-default btn-sm" data-toggle="modal" data-target="#editSpoil" data-sID="'data.sID'" data-id="'data.vID'">Edit</button>';
 					}
 				}
 			]
