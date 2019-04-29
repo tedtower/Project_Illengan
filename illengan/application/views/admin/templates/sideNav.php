@@ -61,5 +61,6 @@
         </li>
         <!--Activity Logs-->
         <li><a href="<?php echo base_url('admin/log/activity')?>"><i class="far fa-history"></i> Activity Logs</a></li>
+        <li><a href="<?php echo base_url('logout')?>"><i class="far fa-sign-out-alt"></i> Log Out</a></li>
     </ul>
 </nav>

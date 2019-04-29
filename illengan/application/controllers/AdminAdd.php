@@ -116,6 +116,7 @@ class AdminAdd extends CI_Controller{
         }
     }
     function addPurchaseOrder() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $spID = $this->input->post('spID');
             $poDate = $this->input->post('poDate');
             $edDate = $this->input->post('edDate');
@@ -126,7 +127,9 @@ class AdminAdd extends CI_Controller{
             $merchandise = json_decode($this->input->post('merchandise'), true);
             echo json_encode($merchandise, true);
             $this->adminmodel->add_PurchaseOrder($poDate, $edDate, $poTotal, $poDateRecorded, $poStatus, $poRemarks, $spID, $merchandise);
-        
+        }else{
+            redirect('login');
+        }    
     }
     function addTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){

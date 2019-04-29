@@ -137,13 +137,12 @@ class AdminModel extends CI_Model{
 
     }
     function add_poItems($poID, $merchandise) {
-        $query = "insert into poitems (poiID, vID, poID, poiQty, poiUnit, poiPrice, poiRemarks, poiStatus) values
+        $query = "insert into poitems (poiID, vID, poID, poiName, poiQty, poiUnit, poiPrice, poiStatus) values
         (NULL,?,?,?,?,?,?,?)";
         if(count($merchandise) > 0){
         for($in = 0; $in < count($merchandise) ; $in++){
-            $this->db->query($query, array($merchandise[$in]['vID'], $poID, $merchandise[$in]['poiQty'],
-            $merchandise[$in]['poiUnit'],$merchandise[$in]['poiPrice'],$merchandise[$in]['poiRemarks'], 
-            $merchandise[$in]['poiStatus']));
+            $this->db->query($query, array($merchandise[$in]['vID'], $poID, $merchandise[$in]['poiName'], $merchandise[$in]['poiQty'],
+            $merchandise[$in]['poiUnit'],$merchandise[$in]['poiPrice'], $merchandise[$in]['poiStatus']));
         }
     } else {
         return false;
@@ -167,7 +166,7 @@ class AdminModel extends CI_Model{
                 spID = ?;";
         if($this->db->query($query, array($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spID))){
             foreach($spMerch as $merch){
-                if($merch[merchID] == NULL){
+                if($merch['merchID'] == NULL){
                     $this->add_supplierMerchandise($merch);
                 }else{
                     $this->edit_supplierMerchandise($merch,$spID);
@@ -196,25 +195,52 @@ class AdminModel extends CI_Model{
         $this->db->query($query, array());
     }
 
-    function edit_purchaseOrder(){
-        $query = "UPDATE purchaseorder 
+    function edit_purchaseOrder($poDate, $edDate, $poTotal, $poDateRecorded, $poStatus, 
+    $poRemarks, $spID, $poID, $merchandise){
+        $query = "UPDATE purchaseorder po
             SET 
                 spID = ?,
                 poDate = ?,
                 edDate = ?,
                 poTotal = ?,
                 poDateRecorded = ?,
-                poRemarks = ?,
-                poStatus = ?
+                poStatus = ?,
+                poRemarks = ?
             WHERE
-                poID = ?;";
-        if($this->db->query($query, array())){
-            foreach($poItems as $item){
-                
+                po.poID = ?;";
+       if($this->db->query($query,array($spID,$poDate, $edDate, $poTotal,$poDateRecorded,$poStatus, $poRemarks, $poID))) {
+        foreach($merchandise as $merch){
+            if($merch['poiID'] == NULL){
+                $this->add_poItems($poID, $merchandise);
+            }else{
+                $this->update_poItems($poID, $merchandise);
             }
-            return true;
+        
+           }
+    }
+}
+    
+
+    function update_poItems($poID, $merchandise) {
+        $query = $query = "UPDATE poitems
+        SET 
+            vID = ?,
+            poID = ?,
+            poiName = ?,
+            poiQty = ?,
+            poiUnit = ?,
+            poiPrice = ?,
+            poiStatus = ?
+        WHERE
+            poiID = ?;";
+        if(count($merchandise) > 0){
+        for($in = 0; $in < count($merchandise) ; $in++){
+            $this->db->query($query, array($merchandise[$in]['vID'], $poID, $merchandise[$in]['poiName'], $merchandise[$in]['poiQty'],
+            $merchandise[$in]['poiUnit'],$merchandise[$in]['poiPrice'], $merchandise[$in]['poiStatus'],$merchandise[$in]['poiID']));
+
         }
-        return false;
+    } 
+   
     }
 
     function edit_poItem($spmID, $spID, $poItem){
@@ -422,21 +448,9 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_stocks(){
-        $query = "SELECT 
-            stID,
-            stName,
-            IF(SUM(vQty) IS NULL, 0, SUM(vQty)) AS 'stQty',
-            stStatus,
-            stType,
-            ctName,
-            ctID
-        FROM
-            stockitems
-                LEFT JOIN
-            variance USING (stID)
-                INNER JOIN
-            categories USING (ctID)
-        GROUP BY stID;";
+        $query = "SELECT stID, stName, var.vID, IF(SUM(vQty) IS NULL, 0, SUM(vQty)) AS 'stQty', 
+        stStatus, stType, ctName, ctID FROM stockitems 
+        LEFT JOIN variance var USING (stID) INNER JOIN categories USING (ctID) GROUP BY stID";
         return $this->db->query($query)->result_array();
     }
     function get_stockVariance(){
@@ -486,7 +500,8 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_poItemVariance() {
-        $query ="SELECT *, CONCAT(st.stName,' ',var.vUnit,' ',var.vSize) AS poItem FROM poitems po INNER JOIN variance var USING (vID) INNER JOIN stockitems st USING (stID)";
+        $query ="SELECT *, CONCAT(st.stName,' ',var.vUnit,' ',var.vSize) AS poItem, CONCAT(po.poiName,': ',st.stName) AS branditem FROM poitems po 
+        INNER JOIN variance var USING (vID) INNER JOIN stockitems st USING (stID)";
         return $this->db->query($query)->result_array();
     }
     function get_stockCategories(){
@@ -520,7 +535,8 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_suppMerchandise($spmID){
-        $query = "Select * from suppliermerchandise spm INNER JOIN supplier USING (spID) INNER JOIN variance USING (vID) INNER JOIN stockitems USING (stID) WHERE spm.spmID = ?";
+        $query = "Select *, CONCAT(spm.spmDesc,' :',st.stName) as branditem from suppliermerchandise spm INNER JOIN supplier USING (spID) INNER JOIN variance 
+        USING (vID) INNER JOIN stockitems st USING (stID) WHERE spm.spmID = ?";
         return $this->db->query($query, array($spmID))->result_array();
     }
     function get_spoilages(){
@@ -652,4 +668,5 @@ class AdminModel extends CI_Model{
     }
 
 }
+
 ?>
