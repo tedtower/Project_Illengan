@@ -224,7 +224,7 @@ var stockchoice = [];
 	}
 
 	$(document).ready(function() {
-		var etable = $('#tablevalues').DataTable({
+		var table = $('#tablevalues').DataTable({
 			ajax: {
 				url: 'http://www.illengan.com/admin/spoilagesstockjson',
 				dataSrc: ''
@@ -277,7 +277,7 @@ var stockchoice = [];
 		//For showing the accordion
 		$('#tablevalues tbody').on('click', 'td.details-control', function() {
 			var tr = $(this).closest('tr');
-			var row = etable.row(tr);
+			var row = table.row(tr);
 
 			if (row.child.isShown()) {
 				row.child.hide(); //to hide child row if open
@@ -290,7 +290,7 @@ var stockchoice = [];
 
 		//function for 'Expand all' button
 		$('#btn-show-all-children').on('click', function() {
-			etable.rows().every(function() {
+			table.rows().every(function() {
 				if (!this.child.isShown()) {
 					this.child(format(this.data())).show();
 					$(this.node()).addClass('shown');
@@ -299,7 +299,7 @@ var stockchoice = [];
 		});
 
 		$('#btn-hide-all-children').on('click', function() {
-			etable.rows().every(function() {
+			table.rows().every(function() {
 				if (this.child.isShown()) {
 					this.child.hide();
 					$(this.node()).removeClass('shown');
@@ -357,8 +357,8 @@ var stockchoice = [];
     // });
 
 	$('#tablevalues').on( 'click', '#btn_update', function () {
-		var vID = etable.row( this ).id();
-		var ssID = etable.row( this ).ssID();
+		var vID = table.row( this ).id();
+		var ssID = table.row( this ).ssID();
         var ssQty = $('#ssQty').val();
 		var ssDate = $('#ssDate').val();
 		var ssRemarks = $('#ssRemarks').val();
