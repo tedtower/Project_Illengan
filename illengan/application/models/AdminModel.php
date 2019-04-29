@@ -93,13 +93,21 @@ class AdminModel extends CI_Model{
         }
     }
 
-    function add_menucategory($ctName, $superCategory){
-        $query = "Insert into categories (ctID, ctName, supcatID, ctType) values (NULL, ?, ? ,'Menu')";
+    function add_menucategory($ctName){
+        $query = "Insert into categories (ctName, ctType) values (?,'menu')";
         return $this->db->query($query,array($ctName));
     }
-    function add_stockcategory($ctName, $superCategory){
-        $query = "Insert into categories (ctID, ctName, supcatID, ctType) values (NULL, ? , ? ,'inventory')";
-        return $this->db->query($query,array($ctName, $superCategory));
+    function add_submenucategory($ctName, $supcatID){
+        $query = "Insert into categories (ctName, supcatID, ctType) values (?,?,'menu')";
+        return $this->db->query($query,array($ctName,$supcatID));
+    }
+    function add_stockcategory($ctName){
+        $query = "Insert into categories (ctName,ctType) values (?,'inventory')";
+        return $this->db->query($query,array($ctName));
+    }
+    function add_substockcategory($ctName, $supcatID){
+        $query = "Insert into categories (ctName, supcatID, ctType) values (?,?,'inventory')";
+        return $this->db->query($query,array($ctName,$supcatID));
     }
     function add_stockItem($stockName,$stockType,$stockCategory,$stockStatus,$stockVariance){
         $query = "Insert into stockitems (stID,stName,stType,ctID,stStatus) values (NULL,?,?,?,?)";
@@ -457,15 +465,19 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_menucategories(){
-        $query = "Select ctID, ctName, ctType, COUNT(menu_id) as menu_no from categories left join menu using (ctID) where ctType = 'menu' group by ctID order by ctName asc";
+        $query = "Select ctID, ctName, ctType, COUNT(mID) as menu_no from categories left join menu using (ctID) where ctType = 'menu' group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
     }
     function get_menumaincategories(){
-        $query = "Select ctID, ctName, ctType, COUNT(menu_id) as menu_no from categories left join menu using (ctID) where ctType = 'menu' and supcatID is null group by ctID order by ctName asc";
+        $query = "Select ctID, ctName, ctType, COUNT(mID) as menu_no from categories left join menu using (ctID) where ctType = 'menu' and supcatID is null group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
     }
     function get_menusubcategories(){
-        $query = "Select ctID, ctName, ctType, COUNT(menu_id) as menu_no from categories left join menu using (ctID) where ctType = 'menu' and supcatID is not null group by ctID order by ctName asc";
+        $query = "Select ctID, ctName, ctType, COUNT(mID) as menu_no from categories left join menu using (ctID) where ctType = 'menu' and supcatID is not null group by ctID order by ctName asc";
+        return $this->db->query($query)->result_array();
+    }
+    function get_maincat(){
+        $query = "SELECT * from categories where supcatID is null AND ctType = 'menu' group by ctName order by ctName asc";
         return $this->db->query($query)->result_array();
     }
 
@@ -567,6 +579,10 @@ class AdminModel extends CI_Model{
                 AND supcatID IS NOT NULL
         GROUP BY ctID
         ORDER BY ctName ASC;";
+        return $this->db->query($query)->result_array();
+    }
+    function get_maincatStock(){
+        $query = "SELECT * from categories where supcatID is null AND ctType = 'inventory' group by ctName order by ctName asc";
         return $this->db->query($query)->result_array();
     }
     function get_supplier(){

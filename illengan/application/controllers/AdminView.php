@@ -141,7 +141,11 @@ class AdminView extends CI_Controller{
     }
     function viewMenuCategories(){
         if($this->checkIfLoggedIn()){
+            $data['title'] = "Menu - Categories";
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
             $data['category'] = $this->adminmodel->get_menucategories();
+            $data['maincategory'] = $this->adminmodel->get_maincat();
             $this->load->view('admin/menucategories',$data);
         }else{
             redirect('login');
@@ -259,9 +263,11 @@ function viewSpoilagesStock(){
     //---------------------------------------------------
     function viewStockCategories(){
         if($this->checkIfLoggedIn()){
-            $data['category'] = $this->adminmodel->get_stockcategories();
-            $this->load->view('admin/templates/head');
+            $data['title'] = "Inventory - Categories";
+            $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
+            $data['category'] = $this->adminmodel->get_stockcategories();
+            $data['maincategory'] = $this->adminmodel->get_maincatStock();
             $this->load->view('admin/inventorycategories',$data);
         }else{
             redirect('login');

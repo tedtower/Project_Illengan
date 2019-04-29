@@ -39,10 +39,38 @@ class AdminAdd extends CI_Controller{
     }
     function addMenuCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $superCategory = trim($this->input->post('super_category'));
-            $category_name = trim($this->input->post('category_name'));
-            $this->adminmodel->add_menucategory($category_name, $superCategory);
+            $ctName = trim($this->input->post('ctName'));
+            $this->adminmodel->add_menucategory($ctName);
             redirect('admin/menucategories');
+        }else{
+            redirect('login');
+        }
+    }
+    function addSubMenuCategory(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $ctName = trim($this->input->post('ctName'));
+            $supcatID = trim($this->input->post('subcatID'));
+            $this->adminmodel->add_submenucategory($ctName, $supcatID);
+            redirect('admin/menucategories');
+        }else{
+            redirect('login');
+        }
+    }
+    function addStockCategory(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $ctName = $this->input->post('ctName');
+            $this->adminmodel->add_stockcategory($ctName);
+            redirect('admin/stockcategories');
+        }else{
+            redirect('login');
+        }
+    }
+    function addSubStockCategory(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $ctName = trim($this->input->post('ctName'));
+            $supcatID = trim($this->input->post('subcatID'));
+            $this->adminmodel->add_SubStockCategory($ctName, $supcatID);
+            redirect('admin/stockcategories');
         }else{
             redirect('login');
         }
@@ -131,15 +159,7 @@ class AdminAdd extends CI_Controller{
             redirect("login");
         }
     }
-    function addStockCategory(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $category_name = $this->input->get('category_name');
-            $data['category'] = $this->adminmodel->add_stockcategory($category_name);
-            $this->viewStockCategories();
-        }else{
-            redirect('login');
-        }
-    }
+
     function addPurchaseOrder() {
             $spID = $this->input->post('spID');
             $poDate = $this->input->post('poDate');
@@ -250,27 +270,7 @@ class AdminAdd extends CI_Controller{
         redirect('adminview/viewReturns');
     }
 
-    function addSupplierMerchandise(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $this->load->model('adminmodel');
-            $spName = $this->input->get("supplierName");
-            $spContactNum =$this->input->get("contactNum");
-            $spEmail =$this->input->get("email");
-            $spStatus =$this->input->get("status");
-            $spAddress =$this->input->get("supplierAddress");
 
-            $vID = $this->input->get("variance");
-            $spmDesc = $this->input->get("merchName");
-            $spmUnit = $this->input->get("merchUnit");
-            $spmPrice = $this->input->get("merchPrice");
-            $this->adminmodel->add_supplierMerchandise($spName, $spContactNum, $spEmail, $spStatus, $spAddress,$vID, $spmDesc, $spmUnit, $spmPrice);
-            redirect('admin/supplier');
-        }else{
-            redirect('login');
-        }
-        // redirect("login");
-        // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
-    }
     function addTransaction(){
         $transID = $this->input->post('transID');
         $spID = $this->input->post('spID');
