@@ -1,7 +1,7 @@
 <html>
 <head>
     <title> Il-Lengan </title>
-    <link rel="icon" type="image/png" href="./assets/media/logo.png">
+    <link rel="icon" type="image/png" href="./assets/media/favicon.ico">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/login/style.css')?>">   
 </head>
     <body>

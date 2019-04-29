@@ -241,7 +241,7 @@
                             <div class="modal fade bd-example-modal" id="brochure" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true"
                                 style="background:rgba(0, 0, 0, 0.3)">
-                                <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Select Stock Item</h5>
@@ -258,35 +258,18 @@
                                                             style="width:120px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                             Purchase Order</span>
                                                     </div>
-                                                    <select class="form-control form-control-sm" name="po">
-                                                        <option value="" selected>Choose</option>
+                                                    <select class="form-control form-control-sm" name="PO" id="PO">
+                                                        <option selected>Choose</option>
                                                     </select>
                                                 </div>
-                                                <br>
-                                                <table class="table">
-                                                    <thead class="thead-light">
-                                                        <tr>
-                                                            <th style="width:2%"></th>
-                                                            <th>Item</th>
-                                                            <th>Unit</th>
-                                                            <th>Qty</th>
-                                                            <th>Price</th>
-                                                            <th>Subtotal</th>
-                                                            <th>Status</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td><input type="checkbox" class="mr-2" value=""></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+
+                                                <div style="margin:1% 3%">
+                                                    <!--checkboxes-->
+                                                    <label style="width:96%"><input type="checkbox" class="mr-2"
+                                                            value="">Sample data 1</label>
+                                                    <label style="width:96%"><input type="checkbox" class="mr-2"
+                                                            value="">Sample data 2</label>
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-danger btn-sm"
@@ -375,12 +358,9 @@ $(function() {
         $.ajax({
             method : 'post',
             url : '<?= site_url('admin/getPurchaseOrders')?>',
-            data : {
-                id : $("#addEditModal").find("select[name='spID']").val()
-            },
             dataType : 'json',
             success : function(data){
-                console.log(data);
+                suppliers = data;
             },
             error : function (response, settings, error){
                 console.log(response.responseText);
@@ -443,6 +423,7 @@ $(function() {
     });
 });
 function setSuppliers(){
+    console.log(suppliers);
     $("#addEditModal").find('select[name="spID"]').children().first().siblings().remove();
     $("#addEditModal").find('select[name="spID"]').append(`
         ${suppliers.map(supplier => {
@@ -451,16 +432,6 @@ function setSuppliers(){
     `);
 }
 function setPurchaseOrders(po){
-    $("#brochure").find("select[name='po'] option").first().siblings().remove();
-    $("#brochure").find("select[name='po']").append(`
-    ${po.po.map(po => {
-        return `<option value="${po.poID}">${po.poID} - ${po.poDate}</option>`
-    }).join('')}
-    `);
+    console.log(po);
 }
-$("#brochure").find("select[name='po']").on('change',function(){
-    var id = $(this).val();
-    $("#poContent").children().remove();
-    $("#poContent").append(`${po.poItems.filter(item => item.poID === id ).map(item => { return `<>`})}`);
-});
 </script>

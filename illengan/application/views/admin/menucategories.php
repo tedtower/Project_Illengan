@@ -79,7 +79,7 @@
                                                 </button>
                                             </div>
                                             
-                                            <form id="formAdd" action="<?= site_url('admin/submenucategories/add') ?>" method="post" accept-charset="utf-8">
+                                            <form id="formAdd" action="<?= site_url('admin/subcategories/add') ?>" method="post" accept-charset="utf-8">
                                                 <div class="modal-body">
                                                         <div class="input-group mb-3">
                                                             <div class="input-group-prepend">
