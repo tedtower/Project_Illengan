@@ -237,7 +237,7 @@ class AdminAdd extends CI_Controller{
             redirect('login');
         }
     }
-    function add_menu(){
+    function addMenu(){
         $config = array(
             'upload_path' => "./uploads/",
             'allowed_types' => "gif|jpg|png|jpeg|pdf",
