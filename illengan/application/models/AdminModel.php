@@ -555,7 +555,7 @@ class AdminModel extends CI_Model{
         $query ="Select * FROM purchaseorder INNER JOIN supplier USING (spID)";
         return $this->db->query($query)->result_array();
     }
-    function get_purchaseOrders(){
+    function get_purchaseOrders($id){
         $query = "SELECT 
             poID,
             poDate,
@@ -569,8 +569,24 @@ class AdminModel extends CI_Model{
         FROM
             purchaseorder
                 INNER JOIN
-            supplier USING (spID);";
-        return $this->db->query($query)->result_array();
+            supplier USING (spID)
+        WHERE
+            spID = ? AND NOT poStatus = 'delivered';";
+        return $this->db->query($query, array($id))->result_array();
+    }
+    function get_poItems($id){
+        $query = "SELECT 
+            *
+        FROM
+            poItems
+        WHERE
+            poID IN (SELECT 
+                    poID
+                FROM
+                    purchaseorder
+                WHERE
+                    spID = ? AND NOT poStatus = 'delivered');";
+        return $this->db->query($query, array($id))->result_array();
     }
     function get_poItemVariance() {
         $query ="SELECT *, CONCAT(st.stName,' ',var.vUnit,' ',var.vSize) AS poItem FROM poitems po INNER JOIN variance var USING (vID) INNER JOIN stockitems st USING (stID)";

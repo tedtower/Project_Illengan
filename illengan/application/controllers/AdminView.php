@@ -494,9 +494,10 @@ function viewSpoilagesStock(){
 
     function getPurchaseOrders(){
         if($this->checkIfLoggedIn()){
+            $id = $this->input->post('id');
             $data = array(
-                "po" => $this->adminmodel->get_purchaseOrders(),
-                "poItems" => $this->adminmodel->getPOItems()
+                "po" => $this->adminmodel->get_purchaseOrders($id),
+                "poItems" => $this->adminmodel->get_poItems($id)
             );
             echo json_encode($data);
         }else{
