@@ -64,7 +64,7 @@ function addStockItems() {
         dataType: 'json',
         success: function (data) {
             alert('Spoiled Stock Added');
-            console.log(data);
+            newFunction(data);
             $('#addStockSpoilage').modal('hide');
             var table = $('#tablevalues').DataTable();
             table.ajax.reload();
@@ -74,4 +74,8 @@ function addStockItems() {
             console.log(error);
         }
     });
+}
+
+function newFunction(data) {
+    console.log(data);
 }
