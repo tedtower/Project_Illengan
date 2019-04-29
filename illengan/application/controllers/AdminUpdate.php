@@ -173,7 +173,41 @@ class adminUpdate extends CI_Controller{
         $data['image'] = $this->adminmodel->edit_image();
         $this->load->view('admin_module/edit_menuimage', $data);
         
-    }    
+    }
+    function editPurchaseOrder(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){   
+                $spID = $this->input->post('spID');
+                $poID = $this->input->post('poID');
+                $poDate = $this->input->post('poDate');
+                $edDate = $this->input->post('edDate');
+                $poTotal = $this->input->post('poTotal');
+                $poDateRecorded = date('Y-m-d');
+                $poStatus = 'pending';
+                $poRemarks = $this->input->post('poRemarks');
+                $merchandise = json_decode($this->input->post('merchandise'), true);
+                echo json_encode($merchandise, true);
+                $this->adminmodel->edit_purchaseOrder($poDate, $edDate, $poTotal, $poDateRecorded, $poStatus, 
+                $poRemarks, $spID, $poID, $merchandise);
+            
+
+        }else{
+            redirect('login');
+        }
+    }
+    function editSource(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $source_id = $this->input->get('source_id');
+            $source_name = $this->input->get('new_name');
+            $contact_num = $this->input->get('new_contact');
+            $email = $this->input->get('new_email');
+            $status = $this->input->get('new_status');
+            $this->adminmodel->edit_source($source_id, $source_name, $contact_num, $email, $status);
+            redirect('admin/sources');
+        }else{
+            redirect('login');
+        }
+    }
+       
     function editTransactions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $transID = trim($this->input->post('transID'));
