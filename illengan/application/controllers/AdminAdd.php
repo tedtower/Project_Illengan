@@ -273,7 +273,6 @@ class AdminAdd extends CI_Controller{
         redirect('adminview/viewReturns');
     }
 
-
     function addTransaction(){
         $transID = $this->input->post('transID');
         $spID = $this->input->post('spID');

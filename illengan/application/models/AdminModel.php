@@ -332,11 +332,11 @@ class AdminModel extends CI_Model{
             return false;
         }
     }
-    function edit_stockspoilage($s_id,$stID,$s_type,$s_date,$date_recorded,$remarks){
-        $query = "update spoilage set s_type = ?, s_date = ?, date_recorded = ?, remarks=? where s_id=?";
-        if($this->db->query($query,array($stype,$s_date,$date_recorded,$remarks,$s_id))){
-            $query = "Update stockspoil set stID = ? where s_id = ?";
-            return $this->db->query($query,array($stID,$s_id));
+    function edit_stockspoilage($ssID,$vID,$ssQty,$ssDate,$ssRemarks,$date_recorded){
+        $query = "update spoilage set ssDateRecorded = ? where ssID=?";
+        if($this->db->query($query,array($date_recorded,$ssID))){
+            $query = "Update varspoilitems set ssQty = ?,ssDate = ?,ssRemarks = ? where ssID = ? AND vID = ?";
+            return $this->db->query($query,array($ssQty,$ssDate,$ssRemarks,$ssID,$vID));
         }else{
             return false;
         }
