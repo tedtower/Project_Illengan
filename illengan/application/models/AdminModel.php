@@ -600,6 +600,14 @@ class AdminModel extends CI_Model{
                     spID = ? AND NOT poStatus = 'delivered');";
         return $this->db->query($query, array($id))->result_array();
     }
+    function add_varQty($qty, $id){
+        $query = "UPDATE variance 
+            SET 
+                vQty = vQty + ?
+            WHERE
+                vID = ?;";
+        $this->db->query($query, array($qty, $id));
+    }
     function get_poItemVariance() {
         $query ="SELECT *, CONCAT(st.stName,', ',var.vUnit,' (',var.vSize,')') AS poItem FROM poitems po INNER JOIN variance var USING (vID) INNER JOIN stockitems st USING (stID) ORDER BY poItem ASC";
         return $this->db->query($query)->result_array();
