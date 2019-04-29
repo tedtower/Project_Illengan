@@ -486,6 +486,18 @@ function viewSpoilagesStock(){
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
 
+    function getPurchaseOrders(){
+        if($this->checkIfLoggedIn()){
+            $data = array(
+                "po" => $this->adminmodel->get_purchaseOrders(),
+                "poItems" => $this->adminmodel->getPOItems()
+            );
+            echo json_encode($data);
+        }else{
+            redirect('login');
+        }
+    }
+
     function jsonSuppMerchandise() {
         $spmID = $this->input->post('spmID');
         $data = $this->adminmodel->get_suppMerchandise($spmID);

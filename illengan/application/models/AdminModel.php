@@ -543,6 +543,23 @@ class AdminModel extends CI_Model{
         $query ="Select * FROM purchaseorder INNER JOIN supplier USING (spID)";
         return $this->db->query($query)->result_array();
     }
+    function get_purchaseOrders(){
+        $query = "SELECT 
+            poID,
+            poDate,
+            edDate,
+            poTotal,
+            poDateRecorded,
+            poRemarks,
+            poStatus,
+            spName,
+            spID
+        FROM
+            purchaseorder
+                INNER JOIN
+            supplier USING (spID);";
+        return $this->db->query($query)->result_array();
+    }
     function get_poItemVariance() {
         $query ="SELECT *, CONCAT(st.stName,' ',var.vUnit,' ',var.vSize) AS poItem FROM poitems po INNER JOIN variance var USING (vID) INNER JOIN stockitems st USING (stID)";
         return $this->db->query($query)->result_array();
