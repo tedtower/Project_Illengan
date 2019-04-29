@@ -192,18 +192,16 @@ class AdminModel extends CI_Model{
         $query = "insert into suppliermerchandise (vID, spID, spmDesc, spmUnit, spmPrice) values (?,?,?,?,?);";
         $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
     }
-    function add_consumption($id,$cd,$rDate,$cnd){
+    function add_consumption($ci,$id,$cd,$rDate){
         $query = "insert into consumption (cnID, cnDate, cnDateRecorded) values (?,?,?)";
         $this->db->query($query,array($id[0]['nextID'],$cd,$rDate));
-        foreach ($cnd as $ci) {
-            $this->add_consumptionItems($id[0]['nextID'],$ci['varConsumed'],$ci['consumedQty'],$ci['remainingQty']);
-            $this->destockVariance($ci['varConsumed'],$ci['remainingQty']);
+        $cnID = $this->db->insert_id();
+        foreach ($ci as $c) {
+            $query = "insert into varconsumptionitems (cnID, vID, cnQty, remainingQty) values (?,?,?,?)";
+            $this->db->query($query,array($cnID,(int)$c['varConsumed'],(int)$c['consumedQty'],(int)$c['remainingQty']));
         }
     }
-    function add_consumptionItems($cnID,$vID,$cnQty,$rQty){
-            $query = "insert into varconsumptionitems (cnID, vID, cnQty, remainingQty) values (?,?,?,?)";
-            $this->db->query($query,array($cnID,$vID,$cnQty,$rQty));
-    }
+
     function edit_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch, $spID){
         $query = "UPDATE supplier 
             SET 
@@ -397,14 +395,6 @@ class AdminModel extends CI_Model{
         }
         return true;
         // return $bool;
-    }
-    function destockVariance($vID,$vQty){
-        $query = "UPDATE variance 
-            SET 
-                vQty = ?
-            WHERE
-                vID = ?;";
-        return $this->db->query($query,array($vQty,$vID));
     }
 
 

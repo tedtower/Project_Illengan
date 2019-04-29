@@ -296,8 +296,9 @@ class AdminAdd extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $nID = $this->adminmodel->get_nextIDConsumption();
             $cnDate = $this->input->post('consumedDate');
-            $cnDestock = json_decode($this->input->post('consumptions'),true);
-            echo json_encode($this->adminmodel->add_consumption($nID,$cnDate,date("Y-m-d H:i:s"),$cnDestock));
+            $cnDestock = $this->input->post('consumptions');
+            $date = date("Y-m-d H:i:s");
+            echo json_encode($this->adminmodel->add_consumption($cnDestock,$nID,$cnDate,$date));
         }else{
             redirect('login');
         }

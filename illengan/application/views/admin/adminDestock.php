@@ -23,7 +23,7 @@
                         </thead>
                         <tbody>
                         <?php $x=0; if(count($consumptions) < 1){
-                            echo "<tr><td colspan='5'>No result. Try to consume item/s from the inventory.</td></tr>";
+                            echo "<tr><td colspan='4'>No result. Try to consume item/s from the inventory.</td></tr>";
                         }else{
                             foreach($consumptions as $c){
                         ?> 
@@ -110,7 +110,7 @@
                                                     <?php } ?>
                                                 </select>
                                             </td>
-                                            <td><input type="number" name="cnQty[]" class="inputCnQty form-control form-control-sm text-center" min="1" required></td>
+                                            <td><input type="number" name="cnQty[]" class="inputCnQty form-control form-control-sm" min="1" required></td>
                                             <td></td>
                                         </tr>
                                     </tbody>
@@ -167,7 +167,7 @@
         var formString = `<tr>
             <input type="hidden" name="">
             <td><select name="cnVar[]" id="temp" class="selectVar form-control form-control-sm" required><option value="" selected disabled>Choose Item</option></select></td>
-            <td><input type="number" name="cnQty[]" class="inputCnQty form-control form-control-sm text-center" min="1" required></td>
+            <td><input type="number" name="cnQty[]" class="inputCnQty form-control form-control-sm" min="1" required></td>
             <td class="text-center" id="temp1"><a href="javascript:void(0)" class="exitBtn"><img src="/assets/media/admin/error.png" style="width:20px;height:20px"></a></td>
         </tr>`;
         $('#destockBodyTable').append(formString);
@@ -203,7 +203,6 @@
             },
             dataType: "json",
             error: function(response, setting, error) {
-                console.log(response.responseText);
                 console.log(error);
             },
             complete: function() {
