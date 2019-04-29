@@ -186,7 +186,7 @@
                                                     <!--Footer-->
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn-success btn-sm" id="btn_update" type="submit" >Update</button>
+                                                        <button class="btn btn-success btn-sm" onclick="updateSpoil()" type="button" >Update</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -356,7 +356,7 @@ var stockchoice = [];
 	// 	updateSpoil(ssID,vID);		
     // });
 
-	$('#tablevalues').on( 'click', '#btn_update', function () {
+	$('.btn_update').on( 'click', function () {
 		var vID = table.row( this ).id();
 		var ssID = table.row( this ).ssID();
         var ssQty = $('#ssQty').val();
@@ -383,11 +383,9 @@ var stockchoice = [];
                 alert("Table Code was successfully updated!");
                 console.log(data);
                 $('#editSpoil').modal('hide');
-                location.reload();
-				console.log(vID);
             }
         });
-		console.log(vID);
+		
         return false;
     });
 
