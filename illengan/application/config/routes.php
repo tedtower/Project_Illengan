@@ -100,6 +100,8 @@ $route['admin/inventory/add'] = "adminadd/addstockitem";
 $route['admin/menu/add'] = "adminadd/add_menu";
 $route['admin/stockcategories/add'] = "adminadd/addstockcategory";
 $route['admin/menucategories/add'] = "adminadd/addmenucategory";
+$route['admin/submenucategories/add'] = "adminadd/addsubmenucategory";
+$route['admin/substockcategories/add'] = "adminadd/addsubstockcategory";
 $route['admin/accounts/add'] = "adminadd/addaccounts";
 $route['admin/tables/add'] = "adminadd/addtable";
 $route['admin/addons/spoilages/add'] = "adminadd/addspoilagesaddons";
@@ -108,6 +110,7 @@ $route['admin/menu/spoilages/add'] = "adminadd/addspoilagesmenu";
 $route['admin/supplier/add'] = "adminadd/addSupplierMerchandise";
 $route['admin/returns/add'] = "adminadd/addreturns";
 $route['admin/promos/add'] = "adminadd/addPromo";
+$route['admin/consumption/add'] = "adminadd/addConsumption";
 
 //End Admin Add Routes ------------------------------------------
 
@@ -155,6 +158,7 @@ $route['admin/jsonPOrders'] ="adminview/jsonPurchaseOrders";
 $route['admin/jsonSupp'] ="adminview/jsonSuppliers";
 $route['admin/jsonMerchandise'] ="adminview/jsonSuppMerchandise";
 $route['admin/inventory/getitem'] = "adminview/getStockDetails";
+$route['admin/getPurchaseOrders'] = "adminview/getPurchaseOrders";
 //End Admin Json Routes ---------------------------------------
 
 //CUSTOMER ROUTES

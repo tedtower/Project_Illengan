@@ -189,7 +189,7 @@
                                                 <!--Transaction Items-->
                                                 <a class="btn btn-default btn-sm" data-toggle="modal"
                                                     data-target="#brochure" data-original-title style="margin:0"
-                                                    id="addTransaction">Add PO Items</a>
+                                                    id="addPOItems">Add PO Items</a>
                                                 <!--Button to add launce the brochure modal-->
                                                 <br><br>
                                                 <table class="subTable1 table table-sm table-borderless">
@@ -354,6 +354,22 @@ $(function() {
             }
         });
     });
+    $("#addPOItems").on('click',function(){
+        $.ajax({
+            method : 'post',
+            url : '<?= site_url('admin/getPurchaseOrders')?>',
+            dataType : 'json',
+            success : function(data){
+                suppliers = data;
+            },
+            error : function (response, settings, error){
+                console.log(response.responseText);
+            },
+            complete: function(){                
+                setSuppliers();
+            }
+        });
+    });
     $("#form").on('submit',function(event){
         event.preventDefault();
         var transID = isNaN(parseInt($(this).find("input[name='transID']").val())) ? (null) : parseInt($(this).find("input[name='transID']").val());
@@ -403,7 +419,7 @@ $(function() {
             complete : function(){
                 $(this).closest(".modal").modal("hide");
             }
-        });        
+        });
     });
 });
 function setSuppliers(){
@@ -414,5 +430,8 @@ function setSuppliers(){
             return `<option value="${supplier.spID}">${supplier.spName}</option>`
         }).join('')}
     `);
+}
+function setPurchaseOrders(po){
+    console.log(po);
 }
 </script>

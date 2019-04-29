@@ -1,6 +1,6 @@
 let UPDATE = 5000;
 var table = $('#mydata');
-
+change_status();
 
 function orders() {
 $(document).ready(function() {
@@ -20,8 +20,8 @@ $(document).ready(function() {
             '<td>Remarks</td>'+
         '</tr>'+
         '<tr>'+
-            '<td>'+d.ao_name+'</td>'+
-            '<td>'+d.remarks+'</td>'+
+            '<td>'+d.aoName+'</td>'+
+            '<td>'+d.olRemarks+'</td>'+
         '</tr>'+
     '</table>';
 }
@@ -45,16 +45,16 @@ $(document).ready(function() {
                 "data":           null,
                 "defaultContent": '' 
                 },
-                {"data" : "menu_name"},
-                {"data" : "cust_name"},
-                {"data" : "table_code"},
-                {"data" : "order_qty"},
+                {"data" : "mName"},
+                {"data" : "custName"},
+                {"data" : "tableCode"},
+                {"data" : "olQty"},
                 {
                     data: null,
                     render: function ( data, type, row, meta) {
-                        return '<button id="status" class="status btn dt-buttons '+ data.item_status +
-                        '" data-order_item_id="'+ data.order_item_id +'"'+
-                        ' data-item_status="'+ data.item_status +'" onclick="change_status()">'+ data.item_status +'</button>';
+                        return '<button id="status" class="status btn dt-buttons '+ data.olStatus +
+                        '" data-order_item_id="'+ data.olID +'"'+
+                        ' data-item_status="'+ data.olStatus +'" onclick="change_status()">'+ data.olStatus +'</button>';
                         }
                     }
             ]
@@ -92,12 +92,13 @@ function change_status() {
         var itemStatus = $(this).data("item_status");
         var item_status;
 
+        console.log(itemStatus);
         if(itemStatus === "pending") {
             item_status = "done";
         } else if(itemStatus === "done") {
             item_status = "pending";
         }
-    
+        console.log(item_status);
         // AJAX CODE FOR POSTING NEW STATUS
         $.ajax({
         type: 'POST',
@@ -107,7 +108,8 @@ function change_status() {
             item_status: item_status
         },
         success: function() {
-            table.DataTable().ajax.reload(null, false);
+            table.DataTable().ajax.reload();
+            console.log('success');
             
         }
             }); 
@@ -115,10 +117,8 @@ function change_status() {
         });
 }
 
-// setInterval(function()
-//     { 
-//         orders();
-//         console.log('m'); 
-//         }, 5000);
+setInterval(function()
+    { 
+        orders();
+        }, 5000);
 
-// 

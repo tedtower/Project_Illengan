@@ -93,13 +93,21 @@ class AdminModel extends CI_Model{
         }
     }
 
-    function add_menucategory($ctName, $superCategory){
-        $query = "Insert into categories (ctID, ctName, supcatID, ctType) values (NULL, ?, ? ,'Menu')";
+    function add_menucategory($ctName){
+        $query = "Insert into categories (ctName, ctType) values (?,'menu')";
         return $this->db->query($query,array($ctName));
     }
-    function add_stockcategory($ctName, $superCategory){
-        $query = "Insert into categories (ctID, ctName, supcatID, ctType) values (NULL, ? , ? ,'inventory')";
-        return $this->db->query($query,array($ctName, $superCategory));
+    function add_submenucategory($ctName, $supcatID){
+        $query = "Insert into categories (ctName, supcatID, ctType) values (?,?,'menu')";
+        return $this->db->query($query,array($ctName,$supcatID));
+    }
+    function add_stockcategory($ctName){
+        $query = "Insert into categories (ctName,ctType) values (?,'inventory')";
+        return $this->db->query($query,array($ctName));
+    }
+    function add_substockcategory($ctName, $supcatID){
+        $query = "Insert into categories (ctName, supcatID, ctType) values (?,?,'inventory')";
+        return $this->db->query($query,array($ctName,$supcatID));
     }
     function add_stockItem($stockName,$stockType,$stockCategory,$stockStatus,$stockVariance){
         $query = "Insert into stockitems (stID,stName,stType,ctID,stStatus) values (NULL,?,?,?,?)";
@@ -183,6 +191,28 @@ class AdminModel extends CI_Model{
     function add_supplierMerchandise($merch, $id) {
         $query = "insert into suppliermerchandise (vID, spID, spmDesc, spmUnit, spmPrice) values (?,?,?,?,?);";
         $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
+    }
+
+    function add_consumption($id,$cd,$rDate,$cnd){
+        $query = "insert into consumption (cnID, cnDate, cnDateRecorded) values (?,?,?)";
+        $this->db->query($query,array($id[0]['nextID'],$cd,$rDate));
+        $cnID = $this->db->insert_id();
+        foreach ($cnd as $ci) {
+            $this->add_consumptionItems($id[0]['nextID'],$ci['varConsumed'],$ci['consumedQty'],$ci['remainingQty']);
+            $this->destockVariance($ci['varConsumed'],$ci['remainingQty']);
+        }
+    }
+    function add_consumptionItems($cnID,$vID,$cnQty,$rQty){
+        $query = "insert into varconsumptionitems (cnID, vID, cnQty, remainingQty) values (?,?,?,?)";
+        $this->db->query($query,array($cnID,$vID,$cnQty,$rQty));
+    }
+    function destockVariance($vID,$vQty){
+        $query = "UPDATE variance 
+            SET 
+                vQty = ?
+            WHERE
+                vID = ?;";
+        return $this->db->query($query,array($vQty,$vID));
     }
 
     function edit_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch, $spID){
@@ -382,7 +412,10 @@ class AdminModel extends CI_Model{
 
 
     //SELECT FUNCTIONS------------------------------------------------------------------
-    
+    function get_nextIDConsumption(){
+        $query = "SELECT COUNT(cnID)+1 nextID FROM consumption;";
+        return $this->db->query($query)->result_array();
+    }
     function get_accounts(){
         $query = "Select * from accounts";
         return $this->db->query($query)->result_array();
@@ -457,15 +490,19 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_menucategories(){
-        $query = "Select ctID, ctName, ctType, COUNT(menu_id) as menu_no from categories left join menu using (ctID) where ctType = 'menu' group by ctID order by ctName asc";
+        $query = "Select ctID, ctName, ctType, COUNT(mID) as menu_no from categories left join menu using (ctID) where ctType = 'menu' group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
     }
     function get_menumaincategories(){
-        $query = "Select ctID, ctName, ctType, COUNT(menu_id) as menu_no from categories left join menu using (ctID) where ctType = 'menu' and supcatID is null group by ctID order by ctName asc";
+        $query = "Select ctID, ctName, ctType, COUNT(mID) as menu_no from categories left join menu using (ctID) where ctType = 'menu' and supcatID is null group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
     }
     function get_menusubcategories(){
-        $query = "Select ctID, ctName, ctType, COUNT(menu_id) as menu_no from categories left join menu using (ctID) where ctType = 'menu' and supcatID is not null group by ctID order by ctName asc";
+        $query = "Select ctID, ctName, ctType, COUNT(mID) as menu_no from categories left join menu using (ctID) where ctType = 'menu' and supcatID is not null group by ctID order by ctName asc";
+        return $this->db->query($query)->result_array();
+    }
+    function get_maincat(){
+        $query = "SELECT * from categories where supcatID is null AND ctType = 'menu' group by ctName order by ctName asc";
         return $this->db->query($query)->result_array();
     }
 
@@ -543,8 +580,25 @@ class AdminModel extends CI_Model{
         $query ="Select * FROM purchaseorder INNER JOIN supplier USING (spID)";
         return $this->db->query($query)->result_array();
     }
+    function get_purchaseOrders(){
+        $query = "SELECT 
+            poID,
+            poDate,
+            edDate,
+            poTotal,
+            poDateRecorded,
+            poRemarks,
+            poStatus,
+            spName,
+            spID
+        FROM
+            purchaseorder
+                INNER JOIN
+            supplier USING (spID);";
+        return $this->db->query($query)->result_array();
+    }
     function get_poItemVariance() {
-        $query ="SELECT *, CONCAT(st.stName,' ',var.vUnit,' ',var.vSize) AS poItem FROM poitems po INNER JOIN variance var USING (vID) INNER JOIN stockitems st USING (stID)";
+        $query ="SELECT *, CONCAT(st.stName,', ',var.vUnit,' (',var.vSize,')') AS poItem FROM poitems po INNER JOIN variance var USING (vID) INNER JOIN stockitems st USING (stID) ORDER BY poItem ASC";
         return $this->db->query($query)->result_array();
     }
     function get_stockCategories(){
@@ -567,6 +621,10 @@ class AdminModel extends CI_Model{
                 AND supcatID IS NOT NULL
         GROUP BY ctID
         ORDER BY ctName ASC;";
+        return $this->db->query($query)->result_array();
+    }
+    function get_maincatStock(){
+        $query = "SELECT * from categories where supcatID is null AND ctType = 'inventory' group by ctName order by ctName asc";
         return $this->db->query($query)->result_array();
     }
     function get_supplier(){
@@ -616,9 +674,14 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_consumption(){
-       $query = "SELECT * FROM consumption";
+       $query = "SELECT cnID, cnDate, cnDateRecorded, COUNT(stID) countItem FROM varconsumptionitems NATURAL JOIN consumption NATURAL JOIN variance NATURAL JOIN stockitems GROUP BY cnDate ORDER BY cnDate DESC";
        return $this->db->query($query)->result_array();
     }
+    function get_consumptionItems(){
+        $query = "SELECT stID, cnID, cnQty, remainingQty, stName, vUnit, vSize  FROM varconsumptionitems NATURAL JOIN consumption NATURAL JOIN variance NATURAL JOIN stockitems";
+        return $this->db->query($query)->result_array();
+    }
+    
     function get_deliveryTransactions(){
         $query = "SELECT 
             iID,

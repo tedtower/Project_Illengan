@@ -141,7 +141,11 @@ class AdminView extends CI_Controller{
     }
     function viewMenuCategories(){
         if($this->checkIfLoggedIn()){
+            $data['title'] = "Menu - Categories";
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
             $data['category'] = $this->adminmodel->get_menucategories();
+            $data['maincategory'] = $this->adminmodel->get_maincat();
             $this->load->view('admin/menucategories',$data);
         }else{
             redirect('login');
@@ -259,9 +263,11 @@ function viewSpoilagesStock(){
     //---------------------------------------------------
     function viewStockCategories(){
         if($this->checkIfLoggedIn()){
-            $data['category'] = $this->adminmodel->get_stockcategories();
-            $this->load->view('admin/templates/head');
+            $data['title'] = "Inventory - Categories";
+            $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
+            $data['category'] = $this->adminmodel->get_stockcategories();
+            $data['maincategory'] = $this->adminmodel->get_maincatStock();
             $this->load->view('admin/inventorycategories',$data);
         }else{
             redirect('login');
@@ -427,14 +433,12 @@ function viewSpoilagesStock(){
     function viewConsumptions(){
         if($this->checkIfLoggedIn()){
             $data['title'] = "Stock Consumption";
-            $data['consumptions'] = array(
-                "destockLog" 	=> $this->adminmodel->get_consumption(),
-                "stockItems" 	=> $this->adminmodel->get_stocks(),
-                "stockVariance" => $this->adminmodel->get_stockVariance()
-            );
+            $data['consumptions'] = $this->adminmodel->get_consumption();
+            $data['conitems'] = $this->adminmodel->get_consumptionItems();
+            $data['variance'] = $this->adminmodel->get_poItemVariance();
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/consumption');
+            $this->load->view('admin/adminDestock');
         }else{
             redirect('login');
         }
@@ -484,6 +488,18 @@ function viewSpoilagesStock(){
     function jsonSuppliers() {
         $data =  $this->adminmodel->get_supplier();
         echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+
+    function getPurchaseOrders(){
+        if($this->checkIfLoggedIn()){
+            $data = array(
+                "po" => $this->adminmodel->get_purchaseOrders(),
+                "poItems" => $this->adminmodel->getPOItems()
+            );
+            echo json_encode($data);
+        }else{
+            redirect('login');
+        }
     }
 
     function jsonSuppMerchandise() {

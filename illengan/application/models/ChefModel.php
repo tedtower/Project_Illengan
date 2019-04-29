@@ -4,24 +4,20 @@
         
         function return_orderlist() {
             $this->load->database();
-            $query = $this->db->query('SELECT * FROM ((((orderlist ol INNER JOIN orderslip os USING (order_id)) 
-            INNER JOIN preferences USING (pref_id)) 
-            INNER JOIN menu mn USING (menu_id)) 
-            LEFT JOIN orderadd oa USING (order_item_id)) 
-            LEFT JOIN addons aon USING (ao_id);');
+            $query = $this->db->query('SELECT * FROM ((((orderlists ol INNER JOIN orderslips os USING (osID)) 
+            INNER JOIN preferences USING (prID)) 
+            INNER JOIN menu mn USING (mID)) 
+            LEFT JOIN orderaddons oa USING (olID)) 
+            LEFT JOIN addons aon USING (aoID);');
             return $query->result();
         }
     
 
-        function update_status() {
+        function update_status($item_status, $order_item_id) {
             $this->load->database();
-            $item_status = $this->input->post('item_status');
-            $order_item_id = $this->input->post('order_item_id');
-
-            $this->db->set('item_status', $item_status);
-            $this->db->where('order_item_id', $order_item_id);
-            $result = $this->db->update('orderlist');
-            return $result;
+            $this->db->set('olStatus', $item_status);
+            $this->db->where('olID', $order_item_id);
+            $this->db->update('orderlists');
             /* $query = $this->db->query('UPDATE orderlist SET item_status = ? WHERE order_id = ? AND menu_id = ?');
             $this->db->query($query, array($item_status, $order_id, $menu_id)); */
         }
