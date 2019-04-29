@@ -422,14 +422,12 @@ function viewSpoilagesStock(){
     function viewConsumptions(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data['title'] = "Stock Consumption";
-            $data['consumptions'] = array(
-                "destockLog" 	=> $this->adminmodel->get_consumption(),
-                "stockItems" 	=> $this->adminmodel->get_stocks(),
-                "stockVariance" => $this->adminmodel->get_stockVariance()
-            );
+            $data['consumptions'] = $this->adminmodel->get_consumption();
+            $data['conitems'] = $this->adminmodel->get_consumptionItems();
+            $data['variance'] = $this->adminmodel->get_poItemVariance();
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/consumption');
+            $this->load->view('admin/adminDestock');
         }else{
             redirect('login');
         }

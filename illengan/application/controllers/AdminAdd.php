@@ -280,5 +280,18 @@ class AdminAdd extends CI_Controller{
         // redirect("login");
         // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
     }
+
+    function addConsumption(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $nID = $this->adminmodel->get_nextIDConsumption();
+            $cnDate = $this->input->post('consumedDate');
+            $cnDestock = $this->input->post('consumptions');
+            $date = date("Y-m-d H:i:s");
+            echo json_encode($this->adminmodel->add_consumption($cnDestock,$nID,$cnDate,$date));
+        }else{
+            redirect('login');
+        }
+    }
+
 }
 ?>
