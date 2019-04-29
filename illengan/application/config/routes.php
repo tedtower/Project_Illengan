@@ -100,6 +100,8 @@ $route['admin/inventory/add'] = "adminadd/addstockitem";
 $route['admin/menu/add'] = "adminadd/add_menu";
 $route['admin/stockcategories/add'] = "adminadd/addstockcategory";
 $route['admin/menucategories/add'] = "adminadd/addmenucategory";
+$route['admin/submenucategories/add'] = "adminadd/addsubmenucategory";
+$route['admin/substockcategories/add'] = "adminadd/addsubstockcategory";
 $route['admin/accounts/add'] = "adminadd/addaccounts";
 $route['admin/tables/add'] = "adminadd/addtable";
 $route['admin/addons/spoilages/add'] = "adminadd/addspoilagesaddons";
@@ -123,6 +125,7 @@ $route['admin/accounts/edit'] = "adminupdate/editAccounts";
 $route['admin/supplier/edit'] = "adminupdate/editSupplierMerchandise";
 $route['admin/tables/edit'] = "adminupdate/edittable";
 $route['admin/stockqty/edit'] = "adminupdate/editStockQty";
+$route['admin/stock/spoilage/edit'] = "adminupdate/editStockSpoil";
 //End Admin Update Routes ---------------------------------------
 
 //Admin Delete Routes -------------------------------------------

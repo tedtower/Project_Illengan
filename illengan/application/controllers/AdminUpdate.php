@@ -19,6 +19,26 @@ class adminUpdate extends CI_Controller{
             redirect('login');
         } 
     }
+    function editMenuCategory(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $ctID = $this->input->post('ctID');
+            $ctName = $this->input->post('new_name');
+            $this->adminmodel->edit_menucategory($ctID, $ctName);
+            redirect('admin/menucategories');
+        }else{
+            redirect('login');
+        }
+    }
+    function editStockCategory(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $ctID = $this->input->post('ctID');
+            $ctName = $this->input->post('new_name');
+            $this->adminmodel->edit_stockcategory($ctID, $ctName);
+            redirect('admin/stockcategories');
+        }else{
+            redirect('login');
+        }
+    }
     function editTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('prevTableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]');
@@ -81,26 +101,6 @@ class adminUpdate extends CI_Controller{
                 echo "Form Validation is not Working.";
             }
             redirect('admin/accounts');
-    }
-    function editMenuCategory(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $category_id = $this->input->get('category_id');
-            $category_name = $this->input->get('new_name');
-            $data['category'] = $this->adminmodel->edit_menucategory($category_id, $category_name);
-            $this->viewMenuCategories();
-        }else{
-            redirect('login');
-        }
-    }
-    function editStockCategory(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $category_id = $this->input->post('category_id');
-            $category_name = $this->input->post('new_name');
-            $data['category'] = $this->adminmodel->edit_stockcategory($category_id, $category_name);
-            $this->viewStockCategories();
-        }else{
-            redirect('login');
-        }
     }
     function editStockItem(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){   
