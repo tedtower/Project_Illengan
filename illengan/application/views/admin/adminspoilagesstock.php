@@ -25,7 +25,9 @@
 									<th>Quantity</th>
 									<th>Date Spoiled</th>
 									<th>Date Recorded</th>
-									<th>Operations</th>
+									<th>Operation</th>
+									<th>Operation</th>
+									
 								</thead>
 								<tbody id="spoilage_data">
 								</tbody>
@@ -36,28 +38,28 @@
 								<div class="modal-dialog modal-lg" role="document">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLabel">Add Stock Spoilage</h5>
+											<h5 class="modal-title" id="exampleModalLabel">Add Spoilage</h5>
 											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 												<span aria-hidden="true">&times;</span>
 											</button>
 										</div>
-										<form id="formAdd" accept-charset="utf-8">
+										<form id="formAdd" action="<?= site_url('admin/stock/spoilages/add')?>" accept-charset="utf-8">
 											<div class="modal-body">
 												<div class="form-row">
-													<!--Container of Source Date-->
+													<!--Container of Stock Spoilage Date-->
 													<!--Spoilage Date-->
 													<div class="input-group mb-3">
 														<div class="input-group-prepend">
 															<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-																Source Date</span>
+																Spoilage Date</span>
 														</div>
-														<input type="date" name="transDate" id="transDate" class="form-control form-control-sm">
+														<input type="date" name="spoilDate" id="spoilDate" class="form-control form-control-sm">
 													</div>
 												</div>
 												<!--Add Stock Item-->
 												<!--Button to add row in the table-->
 												<!--Button to add launche the brochure modal-->
-												<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#brochureSS" data-original-title style="margin:0" id="addStockSpoilage">Add Spoilage Items</a>
+												<a class="addSpoilageItem btn btn-default btn-sm" data-toggle="modal" data-target="#brochureSS" data-original-title style="margin:0" id="addStockSpoilage">Add Spoilage Items</a>
 												<br><br>
 												<table class="stockSpoilageTable table table-sm table-borderless">
 													<!--Table containing the different input fields in adding stock spoilages -->
@@ -73,10 +75,10 @@
 													</tbody>
 												</table>
 												<!--Total of the trans items-->
-
+					
 												<div class="modal-footer">
 													<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-													<button class="btn btn-success btn-sm" type="submit">Add</button>
+													<button type="button" class="btn btn-success btn-sm" onclick="addStockItems()">Add</button>
 												</div>
 											</div>
 										</form>
@@ -95,24 +97,16 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <form id="formAdd" action="<?= site_url('admin/stock/spoilages/add')?>" method="post" accept-charset="utf-8">
+                                        <form id="formAdd"  method="post" accept-charset="utf-8">
                                             <div class="modal-body">
-                                                <div style="margin:1% 3%">
-                                                <!--checkboxes-->
-                                                    <!-- <label style="width:96%"><input type="checkbox" class="mr-2" value=""></label> -->
-													<table id="stocksTable" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-														<thead>
-															<th>Stocks</th>
-														</thead>
-														<tbody id="show_data">
-														</tbody>
-													</table>
+                                                <div style="margin:1% 3%" id="list">
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                                    <button class="btn btn-success btn-sm" type="submit">Ok</button>
-                                            </div>
+												<button type="button" class="btn btn-danger btn-sm"
+													data-dismiss="modal">Cancel</button>
+												<button type="button" class="btn btn-success btn-sm" data-dismiss="modal" onclick="getSelectedStocks()">Ok</button>
+											</div>
                                         </form>
                                     </div>
                                 </div>
@@ -146,6 +140,57 @@
 									</div>
 								</div>
 							</div>
+							<!--End of Delete Modal-->
+							<!--Edit Spoilage-->
+							<div class="modal fade" id="editSpoil" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Edit Spoilage</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form id="formEdit" action="<?= site_url('admin/accounts/edit') ?>" method="post" accept-charset="utf-8">
+                                                
+												<div class="modal-body">
+                                                    <!--Quantity-->
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                Quantity</span>
+                                                        </div>
+                                                        <input type="number" min="1" name="ssQty" id="ssQty" class="form-control form-control-sm">
+                                                        <span class="text-danger"><?php echo form_error("ssQty"); ?></span>
+                                                    </div>
+                                                    <!--Date Spoiled-->
+													<div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                Date Spoiled</span>
+                                                        </div>
+                                                        <input type="date" name="ssDate" id="ssDate" class="form-control form-control-sm">
+                                                        <span class="text-danger"><?php echo form_error("ssDate"); ?></span>
+                                                    </div>
+													<div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                Remarks</span>
+                                                        </div>
+                                                        <input type="text" name="ssRemarks" id="ssRemarks" class="form-control form-control-sm">
+                                                        <span class="text-danger"><?php echo form_error("ssRemarks"); ?></span>
+                                                    </div>
+                                                    <!--Footer-->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                                        <button class="btn btn-success btn-sm" type="submit">Update</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                            </div>
+							<!--End of Edit Modal-->
 						</div>
 					</div>
 				</div>
@@ -155,11 +200,12 @@
 </div>
 <!--End Table Content-->
 <?php include_once('templates/scripts.php') ?>
-
+<script src="<?= admin_js().'addSpoilageBrochure.js'?>"></script>
 <script>
-	 $(function() {
-        viewStocksJs();
-	 })
+var stockchoice = [];
+	//  $(function() {
+    //     viewStocksJs();
+	//  })
 	var table = $('#tablevalues');
 
 	function format(d) {
@@ -189,10 +235,10 @@
 					"defaultContent": ''
 				},
 				{
-					"data": "ssID"
+					"data": "vID"
 				},
 				{
-					"data": "stName"
+					"data": "vName"
 				},
 				{
 					"data": "ssQty"
@@ -209,9 +255,16 @@
 						return '<a href="javascript: void(0)" class="btn btn-warning btn-sm delete_data" data-id="' +
 							data.s_id + '">Delete</a>';
 					}
+				},
+				{
+					"data": null,
+					render: function(data, type, row, meta) {
+						return '<button class="updateBtn btn btn-default btn-sm" data-toggle="modal" data-target="#editSpoil" data-sID="'data.sID'" data-id="'data.vID'">Edit</button>';
+					}
 				}
 			]
 		});
+
 
 
 		//For showing the accordion
@@ -261,60 +314,33 @@
 	});
 	//End Function Delete
 
-	function viewStocksJs() {
-        $.ajax({
-            url: "<?= site_url('admin/stock/spoilages/viewStockJS') ?>",
-            method: "post",
-            dataType: "json",
-            success: function(data) {
+	
+	$(function () {
+	$.ajax({
+            url: '<?= site_url('admin/stock/spoilages/viewStockJS') ?>',
+            dataType: 'json',
+            success: function (data) {
+                var poLastIndex = 0;
                 stocks = data;
                 setStockData(stocks);
             },
-            error: function(response, setting, errorThrown) {
-                console.log(response.responseText);
+            failure: function () {
+                console.log('None');
+            },
+            error: function (response, setting, errorThrown) {
                 console.log(errorThrown);
+                console.log(response.responseText);
             }
-        });
-    }
+		});
 
-    function setStockData() {
-        if ($("#stocksTable> tbody").children().length > 0) {
-            $("#stocksTable> tbody").empty();
-        }
-        stocks.forEach(table => {
-            $("#stocksTable> tbody").append(`
-            <tr data-id="${table.stID}">
-                <td>
-					<label style="width:96%"><input type="checkbox" class="stockchoice" value="${table.stID}">${table.vName}</label>
-                </td>
-            </tr>`);
-        });
-    }
-	$(document).ready(function() {
-		$('.stockchoice').click(function(){
-			var text = "";
-			
-		if ($("#stockSpoilageTable> tbody").children().length > 0) {
-            $("#stockSpoilageTable> tbody").empty();
-        }
-        stocks.forEach(table => {
-            $("#stockSpoilageTable> tbody").append(`
-            <tr data-id="${table.stID}">
-			<td><input type="text" name="stName" id="stock_name" value="${table.stName}" class="form-control form-control-sm"></td>
-			<td><input type="number" name="ssQty" id="s_qty" value="${table.ssQty}"  class="form-control form-control-sm"></td>
-			<td><textarea name="date" id="ssRemarks" value="${table.ssRemarks}" class="form-control form-control-sm" row="1"></textarea></td>
-			<td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
-            </tr>`);
-        });
-	}
-	else{
-		$('.hidden').hide();
-	}
-	
 	});
-});
-
-</script>
+	function setStockData(stocks){
+        $("#list").empty();
+        $("#list").append(`${stocks.map(stock => {
+            return `<label style="width:96%"><input type="checkbox" name="stockchoice[]" class="choiceStock mr-2" value="${stock.vID}">${stock.vName}</label>`
+        }).join('')}`);
+    	}
+</script> 
 </body>
 
 </html>

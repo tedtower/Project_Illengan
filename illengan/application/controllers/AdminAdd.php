@@ -6,12 +6,12 @@ class AdminAdd extends CI_Controller{
         $this->load->model('adminmodel'); 
         date_default_timezone_set('Asia/Manila');  
         // code for getting current date : date("Y-m-d")
-        // code for getting current date and time : date("Y-m-d 2H:i:s")
+        // code for getting current date and time : date("Y-m-d H:i:s")
     }
     function addaccounts(){
 
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[50]');
-        $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
+        // $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
         $this->form_validation->set_rules('aUsername','Username','trim|required|is_unique[accounts.aUsername]');
         $this->form_validation->set_rules('aType','Account Type','trim|required');
 
@@ -39,10 +39,38 @@ class AdminAdd extends CI_Controller{
     }
     function addMenuCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $superCategory = trim($this->input->post('super_category'));
-            $category_name = trim($this->input->post('category_name'));
-            $this->adminmodel->add_menucategory($category_name, $superCategory);
+            $ctName = trim($this->input->post('ctName'));
+            $this->adminmodel->add_menucategory($ctName);
             redirect('admin/menucategories');
+        }else{
+            redirect('login');
+        }
+    }
+    function addSubMenuCategory(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $ctName = trim($this->input->post('ctName'));
+            $supcatID = trim($this->input->post('subcatID'));
+            $this->adminmodel->add_submenucategory($ctName, $supcatID);
+            redirect('admin/menucategories');
+        }else{
+            redirect('login');
+        }
+    }
+    function addStockCategory(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $ctName = $this->input->post('ctName');
+            $this->adminmodel->add_stockcategory($ctName);
+            redirect('admin/stockcategories');
+        }else{
+            redirect('login');
+        }
+    }
+    function addSubStockCategory(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $ctName = trim($this->input->post('ctName'));
+            $supcatID = trim($this->input->post('subcatID'));
+            $this->adminmodel->add_SubStockCategory($ctName, $supcatID);
+            redirect('admin/stockcategories');
         }else{
             redirect('login');
         }
@@ -75,6 +103,31 @@ class AdminAdd extends CI_Controller{
         }
 
     }
+    function addSupplierMerchandise(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+           
+            $spName = $this->input->post('name');
+            $spContactNum = $this->input->post('contactNum');
+            $spEmail= $this->input->post('email');
+            $spStatus = $this->input->post('status');
+            $spAddress = $this->input->post('address');
+            $spMerch = json_decode($this->input->post('merchandises'),true);
+            if($this->adminmodel->add_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch)){
+                echo json_encode(array(
+                    'sources' => $this->adminmodel->get_supplier(),
+                    'merchandises' => $this->adminmodel->get_suppliermerch(),
+                    'stockvariances' => $this->adminmodel->get_stockVariance()
+                ));
+            }else{
+                redirect("admin/dashboard");
+                // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
+            }
+        }else{
+            redirect('login');
+        }
+        // redirect("login");
+        // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
+    }
     function addStockItem(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('name','Stock Name','trim|required|alpha_numeric_spaces');
@@ -100,35 +153,24 @@ class AdminAdd extends CI_Controller{
                 }else{
                     redirect("admin/dashboard");
                     // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
-                }
+                } 
             }
         }else{
             redirect("login");
         }
     }
-    function addStockCategory(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $category_name = $this->input->get('category_name');
-            $data['category'] = $this->adminmodel->add_stockcategory($category_name);
-            $this->viewStockCategories();
-        }else{
-            redirect('login');
-        }
-    }
+
     function addPurchaseOrder() {
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $spID = $this->input->post('spID');
             $poDate = $this->input->post('poDate');
             $edDate = $this->input->post('edDate');
-            $poTotal = 100;
+            $poTotal = $this->input->post('poTotal');
             $poDateRecorded = date('Y-m-d');
-            $poStatus = $this->input->post('poStatus');
+            $poStatus = 'pending';
             $poRemarks = $this->input->post('poRemarks');
-            echo $poDateRecorded, $poDate, $edDate, $poStatus;
-            $this->adminmodel->add_PurchaseOrder($poDate, $edDate, $poTotal, $poDateRecorded, $poStatus, $poRemarks, $spID);
-        }else{
-            redirect('login');
-        }
+            $merchandise = json_decode($this->input->post('merchandise'), true);
+            echo json_encode($merchandise, true);
+            $this->adminmodel->add_PurchaseOrder($poDate, $edDate, $poTotal, $poDateRecorded, $poStatus, $poRemarks, $spID, $merchandise);
         
     }
     function addTable(){
@@ -147,32 +189,6 @@ class AdminAdd extends CI_Controller{
         }else{
             redirect('login');
         }        
-    }
-    function addTransactions(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $receiptNo = trim($this->input->post('receiptNo'));
-            $transDate = trim($this->input->post('transDate'));
-            $source = trim($this->input->post('sourceName'));
-            $remarks = trim($this->input->post('remarks'));
-            $transItems = !isset(json_decode($this->input->post('transItems'), true)[0]) ? NULL : json_decode($this->input->post('transItems'), true);
-            $dateRecorded = date("Y-m-d");
-            $total = 0;
-            for ($index=0; $index < count($transItems); $index++) { 
-                $transItems[$index]['subtotal'] = (float) $transItems[$index]['itemQty'] * (float) $transItems[$index]['itemPrice']; 
-                $total += $transItems[$index]['subtotal'];
-            }
-            if($this->adminmodel->add_transaction($receiptNo, $transDate, $source, $remarks, $total, $dateRecorded, $transItems)){
-                $this->output->set_output(json_encode(array(
-                    "transaction" => $this->adminmodel->get_transactions(),
-                    "transitem" => $this->adminmodel->get_transitems(),
-                    "sources" => $this->adminmodel->get_sources()
-                )));
-            }else{
-                redirect(admin/transactions);
-            }
-        }else{
-            redirect('login');
-        }
     }
     function addspoilagesaddons(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
@@ -212,16 +228,11 @@ class AdminAdd extends CI_Controller{
     function addspoilagesstock(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
-
-            $s_type = $this->input->get("s_type");
-            $stock_name =$this->input->get("stock_name");
-            $s_qty =$this->input->get("s_qty");
-            $s_date =$this->input->get("s_date");
             $date_recorded = date("Y-m-d");
-            $remarks =$this->input->get("remarks");
-
-            $this->adminmodel->add_stockspoil($s_type,$stock_name,$s_qty,$s_date,$date_recorded,$remarks);
-            redirect('admin/stock/spoilages');
+            $stocks = json_decode($this->input->post('stocks'), true);
+            echo json_encode($stocks, true);
+            $this->adminmodel->add_stockspoil($date_recorded,$stocks);
+           
         }else{
             redirect('login');
         }
@@ -259,26 +270,26 @@ class AdminAdd extends CI_Controller{
         redirect('adminview/viewReturns');
     }
 
-    function addSupplierMerchandise(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $this->load->model('adminmodel');
-            $spName = $this->input->get("supplierName");
-            $spContactNum =$this->input->get("contactNum");
-            $spEmail =$this->input->get("email");
-            $spStatus =$this->input->get("status");
-            $spAddress =$this->input->get("supplierAddress");
 
-            $vID = $this->input->get("variance");
-            $spmDesc = $this->input->get("merchName");
-            $spmUnit = $this->input->get("merchUnit");
-            $spmPrice = $this->input->get("merchPrice");
-            $this->adminmodel->add_supplierMerchandise($spName, $spContactNum, $spEmail, $spStatus, $spAddress,$vID, $spmDesc, $spmUnit, $spmPrice);
-            redirect('admin/supplier');
-        }else{
-            redirect('login');
+    function addTransaction(){
+        $transID = $this->input->post('transID');
+        $spID = $this->input->post('spID');
+        $transType = $this->input->post('transType');
+        $receiptNum = $this->input->post('receiptNum');
+        $transDate = $this->input->post('transDate');
+        $resStatus = $this->input->post('resStatus');
+        $remarks = $this->input->post('remarks');
+        $transitems = json_decode($this->input->post('transitems'),true);
+        $dateRecorded = date("Y-m-d");
+        $total = 0.00;
+        for($index = 0 ; $index < count($transitems) ; $index++){
+            $transitems[$index]['subtotal'] = (float) $transitems[$index]['itemPrice'] * (float) $transitems[$index]['itemQty'];
+            $total += $transitems[$index]['subtotal'];
         }
-        // redirect("login");
-        // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
+        if($this->adminmodel->add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks,$total, $transitems)){
+            
+        }else{
+        }
     }
 
     function addConsumption(){

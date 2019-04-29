@@ -45,7 +45,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form id="formAdd" action="<?= site_url('admin/accounts/add') ?>" method="post" accept-charset="utf-8">
+                                            <form id="formAdd" name="AddForm" action="<?= site_url('admin/accounts/add') ?>" method="post" accept-charset="utf-8">
                                                 <div class="modal-body">
                                                     <!--End "Add Account" Modal-->
                                                     <!--Username-->
@@ -66,15 +66,6 @@
                                                         <input type="text" name="password" id="password" class="form-control form-control-sm">
                                                         <span class="text-danger"><?php echo form_error("password"); ?></span>
                                                     </div>
-                                                    <!--Confirm Password-->
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Confirm Password</span>
-                                                        </div>
-                                                        <input type="text" name="confirm_password" id="confirm_password" class="form-control form-control-sm">
-                                                        <span class="text-danger"><?php echo form_error("confirm_password"); ?></span>
-                                                    </div>
                                                     <!--Account Type-->
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
@@ -85,8 +76,10 @@
                                                             <option value="admin" selected>Admin</option>
                                                             <option value="barista">Barista</option>
                                                             <option value="chef">Chef</option>
+                                                            <option value="customer">Customer</option>
                                                         </select>
                                                     </div>
+                                                    <input name="accountId" hidden="hidden">
                                                     <!--Footer-->
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
@@ -127,12 +120,14 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Account Type</span>
                                                         </div>
-                                                        <select class="custom-select" name="accountType" id="accountType">
+                                                        <select class="custom-select" name="new_aType" id="new_aType">
                                                             <option value="admin" selected>Admin</option>
                                                             <option value="barista">Barista</option>
                                                             <option value="chef">Chef</option>
+                                                            <option value="customer">Customer</option>
                                                         </select>
                                                     </div>
+                                                    <input name="accountId" hidden="hidden">
                                                     <!--Footer-->
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
@@ -184,6 +179,7 @@
                                                         <input type="text" name="new_confirm_password" id="new_confirm_password" class="form-control form-control-sm">
                                                         <span class="text-danger"><?php echo form_error("new_confirm_password"); ?></span>
                                                     </div>
+                                                    <input name="accountId" hidden="hidden">
                                                     <!--Footer-->
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
@@ -224,9 +220,11 @@
                         </div>
                     </div>
                 </div>
-</body>
+    </body>
 
 <?php include_once('templates/scripts.php') ?>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.validate.min.js'?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.validate.js'?>"></script>
 <script>
     var accounts = [];
     $(function() {
@@ -234,11 +232,11 @@
 
         // Delete Account Function====================================
 
-        $("#confirmDelete").on('submit', function(event) {
-            event.preventDefault();
-            var accountId = $(this).find("input").val();
-            console.log(accountId);
-            $.ajax({
+    $("#confirmDelete").on('submit', function(event) {
+        event.preventDefault();
+        var accountId = $(this).find("input").val();
+        console.log(accountId);
+        $.ajax({
                 url: '<?= site_url('admin/accounts/delete') ?>',
                 method: 'POST',
                 data: {

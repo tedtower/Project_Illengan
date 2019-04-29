@@ -22,22 +22,12 @@
                             <!--Table-->
                             <div class="card-content">
                                 <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newCategory" data-original-title style="float: left" id="addCategroy">Add Category</a>
-                                <!--Search
-                            <div id ="example_filter" class="dataTables_filter">
-                                <label>
-                                    "Search:"
-                                    <div class="form-group form-group-sm is-empty">
-                                       <input type="search" class="form-control" placeholder aria-controls="example">
-                                       <span class="material-input"></span> 
-                                    </div>
-                                </label>
-                            </div>-->
                                 <br>
                                 <br>
                                 <table id="categTable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                     <thead>
                                         <th><b class="pull-left">Category Name</b></th>
-                                        <th><b class="pull-left">Category Type</b></th>
+                                        <th><b class="pull-left">Number of Items</b></th>
                                         <th><b class="pull-left">Actions</b></th>
                                     </thead>
                                     <tbody>

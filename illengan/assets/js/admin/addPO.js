@@ -1,4 +1,6 @@
 addSupplierOpts();
+
+var total = 0;
 function removeOptions() {
     $(document).ready(function() {
         var opt_elements = document.getElementsByClassName('options');
@@ -32,9 +34,6 @@ function addSupplierOpts() {
 
             }
             $('#spName').append(optArr);
-        },
-        failure: function() {
-            console.error('oh no');
         }
     });
 });
@@ -56,51 +55,48 @@ function setSuppMerchandise() {
                 }
                 
                 $('#spName').append(optArr);
-            },
-            failure: function() {
-                console.error('oh no');
             }
         });
     });
     
 }
-
+var countTr = 0;
 function getSelectedMerch() {
     var value = 0;
     var choices = document.getElementsByClassName('merchChoice');
+    var merchChecked;
     for(var i = 0; i <= choices.length-1; i++) {
         if(choices[i].checked) {
-            var value = choices[i].value;
+            value = choices[i].value;
 
             $.ajax({
+            type: 'POST',
             url: 'http://www.illengan.com/admin/jsonMerchandise',
+            data: {
+                spmID : value
+            },
             dataType: 'json',
             async: false,
             success: function(data) {
-                for(var i = 0; i <= data.length-1; i++) {
-                    var merchChecked;
-                    if(data[i].spmID === value) {
-                        merchChecked = `<tr class="merchelem" data-id="`+data[i].spmID+`" data-varid="`+data[i].vID+`">
-                            <input type="hidden" name="">
-                            <td><input type="text" id="stName" name="merchName[]"
-                                    class="form-control form-control-sm"  value="`+data[i].stName+`" readonly="readonly"></td>
-                            <td><input type="number" id="vQty" name="poiQty[]"
-                                    class="form-control form-control-sm" value="`+data[i].vQty+`" ></td>
-                            <td><input type="text" id="vUnit" name="poiUnit[]"
-                                    class="form-control form-control-sm"  value="`+data[i].vUnit+`" readonly="readonly"></td>
-                            <td><input type="number" id="spmPrice" name="poiPrice[]"
-                                    class="form-control form-control-sm"  value="`+data[i].spmPrice+`" readonly="readonly"></td>
-                            <td><input type="number" id="subtotal" name="itemSubtotal[]"
-                                    class="form-control form-control-sm" value="`+parseInt(data[i].spmPrice*data[i].vQty)+`" readonly="readonly"></td>
-                            <td><img class="exitBtn"
-                                    src="/assets/media/admin/error.png"
-                                    style="width:20px;height:20px"></td>
-                            </tr>`;
-                            //merchArr.push(merchChecked);
-                            $('.poItemsTable > tbody').append(merchChecked);
-                    }
-                    
-                }
+                console.log('value spmID '+value);
+                 merchChecked = `<tr class="merchelem" data-id="`+data[0].spmID+`">
+                 <input type="hidden" name="vID" value="`+data[0].vID+`">
+                    <td><input type="text" id="stName" name="stName"
+                             class="form-control form-control-sm"  data-stID="`+data[0].stID+`" value="`+data[0].stName+`" readonly="readonly"></td>
+                     <td><input type="text" id="vQty" onchange="setSubtotal()" name="vQty"
+                             class="vQty form-control form-control-sm" value="`+data[0].vQty+`" ></td>
+                     <td><input type="text" id="vUnit" name="vUnit"
+                            class="form-control form-control-sm" value="`+data[0].vUnit+`" readonly="readonly"></td>
+                     <td><input type="number" id="spmPrice" name="spmPrice"
+                             class="spmPrice form-control form-control-sm"  value="`+data[0].spmPrice+`" readonly="readonly"></td>
+                     <td><input type="number" name="subtotal"
+                     class="subtotal form-control form-control-sm" value="" readonly="readonly"></td>
+                    <td><img class="exitBtn"
+                             src="/assets/media/admin/error.png"
+                             style="width:20px;height:20px"></td>
+                     </tr>`;
+                     $('.poItemsTable > tbody').append(merchChecked);
+                 setSubtotal();
             }
         });
         }
@@ -108,14 +104,37 @@ function getSelectedMerch() {
         
     }
 }
-
+var elements;
 function addPurchaseOrder() {
     var spID = $('#spID').val();
     var poDate = $('#poDate').val();
     var edDate = $('#edDate').val();
-    var poStatus = $('#poStatus').val();
     var poRemarks = $('#poRemarks').val();
-     
+    var poiQty, poiUnit, poiPrice;
+    elements = document.getElementsByClassName('merchelem');
+
+    var itemMerch = [];
+    var merch= [];
+    for(var i = 0; i <= elements.length-1; i++) {
+        vID = document.getElementsByName('vID')[i].value;
+        poiQty = document.getElementsByName('vQty')[i].value;
+        poiUnit = document.getElementsByName('vUnit')[i].value;
+        poiPrice = document.getElementsByName('spmPrice')[i].value;
+        poTotal = total;
+
+        itemMerch = {
+            'vID' : vID,
+            'poiQty' : poiQty,
+            'poiUnit' : poiUnit,
+            'poiPrice' : poiPrice,
+            'poiStatus' : 'pending',
+            'poiRemarks' : poRemarks
+        };
+        merch.push(itemMerch);
+    }
+    console.log(document.getElementsByName('vID'));
+    console.log(merch);
+    
     $.ajax({
         type: 'POST',
         url: 'http://www.illengan.com/admin/purchaseorder/add',
@@ -123,13 +142,39 @@ function addPurchaseOrder() {
             spID: spID,
             poDate: poDate,
             edDate: edDate,
-            poStatus: poStatus,
-            poRemarks: poRemarks
+            poTotal: poTotal,
+            poRemarks: poRemarks,
+            merchandise: JSON.stringify(merch)
         },
-        success: function() {
-            alert('Purchase Order added');
+        dataType : 'json',
+        success: function(data) {
+                alert('Purchase Order added');
+                
         }
     })
-
-
 }
+
+
+    
+function setSubtotal() {
+    var spmPrice, vQty;
+    var total = 0;
+    elements = document.getElementsByClassName('merchelem');
+
+    for(var i = 0; i <= elements.length-1; i++) {
+        spmPrice = parseInt(document.getElementsByName('spmPrice')[i].value);
+        vQty = parseInt(document.getElementsByName('vQty')[i].value);
+        document.getElementsByName('subtotal')[i].value = vQty * spmPrice;
+        subtotal = parseInt(document.getElementsByName('subtotal')[i].value);
+        total = total + subtotal;
+        console.log(total);
+    }
+    $('#total').text(total);
+}
+
+
+
+
+
+
+     

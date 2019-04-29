@@ -84,7 +84,7 @@ $route['admin/log/stocks'] = "adminview/viewLogStock";
 $route['admin/log/activity'] = "adminview/viewActivityLog";
 $route['admin/consumption'] = "adminview/viewConsumptions";
 $route['admin/transactions'] = "adminview/viewalltransactions";
-$route['admin/transactions/delivery'] = "adminview/viewdeliverytransactions";
+$route['admin/transactions/delivery'] = "adminview/viewDeliveryTransactions";
 $route['admin/transactions/purchase'] = "adminview/viewpurchasetransactions";
 $route['admin/transactions/return'] = "adminview/viewreturntransactions";
 //End Viewing Routes
@@ -94,12 +94,14 @@ $route['admin/menu/datatables'] = "adminview/datatables_menu";
 //End Note Sure Routes
 
 //Admin Add Routes ----------------------------------------------
-$route['admin/transactions/add'] = "adminadd/addtransactions";
+$route['admin/transactions/add'] = "adminadd/addtransaction";
 $route['admin/purchaseorder/add'] = "adminadd/addPurchaseOrder";
 $route['admin/inventory/add'] = "adminadd/addstockitem";
 $route['admin/menu/add'] = "adminadd/add_menu";
 $route['admin/stockcategories/add'] = "adminadd/addstockcategory";
 $route['admin/menucategories/add'] = "adminadd/addmenucategory";
+$route['admin/submenucategories/add'] = "adminadd/addsubmenucategory";
+$route['admin/substockcategories/add'] = "adminadd/addsubstockcategory";
 $route['admin/accounts/add'] = "adminadd/addaccounts";
 $route['admin/tables/add'] = "adminadd/addtable";
 $route['admin/addons/spoilages/add'] = "adminadd/addspoilagesaddons";
@@ -121,9 +123,10 @@ $route['admin/inventory/edit'] = "adminupdate/editstockitem";
 $route['admin/transactions/edit'] = "adminupdate/edittransactions";
 $route['admin/accounts/changepassword'] = "adminupdate/changeAccountPassword";
 $route['admin/accounts/edit'] = "adminupdate/editAccounts";
-$route['admin/sources/edit'] = "adminupdate/editsource";
+$route['admin/supplier/edit'] = "adminupdate/editSupplierMerchandise";
 $route['admin/tables/edit'] = "adminupdate/edittable";
 $route['admin/stockqty/edit'] = "adminupdate/editStockQty";
+$route['admin/stock/spoilage/edit'] = "adminupdate/editStockSpoil";
 //End Admin Update Routes ---------------------------------------
 
 //Admin Delete Routes -------------------------------------------
@@ -154,7 +157,8 @@ $route['admin/stock/spoilages/viewStockJS'] ="adminview/viewStockJS";
 $route['admin/jsonPOrders'] ="adminview/jsonPurchaseOrders";
 $route['admin/jsonSupp'] ="adminview/jsonSuppliers";
 $route['admin/jsonMerchandise'] ="adminview/jsonSuppMerchandise";
-
+$route['admin/inventory/getitem'] = "adminview/getStockDetails";
+$route['admin/getPurchaseOrders'] = "adminview/getPurchaseOrders";
 //End Admin Json Routes ---------------------------------------
 
 //CUSTOMER ROUTES
