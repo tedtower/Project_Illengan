@@ -258,12 +258,12 @@
                                                             style="width:120px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                             Purchase Order</span>
                                                     </div>
-                                                    <select class="form-control form-control-sm" name="po">
-                                                        <option value="" selected>Choose</option>
+                                                    <select class="form-control form-control-sm" name="PO" id="PO">
+                                                        <option selected>Choose</option>
                                                     </select>
                                                 </div>
 
-                                                <div style="margin:1% 3%" id="poContent">
+                                                <div style="margin:1% 3%">
                                                     <!--checkboxes-->
                                                     <label style="width:96%"><input type="checkbox" class="mr-2"
                                                             value="">Sample data 1</label>
@@ -358,12 +358,9 @@ $(function() {
         $.ajax({
             method : 'post',
             url : '<?= site_url('admin/getPurchaseOrders')?>',
-            data : {
-                id : $("#addEditModal").find("select[name='spID']").val()
-            },
             dataType : 'json',
             success : function(data){
-                console.log(data);
+                suppliers = data;
             },
             error : function (response, settings, error){
                 console.log(response.responseText);
@@ -426,6 +423,7 @@ $(function() {
     });
 });
 function setSuppliers(){
+    console.log(suppliers);
     $("#addEditModal").find('select[name="spID"]').children().first().siblings().remove();
     $("#addEditModal").find('select[name="spID"]').append(`
         ${suppliers.map(supplier => {
@@ -434,16 +432,6 @@ function setSuppliers(){
     `);
 }
 function setPurchaseOrders(po){
-    $("#brochure").find("select[name='po'] option").first().siblings().remove();
-    $("#brochure").find("select[name='po']").append(`
-    ${po.po.map(po => {
-        return `<option value="${po.poID}">${po.poID} - ${po.poDate}</option>`
-    }).join('')}
-    `);
+    console.log(po);
 }
-$("#brochure").find("select[name='po']").on('change',function(){
-    var id = $(this).val();
-    $("#poContent").children().remove();
-    $("#poContent").append(`${po.poItems.filter(item => item.poID === id ).map(item => { return `<>`})}`);
-});
 </script>

@@ -97,16 +97,27 @@ class AdminView extends CI_Controller{
             $data['title'] = "Menu";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
-            $data['menuitem'] = array(
-                'menus' => $this->adminmodel->get_menu(),
-                'preferences' => $this->adminmodel->get_preferences(),
-                'addons' => $this->adminmodel->get_addons2()
-            );
-            $this->load->view('admin/menuitems', $data);
+            $this->load->view('admin/menuitems');
         }else{
             redirect('login');
         }
     }
+
+    function menuGetDetails(){
+        if($this->checkIfLoggedIn()){
+            $data = array(
+                'menu' => $this->adminmodel->get_menu(),
+                'preferences' => $this->adminmodel->get_preferences(),
+                'addons' => $this->adminmodel->get_addons2()
+            );
+            header('Content-Type: application/json');
+            echo json_encode($data, JSON_PRETTY_PRINT);
+        }else{
+            redirect('login');
+        }
+    }
+
+    
 
     function menuAddons(){
         if($this->checkIfLoggedIn()){
@@ -481,10 +492,9 @@ function viewSpoilagesStock(){
 
     function getPurchaseOrders(){
         if($this->checkIfLoggedIn()){
-            $id = $this->input->post('id');
             $data = array(
-                "po" => $this->adminmodel->get_purchaseOrders($id),
-                "poItems" => $this->adminmodel->get_poItems($id)
+                "po" => $this->adminmodel->get_purchaseOrders(),
+                "poItems" => $this->adminmodel->getPOItems()
             );
             echo json_encode($data);
         }else{

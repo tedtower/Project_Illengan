@@ -55,7 +55,7 @@
                                                         style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Supplier</span>
                                                 </div>
-                                                <select class="form-control form-control-sm" id="spName" name="spID">
+                                                <select class="form-control form-control-sm" id="spID" name="spID">
                                                 </select>
                                             </div>
                                             <!--Purchase date-->
@@ -102,8 +102,7 @@
                                                 <tr>
                                                     <th>Item Name</th>
                                                     <th width="10%">Qty</th>
-                                                    <th width="10%">Unit</th>
-                                                    <th width="10%">Size</th>
+                                                    <th width="15%">Unit</th>
                                                     <th width="15%">Price</th>
                                                     <th width="15%">Subtotal</th>
                                                     <th></th>
@@ -152,7 +151,7 @@
                                                         style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Supplier</span>
                                                 </div>
-                                                <select class="form-control form-control-sm" id="spName" name="spID">
+                                                <select class="form-control form-control-sm" id="spName" name="spName">
                                                 </select>
                                             </div>
                                             <!--Purchase date-->
@@ -192,7 +191,7 @@
                                         </div>
                                         <!--Button to add row in the table-->
                                         <a class="addPOItem btn btn-default btn-sm" data-toggle="modal" data-target="#brochure"
-                                            data-original-title style="margin:0" id="">Add Items</a>
+                                            data-original-title style="margin:0">Add Items</a>
                                         <br><br>
                                         <!--Table containing the different input fields in adding PO items -->
                                         <table class="poItemsTables table table-sm table-borderless">
@@ -201,7 +200,6 @@
                                                     <th>Item Name</th>
                                                     <th width="15%">Unit</th>
                                                     <th width="10%">Qty</th>
-                                                    <th width="10%">Size</th>
                                                     <th width="15%">Price</th>
                                                     <th width="15%">Subtotal</th>
                                                     <th></th>
@@ -213,7 +211,7 @@
                                         </table>
 
                                         <!--Total of the trans items-->
-                                        <span>Total: &#8369; <span id="total1" class="total"></span></span>
+                                        <span>Total: &#8369;<span class="total"> 0</span></span>
                                         <!--Modal Footer-->
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger btn-sm"
@@ -251,7 +249,7 @@
                                             data-dismiss="modal">Cancel</button>
                                         <button type="button" class="btn btn-success btn-sm" data-dismiss="modal" onclick="getSelectedMerch()">Ok</button>
                                     </div>
-                                </form> 
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -346,7 +344,7 @@ var suppMerch = [];
     function setBrochureContent(merchandise){
         $("#list").empty();
         $("#list").append(`${merchandise.map(merch => {
-            return `<label style="width:96%"><input type="checkbox" name="suppMerch[]" class="merchChoice mr-2" value="${merch.spmID}"> ${merch.spmDesc} - ${parseFloat(merch.spmPrice).toFixed(2)}</label>`
+            return `<label style="width:96%"><input type="checkbox" id="JAJA" name="suppMerch[]" class="merchChoice mr-2" value="${merch.spmID}"> ${merch.spmDesc} - ${parseFloat(merch.spmPrice).toFixed(2)}</label>`
         }).join('')}`);
     }
     function showTable() {
@@ -361,7 +359,7 @@ var suppMerch = [];
                     <td>${item.purOrders.poStatus}</td>
                     <td>${(parseFloat(item.purOrders.poTotal)).toFixed(2)}</td>
                     <td>
-                        <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editPO" id="editPOBtn">Edit</button>
+                        <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editPO" onclick="setSubtotal()" id="editPOBtn">Edit</button>
                         <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#delete">Delete</button>
                     </td>
                 </tr>
@@ -378,17 +376,19 @@ var suppMerch = [];
                             <th scope="col">Unit</th>
                             <th scope="col">Price</th>
                             <th scope="col">Subtotal Price</th>
+                            <th scope="col">Remarks</th>
                         </tr>
                     </thead>
                     <tbody>
                     ${item.poItems.map(po => {
                         return `
                         <tr>
-                            <td>${po.poiName}: ${po.stName}</td>
+                            <td>${po.stName}</td>
                             <td>${po.poiQty}</td>
                             <td>${po.poiUnit}</td>
                             <td>&#8369; ${po.poiPrice}</td>
                             <td>${(parseFloat(po.poiPrice)*parseInt(po.poiQty)).toFixed(2)}</td>
+                            <td>${po.poiRemarks}</td>
                         </tr>
                         `;
                     }).join('')}
@@ -436,89 +436,35 @@ var suppMerch = [];
 
 
 function setEditModal(modal, purchOr, poitems) {
-    $("#editPO form")[0].reset();
+    console.log(`${purchOr.spID}`);
+    var count = 0;
     modal.find("input[name='poID']").val(purchOr.poID);
     modal.find("input[name='poDate']").val(purchOr.poDate);
     modal.find("input[name='edDate']").val(purchOr.edDate);
-    modal.find("textarea[name='poRemarks']").val(purchOr.poRemarks);
-    modal.find("select[name='spID']").find(`option[value=${purchOr.spID}]`).attr("selected","selected");
+    modal.find("input[name='poRemarks']").val(purchOr.poRemarks);
+    modal.find("select[name='spName']").find(`option[value=${purchOr.spID}]`).attr("selected","selected");
     
     poitems.forEach(poi => {
         modal.find(".poItemsTables > tbody").append(`
-        <tr class="merchelem" id="vID" data-id="${poi.poiID}" data-varid="${poi.vID}">
-        <input type="hidden" name="poID" value="${poi.poID}">
-        <input type="hidden" name="spmDesc" value="${poi.spmDesc}">
+        <tr class="merchelem" id="vID" data-id="${poi.poID}" data-varid="${poi.vID}">
+            <input type="hidden" name="poID" value="${poi.poID}">
             <td><input type="text" id="stName" name="stName" class="form-control form-control-sm" data-stID="${poi.stID}" 
-            value="${poi.branditem}" readonly="readonly"></td>
+            value="${poi.stName}" readonly="readonly"></td>
             <td><input type="text" id="vQty" onchange="setSubtotal()" name="vQty"
                     class="vQty form-control form-control-sm" value="${poi.vQty}"></td>
             <td><input type="text" id="vUnit" name="vUnit" class="form-control form-control-sm" value="${poi.vUnit}"
                     readonly="readonly"></td>
-            <td><input type="text" id="vUnit" name="vUnit" class="form-control form-control-sm" value="${poi.vSize}"
-                    readonly="readonly"></td>
             <td><input type="number" id="spmPrice" name="spmPrice" class="spmPrice form-control form-control-sm"
-                    value="${poi.poiPrice}" readonly="readonly"></td>
-            <td><input type="number" name="subtotal" class="subtotal form-control form-control-sm" value=""
+                    value="${poi.spmPrice}" readonly="readonly"></td>
+            <td><input type="number" id="subtotal" class="subtotal form-control form-control-sm" value=""
                     readonly="readonly"></td>
             <td><img class="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
         </tr>
         `);
     });
-    setSubtotal();
+
+    
 }
-$(document).ready(function() {
-    $("#editPO form").on('submit', function(event) {
-        event.preventDefault();
-        var poID = $(this).find("input[name='poID']").val();
-        var spName = $(this).find("select[name='spID']").val();
-        var poiName = $(this).find("input[name='spmDesc']").val();
-        var poDate = $(this).find("input[name='poDate']").val();
-        var edDate = $(this).find("input[name='edDate']").val();
-        var poRemarks = $(this).find("textarea[name='poRemarks']").val();
-        var poTotal = $(this).find("span[id='total1']").text();
-       
-        var merch = [];
-        for (var index = 0; index < $(this).find(".poItemsTables > tbody").children().length; index++) {
-            var row = $(this).find(".poItemsTables > tbody > tr").eq(index);
-            merch.push({
-                poiID:  isNaN(parseInt(row.attr('data-id'))) ?  (null) : parseInt(row.attr('data-id')),
-                vID :  row.attr('data-varid'),
-                poiName: row.find("input[name='spmDesc']").val(),
-                poiQty: row.find("input[name='vQty']").val(),
-                poiUnit: row.find("input[name='vUnit']").val(),
-                poiPrice: row.find("input[name='spmPrice']").val(),
-                poiStatus: 'pending'
-            });
-        }
-        console.log(poID, spName, poDate, edDate, merch, poTotal);
-        $.ajax({
-            url: "<?= site_url("admin/purchaseorder/edit")?>",
-            method: "post",
-            data: {
-                spID: spName,
-                poID: poID,
-                poDate: poDate,
-                edDate: edDate,
-                poTotal: poTotal,
-                poRemarks: poRemarks,
-                merchandise: JSON.stringify(merch)
-            },
-            dataType: "json",
-            success: function(data) {
-                console.log(data);
-                location.reload();
-                alert('Purchase Order Updated');
-            },
-            complete: function() {
-                $("#editPO").modal("hide");
-            },
-            error: function(error) {
-                console.log(error);
-            }
-            
-        });
-    });
-});
 
 
 
