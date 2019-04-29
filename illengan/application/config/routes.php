@@ -110,6 +110,7 @@ $route['admin/menu/spoilages/add'] = "adminadd/addspoilagesmenu";
 $route['admin/supplier/add'] = "adminadd/addSupplierMerchandise";
 $route['admin/returns/add'] = "adminadd/addreturns";
 $route['admin/promos/add'] = "adminadd/addPromo";
+$route['admin/consumption/add'] = "adminadd/addConsumption";
 
 //End Admin Add Routes ------------------------------------------
 
