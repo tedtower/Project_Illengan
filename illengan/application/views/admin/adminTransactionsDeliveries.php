@@ -189,7 +189,7 @@
                                                 <!--Transaction Items-->
                                                 <a class="btn btn-default btn-sm" data-toggle="modal"
                                                     data-target="#brochure" data-original-title style="margin:0"
-                                                    id="addTransaction">Add PO Items</a>
+                                                    id="addPOItems">Add PO Items</a>
                                                 <!--Button to add launce the brochure modal-->
                                                 <br><br>
                                                 <table class="subTable1 table table-sm table-borderless">
@@ -258,12 +258,12 @@
                                                             style="width:120px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                             Purchase Order</span>
                                                     </div>
-                                                    <select class="form-control form-control-sm" name="PO" id="PO">
-                                                        <option selected>Choose</option>
+                                                    <select class="form-control form-control-sm" name="po">
+                                                        <option value="" selected>Choose</option>
                                                     </select>
                                                 </div>
 
-                                                <div style="margin:1% 3%">
+                                                <div style="margin:1% 3%" id="poContent">
                                                     <!--checkboxes-->
                                                     <label style="width:96%"><input type="checkbox" class="mr-2"
                                                             value="">Sample data 1</label>
@@ -354,6 +354,25 @@ $(function() {
             }
         });
     });
+    $("#addPOItems").on('click',function(){
+        $.ajax({
+            method : 'post',
+            url : '<?= site_url('admin/getPurchaseOrders')?>',
+            data : {
+                id : $("#addEditModal").find("select[name='spID']").val()
+            },
+            dataType : 'json',
+            success : function(data){
+                console.log(data);
+            },
+            error : function (response, settings, error){
+                console.log(response.responseText);
+            },
+            complete: function(){                
+                setSuppliers();
+            }
+        });
+    });
     $("#form").on('submit',function(event){
         event.preventDefault();
         var transID = isNaN(parseInt($(this).find("input[name='transID']").val())) ? (null) : parseInt($(this).find("input[name='transID']").val());
@@ -403,11 +422,10 @@ $(function() {
             complete : function(){
                 $(this).closest(".modal").modal("hide");
             }
-        });        
+        });
     });
 });
 function setSuppliers(){
-    console.log(suppliers);
     $("#addEditModal").find('select[name="spID"]').children().first().siblings().remove();
     $("#addEditModal").find('select[name="spID"]').append(`
         ${suppliers.map(supplier => {
@@ -415,4 +433,17 @@ function setSuppliers(){
         }).join('')}
     `);
 }
+function setPurchaseOrders(po){
+    $("#brochure").find("select[name='po'] option").first().siblings().remove();
+    $("#brochure").find("select[name='po']").append(`
+    ${po.po.map(po => {
+        return `<option value="${po.poID}">${po.poID} - ${po.poDate}</option>`
+    }).join('')}
+    `);
+}
+$("#brochure").find("select[name='po']").on('change',function(){
+    var id = $(this).val();
+    $("#poContent").children().remove();
+    $("#poContent").append(`${po.poItems.filter(item => item.poID === id ).map(item => { return `<>`})}`);
+});
 </script>

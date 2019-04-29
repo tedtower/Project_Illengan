@@ -192,6 +192,15 @@ class AdminModel extends CI_Model{
         $query = "insert into suppliermerchandise (vID, spID, spmDesc, spmUnit, spmPrice) values (?,?,?,?,?);";
         $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
     }
+    function add_consumption($ci,$id,$cd,$rDate){
+        $query = "insert into consumption (cnID, cnDate, cnDateRecorded) values (?,?,?)";
+        $this->db->query($query,array($id[0]['nextID'],$cd,$rDate));
+        $cnID = $this->db->insert_id();
+        foreach ($ci as $c) {
+            $query = "insert into varconsumptionitems (cnID, vID, cnQty, remainingQty) values (?,?,?,?)";
+            $this->db->query($query,array($cnID,(int)$c['varConsumed'],(int)$c['consumedQty'],(int)$c['remainingQty']));
+        }
+    }
 
     function edit_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch, $spID){
         $query = "UPDATE supplier 
@@ -390,7 +399,10 @@ class AdminModel extends CI_Model{
 
 
     //SELECT FUNCTIONS------------------------------------------------------------------
-    
+    function get_nextIDConsumption(){
+        $query = "SELECT COUNT(cnID)+1 nextID FROM consumption;";
+        return $this->db->query($query)->result_array();
+    }
     function get_accounts(){
         $query = "Select * from accounts";
         return $this->db->query($query)->result_array();
@@ -555,8 +567,41 @@ class AdminModel extends CI_Model{
         $query ="Select * FROM purchaseorder INNER JOIN supplier USING (spID)";
         return $this->db->query($query)->result_array();
     }
+    function get_purchaseOrders($id){
+        $query = "SELECT 
+            poID,
+            poDate,
+            edDate,
+            poTotal,
+            poDateRecorded,
+            poRemarks,
+            poStatus,
+            spName,
+            spID
+        FROM
+            purchaseorder
+                INNER JOIN
+            supplier USING (spID)
+        WHERE
+            spID = ? AND NOT poStatus = 'delivered';";
+        return $this->db->query($query, array($id))->result_array();
+    }
+    function get_poItems($id){
+        $query = "SELECT 
+            *
+        FROM
+            poItems
+        WHERE
+            poID IN (SELECT 
+                    poID
+                FROM
+                    purchaseorder
+                WHERE
+                    spID = ? AND NOT poStatus = 'delivered');";
+        return $this->db->query($query, array($id))->result_array();
+    }
     function get_poItemVariance() {
-        $query ="SELECT *, CONCAT(st.stName,' ',var.vUnit,' ',var.vSize) AS poItem FROM poitems po INNER JOIN variance var USING (vID) INNER JOIN stockitems st USING (stID)";
+        $query ="SELECT *, CONCAT(st.stName,', ',var.vUnit,' (',var.vSize,')') AS poItem FROM poitems po INNER JOIN variance var USING (vID) INNER JOIN stockitems st USING (stID) ORDER BY poItem ASC";
         return $this->db->query($query)->result_array();
     }
     function get_stockCategories(){
@@ -632,9 +677,14 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_consumption(){
-       $query = "SELECT * FROM consumption";
+       $query = "SELECT cnID, cnDate, cnDateRecorded, COUNT(stID) countItem FROM varconsumptionitems NATURAL JOIN consumption NATURAL JOIN variance NATURAL JOIN stockitems GROUP BY cnDate ORDER BY cnDate DESC";
        return $this->db->query($query)->result_array();
     }
+    function get_consumptionItems(){
+        $query = "SELECT stID, cnID, cnQty, remainingQty, stName, vUnit, vSize  FROM varconsumptionitems NATURAL JOIN consumption NATURAL JOIN variance NATURAL JOIN stockitems";
+        return $this->db->query($query)->result_array();
+    }
+    
     function get_deliveryTransactions(){
         $query = "SELECT 
             iID,
