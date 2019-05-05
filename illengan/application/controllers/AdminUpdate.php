@@ -10,12 +10,12 @@ class adminUpdate extends CI_Controller{
     }
     function editStockSpoil(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $ssID=$this->input->post('ssID');
-            $vID=$this->input->post('vID');
-            $ssQty=$this->input->post('ssQty');
-            $ssDate=$this->input->post('ssDate');
-            $ssRemarks=$this->input->post('ssRemarks');
-            $date_recorded=date("Y-m-d 2H:i:s");
+            $ssID = $this->input->post('ssID');
+            $vID = $this->input->post('vID');
+            $ssQty = $this->input->post('ssQty');
+            $ssDate = $this->input->post('ssDate');
+            $ssRemarks = $this->input->post('ssRemarks');
+            $date_recorded = date("Y-m-d H:i:s");
 
             $this->adminmodel->edit_stockspoilage($ssID,$vID,$ssQty,$ssDate,$ssRemarks,$date_recorded);
         }else{

@@ -202,7 +202,7 @@ class AdminAdd extends CI_Controller{
             $s_qty =$this->input->post("s_qty");
             $s_date =$this->input->post("s_date");
             $remarks =$this->input->post("remarks");
-            $date_recorded = date("Y-m-d");
+            $date_recorded = date("Y-m-d H:i:s");
 
             $this->adminmodel->add_aospoil($s_type,$ao_name,$s_type,$s_date,$date_recorded,$remarks);
             $data['spoilages'] = $this->adminmodel->get_spoilages();
@@ -218,7 +218,7 @@ class AdminAdd extends CI_Controller{
             $menu_name =$this->input->post("menu_name");
             $s_qty =$this->input->post("s_qty");
             $s_date =$this->input->post("s_date");
-            $date_recorded = date("Y-m-d");
+            $date_recorded = date("Y-m-d H:i:s");
             $remarks =$this->input->post("remarks");
 
             $this->adminmodel->add_menuspoil($s_type,$menu_name,$s_qty,$s_date,$date_recorded,$remarks);
@@ -231,7 +231,7 @@ class AdminAdd extends CI_Controller{
     function addspoilagesstock(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
-            $date_recorded = date("Y-m-d");
+            $date_recorded = date("Y-m-d H:i:s");
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
             $this->adminmodel->add_stockspoil($date_recorded,$stocks);

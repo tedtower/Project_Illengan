@@ -1,3 +1,4 @@
+<!--End Side Bar-->
 <div class="content">
 	<div class="container-fluid">
 		<br>
@@ -12,19 +13,20 @@
 						<!--Table-->
 						<div class="card-content">
 
-							<!--Add Stock Spoilage BUTTON-->
+							<!--Add Stock Spoilage-->
 							<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addStockSpoilage" data-original-title style="margin:0">Add Stock Spoilage</a><br>
-							<!--eND Add Stock Spoilage BUTTON-->
+
 							<br>
-							<table id="spoilagesTable" class="spoiltable dtr-inline collapsed table display">
+							<table id="tablevalues" class="dataTable dtr-inline collapsed table display">
 								<thead>
+									<th></th>
 									<th>vCode</th>
 									<th>sCode</th>
 									<th>Item Name</th>
 									<th>Quantity</th>
 									<th>Date Spoiled</th>
 									<th>Date Recorded</th>
-									<th>Remarks</th>
+									<th>Operation</th>
 									<th>Operation</th>
 									
 								</thead>
@@ -141,7 +143,7 @@
 							</div>
 							<!--End of Delete Modal-->
 							<!--Edit Spoilage-->
-							<div class="modal fade" id="editSpoil" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal fade" id="editSpoil" action="<?= site_url('admin/stock/spoilage/edit') ?>" method="post" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -182,8 +184,8 @@
 													<input name="vID" id="vID" hidden="hidden">
                                                     <!--Footer-->
                                                     <div class="modal-footer">
-													<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                            		<button class="btn btn-success btn-sm" type="submit">Update</button>
+                                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                                        <button class="btn_update btn btn-success btn-sm" type="submit">Update</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -202,38 +204,9 @@
 <?php include_once('templates/scripts.php') ?>
 <script src="<?= admin_js().'addSpoilageBrochure.js'?>"></script>
 <script>
-	var spoilages = [];
-	var stockchoice = [];
-	$(function() {
-		viewSpoilagesJs();
-
-		$.ajax({
-				url: '<?= site_url('admin/stock/spoilages/viewStockJS') ?>',
-				dataType: 'json',
-				success: function (data) {
-					var poLastIndex = 0;
-					stocks = data;
-					setStockData(stocks);
-				},
-				failure: function () {
-					console.log('None');
-				},
-				error: function (response, setting, errorThrown) {
-					console.log(errorThrown);
-					console.log(response.responseText);
-				}
-			});
-
-	});
-	function setStockData(stocks){
-			$("#list").empty();
-			$("#list").append(`${stocks.map(stock => {
-				return `<label style="width:96%"><input type="checkbox" name="stockchoice[]" class="choiceStock mr-2" value="${stock.vID}">${stock.vName}</label>`
-			}).join('')}`);
-	}
-		
-	//POPULATE TABLE
-	var table = $('#spoilagesTable');
+var stockchoice = [];
+	
+	var table = $('#tablevalues');
 	function format(d) {
 		return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
 			'<tr>' +
@@ -245,103 +218,92 @@
 			'</table>';
 
 	}
-	function viewSpoilagesJs() {
-        $.ajax({
-            url: "<?= site_url('admin/spoilagesstockjson') ?>",
-            method: "post",
-            dataType: "json",
-            success: function(data) {
-                spoilages = data;
-                setSpoilagesData(spoilages);
-            },
-            error: function(response, setting, errorThrown) {
-                console.log(response.responseText);
-                console.log(errorThrown);
-            }
-        });
-	}
-	function setSpoilagesData() {
-        if ($("#spoilagesTable> tbody").children().length > 0) {
-            $("#spoilagesTable> tbody").empty();
-        }
-        spoilages.forEach(table => {
-            $("#spoilagesTable> tbody").append(`
-            <tr data-vID="${table.vID}" data-ssID="${table.ssID}" data-spoilname="${table.vName}">
-                <td>${table.vID}</td>
-                <td>${table.ssID}</td>
-                <td>${table.vName}</td>
-                <td>${table.ssQty}</td>
-				<td>${table.ssDate}</td>
-				<td>${table.ssDateRecorded}</td>
-				<td>${table.ssRemarks}</td>
-                <td>
-                        <!--Action Buttons-->
-                        <div class="onoffswitch">
 
-                            <!--Edit button-->
-                            <button class="updateBtn btn btn-default btn-sm" data-toggle="modal"
-                                data-target="#editSpoil">Edit</button>
-                            <!--Delete button-->
-                            <button class="item_delete btn btn-danger btn-sm" data-toggle="modal" 
-                            data-target="#deleteSpoilage">Delete</button>                      
-                        </div>
-                    </td>
-                </tr>`);
-            $(".updateBtn").last().on('click', function () {
-				$("#editSpoil").find("input[name='vID']").val($(this).closest("tr").attr(
-                    "data-vID"));
-                $("#editSpoil").find("input[name='ssID']").val($(this).closest("tr").attr(
-                    "data-ssID"));
-            });
-            $(".item_delete").last().on('click', function () {
-                $("#deleteSpoilageId").text(
-                    `Delete spoilage code ${$(this).closest("tr").attr("data-spoilname")}`);
-                $("#deleteSpoilage").find("input[name='vID']").val($(this).closest("tr").attr(
-					"data-id"));
-				$("#deleteSpoilage").find("input[name='ssID']").val($(this).closest("tr").attr(
-                    "data-id"));
-            });
-        });
-	}
-	//END OF POPULATING TABLE
-	//-------------------------Function for Edit-------------------------------
 	$(document).ready(function() {
-    $("#editSpoil form").on('submit', function(event) {
-		event.preventDefault();
-		var ssID = $(this).find("input[name='ssID']").val();
-        var vID = $(this).find("input[name='vID']").val();
-        var ssQty = $(this).find("input[name='ssQty']").val();
-        var ssDate = $(this).find("input[name='ssDate']").val();
-        var ssRemarks = $(this).find("input[name='ssRemarks']").val();
-       
-        console.log(ssID, vID, ssQty, ssDate, ssRemarks);
-        $.ajax({
-            url: "<?= site_url("admin/stock/spoilage/edit")?>",
-            method: "post",
-            data: {
-				ssID: ssID,
-                vID : vID,
-                ssQty: ssQty,
-                ssDate: ssDate,
-                ssRemarks: ssRemarks
-            },
-            dataType: "json",
-            success: function(data) {
-                console.log(data);
-                location.reload();
-                alert('Stock Spoilage Updated');
-            },
-            complete: function() {
-                $("#editSpoil").modal("hide");
-            },
-            error: function(error) {
-                console.log(error);
-            }
-            
-        });
-    });
-});
-	//--------------------End of Function for Edit-----------------------------
+		var table = $('#tablevalues').DataTable({
+			ajax: {
+				url: 'http://www.illengan.com/admin/spoilagesstockjson',
+				dataSrc: '',
+			},
+			colReorder: {
+				realtime: true
+			},
+			"columns": [{
+					"className": 'details-control',
+					"data": null,
+					"defaultContent": ''
+				},
+				{
+					"data": "vID"
+				},
+				{
+					"data": "ssID",
+				},
+				{
+					"data": "vName"
+				},
+				{
+					"data": "ssQty"
+				},
+				{
+					"data": "ssDate"
+				},
+				{
+					"data": "ssDateRecorded"
+				},
+				{
+					"data": null,
+					render: function(data, type, row, meta) {
+						return '<a href="javascript: void(0)" class="btn btn-warning btn-sm delete_data" data-id="' +
+							data.ssID + '">Delete</a>';
+					}
+				},
+				{
+					"data": null,
+					render: function(data, type, row, meta) {
+						return '<button class="updateBtn btn btn-default btn-sm" data-toggle="modal" data-target="#editSpoil" data-ssID="' + 
+						data.ssID +'" data-id="'+ data.vID + '" >Edit</button>';
+					}
+				}
+			]
+		});
+
+
+
+		//For showing the accordion
+		$('#tablevalues tbody').on('click', 'td.details-control', function() {
+			var tr = $(this).closest('tr');
+			var row = table.row(tr);
+
+			if (row.child.isShown()) {
+				row.child.hide(); //to hide child row if open
+				tr.removeClass('shown');
+			} else {
+				row.child(format(row.data())).show(); //to open the child row
+				tr.addClass('shown');
+			}
+		});
+
+		//function for 'Expand all' button
+		$('#btn-show-all-children').on('click', function() {
+			table.rows().every(function() {
+				if (!this.child.isShown()) {
+					this.child(format(this.data())).show();
+					$(this.node()).addClass('shown');
+				}
+			});
+		});
+
+		$('#btn-hide-all-children').on('click', function() {
+			table.rows().every(function() {
+				if (this.child.isShown()) {
+					this.child.hide();
+					$(this.node()).removeClass('shown');
+				}
+			});
+		});
+
+	});
 	// Function for Delete
 	$(document).ready(function() {
 		$('.delete_data').click(function() {
@@ -354,6 +316,91 @@
 		});
 	});
 	//End Function Delete
+
+	
+	$(function () {
+	$.ajax({
+            url: '<?= site_url('admin/stock/spoilages/viewStockJS') ?>',
+            dataType: 'json',
+            success: function (data) {
+                var poLastIndex = 0;
+                stocks = data;
+                setStockData(stocks);
+            },
+            failure: function () {
+                console.log('None');
+            },
+            error: function (response, setting, errorThrown) {
+                console.log(errorThrown);
+                console.log(response.responseText);
+            }
+		});
+
+	});
+	function setStockData(stocks){
+        $("#list").empty();
+        $("#list").append(`${stocks.map(stock => {
+            return `<label style="width:96%"><input type="checkbox" name="stockchoice[]" class="choiceStock mr-2" value="${stock.vID}">${stock.vName}</label>`
+        }).join('')}`);
+		}
+		
+	 // Edit Spoilage===========================================
+	 var tuples = ((document.getElementById('tablevalues')).getElementsByTagName('tbody'))[0]
+        .getElementsByTagName('tr');
+    var tupleNo = tuples.length;
+    var editButtons = document.getElementsByName('editSpoil');
+    var editModal = document.getElementById('editSpoil');
+    for (var x = 0; x < tupleNo; x++) {
+        editButtons[x].addEventListener("click", showEditModal);
+    }
+    function showEditModal(event) {
+        var row = event.target.parentElement.parentElement.parentElement;
+        document.getElementById('vID').value = parseInt(row.firstElementChild.innerHTML);
+		document.getElementById('ssID').value = parseInt(row.firstElementChild.nextElementSibling.innerHTML);
+    }
+	//  $('#spoilage_data').on('click', '.updateBtn', function (){
+	// 	var vID = $(obj).attr('id');
+	// 	var ssID = $(obj).attr('ssID');
+
+	// 	$(".updateBtn").last().on('click', function() {
+	// 		$("#editSpoil").find("input[name='ssIDget']").val($(obj).attr('ssID'));
+	// 		$("#editSpoil").find("input[name='vIDget']").val($(obj).attr('id'));
+	// 	})
+	// });
+
+	// $('.btn_update').on('click', function () {
+	// 	var ssID = $('#ssID').val();
+	// 	var vID = $('#vID').val();
+    //     var ssQty = $('#ssQty').val();
+	// 	var ssDate = $('#ssDate').val();
+	// 	var ssRemarks = $('#ssRemarks').val();
+
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "http://illengan.com/admin/stock/spoilage/edit",
+    //         dataType: "JSON",
+    //         data: {
+	// 			ssID : ssID,
+	// 			vID : vID,
+	// 			ssQty : ssQty,
+	// 			ssDate : ssDate,
+	// 			ssRemarks : ssRemarks
+    //         },
+    //         success: function(data) {
+    //             // $('[name="ssID"]').val("");
+    //             // $('[name="vID"]').val("");
+    //             // $('[name="ssQty"]').val("");
+	// 			// $('[name="ssDate"]').val("");
+	// 			// $('[name="ssRemarks"]').val("");
+    //             alert("Table Code was successfully updated!");
+    //             console.log(data);
+    //             $('#editSpoil').modal('hide');
+    //         }
+    //     });
+		
+    //     return false;
+    // });
+
 
 </script> 
 </body>
