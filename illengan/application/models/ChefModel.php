@@ -1,5 +1,5 @@
 <?php
-    class ChefModel extends CI_Model {
+    class Chefmodel extends CI_Model {
         
         
         function return_orderlist() {

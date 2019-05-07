@@ -5,7 +5,7 @@ class Login extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type')){
             $this->homeRedirect();
         }else{
-            $this->load->view('login');
+            $this->load->view('Login');
         }
     }
 
@@ -49,7 +49,7 @@ class Login extends CI_Controller{
 		if($this->session->userdata('user_id') && $this->session->userdata('user_type')){
 			$this->session->sess_destroy();
 		}
-		redirect('login');		
+		redirect('Login');		
     }
 
 }
