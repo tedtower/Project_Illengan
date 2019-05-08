@@ -43,7 +43,7 @@
                                         <td><?= $delivery['resolvedStatus']?></td>
                                         <td>
                                             <button class="editBtn btn btn-sm btn-primary" data-toggle="modal"
-                                                data-target="#editTransaction">Edit</button>
+                                                data-target="#addEditModal">Edit</button>
                                             <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal"
                                                 data-target="#delete">Delete</button>
                                         </td>
@@ -380,13 +380,10 @@ $(function() {
             },
             dataType : 'json',
             success : function(data){
-                console.log(data);
+                setPurchaseOrders(data);
             },
             error : function (response, settings, error){
                 console.log(response.responseText);
-            },
-            complete: function(){                
-                setSuppliers();
             }
         });
     });
@@ -461,10 +458,22 @@ function setPurchaseOrders(po){
         return `<option value="${po.poID}">${po.poID} - ${po.poDate}</option>`
     }).join('')}
     `);
+    console.log(po.po.map(po => {
+        return `<option value="${po.poID}">${po.poID} - ${po.poDate}</option>`
+    }).join(''));
+    $("#brochure").find("select[name='po']").on('change',function(){
+        var id = $(this).val();
+        $("#brochure").find('.table tbody').children().remove();
+        $("#brochure").find('.table tbody').append(`${po.poItems.filter(item => item.poID === id ).map(item => { return `
+                                                        <tr>
+                                                            <td><input type="checkbox" class="mr-2" value="${item.poiID}"></td>
+                                                            <td>${null}</td>
+                                                            <td>${item.poiUnit}</td>
+                                                            <td>${item.poiQty}</td>
+                                                            <td>${item.poiPrice}</td>
+                                                            <td>${(parseFloat(item.poiPrice) * parseInt(item.poiQty)).toFixed(2)}</td>
+                                                            <td>${item.poiStatus}</td>
+                                                        </tr>`}).join('')}`);
+    });
 }
-$("#brochure").find("select[name='po']").on('change',function(){
-    var id = $(this).val();
-    $("#poContent").children().remove();
-    $("#poContent").append(`${po.poItems.filter(item => item.poID === id ).map(item => { return `<>`})}`);
-});
 </script>
