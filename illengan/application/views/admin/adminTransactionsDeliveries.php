@@ -430,8 +430,12 @@ $(function() {
             beforeSend : function(){
                 console.log(transID, spID, transType, receiptNum, transDate, resStatus, remarks, transitems);
             },
-            success : function(data){
-                console.log(data);
+            success : function(response){
+                if(response.loginErr !== null){
+                    window.location.href = '<?= site_url('login')?>';
+                }else if(response.dataErr !== null){
+                    console.log();
+                }
             },
             error : function (response, setting, error){
                 console.log(response.responseText);

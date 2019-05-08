@@ -748,16 +748,16 @@ class Adminmodel extends CI_Model{
         }else{
             $query = "UPDATE invoice 
                 SET 
-                    spID = '',
-                    iDate = '',
-                    iDateRecorded = '',
-                    iNumber = '',
-                    iTotal = '',
-                    iRemarks = '',
-                    iType = '',
-                    resolvedStatus = ''
+                    spID = ?,
+                    iDate = ?,
+                    iDateRecorded = ?,
+                    iNumber = ?,
+                    iTotal = ?,
+                    iRemarks = ?,
+                    iType = ?,
+                    resolvedStatus = ?
                 WHERE
-                    transID = '';";
+                    transID = ?;";
             $invoiceSuccess = $this->db->query($query, array($spID, $transDate, $dateRecorded, $receiptNumber, $total, $remarks, $transType, $resStatus, $transID));
         }
         $id = $this->db->insert_id();
