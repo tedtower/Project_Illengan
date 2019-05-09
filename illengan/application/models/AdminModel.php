@@ -568,24 +568,24 @@ class AdminModel extends CI_Model{
             stockitems USING (stID);";
         return $this->db->query($query)->result_array();
     }
-    function get_stockExpiration(){
-        $query = "SELECT 
-            expID,
-            CONCAT(stName,
-                    ' ',
-                    vUnit,
-                    IF(vSize = NULL, '', CONCAT(' ', vSize))) AS vName,
-            expDate,
-            expQty,
-            expMaxTime
-        FROM
-            expiration
-                INNER JOIN
-            variance USING (vID)
-                INNER JOIN
-            stockitems USING (stID);";
-        return $this->db->query($query)->result_array();
-    }
+    // function get_stockExpiration(){
+    //     $query = "SELECT 
+    //         expID,
+    //         CONCAT(stName,
+    //                 ' ',
+    //                 vUnit,
+    //                 IF(vSize = NULL, '', CONCAT(' ', vSize))) AS vName,
+    //         expDate,
+    //         expQty,
+    //         expMaxTime
+    //     FROM
+    //         expiration
+    //             INNER JOIN
+    //         variance USING (vID)
+    //             INNER JOIN
+    //         stockitems USING (stID);";
+    //     return $this->db->query($query)->result_array();
+    // }
     function get_addons(){
         $query = "Select * from addons";
         return $this->db->query($query)->result_array();

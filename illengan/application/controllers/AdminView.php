@@ -53,8 +53,7 @@ class AdminView extends CI_Controller{
             $data['inventory'] = array(
                 "stocks" => $this->adminmodel->get_stocks(),
                 "categories" => $this->adminmodel->get_stockSubCategories(),
-                "variances" => $this->adminmodel->get_stockVariance(),
-                "expirations" => $this->adminmodel->get_stockExpiration()
+                "variances" => $this->adminmodel->get_stockVariance()
             );
             $data['category'] = $this->adminmodel->get_stockcategories();
             $this->load->view('admin/adminInventory',$data);
@@ -97,17 +96,30 @@ class AdminView extends CI_Controller{
             $data['title'] = "Menu";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
-            $data['menuitem'] = array(
-                'menus' => $this->adminmodel->get_menu(),
-                'preferences' => $this->adminmodel->get_preferences(),
-                'addons' => $this->adminmodel->get_addons2()
-            );
-            $this->load->view('admin/menuitems', $data);
+            // $data['menuitem'] = array(
+            //     'menus' => $this->adminmodel->get_menu(),
+            //     'preferences' => $this->adminmodel->get_preferences(),
+            //     'addons' => $this->adminmodel->get_addons2()
+            // );
+            $this->load->view('admin/menuitems');
         }else{
             redirect('login');
         }
     }
 
+    function menuGetDetails(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data = array(
+                'menu' => $this->adminmodel->get_menu(),
+                'preferences' => $this->adminmodel->get_preferences(),
+                'addons' => $this->adminmodel->get_addons2()
+            );
+            header('Content-Type: application/json');
+            echo json_encode($data, JSON_PRETTY_PRINT);
+        }else{
+            redirect('login');
+        }
+    }
     function menuAddons(){
         if($this->checkIfLoggedIn()){
             $data['title'] = "Menu - Addons";
@@ -156,9 +168,7 @@ class AdminView extends CI_Controller{
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             // $data['sales'] = $this->adminmodel->get_sales();
-            $this->load->view('admin/adminSales',$data);
-            $this->load->view('admin/templates/scripts');
-            $this->load->view('admin/templates/footer');
+            $this->load->view('admin/adminSales');
         }else{
             redirect('login');
         }
