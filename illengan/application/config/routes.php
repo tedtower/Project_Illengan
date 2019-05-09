@@ -53,6 +53,7 @@ $route['default_controller'] = 'login/viewlogin';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'login/viewlogin';
+$route['logout'] = 'login/logout';
 $route['verifylogin'] = "login/check_cred";
 
 //Viewing Routes -----------------------------------------------
@@ -120,6 +121,7 @@ $route['admin/stockcategories/edit'] = "adminupdate/editstockcategory/";
 $route['admin/menu/edit'] = "adminupdate/edit_menu";
 $route['admin/menu/edit_image'] = "adminupdate/edit_image";
 $route['admin/inventory/edit'] = "adminupdate/editstockitem";
+$route['admin/purchaseorder/edit'] = "adminupdate/editPurchaseOrder";
 $route['admin/transactions/edit'] = "adminupdate/edittransactions";
 $route['admin/accounts/changepassword'] = "adminupdate/changeAccountPassword";
 $route['admin/accounts/edit'] = "adminupdate/editAccounts";

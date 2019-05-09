@@ -241,7 +241,7 @@
                             <div class="modal fade bd-example-modal" id="brochure" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true"
                                 style="background:rgba(0, 0, 0, 0.3)">
-                                <div class="modal-dialog" role="document">
+                                <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Select Stock Item</h5>
@@ -262,14 +262,31 @@
                                                         <option value="" selected>Choose</option>
                                                     </select>
                                                 </div>
-
-                                                <div style="margin:1% 3%" id="poContent">
-                                                    <!--checkboxes-->
-                                                    <label style="width:96%"><input type="checkbox" class="mr-2"
-                                                            value="">Sample data 1</label>
-                                                    <label style="width:96%"><input type="checkbox" class="mr-2"
-                                                            value="">Sample data 2</label>
-                                                </div>
+                                                <br>
+                                                <table class="table">
+                                                    <thead class="thead-light">
+                                                        <tr>
+                                                            <th style="width:2%"></th>
+                                                            <th>Item</th>
+                                                            <th>Unit</th>
+                                                            <th>Qty</th>
+                                                            <th>Price</th>
+                                                            <th>Subtotal</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><input type="checkbox" class="mr-2" value=""></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-danger btn-sm"

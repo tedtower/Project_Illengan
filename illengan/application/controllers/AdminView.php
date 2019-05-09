@@ -97,27 +97,16 @@ class AdminView extends CI_Controller{
             $data['title'] = "Menu";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/menuitems');
-        }else{
-            redirect('login');
-        }
-    }
-
-    function menuGetDetails(){
-        if($this->checkIfLoggedIn()){
-            $data = array(
-                'menu' => $this->adminmodel->get_menu(),
+            $data['menuitem'] = array(
+                'menus' => $this->adminmodel->get_menu(),
                 'preferences' => $this->adminmodel->get_preferences(),
                 'addons' => $this->adminmodel->get_addons2()
             );
-            header('Content-Type: application/json');
-            echo json_encode($data, JSON_PRETTY_PRINT);
+            $this->load->view('admin/menuitems', $data);
         }else{
             redirect('login');
         }
     }
-
-    
 
     function menuAddons(){
         if($this->checkIfLoggedIn()){

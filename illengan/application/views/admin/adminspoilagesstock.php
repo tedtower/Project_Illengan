@@ -20,7 +20,8 @@
 							<table id="tablevalues" class="dataTable dtr-inline collapsed table display">
 								<thead>
 									<th></th>
-									<th>Code</th>
+									<th>vCode</th>
+									<th>sCode</th>
 									<th>Item Name</th>
 									<th>Quantity</th>
 									<th>Date Spoiled</th>
@@ -151,7 +152,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form id="formEdit" action="<?= site_url('admin/accounts/edit') ?>" method="post" accept-charset="utf-8">
+                                            <form id="formEdit" accept-charset="utf-8">
                                                 
 												<div class="modal-body">
                                                     <!--Quantity-->
@@ -180,10 +181,12 @@
                                                         <input type="text" name="ssRemarks" id="ssRemarks" class="form-control form-control-sm">
                                                         <span class="text-danger"><?php echo form_error("ssRemarks"); ?></span>
                                                     </div>
+													<input name="ssID" hidden="hidden">
+													<input name="vID" hidden="hidden">
                                                     <!--Footer-->
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn-success btn-sm" type="submit">Update</button>
+                                                        <button class="btn btn-success btn-sm" onclick="updateSpoil()" type="button" >Update</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -238,6 +241,9 @@ var stockchoice = [];
 					"data": "vID"
 				},
 				{
+					"data": "ssID",
+				},
+				{
 					"data": "vName"
 				},
 				{
@@ -253,13 +259,14 @@ var stockchoice = [];
 					"data": null,
 					render: function(data, type, row, meta) {
 						return '<a href="javascript: void(0)" class="btn btn-warning btn-sm delete_data" data-id="' +
-							data.s_id + '">Delete</a>';
+							data.ssID + '">Delete</a>';
 					}
 				},
 				{
 					"data": null,
 					render: function(data, type, row, meta) {
-						return '<button class="updateBtn btn btn-default btn-sm" data-toggle="modal" data-target="#editSpoil" data-sID="'data.sID'" data-id="'data.vID'">Edit</button>';
+						return '<button class="updateBtn btn btn-default btn-sm" data-toggle="modal" data-target="#editSpoil" data-ssID="' + 
+						data.ssID +'" data-id="'+ data.vID + '">Edit</button>';
 					}
 				}
 			]
@@ -339,7 +346,50 @@ var stockchoice = [];
         $("#list").append(`${stocks.map(stock => {
             return `<label style="width:96%"><input type="checkbox" name="stockchoice[]" class="choiceStock mr-2" value="${stock.vID}">${stock.vName}</label>`
         }).join('')}`);
-    	}
+		}
+		
+	 // Edit Spoilage===========================================
+	//  $('#spoilage_data').on('click', '.updateBtn', function() {
+	//    var ssID = $(this).data('ssID');
+	//    var vID = $(this).data('id');
+
+	// 	updateSpoil(ssID,vID);		
+    // });
+
+	$('.btn_update').on( 'click', function () {
+		var vID = table.row( this ).id();
+		var ssID = table.row( this ).ssID();
+        var ssQty = $('#ssQty').val();
+		var ssDate = $('#ssDate').val();
+		var ssRemarks = $('#ssRemarks').val();
+		console.log(vID);
+        $.ajax({
+            type: "POST",
+            url: "http://illengan.com/admin/stock/spoilage/edit",
+            dataType: "JSON",
+            data: {
+				ssID : ssID,
+				vID : vID,
+				ssQty : ssQty,
+				ssDate : ssDate,
+				ssRemarks : ssRemarks
+            },
+            success: function(data) {
+                // $('[name="ssID"]').val("");
+                // $('[name="vID"]').val("");
+                // $('[name="ssQty"]').val("");
+				// $('[name="ssDate"]').val("");
+				// $('[name="ssRemarks"]').val("");
+                alert("Table Code was successfully updated!");
+                console.log(data);
+                $('#editSpoil').modal('hide');
+            }
+        });
+		
+        return false;
+    });
+
+
 </script> 
 </body>
 
