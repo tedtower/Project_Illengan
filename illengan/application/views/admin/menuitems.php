@@ -12,8 +12,18 @@
                         <div class="container-fluid">
                             <!--Table-->
                             <div class="card-content">
-                                <a class="btn btn-default btn-sm" id="addBtn"data-toggle="modal" data-target="#newMenu"
+                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newMenu"
                                     data-original-title style="margin:0;">Add Menu Item</a>
+                                <!--Search
+                            <div id ="example_filter" class="dataTables_filter">
+                                <label>
+                                    "Search:"
+                                    <div class="form-group form-group-sm is-empty">
+                                       <input type="search" class="form-control" placeholder aria-controls="example">
+                                       <span class="material-input"></span> 
+                                    </div>
+                                </label>
+                            </div>-->
                                 <br>
                                 <br>
             <table id="menuTable" class="table dt-responsive nowrap" cellspacing="0" width="100%">
@@ -31,174 +41,176 @@
                 </tbody>
             </table>
             <!--Start of Modal "Add Menu"-->
-            <div class="modal fade bd-example-modal-lg" id="newMenu" tabindex="-1" role="dialog"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Add Menu Item</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <form action="<?php echo base_url()?>admin/menu/add" method="get"
-                                                accept-charset="utf-8">
-                                                <div class="modal-body">
-                                                    <div class="input-group mb-3"> <!--Menu Image-->
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" style="width:105px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">Image</span>
-                                                        </div>
-                                                        <div class="custom-file">
-                                                            <input type="file" class="custom-file-input" name="mImage" id="inputGroupFile01">
-                                                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                                                        </div>
-                                                    </div> 
-                                                    <!--Menu Name-->
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                            Name</span>
-                                                        </div>
-                                                        <input type="text" name="mName" class="form-control form-control-sm">
-                                                    </div>  
-                                                    <!--Description-->
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                            Description</span>
-                                                        </div>
-                                                        <textarea type="text" name="mDesc" class="form-control form-control-sm"></textarea>
-                                                    </div>                                                                                                                                                       
-                                                    <div class="form-row"> <!--Container of receipt no. and transaction date-->
-                                                        <!--Receipt no-->
-                                                        <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                            Category</span>
-                                                        </div>
-                                                        <select class="custom-select" name="category" >
-                                                            <option selected>Choose</option>
-                                                            <option></option>
-                                                        </select>
-                                                    </div>
-                                                        <!--Transaction date-->
-                                                        <div class="input-group mb-3 col">
-                                                            <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                            Status</span>
-                                                        </div>
-                                                        <select class="custom-select" name="mStatus">
-                                                            <option selected>Choose</option>
-                                                            <option></option>
-                                                        </select>
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    <!--Menu Items-->
-                                                    <a class="addPreferences btn btn-primary btn-sm" style="color:blue;margin:0">Add Preferences</a> <!--Button to add row in the table-->
-                                                    <br><br>
-                                                    <table class="addPrefTable table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
-                                                        <thead class="thead-light">
-                                                            <tr>
-                                                                <th>Name</th>
-                                                                <th>Temperature</th>
-                                                                <th>Price</th>
-                                                                <th>Status</th>
-                                                                <th></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-
-                                                        </tbody>
-                                                    </table>
-                                                    <!--Menu Items-->
-                                                    <a class="addAddons btn btn-primary btn-sm" style="color:blue">Add Addons</a> <!--Button to add row in the table-->
-                                                    <br><br>
-                                                    <table class="addAddonsTable table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
-                                                        <thead class="thead-light">
-                                                            <tr>
-                                                                <th style="width:50%">Name</th>
-                                                                <th style="width:50%">Price</th>
-                                                                <th></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
-                                                    </table>
-                         
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger btn-sm"
-                                                            data-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn-success btn-sm"
-                                                            type="submit">Insert</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
+            <div class="modal fade bd-example-modal-lg" id="newMenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Menu Item</h5>
+                            <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="<?php echo base_url()?>admin/menu/add" method="get"
+                            accept-charset="utf-8">
+                            <div class="modal-body">
+                                <div class="input-group mb-3"> <!--Menu Image-->
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="width:105px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">Image</span>
+                                    </div>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="mImage" id="inputGroupFile01">
+                                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                    </div>
+                                </div> 
+                                <!--Menu Name-->
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Name</span>
+                                    </div>
+                                    <input type="text" name="mName" class="form-control form-control-sm">
+                                </div>  
+                                <!--Description-->
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Description</span>
+                                    </div>
+                                    <textarea type="text" name="mDesc" class="form-control form-control-sm"></textarea>
+                                </div>                                                                                                                                                       
+                                <div class="form-row"> <!--Container of receipt no. and transaction date-->
+                                    <!--Receipt no-->
+                                    <div class="input-group mb-3 col">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Category</span>
+                                    </div>
+                                    <select class="custom-select" name="ctName" >
+                                        <option selected>Choose</option>
+                                        <option></option>
+                                    </select>
+                                </div>
+                                    <!--Transaction date-->
+                                    <div class="input-group mb-3 col">
+                                        <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Status</span>
+                                    </div>
+                                    <select class="custom-select" name="mAvailability">
+                                        <option selected>Choose</option>
+                                        <option></option>
+                                    </select>
                                     </div>
                                 </div>
-<!--End of Modal "Add Transaction"-->
 
-        </div>
-   
-    </div>
-    </div>
-    </div>
-    
-   
 
+
+                                <!--Menu Items-->
+                                <a class="addPreference btn btn-primary btn-sm" style="color:blue;margin:0">Add Preferences</a> <!--Button to add row in the table-->
+                                <br><br>
+                                <table class="preferenceTable table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Temperature</th>
+                                            <th>Price</th>
+                                            <th>Status</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                                <!--Menu Items-->
+                                <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Addons</a> <!--Button to add row in the table-->
+                                <br><br>
+                                <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th style="width:50%">Name</th>
+                                            <th style="width:50%">Price</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <select class="form-control" name="aoName">
+                                                    <option selected>Choose</option>
+                                                    <option></option>
+                                                </select>
+                                            </td>
+                                            <td><input type="number" name="aoPrice" class="form-control form-control-sm"></td>
+                                            <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px;right:0"></td>
+                                        </tr>
+                                </table>
+        
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                        data-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-success btn-sm"
+                                        type="submit">Insert</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
+<!--End of Modal "Add Transaction"-->
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 
 <?php include_once('templates/scripts.php') ?>
 <script>
-var menuitem = <?= json_encode($menuitem)?>;
-var rowsPerPage = menuitem.menus.length;
+var menu = [];
 $(document).ready(function() {
     $("#addBtn").on('click', function() {
         $("#newMenu form")[0].reset();
-        console.log(menuitem);
     });
-    $(".addPreferences").on('click',function(){
+    $(".addPreference").on('click',function(){
         var row=`
         <tr data-id="">
-            <td><input type="text" name="prName[]" class="form-control form-control-sm"></td>
+            <td><input type="text" name="prName" class="form-control form-control-sm"></td>
             <td>
-                <select class="form-control" name="mTemp[]">
-                    <option selected>Choose</option>
-                    <option></option>
+                <select class="form-control" name="mTemp">
+                    <option value="" selected>Choose</option>
+                    <option value="c">Cold</option>
+                    <option value="h">Hot</option>
+                    <option value="hc">Hot and Cold</option>
                 </select>
             </td>
             <td><input type="number" name="prPrice" class="form-control form-control-sm"></td>
             <td>
-                <select class="form-control" name="prStatus" >
+                <select class="form-control" name="prStatus">
                     <option selected>Choose</option>
                     <option></option>
                 </select>
             </td>
-            <td><img class="exitBtn1" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+            <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
         </tr>
         `;
-        $(this).closest(".modal").find(".addPrefTable > tbody").append(row);
-        $(this).closest(".modal").find(".exitBtn1").last().on('click',function(){
+        $(this).closest(".modal").find(".merchandisetable > tbody").append(row);
+        $(this).closest(".modal").find(".exitBtn").last().on('click',function(){
             $(this).closest("tr").remove();
         });
-    }); 
-    
+    });
     setTableData();
-    $("#newMenu form").on('submit', function(event) {
+    $("#newSupplier form").on('submit', function(event) {
         event.preventDefault();
-        var image = $(this).find("input[name='mImage']").val();
-        var name = $(this).find("input[name='mName']").val();
-        var desc = $(this).find("input[name='mDesc']").val();
-        var category = $(this).find("input[name='category']").val();
-        var status = $(this).find("select[name='mStatus']").val();
-        var menupreferences = [];
-        var menuaddons = [];
+        var name = $(this).find("input[name='supplierName']").val();
+        var contactNum = $(this).find("input[name='contactNum']").val();
+        var email = $(this).find("input[name='email']").val();
+        var address = $(this).find("input[name='supplierAddress']").val();
+        var status = $(this).find("select[name='status']").val();
+        var supplierMerchandise = [];
         for (var index = 0; index < $(this).find(".merchandisetable > tbody").children().length; index++) {
             supplierMerchandise.push({
                 merchName: $(this).find("input[name='merchName[]']").eq(index).val(),
@@ -208,7 +220,7 @@ $(document).ready(function() {
             });
         }
         $.ajax({
-            url: "<?= site_url("admin/s/add")?>",
+            url: "<?= site_url("admin/supplier/add")?>",
             method: "post",
             data: {
                 name: name,
@@ -292,277 +304,132 @@ $(document).ready(function() {
     });
 });
 
-function setTableData() {
-    var count = 0;
-    //Populate Stock Table
-    if ($("#suppliertable > tbody").children().length === 0) {
-        for (lastIndex; lastIndex < supplier.sources.length; lastIndex++) {
-            if (count < rowsPerPage) {
-                appendRow(supplier.sources[lastIndex]);
-                appendAccordion(supplier.merchandises.filter(merchandise => merchandise.spID === supplier.sources[lastIndex].spID));
-            }
+$(function(){
+    $.ajax({
+        url: '<?= base_url("admin/menu/getDetails")?>',
+        dataType: 'json',
+        success: function(data){
+            var prefLastIndex = 0;
+            var aoLastIndex = 0;
+            $.each(data.menu, function(index, item){
+                menu.push({"menu" : item});
+                menu[index].preferences = data.preferences.filter(pref => pref.mID == item.mID);
+                menu[index].addons = data.addons.filter(ao => ao.mID == item.mID);
+            });
+            showTable();
+        },
+        error: function(response,setting, errorThrown){
+            console.log(errorThrown);
+            console.log(response.responseText);
         }
-        //Set accordion icon event to show accordion
-        $(".accordionBtn").on('click', function() {
-            if ($(this).closest("tr").next(".accordion").css("display") == 'none') {
-                $(this).closest("tr").next(".accordion").css("display", "table-row");
-                $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
-            } else {
-                $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
-                $(this).closest("tr").next(".accordion").hide("slow");
-            }
-        });
-        $(".editBtn").on("click", function() {
-            $("#editSupplier form")[0].reset();
-            $("#editSupplier .merchandisetable > tbody").empty();
-            var sourceID = $(this).closest("tr").attr("data-id");
-            setEditModal($("#editSupplier"), supplier.sources.filter(item => item.spID === sourceID)[0], supplier.merchandises.filter(merchandise => merchandise.spID === sourceID));
-        });
-    } else {
-        $("#suppliertable > tbody").empty();
-    }
-}
-
-function appendRow(source) {
-    var nullVal = false;
-    var row = `${source.spID == null ? nullVal = true : `
-    <tr data-id="${source.spID}">
-    <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png"
-                style="height:15px;width:15px" /></td>
-        <td>${source.spName}</td>
-        <td>${source.spContactNum}</td>
-        <td>${source.spEmail}</td>
-        <td>${source.spAddress}</td>
-        <td>${source.spStatus}</td>
-        <td>
-            <button class="editBtn btn btn-primary btn-sm" data-toggle="modal"
-                data-target="#editSupplier">Edit</button>
-            <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"
-                data-target="#deleteStock">Delete</button>
-        </td>
-    </tr>`}`;
-    if (nullVal) {
-        $("#note").text("No supplier items recorded!");
-    } else {
-        $("#note").text("");
-        $("#suppliertable > tbody").append(row);
-    }
-}
-function appendAccordion(merchandises) {
-    var row = `
-    <tr class="accordion" style="display:none">
-        <td colspan="7">
-        <div class="suppliermerch" style="margin:1% 5%">
-                ${merchandises.length === 0 ? "No merchandise products are set for this supplier." : 
-                `<span>Merchandise Items</span>
-                    <table class="table table-bordered dt-responsive nowrap mt-2">
-                        <thead style="background:white">
-                            <tr>
-                            <th scope="col">Item Name</th>
-                            <th scope="col">Unit</th>
-                            <th scope="col">Price</th>
-                            </tr>
-                        </thead>
-                    <tbody>
-                    ${merchandises.map(merchandise => {
-                        return `
-                        <tr>
-                        <td>${merchandise.merchandise}</td>
-                        <td>${merchandise.spmUnit}</td>
-                        <td>${merchandise.spmPrice}</td>
-                        </tr> 
-                        `;
-                    }).join('')}
-                    </tbody>
-                </table>
-                `}
-        </div>
-        </td>
-    </tr>
-    `;
-    $("#suppliertable > tbody").append(row);
-}
-
-function setEditModal(modal, source, merchandises) {
-    modal.find("input[name='sourceID']").val(source.spID);
-    modal.find("input[name='supplierName']").val(source.spName);
-    modal.find("input[name='contactNum']").val(source.spContactNum);
-    modal.find("input[name='email']").val(source.spEmail);
-    modal.find("input[name='supplierAddress']").val(source.spAddress);
-    modal.find("select[name='status']").find(`option[value='${source.spStatus}']`).attr("selected", "selected");
-    
-    merchandises.forEach(merchandise => {
-        modal.find(".merchandisetable > tbody").append(`
-        <tr data-id="${merchandise.spmID}">
-            <td><input type="text" name="merchName[]" value="${merchandise.spmDesc}" class="form-control form-control-sm" required></td>
-            <td><input type="text" name="merchUnit[]" value="${merchandise.spmUnit}" class="form-control form-control-sm"></td>
-            <td><input type="number" name="merchPrice[]" value="${merchandise.spmPrice}" class="form-control form-control-sm" required></td>
-            <td>
-            <select class="form-control" name="variance[]" required>
-                ${supplier.stockvariances.map(variance => {
-                        return `
-                        <option value="${variance.vID}">${variance.vName}</option>`
-                    }).join('')}
-            </select>
-            </td>
-            <td><img class="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
-        </tr>
-        `);
-        modal.find("select[name='variance[]']").last().find(`option[value='${merchandise.vID}']`).attr("selected", "selected");  
     });
-}
-</script>
 
-<script>
-//     function showTable(){
-//         menu.forEach(function(item){
-//             var tableRow = `                
-//                 <tr class="table_row" data-menuId="${item.menu.mID}">   <!-- table row ng table -->
-//                     <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
-//                     <td>${item.menu.mName}</td>
-//                     <td>${item.menu.ctName}</td>
-//                     <td>${item.menu.mAvailability}</td>
-//                     <td>
-//                         <button class="editBtn btn btn-sm btn-primary">Edit</button>
-//                         <button class="deleteBtn btn btn-sm btn-danger">Delete</button>
-//                     </td>
-//                 </tr>
-//             `;
-//             var preferencesDiv = `
-//             <div class="preferences" style="width:45%;overflow:auto;float:left;margin-right:3%" > <!-- Preferences table container-->
-//             <span><b>Preferences:</b></span> <!-- label--><br>
-//                 ${item.preferences.length === 0 ? "No preferences are set for this menu item" : 
-//                 `
-//                 <table class="table table-bordered"> <!-- Preferences table-->
-//                     <thead class="thead-light">
-//                         <tr>
-//                             <th scope="col">Size Name</th>
-//                             <th scope="col">Price</th>
-//                             <th scope="col">Status</th>
-//                         </tr>
-//                     </thead>
-//                     <tbody>
-//                     ${item.preferences.map(pref => {
-//                         return `
-//                         <tr>
-//                             <td>${pref.prName.toLowerCase() === 'normal' ? `${pref.mTemp == null ? "Regular" : pref.mTemp === 'h' ? "Hot" : pref.mTemp === 'c' ? "Cold" : "Hot and Cold" }` : `${pref.prName+ " "+ `${pref.mTemp == null ? "" : pref.mTemp}`}`}</td>
-//                             <td>&#8369; ${pref.prPrice}</td>
-//                             <td>${pref.prStatus}</td>
-//                         </tr>
-//                         `;
-//                     }).join('')}
-//                     </tbody>
-//                 </table>
-//                 `}
-//             </div>
-//             `;
-//             var accordion = `
-//             <tr class="accordion" style="display:none">
-//                 <td colspan="5"> <!-- table row ng accordion -->
-//                     <div style="overflow:auto;display:none"> <!-- container ng accordion -->
-//                         <div style="width:280px;overflow:auto;float:left;margin-right:3%"> <!-- image container -->
-//                             <img src="<?=site_url('uploads/')?>${item.menu.mImage}" style="width:280px;height:180px">
-//                         </div>
-                        
-//                         <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
-//                             <div><b>Description:</b> <!-- label-->
-//                                 <p>${item.menu.mDesc}
-//                                 </p>
-//                             </div>
+});
+
+function showTable(){
+    menu.forEach(function(item){
+        var tableRow = `                
+            <tr class="table_row" data-menuId="${item.menu.mID}">   <!-- table row ng table -->
+                <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
+                <td>${item.menu.mName}</td>
+                <td>${item.menu.ctName}</td>
+                <td>${item.menu.mAvailability}</td>
+                <td>
+                    <button class="editBtn btn btn-sm btn-primary">Edit</button>
+                    <button class="deleteBtn btn btn-sm btn-danger">Delete</button>
+                </td>
+            </tr>
+        `;
+        var preferencesDiv = `
+        <div class="preferences" style="width:45%;overflow:auto;float:left;margin-right:3%" > <!-- Preferences table container-->
+            <span><b>Preferences:</b></span><br> <!-- label-->
+            ${item.preferences.length === 0 ? "No prefernces are set for this menu item" : 
+            `
+            <table class="table table-bordered"> <!-- Preferences table-->
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Size Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                ${item.preferences.map(pref => {
+                    return `
+                    <tr>
+                        <td>${pref.prName.toLowerCase() === 'normal' ? `${pref.mTemp == null ? "Regular" : pref.mTemp === 'h' ? "Hot" : pref.mTemp === 'c' ? "Cold" : "Hot and Cold" }` : `${pref.prName+ " "+ `${pref.mTemp == null ? "" : pref.mTemp}`}`}</td>
+                        <td>&#8369; ${pref.prPrice}</td>
+                        <td>${pref.prStatus}</td>
+                    </tr>
+                    `;
+                }).join('')}
+                </tbody>
+            </table>
+            `}
+        </div>
+        `;
+        var accordion = `
+        <tr class="accordion" style="display:none">
+            <td colspan="5"> <!-- table row ng accordion -->
+                <div style="overflow:auto;display:none"> <!-- container ng accordion -->
+                    <div style="width:280px;overflow:auto;float:left;margin-right:3%"> <!-- image container -->
+                        <img src="<?=site_url('uploads/')?>${item.menu.mImage}" style="width:280px;height:180px">
+                    </div>
+                    
+                    <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
+                        <div><b>Description:</b> <!-- label-->
+                            <p>${item.menu.mDesc}
+                            </p>
+                        </div> 
+                        <div class="aoAndPreferences" style="overflow:auto;margin-top:1%"> <!-- Preferences and addons container-->
                             
-//                             <div class="aoAndPreferences" style="overflow:auto;margin-top:1%"> <!-- Preferences and addons container-->
-                                
-//                             </div>
-//                         </div>
-//                     </div>
-//                 </td>
-//             </tr>
-//             `;
-//             var addonsDiv = `
-//             <div class="addons" style="width:45%;overflow:auto" > <!-- Addons table container--><span><b>Addons:</b></span><br>
-//                 ${item.addons.length === 0 ? "No addons are set for this menu item." : 
-//                     `<!-- label-->
-//                     <table class="table table-bordered"> <!-- Addons table-->
-//                         <thead class="thead-light">
-//                             <tr>
-//                                 <th scope="col">Addons Name</th>
-//                                 <th scope="col">Price</th>
-//                                 <th scope="col">Status</th>
-//                             </tr>
-//                         </thead>
-//                         <tbody>
-//                         ${item.addons.map(addon => {
-//                             return `<tr><td>${addon.aoName}</td>
-//                             <td>&#8369; ${addon.aoPrice}</td>
-//                             <td>${addon.aoStatus}</td></tr>`;
-//                             }).join('')}
-//                         </tbody>
-//                     </table>`
-//                 }
-//             </div>`;
-//             $("#menuTable > tbody").append(tableRow);
-//             $("#menuTable > tbody").append(accordion);
-//             $(".aoAndPreferences").last().append(preferencesDiv);
-//             $(".aoAndPreferences").last().append(addonsDiv);
-//         });
-//         $(".accordionBtn").on('click', function(){
-//             if($(this).closest("tr").next(".accordion").css("display") == 'none'){
-//                 $(this).closest("tr").next(".accordion").css("display","table-row");
-//                 $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
-//             }else{
-//                 $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
-//                 $(this).closest("tr").next(".accordion").hide("slow");
-//             }
-//         });
-//         $(".editBtn").on("click",function(){
-//             var menuID = $(this).closest("tr").attr("data-menuID");
-//             //set Modal contents;
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        `;
+        var addonsDiv = `
+        <div class="addons" style="width:45%;overflow:auto" > <!-- Addons table container--><span><b>Addons:</b></span><br>
+            ${item.addons.length === 0 ? "No addons are set for this menu item." : 
+                `<!-- label-->
+                <table class="table table-bordered"> <!-- Addons table-->
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Addons Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    ${item.addons.map(addon => {
+                        return `<tr><td>${addon.aoName}</td>
+                        <td>&#8369; ${addon.aoPrice}</td>
+                        <td>${addon.aoStatus}</td></tr>`;
+                        }).join('')}
+                    </tbody>
+                </table>`
+            }
+        </div>`;
+        $("#menuTable > tbody").append(tableRow);
+        $("#menuTable > tbody").append(accordion);
+        $(".aoAndPreferences").last().append(preferencesDiv);
+        $(".aoAndPreferences").last().append(addonsDiv);
+    });
+    $(".accordionBtn").on('click', function(){
+        if($(this).closest("tr").next(".accordion").css("display") == 'none'){
+            $(this).closest("tr").next(".accordion").css("display","table-row");
+            $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
+        }else{
+            $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
+            $(this).closest("tr").next(".accordion").hide("slow");
+        }
+    });
+    $(".editBtn").on("click",function(){
+        var menuID = $(this).closest("tr").attr("data-menuID");
+        //set Modal contents;
 
-//         });
+    });
 
-//     }
-//     $(".addPreferences").on('click',function(){
-//         var row=`
-//         <tr data-id="">
-//             <td><input type="text" name="prName[]" class="form-control form-control-sm"></td>
-//             <td>
-//                 <select class="form-control" name="mTemp[]">
-//                     <option selected>Choose</option>
-//                     <option></option>
-//                 </select>
-//             </td>
-//             <td><input type="number" name="prPrice" class="form-control form-control-sm"></td>
-//             <td>
-//                 <select class="form-control" name="prStatus" >
-//                     <option selected>Choose</option>
-//                     <option></option>
-//                 </select>
-//             </td>
-//             <td><img class="exitBtn1" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
-//         </tr>
-//         `;
-//         $(this).closest(".modal").find(".addPrefTable > tbody").append(row);
-//         $(this).closest(".modal").find(".exitBtn1").last().on('click',function(){
-//             $(this).closest("tr").remove();
-//         });
-//     }); 
-
-//     $(".addAddons").on('click',function(){
-//         var row=`
-//         <tr data-id="">
-//             <td>
-//                 <select class="form-control" name="menu_availability" id="menu_availability">
-//                     <option selected>Choose</option>
-//                     <option></option>
-//                 </select>
-//             </td>
-//             <td><input type="number" name="item_qty" id="item_qty" class="form-control form-control-sm"></td>
-//             <td><img class="exitBtn2" src="/assets/media/admin/error.png" style="width:20px;height:20px;right:0"></td>
-//         </tr>
-//         `;
-//         $(this).closest(".modal").find(".addAddonsTable > tbody").append(row);
-//         $(this).closest(".modal").find(".exitBtn2").last().on('click',function(){
-//             $(this).closest("tr").remove();
-//         });
-//     });  
-// </script>
+}  
+</script>

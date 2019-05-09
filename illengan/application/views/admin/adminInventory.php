@@ -488,6 +488,7 @@ $(document).ready(function() {
             $(this).closest("tr").next(".accordion").hide("slow");
         }
     });
+    console.log(inventory);
     $("#addBtn").on('click', function() {
         $("#newStock form")[0].reset();
         console.log(inventory);
@@ -692,8 +693,8 @@ function setEditModal(modal, stock, variances) {
     modal.find("select[name='stockType']").val(stock.stType);
     modal.find("select[name='stockCategory']").find(`option[value=${stock.ctID}]`).attr("selected", "selected");
     modal.find("select[name='stockStatus']").find(`option[value="${stock.stStatus}"]`).attr("selected", "selected");
-    
-    variances.forEach(variance => {    
+
+    variances.forEach(variance => {
         modal.find(".varianceTable > tbody").append(`
         <tr data-id="${variance.vID}">
             <td><input type="text" name="varUnit[]" value="${variance.vUnit}"

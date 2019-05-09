@@ -1,5 +1,5 @@
 <?php
-    class ChefModel extends CI_Model {
+    class Chefmodel extends CI_Model {
         
         
         function return_orderlist() {
@@ -15,9 +15,14 @@
 
         function update_status($item_status, $order_item_id) {
             $this->load->database();
-            $this->db->set('olStatus', $item_status);
-            $this->db->where('olID', $order_item_id);
-            $this->db->update('orderlists');
+            $query = "UPDATE orderlists SET
+            olStatus = ? 
+            WHERE olID = ?";
+
+            $this->db->query($query, array($item_status, $order_item_id));
+            // $this->db->set('olStatus', $item_status);
+            // $this->db->where('olID', $order_item_id);
+            // $this->db->update('orderlists');
             /* $query = $this->db->query('UPDATE orderlist SET item_status = ? WHERE order_id = ? AND menu_id = ?');
             $this->db->query($query, array($item_status, $order_id, $menu_id)); */
         }

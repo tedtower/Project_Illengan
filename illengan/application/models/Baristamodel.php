@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-    class BaristaModel extends CI_Model{
+    class Baristamodel extends CI_Model{
         
         function orderlist(){
             $this->load->database();
