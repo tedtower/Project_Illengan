@@ -352,7 +352,6 @@ function viewSpoilagesStock(){
                 "poitems" => $this->adminmodel->get_poItemVariance()
             );
             $this->load->view('admin/adminPurchaseOrder',$data);
-
         }else{
             redirect('login');
         }

@@ -172,6 +172,7 @@ class AdminAdd extends CI_Controller{
             $merchandise = json_decode($this->input->post('merchandise'), true);
             echo json_encode($merchandise, true);
             $this->adminmodel->add_PurchaseOrder($poDate, $edDate, $poTotal, $poDateRecorded, $poStatus, $poRemarks, $spID, $merchandise);
+            
         }else{
             redirect('login');
         }    

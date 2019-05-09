@@ -73,7 +73,6 @@ $route['admin/supplier/getDetails'] = "adminview/supplierGetDetails";
 $route['admin/accounts'] = "adminview/viewaccounts";
 $route['admin/inventory'] = "adminview/viewinventory";
 $route['admin/purchaseorders'] = "adminview/viewpurchaseorders";
-$route['admin/purchaseorder'] = "adminview/viewPurchaseOrder";
 $route['admin/spoilages/menu/add'] ="adminview/viewInsertSpoilageMenu";
 $route['admin/spoilages/stock/add'] ="adminview/viewInsertSpoilageStock";
 $route['admin/spoilages/addons/add'] ="adminview/viewInsertSpoilageAo";
