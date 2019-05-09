@@ -332,11 +332,33 @@ function viewSpoilagesStock(){
         }
     }
     function viewReturnTransactions(){
-        if($this->checkIfLoggedIn()){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data['title'] = "Transactions - Returns";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/adminTransactionsReturns');
+            $data = array(
+                'invRet' => $this->adminmodel->get_invRetVar(),
+                'retItems' => $this->adminmodel->get_returns(),
+
+            );
+            $this->load->view('admin/adminTransactionsReturns',$data);
+        }else{
+            redirect('login');
+        }
+    }
+    function getReturns(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $item = $this->input->post('id');
+            $data = array(
+                'invoice' => $this->adminmodel->get_invoiceReturns(),
+                'returns' => $this->adminmodel->get_returns(),
+                'invoiceitems' => $this->adminmodel->get_poD(),
+                'invoSup' => $this->adminmodel->get_allInvoice(),
+                'selected' => $this->adminmodel->get_item($item)
+            );
+            header('Content-Type: application/json');
+            echo json_encode($data, JSON_PRETTY_PRINT);
+
         }else{
             redirect('login');
         }
