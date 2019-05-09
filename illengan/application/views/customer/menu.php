@@ -23,7 +23,7 @@
                         <img data-mID="<?php echo $items->mID; ?>" class="card-img-top" src="
                         <?php
                             if(isset($items->menu_image)){
-                                echo "".cmedia_url()."menu/".$items->menu_image;
+                                echo "".cmedia_url()."menu/".$items->mImage;
                             } else {
                                 echo "".cmedia_url()."menu/no_image.jpg";
                             }
