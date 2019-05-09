@@ -1,5 +1,5 @@
 <?php
-class AdminAdd extends CI_Controller{
+class Adminadd extends CI_Controller{
 
     function __construct(){
         parent:: __construct();
@@ -304,6 +304,24 @@ class AdminAdd extends CI_Controller{
             redirect('login');
         }
     }
+    function addReturnTransactions(){
+        $idate = date('Y-m-d');
+        $reQty = $this->input->post('reQty');
+        $reUnit = $this->input->post('reUnit');
+        $cost = $this->input->post('cost');
+        $supID= $this->input->post('supID');
+        $dateRet= $this->input->post('dateRet');
+        $receipt= $this->input->post('receipt');
+        $remarks= $this->input->post('remarks');
+        $reStat= $this->input->post('reStat');
+        $stckName= $this->input->post('stckName');
+        $subtotal= $this->input->post('subtotal');
+        $variance= $this->input->post('variance');
+        $stckID= $this->input->post('stckID');
+        $this->adminmodel->add_returns($idate, $reQty, $reUnit, $supID, $dateRet, $receipt, $cost, $remarks,$reStat,  $stckName, $subtotal, $variance, $stckID);
+        redirect('adminview/viewReturnTransactions');
+    }
+
 
 }
 ?>
