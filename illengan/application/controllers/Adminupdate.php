@@ -1,5 +1,5 @@
 <?php
-class adminUpdate extends CI_Controller{
+class adminupdate extends CI_Controller{
 
     function __construct(){
         parent:: __construct();
@@ -249,6 +249,22 @@ class adminUpdate extends CI_Controller{
         }else{
             redirect('login');
         }
+    }
+    function editReturnTrans(){
+        print_r($_POST);
+        $eID = $this->input->post('eID'); 
+        $eSpID = $this->input->post('eSpID');
+        $eRNum = $this->input->post('eRNum'); 
+        $eStat = $this->input->post('eStat'); 
+        $eRDate = $this->input->post('eRDate');
+        $eDRec = $this->input->post('eDRec');
+        $etotal = $this->input->post('eTotal'); 
+        $eremarks = $this->input->post('eRemarks');
+        $defaultType = $this->input->post('eType'); 
+        $eRetIt = json_decode($this->input->post('eRetIt'), true); 
+        echo json_encode($eRetIt, true);
+        $this->adminmodel->update_returns($eID, $eSpID, $eRNum, 
+        $eStat, $eRDate, $eDRec, $etotal, $eremarks, $defaultType, $eRetIt);
     }
 }
 ?>
