@@ -11,7 +11,7 @@
                 echo $err;
             }?></span>
             <img src="<?php echo base_url('/assets/media/logo.png')?>" class="logo">
-            <form method="post" action="<?php echo site_url("verifylogin")?>">
+            <form method="post" action="<?= site_url("verify"); ?>">
                     <p>Username</p>
                         <input type="text" name="username" placeholder="Enter Username">
                     <p>Password</p>
