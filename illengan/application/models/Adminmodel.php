@@ -129,9 +129,9 @@ class Adminmodel extends CI_Model{
         $query = "Insert into variance (stID, vUnit, vQty, vMin, vSize, vStatus, bQty) values (?,?,?,?,?,?,?)";
         return $this->db->query($query, array($stockID, $stockVariance['varUnit'],$stockVariance['varQty'],$stockVariance['varMin'],$stockVariance['varSize'],$stockVariance['varStatus'],0));
     }
-    function add_table($table_code){
-        $query = "Insert into tables (table_code) values (?);";
-        return $this->db->query($query, array($table_code));
+    function add_table($tableCode){
+        $query = "Insert into tables (tableCode) values (?);";
+        return $this->db->query($query, array($tableCode));
     }
     function add_promo($pmName, $pmStartDate, $pmEndDate, $fbName, $isElective, $prID, $pcType, $pcQty, $prIDfb, $fbQty){
         $query = "insert into promos (pmID, pmName, pmStartDate, pmEndDate) values (NULL,?,?,?)";
@@ -839,7 +839,7 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query, array($stID));
     }
     function delete_table($tableCode){
-        $query = "Delete from tables where table_code= ?";
+        $query = "Delete from tables where tableCode= ?";
         return $this->db->query($query, array($tableCode));
     }
     function delete_transaction($trans_id){
@@ -872,7 +872,7 @@ class Adminmodel extends CI_Model{
     }
     
     function edit_table($newTableCode, $previousTableCode){
-        $query = "Update tables set table_code = ? where table_code = ?;";
+        $query = "Update tables set tableCode = ? where tableCode = ?;";
         return $this->db->query($query, array($newTableCode, $previousTableCode));
     }
     //Return Function

@@ -45,7 +45,7 @@ class adminupdate extends CI_Controller{
     function editTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('prevTableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]');
-            $this->form_validation->set_rules('tableCode',   'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
+            $this->form_validation->set_rules('tableCode',   'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.tableCode]');
             if($this->form_validation->run()){
                 $prevTableCode = trim($this->input->post('prevTableCode'));
                 $tableCode = trim($this->input->post('tableCode'));

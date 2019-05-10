@@ -179,7 +179,7 @@ class Adminadd extends CI_Controller{
     }
     function addTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
+            $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.tableCode]');
             if($this->form_validation->run()){
                 $tableCode = trim($this->input->post('tableCode'));
                 if($this->adminmodel->add_table($tableCode)){

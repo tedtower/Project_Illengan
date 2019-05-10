@@ -234,8 +234,8 @@
         }
         tables.forEach(table => {
             $("#tablesTable > tbody").append(`
-        <tr data-id="${table.table_code}">
-            <td>${table.table_code}</td>
+        <tr data-id="${table.tableCode}">
+            <td>${table.tableCode}</td>
             <td>
                 <!--Action Buttons-->
                 <div class="onoffswitch">
