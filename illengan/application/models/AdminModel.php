@@ -794,6 +794,7 @@ class AdminModel extends CI_Model{
                 iItemID = ?;";
             $this->db->query($query,array($item['varID'],$id,$item['itemName'],$item['itemQty'],$item['itemPrice'],$item['itemUnit'],$item['subtotal'],$item['itemID']));
         }
+        return;
     }
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------

@@ -175,24 +175,24 @@ function unsetModalContents(){
 function setModalContents(item_id){
     $('span#mid').text(item_id);
     for(var i = 0; i < menu.length; i++) {
-        if(menu[i].menu_id == item_id) {
+        if(menu[i].mID == item_id) {
             var menu_pref = jQuery.grep(pref,function(obj){
-                return obj.menu_id == item_id;
+                return obj.mID == item_id;
                 });
             menu_addon = jQuery.grep(addon,function(obj){
-                return obj.menu_id == item_id;
+                return obj.mID == item_id;
                 });
-            $('#menu_name').text(menu[i].menu_name);
-            if(menu[i].menu_image){
-                $('#menu_image').attr("src","<?php echo cmedia_url(); ?>menu/"+menu[i].menu_image);
+            $('#menu_name').text(menu[i].mName);
+            if(menu[i].mImage){
+                $('#menu_image').attr("src","<?php echo cmedia_url(); ?>menu/"+menu[i].mImage);
             } else {
                 $('#menu_image').attr("src","<?php echo cmedia_url(); ?>menu/no_image.jpg");
             }
-            $('#menu_price').text(menu[i].pref_price);
-            $('#menu_description').text(menu[i].menu_description);
+            $('#menu_price').text(menu[i].prPrice);
+            $('#menu_description').text(menu[i].mDesc);
             
-            if(menu[i].menu_availability === 'available'){
-                $('#menu_status').text(menu[i].menu_availability.charAt(0).toUpperCase() + menu[i].menu_availability.slice(1));
+            if(menu[i].mAvailability === 'available'){
+                $('#menu_status').text(menu[i].mAvailability.charAt(0).toUpperCase() + menu[i].mAvailability.slice(1));
                 $('#menu_status').attr("class","teal-text");
                 $('#order-details').show();
                 $('.save-order').show();
@@ -206,7 +206,7 @@ function setModalContents(item_id){
                 $('#sizeable').show();                
                 $("#sizeSelect").removeAttr('disabled');
                 for(var x=0; x<menu_pref.length; x++){
-                    $('#sizeSelect').append('<option data-price="'+menu_pref[x].pref_price+'" data-name="'+menu_pref[x].size_name+'" value="'+menu_pref[x].pref_id+'">'+menu_pref[x].preference+'</option>');
+                    $('#sizeSelect').append('<option data-price="'+menu_pref[x].prPrice+'" data-name="'+menu_pref[x].prName+'" value="'+menu_pref[x].prID+'">'+menu_pref[x].preference+'</option>');
                 }
                 $("#sizeSelect").on('change',function(){
                     computeSubtotal();
@@ -223,9 +223,9 @@ function setModalContents(item_id){
             });
             }else{
                 $("#sizeInput").removeAttr('disabled');
-                $("#sizeInput").attr("value", menu_pref[0].pref_id);
-                $("#sizeInput").attr("data-price", menu_pref[0].pref_price);
-                $("#menuSubtotal").text(parseFloat(menu_pref[0].pref_price));
+                $("#sizeInput").attr("value", menu_pref[0].prID);
+                $("#sizeInput").attr("data-price", menu_pref[0].prPrice);
+                $("#menuSubtotal").text(parseFloat(menu_pref[0].prPrice));
             }
             if(menu_addon.length > 0){
                 $("#addonSelectBtn").removeAttr('disabled');
