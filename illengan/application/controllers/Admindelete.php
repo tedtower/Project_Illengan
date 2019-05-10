@@ -1,5 +1,5 @@
 <?php
-class AdminDelete extends CI_Controller{
+class Admindelete extends CI_Controller{
 
     function __construct(){
         parent:: __construct();
