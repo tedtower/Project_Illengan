@@ -736,14 +736,14 @@ class AdminModel extends CI_Model{
         $id = $this->db->insert_id();
         if($invoiceSuccess){
             foreach($transitems as $item){
-                $this->addEdit_transaction($item, $id);
+                $this->addEdit_transactionItems($item, $id);
             }
             return true;
         }
         return false;
     }
 
-    function addEdit_transaction($item,$id){
+    function addEdit_transactionItems($item,$id){
         $query = "";
         if($item['itemID'] == null){
             $query = "INSERT INTO `invoiceitems`(
