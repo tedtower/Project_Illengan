@@ -141,6 +141,7 @@ $(document).ready(function(){
                 console.log(prefId, qty, remarks);
             },
             success: function(data) {
+                location.reload();
                 alert("Menu has been added in the orderlist.");
                 console.log(data);
             },
