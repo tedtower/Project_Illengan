@@ -47,12 +47,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                           {  
                             ?> 
                                <tr>  
-                                    <td><?= $row["order_item_id"]?></td>  
-                                    <td><?= $row["cust_name"]?></td>  
-                                    <td><?= $row["table_code"]?></td>  
-                                    <td><?= $row["order_desc"]?></td>  
-                                    <td><?= $row["order_qty"]?></td>  
-                                    <td><?= $row["item_status"]?></td>  
+                                    <td><?= $row["olID"]?></td>  
+                                    <td><?= $row["custName"]?></td>  
+                                    <td><?= $row["tableCode"]?></td>  
+                                    <td><?= $row["olDesc"]?></td>  
+                                    <td><?= $row["olQty"]?></td>  
+                                    <td><?= $row["olStatus"]?></td>  
                                    <!-- <td><button id="cancelOrder" class="btn btn-warning">Cancel</button></td>-->
                                </tr>    
                          
@@ -230,3 +230,4 @@ $(document).ready(function(){
 
 </body>
 </html>
+
