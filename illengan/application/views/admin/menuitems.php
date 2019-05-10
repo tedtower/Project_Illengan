@@ -51,7 +51,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form action="<?php echo base_url()?>admin/menu/add" method="get"
+                        <form action="<?php echo base_url()?>admin/menu/add" method="post"
                             accept-charset="utf-8">
                             <div class="modal-body">
                                 <div class="input-group mb-3"> <!--Menu Image-->
@@ -87,8 +87,10 @@
                                         Category</span>
                                     </div>
                                     <select class="custom-select" name="ctName" >
-                                        <option selected>Choose</option>
-                                        <option></option>
+                                    <option value="" selected disabled>Choose</option>
+                                    <?php foreach($category as $category){?>
+                                        <option value="<?= $category['ctID']?>"><?= $category['ctName']?></option>
+                                    <?php }?>
                                     </select>
                                 </div>
                                     <!--Transaction date-->
@@ -109,7 +111,7 @@
                                 <!--Menu Items-->
                                 <a class="addPreference btn btn-primary btn-sm" style="color:blue;margin:0">Add Preferences</a> <!--Button to add row in the table-->
                                 <br><br>
-                                <table class="preferenceTable table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
+                                <table class="preferencetable table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
                                     <thead class="thead-light">
                                         <tr>
                                             <th>Name</th>
@@ -124,27 +126,18 @@
                                     </tbody>
                                 </table>
                                 <!--Menu Items-->
-                                <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Addons</a> <!--Button to add row in the table-->
+                                <a class="addAddon btn btn-primary btn-sm" style="color:blue;margin:0">Add Addons</a> <!--Button to add row in the table-->
                                 <br><br>
-                                <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
+                                <table class="addontable table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
                                     <thead class="thead-light">
                                         <tr>
-                                            <th style="width:50%">Name</th>
-                                            <th style="width:50%">Price</th>
+                                            <th style="width:96%;text-align:center">Addon Name</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                <select class="form-control" name="aoName">
-                                                    <option selected>Choose</option>
-                                                    <option></option>
-                                                </select>
-                                            </td>
-                                            <td><input type="number" name="aoPrice" class="form-control form-control-sm"></td>
-                                            <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px;right:0"></td>
-                                        </tr>
+
+                                    </tbody>
                                 </table>
         
                                 <div class="modal-footer">
@@ -171,6 +164,7 @@
 <?php include_once('templates/scripts.php') ?>
 <script>
 var menu = [];
+var addons = <?= json_encode($addons)?>;
 $(document).ready(function() {
     $("#addBtn").on('click', function() {
         $("#newMenu form")[0].reset();
@@ -178,61 +172,88 @@ $(document).ready(function() {
     $(".addPreference").on('click',function(){
         var row=`
         <tr data-id="">
-            <td><input type="text" name="prName" class="form-control form-control-sm"></td>
+            <td><input type="text" name="prName[]" class="form-control form-control-sm"></td>
             <td>
-                <select class="form-control" name="mTemp">
+                <select class="form-control" name="mTemp[]">
                     <option value="" selected>Choose</option>
                     <option value="c">Cold</option>
                     <option value="h">Hot</option>
                     <option value="hc">Hot and Cold</option>
                 </select>
             </td>
-            <td><input type="number" name="prPrice" class="form-control form-control-sm"></td>
+            <td><input type="number" name="prPrice[]" class="form-control form-control-sm"></td>
             <td>
-                <select class="form-control" name="prStatus">
-                    <option selected>Choose</option>
-                    <option></option>
+                <select class="form-control" name="prStatus[]">
+                    <option value="" selected disabled>Choose</option>
+                    <option value="available">Available</option>
+                    <option value="unavailable">Unvailable</option>
+                    <option value="deleted">Deleted</option>
                 </select>
             </td>
-            <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+            <td><img class="exitBtn1" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
         </tr>
         `;
-        $(this).closest(".modal").find(".merchandisetable > tbody").append(row);
-        $(this).closest(".modal").find(".exitBtn").last().on('click',function(){
+        $(this).closest(".modal").find(".preferencetable > tbody").append(row);
+        $(this).closest(".modal").find(".exitBtn1").last().on('click',function(){
             $(this).closest("tr").remove();
         });
     });
-    setTableData();
-    $("#newSupplier form").on('submit', function(event) {
+    $(".addAddon").on('click',function(){
+        var row=`
+        <tr data-id="">
+            <td>
+                <select class="form-control" name="aoName[]">
+                ${addons.map(addon => {
+                        return `
+                        <option value="${addon.aoID}">${addon.aoName}</option>`
+                    }).join('')}
+                </select>
+            </td>
+            <td><img class="exitBtn2" src="/assets/media/admin/error.png" style="width:20px;height:20px;right:0"></td>
+        </tr>
+        `;
+        $(this).closest(".modal").find(".addontable > tbody").append(row);
+        $(this).closest(".modal").find(".exitBtn2").last().on('click',function(){
+            $(this).closest("tr").remove();
+        });
+    });
+    $("#newMenu form").on('submit', function(event) {
         event.preventDefault();
-        var name = $(this).find("input[name='supplierName']").val();
-        var contactNum = $(this).find("input[name='contactNum']").val();
-        var email = $(this).find("input[name='email']").val();
-        var address = $(this).find("input[name='supplierAddress']").val();
-        var status = $(this).find("select[name='status']").val();
-        var supplierMerchandise = [];
-        for (var index = 0; index < $(this).find(".merchandisetable > tbody").children().length; index++) {
-            supplierMerchandise.push({
-                merchName: $(this).find("input[name='merchName[]']").eq(index).val(),
-                merchUnit: $(this).find("input[name='merchUnit[]']").eq(index).val(),
-                merchPrice: $(this).find("input[name='merchPrice[]']").eq(index).val(),
-                varID: $(this).find("select[name='variance[]']").eq(index).val()
+        var image = $(this).find("input[name='mImage']").val();
+        var name = $(this).find("input[name='mName']").val();
+        var description = $(this).find("input[name='mDesc']").val();
+        var category = $(this).find("input[name='ctName']").val();
+        var status = $(this).find("select[name='mAvailability']").val();
+        var preferences = [];
+        for (var index = 0; index < $(this).find(".preferencetable > tbody").children().length; index++) {
+            preferences.push({
+                prName: $(this).find("input[name='prName[]']").eq(index).val(),
+                mTemp: $(this).find("input[name='mTemp[]']").eq(index).val(),
+                prPrice: $(this).find("input[name='prPrice[]']").eq(index).val(),
+                prStatus: $(this).find("select[name='prStatus[]']").eq(index).val()
+            });
+        }
+        var addons = [];
+        for (var index = 0; index < $(this).find(".addontable > tbody").children().length; index++) {
+            addons.push({
+                aoName: $(this).find("select[name='aoName[]']").eq(index).val()
             });
         }
         $.ajax({
-            url: "<?= site_url("admin/supplier/add")?>",
+            url: "<?= site_url("admin/menu/add")?>",
             method: "post",
             data: {
+                image: image,
                 name: name,
-                contactNum: contactNum,
-                email: email,
-                address: address,
+                description: description,
+                category: category,
                 status: status,
-                merchandises: JSON.stringify(supplierMerchandise)
+                preferences: JSON.stringify(preferences),
+                addons: JSON.stringify(addons)
             },
             dataType: "json",
             beforeSend: function() {
-                console.log(name, contactNum, email, address, status, supplierMerchandise);
+                console.log(image,name,description,category,status,preferences,addons);
             },
             success: function(data) {
                 console.log(data);
@@ -244,7 +265,7 @@ $(document).ready(function() {
                 console.log(error);
             },
             complete: function() {
-                $("#newSupplier").modal("hide");
+                $("#newMenu").modal("hide");
             }
         });
     });
