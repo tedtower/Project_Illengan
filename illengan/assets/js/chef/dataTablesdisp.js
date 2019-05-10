@@ -1,6 +1,5 @@
 let UPDATE = 5000;
 var table = $('#mydata');
-change_status();
 
 function orders() {
 $(document).ready(function() {
@@ -52,9 +51,10 @@ $(document).ready(function() {
                 {
                     data: null,
                     render: function ( data, type, row, meta) {
-                        return '<button id="status" class="status btn dt-buttons '+ data.olStatus +
-                        '" data-order_item_id="'+ data.olID +'"'+
-                        ' data-item_status="'+ data.olStatus +'" onclick="change_status()">'+ data.olStatus +'</button>';
+                        return '<button class="status btn dt-buttons '+ data.olStatus +
+                        '" id="'+ data.olID +'"'+
+                        ' name="'+ data.olStatus +'" onclick="change_status(this.id, this.name)">'
+                        + data.olStatus +'</button>';
                         }
                     }
             ]
@@ -86,13 +86,7 @@ $(document).ready(function() {
             
 } );
 
-function change_status() {
-    $('.status').on('click', function() {
-        var orderItemId = $(this).data("order_item_id");
-        var itemStatus = $(this).data("item_status");
-        var item_status;
-
-        console.log(itemStatus);
+function change_status(orderItemId, itemStatus) {
         if(itemStatus === "pending") {
             item_status = "done";
         } else if(itemStatus === "done") {
@@ -113,8 +107,6 @@ function change_status() {
             
         }
             }); 
- 
-        });
 }
 
 setInterval(function()

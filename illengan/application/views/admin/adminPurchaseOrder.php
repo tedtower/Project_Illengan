@@ -451,8 +451,8 @@ function setEditModal(modal, purchOr, poitems) {
             <td><input type="text" id="stName" name="stName" class="form-control form-control-sm" data-stID="${poi.stID}" 
             value="${poi.branditem}" readonly="readonly"></td>
             <td><input type="text" id="vQty" onchange="setSubtotal()" name="vQty"
-                    class="vQty form-control form-control-sm" value="${poi.vQty}"></td>
-            <td><input type="text" id="vUnit" name="vUnit" class="form-control form-control-sm" value="${poi.vUnit}"
+                    class="vQty form-control form-control-sm" value="${poi.poiQty}"></td>
+            <td><input type="text" id="vUnit" name="vUnit" class="form-control form-control-sm" value="${poi.poiUnit}"
                     readonly="readonly"></td>
             <td><input type="text" id="vUnit" name="vUnit" class="form-control form-control-sm" value="${poi.vSize}"
                     readonly="readonly"></td>

@@ -169,7 +169,7 @@
                     ${item.promos.discount != null ? "Discount" : ""}</td>
                     <td>${item.promos.pmStartDate}</td>
                     <td>${item.promos.pmEndDate}</td>
-                    <td>${item.promos.pmStatus}</td>
+                    <td>${item.promos.status}</td>
                     <td>
                         <button class="editBtn btn btn-sm btn-primary">Edit</button>
                         <button class="deleteBtn btn btn-sm btn-danger">Delete</button>

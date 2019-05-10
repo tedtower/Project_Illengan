@@ -183,7 +183,11 @@
                                                     <!--Footer-->
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+<<<<<<< HEAD
                                                         <button class="btn btn-success btn-sm" type="submit">Update</button>
+=======
+                                                        <button class="btn btn-success btn-sm" id="btn_update" type="button" onclick="updatePass()">Update</button>
+>>>>>>> 748be07ccce6446489887464589ad8c68f90a0c1
                                                     </div>
                                                 </div>
                                             </form>
@@ -282,8 +286,14 @@
     });
 
 
+<<<<<<< HEAD
     $('#btn_update').on('click', function() {
         var aID = $('#aID').val();
+=======
+    // $('#btn_update').on('click', function() {
+        function updatePass(){
+        var accountId = $('#accountId').val();
+>>>>>>> 748be07ccce6446489887464589ad8c68f90a0c1
         var old_password = $('#old_password').val();
         var new_password = $('#new_password').val();
         var new_password_confirmation = $('#new_password_confirmation').val();
@@ -298,7 +308,11 @@
                 new_password_confirmation: new_password_confirmation
             },
             success: function(data) {
+<<<<<<< HEAD
                 $('[name="aID"]').val("");
+=======
+                $('[name="accountId"]').val("");
+>>>>>>> 748be07ccce6446489887464589ad8c68f90a0c1
                 $('[name="old_password"]').val("");
                 $('[name="new_password"]').val("");
                 $('[name="new_password_confirmation"]').val("");

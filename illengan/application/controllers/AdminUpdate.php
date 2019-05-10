@@ -1,5 +1,5 @@
 <?php
-class adminUpdate extends CI_Controller{
+class adminupdate extends CI_Controller{
 
     function __construct(){
         parent:: __construct();
@@ -10,12 +10,12 @@ class adminUpdate extends CI_Controller{
     }
     function editStockSpoil(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $ssID = $this->input->post('ssID');
-            $vID = $this->input->post('vID');
-            $ssQty = $this->input->post('ssQty');
-            $ssDate = $this->input->post('ssDate');
-            $ssRemarks = $this->input->post('ssRemarks');
-            $date_recorded = date("Y-m-d H:i:s");
+            $ssID=$this->input->post('ssID');
+            $vID=$this->input->post('vID');
+            $ssQty=$this->input->post('ssQty');
+            $ssDate=$this->input->post('ssDate');
+            $ssRemarks=$this->input->post('ssRemarks');
+            $date_recorded=date("Y-m-d 2H:i:s");
 
             $this->adminmodel->edit_stockspoilage($ssID,$vID,$ssQty,$ssDate,$ssRemarks,$date_recorded);
         }else{
@@ -59,7 +59,7 @@ class adminUpdate extends CI_Controller{
     function editTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('prevTableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]');
-            $this->form_validation->set_rules('tableCode',   'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
+            $this->form_validation->set_rules('tableCode',   'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.tableCode]');
             if($this->form_validation->run()){
                 $prevTableCode = trim($this->input->post('prevTableCode'));
                 $tableCode = trim($this->input->post('tableCode'));
@@ -264,6 +264,22 @@ class adminUpdate extends CI_Controller{
         }else{
             redirect('login');
         }
+    }
+    function editReturnTrans(){
+        print_r($_POST);
+        $eID = $this->input->post('eID'); 
+        $eSpID = $this->input->post('eSpID');
+        $eRNum = $this->input->post('eRNum'); 
+        $eStat = $this->input->post('eStat'); 
+        $eRDate = $this->input->post('eRDate');
+        $eDRec = $this->input->post('eDRec');
+        $etotal = $this->input->post('eTotal'); 
+        $eremarks = $this->input->post('eRemarks');
+        $defaultType = $this->input->post('eType'); 
+        $eRetIt = json_decode($this->input->post('eRetIt'), true); 
+        echo json_encode($eRetIt, true);
+        $this->adminmodel->update_returns($eID, $eSpID, $eRNum, 
+        $eStat, $eRDate, $eDRec, $etotal, $eremarks, $defaultType, $eRetIt);
     }
 }
 ?>

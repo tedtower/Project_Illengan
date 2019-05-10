@@ -1,5 +1,5 @@
 <?php
-class AdminAdd extends CI_Controller{
+class Adminadd extends CI_Controller{
 
     function __construct(){
         parent:: __construct();
@@ -173,13 +173,14 @@ class AdminAdd extends CI_Controller{
             $merchandise = json_decode($this->input->post('merchandise'), true);
             echo json_encode($merchandise, true);
             $this->adminmodel->add_PurchaseOrder($poDate, $edDate, $poTotal, $poDateRecorded, $poStatus, $poRemarks, $spID, $merchandise);
+            
         }else{
             redirect('login');
         }    
     }
     function addTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
+            $this->form_validation->set_rules('tableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.tableCode]');
             if($this->form_validation->run()){
                 $tableCode = trim($this->input->post('tableCode'));
                 if($this->adminmodel->add_table($tableCode)){
@@ -221,7 +222,7 @@ class AdminAdd extends CI_Controller{
     function addspoilagesstock(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
-            $date_recorded = date("Y-m-d H:i:s");
+            $date_recorded = date("Y-m-d");
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
             $this->adminmodel->add_stockspoil($date_recorded,$stocks);
@@ -294,6 +295,24 @@ class AdminAdd extends CI_Controller{
             redirect('login');
         }
     }
+    function addReturnTransactions(){
+        $idate = date('Y-m-d');
+        $reQty = $this->input->post('reQty');
+        $reUnit = $this->input->post('reUnit');
+        $cost = $this->input->post('cost');
+        $supID= $this->input->post('supID');
+        $dateRet= $this->input->post('dateRet');
+        $receipt= $this->input->post('receipt');
+        $remarks= $this->input->post('remarks');
+        $reStat= $this->input->post('reStat');
+        $stckName= $this->input->post('stckName');
+        $subtotal= $this->input->post('subtotal');
+        $variance= $this->input->post('variance');
+        $stckID= $this->input->post('stckID');
+        $this->adminmodel->add_returns($idate, $reQty, $reUnit, $supID, $dateRet, $receipt, $cost, $remarks,$reStat,  $stckName, $subtotal, $variance, $stckID);
+        redirect('adminview/viewReturnTransactions');
+    }
+
 
 }
 ?>
