@@ -16,7 +16,6 @@ class Login extends CI_Controller{
     function check_cred(){
         $uname = $this->input->post('username');
         $pword = $this->input->post('password');
-        $this->load->model('loginmodel');
         $loginAttempt = $this->loginmodel->validate($uname,$pword);
         if(is_array($loginAttempt)){
             $user_data = array(
