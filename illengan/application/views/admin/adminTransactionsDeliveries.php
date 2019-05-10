@@ -409,7 +409,6 @@ $(function() {
                 itemPrice : row.find("input[name='itemPrice[]']").val() 
             });
         }
-    
         $.ajax({
             method : 'post',
             url : "<?= site_url('admin/transactions/add')?>",
@@ -465,15 +464,15 @@ function setPurchaseOrders(po){
         var id = $(this).val();
         $("#brochure").find('.table tbody').children().remove();
         $("#brochure").find('.table tbody').append(`${po.poItems.filter(item => item.poID === id ).map(item => { return `
-                                                        <tr>
-                                                            <td><input type="checkbox" class="mr-2" value="${item.poiID}"></td>
-                                                            <td>${null}</td>
-                                                            <td>${item.poiUnit}</td>
-                                                            <td>${item.poiQty}</td>
-                                                            <td>${item.poiPrice}</td>
-                                                            <td>${(parseFloat(item.poiPrice) * parseInt(item.poiQty)).toFixed(2)}</td>
-                                                            <td>${item.poiStatus}</td>
-                                                        </tr>`}).join('')}`);
+            <tr>
+                <td><input type="checkbox" class="mr-2" value="${item.poiID}"></td>
+                <td>${item.poiName}</td>
+                <td>${item.poiUnit}</td>
+                <td>${item.poiQty}</td>
+                <td>${item.poiPrice}</td>
+                <td>${(parseFloat(item.poiPrice) * parseInt(item.poiQty)).toFixed(2)}</td>
+                <td>${item.poiStatus}</td>
+            </tr>`}).join('')}`);
     });
 }
 </script>
