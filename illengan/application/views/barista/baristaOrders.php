@@ -103,7 +103,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                        <strong>Are you sure to remove this record?</strong>
                   </div>
                   <div class="modal-footer">
-                    <input type="hidden" name="order_id_remove" id="order_id_remove" class="form-control">
+                    <input type="hidden" name="osID_remove" id="osID_remove" class="form-control">
                     <button type="button" type="submit" id="btn_cancel" class="btn btn-primary">Yes</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                   </div>
@@ -134,7 +134,7 @@ function format(d){
       '</tr>'+
       '<tr>'+
           '<td>---</td>'+
-          '<td>'+d.remarks+'</td>'+
+          '<td>'+d.olRemarks+'</td>'+
       '</tr>'+
       '</table>';
 
@@ -155,21 +155,21 @@ $(document).ready(function(){
         "data": null,
         "defaultContent": 'click!'
       },
-      {data : 'order_item_id'},
-      {data : 'cust_name'},
-      {data : 'table_code'},
-      {data : 'order_desc'},
-      {data : 'order_qty'},
+      {data : 'olID'},
+      {data : 'custName'},
+      {data : 'tableCode'},
+      {data : 'olDesc'},
+      {data : 'olQty'},
       {data : null,
               render: function(data, type, row, meta){
                 return '<button id="orderStatus" class="status btn dt-buttons '+ data.item_status +
-                        '" data-order_item_id="'+ data.order_item_id +'"'+
+                        '" data-order_item_id="'+ data.olID +'"'+
                         ' data-item_status="'+ data.item_status +'" onclick="change_status()">'+ data.item_status +'</button>';
               }
       },
       {data: null,
             render: function(data, type, row, meta){
-                return '<a href="javascirpt: void(0)" class="btn btn-warning btn-sm item_delete" data-order_id="'+data.order_id+'">Cancel</a>';
+                return '<a href="javascript: void(0)" class="btn btn-warning btn-sm item_delete" data-order_id="'+data.osID+'">Cancel</a>';
             }
       }
     ]
@@ -213,22 +213,22 @@ $('#btn-hide-all-children').on('click', function(){
 
 //get data for delete record
 $('#show_data').on('click','.item_delete',function(){
-            var order_id = $(this).data('order_id');
+            var osID = $(this).data('osID');
             
             $('#Modal_Remove').modal('show');
-            $('[name="order_id_remove"]').val(order_id);
+            $('[name="osID_remove"]').val(osID);
         });
 
         //delete record to database
          $('#btn_cancel').on('click',function(){
-            var order_id = $('#order_id_remove').val();
+            var osID = $('#osID_remove').val();
             $.ajax({
                 type : "POST",
                 url  : "<?php echo site_url('barista/cancel')?>",
                 dataType : "JSON",
-                data : {order_id:order_id},
+                data : {osID:osID},
                 success: function(data){
-                    $('[name="order_id_remove"]').val("");
+                    $('[name="osID_remove"]').val("");
                     alert("Record removed successfully!");
                     $('#Modal_Remove').modal('hide');
                     
@@ -240,13 +240,11 @@ $('#show_data').on('click','.item_delete',function(){
 
 function change_status(){
   $('.orderStatus').on('click', function(){
-    var orderItemId = $(this).data('order_item_id');
-    var itemStatus = $(this).data('item_status');
+    var orderItemId = $(this).data('olID');
+    var itemStatus = $(this).data('olStatus');
     var item_status;
 
     if(itemStatus === "pending"){
-      item_status = "ongoing";
-    }else if(itemStatus === "ongoing"){
       item_status = "done";
     }else if(itemStatus === "done"){
       item_status = "served";
@@ -258,8 +256,8 @@ function change_status(){
       type: 'POST',
       url: 'http://www.illengan.com/barista/change_status',
       data : {
-        order_item_id : orderItemId,
-        item_status: item_status
+        olID : orderItemId,
+        olStatus: item_status
       },
       success: function() {
         table.DataTable(). ajax.reload(null, false);
@@ -274,3 +272,4 @@ function change_status(){
 
 </body>
 </html>
+
