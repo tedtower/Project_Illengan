@@ -294,6 +294,7 @@ class Adminadd extends CI_Controller{
         if($this->adminmodel->add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks,$total, $transitems)){
             
         }else{
+            redirect('login');
         }
     }
 

@@ -483,6 +483,10 @@ class AdminModel extends CI_Model{
         $query = "Select * from menu inner join categories using (ctID) order by ctName asc, mName asc";
         return $this->db->query($query)->result_array();
     }
+    function get_addons2(){
+        $query = "SELECT * from menuaddons inner join addons using (aoID)";
+        return $this->db->query($query)->result_array();
+    }
     function get_preferences(){
         $query = "SELECT * from preferences";
         return $this->db->query($query)->result_array();
@@ -747,14 +751,14 @@ class AdminModel extends CI_Model{
         $id = $this->db->insert_id();
         if($invoiceSuccess){
             foreach($transitems as $item){
-                $this->addEdit_transaction($item, $id);
+                $this->addEdit_transactionItems($item, $id);
             }
             return true;
         }
         return false;
     }
 
-    function addEdit_transaction($item,$id){
+    function addEdit_transactionItems($item,$id){
         $query = "";
         if($item['itemID'] == null){
             $query = "INSERT INTO `invoiceitems`(
