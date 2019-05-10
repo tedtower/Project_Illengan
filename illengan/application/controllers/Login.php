@@ -1,6 +1,10 @@
 <?php
 class Login extends CI_Controller{
-
+   function __construct(){
+        parent:: __construct();
+        $this->load->model('loginmodel');  
+    }
+	
     function viewlogin(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type')){
             $this->homeRedirect();
