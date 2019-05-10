@@ -12,7 +12,7 @@ class Customer extends CI_Controller {
 
 	//Checks if the user is logged in. *DON'T CHANGE*
 	function isLoggedIn(){
-		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Customer'){
+		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'customer'){
 			return true;			
 		}else{
 			return false;
