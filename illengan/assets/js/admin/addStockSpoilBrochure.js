@@ -17,6 +17,7 @@ function getSelectedStocks() {
                 success: function (data) {
                    
                     stockChecked = `<tr class="stockelem" data-id="` + data[i].vID + `" >
+                            <input type="hidden" id="curQty` + i + `" name="curQty" class="form-control form-control-sm" data-vID="` + data[i].vQty + `" value="` + data[i].vQty + `">
                             <input type="hidden" id="vID` + i + `" name="vID" class="form-control form-control-sm" data-vID="` + data[i].vID + `" value="` + data[i].vID + `">
                             <td><input type="text" id="stName` + i + `" name="stName"
                                     class="form-control form-control-sm" data-stNameID="` + data[i].stName + `" value="` + data[i].vName + `" readonly="readonly"></td>
@@ -41,14 +42,16 @@ function addStockItems() {
     var ssDate = document.getElementById('spoilDate').value;
     var stockItems = [];
     var stocks = [];
-    var vID, ssQty, ssRemarks;
+    var vID,stID,ssQty, ssRemarks;
     for (var i = 0; i <= elements.length - 1; i++) {
         vID = document.getElementsByName('vID')[i].value;
+        curQty = document.getElementsByName('curQty')[i].value;
         ssQty = document.getElementsByName('ssQty')[i].value;
         ssRemarks = document.getElementsByName('ssRemarks')[i].value;
 
         stockItems = {
             'vID': vID,
+            'curQty': curQty,
             'ssQty': ssQty,
             'ssDate': ssDate,
             'ssRemarks': ssRemarks
@@ -65,10 +68,12 @@ function addStockItems() {
         success: function (data) {
             alert('Spoiled Stock Added');
             newFunction(data);
-            $('#addStockSpoilage').modal('hide');
-            var table = $('#tablevalues').DataTable();
-            table.ajax.reload();
+            
         },
+        complete: function() {
+            $("#addStockSpoilage").modal("hide");
+            location.reload();
+            },
         error: function(response, setting, error) {
             console.log(response.responseText);
             console.log(error);

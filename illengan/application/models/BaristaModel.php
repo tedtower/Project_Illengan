@@ -5,32 +5,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         
         function orderlist(){
             $this->load->database();
-            $query = $this->db->query('SELECT * from orderslip join orderlist using (order_id) join preferences using (pref_id)');
+            $query = $this->db->query('SELECT * from orderslips join orderlists using (osID) join preferences using (prID)');
             return $query->result();
         }
 
         function show_orderslip(){
             $this->load->database();
-            $query = $this->db->query('SELECT * from orderslip join orderlist using (order_id) join preferences using (pref_id) GROUP BY table_code');
+            $query = $this->db->query('SELECT * from orderslips join orderlists using (osID) join preferences using (prID) GROUP BY tableCode');
             return $query->result();
         }
 
         function edit_tablenumber(){
-            $order_id=$this->input->post('order_id');
-            $table_code=$this->input->post('table_code');
+            $osID=$this->input->post('osID');
+            $tableCode=$this->input->post('tableCode');
     
-            $this->db->set('order_id', $order_id);
-            $this->db->set('table_code', $table_code);
-            $this->db->where('order_id', $order_id);
-            $result=$this->db->update('orderslip');
+            $this->db->set('osID', $osID);
+            $this->db->set('tableCode', $tableCode);
+            $this->db->where('osID', $osID);
+            $result=$this->db->update('orderslips');
             return $result;
 
         }
 
         function cancelOrder(){
-            $order_id=$this->input->post('order_id');
-            $this->db->where('order_id', $order_id);
-            $result=$this->db->delete('orderlist');
+            $osID=$this->input->post('osID');
+            $this->db->where('osID', $osID);
+            $result=$this->db->delete('orderlists');
             return $result;
         }
         
@@ -54,14 +54,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         function pending_orders(){
-            $query = $this->db->query('SELECT * from orderslip join orderlist using (order_id) join preferences using (pref_id)
-             where orderlist.item_status = "pending" ');
+            $query = $this->db->query('SELECT * from orderslips join orderlists using (osID) join preferences using (prID)
+             where orderlists.olStatus = "pending" ');
             return $query->result_array();
         }
 
         function served_orders(){
-            $query = $this->db->query('SELECT * from orderslip join orderlist using (order_id) join preferences using (pref_id) 
-            where orderlist.item_status = "served" ');
+            $query = $this->db->query('SELECT * from orderslips join orderlists using (osID) join preferences using (prID) 
+            where orderlists.olStatus = "served" ');
             return $query->result_array();
         }
 

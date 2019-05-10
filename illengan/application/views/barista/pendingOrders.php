@@ -47,12 +47,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                           {  
                             ?> 
                                <tr>  
-                                    <td><?= $row["order_item_id"]?></td>  
-                                    <td><?= $row["cust_name"]?></td>  
-                                    <td><?= $row["table_code"]?></td>  
-                                    <td><?= $row["order_desc"]?></td>  
-                                    <td><?= $row["order_qty"]?></td>  
-                                    <td><?= $row["item_status"]?></td>  
+                                    <td><?= $row["olID"]?></td>  
+                                    <td><?= $row["custName"]?></td>  
+                                    <td><?= $row["tableCode"]?></td>  
+                                    <td><?= $row["olDesc"]?></td>  
+                                    <td><?= $row["olQty"]?></td>  
+                                    <td><?= $row["olStatus"]?></td>  
                                     <td><button id="cancelOrder" class="btn btn-warning btn-sm">Cancel</button></td>  
                                </tr>    
                          
@@ -171,20 +171,20 @@ $(document).ready(function(){
 
         //get data for delete record
         $('#show_data').on('click','.item_delete',function(){
-             var order_id = $(this).data('order_id');
+             var osID = $(this).data('osID');
             
              $('#Modal_Remove').modal('show');
-             $('[name="order_id_remove"]').val(order_id);
+             $('[name="order_id_remove"]').val(osID);
          });
 
          //delete record to database
           $('#btn_cancel').on('click',function(){
-             var order_id = $('#order_id_remove').val();
+             var osID = $('#order_id_remove').val();
              $.ajax({
                  type : "POST",
                  url  : "<?php echo site_url('barista/cancel')?>",
                  dataType : "JSON",
-                 data : {order_id:order_id},
+                 data : {osID:osID},
                  success: function(data){
                      $('[name="order_id_remove"]').val("");
                      alert("Record removed successfully!");

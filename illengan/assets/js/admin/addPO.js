@@ -149,7 +149,7 @@ function addPurchaseOrder() {
         console.log('vID' + vID);
         console.log('poiQty' + poiQty);
         console.log('pU' + poiUnit);
-        console.log('poiPrice' + poiUnit);
+        console.log(itemMerch);
     }
 
     $.ajax({
@@ -162,6 +162,9 @@ function addPurchaseOrder() {
             poTotal: poTotal,
             poRemarks: poRemarks,
             merchandise: JSON.stringify(merch)
+        },
+        beforeSend: function() {
+            console.log('POI'+poiName);
         },
         dataType: 'json',
         success: function (data) {

@@ -21,7 +21,7 @@
 				<select class="form-control mb-2 delius" name="table_no" required>
 				    <option value="">Please Select</option>
                     <?php foreach($number as $row){ 
-                        echo '<option value="'.$row->table_code.'">'.$row->table_code.'</option>';
+                        echo '<option value="'.$row->tableCode.'">'.$row->tableCode.'</option>';
                     }?>
                 </select>
 					<div class="md-form input-group m-0 delius">

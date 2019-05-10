@@ -150,7 +150,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form id="formAdd" accept-charset="utf-8">
+                                            <form id="formAdd" action="<?= site_url('admin/accounts/changepassword') ?>" method="post" accept-charset="utf-8">
                                                 <div class="modal-body">
                                                     <!--Old Password-->
                                                     <div class="input-group mb-3">
@@ -179,11 +179,15 @@
                                                         <input type="text" name="new_confirm_password" id="new_confirm_password" class="form-control form-control-sm">
                                                         <span class="text-danger"><?php echo form_error("new_confirm_password"); ?></span>
                                                     </div>
-                                                    <input name="accountId" id="accountId" hidden="hidden">
+                                                    <input name="accountId" hidden="hidden">
                                                     <!--Footer-->
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+<<<<<<< HEAD
+                                                        <button class="btn btn-success btn-sm" type="submit">Update</button>
+=======
                                                         <button class="btn btn-success btn-sm" id="btn_update" type="button" onclick="updatePass()">Update</button>
+>>>>>>> 748be07ccce6446489887464589ad8c68f90a0c1
                                                     </div>
                                                 </div>
                                             </form>
@@ -246,6 +250,11 @@
                 success: function(data) {
                     accounts = data;
                     setAccountData();
+
+                },
+                complete: function() {
+                $("#deleteAccount").modal("hide");
+				location.reload();
                 }
             });
         });
@@ -264,52 +273,59 @@
     function showEditModal(event) {
         var row = event.target.parentElement.parentElement.parentElement;
         document.getElementById('aID').value = parseInt(row.firstElementChild.innerHTML);
-        document.getElementById('aUsername').value = (row.firstElementChild.nextElementSibling
-            .innerHTML).trim();
+        document.getElementById('new_aUsername').value = row.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
         document.getElementById('aType').value = capitalizeFirstLetter((row.firstElementChild
-            .nextElementSibling.nextElementSibling.innerHTML).trim());
+            .nextElementSibling.nextElementSibling.nextElementSibling.innerHTML).trim());
     }
 
-
-
     // Edit Account Password===========================================
-    // $('#show_data').on('click', '.updatePassBtn', function() {
-    //     var aID = $(this).data('aID');
+    $('#show_data').on('click', '.item_edit', function() {
+        var aID = $(this).data('aID');
 
-    //     $('#editPassword').modal('show');
-    // });
+        $('#editPassword').modal('show');
+    });
 
 
+<<<<<<< HEAD
+    $('#btn_update').on('click', function() {
+        var aID = $('#aID').val();
+=======
     // $('#btn_update').on('click', function() {
         function updatePass(){
         var accountId = $('#accountId').val();
+>>>>>>> 748be07ccce6446489887464589ad8c68f90a0c1
         var old_password = $('#old_password').val();
         var new_password = $('#new_password').val();
-        var new_confirm_password = $('#new_confirm_password').val();
+        var new_password_confirmation = $('#new_password_confirmation').val();
         $.ajax({
             type: "POST",
             url: "http://illengan.com/admin/accounts/changepassword",
             dataType: "JSON",
             data: {
-                accountId: accountId,
+                aID: aID,
                 old_password: old_password,
                 new_password: new_password,
-                new_confirm_password: new_confirm_password
+                new_password_confirmation: new_password_confirmation
             },
             success: function(data) {
+<<<<<<< HEAD
+                $('[name="aID"]').val("");
+=======
                 $('[name="accountId"]').val("");
+>>>>>>> 748be07ccce6446489887464589ad8c68f90a0c1
                 $('[name="old_password"]').val("");
                 $('[name="new_password"]').val("");
-                $('[name="new_confirm_password"]').val("");
-                alert("Account was successfully updated!");
-                console.log(data);
-                $('#editPassword').modal('hide');
-                location.reload();
-
-            }
+                $('[name="new_password_confirmation"]').val("");
+                $('#editPasswordModal').modal('hide');
+                alert("Table Code was successfully updated!");
+            },
+                complete: function() {
+                $("#editPassword").modal("hide");
+				location.reload();
+                }
         });
         return false;
-    };
+    });
 
 
     //Display data to table====================================================

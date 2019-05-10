@@ -276,15 +276,6 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td><input type="checkbox" class="mr-2" value=""></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -346,16 +337,9 @@
 var suppliers = [];
 
 $(function() {
-    $(".accordionBtn").on('click', function() {
-        if ($(this).closest("tr").next(".accordion").css("display") == 'none') {
-            $(this).closest("tr").next(".accordion").css("display", "table-row");
-            $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
-        } else {
-            $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
-            $(this).closest("tr").next(".accordion").hide("slow");
-        }
-    });
     $("#addTransaction").on('click',function(){
+        $("#form")[0].reset();
+        $("#form").find(".table tbody").empty();
         $.ajax({
             method : 'post',
             url : '<?= site_url('admin/jsonSupp')?>',
@@ -371,7 +355,18 @@ $(function() {
             }
         });
     });
+    $(".accordionBtn").on('click', function() {
+        if ($(this).closest("tr").next(".accordion").css("display") == 'none') {
+            $(this).closest("tr").next(".accordion").css("display", "table-row");
+            $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
+        } else {
+            $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
+            $(this).closest("tr").next(".accordion").hide("slow");
+        }
+    });
     $("#addPOItems").on('click',function(){
+        $("#brochure").find("form")[0].reset();
+        $("#brochure").find(".table tbody").empty();
         $.ajax({
             method : 'post',
             url : '<?= site_url('admin/getPurchaseOrders')?>',
@@ -409,7 +404,6 @@ $(function() {
                 itemPrice : row.find("input[name='itemPrice[]']").val() 
             });
         }
-    
         $.ajax({
             method : 'post',
             url : "<?= site_url('admin/transactions/add')?>",
@@ -452,28 +446,71 @@ function setSuppliers(){
     `);
 }
 function setPurchaseOrders(po){
+    var id = 0;
+    var pois = [];
+    var poIDs = [];
+    var values = [];
     $("#brochure").find("select[name='po'] option").first().siblings().remove();
     $("#brochure").find("select[name='po']").append(`
     ${po.po.map(po => {
         return `<option value="${po.poID}">${po.poID} - ${po.poDate}</option>`
     }).join('')}
     `);
-    console.log(po.po.map(po => {
-        return `<option value="${po.poID}">${po.poID} - ${po.poDate}</option>`
-    }).join(''));
     $("#brochure").find("select[name='po']").on('change',function(){
-        var id = $(this).val();
-        $("#brochure").find('.table tbody').children().remove();
-        $("#brochure").find('.table tbody').append(`${po.poItems.filter(item => item.poID === id ).map(item => { return `
-                                                        <tr>
-                                                            <td><input type="checkbox" class="mr-2" value="${item.poiID}"></td>
-                                                            <td>${null}</td>
-                                                            <td>${item.poiUnit}</td>
-                                                            <td>${item.poiQty}</td>
-                                                            <td>${item.poiPrice}</td>
-                                                            <td>${(parseFloat(item.poiPrice) * parseInt(item.poiQty)).toFixed(2)}</td>
-                                                            <td>${item.poiStatus}</td>
-                                                        </tr>`}).join('')}`);
+        id = $(this).val();
+        pois = po.poItems.filter(item => item.poID === id );
+        setBrochureModalTableOneData(pois);
     });
+    $("#brochure form").on('submit',function(event){
+        event.preventDefault();
+        $.each($("input[name='poiID[]']:checked"),function(){
+            values.push($(this).val());
+        });
+        $("#brochure").modal('hide');
+        setModalTableOneData(pois,values);
+    });
+}
+//array 1 : array of objects from DB
+//array 2 : array of poiIDs as selected by the user from the brochure
+function setModalTableOneData(array1, array2){
+    $("#form").find(".table").eq(0).find("tbody").empty();
+    $("#form").find(".table").eq(0).find("tbody").append(`${
+        array1.filter(item => array2.includes(item.poiID)).map(item => {
+            return `<tr data-id="${item.poiID}" data-id2="${item.vID}">
+                <td><input type="text" name="itemName[]"
+                        class="form-control form-control-sm" value="${item.poiName}" readonly="readonly"></td>
+                <td><input type="number" name="actualItemQty[]"
+                        class="form-control form-control-sm" value=""></td>
+                <td><input type="number" name="itemQty[]"
+                        class="form-control form-control-sm" value="${item.poiQty}" readonly="readonly"></td>
+                <td><input type="text" name="itemUnit[]"
+                        class="form-control form-control-sm" value="${item.poiUnit}" readonly="readonly"></td>
+                <td><input type="number" name="itemPrice[]"
+                        class="form-control form-control-sm" value="${item.poiPrice}" readonly="readonly"></td>
+                <td><input type="number" name="itemSubtotal[]"
+                        class="form-control form-control-sm" value="${parseFloat(item.poiPrice) * parseInt(item.poiQty)}" readonly="readonly"></td>
+                <td><img class="exitBtn" id="exitBtn"
+                        src="/assets/media/admin/error.png"
+                        style="width:20px;height:20px"></td>
+            </tr>`;
+        }).join('')
+    }`);
+    
+}
+function setBrochureModalTableOneData(array){
+    $("#brochure").find('.table tbody').eq(0).children().remove();
+    $("#brochure").find('.table tbody').eq(0).append(`${array.map(item => { return `
+        <tr>
+            <td><input type="checkbox" class="mr-2" name="poiID[]" value="${item.poiID}"></td>
+            <td>${item.poiName}</td>
+            <td>${item.poiUnit}</td>
+            <td>${item.poiQty}</td>
+            <td>${item.poiPrice}</td>
+            <td>${(parseFloat(item.poiPrice) * parseInt(item.poiQty)).toFixed(2)}</td>
+            <td>${item.poiStatus}</td>
+        </tr>`}).join('')}`);
+}
+function resetModal(){
+    $("")
 }
 </script>

@@ -488,6 +488,14 @@ $(document).ready(function() {
             $(this).closest("tr").next(".accordion").hide("slow");
         }
     });
+    $("#newStock").find("select[name='stockCategory']").append(`
+    ${inventory.categories.map(category => {
+        return `<option value="${category.ctID}">${category.ctName}</option>`
+    }).join('')}`);
+    $("#editStock").find("select[name='stockCategory']").append(`
+    ${inventory.categories.map(category => {
+        return `<option value="${category.ctID}">${category.ctName}</option>`
+    }).join('')}`);
     console.log(inventory);
     $("#addBtn").on('click', function() {
         $("#newStock form")[0].reset();

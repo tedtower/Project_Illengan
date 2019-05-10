@@ -22,6 +22,20 @@ class adminupdate extends CI_Controller{
             redirect('login');
         } 
     }
+    function editMenuSpoil(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $msID = $this->input->post('msID');
+            $prID = $this->input->post('prID');
+            $msQty = $this->input->post('msQty');
+            $msDate = $this->input->post('msDate');
+            $msRemarks = $this->input->post('msRemarks');
+            $date_recorded = date("Y-m-d H:i:s");
+
+            $this->adminmodel->edit_menuspoilage($msID,$prID,$msQty,$msDate,$msRemarks,$date_recorded);
+        }else{
+            redirect('login');
+        } 
+    }
     function editMenuCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $ctID = $this->input->post('ctID');
@@ -45,7 +59,7 @@ class adminupdate extends CI_Controller{
     function editTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('prevTableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]');
-            $this->form_validation->set_rules('tableCode',   'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.table_code]');
+            $this->form_validation->set_rules('tableCode',   'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]|is_unique[tables.tableCode]');
             if($this->form_validation->run()){
                 $prevTableCode = trim($this->input->post('prevTableCode'));
                 $tableCode = trim($this->input->post('tableCode'));
@@ -100,6 +114,7 @@ class adminupdate extends CI_Controller{
             $aType = $this->input->post('new_aType');
             $aUsername = $this->input->post('new_aUsername');
             $this->adminmodel->edit_accounts($aID,$aType,$aUsername);
+            redirect('admin/accounts');
             }else{
                 echo "Form Validation is not Working.";
             }
