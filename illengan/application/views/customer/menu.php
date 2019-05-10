@@ -22,7 +22,7 @@
                     <a href="javascript:void(0)" onclick="hide_freebies();freebies_discounts()" class="menu_card" id="<?php echo $items->mID; ?>">
                         <img data-mID="<?php echo $items->mID; ?>" class="card-img-top" src="
                         <?php
-                            if(isset($items->menu_image)){
+                            if(isset($items->mImage)){
                                 echo "".cmedia_url()."menu/".$items->mImage;
                             } else {
                                 echo "".cmedia_url()."menu/no_image.jpg";
