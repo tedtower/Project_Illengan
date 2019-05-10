@@ -54,7 +54,7 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'login/viewlogin';
 $route['logout'] = 'login/logout';
-$route['verifylogin'] = "login/check_cred";
+$route['verifylogin'] = 'login/check_cred';
 
 //Viewing Routes -----------------------------------------------
 $route['admin/menu'] = "adminview/viewmenu";
