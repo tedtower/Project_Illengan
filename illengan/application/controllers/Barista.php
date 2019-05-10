@@ -80,11 +80,11 @@ class Barista extends CI_Controller{
     }
     
     function change_status() {
-        $item_status = $this->input->post('item_status');
-        $order_item_id = $this->input->post('order_item_id');
-        $order_id = $this->input->post('order_id');
+        $item_status = $this->input->post('olStatus');
+        $olID = $this->input->post('olID');
+        $osID = $this->input->post('osID');
         
-        $this->baristamodel->update_status($order_id, $order_item_id, $item_status);
+        $this->baristamodel->update_status($osID, $olID, $item_status);
         $this->get_orderlist();
     }
 
