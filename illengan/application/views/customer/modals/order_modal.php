@@ -18,7 +18,7 @@
             echo form_hidden('table_no', $table_no);
             echo form_hidden('cust_name', $cust_name);
 		echo '<strong>Customer Name:</h3>'.$cust_name.'
-        <br><strong>Table Code: </strong>'.$table_no['table_code'].'<br><b>Date:&nbsp;</b>'.$date.'<br>';
+        <br><strong>Table Code: </strong>'.$table_no['tableCode'].'<br><b>Date:&nbsp;</b>'.$date.'<br>';
           if(empty($orders)) { //check if the customer did not order yet
             echo 'To order menu items click on "Save to Orderlist" Button';
 		  }else{
