@@ -86,6 +86,7 @@ $route['admin/transactions'] = "adminview/viewalltransactions";
 $route['admin/transactions/delivery'] = "adminview/viewDeliveryTransactions";
 $route['admin/transactions/purchase'] = "adminview/viewpurchasetransactions";
 $route['admin/transactions/return'] = "adminview/viewreturntransactions";
+$route['admin/transactions/getReturns'] = "adminview/getReturns";
 
 //End Viewing Routes
 
