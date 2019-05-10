@@ -61,7 +61,6 @@ $route['admin/menu'] = "adminview/viewmenu";
 $route['admin/menu/getDetails'] = "adminview/menuGetDetails";
 $route['admin/menu/addons'] = "adminview/menuAddons";
 $route['admin/menu/promos'] = "adminview/menuPromos";
-$route['admin/spoilages'] = "adminview/viewspoilages";
 $route['admin/sales'] = "adminview/viewSales";
 $route['admin/dashboard'] = "adminview/viewdashboard";
 $route['admin/tables'] = "adminview/viewtables";
@@ -129,6 +128,7 @@ $route['admin/supplier/edit'] = "adminupdate/editSupplierMerchandise";
 $route['admin/tables/edit'] = "adminupdate/edittable";
 $route['admin/stockqty/edit'] = "adminupdate/editStockQty";
 $route['admin/stock/spoilage/edit'] = "adminupdate/editStockSpoil";
+$route['admin/menu/spoilage/edit'] = "adminupdate/editMenuSpoil";
 //End Admin Update Routes ---------------------------------------
 
 //Admin Delete Routes -------------------------------------------
@@ -151,11 +151,12 @@ $route['admin/jsonStock'] = "adminview/jsonStock";
 $route['admin/jsonPromos'] = "adminview/jsonPromos";
 $route['admin/spoilagesmenujson'] = "adminview/viewSpoilagesMenuJs";
 $route['admin/spoilagesaddonsjson'] = "adminview/viewSpoilagesAddonsJs";
-$route['admin/spoilagesjson'] = "adminview/viewSpoilagesJs";
 $route['admin/spoilagesstockjson'] = "adminview/viewSpoilagesStockJs";
 $route['admin/accounts/viewAccountsJs'] ="adminview/viewAccountsJs";
 $route['admin/jsonMenu'] ="adminview/jsonMenu";
 $route['admin/stock/spoilages/viewStockJS'] ="adminview/viewStockJS";
+$route['admin/menu/spoilages/viewMenuJS'] ="adminview/viewMenuJS";
+$route['admin/addon/spoilages/viewAddonJS'] ="adminview/viewAddonJS";
 $route['admin/jsonPOrders'] ="adminview/jsonPurchaseOrders";
 $route['admin/jsonSupp'] ="adminview/jsonSuppliers";
 $route['admin/jsonMerchandise'] ="adminview/jsonSuppMerchandise";

@@ -19,7 +19,16 @@ class AdminAdd extends CI_Controller{
             $username = $this->input->post("aUsername");
             $aType = $this->input->post("aType");
 
-        if($this->form_validation->run()){
+        // if($this->form_validation->run()){
+        //     $data = array(
+        //         'aPassword'=>$password,
+        //         'aUsername'=>$username,
+        //         'aType'=>$aType
+        //     );
+        //     $this->adminmodel->add_accounts($data);
+        //     redirect('admin/accounts');
+
+        // }else{
             $data = array(
                 'aPassword'=>$password,
                 'aUsername'=>$username,
@@ -27,15 +36,7 @@ class AdminAdd extends CI_Controller{
             );
             $this->adminmodel->add_accounts($data);
             redirect('admin/accounts');
-
-        }else{
-            $data = array(
-                'aPassword'=>$password,
-                'aUsername'=>$username,
-                'aType'=>$aType
-            );
-            echo json_encode($data);
-        }
+        // }
     }
     function addMenuCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
@@ -196,34 +197,23 @@ class AdminAdd extends CI_Controller{
     function addspoilagesaddons(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
-
-            $s_type = $this->input->post("s_type");
-            $ao_name =$this->input->post("ao_name");
-            $s_qty =$this->input->post("s_qty");
-            $s_date =$this->input->post("s_date");
-            $remarks =$this->input->post("remarks");
             $date_recorded = date("Y-m-d H:i:s");
-
-            $this->adminmodel->add_aospoil($s_type,$ao_name,$s_type,$s_date,$date_recorded,$remarks);
-            $data['spoilages'] = $this->adminmodel->get_spoilages();
-            $this->load->view('admin/view_spoilages',$data); 
+            $addons = json_decode($this->input->post('addons'), true);
+            echo json_encode($addons, true);
+            $this->adminmodel->add_aospoil($date_recorded,$addons);
+           
         }else{
             redirect('login');
         }
     }
     function addspoilagesmenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-
-            $s_type = $this->input->post("s_type");
-            $menu_name =$this->input->post("menu_name");
-            $s_qty =$this->input->post("s_qty");
-            $s_date =$this->input->post("s_date");
+            $this->load->model('adminmodel');
             $date_recorded = date("Y-m-d H:i:s");
-            $remarks =$this->input->post("remarks");
-
-            $this->adminmodel->add_menuspoil($s_type,$menu_name,$s_qty,$s_date,$date_recorded,$remarks);
-            $data['spoilages'] = $this->adminmodel->get_spoilages();
-            $this->load->view('admin/view_spoilages', $data);
+            $menus = json_decode($this->input->post('menus'), true);
+            echo json_encode($menus, true);
+            $this->adminmodel->add_menuspoil($date_recorded,$menus);
+           
         }else{
             redirect('login');
         }
@@ -235,7 +225,7 @@ class AdminAdd extends CI_Controller{
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
             $this->adminmodel->add_stockspoil($date_recorded,$stocks);
-           
+            redirect('admin/stock/spoilages');
         }else{
             redirect('login');
         }

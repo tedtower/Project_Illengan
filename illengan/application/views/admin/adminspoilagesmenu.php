@@ -1,4 +1,3 @@
-<!--End Side Bar-->
 <div class="content">
 	<div class="container-fluid">
 		<br>
@@ -13,52 +12,56 @@
 						<!--Table-->
 						<div class="card-content">
 
-							<!--Add Menu Spoilage-->
+							<!--Add Menu Spoilage BUTTON-->
 							<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addMenuSpoilage" data-original-title style="margin:0">Add Menu Spoilage</a><br>
-
+							<!--eND Add Menu Spoilage BUTTON-->
 							<br>
-							<table id="tablevalues" class="dataTable dtr-inline collapsed table display">
+							<table id="menuTable" class="spoiltable dtr-inline collapsed table display">
 								<thead>
-									<th></th>
-									<th>Code</th>
-									<th>Description</th>
+									<th>prCode</th>
+									<th>msCode</th>
+									<th>Item Name</th>
 									<th>Quantity</th>
-									<th>Damage date</th>
+									<th>Date Spoiled</th>
 									<th>Date Recorded</th>
-									<th>Operations</th>
+									<th>Remarks</th>
+									<th>Operation</th>
+									
 								</thead>
-								<tbody id="spoilage_data">
+								<tbody id="menu_data">
 								</tbody>
 							</table>
 							<!--End Table Content-->
-							<!--Start of Modal "Add Menu Menu"-->
+							<!--Start of Modal "Add Menu Spoilages"-->
 							<div class="modal fade bd-example-modal-lg" id="addMenuSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 								<div class="modal-dialog modal-lg" role="document">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLabel">Add Menu Spoilage</h5>
+											<h5 class="modal-title" id="exampleModalLabel">Add Spoilage</h5>
 											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 												<span aria-hidden="true">&times;</span>
 											</button>
 										</div>
-										<form id="formAdd" action="<?= site_url('admin/menu/spoilages/add') ?>" method="post" accept-charset="utf-8">
+										<form id="formAdd" action="<?= site_url('admin/menu/spoilages/add')?>" accept-charset="utf-8">
 											<div class="modal-body">
 												<div class="form-row">
-													<!--Container of Source Date-->
+													<!--Container of Menu Spoilage Date-->
 													<!--Spoilage Date-->
 													<div class="input-group mb-3">
 														<div class="input-group-prepend">
 															<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-																Source Date</span>
+																Spoilage Date</span>
 														</div>
-														<input type="date" name="transDate" id="transDate" class="form-control form-control-sm">
+														<input type="date" name="spoilDate" id="spoilDate" class="form-control form-control-sm">
 													</div>
 												</div>
+												<!--Add Menu Item-->
 												<!--Button to add row in the table-->
-												<a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Row</a>
+												<!--Button to add launche the brochure modal-->
+												<a class="addSpoilageItem btn btn-default btn-sm" data-toggle="modal" data-target="#brochureSS" data-original-title style="margin:0" id="addMenuSpoilage">Add Spoilage Items</a>
 												<br><br>
-												<table class="menuSpoilageTable table table-sm table-borderless">
-													<!--Table containing the different input fields in adding AO spoilages -->
+												<table class="menuspoilageTable table table-sm table-borderless">
+													<!--Table containing the different input fields in adding menu spoilages -->
 													<thead class="thead-light">
 														<tr>
 															<th>Name</th>
@@ -68,18 +71,13 @@
 														</tr>
 													</thead>
 													<tbody>
-														<tr>
-															<td><input type="text" name="menu_name" id="menu_name" class="form-control form-control-sm"></td>
-															<td><input type="number" name="s_qty" id="s_qty" class="form-control form-control-sm"></td>
-															<td><textarea name="date" id="s_date" class="form-control form-control-sm"></textarea></td>
-															<td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
 													</tbody>
 												</table>
 												<!--Total of the trans items-->
-
+					
 												<div class="modal-footer">
 													<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-													<button class="btn btn-success btn-sm" type="submit">Add</button>
+													<button type="button" class="btn btn-success btn-sm" onclick="addMenuItems()">Add</button>
 												</div>
 											</div>
 										</form>
@@ -87,6 +85,32 @@
 								</div>
 							</div>
 							<!--End of Modal "Add Menu Spoilage"-->
+
+							<!--Start of Brochure Modal"-->
+                            <div class="modal fade bd-example-modal" id="brochureSS" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background:rgba(0, 0, 0, 0.3)">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Select Preferences</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form id="formAdd"  method="post" accept-charset="utf-8">
+                                            <div class="modal-body">
+                                                <div style="margin:1% 3%" id="list">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+												<button type="button" class="btn btn-danger btn-sm"
+													data-dismiss="modal">Cancel</button>
+												<button type="button" class="btn btn-success btn-sm" data-dismiss="modal" onclick="getSelectedPref()">Ok</button>
+											</div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        <!--End of Brochure Modal"-->
 
 							<!--Delete Confirmation Box-->
 							<div class="modal fade" id="deleteSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -103,6 +127,9 @@
 												<h6 id="deleteTableCode"></h6>
 												<p>Are you sure you want to delete the selected menu spoilages?</p>
 												<input type="text" name="tableCode" hidden="hidden">
+												<div>
+													Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm">
+												</div>
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
@@ -112,8 +139,58 @@
 									</div>
 								</div>
 							</div>
-
-
+							<!--End of Delete Modal-->
+							<!--Edit Spoilage-->
+							<div class="modal fade" id="editSpoil" name="editSpoil" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Edit Spoilage</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form id="formEdit" accept-charset="utf-8" > 
+												<div class="modal-body">
+                                                    <!--Quantity-->
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                Quantity</span>
+                                                        </div>
+                                                        <input type="number" min="1" name="msQty" id="msQty" class="form-control form-control-sm">
+                                                        <span class="text-danger"><?php echo form_error("msQty"); ?></span>
+                                                    </div>
+                                                    <!--Date Spoiled-->
+													<div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                Date Spoiled</span>
+                                                        </div>
+                                                        <input type="date" name="msDate" id="msDate" class="form-control form-control-sm">
+                                                        <span class="text-danger"><?php echo form_error("msDate"); ?></span>
+                                                    </div>
+													<div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                Remarks</span>
+                                                        </div>
+                                                        <input type="text" name="msRemarks" id="msRemarks" class="form-control form-control-sm">
+                                                        <span class="text-danger"><?php echo form_error("msRemarks"); ?></span>
+                                                    </div>
+													<input name="msID" id="msID" hidden="hidden">
+													<input name="prID" id="prID" hidden="hidden">
+                                                    <!--Footer-->
+                                                    <div class="modal-footer">
+													<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                            		<button class="btn btn-success btn-sm" type="submit">Update</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                            </div>
+							<!--End of Edit Modal-->
 						</div>
 					</div>
 				</div>
@@ -123,109 +200,152 @@
 </div>
 <!--End Table Content-->
 <?php include_once('templates/scripts.php') ?>
-
+<script src="<?= admin_js().'addMenuSpoilBrochure.js'?>"></script>
 <script>
-	var table = $('#tablevalues');
+	var spoilages = [];
+	var menuchoice = [];
+	$(function() {
+		viewSpoilagesJs();
+//-----------------------Populate Brochure----------------------------------------
+		$.ajax({
+				url: '<?= site_url('admin/menu/spoilages/viewMenuJS') ?>',
+				dataType: 'json',
+				success: function (data) {
+					var poLastIndex = 0;
+					menus = data;
+					setMenuData(menus);
+				},
+				failure: function () {
+					console.log('None');
+				},
+				error: function (response, setting, errorThrown) {
+					console.log(errorThrown);
+					console.log(response.responseText);
+				}
+			});
 
+	});
+	function setMenuData(menus){
+			$("#list").empty();
+			$("#list").append(`${menus.map(menu => {
+				return `<label style="width:96%"><input type="checkbox" name="menuchoice[]" class="choiceMenu mr-2" value="${menu.prID}">${menu.prName}</label>`
+			}).join('')}`);
+	}
+	//-----------------------End of Brochure Populate--------------------------		
+	//POPULATE TABLE
+	var table = $('#menuTable');
 	function format(d) {
 		return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
 			'<tr>' +
 			'<td>Remarks</td>' +
 			'</tr>' +
 			'<tr>' +
-			'<td>' + d.remarks + '</td>' +
+			'<td>' + d.msRemarks + '</td>' +
 			'</tr>' +
 			'</table>';
 
 	}
+	function viewSpoilagesJs() {
+        $.ajax({
+            url: "<?= site_url('admin/spoilagesmenujson') ?>",
+            method: "post",
+            dataType: "json",
+            success: function(data) {
+                spoilages = data;
+                setSpoilagesData(spoilages);
+            },
+            error: function(response, setting, errorThrown) {
+                console.log(response.responseText);
+                console.log(errorThrown);
+            }
+        });
+	}
+	function setSpoilagesData() {
+        if ($("#menuTable> tbody").children().length > 0) {
+            $("#menuTable> tbody").empty();
+        }
+        spoilages.forEach(table => {
+            $("#menuTable> tbody").append(`
+            <tr data-prID="${table.prID}" data-msID="${table.msID}" data-spoilname="${table.vName}">
+                <td>${table.prID}</td>
+                <td>${table.msID}</td>
+                <td>${table.mName}</td>
+                <td>${table.msQty}</td>
+				<td>${table.msDate}</td>
+				<td>${table.msDateRecorded}</td>
+				<td>${table.msRemarks}</td>
+                <td>
+                        <!--Action Buttons-->
+                        <div class="onoffswitch">
 
+                            <!--Edit button-->
+                            <button class="updateBtn btn btn-default btn-sm" data-toggle="modal"
+                                data-target="#editSpoil">Edit</button>
+                            <!--Delete button-->
+                            <button class="item_delete btn btn-danger btn-sm" data-toggle="modal" 
+                            data-target="#deleteSpoilage">Delete</button>                      
+                        </div>
+                    </td>
+                </tr>`);
+            $(".updateBtn").last().on('click', function () {
+				$("#editSpoil").find("input[name='prID']").val($(this).closest("tr").attr(
+                    "data-prID"));
+                $("#editSpoil").find("input[name='msID']").val($(this).closest("tr").attr(
+                    "data-msID"));
+            });
+            $(".item_delete").last().on('click', function () {
+                $("#deleteSpoilageId").text(
+                    `Delete spoilage code ${$(this).closest("tr").attr("data-spoilname")}`);
+                $("#deleteSpoilage").find("input[name='prID']").val($(this).closest("tr").attr(
+					"data-id"));
+				$("#deleteSpoilage").find("input[name='msID']").val($(this).closest("tr").attr(
+                    "data-id"));
+            });
+        });
+	}
+	//END OF POPULATING TABLE
+	//-------------------------Function for Edit-------------------------------
 	$(document).ready(function() {
-		var table = $('#tablevalues').DataTable({
-			ajax: {
-				url: 'http://www.illengan.com/admin/spoilagesmenujson',
-				dataSrc: ''
-			},
-			colReorder: {
-				realtime: true
-			},
-			"columns": [{
-					"className": 'details-control',
-					"data": null,
-					"defaultContent": ''
-				},
-				{
-					"data": "s_id"
-				},
-				{
-					"data": "menu_name"
-				},
-				{
-					"data": "s_qty"
-				},
-				{
-					"data": "s_date"
-				},
-				{
-					"data": "date_recorded"
-				},
-				{
-					"data": null,
-					render: function(data, type, row, meta) {
-						return '<a href="javascript: void(0)" class="btn btn-warning btn-sm delete_data" data-id="' +
-							data.s_id + '">Delete</a>';
-					}
-				}
-			]
-		});
-
-
-		//For showing the accordion
-		$('#tablevalues tbody').on('click', 'td.details-control', function() {
-			var tr = $(this).closest('tr');
-			var row = table.row(tr);
-
-			if (row.child.isShown()) {
-				row.child.hide(); //to hide child row if open
-				tr.removeClass('shown');
-			} else {
-				row.child(format(row.data())).show(); //to open the child row
-				tr.addClass('shown');
-			}
-		});
-
-		//function for 'Expand all' button
-		$('#btn-show-all-children').on('click', function() {
-			table.rows().every(function() {
-				if (!this.child.isShown()) {
-					this.child(format(this.data())).show();
-					$(this.node()).addClass('shown');
-				}
-			});
-		});
-
-		$('#btn-hide-all-children').on('click', function() {
-			table.rows().every(function() {
-				if (this.child.isShown()) {
-					this.child.hide();
-					$(this.node()).removeClass('shown');
-				}
-			});
-		});
-
-	});
-	// Function for Delete
-	$(document).ready(function() {
-		$('.delete_data').click(function() {
-			var id = $(this).attr("id");
-			if (confirm("Are you sure you want to delete this?")) {
-				window.location = "<?php echo base_url(); ?>admin/sources/delete/" + id;
-			} else {
-				return false;
-			}
-		});
-	});
+    $("#editSpoil form").on('submit', function(event) {
+		event.preventDefault();
+		var msID = $(this).find("input[name='msID']").val();
+        var prID = $(this).find("input[name='prID']").val();
+        var msQty = $(this).find("input[name='msQty']").val();
+        var msDate = $(this).find("input[name='msDate']").val();
+        var msRemarks = $(this).find("input[name='msRemarks']").val();
+       
+        console.log(msID, prID, msQty, msDate, msRemarks);
+        $.ajax({
+            url: "<?= site_url("admin/menu/spoilage/edit")?>",
+            method: "post",
+            data: {
+				msID: msID,
+                prID : prID,
+                msQty: msQty,
+                msDate: msDate,
+                msRemarks: msRemarks
+            },
+            dataType: "json",
+            success: function(data) {
+                alert('Menu Spoilage Updated');
+				console.log(data);
+            },
+            complete: function() {
+                $("#editSpoil").modal("hide");
+				location.reload();
+            },
+            error: function(error) {
+                console.log(error);
+            }
+            
+        });
+    });
+});
+	//--------------------End of Function for Edit-----------------------------
+	
 	//End Function Delete
-</script>
+
+</script> 
 </body>
 
 </html>

@@ -168,23 +168,15 @@ class AdminView extends CI_Controller{
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
-    function viewSpoilagesJs(){
-        if($this->checkIfLoggedIn()){
-            $data['stocks']= $this->adminmodel->get_spoilages();
-            echo json_encode($data);
-            
-        }else{
-            redirect('login');
-        }
+    function viewMenuJS() {
+        $data=$this->adminmodel->get_menuPref();
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
     }
-    function viewSpoilages(){
-        if($this->checkIfLoggedIn()){
-            $this->load->view('admin/templates/head');
-            $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/adminspoilages');
-        }else{
-            redirect('login');
-        }
+    function viewAddonJS(){
+        $data=$this->adminmodel->get_addons();
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
     }
  //-----------Stock Spoilage------------------------- 
  function viewSpoilagesStockJs(){
@@ -231,7 +223,7 @@ function viewSpoilagesStock(){
     //-----------Addons Spoilage------------------------- 
     function viewSpoilagesAddonsJs(){
         if($this->checkIfLoggedIn()){
-            $data= $this->adminmodel->$this->adminmodel->get_spoilagesaddons();
+            $data= $this->adminmodel->get_spoilagesaddons();
             echo json_encode($data);
             
         }else{

@@ -19,7 +19,7 @@
 							<table id="spoilagesTable" class="spoiltable dtr-inline collapsed table display">
 								<thead>
 									<th>vCode</th>
-									<th>sCode</th>
+									<th>ssCode</th>
 									<th>Item Name</th>
 									<th>Quantity</th>
 									<th>Date Spoiled</th>
@@ -141,7 +141,7 @@
 							</div>
 							<!--End of Delete Modal-->
 							<!--Edit Spoilage-->
-							<div class="modal fade" id="editSpoil" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal fade" id="editSpoil" name="editSpoil" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -200,13 +200,13 @@
 </div>
 <!--End Table Content-->
 <?php include_once('templates/scripts.php') ?>
-<script src="<?= admin_js().'addSpoilageBrochure.js'?>"></script>
+<script src="<?= admin_js().'addStockSpoilBrochure.js'?>"></script>
 <script>
 	var spoilages = [];
 	var stockchoice = [];
 	$(function() {
 		viewSpoilagesJs();
-
+//-----------------------Populate Brochure----------------------------------------
 		$.ajax({
 				url: '<?= site_url('admin/stock/spoilages/viewStockJS') ?>',
 				dataType: 'json',
@@ -231,7 +231,7 @@
 				return `<label style="width:96%"><input type="checkbox" name="stockchoice[]" class="choiceStock mr-2" value="${stock.vID}">${stock.vName}</label>`
 			}).join('')}`);
 	}
-		
+	//-----------------------End of Brochure Populate--------------------------	
 	//POPULATE TABLE
 	var table = $('#spoilagesTable');
 	function format(d) {
@@ -327,12 +327,12 @@
             },
             dataType: "json",
             success: function(data) {
-                console.log(data);
-                location.reload();
                 alert('Stock Spoilage Updated');
+				console.log(data);
             },
             complete: function() {
                 $("#editSpoil").modal("hide");
+				location.reload();
             },
             error: function(error) {
                 console.log(error);
