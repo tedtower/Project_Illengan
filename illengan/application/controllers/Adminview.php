@@ -96,12 +96,14 @@ class Adminview extends CI_Controller{
             $data['title'] = "Menu";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
+            $data['addons'] = $this->adminmodel->get_addons();
+            $data['category'] = $this->adminmodel->get_menucategories();
             // $data['menuitem'] = array(
             //     'menus' => $this->adminmodel->get_menu(),
             //     'preferences' => $this->adminmodel->get_preferences(),
             //     'addons' => $this->adminmodel->get_addons2()
             // );
-            $this->load->view('admin/menuitems');
+            $this->load->view('admin/menuitems',$data);
         }else{
             redirect('login');
         }
