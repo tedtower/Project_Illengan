@@ -135,6 +135,27 @@ class AdminModel extends CI_Model{
         return false;
     }
 
+    function add_supplierMerchandise($merch, $id) {
+        $query = "insert into suppliermerchandise (vID, spID, spmDesc, spmUnit, spmPrice) values (?,?,?,?,?);";
+        $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
+    }
+
+    function add_menu($image, $mName, $mDesc, $category, $status, $preferences, $addons){
+        $query = "insert into menu (mImage, mName, mDesc, ctID, mAvailability) values (?,?,?,?,?);";
+        if($this->db->query($query,array($image, $mName, $mDesc, $category, $status))){
+            $mID = $this->db->insert_id();
+            if(count($preferences) > 0){
+                foreach ($preferences as $pref) {
+                    $this->add_preference($pref, $mID);
+
+                }
+            }
+            return true;            
+        }
+        return false;
+    }
+
+
     function add_PurchaseOrder($poDate,$edDate,$poTotal,$poDateRecorded,$poStatus, $poRemarks, $spID, $merchandise){
         $query = "insert into purchaseorder (poID, poDate, edDate, poTotal, poDateRecorded, poStatus, 
         poRemarks, spID) values (NULL,?,?,?,?,?,?,?);";
@@ -157,11 +178,6 @@ class AdminModel extends CI_Model{
    
     }
     
-    function add_supplierMerchandise($merch, $id) {
-        $query = "insert into suppliermerchandise (vID, spID, spmDesc, spmUnit, spmPrice) values (?,?,?,?,?);";
-        $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
-    }
-
     function add_consumption($id,$cd,$rDate,$cnd){
         $query = "insert into consumption (cnID, cnDate, cnDateRecorded) values (?,?,?)";
         $this->db->query($query,array($id[0]['nextID'],$cd,$rDate));
@@ -492,11 +508,6 @@ class AdminModel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
 
-    function add_menu($mName, $menu_description, $ctID, $menu_price, $picture){
-        $query = "Insert into menu (menu_id, mName, menu_description, ctID, menu_price, menu_image, size, menu_availability) values (NULL,?,?,?,?,?, NULL,'Available')";
-        return $this->db->query($query,array($mName, $menu_description, $ctID, $menu_price, $picture));
-
-    }
     function get_sales(){
         $query = "Select order_id, order_date_time, order_payable, pay_date_time, date_recorded, mName, order_qty, order_total from orderslip inner join orderlist using (order_id) inner join menu using (mID) where payment_status = 'paid';";
         return $this->db->query($query)->result_array();
