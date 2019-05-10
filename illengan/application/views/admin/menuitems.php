@@ -51,7 +51,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form action="<?php echo base_url()?>admin/menu/add" method="post"
+                        <form action="<?php echo base_url()?>admin/menu/add" method="get"
                             accept-charset="utf-8">
                             <div class="modal-body">
                                 <div class="input-group mb-3"> <!--Menu Image-->
@@ -87,10 +87,8 @@
                                         Category</span>
                                     </div>
                                     <select class="custom-select" name="ctName" >
-                                    <option value="" selected disabled>Choose</option>
-                                    <?php foreach($category as $category){?>
-                                        <option value="<?= $category['ctID']?>"><?= $category['ctName']?></option>
-                                    <?php }?>
+                                        <option selected>Choose</option>
+                                        <option></option>
                                     </select>
                                 </div>
                                     <!--Transaction date-->
@@ -109,9 +107,9 @@
 
 
                                 <!--Menu Items-->
-                                <a class="addPreference btn btn-primary btn-sm" style="color:blue;margin:0">Add Preferences</a> <!--Button to add row in the table-->
+                                <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Preferences</a> <!--Button to add row in the table-->
                                 <br><br>
-                                <table class="preferencetable table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
+                                <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
                                     <thead class="thead-light">
                                         <tr>
                                             <th>Name</th>
@@ -122,22 +120,46 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
-                                    </tbody>
+                                        <tr>
+                                            <td><input type="text" name="prName" class="form-control form-control-sm"></td>
+                                            <td>
+                                                <select class="form-control" name="mTemp">
+                                                    <option selected>Choose</option>
+                                                    <option></option>
+                                                </select>
+                                            </td>
+                                            <td><input type="number" name="prPrice" class="form-control form-control-sm"></td>
+                                            <td>
+                                                <select class="form-control" name="prStatus">
+                                                    <option selected>Choose</option>
+                                                    <option></option>
+                                                </select>
+                                            </td>
+                                            <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+                                        </tr>
                                 </table>
                                 <!--Menu Items-->
-                                <a class="addAddon btn btn-primary btn-sm" style="color:blue;margin:0">Add Addons</a> <!--Button to add row in the table-->
+                                <a class="btn btn-primary btn-sm" style="color:blue;margin:0">Add Addons</a> <!--Button to add row in the table-->
                                 <br><br>
-                                <table class="addontable table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
+                                <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
                                     <thead class="thead-light">
                                         <tr>
-                                            <th style="width:96%;text-align:center">Addon Name</th>
+                                            <th style="width:50%">Name</th>
+                                            <th style="width:50%">Price</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
-                                    </tbody>
+                                        <tr>
+                                            <td>
+                                                <select class="form-control" name="aoName">
+                                                    <option selected>Choose</option>
+                                                    <option></option>
+                                                </select>
+                                            </td>
+                                            <td><input type="number" name="aoPrice" class="form-control form-control-sm"></td>
+                                            <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px;right:0"></td>
+                                        </tr>
                                 </table>
         
                                 <div class="modal-footer">
@@ -164,96 +186,88 @@
 <?php include_once('templates/scripts.php') ?>
 <script>
 var menu = [];
-var addons = <?= json_encode($addons)?>;
 $(document).ready(function() {
     $("#addBtn").on('click', function() {
-        $("#newMenu form")[0].reset();
+        $("#newStock form")[0].reset();
     });
-    $(".addPreference").on('click',function(){
-        var row=`
+    $(".editBtn").on("click", function() {
+        $("#editMenu form")[0].reset();
+        var id = $(this).closest("tr").attr("data-id")
+        $.ajax({
+            method : 'post',
+            url : '<?=site_url('admin/inventory/getitem')?>',
+            data : {
+                id : id
+            },
+            dataType : "json",
+            success : function (data){
+                console.log(data);
+                $("#editStock .varianceTable > tbody").empty();
+                setEditModal($("#editStock"), data.stock[0], data.variances);
+            },
+            error : function(response, setting, error){
+                console.log(response.responseText);
+            }
+        });
+    });
+    $(".addItemVarianceBtn").on('click', function() {
+        var row = `
         <tr data-id="">
-            <td><input type="text" name="prName[]" class="form-control form-control-sm"></td>
+            <td><input type="text" name="varUnit[]"
+                    class="form-control form-control-sm"></td>
+            <td><input type="text" name="varSize[]"
+                    class="form-control form-control-sm"></td>
+            <td><input type="number" name="varMinimum[]"
+                    class="form-control form-control-sm"></td>
+            <td><input type="number" name="varQty[]"
+                    class="form-control form-control-sm"></td>
             <td>
-                <select class="form-control" name="mTemp[]">
+                <select class="form-control" name="varStatus[]">
                     <option value="" selected>Choose</option>
-                    <option value="c">Cold</option>
-                    <option value="h">Hot</option>
-                    <option value="hc">Hot and Cold</option>
+                    <option value="available">available</option>
+                    <option value="unavailable">unavailable</option>
                 </select>
             </td>
-            <td><input type="number" name="prPrice[]" class="form-control form-control-sm"></td>
-            <td>
-                <select class="form-control" name="prStatus[]">
-                    <option value="" selected disabled>Choose</option>
-                    <option value="available">Available</option>
-                    <option value="unavailable">Unvailable</option>
-                    <option value="deleted">Deleted</option>
-                </select>
-            </td>
-            <td><img class="exitBtn1" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+            <td><img class="exitBtn"
+                    src="/assets/media/admin/error.png"
+                    style="width:20px;height:20px"></td>
         </tr>
         `;
-        $(this).closest(".modal").find(".preferencetable > tbody").append(row);
-        $(this).closest(".modal").find(".exitBtn1").last().on('click',function(){
+        $(this).closest(".modal").find(".varianceTable > tbody").append(row);
+        $(this).closest(".modal").find(".exitBtn").last().on('click', function() {
             $(this).closest("tr").remove();
         });
     });
-    $(".addAddon").on('click',function(){
-        var row=`
-        <tr data-id="">
-            <td>
-                <select class="form-control" name="aoName[]">
-                ${addons.map(addon => {
-                        return `
-                        <option value="${addon.aoID}">${addon.aoName}</option>`
-                    }).join('')}
-                </select>
-            </td>
-            <td><img class="exitBtn2" src="/assets/media/admin/error.png" style="width:20px;height:20px;right:0"></td>
-        </tr>
-        `;
-        $(this).closest(".modal").find(".addontable > tbody").append(row);
-        $(this).closest(".modal").find(".exitBtn2").last().on('click',function(){
-            $(this).closest("tr").remove();
-        });
-    });
-    $("#newMenu form").on('submit', function(event) {
+    // setTableData();
+    $("#newStock form").on('submit', function(event) {
         event.preventDefault();
-        var image = $(this).find("input[name='mImage']").val();
-        var name = $(this).find("input[name='mName']").val();
-        var description = $(this).find("input[name='mDesc']").val();
-        var category = $(this).find("input[name='ctName']").val();
-        var status = $(this).find("select[name='mAvailability']").val();
-        var preferences = [];
-        for (var index = 0; index < $(this).find(".preferencetable > tbody").children().length; index++) {
-            preferences.push({
-                prName: $(this).find("input[name='prName[]']").eq(index).val(),
-                mTemp: $(this).find("input[name='mTemp[]']").eq(index).val(),
-                prPrice: $(this).find("input[name='prPrice[]']").eq(index).val(),
-                prStatus: $(this).find("select[name='prStatus[]']").eq(index).val()
-            });
-        }
-        var addons = [];
-        for (var index = 0; index < $(this).find(".addontable > tbody").children().length; index++) {
-            addons.push({
-                aoName: $(this).find("select[name='aoName[]']").eq(index).val()
+        var name = $(this).find("input[name='stockName']").val();
+        var type = $(this).find("select[name='stockType']").val();
+        var category = $(this).find("select[name='stockCategory']").val();
+        var status = $(this).find("select[name='stockStatus']").val();
+        var stockVariances = [];
+        for (var index = 0; index < $(this).find(".varianceTable > tbody").children().length; index++) {
+            stockVariances.push({
+                varUnit: $(this).find("input[name='varUnit[]']").eq(index).val(),
+                varSize: $(this).find("input[name='varSize[]']").eq(index).val(),
+                varMin: $(this).find("input[name='varMinimum[]']").eq(index).val(),
+                varQty: $(this).find("input[name='varQty[]']").eq(index).val(),
+                varStatus: $(this).find("select[name='varStatus[]']").eq(index).val()
             });
         }
         $.ajax({
-            url: "<?= site_url("admin/menu/add")?>",
+            url: "<?= site_url("admin/inventory/add")?>",
             method: "post",
             data: {
-                image: image,
                 name: name,
-                description: description,
+                type: type,
                 category: category,
                 status: status,
-                preferences: JSON.stringify(preferences),
-                addons: JSON.stringify(addons)
+                variances: JSON.stringify(stockVariances)
             },
             dataType: "json",
             beforeSend: function() {
-                console.log(image,name,description,category,status,preferences,addons);
+                console.log(name, type, category, status, stockVariances);
             },
             success: function(data) {
                 console.log(data);
@@ -262,51 +276,50 @@ $(document).ready(function() {
                 // setTableData();
             },
             error: function(response, setting, error) {
+                console.log(response.responseText);
                 console.log(error);
             },
             complete: function() {
-                $("#newMenu").modal("hide");
+                $("#newStock").modal("hide");
             }
         });
     });
 
-    $("#editSupplier form").on('submit', function(event) {
+    $("#editStock form").on('submit', function(event) {
         event.preventDefault();
-        var id = $(this).find("input[name='sourceID']").val();
-        var name = $(this).find("input[name='supplierName']").val();
-        var contactNum = $(this).find("input[name='contactNum']").val();
-        var email = $(this).find("input[name='email']").val();
-        var address = $(this).find("input[name='supplierAddress']").val();
-        var status = $(this).find("select[name='status']").val();
-        var supplierMerchandise = [];
-        for (var index = 0; index < $(this).find(".merchandisetable > tbody").children().length; index++) {
-            var row = $(this).find(".merchandisetable > tbody > tr").eq(index);
-            console.log(row);
-            supplierMerchandise.push({
-                spmID : isNaN(parseInt(row.attr('data-id'))) ?  (null) : parseInt(row.attr('data-id')),
-                merchName: row.find("input[name='merchName[]']").val(),
-                merchUnit: row.find("input[name='merchUnit[]']").val(),
-                merchPrice: parseFloat(row.find("input[name='merchPrice[]']").val()),
-                varID: parseInt(row.find("select[name='variance[]']").val())
+        var id = $(this).find("input[name='stockID']").val();
+        var name = $(this).find("input[name='stockName']").val();
+        var type = $(this).find("select[name='stockType']").val();
+        var category = $(this).find("select[name='stockCategory']").val();
+        var status = $(this).find("select[name='stockStatus']").val();
+        var stockVariances = [];
+        for (var index = 0; index < $(this).find(".varianceTable > tbody").children().length; index++) {
+            var row = $(this).find(".varianceTable > tbody > tr").eq(index);
+            stockVariances.push({
+                varID: isNaN(parseInt(row.attr('data-id'))) ? (null) : parseInt(row.attr(
+                    'data-id')),
+                varUnit: row.find("input[name='varUnit[]']").val(),
+                varSize: row.find("input[name='varSize[]']").val(),
+                varMin: parseInt(row.find("input[name='varMinimum[]']").val()),
+                varQty: parseInt(row.find("input[name='varQty[]']").val()),
+                varStatus: row.find("select[name='varStatus[]']").val()
             });
         }
-
-        console.log(id, name, contactNum, email, address, status, supplierMerchandise);
+        console.log(id, name, type, category, status, stockVariances);
         $.ajax({
-            url: "<?= site_url("admin/supplier/edit")?>",
+            url: "<?= site_url("admin/inventory/edit")?>",
             method: "post",
             data: {
-                id : id,
+                id: id,
                 name: name,
-                contactNum: contactNum,
-                email: email,
-                address: address,
+                type: type,
+                category: category,
                 status: status,
-                merchandises: JSON.stringify(supplierMerchandise)
+                variances: JSON.stringify(stockVariances)
             },
             dataType: "json",
             beforeSend: function() {
-                console.log(name, contactNum, email, address, status, supplierMerchandise);
+                console.log(name, type, category, status, stockVariances);
             },
             success: function(data) {
                 console.log(data);
@@ -315,142 +328,141 @@ $(document).ready(function() {
                 // setTableData();
             },
             error: function(response, setting, error) {
-                console.log(error);
                 console.log(response.responseText);
+                console.log(error);
             },
             complete: function() {
-                $("#editSupplier").modal("hide");
+                $("#newStock").modal("hide");
             }
         });
     });
 });
 
-$(function(){
-    $.ajax({
-        url: '<?= base_url("admin/menu/getDetails")?>',
-        dataType: 'json',
-        success: function(data){
-            var prefLastIndex = 0;
-            var aoLastIndex = 0;
-            $.each(data.menu, function(index, item){
-                menu.push({"menu" : item});
-                menu[index].preferences = data.preferences.filter(pref => pref.mID == item.mID);
-                menu[index].addons = data.addons.filter(ao => ao.mID == item.mID);
-            });
-            showTable();
-        },
-        error: function(response,setting, errorThrown){
-            console.log(errorThrown);
-            console.log(response.responseText);
-        }
+    $(function(){
+        $.ajax({
+            url: '<?= base_url("admin/menu/getDetails")?>',
+            dataType: 'json',
+            success: function(data){
+                var prefLastIndex = 0;
+                var aoLastIndex = 0;
+                $.each(data.menu, function(index, item){
+                    menu.push({"menu" : item});
+                    menu[index].preferences = data.preferences.filter(pref => pref.mID == item.mID);
+                    menu[index].addons = data.addons.filter(ao => ao.mID == item.mID);
+                });
+                showTable();
+            },
+            error: function(response,setting, errorThrown){
+                console.log(errorThrown);
+                console.log(response.responseText);
+            }
+        });
+
     });
-
-});
-
-function showTable(){
-    menu.forEach(function(item){
-        var tableRow = `                
-            <tr class="table_row" data-menuId="${item.menu.mID}">   <!-- table row ng table -->
-                <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
-                <td>${item.menu.mName}</td>
-                <td>${item.menu.ctName}</td>
-                <td>${item.menu.mAvailability}</td>
-                <td>
-                    <button class="editBtn btn btn-sm btn-primary">Edit</button>
-                    <button class="deleteBtn btn btn-sm btn-danger">Delete</button>
-                </td>
-            </tr>
-        `;
-        var preferencesDiv = `
-        <div class="preferences" style="width:45%;overflow:auto;float:left;margin-right:3%" > <!-- Preferences table container-->
-            <span><b>Preferences:</b></span><br> <!-- label-->
-            ${item.preferences.length === 0 ? "No prefernces are set for this menu item" : 
-            `
-            <table class="table table-bordered"> <!-- Preferences table-->
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">Size Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                ${item.preferences.map(pref => {
-                    return `
-                    <tr>
-                        <td>${pref.prName.toLowerCase() === 'normal' ? `${pref.mTemp == null ? "Regular" : pref.mTemp === 'h' ? "Hot" : pref.mTemp === 'c' ? "Cold" : "Hot and Cold" }` : `${pref.prName+ " "+ `${pref.mTemp == null ? "" : pref.mTemp}`}`}</td>
-                        <td>&#8369; ${pref.prPrice}</td>
-                        <td>${pref.prStatus}</td>
-                    </tr>
-                    `;
-                }).join('')}
-                </tbody>
-            </table>
-            `}
-        </div>
-        `;
-        var accordion = `
-        <tr class="accordion" style="display:none">
-            <td colspan="5"> <!-- table row ng accordion -->
-                <div style="overflow:auto;display:none"> <!-- container ng accordion -->
-                    <div style="width:280px;overflow:auto;float:left;margin-right:3%"> <!-- image container -->
-                        <img src="<?=site_url('uploads/')?>${item.menu.mImage}" style="width:280px;height:180px">
-                    </div>
-                    
-                    <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
-                        <div><b>Description:</b> <!-- label-->
-                            <p>${item.menu.mDesc}
-                            </p>
-                        </div> 
-                        <div class="aoAndPreferences" style="overflow:auto;margin-top:1%"> <!-- Preferences and addons container-->
-                            
-                        </div>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        `;
-        var addonsDiv = `
-        <div class="addons" style="width:45%;overflow:auto" > <!-- Addons table container--><span><b>Addons:</b></span><br>
-            ${item.addons.length === 0 ? "No addons are set for this menu item." : 
-                `<!-- label-->
-                <table class="table table-bordered"> <!-- Addons table-->
+    function showTable(){
+        menu.forEach(function(item){
+            var tableRow = `                
+                <tr class="table_row" data-menuId="${item.menu.mID}">   <!-- table row ng table -->
+                    <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
+                    <td>${item.menu.mName}</td>
+                    <td>${item.menu.ctName}</td>
+                    <td>${item.menu.mAvailability}</td>
+                    <td>
+                        <button class="editBtn btn btn-sm btn-primary">Edit</button>
+                        <button class="deleteBtn btn btn-sm btn-danger">Delete</button>
+                    </td>
+                </tr>
+            `;
+            var preferencesDiv = `
+            <div class="preferences" style="width:45%;overflow:auto;float:left;margin-right:3%" > <!-- Preferences table container-->
+                <span><b>Preferences:</b></span><br> <!-- label-->
+                ${item.preferences.length === 0 ? "No prefernces are set for this menu item" : 
+                `
+                <table class="table table-bordered"> <!-- Preferences table-->
                     <thead class="thead-light">
                         <tr>
-                            <th scope="col">Addons Name</th>
+                            <th scope="col">Size Name</th>
                             <th scope="col">Price</th>
                             <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                    ${item.addons.map(addon => {
-                        return `<tr><td>${addon.aoName}</td>
-                        <td>&#8369; ${addon.aoPrice}</td>
-                        <td>${addon.aoStatus}</td></tr>`;
-                        }).join('')}
+                    ${item.preferences.map(pref => {
+                        return `
+                        <tr>
+                            <td>${pref.prName.toLowerCase() === 'normal' ? `${pref.mTemp == null ? "Regular" : pref.mTemp === 'h' ? "Hot" : pref.mTemp === 'c' ? "Cold" : "Hot and Cold" }` : `${pref.prName+ " "+ `${pref.mTemp == null ? "" : pref.mTemp}`}`}</td>
+                            <td>&#8369; ${pref.prPrice}</td>
+                            <td>${pref.prStatus}</td>
+                        </tr>
+                        `;
+                    }).join('')}
                     </tbody>
-                </table>`
+                </table>
+                `}
+            </div>
+            `;
+            var accordion = `
+            <tr class="accordion" style="display:none">
+                <td colspan="5"> <!-- table row ng accordion -->
+                    <div style="overflow:auto;display:none"> <!-- container ng accordion -->
+                        <div style="width:280px;overflow:auto;float:left;margin-right:3%"> <!-- image container -->
+                            <img src="<?=site_url('uploads/')?>${item.menu.mImage}" style="width:280px;height:180px">
+                        </div>
+                        
+                        <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
+                            <div><b>Description:</b> <!-- label-->
+                                <p>${item.menu.mDesc}
+                                </p>
+                            </div> 
+                            <div class="aoAndPreferences" style="overflow:auto;margin-top:1%"> <!-- Preferences and addons container-->
+                                
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            `;
+            var addonsDiv = `
+            <div class="addons" style="width:45%;overflow:auto" > <!-- Addons table container--><span><b>Addons:</b></span><br>
+                ${item.addons.length === 0 ? "No addons are set for this menu item." : 
+                    `<!-- label-->
+                    <table class="table table-bordered"> <!-- Addons table-->
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Addons Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        ${item.addons.map(addon => {
+                            return `<tr><td>${addon.aoName}</td>
+                            <td>&#8369; ${addon.aoPrice}</td>
+                            <td>${addon.aoStatus}</td></tr>`;
+                            }).join('')}
+                        </tbody>
+                    </table>`
+                }
+            </div>`;
+            $("#menuTable > tbody").append(tableRow);
+            $("#menuTable > tbody").append(accordion);
+            $(".aoAndPreferences").last().append(preferencesDiv);
+            $(".aoAndPreferences").last().append(addonsDiv);
+        });
+        $(".accordionBtn").on('click', function(){
+            if($(this).closest("tr").next(".accordion").css("display") == 'none'){
+                $(this).closest("tr").next(".accordion").css("display","table-row");
+                $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
+            }else{
+                $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
+                $(this).closest("tr").next(".accordion").hide("slow");
             }
-        </div>`;
-        $("#menuTable > tbody").append(tableRow);
-        $("#menuTable > tbody").append(accordion);
-        $(".aoAndPreferences").last().append(preferencesDiv);
-        $(".aoAndPreferences").last().append(addonsDiv);
-    });
-    $(".accordionBtn").on('click', function(){
-        if($(this).closest("tr").next(".accordion").css("display") == 'none'){
-            $(this).closest("tr").next(".accordion").css("display","table-row");
-            $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
-        }else{
-            $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
-            $(this).closest("tr").next(".accordion").hide("slow");
-        }
-    });
-    $(".editBtn").on("click",function(){
-        var menuID = $(this).closest("tr").attr("data-menuID");
-        //set Modal contents;
+        });
+        $(".editBtn").on("click",function(){
+            var menuID = $(this).closest("tr").attr("data-menuID");
+            //set Modal contents;
 
-    });
+        });
 
-}  
+    }  
 </script>
