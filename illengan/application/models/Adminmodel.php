@@ -1,5 +1,5 @@
 <?php
-class AdminModel extends CI_Model{
+class Adminmodel extends CI_Model{
     
     private $err = array('Username does not exist!', 'Incorrect password');
 
@@ -794,6 +794,7 @@ class AdminModel extends CI_Model{
                 iItemID = ?;";
             $this->db->query($query,array($item['varID'],$id,$item['itemName'],$item['itemQty'],$item['itemPrice'],$item['itemUnit'],$item['subtotal'],$item['itemID']));
         }
+        return;
     }
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
@@ -857,24 +858,126 @@ class AdminModel extends CI_Model{
         return $this->db->query($query, array($newTableCode, $previousTableCode));
     }
     //Return Function
-    function get_returns(){
-        $query = "SELECT returns.return_id, returns.trans_id, returns.stID, returns.return_qty, returns.remarks, returns.date_recorded, transactions.receipt_no, transactions.trans_date,
-        stockitems.stName, stockitems.stock_unit FROM transactions inner join returns on transactions.trans_id = returns.trans_id inner join stockitems on returns.stID = stockitems.stID";
+    function get_poD(){
+        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID inner join invoiceitems on invoice.iID=invoiceitems.iID
+        inner join variance on invoiceitems.vID=variance.vID inner join stockitems on variance.stID=stockitems.stID where invoice.iType !='return'";
         return $this->db->query($query)->result_array();
     }
-    function add_returns($trans, $stock, $quantity,  $now){
-        $stocks= "Select stock_quantity from stockitems where stID='$stock'";
-        $stocks = $this->db->query($stocks)->result_array();
-        foreach($stocks as $stck){
-            $stck = $stck['stock_quantity'];
+    function get_returns(){
+        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID inner join invoiceitems on invoice.iID=invoiceitems.iID
+        inner join variance on invoiceitems.vID=variance.vID inner join stockitems on variance.stID=stockitems.stID ";
+        return $this->db->query($query)->result_array();
+    }
+    function get_invoiceReturns(){
+        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID where invoice.iType='return'";
+        return $this->db->query($query)->result_array();
+    }
+    function get_invRetVar(){
+        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID inner join invoiceitems on invoice.iID=invoiceitems.iID
+        inner join variance on invoiceitems.vID=variance.vID where invoice.iType='return'";
+        return $this->db->query($query)->result_array();
+    }
+    function get_item($item){
+        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID inner join invoiceitems on invoice.iID=invoiceitems.iID
+        inner join variance on invoiceitems.vID=variance.vID inner join stockitems on variance.stID=stockitems.stID where invoiceitems.iID ='$item'";
+        return $this->db->query($query)->result_array();
+    }
+    function get_allInvoice(){
+        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID where invoice.iType !='return' ORDER BY invoice.iDate DESC";
+        return $this->db->query($query)->result_array();
+    }
+    function add_returns($idate, $reQty, $reUnit, $supID, $dateRet, $receipt, $cost, $remarks,$reStat,  $stckName, $subtotal, $variance, $stckID){
+        $var= "Select vQty from variance where vID='$variance'";
+        $var = $this->db->query($var)->result_array();
+        foreach($var as $stck){
+            $var = $stck['vQty'];
         }
-        $stck_qty = $stck - $quantity;
-        $query2 = "Update stockitems set stock_quantity = ? where stID = ?";
-        $this->db->query($query2, array( $stck_qty, $stock));
+        $stck_qty = $var - $reQty;
+        $query2 = "Update variance set vQty = ? where vID = ?";
+        $this->db->query($query2, array($stck_qty, $variance));
 
-        $query1 = "Insert into returns(trans_id, stID, return_qty, date_recorded) values (?,?,?,?)";
-        return $this->db->query($query1, array( $trans, $stock, $quantity,  $now));
-        
+        $findReceipt = "Select iNumber from invoice";
+        $existReceipt = $this->db->query($findReceipt)->result_array();
+        foreach($existReceipt as $exists)
+        if($receipt == $exists['iNumber']){
+            $datas = "Select * from invoice where iNumber='$receipt'";
+            $existData = $this->db->query($datas)->result_array();
+            foreach($existData as $data){
+                $insertItem = "Insert into invoiceitems(iItemID, vID, iID, iName, iQty, iPrice, iUnit, iSubTotal) values (?,?,?,?,?,?,?,?)";
+                return $this->db->query($insertItem, array(NULL, $variance, $data['iID'], $stckName,  $reQty, $cost, $reUnit, $subtotal));
+            }
+        }else{
+            $query1 = "Insert into invoice(iID, spID, iDate, iDateRecorded, iNumber, iTotal, iRemarks, iType, resolvedStatus) values (?,?,?,?,?,?,?,?,?)";
+            $this->db->query($query1, array(NULL, $supID, $dateRet, $idate,  $receipt, $subtotal, $remarks, 'return', $reStat));
+    
+            $invId= $this->db->insert_id();
+            $query3 = "Insert into invoiceitems(iItemID, vID, iID, iName, iQty, iPrice, iUnit, iSubTotal) values (?,?,?,?,?,?,?,?)";
+            return $this->db->query($query3, array(NULL, $variance, $invId, $stckName,  $reQty, $cost, $reUnit, $subtotal));
+        }
+    }
+    function update_returns($eID, $eSpID, $eRNum, $eStat, $eRDate, $eDRec, $etotal, $eremarks, $defaultType, $eRetIt){
+        $query1 = "UPDATE invoice 
+            SET 
+                spID = ?,
+                iDate = ?,
+                iDateRecorded = ?,
+                iNumber = ?,
+                iTotal = ?,
+                iRemarks = ?,
+                iType = ?,
+                resolvedStatus = ?
+            WHERE
+                iID = ?;"
+                ;
+        $this->db->query($query1,array($eSpID,$eRDate, $eDRec, $eRNum, $etotal, $eremarks, $defaultType, $eStat, $eID));
+        $query2 = "UPDATE invoiceitems
+        SET 
+            vID = ?,
+            iID = ?,
+            iName = ?,
+            iQty = ?,
+            iPrice = ?,
+            iUnit = ?,
+            iSubTotal = ?
+        WHERE
+            iItemID = ?
+    ;";
+        if(count($eRetIt) > 0){
+            for($i = 0; $i < count($eRetIt) ; $i++){
+                $itemID = $eRetIt[$i]['itemID'];
+                $varID = $eRetIt[$i]['varId'];
+                $itQty = $eRetIt[$i]['itQty'];
+
+                    $retOldQty = "Select iQty from invoiceitems where iItemID = '$itemID'";
+                    $variance = $this->db->query($retOldQty)->result_array();
+                    foreach($variance as $num){
+                        $old = $num['iQty'];
+                    }
+                        if($old > $itQty){
+                            $newVarqty1 = $old - $itQty; 
+                            $quant = "Select vQty from variance where vID='$varID'";
+                            $iQuant = $this->db->query($quant)->result_array();
+                            foreach($iQuant as $num){
+                                $var = $num['vQty'];
+                            }
+                            $newQty =  $newVarqty1 + $var;
+                            $addVarQty = "Update variance set vQty = ? where vID = ?";
+                            $this->db->query($addVarQty, array($newQty, $varID));
+                        }else{
+                            $newVarqty2 = $itQty - $old;
+                            $quant = "Select vQty from variance where vID='$varID'";
+                            $var = $this->db->query($quant)->result_array();
+                            foreach($var as $num){
+                                $var = $num['vQty'];
+                            }
+                            $newQty = $var - $newVarqty2;
+                            $addVarQty = "Update variance set vQty = ? where vID = ?";
+                            $this->db->query($addVarQty, array($newQty, $varID));
+                       }
+                       return $this->db->query($query2, array($varID, $eID, $eRetIt[$i]['itName'], $itQty,
+                       $eRetIt[$i]['itPri'],$eRetIt[$i]['itUnit'], $eRetIt[$i]['itSub'],$itemID));
+                    }
+            }
     }
 
 }

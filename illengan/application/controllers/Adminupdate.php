@@ -1,5 +1,5 @@
 <?php
-class adminupdate extends CI_Controller{
+class Adminupdate extends CI_Controller{
 
     function __construct(){
         parent:: __construct();

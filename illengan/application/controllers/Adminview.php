@@ -314,7 +314,7 @@ function viewSpoilagesStock(){
     }
     function viewDeliveryTransactions(){
         if($this->checkIfLoggedIn()){
-            $data['title'] = "Admin Deliveries";
+            $data['title'] = "Transactios - Deliveries";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $data['deliveries'] = $this->adminmodel->get_deliveryTransactions();
@@ -329,6 +329,7 @@ function viewSpoilagesStock(){
             $data['title'] = "Transactions - Purchases";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
+            
             $this->load->view('admin/adminTransactionsPurchases');
             
         }else{

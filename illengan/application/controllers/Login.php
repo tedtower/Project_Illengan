@@ -1,6 +1,10 @@
 <?php
 class Login extends CI_Controller{
-
+   function __construct(){
+        parent:: __construct();
+        $this->load->model('loginmodel');  
+    }
+	
     function viewlogin(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type')){
             $this->homeRedirect();
@@ -12,8 +16,7 @@ class Login extends CI_Controller{
     function check_cred(){
         $uname = $this->input->post('username');
         $pword = $this->input->post('password');
-        $this->load->model('LoginModel');
-        $loginAttempt = $this->LoginModel->validate($uname,$pword);
+        $loginAttempt = $this->loginmodel->validate($uname,$pword);
         if(is_array($loginAttempt)){
             $user_data = array(
                 'user_id' => $loginAttempt[0]['aID'],

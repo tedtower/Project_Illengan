@@ -84,7 +84,7 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        
+                                        <form id="addReturns" method="post">
                                             <div class="modal-body">
                                             <div class="form-row">
                                                 <!--Source Name-->
@@ -156,29 +156,31 @@
                                                 </div>
                                                 <!--Button to add launce the brochure modal-->
                                                 <br>
+                                                <div class="form-row">
                                                  <!--date -->
-                                                 <div class="input-group">
+                                                 <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Return Date</span>
                                                         </div>
-                                                        <input type="date" class="form-control" name="retDate" id="retDate" required/>
+                                                        <input type="date" required class="form-control" name="retDate" id="retDate" />
                                                     </div>
-                                                <br>
-                                                <div class="form-now">
                                                 <!--Status-->
                                                     <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">      
                                                             <span class="input-group-text" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Return Status</span>
                                                         </div>
-                                                        <select class="form-control form-control-sm" name="retType" id="retType" required/>
+                                                        <select required class="form-control form-control-sm" name="retType" id="retType" />
                                                         <option value="">Choose</option>
                                                             <option value="pending">pending</option>
                                                             <option value="partially resolved">partially resolved</option>
                                                         </select>
                                                     </div>
+                                                    </div>
+                                                <br>
                                                 <!--Remarks-->
+                                                <div class="form-now">
                                                     <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
@@ -187,14 +189,13 @@
                                                         <textarea type="text" name="remarks" id="remarks" class="form-control form-control-sm" rows="1"></textarea>
                                                     </div>
                                                 </div>
-
                                                 <div class="form-row">
                                                 <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">      
                                                             <span class="input-group-text" style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Return Quantity</span>
                                                         </div>
-                                                       <input type="number" name="returnQty" id="returnQty" min="1" class="form-control form-control-sm" required/>
+                                                       <input type="number" required name="returnQty" id="returnQty" min="1" class="form-control form-control-sm"/>
                                                 </div>
                                                  <!--item unit-->
                                                  <div class="input-group mb-3 col">
@@ -223,7 +224,7 @@
                                                     <button type="submit" id="submitReturn" class="btn btn-success btn-sm">Add To Returns</button>
                                                 </div>
                                             </div>
-                                        <!--/form-->
+                                        </form>
                                     </div>
                                 </div>
                 </div>
@@ -251,7 +252,7 @@
                                                             <span class="input-group-text" style="width:100px;background:#3366ff;color:rgb(242, 242, 242);font-size:14px;">
                                                                 Supplier</span>
                                                         </div>
-                                                        <input type="text"  class="form-control" name="esourceName" id="esourceName"/>
+                                                        <input type="text"  class="form-control" name="esourceName" id="esourceName" required/>
                                                         <input type="hidden" name="estckID" id="estckID"/>
                                                     </div>
                                                 <!--Receipt Number-->
@@ -260,7 +261,7 @@
                                                             <span class="input-group-text" style="width:100px;background:#3366ff;color:rgb(242, 242, 242);font-size:14px;">
                                                                 Receipt No.</span>
                                                         </div>
-                                                        <input type="text" class="form-control" name="ereceiptNum" id="ereceiptNum" />
+                                                        <input type="text" class="form-control" name="ereceiptNum" id="ereceiptNum" required/>
                                                     </div>
                                                  <!--Status-->
                                                  <div class="input-group mb-3 col">
@@ -268,7 +269,7 @@
                                                             <span class="input-group-text" style="width:100px;background:#3366ff;color:rgb(242, 242, 242);font-size:14px;">
                                                                 Status</span>
                                                         </div>
-                                                        <input type="text" class="form-control" name="estatus" id="estatus" />
+                                                        <input type="text" class="form-control" name="estatus" id="estatus" required/>
                                                         
                                                     </div>
                                             </div>
@@ -279,7 +280,7 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:#3366ff;color:rgb(242, 242, 242);font-size:14px;">
                                                                 Return Date</span>
                                                         </div>
-                                                <input type="date" name="reDate" id="reDate" class="form-control form-control-sm" />
+                                                <input type="date" name="reDate" id="reDate" class="form-control form-control-sm" required/>
                                                 </div>
                                                  <!--item unit-->
                                                  <div class="input-group mb-3 col">
@@ -287,7 +288,7 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:120px;background:#3366ff;color:rgb(242, 242, 242);font-size:14px;">
                                                                 Date Recorded</span>
                                                         </div>
-                                                <input type="text" name="dateRecord" id="dateRecord" class="form-control form-control-sm" />
+                                                <input type="text" name="dateRecord" id="dateRecord" class="form-control form-control-sm" required/>
                                                 </div>
                                             </div>
                                             <div class="form-row">
@@ -296,7 +297,7 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:#3366ff;color:rgb(242, 242, 242);font-size:14px;">
                                                                 Total</span>
                                                         </div>
-                                                <input type="text" name="eTotal" id="eTotal" class="form-control form-control-sm" />
+                                                <input type="text" name="eTotal" id="eTotal" class="form-control form-control-sm" required/>
                                                 </div>
                                                 <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
@@ -313,7 +314,7 @@
                                                     <!--Table containing the different input fields in adding trans items -->
                                                     <thead class="thead-dark">
                                                         <tr>
-                                                            <th width="40%">Items Name/s</th>
+                                                            <th width="30%">Items Name/s</th>
                                                             <th>Old Returned Qty</th>
                                                             <th>New Returned Qty</th>
                                                             <th>Unit</th>
@@ -486,11 +487,11 @@ function showEditModal(modal, allinvoice, invoiceItems){
         modal.find(".returnsItemsTable > tbody").append(`
         <tr class="returnsItems" data-id="${invIt.iItemID}" data-varid="${invIt.vID}" data-stckID="${invIt.stID}">
          <td><input type="text" name="eitemName" value="${invIt.stName}" class="form-control form-control-sm"></td>
-         <td><input type="number" name="eoldQty" value="${invIt.iQty}" class="form-control form-control-sm"></td>
-         <td><input type="number" name="eitemQty" class="form-control form-control-sm"></td>
+         <td><input type="number" name="eoldQty" value="${invIt.iQty}" class="form-control form-control-sm" readonly></td>
+         <td><input type="number" id="eitemQuantity" name="eitemQty"  onchange="computeSubtotal()" min="1" class="form-control form-control-sm" required></td>
          <td><input type="text" name="eitemUnit" value="${invIt.iUnit}" class="form-control form-control-sm"></td>
-         <td><input type="number" name="eitemPrice" value="${invIt.iPrice}" class="form-control form-control-sm"></td>
-         <td><input type="number" id="itemSubtotal" name="eitemSubtotal" value="${invIt.iSubTotal}" class="form-control form-control-sm"></td>
+         <td><input type="number" id="eitemPrice" name="eitemPrice" value="${invIt.iPrice}" class="form-control form-control-sm"></td>
+         <td><input type="number" id="eitemSubtotal" name="eitemSubtotal" value="${invIt.iSubTotal}" class="form-control form-control-sm"></td>
      </tr>
         `);
         
@@ -663,7 +664,8 @@ $('#editReturns form#formEdit').on('submit', function(e){
         });
 });
 
-$('button#submitReturn').on('click', function(e){
+$('#newTransaction form#addReturns').on('submit', function(e){
+    event.preventDefault();
     var returnQty = document.getElementById("returnQty").value;
     var returnUnit = document.getElementById("returnUnit").value;
     var supID = document.getElementById("supID").value;
@@ -697,7 +699,9 @@ console.log(returnQty, returnUnit,supID, retDate, receiptNum,remarks,retType,ite
                 'cost' : itemPrice
                 },
             success: function(data){
+                location.reload();
                 alert('Successful');
+
             },
             error: function(response,setting, errorThrown){
                 console.log(errorThrown);
@@ -705,4 +709,11 @@ console.log(returnQty, returnUnit,supID, retDate, receiptNum,remarks,retType,ite
             }
         });
     });
+function computeSubtotal(){
+    var quantity = $("#eitemQuantity").val();
+    var price = $("#eitemPrice").val();
+     var subtotal= quantity * price;
+     $("#eitemSubtotal").val(subtotal);
+     $("input[name='eTotal']").val(subtotal);
+}
 </script>
