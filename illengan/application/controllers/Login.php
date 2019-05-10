@@ -1,5 +1,5 @@
 <?php
-class login extends CI_Controller{
+class Login extends CI_Controller{
 
     function viewlogin(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type')){
