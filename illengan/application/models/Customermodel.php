@@ -94,7 +94,7 @@
 			$order_id= $this->db->insert_id();
 			$bool = false;
 			foreach($orderlist as $items){
-				$query2 = "Insert into orderlist (olID, osID, prID, osDesc, olQty, olSubtotal, olStatus, olRemarks) values (?,?,?,?,?,?,?,?)";
+				$query2 = "Insert into orderlists (olID, osID, prID, olDesc, olQty, olSubtotal, olStatus, olRemarks) values (?,?,?,?,?,?,?,?)";
 				$bool = $this->db->query($query2, array(NULL,$order_id, $items['id'],'',$items['qty'], $total, 'pending', $items['remarks'])); 
 			}
 			return true;
