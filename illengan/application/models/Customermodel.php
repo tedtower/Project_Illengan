@@ -1,5 +1,5 @@
 <?php
-    class CustomerModel extends CI_Model {
+    class Customermodel extends CI_Model {
 	function get_tables(){ 
 	    $query = $this->db->query('SELECT tableCode FROM tables');
 	    return $query->result();

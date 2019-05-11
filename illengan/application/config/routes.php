@@ -54,7 +54,7 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'login/viewlogin';
 $route['logout'] = 'login/logout';
-$route['verifylogin'] = "login/check_cred";
+$route['verify'] = 'login/check_cred';
 
 //Viewing Routes -----------------------------------------------
 $route['admin/menu'] = "adminview/viewmenu";
@@ -85,6 +85,7 @@ $route['admin/transactions'] = "adminview/viewalltransactions";
 $route['admin/transactions/delivery'] = "adminview/viewDeliveryTransactions";
 $route['admin/transactions/purchase'] = "adminview/viewpurchasetransactions";
 $route['admin/transactions/return'] = "adminview/viewreturntransactions";
+$route['admin/transactions/getReturns'] = "adminview/getReturns";
 
 //End Viewing Routes
 

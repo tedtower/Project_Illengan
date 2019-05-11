@@ -129,6 +129,40 @@ class Adminadd extends CI_Controller{
         // redirect("login");
         // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
     }
+    function addMenu(){
+        $config = array(
+            'upload_path' => "./uploads/",
+            'allowed_types' => "gif|jpg|png|jpeg|pdf",
+            'overwrite' => TRUE,
+            'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+            );
+        $this->load->library('upload', $config);
+        if ( ! $this->upload->do_upload('image')){
+            echo 'error';
+        }
+        else{
+            $data = $this->upload->data();
+            $image = $data['file_name'];
+            $mName = $this->input->post('name');
+            $mDesc = $this->input->post('description');
+            $category = $this->input->post('category');
+            $status = $this->input->post('status');
+            $preferences = json_decode($this->input->post('preferences'),true);
+            $addons= json_decode($this->input->post('addons'),true);
+            if($this->adminmodel->add_menu($image, $mName, $mDesc, $category, $status, $preferences, $addons)){
+                echo json_encode(array(
+                    'menus' => $this->adminmodel->get_menu(),
+                    'preferences' => $this->adminmodel->get_preferences(),
+                    'addons' => $this->adminmodel->get_addons2()
+                ));
+            }else{
+                redirect("admin/dashboard");
+                // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
+            }
+        redirect('admin/menu');
+        }
+
+    }
     function addStockItem(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('name','Stock Name','trim|required|alpha_numeric_spaces');
@@ -231,29 +265,7 @@ class Adminadd extends CI_Controller{
             redirect('login');
         }
     }
-    function addMenu(){
-        $config = array(
-            'upload_path' => "./uploads/",
-            'allowed_types' => "gif|jpg|png|jpeg|pdf",
-            'overwrite' => TRUE,
-            'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
-            );
-        $this->load->library('upload', $config);
-        if ( ! $this->upload->do_upload('menu_image')){
-            echo 'error';
-        }
-        else{
-        $data = $this->upload->data();
-        $picture = $data['file_name'];
-        $menu_name = $this->input->post('menu_name');
-        $menu_description = $this->input->post('menu_description');
-        $category_id = $this->input->post('category_id');
-        $menu_price = $this->input->post('menu_price');
-        $this->adminmodel->add_menu($menu_name, $menu_description, $category_id, $menu_price, $picture);
-        redirect('admin/menu');
-        }
 
-    }
     function addReturns(){
         $now = date('Y-m-d');
         $quantity = $this->input->post('quantity');
@@ -282,6 +294,7 @@ class Adminadd extends CI_Controller{
         if($this->adminmodel->add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks,$total, $transitems)){
             
         }else{
+            redirect('login');
         }
     }
 

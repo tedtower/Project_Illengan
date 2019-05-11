@@ -13,7 +13,7 @@ class Barista extends CI_Controller{
 
         function index()
         {
-            $this->load->view('barista/sideNavigation');
+            $this->load->view('barista/navigation');
             $this->load->view('barista/baristaOrders'); 
     }
 
@@ -28,7 +28,7 @@ class Barista extends CI_Controller{
     }
 
     function orderslip(){
-        $this->load->view('barista/sideNavigation');
+        $this->load->view('barista/navigation');
         $this->load->view('barista/orderslip');
         //$data = $this->baristamodel->show_orderslip();
         //echo json_encode($data);
@@ -53,10 +53,10 @@ class Barista extends CI_Controller{
 
         function getBillDetails(){
             if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
-            $order_id = $this->input->post("order_id"); 
+            $osID = $this->input->post("osID"); 
             $orderdetails = array(
-            'orderslip' => $this->baristamodel->get_orderslip($order_id)[0],
-            'orderlist' => $this->baristamodel->get_orderlist($order_id)
+            'orderslips' => $this->baristamodel->get_orderslip($osID)[0],
+            'orderlists' => $this->baristamodel->get_orderlist($osID)
             );
                 $this->output->set_output(json_encode($orderdetails));
             }else{
@@ -80,11 +80,11 @@ class Barista extends CI_Controller{
     }
     
     function change_status() {
-        $item_status = $this->input->post('item_status');
-        $order_item_id = $this->input->post('order_item_id');
-        $order_id = $this->input->post('order_id');
+        $item_status = $this->input->post('olStatus');
+        $olID = $this->input->post('olID');
+        $osID = $this->input->post('osID');
         
-        $this->baristamodel->update_status($order_id, $order_item_id, $item_status);
+        $this->baristamodel->update_status($osID, $olID, $item_status);
         $this->get_orderlist();
     }
 
@@ -99,14 +99,14 @@ class Barista extends CI_Controller{
     }
 
     function pendingStatus(){
-        $this->load->view('barista/sideNavigation');
+        $this->load->view('barista/navigation');
         //->load->view('barista/pending');
         $data['orders'] = $this->baristamodel->pending_orders();
         $this->load->view('barista/pendingOrders', $data);
     }
 
     function servedStatus(){
-        $this->load->view('barista/sideNavigation');
+        $this->load->view('barista/navigation');
         //$this->load->view('barista/servedOrders');
         $data['served'] = $this->baristamodel->served_orders();
         $this->load->view('barista/servedOrders', $data);
@@ -118,19 +118,19 @@ class Barista extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
             $payment_date_time = date("Y-m-d H:i:s");
             $date_recorded = date("Y-m-d");
-            $order_id = $this->input->post("order_id");
+            $osID = $this->input->post("osID");
             $status = $this->input->post("pay_status");
             
             switch($status){
                 case "p": 
-                    if($this->baristamodel->update_billstatus($order_id)){
+                    if($this->baristamodel->update_billstatus($osID)){
                         $this->output->set_output(json_encode($this->baristamodel->get_bills()));
                     }else{
                         //error
                     }
                     break;
                 case "u" : 
-                    if($this->baristamodel->update_billstatus($order_id, $payment_date_time, $date_recorded)){
+                    if($this->baristamodel->update_billstatus($osID, $payment_date_time, $date_recorded)){
                         $this->output->set_output(json_encode($this->baristamodel->get_bills()));
                     }else{
                         //error
