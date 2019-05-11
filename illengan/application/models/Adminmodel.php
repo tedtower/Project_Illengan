@@ -293,10 +293,6 @@ class Adminmodel extends CI_Model{
         $this->db->query($query, array());
     }
     // UPDATE FUNCTIONS-------------------------------------------------------------
-    function get_password($aID){
-        $query = "select aPassword from accounts where aID = ? ";
-        return $this->db->query($query,array($aID))->result_array();
-    }
 
     function change_aPassword($new_password, $aID){
         $query = "Update accounts set aPassword = ?  where aID = ? ";
