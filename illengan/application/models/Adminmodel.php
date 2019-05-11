@@ -701,8 +701,7 @@ class Adminmodel extends CI_Model{
         $query = "SELECT stID, cnID, cnQty, remainingQty, stName, vUnit, vSize  FROM varconsumptionitems NATURAL JOIN consumption NATURAL JOIN variance NATURAL JOIN stockitems";
         return $this->db->query($query)->result_array();
     }
-    
-    function get_deliveryTransactions(){
+    function get_allTransactions(){
         $query = "SELECT 
             iID,
             spID,
@@ -720,11 +719,84 @@ class Adminmodel extends CI_Model{
             supplier USING (spID);";
         return $this->db->query($query)->result_array();
     }
-    function get_deliveryTransactionsDeliveriesItems(){
+    function get_purchaseTransactions(){
+        $query = "SELECT 
+            iID,
+            spID,
+            spName,
+            iType,
+            iNumber,
+            iTotal,
+            iRemarks,
+            iDate,
+            iDateRecorded,
+            resolvedStatus
+        FROM
+            invoice
+                INNER JOIN
+            supplier USING (spID)
+        WHERE
+            iType = 'purchase';";
+        return $this->db->query($query)->result_array();
+    } 
+    function get_deliveryTransactions(){
+        $query = "SELECT 
+            iID,
+            spID,
+            spName,
+            iType,
+            iNumber,
+            iTotal,
+            iRemarks,
+            iDate,
+            iDateRecorded,
+            resolvedStatus
+        FROM
+            invoice
+                INNER JOIN
+            supplier USING (spID)
+        WHERE
+            iType = 'delivery';";
+        return $this->db->query($query)->result_array();
+    }
+    function get_allTransactionsItems(){
         $query = "SELECT 
             iID, iName, iQty, iPrice, iUnit, iSubtotal
         FROM
-            invoiceitems;";
+            invoiceitems
+                INNER JOIN
+            (SELECT 
+                iID
+            FROM
+                invoice) AS aInvoice USING (iID);";
+        return $this->db->query($query)->result_array();
+    }
+    function get_purchaseTransactionsItems(){
+        $query = "SELECT 
+            iID, iName, iQty, iPrice, iUnit, iSubtotal
+        FROM
+            invoiceitems
+                INNER JOIN
+            (SELECT 
+                iID
+            FROM
+                invoice
+            WHERE
+                iType = 'purchase') AS pInvoice USING (iID);";
+        return $this->db->query($query)->result_array();
+    }
+    function get_deliveryTransactionsItems(){
+        $query = "SELECT
+            iID, iName, iQty, iPrice, iUnit, iSubtotal
+        FROM
+            invoiceitems
+                INNER JOIN
+            (SELECT 
+                iID
+            FROM
+                invoice
+            WHERE
+                iType = 'delivery') AS dInvoice USING (iID);";
         return $this->db->query($query)->result_array();
     }
     function add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks, $total, $transitems, $transID=null){
@@ -750,14 +822,19 @@ class Adminmodel extends CI_Model{
         }
         $id = $this->db->insert_id();
         if($invoiceSuccess){
+            $indexes = [];
+            $count = 0;
             foreach($transitems as $item){
-                $this->addEdit_transactionItems($item, $id);
+                if(!$this->addEdit_transactionItems($item, $id)){
+                    array_push($indexes,$count);
+                }
+                $count++;
             }
+            echo json_encode(array("erredQ" =>$indexes, "data"=> $transitems));
             return true;
         }
         return false;
     }
-
     function addEdit_transactionItems($item,$id){
         $query = "";
         if($item['itemID'] == null){

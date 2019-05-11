@@ -307,7 +307,9 @@ function viewSpoilagesStock(){
             $data['title'] = "Transactions - All";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/adminTransactionsAll');
+            $data['invoices'] = $this->adminmodel->get_allTransactions();
+            $data['items'] = $this->adminmodel->get_allTransactionsItems();
+            $this->load->view('admin/adminTransactionsAll',$data);
         }else{
             redirect('login');
         }
@@ -318,7 +320,7 @@ function viewSpoilagesStock(){
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $data['deliveries'] = $this->adminmodel->get_deliveryTransactions();
-            $data['items'] = $this->adminmodel->get_deliveryTransactionsDeliveriesItems();
+            $data['items'] = $this->adminmodel->get_deliveryTransactionsItems();
             $this->load->view('admin/adminTransactionsDeliveries',$data);
         }else{
             redirect('login');
@@ -329,8 +331,9 @@ function viewSpoilagesStock(){
             $data['title'] = "Transactions - Purchases";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            
-            $this->load->view('admin/adminTransactionsPurchases');
+            $data['purchases'] = $this->adminmodel->get_purchaseTransactions();
+            $data['items'] = $this->adminmodel->get_purchaseTransactionsItems();
+            $this->load->view('admin/adminTransactionsPurchases',$data);
             
         }else{
             redirect('login');
