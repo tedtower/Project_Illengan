@@ -7,7 +7,7 @@
                     <button type="button" class="close d-flex justify-content-end" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true" class="rp-title">&times;</span>
                     </button>
-	<form method="post" action="<?php echo base_url();?>customer/completeOrder">
+	<form method="post" action="<?php echo base_url('customer/completeOrder');?>">
 	<?php 
 		$cust_name = $this->session->userdata('cust_name');
         $table_no = $this->session-> userdata('table_no');
@@ -90,7 +90,7 @@
                             <?php include 'orderslip.php'; ?>
                         </div>
                         <div>
-                            <a href="<?php echo base_url();?>customer/clearOrder"><button type= "button" class="btn btn-danger btn-md delius">Clear</button></a>
+                            <a href="<?php echo base_url('customer/clearOrder');?>"><button type= "button" class="btn btn-danger btn-md delius">Clear</button></a>
                         </div>
                     </div>
                 </div>
