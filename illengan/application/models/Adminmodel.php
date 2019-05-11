@@ -966,24 +966,13 @@ class Adminmodel extends CI_Model{
         $query2 = "Update variance set vQty = ? where vID = ?";
         $this->db->query($query2, array($stck_qty, $variance));
 
-        $findReceipt = "Select iNumber from invoice";
-        $existReceipt = $this->db->query($findReceipt)->result_array();
-        foreach($existReceipt as $exists)
-        if($receipt == $exists['iNumber']){
-            $datas = "Select * from invoice where iNumber='$receipt'";
-            $existData = $this->db->query($datas)->result_array();
-            foreach($existData as $data){
-                $insertItem = "Insert into invoiceitems(iItemID, vID, iID, iName, iQty, iPrice, iUnit, iSubTotal) values (?,?,?,?,?,?,?,?)";
-                return $this->db->query($insertItem, array(NULL, $variance, $data['iID'], $stckName,  $reQty, $cost, $reUnit, $subtotal));
-            }
-        }else{
             $query1 = "Insert into invoice(iID, spID, iDate, iDateRecorded, iNumber, iTotal, iRemarks, iType, resolvedStatus) values (?,?,?,?,?,?,?,?,?)";
             $this->db->query($query1, array(NULL, $supID, $dateRet, $idate,  $receipt, $subtotal, $remarks, 'return', $reStat));
     
             $invId= $this->db->insert_id();
             $query3 = "Insert into invoiceitems(iItemID, vID, iID, iName, iQty, iPrice, iUnit, iSubTotal) values (?,?,?,?,?,?,?,?)";
             return $this->db->query($query3, array(NULL, $variance, $invId, $stckName,  $reQty, $cost, $reUnit, $subtotal));
-        }
+        
     }
     function update_returns($eID, $eSpID, $eRNum, $eStat, $eRDate, $eDRec, $etotal, $eremarks, $defaultType, $eRetIt){
         $query1 = "UPDATE invoice 
