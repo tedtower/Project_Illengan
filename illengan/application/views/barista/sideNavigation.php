@@ -22,7 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo site_url('barista/baristaInventory')?>">
+                        <a href="<?php echo site_url('admin/stockqty/edit')?>">
                             <p>Inventory</p>
                         </a>
                     </li>

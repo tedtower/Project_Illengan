@@ -151,19 +151,19 @@
                     ?>
                                 <tr>
                                     <td>
-                                        <?php echo $bill['order_id'] ?>
+                                        <?php echo $bill['osID'] ?>
                                         <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
                                     </td>
                                     <td>
-                                        <?php echo $bill['table_code'] ?>
+                                        <?php echo $bill['tableCode'] ?>
                                         <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
                                     </td>
                                     <td>
-                                        <?php echo $bill['cust_name'] ?>
+                                        <?php echo $bill['cusName'] ?>
                                         <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
                                     </td>
                                     <td>
-                                        <?php echo $bill['total'] ?>
+                                        <?php echo $bill['ostotal'] ?>
                                         <!--insert PHP echo (e.g. "?php echo $row->code; ?>  data-toggle="modal"  data-target=""-->
                                     </td>
                                     <td>
@@ -219,7 +219,7 @@ $(function() {
                 method: "post",
                 url: "<?php echo site_url('barista/getBillDetails')?>",
                 data: {
-                    order_id: orderId
+                    osID: orderId
                 },
                 dataType: "json",
                 success: function(bill) {
@@ -257,7 +257,7 @@ $(function() {
                 method: "post",
                 url: "billings/setStatus",
                 data: {
-                    order_id: orderId,
+                    osID: orderId,
                     pay_status: status
                 }, 
                 dataType: "json",
@@ -271,7 +271,7 @@ $(function() {
 });
 
 function setModalData(orderId) {
-    var listLength = bills[orderId]['orderlist'].length;
+    var listLength = bills[orderId]['orderlists'].length;
     var listRow = `<tr class="orderList">
                             <td class="itemNames"></td>
                             <td class="itemQty"></td>
@@ -279,17 +279,17 @@ function setModalData(orderId) {
                         </tr>
                         `;
     removeModalData();
-    console.log(bills[orderId]['orderslip']['order_id']);
-    $("#orderNo").text(bills[orderId]['orderslip']['order_id']);
-    $("#tableCode").text(bills[orderId]['orderslip']['table_code']);
-    $("#customerName").text(bills[orderId]['orderslip']['cust_name']);
-    $("#paymentStatus").text(bills[orderId]['orderslip']['pay_status']);
-    $("#paymentDate").text(bills[orderId]['orderslip']['pay_date_time']);
+    console.log(bills[orderId]['orderslips']['osID']);
+    $("#orderNo").text(bills[orderId]['orderslips']['osID']);
+    $("#tableCode").text(bills[orderId]['orderslips']['tableCode']);
+    $("#customerName").text(bills[orderId]['orderslips']['custName']);
+    $("#paymentStatus").text(bills[orderId]['orderslips']['pay_status']);
+    $("#paymentDate").text(bills[orderId]['orderslips']['osPayDate']);
     for(var index = 0 ; index < listLength ; index++){
         $("#billModal table tbody").last().before(listRow);
-        $(".itemNames").eq($("orderList").length-1).text(bills[orderId]['orderlist'][index]["menu_name"]);
-        $(".itemQty").eq($("orderList").length-1).text(bills[orderId]['orderlist'][index]["order_qty"]);
-        $(".itemPrice").eq($("orderList").length-1).text(bills[orderId]['orderlist'][index]["order_total"]);
+        $(".itemNames").eq($("orderList").length-1).text(bills[orderId]['orderlists'][index]["mName"]);
+        $(".itemQty").eq($("orderList").length-1).text(bills[orderId]['orderlists'][index]["olQty"]);
+        $(".itemPrice").eq($("orderList").length-1).text(bills[orderId]['orderlists'][index]["olTotal"]);
     }
     if(bills[orderId]["orderslip"]["pay_status"] === "Paid"){
         $("#cash").attr("disabled","disabled");
@@ -300,8 +300,8 @@ function setModalData(orderId) {
         $("#change").removeAttr("disabled");
         $("#update-pay-status-btn").text("Pay");
     }
-    $("#totalamountpayable").text(bills[orderId]['orderslip']['total']);
-    $("#update-pay-status-btn").attr("data-orderid", bills[orderId]["orderslip"]["order_id"]);
+    $("#totalamountpayable").text(bills[orderId]['orderslips']['osTotal']);
+    $("#update-pay-status-btn").attr("data-orderid", bills[orderId]["orderslips"]["osID"]);
     $("#update-pay-status-btn").attr("data-paystatus", bills[orderId]["orderslip"]["pay_status"]);
 }
 
