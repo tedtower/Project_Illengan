@@ -27,7 +27,6 @@
                                         <th><b class="pull-left">Account No.</b></th>
                                         <th><b class="pull-left">Type</b></th>
                                         <th><b class="pull-left">Username</b></th>
-                                        <th><b class="pull-left">Password</b></th>
                                         <th><b class="pull-left">Online</b></th>
                                         <th><b class="pull-left">Actions</b></th>
 
@@ -54,7 +53,7 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Username</span>
                                                         </div>
-                                                        <input type="text" name="aUsername" id="aUsername" class="form-control form-control-sm">
+                                                        <input type="text" name="aUsername" id="aUsername" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("aUsername"); ?></span>
                                                     </div>
                                                     <!--Password-->
@@ -63,7 +62,7 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Password</span>
                                                         </div>
-                                                        <input type="text" name="password" id="password" class="form-control form-control-sm">
+                                                        <input type="text" name="password" id="password" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("password"); ?></span>
                                                     </div>
                                                     <!--Account Type-->
@@ -111,7 +110,7 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Username</span>
                                                         </div>
-                                                        <input type="text" name="new_aUsername" id="new_aUsername" class="form-control form-control-sm">
+                                                        <input type="text" name="new_aUsername" id="new_aUsername" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("new_aUsername"); ?></span>
                                                     </div>
                                                     <!--Account Type-->
@@ -158,7 +157,7 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Old Password</span>
                                                         </div>
-                                                        <input type="text" name="old_password" id="old_password" class="form-control form-control-sm">
+                                                        <input type="text" name="old_password" id="old_password" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("old_password"); ?></span>
                                                     </div>
                                                     <!--New Password-->
@@ -167,7 +166,7 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 New Password</span>
                                                         </div>
-                                                        <input type="text" name="new_password" id="new_password" class="form-control form-control-sm">
+                                                        <input type="text" name="new_password" id="new_password" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("new_password"); ?></span>
                                                     </div>
                                                     <!--Confirm Password-->
@@ -176,18 +175,14 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Confirm Password</span>
                                                         </div>
-                                                        <input type="text" name="new_confirm_password" id="new_confirm_password" class="form-control form-control-sm">
+                                                        <input type="text" name="new_confirm_password" id="new_confirm_password" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("new_confirm_password"); ?></span>
                                                     </div>
                                                     <input name="accountId" hidden="hidden">
                                                     <!--Footer-->
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-<<<<<<< HEAD
                                                         <button class="btn btn-success btn-sm" type="submit">Update</button>
-=======
-                                                        <button class="btn btn-success btn-sm" id="btn_update" type="button" onclick="updatePass()">Update</button>
->>>>>>> 748be07ccce6446489887464589ad8c68f90a0c1
                                                     </div>
                                                 </div>
                                             </form>
@@ -239,7 +234,6 @@
     $("#confirmDelete").on('submit', function(event) {
         event.preventDefault();
         var accountId = $(this).find("input").val();
-        console.log(accountId);
         $.ajax({
                 url: '<?= site_url('admin/accounts/delete') ?>',
                 method: 'POST',
@@ -286,14 +280,8 @@
     });
 
 
-<<<<<<< HEAD
     $('#btn_update').on('click', function() {
         var aID = $('#aID').val();
-=======
-    // $('#btn_update').on('click', function() {
-        function updatePass(){
-        var accountId = $('#accountId').val();
->>>>>>> 748be07ccce6446489887464589ad8c68f90a0c1
         var old_password = $('#old_password').val();
         var new_password = $('#new_password').val();
         var new_password_confirmation = $('#new_password_confirmation').val();
@@ -308,11 +296,7 @@
                 new_password_confirmation: new_password_confirmation
             },
             success: function(data) {
-<<<<<<< HEAD
                 $('[name="aID"]').val("");
-=======
-                $('[name="accountId"]').val("");
->>>>>>> 748be07ccce6446489887464589ad8c68f90a0c1
                 $('[name="old_password"]').val("");
                 $('[name="new_password"]').val("");
                 $('[name="new_password_confirmation"]').val("");
@@ -355,7 +339,6 @@
                 <td>${table.aID}</td>
                 <td>${table.aType}</td>
                 <td>${table.aUsername}</td>
-                <td>${table.aPassword}</td>
                 <td>${table.aIsOnline}</td>
                 <td>
                         <!--Action Buttons-->

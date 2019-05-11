@@ -12,12 +12,11 @@ class adminupdate extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $ssID=$this->input->post('ssID');
             $vID=$this->input->post('vID');
-            $ssQty=$this->input->post('ssQty');
             $ssDate=$this->input->post('ssDate');
             $ssRemarks=$this->input->post('ssRemarks');
-            $date_recorded=date("Y-m-d 2H:i:s");
+            $date_recorded=date("Y-m-d H:i:s");
 
-            $this->adminmodel->edit_stockspoilage($ssID,$vID,$ssQty,$ssDate,$ssRemarks,$date_recorded);
+            $this->adminmodel->edit_stockspoilage($ssID,$vID,$ssDate,$ssRemarks,$date_recorded);
         }else{
             redirect('login');
         } 
@@ -26,12 +25,26 @@ class adminupdate extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $msID = $this->input->post('msID');
             $prID = $this->input->post('prID');
-            $msQty = $this->input->post('msQty');
+            // $msQty = $this->input->post('msQty');
             $msDate = $this->input->post('msDate');
             $msRemarks = $this->input->post('msRemarks');
             $date_recorded = date("Y-m-d H:i:s");
 
-            $this->adminmodel->edit_menuspoilage($msID,$prID,$msQty,$msDate,$msRemarks,$date_recorded);
+            $this->adminmodel->edit_menuspoilage($msID,$prID,$msDate,$msRemarks,$date_recorded);
+        }else{
+            redirect('login');
+        } 
+    }
+    function editAoSpoil(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $aoID = $this->input->post('aoID');
+            $aosID = $this->input->post('aosID');
+            // $aosQty = $this->input->post('msQty');
+            $aosDate = $this->input->post('aosDate');
+            $aosRemarks = $this->input->post('aosRemarks');
+            $date_recorded = date("Y-m-d H:i:s");
+
+            $this->adminmodel->edit_aospoilage($aoID,$aosID,$aosDate,$aosRemarks,$date_recorded);
         }else{
             redirect('login');
         } 

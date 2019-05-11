@@ -20,11 +20,11 @@ function getSelectedStocks() {
                             <input type="hidden" id="curQty` + i + `" name="curQty" class="form-control form-control-sm" data-vID="` + data[i].vQty + `" value="` + data[i].vQty + `">
                             <input type="hidden" id="vID` + i + `" name="vID" class="form-control form-control-sm" data-vID="` + data[i].vID + `" value="` + data[i].vID + `">
                             <td><input type="text" id="stName` + i + `" name="stName"
-                                    class="form-control form-control-sm" data-stNameID="` + data[i].stName + `" value="` + data[i].vName + `" readonly="readonly"></td>
+                                    class="form-control form-control-sm" data-stNameID="` + data[i].stName + `" value="` + data[i].vName + `" readonly="readonly" required></td>
                             <td><input type="number" min="1" id="ssQty` + i + `" name="ssQty"
-                                    class="form-control form-control-sm" value="" ></td>
+                                    class="form-control form-control-sm" value="" required></td>
                             <td><input type="text" id="ssRemarks` + i + `" name="ssRemarks"
-                                    class="form-control form-control-sm"  value=""></td>
+                                    class="form-control form-control-sm"  value="" required></td>
                             <td><img class="exitBtn"
                                     src="/assets/media/admin/error.png"
                                     style="width:20px;height:20px"></td>
@@ -71,7 +71,7 @@ function addStockItems() {
             
         },
         complete: function() {
-            $("#addStockSpoilage").modal("hide");
+            $("#formAdd").modal("hide");
             location.reload();
             },
         error: function(response, setting, error) {

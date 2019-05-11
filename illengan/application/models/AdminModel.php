@@ -34,8 +34,7 @@ class AdminModel extends CI_Model{
         $query = "insert into spoiledmenu (msID,prID,msQty,msDate,msRemarks) values (?,?,?,?,?)";
         if(count($menus) > 0){
             for($in = 0; $in < count($menus) ; $in++){
-                $this->db->query($query, array($msID, $menus[$in]['prID'], $menus[$in]['msQty'],
-                $menus[$in]['msDate'],$menus[$in]['msRemarks']));
+                $this->db->query($query, array($msID, $menus[$in]['prID'], $menus[$in]['msQty'],$menus[$in]['msDate'],$menus[$in]['msRemarks']));
             }    
         }
     }
@@ -292,29 +291,29 @@ class AdminModel extends CI_Model{
         $query = "update accounts set aUsername = ?, aType = ? where aID = ?";
         return $this->db->query($query,array($aUsername, $aType, $aID));
     }
-    function edit_menuspoilage($msID,$prID,$msQty,$msDate,$msRemarks,$date_recorded){
+    function edit_menuspoilage($msID,$prID,$msDate,$msRemarks,$date_recorded){
         $query = "Update menuspoil set msDateRecorded = ? where msID=?";
         if($this->db->query($query,array($date_recorded,$msID))){
-            $query = "Update spoiledmenu set msQty = ?,msDate = ?,msRemarks = ? where msID = ? AND prID = ?";
-            return $this->db->query($query,array($msQty,$msDate,$msRemarks,$msID,$prID));
+            $query = "Update spoiledmenu set msDate = ?,msRemarks = ? where msID = ? AND prID = ?";
+            return $this->db->query($query,array($msDate,$msRemarks,$msID,$prID));
         }else{
             return false;
         }
     }
-    function edit_stockspoilage($ssID,$vID,$ssQty,$ssDate,$ssRemarks,$date_recorded){
+    function edit_stockspoilage($ssID,$vID,$ssDate,$ssRemarks,$date_recorded){
         $query = "Update stockspoil set ssDateRecorded = ? where ssID=?";
         if($this->db->query($query,array($date_recorded,$ssID))){
-            $query = "Update varspoilitems set ssQty = ?,ssDate = ?,ssRemarks = ? where ssID = ? AND vID = ?";
-            return $this->db->query($query,array($ssQty,$ssDate,$ssRemarks,$ssID,$vID));
+            $query = "Update varspoilitems set ssDate = ?,ssRemarks = ? where ssID = ? AND vID = ?";
+            return $this->db->query($query,array($ssDate,$ssRemarks,$ssID,$vID));
         }else{
             return false;
         }
     }
-    function edit_aospoilage($s_id,$aoID,$s_type,$s_date,$date_recorded,$remarks){
-        $query = "update spoilage set s_type = ?, s_date = ?, date_recorded = ?, remarks=? where s_id=?";
-        if($this->db->query($query,array($stype,$s_date,$date_recorded,$remarks,$s_id))){
-            $query = "Update ao_spoil set aoID = ? where s_id = ?";
-            return $this->db->query($query,array($aoID,$s_id));
+    function edit_aospoilage($aoID,$aosID,$aosDate,$aosRemarks,$date_recorded){
+        $query = "Update aospoil set aosDateRecorded = ? where aosID=?";
+        if($this->db->query($query,array($date_recorded,$aosID))){
+            $query = "Update addonspoil set aosDate = ?,aosRemarks = ? where aoID = ?";
+            return $this->db->query($query,array($aosDate,$aosRemarks,$aoID));
         }else{
             return false;
         }
@@ -657,7 +656,7 @@ class AdminModel extends CI_Model{
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesaddons(){
-        $query = "Select aosID, aoName,aosQty, aoCategory,aosDate, aosDateRecorded, aosRemarks from addonspoil INNER JOIN aospoil using (aosID)INNER JOIN addons using (aoID)";
+        $query = "Select aoID,aosID, aoName,aosQty, aoCategory,aosDate, aosDateRecorded, aosRemarks from addonspoil INNER JOIN aospoil using (aosID)INNER JOIN addons using (aoID)";
         return  $this->db->query($query)->result_array();
     }
     function get_tables(){
@@ -790,11 +789,9 @@ class AdminModel extends CI_Model{
         $query = "delete from categories where ctID = ? and ctType= 'menu'";
         return $this->db->query($query,array($ctID));
     }
-    function delete_spoilages(){
-        $s_id=$this->input->post('s_id');
-        $this->db->where('s_id', $s_id);
-        $result = $this->db->delete('spoilage');
-        return $result;
+    function delete_spoilages($ssID, $delRemarks){
+        $query ="Delete from stockspoil where ssID = ?";
+        return $this->db->query(query, array($ssID));
     }
     function delete_stockcategory($ctID){
         $query = "delete from categories where ctID = ? and ctType= 'inventory'";

@@ -18,8 +18,6 @@
 							<br>
 							<table id="spoilagesTable" class="spoiltable dtr-inline collapsed table display">
 								<thead>
-									<th>vCode</th>
-									<th>ssCode</th>
 									<th>Item Name</th>
 									<th>Quantity</th>
 									<th>Date Spoiled</th>
@@ -52,7 +50,7 @@
 															<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
 																Spoilage Date</span>
 														</div>
-														<input type="date" name="spoilDate" id="spoilDate" class="form-control form-control-sm">
+														<input type="date" name="spoilDate" id="spoilDate" class="form-control form-control-sm" required>
 													</div>
 												</div>
 												<!--Add Stock Item-->
@@ -126,10 +124,15 @@
 											<div class="modal-body">
 												<h6 id="deleteTableCode"></h6>
 												<p>Are you sure you want to delete the selected stock spoilages?</p>
-												<input type="text" name="tableCode" hidden="hidden">
-												<div>
-													Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm">
-												</div>
+												<input type="text" name="ssID" hidden="hidden">
+												<div class="input-group mb-2">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                Remarks</span>
+                                                        </div>
+                                                        <input type="text" name="delRemarks" id="delRemarks" class="form-control form-control-sm" required>
+                                                        <span class="text-danger"><?php echo form_error("delRemarks"); ?></span>
+                                                </div>
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
@@ -153,21 +156,21 @@
                                             <form id="formEdit" accept-charset="utf-8" > 
 												<div class="modal-body">
                                                     <!--Quantity-->
-                                                    <div class="input-group mb-3">
+                                                    <!-- <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Quantity</span>
                                                         </div>
-                                                        <input type="number" min="1" name="ssQty" id="ssQty" class="form-control form-control-sm">
+                                                        <input type="number" min="1" name="ssQty" id="ssQty" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("ssQty"); ?></span>
-                                                    </div>
+                                                    </div> -->
                                                     <!--Date Spoiled-->
 													<div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Date Spoiled</span>
                                                         </div>
-                                                        <input type="date" name="ssDate" id="ssDate" class="form-control form-control-sm">
+                                                        <input type="date" name="ssDate" id="ssDate" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("ssDate"); ?></span>
                                                     </div>
 													<div class="input-group mb-3">
@@ -175,11 +178,12 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Remarks</span>
                                                         </div>
-                                                        <input type="text" name="ssRemarks" id="ssRemarks" class="form-control form-control-sm">
+                                                        <input type="text" name="ssRemarks" id="ssRemarks" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("ssRemarks"); ?></span>
                                                     </div>
 													<input name="ssID" id="ssID" hidden="hidden">
 													<input name="vID" id="vID" hidden="hidden">
+													<input name="curQty" id="curQty" hidden="hidden">
                                                     <!--Footer-->
                                                     <div class="modal-footer">
 													<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
@@ -266,9 +270,7 @@
         }
         spoilages.forEach(table => {
             $("#spoilagesTable> tbody").append(`
-            <tr data-vID="${table.vID}" data-ssID="${table.ssID}" data-spoilname="${table.vName}">
-                <td>${table.vID}</td>
-                <td>${table.ssID}</td>
+            <tr data-vID="${table.vID}" data-ssID="${table.ssID}" data-spoilname="${table.vName}" data-curQty="${table.ssQty}">
                 <td>${table.vName}</td>
                 <td>${table.ssQty}</td>
 				<td>${table.ssDate}</td>
@@ -291,15 +293,13 @@
 				$("#editSpoil").find("input[name='vID']").val($(this).closest("tr").attr(
                     "data-vID"));
                 $("#editSpoil").find("input[name='ssID']").val($(this).closest("tr").attr(
-                    "data-ssID"));
+					"data-ssID"));
             });
             $(".item_delete").last().on('click', function () {
                 $("#deleteSpoilageId").text(
                     `Delete spoilage code ${$(this).closest("tr").attr("data-spoilname")}`);
-                $("#deleteSpoilage").find("input[name='vID']").val($(this).closest("tr").attr(
-					"data-id"));
 				$("#deleteSpoilage").find("input[name='ssID']").val($(this).closest("tr").attr(
-                    "data-id"));
+                    "data-ssID"));
             });
         });
 	}
@@ -310,18 +310,17 @@
 		event.preventDefault();
 		var ssID = $(this).find("input[name='ssID']").val();
         var vID = $(this).find("input[name='vID']").val();
-        var ssQty = $(this).find("input[name='ssQty']").val();
+        // var ssQty = $(this).find("input[name='ssQty']").val();
         var ssDate = $(this).find("input[name='ssDate']").val();
         var ssRemarks = $(this).find("input[name='ssRemarks']").val();
-       
-        console.log(ssID, vID, ssQty, ssDate, ssRemarks);
+      
         $.ajax({
             url: "<?= site_url("admin/stock/spoilage/edit")?>",
             method: "post",
             data: {
 				ssID: ssID,
                 vID : vID,
-                ssQty: ssQty,
+                // ssQty: ssQty,
                 ssDate: ssDate,
                 ssRemarks: ssRemarks
             },
@@ -343,16 +342,29 @@
 });
 	//--------------------End of Function for Edit-----------------------------
 	// Function for Delete
-	$(document).ready(function() {
-		$('.delete_data').click(function() {
-			var id = $(this).attr("id");
-			if (confirm("Are you sure you want to delete this?")) {
-				window.location = "<?php echo base_url(); ?>admin/sources/delete/" + id;
-			} else {
-				return false;
-			}
-		});
-	});
+	
+    $("#confirmDelete").on('submit', function(event) {
+		event.preventDefault();
+		var delRemarks =$(this).find("input[name='delRemarks']").val();
+        $.ajax({
+                url: '<?= site_url('admin/stock/spoilage/delete') ?>',
+                method: 'POST',
+                data: {
+					ssID: ssID,
+					delRemarks:delRemarks
+                },
+                dataType: 'json',
+                success: function(data) {
+                    accounts = data;
+                    setAccountData();
+                },
+                complete: function() {
+                $("#deleteSpoilage").modal("hide");
+				location.reload();
+                }
+            });
+        });
+
 	//End Function Delete
 
 </script> 

@@ -18,7 +18,6 @@
 							<br>
 							<table id="addonTable" class="spoiltable dtr-inline collapsed table display">
 								<thead>
-									<th>aoCode</th>
 									<th>Item Name</th>
 									<th>Category</th>
 									<th>Quantity</th>
@@ -42,7 +41,7 @@
 												<span aria-hidden="true">&times;</span>
 											</button>
 										</div>
-										<form id="formAdd" action="<?= site_url('admin/addon/spoilages/add')?>" accept-charset="utf-8">
+										<form id="formAdd" accept-charset="utf-8">
 											<div class="modal-body">
 												<div class="form-row">
 													<!--Container of Addon Spoilage Date-->
@@ -52,7 +51,7 @@
 															<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
 																Spoilage Date</span>
 														</div>
-														<input type="date" name="spoilDate" id="spoilDate" class="form-control form-control-sm">
+														<input type="date" name="spoilDate" id="spoilDate" class="form-control form-control-sm" required>
 													</div>
 												</div>
 												<!--Add Addon Item-->
@@ -128,7 +127,7 @@
 												<p>Are you sure you want to delete the selected addon spoilages?</p>
 												<input type="text" name="tableCode" hidden="hidden">
 												<div>
-													Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm">
+													Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm" required>
 												</div>
 											</div>
 											<div class="modal-footer">
@@ -153,21 +152,21 @@
                                             <form id="formEdit" accept-charset="utf-8" > 
 												<div class="modal-body">
                                                     <!--Quantity-->
-                                                    <div class="input-group mb-3">
+                                                    <!-- <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Quantity</span>
                                                         </div>
                                                         <input type="number" min="1" name="aosQty" id="aosQty" class="form-control form-control-sm">
                                                         <span class="text-danger"><?php echo form_error("aosQty"); ?></span>
-                                                    </div>
+                                                    </div> -->
                                                     <!--Date Spoiled-->
 													<div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Date Spoiled</span>
                                                         </div>
-                                                        <input type="date" name="aosDate" id="aosDate" class="form-control form-control-sm">
+                                                        <input type="date" name="aosDate" id="aosDate" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("aosDate"); ?></span>
                                                     </div>
 													<div class="input-group mb-3">
@@ -175,10 +174,11 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Remarks</span>
                                                         </div>
-                                                        <input type="text" name="aosRemarks" id="aosRemarks" class="form-control form-control-sm">
+                                                        <input type="text" name="aosRemarks" id="aosRemarks" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("aosRemarks"); ?></span>
                                                     </div>
 													<input name="aoID" id="aoID" hidden="hidden">
+													<input name="aosID" id="aosID" hidden="hidden">
                                                     <!--Footer-->
                                                     <div class="modal-footer">
 													<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
@@ -265,8 +265,8 @@
         }
         spoilages.forEach(table => {
             $("#addonTable> tbody").append(`
-            <tr data-aoID="${table.aoID}" data-spoilname="${table.aoName}">
-                <td>${table.aosID}</td>
+			<tr data-aoID="${table.aoID}" data-aosID="${table.aosID}" data-spoilname="${table.aoName}">
+				
                 <td>${table.aoName}</td>
                 <td>${table.aoCategory}</td>
                 <td>${table.aosQty}</td>
@@ -288,7 +288,9 @@
                 </tr>`);
             $(".updateBtn").last().on('click', function () {
                 $("#editSpoil").find("input[name='aoID']").val($(this).closest("tr").attr(
-                    "data-aoID"));
+					"data-aoID"));
+				$("#editSpoil").find("input[name='aosID']").val($(this).closest("tr").attr(
+					"data-aosID"));
             });
             $(".item_delete").last().on('click', function () {
                 $("#deleteSpoilageId").text(
@@ -304,17 +306,18 @@
     $("#editSpoil form").on('submit', function(event) {
 		event.preventDefault();
 		var aoID = $(this).find("input[name='aoID']").val();
-        var aosQty = $(this).find("input[name='aosQty']").val();
+		var aosID = $(this).find("input[name='aosID']").val();
+        // var aosQty = $(this).find("input[name='aosQty']").val();
         var aosDate = $(this).find("input[name='aosDate']").val();
         var aosRemarks = $(this).find("input[name='aosRemarks']").val();
        
-        console.log(aoID, aosQty, aosDate, aosRemarks);
         $.ajax({
-            url: "<?= site_url("admin/addon/spoilage/edit")?>",
+            url: "<?= site_url("admin/addons/spoilage/edit")?>",
             method: "post",
             data: {
 				aoID: aoID,
-                aosQty: aosQty,
+				aosID: aosID,
+                // aosQty: aosQty,
                 aosDate: aosDate,
                 aosRemarks: aosRemarks
             },

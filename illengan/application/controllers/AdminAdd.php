@@ -222,7 +222,7 @@ class Adminadd extends CI_Controller{
     function addspoilagesstock(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
-            $date_recorded = date("Y-m-d");
+            $date_recorded = date("Y-m-d H:i:s");
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
             $this->adminmodel->add_stockspoil($date_recorded,$stocks);

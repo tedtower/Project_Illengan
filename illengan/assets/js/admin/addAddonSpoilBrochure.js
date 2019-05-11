@@ -19,11 +19,11 @@ function getSelectedAddons() {
                     addonChecked = `<tr class="addonelem" data-id="` + data[i].aoID + `" >
                             <input type="hidden" id="aoID` + i + `" name="aoID" class="form-control form-control-sm" data-aoID="` + data[i].aoID + `" value="` + data[i].aoID + `">
                             <td><input type="text" id="aoName` + i + `" name="aoName"
-                                    class="form-control form-control-sm" data-aoNameID="` + data[i].aoName + `" value="` + data[i].aoName + `" readonly="readonly"></td>
+                                    class="form-control form-control-sm" data-aoNameID="` + data[i].aoName + `" value="` + data[i].aoName + `" readonly="readonly" required></td>
                             <td><input type="number" min="1" id="aosQty` + i + `" name="aosQty"
-                                    class="form-control form-control-sm" value="" ></td>
+                                    class="form-control form-control-sm" value="" required></td>
                             <td><input type="text" id="aosRemarks` + i + `" name="aosRemarks"
-                                    class="form-control form-control-sm"  value=""></td>
+                                    class="form-control form-control-sm"  value="" required></td>
                             <td><img class="exitBtn"
                                     src="/assets/media/admin/error.png"
                                     style="width:20px;height:20px"></td>
@@ -65,11 +65,12 @@ function addAddonItems() {
         },
         dataType: 'json',
         success: function (data) {
-            alert('Spoiled Menu Added');
+            alert('Spoiled Addon Added');
             newFunction(data);
-            $('#addAddonSpoilage').modal('hide');
-            var table = $('#tablevalues').DataTable();
-            table.ajax.reload();
+        },
+        complete: function() {
+            $("#formAdd").modal("hide");
+            location.reload();
         },
         error: function(response, setting, error) {
             console.log(response.responseText);
