@@ -179,10 +179,14 @@ $route['customer/menu'] = "customer/view";
 $route['customer/json'] = "customer/json";
 
 // BARISTA ROUTES
-$route['barista/orders'] = "barista/index";
+$route['barista/orders'] = "barista/pendingOrders";
 $route['barista/billings'] = "barista/getbills";
 $route['barista/getBillDetails'] = "barista/getBillDetails";
 $route['barista/billings/setStatus'] = "barista/setbillstatus";
+
+//BARISTA JS ROUTES
+// $route['barista/orderslipJS'] = "barista/viewOrderslipJS";
+// $route['barista/pendingOrdersJS'] ="barista/pendingOrdersJS";
 
 // CHEF ROUTES
 $route['chef/get_orderlist'] = "chef/get_orderlist";
