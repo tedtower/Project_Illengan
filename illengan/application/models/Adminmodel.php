@@ -141,19 +141,9 @@ class Adminmodel extends CI_Model{
 
     function add_menu($image, $mName, $mDesc, $category, $status, $preferences, $addons){
         $query = "insert into menu (mImage, mName, mDesc, ctID, mAvailability) values (?,?,?,?,?);";
-        if($this->db->query($query,array($image, $mName, $mDesc, $category, $status))){
-            $mID = $this->db->insert_id();
-            if(count($preferences) > 0){
-                foreach ($preferences as $pref) {
-                    $this->add_preference($pref, $mID);
-
-                }
-            }
-            return true;            
-        }
-        return false;
+        return $this->db->query($query,array($image, $mName, $mDesc, $category, $status));
+     
     }
-
 
     function add_PurchaseOrder($poDate,$edDate,$poTotal,$poDateRecorded,$poStatus, $poRemarks, $spID, $merchandise){
         $query = "insert into purchaseorder (poID, poDate, edDate, poTotal, poDateRecorded, poStatus, 
