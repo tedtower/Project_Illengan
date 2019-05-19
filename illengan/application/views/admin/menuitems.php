@@ -241,8 +241,7 @@ $(document).ready(function() {
 
     // $("#newMenu form").on('submit', function(event) {
     //     event.preventDefault();
-    //     var image = new FormData();
-    //     image.append('image', $(this).find("input[name='mImage']")[0].files[0]);
+    //     var image = $(this).find("input[name='mImage']")[0].files[0];
     //     var name = $(this).find("input[name='mName']").val();
     //     var description = $(this).find("textarea[name='mDesc']").val();
     //     var category = $(this).find("select[name='ctName']").val();

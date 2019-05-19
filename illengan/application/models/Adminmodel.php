@@ -126,7 +126,6 @@ class Adminmodel extends CI_Model{
             if(count($spMerch) > 0){
                 foreach ($spMerch as $merch) {
                     $this->add_supplierMerchandise($merch, $spID);
-
                 }
             }
             return true;            
@@ -139,10 +138,9 @@ class Adminmodel extends CI_Model{
         $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
     }
 
-    function add_menu($image, $mName, $mDesc, $category, $status, $preferences, $addons){
+    function add_menu($image, $mName, $mDesc, $category, $status){
         $query = "insert into menu (mImage, mName, mDesc, ctID, mAvailability) values (?,?,?,?,?);";
         return $this->db->query($query,array($image, $mName, $mDesc, $category, $status));
-     
     }
 
     function add_PurchaseOrder($poDate,$edDate,$poTotal,$poDateRecorded,$poStatus, $poRemarks, $spID, $merchandise){
