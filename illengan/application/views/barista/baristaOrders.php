@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <body>
 
   <div class="nav nav-tabs"><a href="<?php echo site_url('barista/orders'); ?>" class="nav nav-link active" role="tab">Orderlist</a> &nbsp;
-              <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="nav nav-link" role="tab">Pending Orders</a> &nbsp;
+            <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="nav nav-link" role="tab">Pending Orders</a> &nbsp;
             <a href="<?php echo site_url('barista/servedStatus'); ?>" class="nav nav-link" role="tab">Served Orders</a>
             <a href="<?php echo site_url('barista/orderslip'); ?>" class="nav nav-link" role="tab">Orderslip</a>
             </div>
@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   <button class="btn btn-dark" id="btn-hide-all-children" type="button">Collapse All</button>
             </div>
             <br>
-            <table class="table table-striped" id="mydata" >
+            <table id="ordersTable" class="table table-striped" >
                 <thead>
                     <tr>
                         <!--<th>Slip No.</th> -->
@@ -124,7 +124,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script type="text/javascript" src="<?php echo base_url().'assets/js/barista/dataTables.buttons.js'?>"></script>
 
 <script>
-var table = $('#mydata');
+var table = $('#ordersTable');
 
 function format(d){
   return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
@@ -141,9 +141,9 @@ function format(d){
 }
 
 $(document).ready(function(){
-  var table = $('#mydata').DataTable({
+  var table = $('#ordersTable').DataTable({
       ajax: {
-      url: 'http://www.illengan.com/barista/orders_b',
+      url: 'http://www.illengan.com/barista/pendingOrdersJS',
       dataSrc: ''
     },
     colReorder: {
@@ -176,7 +176,7 @@ $(document).ready(function(){
   });
 
 //For showing the accordion
-  $('#mydata tbody').on('click', 'td.details-control', function(){
+  $('#ordersTable tbody').on('click', 'td.details-control', function(){
     var tr = $(this).closest('tr');
     var row = table.row(tr);
 
