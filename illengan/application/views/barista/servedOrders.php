@@ -21,14 +21,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/style.css'?>">
   </head>
 <body>
-<div class="nav nav-tabs"><a href="<?php echo site_url('barista/orders'); ?>" class="nav nav-link" role="tab">Orderlist</a> &nbsp;
-              <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="nav nav-link" role="tab">Pending Orders</a> &nbsp;
-            <a href="<?php echo site_url('barista/servedStatus'); ?>" class="nav nav-link active" role="tab">Served Orders</a>
-            <a href="<?php echo site_url('barista/orderslip'); ?>" class="nav nav-link" role="tab">Orderslip</a>
-            </div>
-            <br>
+<?php include_once('headernav.php') ?>
+  <br>
   <div class="container">
-            <table class="table table-striped" id="servedorders" >
+            <table  class="pendOrders dtr-inline collapsed table display" id="servedordersTable" >
                 <thead>
                     <tr>
                         <!--<th>Slip No.</th> -->
@@ -42,23 +38,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </tr>
                 </thead>
                 <tbody>
-                <?php  if(isset($served)){
-                          foreach($served as $row) 
-                          {  
-                            ?> 
-                               <tr>  
-                                    <td><?= $row["olID"]?></td>  
-                                    <td><?= $row["custName"]?></td>  
-                                    <td><?= $row["tableCode"]?></td>  
-                                    <td><?= $row["olDesc"]?></td>  
-                                    <td><?= $row["olQty"]?></td>  
-                                    <td><?= $row["olStatus"]?></td>  
-                                   <!-- <td><button id="cancelOrder" class="btn btn-warning">Cancel</button></td>-->
-                               </tr>    
-                         
-                          <?php } 
-                        } ?>  
-                    
                 </tbody>
             </table>
     </div>
@@ -133,10 +112,68 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script type="text/javascript" src="<?php echo base_url().'assets/js/barista/dataTables.bootstrap4.js'?>"></script>
 
 <script>
-$(document).ready(function(){
-    $('#servedorders').DataTable();
+var serOrders = [];
+$(function() {
+		viewservedOrdersJs();
 });
 
+//POPULATE TABLE
+var table = $('#servedordersTable');
+	function format(d) {
+		return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+			'<tr>' +
+			'<td>Remarks</td>' +
+			'</tr>' +
+			'<tr>' +
+			'<td>' + d.ssRemarks + '</td>' +
+			'</tr>' +
+			'</table>';
+
+	}
+	function viewservedOrdersJs() {
+        $.ajax({
+            url: "<?= site_url('barista/servedOrdersJS') ?>",
+            method: "post",
+            dataType: "json",
+            success: function(data) {
+                serOrders = data;
+                setserOrdersData(serOrders);
+            },
+            error: function(response, setting, errorThrown) {
+                console.log(response.responseText);
+                console.log(errorThrown);
+            }
+        });
+	}
+	function setserOrdersData() {
+        if ($("#servedordersTable> tbody").children().length > 0) {
+            $("#servedordersTable> tbody").empty();
+        }
+        serOrders.forEach(table => {
+            $("#servedordersTable> tbody").append(`
+            <tr data-olID="${table.olID}" >
+                <td>${table.olID}</td>
+                <td>${table.custName}</td>
+                <td>${table.tableCode}</td>
+                <td>${table.olDesc}</td>
+                <td>${table.olQty}</td>
+                <td>${table.olStatus}</td>
+                <td>
+                        <!--Action Buttons-->
+                        <div class="onoffswitch">
+                            <!--Delete button-->
+                            <button class="item_delete btn btn-danger btn-sm" data-toggle="modal" 
+                            data-target="#Modal_Remove">Cancel</button>                      
+                        </div>
+                    </td>
+                </tr>`);
+            $(".item_delete").last().on('click', function () {
+                $("#Modal_Remove").find("input[name='olID']").val($(this).closest("tr").attr(
+                          "data-olID"));
+            });
+        });
+	}
+	//END OF POPULATING TABLE
 
 //start of new function
 /*$('#show_data').on('click','.item_edit',function(){
