@@ -256,7 +256,7 @@ class Adminadd extends CI_Controller{
     function addspoilagesstock(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
-            $date_recorded = date("Y-m-d");
+            $date_recorded = date("Y-m-d H:i:s");
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
             $this->adminmodel->add_stockspoil($date_recorded,$stocks);
@@ -265,7 +265,6 @@ class Adminadd extends CI_Controller{
             redirect('login');
         }
     }
-
     function addReturns(){
         $now = date('Y-m-d');
         $quantity = $this->input->post('quantity');
@@ -275,7 +274,6 @@ class Adminadd extends CI_Controller{
         $this->adminmodel->add_returns($trans, $stock, $quantity,  $now, $stck_qty);
         redirect('adminview/viewReturns');
     }
-
     function addTransaction(){
         $transID = $this->input->post('transID');
         $spID = $this->input->post('spID');
@@ -292,9 +290,13 @@ class Adminadd extends CI_Controller{
             $total += $transitems[$index]['subtotal'];
         }
         if($this->adminmodel->add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks,$total, $transitems)){
-            
+            echo json_encode(array(
+                "dataSuccess" => true
+            ));
         }else{
-            redirect('login');
+            echo json_encode(array(
+                "dataErr" => true
+            ));
         }
     }
 

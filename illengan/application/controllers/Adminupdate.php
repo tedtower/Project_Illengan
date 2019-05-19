@@ -12,12 +12,11 @@ class Adminupdate extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $ssID=$this->input->post('ssID');
             $vID=$this->input->post('vID');
-            $ssQty=$this->input->post('ssQty');
             $ssDate=$this->input->post('ssDate');
             $ssRemarks=$this->input->post('ssRemarks');
-            $date_recorded=date("Y-m-d 2H:i:s");
+            $date_recorded=date("Y-m-d H:i:s");
 
-            $this->adminmodel->edit_stockspoilage($ssID,$vID,$ssQty,$ssDate,$ssRemarks,$date_recorded);
+            $this->adminmodel->edit_stockspoilage($ssID,$vID,$ssDate,$ssRemarks,$date_recorded);
         }else{
             redirect('login');
         } 
@@ -26,12 +25,26 @@ class Adminupdate extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $msID = $this->input->post('msID');
             $prID = $this->input->post('prID');
-            $msQty = $this->input->post('msQty');
+            // $msQty = $this->input->post('msQty');
             $msDate = $this->input->post('msDate');
             $msRemarks = $this->input->post('msRemarks');
             $date_recorded = date("Y-m-d H:i:s");
 
-            $this->adminmodel->edit_menuspoilage($msID,$prID,$msQty,$msDate,$msRemarks,$date_recorded);
+            $this->adminmodel->edit_menuspoilage($msID,$prID,$msDate,$msRemarks,$date_recorded);
+        }else{
+            redirect('login');
+        } 
+    }
+    function editAoSpoil(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $aoID = $this->input->post('aoID');
+            $aosID = $this->input->post('aosID');
+            // $aosQty = $this->input->post('msQty');
+            $aosDate = $this->input->post('aosDate');
+            $aosRemarks = $this->input->post('aosRemarks');
+            $date_recorded = date("Y-m-d H:i:s");
+
+            $this->adminmodel->edit_aospoilage($aoID,$aosID,$aosDate,$aosRemarks,$date_recorded);
         }else{
             redirect('login');
         } 
@@ -77,29 +90,17 @@ class Adminupdate extends CI_Controller{
     }
     function changeAccountPassword(){  
         $this->load->library('form_validation');
+        // $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[3]|max_length[50]');
+        // $this->form_validation->set_rules('new_password_confirmation', 'Confirm password', 'required|min_length[3]|max_length[50]|matches[new_password]');
 
-        $aID = $this->input->post('accountId');
-        $current_password = $this->adminmodel->get_password($aID);
-
-        $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[3]|max_length[50]');
-        $this->form_validation->set_rules('new_confirm_password', 'Confirm password', 'required|min_length[3]|max_length[50]|matches[new_password]');
-        $this->form_validation->set_rules('old_password', 'Old Password', 'required');
-
-        if($this->form_validation->run()){
-            $old_password = $this->input->post("old_password");
+        // if($this->form_validation->run()){
+            $aID = $this->input->post('aID');
             $new_password = password_hash($this->input->post("new_password"),PASSWORD_DEFAULT);
-
-            foreach($current_password AS $row) {
-                if (password_verify($old_password, $row['aPassword'])){                 
-                    $this->adminmodel->change_aPassword($new_password,$aID);
-                }else{ 
-                echo "Password incorrect";
-               }
-           }   
-        }else{
-            
-                // echo "Form Validation is not working";
-        }
+             $this->adminmodel->change_aPassword($new_password,$aID);
+              
+        // }else{
+            // echo "Form Validation is not working";
+        // }
        
         redirect('admin/accounts');   
     }

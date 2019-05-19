@@ -90,12 +90,12 @@
         }
        function orderInsert($total, $tableCode, $orderlist, $customer, $orderDate){ //insert in table orderslip
             $query1 = "Insert into orderslips(tableCode, custName, osTotal, osDate, osPayDate, osDateRecorded) values (?,?,?,?,?,?)";
-			$this->db->query($query1, array( $tableCode, $customer, $osTotal, $orderDate,'', $orderDate)); 
+			$this->db->query($query1, array( $tableCode, $customer, $total, $orderDate,'', $orderDate)); 
 			$order_id= $this->db->insert_id();
 			$bool = false;
 			foreach($orderlist as $items){
-				$query2 = "Insert into orderlist (olID, osID, prID, osDesc, olQty, olSubtotal, olStatus, olRemarks) values (?,?,?,?,?,?,?,?)";
-				$bool = $this->db->query($query2, array(NULL,$order_id, $items['id'],'',$items['qty'], $osTotal, 'pending', $items['remarks'])); 
+				$query2 = "Insert into orderlists (olID, osID, prID, olDesc, olQty, olSubtotal, olStatus, olRemarks) values (?,?,?,?,?,?,?,?)";
+				$bool = $this->db->query($query2, array(NULL,$order_id, $items['id'],'',$items['qty'], $total, 'pending', $items['remarks'])); 
 			}
 			return true;
         }

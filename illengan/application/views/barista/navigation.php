@@ -45,5 +45,18 @@
     <p>Notifications</p>
     </div>
   </div>
+
+  <a href="<?php echo base_url('login/logout')?>">
+  <div class="select-nav-pill">
+    <div class="icon-div active">
+     
+      <img id="icon" src="<?php echo base_url().'assets/media/navigation/sign-out-option.png' ?>">
+    </div>
+    <div class="nav-title">
+    <p>Sign Out</p>
+    </div>
+  </div>
+  </a>
+  
 </div>
 </div>

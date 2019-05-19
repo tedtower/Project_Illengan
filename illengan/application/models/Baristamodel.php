@@ -66,22 +66,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         function get_bills(){
-            $query = "select order_id, table_code, cust_name, total, order_date, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status , pay_date_time from orderslip";
+            $query = "select osID, tableCode, custName, osTotal, osDate, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status , osPayDate from orderslips";
             return $this->db->query($query)->result_array();
         }
 
-        function get_orderlist($order_id){
-            $query = "Select order_item_id, menu_name, order_qty, order_total from orderlist inner join menu using (menu_id) where order_id = ?";
+        function get_orderlist($osID){
+            $query = "Select olID, olDesc, olQty, olSubTotal from orderlists inner join preferences using (prID) where osID = ?";
             return $this->db->query($query, array($order_id))->result_array(); 
         }
 
-        function get_orderslip($order_id){
-            $query = "select order_id, table_code, cust_name, total, order_date, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status , pay_date_time from orderslip where order_id = ?";
+        function get_orderslip($osID){
+            $query = "select osID, tableCode, custName, osTotal, osDate, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status , osPayDate from orderslips where osID = ?";
             return $this->db->query($query, array($order_id))->result_array();
         }
 
-        function update_billstatus($order_id, $payment_date_time = null, $date_recorded = null){
-            $query = "update orderslip set pay_date_time = ?, date_recorded = ? where order_id=?";
+        function update_billstatus($osID, $payment_date_time = null, $date_recorded = null){
+            $query = "update orderslips set osPayDate = ?, osDateRecorded = ? where osID=?";
             return $this->db->query($query, array($payment_date_time, $date_recorded, $order_id));
         }
 

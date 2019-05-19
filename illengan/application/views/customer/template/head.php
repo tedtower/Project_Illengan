@@ -33,7 +33,7 @@
                     <a class="nav-link dropdown-toggle" id="menu-dd" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fal fa-utensils-alt"></i></i> Menu</a>
                     <div class="dropdown-menu dropdown-default elegant-color c-focus" aria-labelledby="menu-dd">
                         <?php foreach($categories as $cat) {?>
-                            <a class="dropdown-item" href="#"><?php echo $cat->category_name; ?></a>
+                            <a class="dropdown-item" href="#"><?php echo $cat->ctName; ?></a>
                         <?php } ?>
                     </div>
                 </li>
