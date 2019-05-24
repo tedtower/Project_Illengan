@@ -145,11 +145,6 @@ function addPurchaseOrder() {
             'poiRemarks': poRemarks
         };
         merch.push(itemMerch);
-        console.log('spID' + spID);
-        console.log('vID' + vID);
-        console.log('poiQty' + poiQty);
-        console.log('pU' + poiUnit);
-        console.log(itemMerch);
     }
 
     $.ajax({
