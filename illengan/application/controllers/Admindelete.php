@@ -15,10 +15,9 @@ class Admindelete extends CI_Controller{
             if($this->form_validation->run()){
                 $accountId = trim($this->input->post("accountId"));
                 $this->adminmodel->delete_account($accountId);
-                // redirect('admin/accounts');
+               
             }else{
-                echo $accountID;
-               //redirect('admin/accounts');
+                 redirect('admin/accounts');
             } 
 
         }else{
@@ -37,13 +36,24 @@ class Admindelete extends CI_Controller{
         }
     }
     function deletestockspoilages(){
+        
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $data=$this->adminmodel->delete_spoilages(); 
-            echo json_encode($data);
-            redirect('admin/stock/spoilages');
+            $this->form_validation->set_rules('accountId', 'Account Id', 'trim|required');
+            if($this->form_validation->run()){
+                $ssID = trim($this->input->post("ssID"));
+                $delRemarks = $this->input->post("delRemarks");
+                $dateRecorded =  date("Y-m-d H:i:s");
+                $type = "delete";
+                $this->adminmodel->delete_account($ssID,$delRemarks,$dateRecorded,$type);
+               
+            }else{
+                echo $accountID;
+               redirect('admin/stock/spoilages');
+            } 
+
         }else{
             redirect('login');
-        }
+        }  
     }
     function deletemenuspoilages($sid){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){

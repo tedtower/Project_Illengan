@@ -21,7 +21,7 @@ class Chef extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->database();
-        $this->load->model('ChefModel');  
+        $this->load->model('Chefmodel');  
         // code for getting current date : date("Y-m-d")
         // code for getting current date and time : date("Y-m-d H:i:s")
 	}
@@ -33,7 +33,7 @@ class Chef extends CI_Controller {
 
 	function get_orderlist() {
 		$data = array();
-		$data['data'] = $this->ChefModel->return_orderlist();
+		$data['data'] = $this->Chefmodel->return_orderlist();
 
 		header('Content-Type: application/json');
 		echo json_encode($data, JSON_PRETTY_PRINT);
@@ -45,7 +45,7 @@ class Chef extends CI_Controller {
 		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Chef'){
 		$order_item_id = $this->input->post('order_item_id');
 		$item_status = $this->input->post('item_status');
-		$this->ChefModel->update_status( $item_status, $order_item_id);
+		$this->Chefmodel->update_status( $item_status, $order_item_id);
 		} else {
 			redirect('login');
 		}

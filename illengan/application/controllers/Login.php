@@ -1,6 +1,10 @@
 <?php
 class Login extends CI_Controller{
-
+   function __construct(){
+        parent:: __construct();
+        $this->load->model('loginmodel');  
+    }
+	
     function viewlogin(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type')){
             $this->homeRedirect();
@@ -12,7 +16,6 @@ class Login extends CI_Controller{
     function check_cred(){
         $uname = $this->input->post('username');
         $pword = $this->input->post('password');
-        $this->load->model('loginmodel');
         $loginAttempt = $this->loginmodel->validate($uname,$pword);
         if(is_array($loginAttempt)){
             $user_data = array(
@@ -34,7 +37,7 @@ class Login extends CI_Controller{
                 redirect('admin/dashboard');
                 break;
             case 'barista':
-                redirect('barista/billings');
+                redirect('barista/orders');
                 break;
             case 'chef':
                 redirect('chef');

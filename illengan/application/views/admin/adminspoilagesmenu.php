@@ -18,8 +18,6 @@
 							<br>
 							<table id="menuTable" class="spoiltable dtr-inline collapsed table display">
 								<thead>
-									<th>prCode</th>
-									<th>msCode</th>
 									<th>Item Name</th>
 									<th>Quantity</th>
 									<th>Date Spoiled</th>
@@ -52,7 +50,7 @@
 															<span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
 																Spoilage Date</span>
 														</div>
-														<input type="date" name="spoilDate" id="spoilDate" class="form-control form-control-sm">
+														<input type="date" name="spoilDate" id="spoilDate" class="form-control form-control-sm" required>
 													</div>
 												</div>
 												<!--Add Menu Item-->
@@ -128,7 +126,7 @@
 												<p>Are you sure you want to delete the selected menu spoilages?</p>
 												<input type="text" name="tableCode" hidden="hidden">
 												<div>
-													Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm">
+													Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm" required>
 												</div>
 											</div>
 											<div class="modal-footer">
@@ -153,21 +151,21 @@
                                             <form id="formEdit" accept-charset="utf-8" > 
 												<div class="modal-body">
                                                     <!--Quantity-->
-                                                    <div class="input-group mb-3">
+                                                    <!-- <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Quantity</span>
                                                         </div>
-                                                        <input type="number" min="1" name="msQty" id="msQty" class="form-control form-control-sm">
+                                                        <input type="number" min="1" name="msQty" id="msQty" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("msQty"); ?></span>
-                                                    </div>
+                                                    </div> -->
                                                     <!--Date Spoiled-->
 													<div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Date Spoiled</span>
                                                         </div>
-                                                        <input type="date" name="msDate" id="msDate" class="form-control form-control-sm">
+                                                        <input type="date" name="msDate" id="msDate" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("msDate"); ?></span>
                                                     </div>
 													<div class="input-group mb-3">
@@ -175,7 +173,7 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Remarks</span>
                                                         </div>
-                                                        <input type="text" name="msRemarks" id="msRemarks" class="form-control form-control-sm">
+                                                        <input type="text" name="msRemarks" id="msRemarks" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("msRemarks"); ?></span>
                                                     </div>
 													<input name="msID" id="msID" hidden="hidden">
@@ -267,8 +265,6 @@
         spoilages.forEach(table => {
             $("#menuTable> tbody").append(`
             <tr data-prID="${table.prID}" data-msID="${table.msID}" data-spoilname="${table.vName}">
-                <td>${table.prID}</td>
-                <td>${table.msID}</td>
                 <td>${table.mName}</td>
                 <td>${table.msQty}</td>
 				<td>${table.msDate}</td>
@@ -314,14 +310,13 @@
         var msDate = $(this).find("input[name='msDate']").val();
         var msRemarks = $(this).find("input[name='msRemarks']").val();
        
-        console.log(msID, prID, msQty, msDate, msRemarks);
         $.ajax({
             url: "<?= site_url("admin/menu/spoilage/edit")?>",
             method: "post",
             data: {
 				msID: msID,
                 prID : prID,
-                msQty: msQty,
+                // msQty: msQty,
                 msDate: msDate,
                 msRemarks: msRemarks
             },

@@ -54,7 +54,7 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'login/viewlogin';
 $route['logout'] = 'login/logout';
-$route['verifylogin'] = "login/check_cred";
+$route['verify'] = 'login/check_cred';
 
 //Viewing Routes -----------------------------------------------
 $route['admin/menu'] = "adminview/viewmenu";
@@ -75,7 +75,6 @@ $route['admin/purchaseorders'] = "adminview/viewpurchaseorders";
 $route['admin/spoilages/menu/add'] ="adminview/viewInsertSpoilageMenu";
 $route['admin/spoilages/stock/add'] ="adminview/viewInsertSpoilageStock";
 $route['admin/spoilages/addons/add'] ="adminview/viewInsertSpoilageAo";
-$route['admin/spoilages'] = "adminview/viewspoilages";
 $route['admin/menu/spoilages'] = "adminview/viewspoilagesmenu";
 $route['admin/stock/spoilages'] = "adminview/viewSpoilagesstock";
 $route['admin/addons/spoilages'] = "adminview/viewspoilagesaddons";
@@ -86,6 +85,7 @@ $route['admin/transactions'] = "adminview/viewalltransactions";
 $route['admin/transactions/delivery'] = "adminview/viewDeliveryTransactions";
 $route['admin/transactions/purchase'] = "adminview/viewpurchasetransactions";
 $route['admin/transactions/return'] = "adminview/viewreturntransactions";
+$route['admin/transactions/getReturns'] = "adminview/getReturns";
 
 //End Viewing Routes
 
@@ -97,7 +97,7 @@ $route['admin/menu/datatables'] = "adminview/datatables_menu";
 $route['admin/transactions/add'] = "adminadd/addtransaction";
 $route['admin/purchaseorder/add'] = "adminadd/addPurchaseOrder";
 $route['admin/inventory/add'] = "adminadd/addstockitem";
-$route['admin/menu/add'] = "adminadd/add_menu";
+$route['admin/menu/add'] = "adminadd/addMenu";
 $route['admin/stockcategories/add'] = "adminadd/addstockcategory";
 $route['admin/menucategories/add'] = "adminadd/addmenucategory";
 $route['admin/sales/add'] = "adminadd/addSales";
@@ -130,6 +130,7 @@ $route['admin/tables/edit'] = "adminupdate/edittable";
 $route['admin/stockqty/edit'] = "adminupdate/editStockQty";
 $route['admin/stock/spoilage/edit'] = "adminupdate/editStockSpoil";
 $route['admin/menu/spoilage/edit'] = "adminupdate/editMenuSpoil";
+$route['admin/addons/spoilage/edit'] = "adminupdate/editAoSpoil";
 $route['admin/returntransactions/edit'] = "adminupdate/editReturnTrans";
 //End Admin Update Routes ---------------------------------------
 
@@ -140,7 +141,7 @@ $route['admin/stockcategories/delete/(:num)'] = "admindelete/deletestockcategory
 $route['admin/inventory/delete/(:num)'] = "admindelete/deletestockitem/$1";
 $route['admin/transactions/delete'] = "admindelete/deletetransactions";
 $route['admin/sources/delete/(:num)'] = "admindelete/deletesource/$1";
-$route['admin/stock/spoilage/delete/(:num)'] ="admindelete/deletestockspoilages/$1";
+$route['admin/stock/spoilage/delete'] ="admindelete/deletestockspoilages";
 $route['admin/menu/spoilage/delete/(:num)'] ="admindelete/deletemenuspoilages/$1";
 $route['admin/addons/spoilage/delete/(:num)'] ="admindelete/deleteaddonsspoilages/$1";
 $route['admin/accounts/delete'] ="admindelete/deleteAccount";
@@ -181,10 +182,14 @@ $route['customer/menu'] = "customer/view";
 $route['customer/json'] = "customer/json";
 
 // BARISTA ROUTES
-$route['barista/orders'] = "barista/index";
+$route['barista/orders'] = "barista/pendingOrders";
 $route['barista/billings'] = "barista/getbills";
 $route['barista/getBillDetails'] = "barista/getBillDetails";
 $route['barista/billings/setStatus'] = "barista/setbillstatus";
+
+//BARISTA JS ROUTES
+// $route['barista/orderslipJS'] = "barista/viewOrderslipJS";
+// $route['barista/pendingOrdersJS'] ="barista/pendingOrdersJS";
 
 // CHEF ROUTES
 $route['chef/get_orderlist'] = "chef/get_orderlist";

@@ -1,5 +1,5 @@
 <?php
-class AdminModel extends CI_Model{
+class Adminmodel extends CI_Model{
     
     private $err = array('Username does not exist!', 'Incorrect password');
 
@@ -34,8 +34,7 @@ class AdminModel extends CI_Model{
         $query = "insert into spoiledmenu (msID,prID,msQty,msDate,msRemarks) values (?,?,?,?,?)";
         if(count($menus) > 0){
             for($in = 0; $in < count($menus) ; $in++){
-                $this->db->query($query, array($msID, $menus[$in]['prID'], $menus[$in]['msQty'],
-                $menus[$in]['msDate'],$menus[$in]['msRemarks']));
+                $this->db->query($query, array($msID, $menus[$in]['prID'], $menus[$in]['msQty'],$menus[$in]['msDate'],$menus[$in]['msRemarks']));
             }    
         }
     }
@@ -127,7 +126,6 @@ class AdminModel extends CI_Model{
             if(count($spMerch) > 0){
                 foreach ($spMerch as $merch) {
                     $this->add_supplierMerchandise($merch, $spID);
-
                 }
             }
             return true;            
@@ -140,21 +138,35 @@ class AdminModel extends CI_Model{
         $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
     }
 
-    function add_menu($image, $mName, $mDesc, $category, $status, $preferences, $addons){
-        $query = "insert into menu (mImage, mName, mDesc, ctID, mAvailability) values (?,?,?,?,?);";
+    function add_menu($image, $mName, $mDesc, $category, $status, $preference, $addon){
+        $query = "INSERT into menu (mImage, mName, mDesc, ctID, mAvailability) values (?,?,?,?,?);";
         if($this->db->query($query,array($image, $mName, $mDesc, $category, $status))){
-            $mID = $this->db->insert_id();
-            if(count($preferences) > 0){
-                foreach ($preferences as $pref) {
-                    $this->add_preference($pref, $mID);
-
-                }
-            }
-            return true;            
+            $this->add_preference($this->db->insert_id(), $preference);
+            $this->add_addon($this->db->insert_id(), $addon);
+            return true;
         }
-        return false;
     }
 
+    function add_preference($mID, $preference){
+       $query = "INSERT into preferences (mID, prName, mTemp, prPrice, prStatus) values (?,?,?,?,?)";
+       if(count($preference) > 0){
+           for($n = 0; $n < count(preference) ; $n++){
+               $this->db->query($query, array($mID, $preference[$n]['prName'], $preference[$n]['mTemp'], $preference[$n]['prPrice'], $preference[$n]['prStatus']));
+           }
+       } else{
+           return false;
+       }
+    }
+    function add_addon($mID, $addon){
+        $query = "INSERT into menuaddons (mID, aoID) values (?,?)";
+        if(count($addon) > 0){
+            for($n = 0; $n < count(addon) ; $n++){
+                $this->db->query($query, array($mID, $addon[$n]['aoID']));
+            }
+        } else{
+            return false;
+        }
+     }
 
     function add_PurchaseOrder($poDate,$edDate,$poTotal,$poDateRecorded,$poStatus, $poRemarks, $spID, $merchandise){
         $query = "insert into purchaseorder (poID, poDate, edDate, poTotal, poDateRecorded, poStatus, 
@@ -168,13 +180,13 @@ class AdminModel extends CI_Model{
         $query = "insert into poitems (poiID, vID, poID, poiName, poiQty, poiUnit, poiPrice, poiStatus) values
         (NULL,?,?,?,?,?,?,?)";
         if(count($merchandise) > 0){
-        for($in = 0; $in < count($merchandise) ; $in++){
-            $this->db->query($query, array($merchandise[$in]['vID'], $poID, $merchandise[$in]['poiName'], $merchandise[$in]['poiQty'],
-            $merchandise[$in]['poiUnit'],$merchandise[$in]['poiPrice'], $merchandise[$in]['poiStatus']));
+            for($in = 0; $in < count($merchandise) ; $in++){
+                $this->db->query($query, array($merchandise[$in]['vID'], $poID, $merchandise[$in]['poiName'], $merchandise[$in]['poiQty'],
+                $merchandise[$in]['poiUnit'],$merchandise[$in]['poiPrice'], $merchandise[$in]['poiStatus']));
+            }
+        } else {
+            return false;
         }
-    } else {
-        return false;
-    }
    
     }
     
@@ -294,10 +306,6 @@ class AdminModel extends CI_Model{
         $this->db->query($query, array());
     }
     // UPDATE FUNCTIONS-------------------------------------------------------------
-    function get_password($aID){
-        $query = "select aPassword from accounts where aID = ? ";
-        return $this->db->query($query,array($aID))->result_array();
-    }
 
     function change_aPassword($new_password, $aID){
         $query = "Update accounts set aPassword = ?  where aID = ? ";
@@ -308,29 +316,29 @@ class AdminModel extends CI_Model{
         $query = "update accounts set aUsername = ?, aType = ? where aID = ?";
         return $this->db->query($query,array($aUsername, $aType, $aID));
     }
-    function edit_menuspoilage($msID,$prID,$msQty,$msDate,$msRemarks,$date_recorded){
+    function edit_menuspoilage($msID,$prID,$msDate,$msRemarks,$date_recorded){
         $query = "Update menuspoil set msDateRecorded = ? where msID=?";
         if($this->db->query($query,array($date_recorded,$msID))){
-            $query = "Update spoiledmenu set msQty = ?,msDate = ?,msRemarks = ? where msID = ? AND prID = ?";
-            return $this->db->query($query,array($msQty,$msDate,$msRemarks,$msID,$prID));
+            $query = "Update spoiledmenu set msDate = ?,msRemarks = ? where msID = ? AND prID = ?";
+            return $this->db->query($query,array($msDate,$msRemarks,$msID,$prID));
         }else{
             return false;
         }
     }
-    function edit_stockspoilage($ssID,$vID,$ssQty,$ssDate,$ssRemarks,$date_recorded){
+    function edit_stockspoilage($ssID,$vID,$ssDate,$ssRemarks,$date_recorded){
         $query = "Update stockspoil set ssDateRecorded = ? where ssID=?";
         if($this->db->query($query,array($date_recorded,$ssID))){
-            $query = "Update varspoilitems set ssQty = ?,ssDate = ?,ssRemarks = ? where ssID = ? AND vID = ?";
-            return $this->db->query($query,array($ssQty,$ssDate,$ssRemarks,$ssID,$vID));
+            $query = "Update varspoilitems set ssDate = ?,ssRemarks = ? where ssID = ? AND vID = ?";
+            return $this->db->query($query,array($ssDate,$ssRemarks,$ssID,$vID));
         }else{
             return false;
         }
     }
-    function edit_aospoilage($s_id,$aoID,$s_type,$s_date,$date_recorded,$remarks){
-        $query = "update spoilage set s_type = ?, s_date = ?, date_recorded = ?, remarks=? where s_id=?";
-        if($this->db->query($query,array($stype,$s_date,$date_recorded,$remarks,$s_id))){
-            $query = "Update ao_spoil set aoID = ? where s_id = ?";
-            return $this->db->query($query,array($aoID,$s_id));
+    function edit_aospoilage($aoID,$aosID,$aosDate,$aosRemarks,$date_recorded){
+        $query = "Update aospoil set aosDateRecorded = ? where aosID=?";
+        if($this->db->query($query,array($date_recorded,$aosID))){
+            $query = "Update addonspoil set aosDate = ?,aosRemarks = ? where aoID = ?";
+            return $this->db->query($query,array($aosDate,$aosRemarks,$aoID));
         }else{
             return false;
         }
@@ -683,7 +691,7 @@ class AdminModel extends CI_Model{
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesaddons(){
-        $query = "Select aosID, aoName,aosQty, aoCategory,aosDate, aosDateRecorded, aosRemarks from addonspoil INNER JOIN aospoil using (aosID)INNER JOIN addons using (aoID)";
+        $query = "Select aoID,aosID, aoName,aosQty, aoCategory,aosDate, aosDateRecorded, aosRemarks from addonspoil INNER JOIN aospoil using (aosID)INNER JOIN addons using (aoID)";
         return  $this->db->query($query)->result_array();
     }
     function get_tables(){
@@ -712,8 +720,7 @@ class AdminModel extends CI_Model{
         $query = "SELECT stID, cnID, cnQty, remainingQty, stName, vUnit, vSize  FROM varconsumptionitems NATURAL JOIN consumption NATURAL JOIN variance NATURAL JOIN stockitems";
         return $this->db->query($query)->result_array();
     }
-    
-    function get_deliveryTransactions(){
+    function get_allTransactions(){
         $query = "SELECT 
             iID,
             spID,
@@ -731,11 +738,84 @@ class AdminModel extends CI_Model{
             supplier USING (spID);";
         return $this->db->query($query)->result_array();
     }
-    function get_deliveryTransactionsDeliveriesItems(){
+    function get_purchaseTransactions(){
+        $query = "SELECT 
+            iID,
+            spID,
+            spName,
+            iType,
+            iNumber,
+            iTotal,
+            iRemarks,
+            iDate,
+            iDateRecorded,
+            resolvedStatus
+        FROM
+            invoice
+                INNER JOIN
+            supplier USING (spID)
+        WHERE
+            iType = 'purchase';";
+        return $this->db->query($query)->result_array();
+    } 
+    function get_deliveryTransactions(){
+        $query = "SELECT 
+            iID,
+            spID,
+            spName,
+            iType,
+            iNumber,
+            iTotal,
+            iRemarks,
+            iDate,
+            iDateRecorded,
+            resolvedStatus
+        FROM
+            invoice
+                INNER JOIN
+            supplier USING (spID)
+        WHERE
+            iType = 'delivery';";
+        return $this->db->query($query)->result_array();
+    }
+    function get_allTransactionsItems(){
         $query = "SELECT 
             iID, iName, iQty, iPrice, iUnit, iSubtotal
         FROM
-            invoiceitems;";
+            invoiceitems
+                INNER JOIN
+            (SELECT 
+                iID
+            FROM
+                invoice) AS aInvoice USING (iID);";
+        return $this->db->query($query)->result_array();
+    }
+    function get_purchaseTransactionsItems(){
+        $query = "SELECT 
+            iID, iName, iQty, iPrice, iUnit, iSubtotal
+        FROM
+            invoiceitems
+                INNER JOIN
+            (SELECT 
+                iID
+            FROM
+                invoice
+            WHERE
+                iType = 'purchase') AS pInvoice USING (iID);";
+        return $this->db->query($query)->result_array();
+    }
+    function get_deliveryTransactionsItems(){
+        $query = "SELECT
+            iID, iName, iQty, iPrice, iUnit, iSubtotal
+        FROM
+            invoiceitems
+                INNER JOIN
+            (SELECT 
+                iID
+            FROM
+                invoice
+            WHERE
+                iType = 'delivery') AS dInvoice USING (iID);";
         return $this->db->query($query)->result_array();
     }
     function add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks, $total, $transitems, $transID=null){
@@ -761,15 +841,20 @@ class AdminModel extends CI_Model{
         }
         $id = $this->db->insert_id();
         if($invoiceSuccess){
+            $indexes = [];
+            $count = 0;
             foreach($transitems as $item){
-                $this->addEdit_transaction($item, $id);
+                if(!$this->addEdit_transactionItems($item, $id)){
+                    array_push($indexes,$count);
+                }
+                $count++;
             }
+            echo json_encode(array("erredQ" =>$indexes, "data"=> $transitems));
             return true;
         }
         return false;
     }
-
-    function addEdit_transaction($item,$id){
+    function addEdit_transactionItems($item,$id){
         $query = "";
         if($item['itemID'] == null){
             $query = "INSERT INTO `invoiceitems`(
@@ -805,6 +890,7 @@ class AdminModel extends CI_Model{
                 iItemID = ?;";
             $this->db->query($query,array($item['varID'],$id,$item['itemName'],$item['itemQty'],$item['itemPrice'],$item['itemUnit'],$item['subtotal'],$item['itemID']));
         }
+        return;
     }
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
@@ -816,11 +902,9 @@ class AdminModel extends CI_Model{
         $query = "delete from categories where ctID = ? and ctType= 'menu'";
         return $this->db->query($query,array($ctID));
     }
-    function delete_spoilages(){
-        $s_id=$this->input->post('s_id');
-        $this->db->where('s_id', $s_id);
-        $result = $this->db->delete('spoilage');
-        return $result;
+    function delete_spoilages($ssID, $delRemarks){
+        $query ="Delete from stockspoil where ssID = ?";
+        return $this->db->query(query, array($ssID));
     }
     function delete_stockcategory($ctID){
         $query = "delete from categories where ctID = ? and ctType= 'inventory'";
@@ -902,24 +986,115 @@ class AdminModel extends CI_Model{
         return $this->db->query($query, array($newTableCode, $previousTableCode));
     }
     //Return Function
-    function get_returns(){
-        $query = "SELECT returns.return_id, returns.trans_id, returns.stID, returns.return_qty, returns.remarks, returns.date_recorded, transactions.receipt_no, transactions.trans_date,
-        stockitems.stName, stockitems.stock_unit FROM transactions inner join returns on transactions.trans_id = returns.trans_id inner join stockitems on returns.stID = stockitems.stID";
+    function get_poD(){
+        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID inner join invoiceitems on invoice.iID=invoiceitems.iID
+        inner join variance on invoiceitems.vID=variance.vID inner join stockitems on variance.stID=stockitems.stID where invoice.iType !='return'";
         return $this->db->query($query)->result_array();
     }
-    function add_returns($trans, $stock, $quantity,  $now){
-        $stocks= "Select stock_quantity from stockitems where stID='$stock'";
-        $stocks = $this->db->query($stocks)->result_array();
-        foreach($stocks as $stck){
-            $stck = $stck['stock_quantity'];
+    function get_returns(){
+        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID inner join invoiceitems on invoice.iID=invoiceitems.iID
+        inner join variance on invoiceitems.vID=variance.vID inner join stockitems on variance.stID=stockitems.stID ";
+        return $this->db->query($query)->result_array();
+    }
+    function get_invoiceReturns(){
+        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID where invoice.iType='return'";
+        return $this->db->query($query)->result_array();
+    }
+    function get_invRetVar(){
+        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID inner join invoiceitems on invoice.iID=invoiceitems.iID
+        inner join variance on invoiceitems.vID=variance.vID where invoice.iType='return'";
+        return $this->db->query($query)->result_array();
+    }
+    function get_item($item){
+        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID inner join invoiceitems on invoice.iID=invoiceitems.iID
+        inner join variance on invoiceitems.vID=variance.vID inner join stockitems on variance.stID=stockitems.stID where invoiceitems.iID ='$item'";
+        return $this->db->query($query)->result_array();
+    }
+    function get_allInvoice(){
+        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID where invoice.iType !='return' ORDER BY invoice.iDate DESC";
+        return $this->db->query($query)->result_array();
+    }
+    function add_returns($idate, $reQty, $reUnit, $supID, $dateRet, $receipt, $cost, $remarks,$reStat,  $stckName, $subtotal, $variance, $stckID){
+        $var= "Select vQty from variance where vID='$variance'";
+        $var = $this->db->query($var)->result_array();
+        foreach($var as $stck){
+            $var = $stck['vQty'];
         }
-        $stck_qty = $stck - $quantity;
-        $query2 = "Update stockitems set stock_quantity = ? where stID = ?";
-        $this->db->query($query2, array( $stck_qty, $stock));
+        $stck_qty = $var - $reQty;
+        $query2 = "Update variance set vQty = ? where vID = ?";
+        $this->db->query($query2, array($stck_qty, $variance));
 
-        $query1 = "Insert into returns(trans_id, stID, return_qty, date_recorded) values (?,?,?,?)";
-        return $this->db->query($query1, array( $trans, $stock, $quantity,  $now));
+            $query1 = "Insert into invoice(iID, spID, iDate, iDateRecorded, iNumber, iTotal, iRemarks, iType, resolvedStatus) values (?,?,?,?,?,?,?,?,?)";
+            $this->db->query($query1, array(NULL, $supID, $dateRet, $idate,  $receipt, $subtotal, $remarks, 'return', $reStat));
+    
+            $invId= $this->db->insert_id();
+            $query3 = "Insert into invoiceitems(iItemID, vID, iID, iName, iQty, iPrice, iUnit, iSubTotal) values (?,?,?,?,?,?,?,?)";
+            return $this->db->query($query3, array(NULL, $variance, $invId, $stckName,  $reQty, $cost, $reUnit, $subtotal));
         
+    }
+    function update_returns($eID, $eSpID, $eRNum, $eStat, $eRDate, $eDRec, $etotal, $eremarks, $defaultType, $eRetIt){
+        $query1 = "UPDATE invoice 
+            SET 
+                spID = ?,
+                iDate = ?,
+                iDateRecorded = ?,
+                iNumber = ?,
+                iTotal = ?,
+                iRemarks = ?,
+                iType = ?,
+                resolvedStatus = ?
+            WHERE
+                iID = ?;"
+                ;
+        $this->db->query($query1,array($eSpID,$eRDate, $eDRec, $eRNum, $etotal, $eremarks, $defaultType, $eStat, $eID));
+        $query2 = "UPDATE invoiceitems
+        SET 
+            vID = ?,
+            iID = ?,
+            iName = ?,
+            iQty = ?,
+            iPrice = ?,
+            iUnit = ?,
+            iSubTotal = ?
+        WHERE
+            iItemID = ?
+    ;";
+        if(count($eRetIt) > 0){
+            for($i = 0; $i < count($eRetIt) ; $i++){
+                $itemID = $eRetIt[$i]['itemID'];
+                $varID = $eRetIt[$i]['varId'];
+                $itQty = $eRetIt[$i]['itQty'];
+
+                    $retOldQty = "Select iQty from invoiceitems where iItemID = '$itemID'";
+                    $variance = $this->db->query($retOldQty)->result_array();
+                    foreach($variance as $num){
+                        $old = $num['iQty'];
+                    }
+                        if($old > $itQty){
+                            $newVarqty1 = $old - $itQty; 
+                            $quant = "Select vQty from variance where vID='$varID'";
+                            $iQuant = $this->db->query($quant)->result_array();
+                            foreach($iQuant as $num){
+                                $var = $num['vQty'];
+                            }
+                            $newQty =  $newVarqty1 + $var;
+                            $addVarQty = "Update variance set vQty = ? where vID = ?";
+                            $this->db->query($addVarQty, array($newQty, $varID));
+                        }else{
+                            $newVarqty2 = $itQty - $old;
+                            $quant = "Select vQty from variance where vID='$varID'";
+                            $var = $this->db->query($quant)->result_array();
+                            foreach($var as $num){
+                                $var = $num['vQty'];
+                            }
+                            $newQty = $var - $newVarqty2;
+                            $addVarQty = "Update variance set vQty = ? where vID = ?";
+                            $this->db->query($addVarQty, array($newQty, $varID));
+                       }
+                       return $this->db->query($query2, array($varID, $eID, $eRetIt[$i]['itName'], $itQty,
+                       $eRetIt[$i]['itPri'],$eRetIt[$i]['itUnit'], $eRetIt[$i]['itSub'],$itemID));
+                    }
+            }
     }
 
 }

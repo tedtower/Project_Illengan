@@ -160,35 +160,93 @@
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Delete Stock Item</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Add Sales</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form id="confirmDelete">
+                                <form action="<?php echo base_url() ?>admin/sales/add" method="get" accept-charset="utf-8">
                                     <div class="modal-body">
-                                        <h6 id="deleteTableCode"></h6>
-                                        <p>Are you sure you want to delete this stock item?</p>
-                                        <input type="text" name="" hidden="hidden">
-                                        <div>
-                                            Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks"
-                                                class="form-control form-control-sm">
+                                        <div class="form-row">
+                                            <!--Table Number-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Table No.</span>
+                                                </div>
+                                                <input type="text" name="tableNum" id="tableNum" class="form-control form-control-sm" required>
+                                            </div>
+                                            <!--Date-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Date</span>
+                                                </div>
+                                                <input type="number" name="date" id="date" class="form-control form-control-sm" required>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary btn-sm"
-                                            data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                    </div>
+                                        <!--Item-->
+                                        <a class="addItem btn btn-primary btn-sm" style="color:blue;margin:0">Add Item</a>
+                                        <!--Button to add row in the table-->
+                                        <br><br>
+                                        <table class="merchandisetable table table-sm table-borderless">
+                                            <!--Table containing the different input fields in adding sales items -->
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Menu Name</th>
+                                                    <th style="width:15%">Price</th>
+                                                    <th style="width:15%">Qty</th>
+                                                    <th style="width:35%">Sub Total</th>
+                                                    <th style="width:4%"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                            <button class="btn btn-success btn-sm" type="submit">Insert</button>
+                                        </div>
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <!--End of Modal "Delete Stock Item"-->
                 </div>
+                <!--End of Add Modal-->
+
+                <!--Start of Modal "Delete Stock Item"-->
+                <div class="modal fade" id="deleteStock" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Delete Stock Item</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form id="confirmDelete">
+                                <div class="modal-body">
+                                    <h6 id="deleteTableCode"></h6>
+                                    <p>Are you sure you want to delete this item?</p>
+                                    <input type="text" name="" hidden="hidden">
+                                    <div>
+                                        Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--End of Modal "Delete Stock Item"-->
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <?php include_once('templates/scripts.php') ?>

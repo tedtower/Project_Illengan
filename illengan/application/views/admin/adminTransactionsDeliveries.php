@@ -197,6 +197,7 @@
                                                     <thead class="thead-light">
                                                         <tr>
                                                             <th width="40%">Name</th>
+                                                            <th>Actual Qty</th>
                                                             <th>Qty</th>
                                                             <th>Unit</th>
                                                             <th>Price</th>
@@ -205,21 +206,6 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr data-id="" data-id2="">
-                                                            <td><input type="text" name="itemName[]"
-                                                                    class="form-control form-control-sm"></td>
-                                                            <td><input type="number" name="itemQty[]"
-                                                                    class="form-control form-control-sm"></td>
-                                                            <td><input type="text" name="itemUnit[]"
-                                                                    class="form-control form-control-sm"></td>
-                                                            <td><input type="number" name="itemPrice[]"
-                                                                    class="form-control form-control-sm"></td>
-                                                            <td><input type="number" name="itemSubtotal[]"
-                                                                    class="form-control form-control-sm"></td>
-                                                            <td><img class="exitBtn" id="exitBtn"
-                                                                    src="/assets/media/admin/error.png"
-                                                                    style="width:20px;height:20px"></td>
-                                                        </tr>
                                                     </tbody>
                                                 </table>
                                                 <span>Total: &#8369;<span class="total">0</span></span>
@@ -289,7 +275,6 @@
                                 </div>
                             </div>
                             <!--End of Brochure Modal"-->
-
                             <!--Start of Modal "Delete Stock Item"-->
                             <div class="modal fade" id="delete" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -397,9 +382,10 @@ $(function() {
             row = $(this).find(".subTable1 > tbody > tr").eq(index);
             transitems.push({
                 itemID : isNaN(parseInt(row.attr("data-id"))) ? (null) : parseInt(row.attr("data-id")),
+                poiID : isNaN(parseInt(row.attr("data-id3"))) ? (null) : parseInt(row.attr("data-id3")),
                 varID : row.attr("data-id2"),
                 itemName : row.find("input[name='itemName[]']").val(),
-                itemQty : row.find("input[name='itemQty[]']").val(),
+                itemQty : row.find("input[name='actualItemQty[]']").val(),
                 itemUnit : row.find("input[name='itemUnit[]']").val(),
                 itemPrice : row.find("input[name='itemPrice[]']").val() 
             });
@@ -424,8 +410,8 @@ $(function() {
             success : function(response){
                 if(response.loginErr !== null){
                     window.location.href = '<?= site_url('login')?>';
-                }else if(response.dataErr !== null){
-                    console.log();
+                }else if(response.dataErr == true){
+                    console.log(response.errIndexes);
                 }
             },
             error : function (response, setting, error){
@@ -476,7 +462,7 @@ function setModalTableOneData(array1, array2){
     $("#form").find(".table").eq(0).find("tbody").empty();
     $("#form").find(".table").eq(0).find("tbody").append(`${
         array1.filter(item => array2.includes(item.poiID)).map(item => {
-            return `<tr data-id="${item.poiID}" data-id2="${item.vID}">
+            return `<tr data-id="" data-id2="${item.vID}" data-id3="${item.poiID}">
                 <td><input type="text" name="itemName[]"
                         class="form-control form-control-sm" value="${item.poiName}" readonly="readonly"></td>
                 <td><input type="number" name="actualItemQty[]"
@@ -495,7 +481,6 @@ function setModalTableOneData(array1, array2){
             </tr>`;
         }).join('')
     }`);
-    
 }
 function setBrochureModalTableOneData(array){
     $("#brochure").find('.table tbody').eq(0).children().remove();
@@ -509,8 +494,5 @@ function setBrochureModalTableOneData(array){
             <td>${(parseFloat(item.poiPrice) * parseInt(item.poiQty)).toFixed(2)}</td>
             <td>${item.poiStatus}</td>
         </tr>`}).join('')}`);
-}
-function resetModal(){
-    $("")
 }
 </script>

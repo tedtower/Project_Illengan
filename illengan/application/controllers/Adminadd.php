@@ -149,39 +149,36 @@ class Adminadd extends CI_Controller{
         // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
     }
     function addMenu(){
-        $config = array(
-            'upload_path' => "./uploads/",
-            'allowed_types' => "gif|jpg|png|jpeg|pdf",
-            'overwrite' => TRUE,
-            'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
-            );
-        $this->load->library('upload', $config);
-        if ( ! $this->upload->do_upload('image')){
-            echo 'error';
-        }
-        else{
-            $data = $this->upload->data();
-            $image = $data['file_name'];
-            $mName = $this->input->post('name');
-            $mDesc = $this->input->post('description');
-            $category = $this->input->post('category');
-            $status = $this->input->post('status');
-            $preferences = json_decode($this->input->post('preferences'),true);
-            $addons= json_decode($this->input->post('addons'),true);
-            if($this->adminmodel->add_menu($image, $mName, $mDesc, $category, $status, $preferences, $addons)){
-                echo json_encode(array(
-                    'menus' => $this->adminmodel->get_menu(),
-                    'preferences' => $this->adminmodel->get_preferences(),
-                    'addons' => $this->adminmodel->get_addons2()
-                ));
-            }else{
-                redirect("admin/dashboard");
-                // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $config = array(
+                'upload_path' => "./uploads/",
+                'allowed_types' => "gif|jpg|png|jpeg|pdf",
+                'overwrite' => TRUE,
+                'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                );
+            $this->load->library('upload', $config);
+            if ( ! $this->upload->do_upload('mImage')){
+                echo 'error';
             }
-        redirect('admin/menu');
+            else{
+                $data = $this->upload->data();
+                $image = $data['file_name'];
+                $mName = $this->input->post('mName');
+                $mDesc = $this->input->post('mDesc');
+                $category = $this->input->post('ctName');
+                $status = $this->input->post('mAvailability');
+                $preference = json_decode($this->input->post('preferences'),true);
+                echo json_encode($preference, true);
+                $addon = json_decode($this->input->post('addons'),true);
+                echo json_encode($addon, true);
+                $this->adminmodel->add_menu($image, $mName, $mDesc, $category, $status, $preference, $addon);
+                redirect("admin/menu");
+            }
+        }else{
+            redirect("login");
         }
-
     }
+
     function addStockItem(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('name','Stock Name','trim|required|alpha_numeric_spaces');
@@ -275,7 +272,7 @@ class Adminadd extends CI_Controller{
     function addspoilagesstock(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
-            $date_recorded = date("Y-m-d");
+            $date_recorded = date("Y-m-d H:i:s");
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
             $this->adminmodel->add_stockspoil($date_recorded,$stocks);
@@ -284,7 +281,6 @@ class Adminadd extends CI_Controller{
             redirect('login');
         }
     }
-
     function addReturns(){
         $now = date('Y-m-d');
         $quantity = $this->input->post('quantity');
@@ -294,7 +290,6 @@ class Adminadd extends CI_Controller{
         $this->adminmodel->add_returns($trans, $stock, $quantity,  $now, $stck_qty);
         redirect('adminview/viewReturns');
     }
-
     function addTransaction(){
         $transID = $this->input->post('transID');
         $spID = $this->input->post('spID');
@@ -311,8 +306,13 @@ class Adminadd extends CI_Controller{
             $total += $transitems[$index]['subtotal'];
         }
         if($this->adminmodel->add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks,$total, $transitems)){
-            
+            echo json_encode(array(
+                "dataSuccess" => true
+            ));
         }else{
+            echo json_encode(array(
+                "dataErr" => true
+            ));
         }
     }
 

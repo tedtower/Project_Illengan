@@ -19,11 +19,11 @@ function getSelectedPref() {
                     menuChecked = `<tr class="menuelem" data-id="` + data[i].prID + `" >
                             <input type="hidden" id="prID` + i + `" name="prID" class="form-control form-control-sm" data-prID="` + data[i].prID + `" value="` + data[i].prID + `">
                             <td><input type="text" id="mName` + i + `" name="mName"
-                                    class="form-control form-control-sm" data-mNameID="` + data[i].mName + `" value="` + data[i].prName + `" readonly="readonly"></td>
+                                    class="form-control form-control-sm" data-mNameID="` + data[i].mName + `" value="` + data[i].prName + `" readonly="readonly" required></td>
                             <td><input type="number" min="1" id="msQty` + i + `" name="msQty"
-                                    class="form-control form-control-sm" value="" ></td>
+                                    class="form-control form-control-sm" value="" required></td>
                             <td><input type="text" id="msRemarks` + i + `" name="msRemarks"
-                                    class="form-control form-control-sm"  value=""></td>
+                                    class="form-control form-control-sm"  value="" required></td>
                             <td><img class="exitBtn"
                                     src="/assets/media/admin/error.png"
                                     style="width:20px;height:20px"></td>
@@ -65,9 +65,10 @@ function addMenuItems() {
         success: function (data) {
             alert('Spoiled Menu Added');
             newFunction(data);
+        },
+        complete: function() {
             $('#addmenuspoilage').modal('hide');
-            var table = $('#tablevZ A                                                                                                           alues').DataTable();
-            table.ajax.reload();
+            location.reload();
         },
         error: function(response, setting, error) {
             console.log(response.responseText);

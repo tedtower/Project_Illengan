@@ -4,7 +4,7 @@ class Customer extends CI_Controller {
 
 	function __construct(){
 		parent:: __construct();
-		$this->load->model("customermodel");
+		$this->load->model("Customermodel");
         date_default_timezone_set('Asia/Manila');  
         // code for getting current date : date("Y-m-d")
         // code for getting current date and time : date("Y-m-d H:i:s")
@@ -34,7 +34,7 @@ class Customer extends CI_Controller {
 			if($this->isCheckedIn()){
 				redirect('customer/menu');
 			}else{
-				$data['number'] = $this->customermodel->get_tables();
+				$data['number'] = $this->Customermodel->get_tables();
 				$this->load->view('customer/checkin', $data);
 			}
 		}else{
@@ -76,14 +76,14 @@ class Customer extends CI_Controller {
 			if($this->isCheckedIn()){
 				$data = array ();
 				$data['cart'] = $this->cart->contents();
-				$data['categories'] = $this->customermodel->fetch_category();
-				$data['menu'] = $this->customermodel->fetch_menu();
-				//$data['subcats'] = array_merge($this->customermodel->fetch_allsubcats(), 
-				//$this->customermodel->fetch_catswithmenu());
-				$data['subcats'] = $this->customermodel->fetch_allsubcats();
+				$data['categories'] = $this->Customermodel->fetch_category();
+				$data['menu'] = $this->Customermodel->fetch_menu();
+				//$data['subcats'] = array_merge($this->Customermodel->fetch_allsubcats(), 
+				//$this->Customermodel->fetch_catswithmenu());
+				$data['subcats'] = $this->Customermodel->fetch_allsubcats();
 				sort($data['subcats']);
-				$data['pref_menu'] = $this->customermodel->fetch_menupref();
-				$data['addons'] = $this->customermodel->fetch_addon();
+				$data['pref_menu'] = $this->Customermodel->fetch_menupref();
+				$data['addons'] = $this->Customermodel->fetch_addon();
 				//$this->output->set_output(json_encode($this->session->userdata('orders')));
 				$data['orders'] = json_encode($this->session->userdata('orders'));
 				$this->load->view('customer/template/head',$data);
@@ -108,12 +108,12 @@ class Customer extends CI_Controller {
 	function addOrder() {
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
-				$preference = $this->customermodel->get_preference($this->input->post('preference'))[0];
+				$preference = $this->Customermodel->get_preference($this->input->post('preference'))[0];
 				$rawAddons = json_decode($this->input->post('addons'),true);
 				if(empty($rawAddons['addonIds'])){
 					$rawAddons = "";
 				}else{
-					$addonsPrices = $this->customermodel->get_addonPrices($rawAddons['addonIds']);					
+					$addonsPrices = $this->Customermodel->get_addonPrices($rawAddons['addonIds']);					
 					for($index = 0 ; $index < count($rawAddons['addonIds']) ; $index++){
 						foreach($addonsPrices as $addon){
 							if($addon['ao_id'] == $rawAddons['addonIds'][$index]){
@@ -170,7 +170,7 @@ class Customer extends CI_Controller {
 				$orderlist = $this->session->userdata('orders');
 				$total = $this->input->post('total');
 				// foreach()
-				$this->customermodel->orderInsert($total, $tableCode, $orderlist, $customer, $orderDate);
+				$this->Customermodel->orderInsert($total, $tableCode, $orderlist, $customer, $orderDate);
 				echo'<script>alert("Successfully Ordered!")</scipt>';
 				$this->load->view('customer/menu');
 			}else{
@@ -201,7 +201,7 @@ class Customer extends CI_Controller {
 	function promos() {
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
-				$data = $this->customermodel->fetch_promos();
+				$data = $this->Customermodel->fetch_promos();
 				echo json_encode($data);
 			}else{
 				redirect('customer/checkin');
@@ -214,8 +214,8 @@ class Customer extends CI_Controller {
 	function freebies_discounts() {
 			$pref_id = $this->input->post('pref_id');
 			$data = array();
-			$data['freebies'] = $this->customermodel->fetch_freebies($pref_id);
-			$data['discounts'] = $this->customermodel->fetch_discounts($pref_id);
+			$data['freebies'] = $this->Customermodel->fetch_freebies($pref_id);
+			$data['discounts'] = $this->Customermodel->fetch_discounts($pref_id);
 	
 			echo json_encode($data);
 	}
