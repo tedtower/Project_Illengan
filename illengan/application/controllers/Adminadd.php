@@ -130,32 +130,36 @@ class Adminadd extends CI_Controller{
         // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
     }
     function addMenu(){
-        $config = array(
-            'upload_path' => "./uploads/",
-            'allowed_types' => "gif|jpg|png|jpeg|pdf",
-            'overwrite' => TRUE,
-            'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
-            );
-        $this->load->library('upload', $config);
-        if ( ! $this->upload->do_upload('mImage')){
-            echo 'error';
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $config = array(
+                'upload_path' => "./uploads/",
+                'allowed_types' => "gif|jpg|png|jpeg|pdf",
+                'overwrite' => TRUE,
+                'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                );
+            $this->load->library('upload', $config);
+            if ( ! $this->upload->do_upload('mImage')){
+                echo 'error';
+            }
+            else{
+                $data = $this->upload->data();
+                $image = $data['file_name'];
+                $mName = $this->input->post('mName');
+                $mDesc = $this->input->post('mDesc');
+                $category = $this->input->post('ctName');
+                $status = $this->input->post('mAvailability');
+                $preference = json_decode($this->input->post('preferences'),true);
+                echo json_encode($preference, true);
+                $addon = json_decode($this->input->post('addons'),true);
+                echo json_encode($addon, true);
+                $this->adminmodel->add_menu($image, $mName, $mDesc, $category, $status, $preference, $addon);
+                redirect("admin/menu");
+            }
+        }else{
+            redirect("login");
         }
-        else{
-            $data = $this->upload->data();
-            $image = $data['file_name'];
-            $mName = $this->input->post('mName');
-            $mDesc = $this->input->post('mDesc');
-            $category = $this->input->post('ctName');
-            $status = $this->input->post('mAvailability');
-            $promoName = $this->input->post('prName[]');
-            $temperature = $this->input->post('mTemp[]');
-            $price = $this->input->post('prPrice[]');
-            $prStatus = $this->input->post('prStatus[]');
-            $aoName = $this->input->post('aoName[]');
-            return $this->adminmodel->add_menu($image, $mName, $mDesc, $category, $status, $promoName, $temperature, $price, $prStatus, $aoName);
-        }
-        redirect('admin/menu');
     }
+
     function addStockItem(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('name','Stock Name','trim|required|alpha_numeric_spaces');

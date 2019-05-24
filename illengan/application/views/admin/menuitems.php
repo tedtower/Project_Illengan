@@ -239,61 +239,51 @@ $(document).ready(function() {
         });
     });
 
-    // $("#newMenu form").on('submit', function(event) {
-    //     event.preventDefault();
-    //     var image = $(this).find("input[name='mImage']")[0].files[0];
-    //     var name = $(this).find("input[name='mName']").val();
-    //     var description = $(this).find("textarea[name='mDesc']").val();
-    //     var category = $(this).find("select[name='ctName']").val();
-    //     var status = $(this).find("select[name='mAvailability']").val();
-    //     var preferences = [];
-    //     for (var index = 0; index < $(this).find(".preferencetable > tbody").children().length; index++) {
-    //         preferences.push({
-    //             prName: $(this).find("input[name='prName[]']").eq(index).val(),
-    //             mTemp: $(this).find("input[name='mTemp[]']").eq(index).val(),
-    //             prPrice: $(this).find("input[name='prPrice[]']").eq(index).val(),
-    //             prStatus: $(this).find("select[name='prStatus[]']").eq(index).val()
-    //         });
-    //     }
-    //     var addons = [];
-    //     for (var index = 0; index < $(this).find(".addontable > tbody").children().length; index++) {
-    //         addons.push({
-    //             aoName: $(this).find("select[name='aoName[]']").eq(index).val()
-    //         });
-    //     }
-    //     $.ajax({
-    //         url: "<?= site_url("admin/menu/add")?>",
-    //         method: "post",
-    //         data: {
-    //             image: image,
-    //             name: name,
-    //             description: description,
-    //             category: category,
-    //             status: status,
-    //             preferences: JSON.stringify(preferences),
-    //             addons: JSON.stringify(addons)
-    //         },
-    //         processData: false,
-    //         contentType: false,
-    //         dataType: "json",
-    //         beforeSend: function() {
-    //             console.log(image,name,description,category,status,preferences,addons);
-    //         },
-    //         success: function(data) {
-    //             console.log(data);
-    //             // inventory = data;
-    //             // lastIndex = 0;
-    //             // setTableData();
-    //         },
-    //         error: function(response, setting, error) {
-    //             console.log(error);
-    //             console.log(response);
-    //         },
-    //         complete: function() {
-    //             $("#newMenu").modal("hide");
-    //         }
-    //     });
-    // });
+    $("#newMenu form").on('submit', function(event) {
+        event.preventDefault();
+        var preferences = [];
+        for (var index = 0; index < $(this).find(".preferencetable > tbody").children().length; index++) {
+            preferences.push({
+                prName: $(this).find("input[name='prName[]']").eq(index).val(),
+                mTemp: $(this).find("input[name='mTemp[]']").eq(index).val(),
+                prPrice: $(this).find("input[name='prPrice[]']").eq(index).val(),
+                prStatus: $(this).find("select[name='prStatus[]']").eq(index).val()
+            });
+        }
+        var addons = [];
+        for (var index = 0; index < $(this).find(".addontable > tbody").children().length; index++) {
+            addons.push({
+                aoName: $(this).find("select[name='aoName[]']").eq(index).val()
+            });
+        }
+        $.ajax({
+            url: "<?= site_url("admin/menu/add")?>",
+            method: "post",
+            data: {
+                preferences: JSON.stringify(preferences),
+                addons: JSON.stringify(addons)
+            },
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            beforeSend: function() {
+                console.log(preferences,addons);
+            },
+            success: function(data) {
+                console.log(data);
+                // inventory = data;
+                // lastIndex = 0;
+                // setTableData();
+            },
+            error: function(response, setting, error) {
+                console.log(error);
+                console.log(response);
+            },
+            complete: function() {
+                $("#newMenu").modal("hide");
+            }
+        });
+    });
 
     $("#editSupplier form").on('submit', function(event) {
         event.preventDefault();

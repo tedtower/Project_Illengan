@@ -138,10 +138,35 @@ class Adminmodel extends CI_Model{
         $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
     }
 
-    function add_menu($image, $mName, $mDesc, $category, $status){
-        $query = "insert into menu (mImage, mName, mDesc, ctID, mAvailability) values (?,?,?,?,?);";
-        return $this->db->query($query,array($image, $mName, $mDesc, $category, $status));
+    function add_menu($image, $mName, $mDesc, $category, $status, $preference, $addon){
+        $query = "INSERT into menu (mImage, mName, mDesc, ctID, mAvailability) values (?,?,?,?,?);";
+        if($this->db->query($query,array($image, $mName, $mDesc, $category, $status))){
+            $this->add_preference($this->db->insert_id(), $preference);
+            $this->add_addon($this->db->insert_id(), $addon);
+            return true;
+        }
     }
+
+    function add_preference($mID, $preference){
+       $query = "INSERT into preferences (mID, prName, mTemp, prPrice, prStatus) values (?,?,?,?,?)";
+       if(count($preference) > 0){
+           for($n = 0; $n < count(preference) ; $n++){
+               $this->db->query($query, array($mID, $preference[$n]['prName'], $preference[$n]['mTemp'], $preference[$n]['prPrice'], $preference[$n]['prStatus']));
+           }
+       } else{
+           return false;
+       }
+    }
+    function add_addon($mID, $addon){
+        $query = "INSERT into menuaddons (mID, aoID) values (?,?)";
+        if(count($addon) > 0){
+            for($n = 0; $n < count(addon) ; $n++){
+                $this->db->query($query, array($mID, $addon[$n]['aoID']));
+            }
+        } else{
+            return false;
+        }
+     }
 
     function add_PurchaseOrder($poDate,$edDate,$poTotal,$poDateRecorded,$poStatus, $poRemarks, $spID, $merchandise){
         $query = "insert into purchaseorder (poID, poDate, edDate, poTotal, poDateRecorded, poStatus, 
@@ -155,13 +180,13 @@ class Adminmodel extends CI_Model{
         $query = "insert into poitems (poiID, vID, poID, poiName, poiQty, poiUnit, poiPrice, poiStatus) values
         (NULL,?,?,?,?,?,?,?)";
         if(count($merchandise) > 0){
-        for($in = 0; $in < count($merchandise) ; $in++){
-            $this->db->query($query, array($merchandise[$in]['vID'], $poID, $merchandise[$in]['poiName'], $merchandise[$in]['poiQty'],
-            $merchandise[$in]['poiUnit'],$merchandise[$in]['poiPrice'], $merchandise[$in]['poiStatus']));
+            for($in = 0; $in < count($merchandise) ; $in++){
+                $this->db->query($query, array($merchandise[$in]['vID'], $poID, $merchandise[$in]['poiName'], $merchandise[$in]['poiQty'],
+                $merchandise[$in]['poiUnit'],$merchandise[$in]['poiPrice'], $merchandise[$in]['poiStatus']));
+            }
+        } else {
+            return false;
         }
-    } else {
-        return false;
-    }
    
     }
     
