@@ -69,6 +69,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $this->db->query($query, array($payment_date_time, $date_recorded, $order_id));
         }
 
+        function get_inventory(){
+            $query = "Select * from stockitems left join variance using (stID)";
+            return $this->db->query($query)->result_array();
+        }
+
     }
 
 ?>

@@ -183,6 +183,9 @@ $route['barista/orders'] = "barista/pendingOrders";
 $route['barista/billings'] = "barista/getbills";
 $route['barista/getBillDetails'] = "barista/getBillDetails";
 $route['barista/billings/setStatus'] = "barista/setbillstatus";
+$route['barista/inventory'] = "barista/viewInventory";
+$route['barista/inventoryJS'] = "barista/inventoryJS";
+
 
 //BARISTA JS ROUTES
 // $route['barista/orderslipJS'] = "barista/viewOrderslipJS";
