@@ -33,7 +33,7 @@
                     </table>
                     <!--Start of Modal "Add Purchase Order"-->
                     <div class="modal fade bd-example-modal-lg" id="addPO" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -130,7 +130,7 @@
                     <!-- END OF ADD PURCHASE ORDER MODAL -->
                     <!--Start of Modal "Edit Purchase Order"-->
                     <div class="modal fade bd-example-modal-lg" id="editPO" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">

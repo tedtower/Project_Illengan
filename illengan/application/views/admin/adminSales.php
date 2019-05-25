@@ -29,7 +29,7 @@
 
                      <!--Start of Modal "Add Sales"-->
                     <div class="modal fade bd-example-modal-lg" id="addSales" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -123,6 +123,7 @@
                         </div>
                     </div>
                     <!-- End of Modal "Add Sales" -->
+                    
                      <!--Start of Menu Items Modal"-->
                      <div class="modal fade bd-example-modal" id="menuItems" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalLabel" aria-hidden="true" style="background:rgba(0, 0, 0, 0.3)">
