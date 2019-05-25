@@ -55,15 +55,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         function update_status($order_id, $order_desc, $item_status) {
             $data['item_status'] = $item_status;
-            $query = $this->db->query('UPDATE orderlist SET item_status = ? WHERE order_item_id = ? AND order_id = ?');
+            $query = $this->db->query('UPDATE orderlists SET item_status = ? WHERE olID = ? AND osID = ?');
             $this->db->query($query, array($item_status, $order_item_id, $order_id));
         }
 
         function get_bills(){
-            $query = "select osID, tableCode, custName, osTotal, osDate, if(pay_date_time is null, 'Unpaid', 'Paid') as pay_status , osPayDate from orderslips";
+            $query = "select osID, tableCode, custName, osTotal, osDate, if(osPayDate is null, 'Unpaid', 'Paid') as payStatus , osPayDate from orderslips";
             return $this->db->query($query)->result_array();
         }
 
+           //get_orderslips and get_orderlists function to be inserted
+        
         function update_billstatus($osID, $payment_date_time = null, $date_recorded = null){
             $query = "update orderslips set osPayDate = ?, osDateRecorded = ? where osID=?";
             return $this->db->query($query, array($payment_date_time, $date_recorded, $order_id));

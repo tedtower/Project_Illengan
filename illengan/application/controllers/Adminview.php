@@ -372,6 +372,8 @@ function viewSpoilagesStock(){
         }
     }
 
+
+
     function viewPurchaseOrders(){
         if($this->checkIfLoggedIn()){
             $data['title'] = "Purchase Order";
@@ -488,6 +490,25 @@ function viewSpoilagesStock(){
 
     function jsonMenu() {
         $data = $this->adminmodel->get_menu_items();
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+
+    function jsonSales() {
+        $data = array();
+        $data['orderslips'] = $this->adminmodel->get_osSales();
+        $data['orderlists'] = $this->adminmodel->get_olSales();
+        $data['menuitems'] = $this->adminmodel->get_menuPref();
+        $data['addons'] = $this->adminmodel->get_orderAddon();
+        $data['tables'] = $this->adminmodel->get_tables();
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+
+    function jsonPrefDetails() {
+        $prID = $this->input->post('prID');
+        $data = $this->adminmodel->get_prefDetails($prID);
+
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }

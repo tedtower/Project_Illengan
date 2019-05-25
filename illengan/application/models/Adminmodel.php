@@ -126,7 +126,6 @@ class Adminmodel extends CI_Model{
             if(count($spMerch) > 0){
                 foreach ($spMerch as $merch) {
                     $this->add_supplierMerchandise($merch, $spID);
-
                 }
             }
             return true;            
@@ -139,11 +138,35 @@ class Adminmodel extends CI_Model{
         $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
     }
 
-    function add_menu($image, $mName, $mDesc, $category, $status, $preferences, $addons){
-        $query = "insert into menu (mImage, mName, mDesc, ctID, mAvailability) values (?,?,?,?,?);";
-        return $this->db->query($query,array($image, $mName, $mDesc, $category, $status));
-     
+    function add_menu($image, $mName, $mDesc, $category, $status, $preference, $addon){
+        $query = "INSERT into menu (mImage, mName, mDesc, ctID, mAvailability) values (?,?,?,?,?);";
+        if($this->db->query($query,array($image, $mName, $mDesc, $category, $status))){
+            $this->add_preference($this->db->insert_id(), $preference);
+            $this->add_addon($this->db->insert_id(), $addon);
+            return true;
+        }
     }
+
+    function add_preference($mID, $preference){
+       $query = "INSERT into preferences (mID, prName, mTemp, prPrice, prStatus) values (?,?,?,?,?)";
+       if(count($preference) > 0){
+           for($n = 0; $n < count(preference) ; $n++){
+               $this->db->query($query, array($mID, $preference[$n]['prName'], $preference[$n]['mTemp'], $preference[$n]['prPrice'], $preference[$n]['prStatus']));
+           }
+       } else{
+           return false;
+       }
+    }
+    function add_addon($mID, $addon){
+        $query = "INSERT into menuaddons (mID, aoID) values (?,?)";
+        if(count($addon) > 0){
+            for($n = 0; $n < count(addon) ; $n++){
+                $this->db->query($query, array($mID, $addon[$n]['aoID']));
+            }
+        } else{
+            return false;
+        }
+     }
 
     function add_PurchaseOrder($poDate,$edDate,$poTotal,$poDateRecorded,$poStatus, $poRemarks, $spID, $merchandise){
         $query = "insert into purchaseorder (poID, poDate, edDate, poTotal, poDateRecorded, poStatus, 
@@ -157,13 +180,13 @@ class Adminmodel extends CI_Model{
         $query = "insert into poitems (poiID, vID, poID, poiName, poiQty, poiUnit, poiPrice, poiStatus) values
         (NULL,?,?,?,?,?,?,?)";
         if(count($merchandise) > 0){
-        for($in = 0; $in < count($merchandise) ; $in++){
-            $this->db->query($query, array($merchandise[$in]['vID'], $poID, $merchandise[$in]['poiName'], $merchandise[$in]['poiQty'],
-            $merchandise[$in]['poiUnit'],$merchandise[$in]['poiPrice'], $merchandise[$in]['poiStatus']));
+            for($in = 0; $in < count($merchandise) ; $in++){
+                $this->db->query($query, array($merchandise[$in]['vID'], $poID, $merchandise[$in]['poiName'], $merchandise[$in]['poiQty'],
+                $merchandise[$in]['poiUnit'],$merchandise[$in]['poiPrice'], $merchandise[$in]['poiStatus']));
+            }
+        } else {
+            return false;
         }
-    } else {
-        return false;
-    }
    
     }
     
@@ -326,7 +349,6 @@ class Adminmodel extends CI_Model{
     }
     function edit_stockcategory($ctID,$ctName){
         $query = "update categories set ctName = ?  where ctID = ? and ctType='inventory'";
-        return $this->db->query($query,array($ctName,$ctID));
     }
     function get_stockDetails($id){
         $query = "SELECT 
@@ -476,6 +498,14 @@ class Adminmodel extends CI_Model{
         $query = "SELECT * from preferences";
         return $this->db->query($query)->result_array();
     }
+    function get_prefDetails($prID){
+        $query = "SELECT * from preferences pr INNER JOIN menu USING (mID) WHERE pr.prID = ?";
+        return $this->db->query($query,array($prID))->result_array();
+    }
+    function get_orderAddon() {
+        $query = "SELECT * FROM `orderaddons` INNER JOIN addons USING (aoID)";
+        return $this->db->query($query)->result_array(); 
+    }
     function get_menuprices(){
         $query = "select mID, prName, prPrice from sizes";
         return $this->db->query($query)->result_array();
@@ -497,8 +527,12 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
 
-    function get_sales(){
-        $query = "Select order_id, order_date_time, order_payable, pay_date_time, date_recorded, mName, order_qty, order_total from orderslip inner join orderlist using (order_id) inner join menu using (mID) where payment_status = 'paid';";
+    function get_osSales(){
+        $query = "Select * from orderslips where payStatus = 'paid';";
+        return $this->db->query($query)->result_array();
+    }
+    function get_olSales(){
+        $query = "Select * from orderlists inner join preferences using (prID) inner join menu using (mID)";
         return $this->db->query($query)->result_array();
     }
     function get_stocks(){
@@ -895,6 +929,40 @@ class Adminmodel extends CI_Model{
     function add_source($data){
         $this->db->insert("sources", $data);
     }
+    function add_salesOrder($tableCode, $custName, $osTotal, $osDate, $osPayDate, $osDateRecorded, $orderlists) {
+        $query = "insert into orderslips (osID, tableCode, custName, osTotal, payStatus, 
+        osDate, osPayDate, osDateRecorded) values (NULL,?,?,?,?,?,?,?);";
+        if($this->db->query($query,array($tableCode, $custName, $osTotal, 'paid', $osDate, $osPayDate, $osDateRecorded))) {
+            $this->add_salesList($this->db->insert_id(), $orderlists);
+            return true;
+            }
+        }
+
+    function add_salesList($osID, $orderlists) {
+        $query = "insert into orderlists (olID, prID, osID, olDesc, olQty, 
+        olSubtotal, olStatus, olRemarks) values (NULL,?,?,?,?,?,?,?);";
+        if(count($orderlists) > 0){
+             for($in = 0; $in < count($orderlists) ; $in++){
+              $this->db->query($query, array($orderlists[$in]['prID'], $osID, $orderlists[$in]['olDesc'], 
+              $orderlists[$in]['olQty'], $orderlists[$in]['olSubtotal'],'served', ' '));
+        }
+    }   else {
+        return false;
+    }
+    }
+    // function add_poItems($poID, $merchandise) {
+    //     $query = "insert into poitems (poiID, vID, poID, poiName, poiQty, poiUnit, poiPrice, poiStatus) values
+    //     (NULL,?,?,?,?,?,?,?)";
+    //     if(count($merchandise) > 0){
+    //     for($in = 0; $in < count($merchandise) ; $in++){
+    //         $this->db->query($query, array($merchandise[$in]['vID'], $poID, $merchandise[$in]['poiName'], $merchandise[$in]['poiQty'],
+    //         $merchandise[$in]['poiUnit'],$merchandise[$in]['poiPrice'], $merchandise[$in]['poiStatus']));
+    //     }
+    // } else {
+    //     return false;
+    // }
+   
+    // }
     function edit_source($source_id, $source_name, $contact_num, $email,$status){
         $query = "update sources set source_name = ?, contact_num = ?, email = ?, status = ?  where source_id = ?";
         return $this->db->query($query,array($source_name, $contact_num, $email,$status,$source_id));
