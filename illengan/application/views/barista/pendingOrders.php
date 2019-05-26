@@ -33,7 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <th>Order</th>
                         <th>Order Qty</th>
                         <th>Item Status</th>
-                        <th style="text-align: right;">Actions</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
