@@ -42,14 +42,14 @@ body {
 #mt {
     width: 145px;
     padding-left: 10px;
+    float: left;
 }
 #mp {
     padding-right: 10px;
+    float: right;
 }
 .cd-mw {
-    max-width: 280px;
-    min-width: 220x;
-    flex: 1 0 22%;
+    max-width: 250px;
     margin: 5px;
 }
 .fs-15 {
@@ -135,4 +135,35 @@ input#addon-qty{
 .freeBOpt {
     position: relative;
     width: 100%;
+}
+@media (min-width : 320px) and (max-width : 480px){
+    .cd-mw {
+        max-width: 100%;
+    }
+}
+@media (min-width : 480px) and (max-width : 540px) {
+    .cd-mw {
+        max-width: 150px;
+    }
+    .card-body {
+        text-align: center;
+    }
+    #mt, #mp {
+        float: none;
+        padding: 0px 3px;
+        line-height: 24px;
+    }
+    #mt {
+        margin-top: 5px;
+    }
+}
+@media (min-width : 540px) and (max-width : 720px) {
+    .cd-mw {
+        max-width: 200px;
+    }
+}
+@media (min-width : 1281px) {
+    .cd-mw {
+        max-width: 320px;
+    }
 }
