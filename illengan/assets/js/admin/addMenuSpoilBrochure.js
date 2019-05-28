@@ -35,6 +35,7 @@ function getSelectedPref() {
         }
     }
 }
+
 var elements;
 function addMenuItems() {
     elements = document.getElementsByClassName('menuelem');

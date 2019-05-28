@@ -9,7 +9,6 @@ class Adminadd extends CI_Controller{
         // code for getting current date and time : date("Y-m-d H:i:s")
     }
     function addaccounts(){
-
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[50]');
         // $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
         $this->form_validation->set_rules('aUsername','Username','trim|required|is_unique[accounts.aUsername]');
@@ -123,9 +122,22 @@ class Adminadd extends CI_Controller{
         }
 
     }
+
+    function addAddon(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $aoName = $this->input->post('aoName');
+            $aoPrice = $this->input->post('aoPrice');
+            $aoCategory = $this->input->post('aoCategory');
+            $aoStatus = $this->input->post('aoStatus');
+            $this->adminmodel->add_addon($aoName, $aoPrice, $aoCategory, $aoStatus);
+            redirect('admin/menu/addons');
+        }else{
+            redirect('login');
+        }
+    }
+    
     function addSupplierMerchandise(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-           
             $spName = $this->input->post('name');
             $spContactNum = $this->input->post('contactNum');
             $spEmail= $this->input->post('email');
@@ -189,17 +201,19 @@ class Adminadd extends CI_Controller{
             if($this->form_validation->run() == FALSE){
                 redirect("admin/dashboard");
             }else{
+                $stockCategory = $this->input->post('category'); 
+                $stockBqty = $this->input->post('bqty');
+                $stockLocation = $this->input->post('location');
+                $stockMin = $this->input->post('min');
                 $stockName = $this->input->post('name');
-                $stockType = $this->input->post('type');
-                $stockCategory = $this->input->post('category');
+                $stockQty = $this->input->post('qty');
                 $stockStatus = $this->input->post('status');
-                $stockVariance = json_decode($this->input->post('variances'),true);
-                if($this->adminmodel->add_stockItem($stockName,$stockType,$stockCategory,$stockStatus,$stockVariance)){
+                $stockType = $this->input->post('type');
+                $stockUom = $this->input->post('uom');
+                if($this->adminmodel->add_stockItem($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, $stockBqty, $stockLocation)){
                     echo json_encode(array(
                         "stocks" => $this->adminmodel->get_stocks(),
-                        "categories" => $this->adminmodel->get_stockSubCategories(),
-                        "variances" => $this->adminmodel->get_stockVariance(),
-                        "expirations" => $this->adminmodel->get_stockExpiration()
+                        "categories" => $this->adminmodel->get_stockSubCategories()
                     ));
                 }else{
                     redirect("admin/dashboard");

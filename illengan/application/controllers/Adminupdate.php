@@ -132,18 +132,20 @@ class Adminupdate extends CI_Controller{
             if($this->form_validation->run() == FALSE){
                 redirect("admin/inventory");
             }else{
-                $stockID = $this->input->post('id');
+                $stockCategory = $this->input->post('category'); 
+                $stockBqty = $this->input->post('bqty');
+                $stockLocation = $this->input->post('location');
+                $stockMin = $this->input->post('min');
                 $stockName = $this->input->post('name');
-                $stockType = $this->input->post('type');
-                $stockCategory = $this->input->post('category');
+                $stockQty = $this->input->post('qty');
                 $stockStatus = $this->input->post('status');
-                $stockVariance = json_decode($this->input->post('variances'),true);
-                if($this->adminmodel->edit_stockItem($stockID,$stockName,$stockType,$stockCategory,$stockStatus,$stockVariance)){
+                $stockType = $this->input->post('type');
+                $stockUom = $this->input->post('uom');
+                $stockID = $this->input->post('id');
+                if($this->adminmodel->edit_stockItem($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockID)){
                     echo json_encode(array(
                         "stocks" => $this->adminmodel->get_stocks(),
-                        "categories" => $this->adminmodel->get_stockSubCategories(),
-                        "variances" => $this->adminmodel->get_stockVariance(),
-                        "expirations" => $this->adminmodel->get_stockExpiration()
+                        "categories" => $this->adminmodel->get_stockSubCategories()
                     ));
                 }
             }
@@ -184,6 +186,20 @@ class Adminupdate extends CI_Controller{
             $menu_availability = $this->input->post('new_availability');
             $data['menu'] = $this->adminmodel->edit_menu($menu_id, $menu_name, $category_id, $menu_description, $menu_price, $menu_availability);
             redirect('admin/menu');
+        }else{
+            redirect('login');
+        }
+    }
+
+    function editAddon(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $aoID = $this->input->post('aoID');
+            $aoName = $this->input->post('aoName');
+            $aoPrice = $this->input->post('aoPrice');
+            $aoCategory = $this->input->post('aoCategory');
+            $aoStatus= $this->input->post('aoStatus');
+            $this->adminmodel->edit_addon($aoName, $aoPrice, $aoCategory, $aoStatus, $aoID);
+            redirect('admin/menu/addons');
         }else{
             redirect('login');
         }

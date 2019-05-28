@@ -90,7 +90,7 @@
         </tbody>
     </table>
     <!--Start of Modal "Add Promo"-->
-        <div class="modal fade bd-example-modal-lg" id="newPromo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade bd-example-modal-lg" id="newPromo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -222,7 +222,7 @@
     <!--End of Modal "Add Promo"-->
 
     <!--Start of Modal "Edit Promo"-->
-        <div class="modal fade bd-example-modal-lg" id="editPromo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade bd-example-modal-lg" id="editPromo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

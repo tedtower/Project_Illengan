@@ -12,12 +12,10 @@
                     <div class="container-fluid">
                         <!--Table-->
                         <div class="card-content">
-                            <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#brochure"
-                                data-original-title style="margin:0" id="addTransaction">Add Purchases/Deliveries</a>
+                            <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#brochure" data-original-title style="margin:0" id="addTransaction">Add Purchases/Deliveries</a>
                             <br>
                             <br>
-                            <table id="transTable" class="table table-bordered dt-responsive nowrap"
-                                cellspacing="0" width="100%">
+                            <table id="transTable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                 <thead class="thead-light">
                                     <tr>
                                         <th style="width:10px"></th>
@@ -30,12 +28,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <!--showTable()-->
+                                    <!--showTable()-->
                                 </tbody>
                             </table>
-                        
-                        <!--Start of Brochure Modal"-->
-                        <div class="modal fade bd-example-modal-lg" id="brochure" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background:rgba(0, 0, 0, 0.3)">
+
+                            <!--Start of Brochure Modal"-->
+                            <div class="modal fade bd-example-modal-lg" id="brochure" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background:rgba(0, 0, 0, 0.3)">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -44,38 +42,37 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <form id="formAdd" action="<?= site_url('admin/transactions/add')?>" method="post" accept-charset="utf-8">
+                                        <form id="formAdd" action="<?= site_url('admin/transactions/add') ?>" method="post" accept-charset="utf-8">
                                             <div class="modal-body">
                                                 <!--checkboxes-->
-                                                <table id="brochure" class="table table-bordered dt-responsive nowrap"
-                                                cellspacing="0" width="100%">
-                                                <thead class="thead-light">
-                                                    <tr>
-                                                        <th><b class="pull-left">Receipt No.</b></th>
-                                                        <th><b class="pull-left">Supplier</b></th>
-                                                        <th><b class="pull-left">Transaction Date</b></th>
-                                                        <th><b class="pull-left">Total</b></th>
-                                                        <th><b class="pull-left">Type</b></th>
-                                                        <th><b class="pull-left">See Items</b></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                   <!--show itesm-->
-                                                </tbody>
-                                            </table>
+                                                <table id="brochure" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                                                    <thead class="thead-light">
+                                                        <tr>
+                                                            <th><b class="pull-left">Receipt No.</b></th>
+                                                            <th><b class="pull-left">Supplier</b></th>
+                                                            <th><b class="pull-left">Transaction Date</b></th>
+                                                            <th><b class="pull-left">Total</b></th>
+                                                            <th><b class="pull-left">Type</b></th>
+                                                            <th><b class="pull-left">See Items</b></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <!--show itesm-->
+                                                    </tbody>
+                                                </table>
                                             </div>
                                             <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                                    
-                                                    
+                                                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+
+
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-               <!--here--> <!--Start of Modal "Add Transaction"-->
-               <div class="modal fade bd-example-modal-lg" id="newTransaction" tabindex="-1"
-                                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <!--here-->
+                            <!--Start of Modal "Add Transaction"-->
+                            <div class="modal fade bd-example-modal-lg" id="newTransaction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -86,40 +83,40 @@
                                         </div>
                                         <form id="addReturns" method="post">
                                             <div class="modal-body">
-                                            <div class="form-row">
-                                                <!--Source Name-->
-                                                <input type="hidden" name="invoID" id="invoID"/>
-                                                <input type="hidden" name="supID" id="supID"/>
-                                                <input type="hidden" name="variance" id="variance"/>
+                                                <div class="form-row">
+                                                    <!--Source Name-->
+                                                    <input type="hidden" name="invoID" id="invoID" />
+                                                    <input type="hidden" name="supID" id="supID" />
+                                                    <input type="hidden" name="variance" id="variance" />
                                                     <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">      
+                                                        <div class="input-group-prepend">
                                                             <span class="input-group-text" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Supplier</span>
                                                         </div>
-                                                        <input type="text"class="form-control form-control-sm" name="sourceName" id="sourceName" readonly/>
+                                                        <input type="text" class="form-control form-control-sm" name="sourceName" id="sourceName" readonly />
                                                     </div>
-                                                <!--Receipt Number-->
+                                                    <!--Receipt Number-->
                                                     <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">      
+                                                        <div class="input-group-prepend">
                                                             <span class="input-group-text" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Receipt No.</span>
                                                         </div>
                                                         <input type="text" class="form-control" name="receiptNum" id="receiptNum" readonly>
                                                     </div>
-                                                    </div>
+                                                </div>
 
                                                 <div class="form-row">
-                                                <!--Stock Name-->
-                                                <div class="input-group mb-3 col">
+                                                    <!--Stock Name-->
+                                                    <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Stock Name:</span>
                                                         </div>
-                                                        <input type="text" name="itemName" id="itemName" class="form-control form-control-sm" readonly/>
-                                                        <input type="hidden" name="stckID" id="stckID"/>
+                                                        <input type="text" name="itemName" id="itemName" class="form-control form-control-sm" readonly />
+                                                        <input type="hidden" name="stckID" id="stckID" />
                                                     </div>
-                                                <!--Invoice Type-->
-                                                <div class="input-group mb-3 col">
+                                                    <!--Invoice Type-->
+                                                    <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Invoice Type</span>
@@ -129,55 +126,55 @@
                                                 </div>
 
                                                 <div class="form-row">
-                                                <!--item quantity-->
-                                                <div class="input-group mb-3 col">
+                                                    <!--item quantity-->
+                                                    <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Quantity</span>
                                                         </div>
-                                                <input type="number" name="itemQty" id="itemQty" class="form-control form-control-sm" readonly/>
-                                                </div>
-                                                 <!--item unit-->
-                                                 <div class="input-group mb-3 col">
+                                                        <input type="number" name="itemQty" id="itemQty" class="form-control form-control-sm" readonly />
+                                                    </div>
+                                                    <!--item unit-->
+                                                    <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Unit</span>
                                                         </div>
-                                                <input type="text" name="itemUnit" id="itemUnit" class="form-control form-control-sm" readonly/>
-                                                </div>
-                                                <!--Price-->
-                                                <div class="input-group mb-3 col">
+                                                        <input type="text" name="itemUnit" id="itemUnit" class="form-control form-control-sm" readonly />
+                                                    </div>
+                                                    <!--Price-->
+                                                    <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Price per Unit</span>
                                                         </div>
                                                         <input type="number" name="itemPrice" id="itemPrice" class="form-control form-control-sm" readonly>
-                                                </div>
+                                                    </div>
                                                 </div>
                                                 <!--Button to add launce the brochure modal-->
                                                 <br>
                                                 <div class="form-row">
-                                                 <!--date -->
-                                                 <div class="input-group mb-3 col">
+                                                    <!--date -->
+                                                    <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Return Date</span>
                                                         </div>
                                                         <input type="date" required class="form-control" name="retDate" id="retDate" />
                                                     </div>
-                                                <!--Status-->
+                                                    <!--Status-->
                                                     <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">      
+                                                        <div class="input-group-prepend">
                                                             <span class="input-group-text" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Return Status</span>
                                                         </div>
                                                         <select required class="form-control form-control-sm" name="retType" id="retType" />
                                                         <option value="">Choose</option>
-                                                            <option value="pending">pending</option>
-                                                            <option value="partially resolved">partially resolved</option>
+                                                        <option value="pending">pending</option>
+                                                        <option value="partially resolved">partially resolved</option>
                                                         </select>
                                                     </div>
-                                                    </div>
+                                                </div>
                                                 <br>
                                                 <!--Remarks-->
                                                 <div class="form-now">
@@ -190,48 +187,46 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-row">
-                                                <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">      
+                                                    <div class="input-group mb-3 col">
+                                                        <div class="input-group-prepend">
                                                             <span class="input-group-text" style="width:110px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Return Quantity</span>
                                                         </div>
-                                                       <input type="number" required name="returnQty" id="returnQty" min="1" class="form-control form-control-sm"/>
-                                                </div>
-                                                 <!--item unit-->
-                                                 <div class="input-group mb-3 col">
+                                                        <input type="number" required name="returnQty" id="returnQty" min="1" class="form-control form-control-sm" />
+                                                    </div>
+                                                    <!--item unit-->
+                                                    <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:90px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Unit</span>
                                                         </div>
                                                         <select class="form-control form-control-sm" name="returnUnit" id="returnUnit">
-                                                        <option value="">Choose</option>
+                                                            <option value="">Choose</option>
                                                             <option value="pack">pack</option>
                                                             <option value="bottle">bottle</option>
                                                             <option value="others">others</option>
                                                         </select>
-                                                </div>
-                                                <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">      
+                                                    </div>
+                                                    <div class="input-group mb-3 col">
+                                                        <div class="input-group-prepend">
                                                             <span class="input-group-text" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Subtotal</span>
                                                         </div>
-                                                        <input type="number" name="itemSubtotal" id="itemSubtotal" class="form-control form-control-sm"/>
-                                                </div>
+                                                        <input type="number" name="itemSubtotal" id="itemSubtotal" class="form-control form-control-sm" />
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger btn-sm"
-                                                        data-dismiss="modal">Cancel</button>
+                                                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
                                                     <button type="submit" id="submitReturn" class="btn btn-success btn-sm">Add To Returns</button>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
-                </div>
-                        <!--End of Modal "Add Transaction"-->
-                        <!--Edit Transaction-->
-                        <div class="modal fade bd-example-modal-lg" id="editReturns" tabindex="-1"
-                                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            </div>
+                            <!--End of Modal "Add Transaction"-->
+                            <!--Edit Transaction-->
+                            <div class="modal fade bd-example-modal-lg" id="editReturns" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -242,74 +237,74 @@
                                         </div>
                                         <form id="formEdit" method="post">
                                             <div class="modal-body">
-                                            <div class="form-row">
-                                                <!--Source Name-->
-                                                <input type="hidden" name="einvoID" id="einvoID"/>
-                                                <input type="hidden" name="esupID" id="esupID"/>
-                                                <!--input type="hidden" name="evar" id="evar"/-->
+                                                <div class="form-row">
+                                                    <!--Source Name-->
+                                                    <input type="hidden" name="einvoID" id="einvoID" />
+                                                    <input type="hidden" name="esupID" id="esupID" />
+                                                    <!--input type="hidden" name="evar" id="evar"/-->
                                                     <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">      
+                                                        <div class="input-group-prepend">
                                                             <span class="input-group-text" style="width:100px;background:#3366ff;color:rgb(242, 242, 242);font-size:14px;">
                                                                 Supplier</span>
                                                         </div>
-                                                        <input type="text"  class="form-control" name="esourceName" id="esourceName" required/>
-                                                        <input type="hidden" name="estckID" id="estckID"/>
+                                                        <input type="text" class="form-control" name="esourceName" id="esourceName" required />
+                                                        <input type="hidden" name="estckID" id="estckID" />
                                                     </div>
-                                                <!--Receipt Number-->
+                                                    <!--Receipt Number-->
                                                     <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">      
+                                                        <div class="input-group-prepend">
                                                             <span class="input-group-text" style="width:100px;background:#3366ff;color:rgb(242, 242, 242);font-size:14px;">
                                                                 Receipt No.</span>
                                                         </div>
-                                                        <input type="text" class="form-control" name="ereceiptNum" id="ereceiptNum" required/>
+                                                        <input type="text" class="form-control" name="ereceiptNum" id="ereceiptNum" required />
                                                     </div>
-                                                 <!--Status-->
-                                                 <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">      
+                                                    <!--Status-->
+                                                    <div class="input-group mb-3 col">
+                                                        <div class="input-group-prepend">
                                                             <span class="input-group-text" style="width:100px;background:#3366ff;color:rgb(242, 242, 242);font-size:14px;">
                                                                 Status</span>
                                                         </div>
-                                                        <input type="text" class="form-control" name="estatus" id="estatus" required/>
-                                                        
+                                                        <input type="text" class="form-control" name="estatus" id="estatus" required />
+
                                                     </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <!--returnDate-->
-                                                <div class="input-group mb-3 col">
+                                                </div>
+                                                <div class="form-row">
+                                                    <!--returnDate-->
+                                                    <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:#3366ff;color:rgb(242, 242, 242);font-size:14px;">
                                                                 Return Date</span>
                                                         </div>
-                                                <input type="date" name="reDate" id="reDate" class="form-control form-control-sm" required/>
-                                                </div>
-                                                 <!--item unit-->
-                                                 <div class="input-group mb-3 col">
+                                                        <input type="date" name="reDate" id="reDate" class="form-control form-control-sm" required />
+                                                    </div>
+                                                    <!--item unit-->
+                                                    <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:120px;background:#3366ff;color:rgb(242, 242, 242);font-size:14px;">
                                                                 Date Recorded</span>
                                                         </div>
-                                                <input type="text" name="dateRecord" id="dateRecord" class="form-control form-control-sm" required/>
+                                                        <input type="text" name="dateRecord" id="dateRecord" class="form-control form-control-sm" required />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="input-group mb-3 col">
+                                                <div class="form-row">
+                                                    <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:#3366ff;color:rgb(242, 242, 242);font-size:14px;">
                                                                 Total</span>
                                                         </div>
-                                                <input type="text" name="eTotal" id="eTotal" class="form-control form-control-sm" required/>
-                                                </div>
-                                                <div class="input-group mb-3 col">
+                                                        <input type="text" name="eTotal" id="eTotal" class="form-control form-control-sm" required />
+                                                    </div>
+                                                    <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:#3366ff;color:rgb(242, 242, 242);font-size:14px;">
                                                                 Remarks</span>
                                                         </div>
-                                                <input type="text" name="eRemarks" id="eRemarks" class="form-control form-control-sm" />
-                                                </div>
+                                                        <input type="text" name="eRemarks" id="eRemarks" class="form-control form-control-sm" />
+                                                    </div>
                                                 </div>
                                                 <br>
-                                                 <!--Transaction Items-->
-                                                
+                                                <!--Transaction Items-->
+
                                                 <table class="returnsItemsTable table table-sm table-borderless">
                                                     <!--Table containing the different input fields in adding trans items -->
                                                     <thead class="thead-dark">
@@ -325,10 +320,9 @@
                                                     <tbody>
                                                     </tbody>
                                                 </table>
-                                               
+
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger btn-sm"
-                                                        data-dismiss="modal">Cancel</button>
+                                                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
                                                     <button type="submit" id="submitEditedReturn" class="btn btn-success btn-sm">Save</button>
                                                 </div>
                                             </div>
@@ -336,7 +330,7 @@
                                     </div>
                                 </div>
                             </div>
-                        <!--End ---->
+                            <!--End ---->
                         </div>
                     </div>
                 </div>
@@ -347,41 +341,46 @@
 </div>
 <?php include_once('templates/scripts.php') ?>
 <script>
-//var allReturns = < ?= json_encode($allReturns)?>;
-var retItems = <?= json_encode($retItems)?>;
-var invRet = <?= json_encode($invRet)?>;
-var invoice = [];
-var returns= [];
-var invoSup = [];
-var invoiceitems = [];
-$(function(){
-    $.ajax({
-            url: '<?= base_url("admin/transactions/getReturns")?>',
+    //var allReturns = < ?= json_encode($allReturns)?>;
+    var retItems = <?= json_encode($retItems) ?>;
+    var invRet = <?= json_encode($invRet) ?>;
+    var invoice = [];
+    var returns = [];
+    var invoSup = [];
+    var invoiceitems = [];
+    $(function() {
+        $.ajax({
+            url: '<?= base_url("admin/transactions/getReturns") ?>',
             dataType: 'json',
-            success: function(data){
+            success: function(data) {
                 var retLastIndex = 0;
                 var invoLastIndex = 0;
-                $.each(data.invoice, function(index, item){
-                    invoice.push({"invoice" : item});
+                $.each(data.invoice, function(index, item) {
+                    invoice.push({
+                        "invoice": item
+                    });
                     invoice[index].returns = data.returns.filter(ret => ret.iID == item.iID);
                 });
                 showTableReturns();
 
-                $.each(data.invoSup, function(index, item){
-                    invoSup.push({"invoSup" : item});
+                $.each(data.invoSup, function(index, item) {
+                    invoSup.push({
+                        "invoSup": item
+                    });
                     invoSup[index].invoiceitems = data.invoiceitems.filter(invo => invo.iID == item.iID);
                 });
                 showItems();
                 console.log('Success');
             },
-            error: function(response,setting, errorThrown){
+            error: function(response, setting, errorThrown) {
                 console.log(errorThrown);
                 console.log(response.responseText);
             }
         });
-}); 
-function showTableReturns(){
-        invoice.forEach(function(item){
+    });
+
+    function showTableReturns() {
+        invoice.forEach(function(item) {
             var tableRow = `
                             <tr data-id="${item.invoice.iID}">
                                 <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
@@ -440,51 +439,51 @@ function showTableReturns(){
                 </td>
             </tr>
             `;
-           
+
             $("#transTable > tbody").append(tableRow);
             $("#transTable > tbody").append(accordion);
             $(".returnItems").last().append(returnItemsDiv);
         });
 
-$(".accordionBtn").on('click', function(){
-    if($(this).closest("tr").next(".accordion").css("display") == 'none'){
-        $(this).closest("tr").next(".accordion").css("display","table-row");
-        $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
-    }else{
-        $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
-        $(this).closest("tr").next(".accordion").hide("slow");
-    }
-});
-$("button#editBtn").on("click", function() {
+        $(".accordionBtn").on('click', function() {
+            if ($(this).closest("tr").next(".accordion").css("display") == 'none') {
+                $(this).closest("tr").next(".accordion").css("display", "table-row");
+                $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
+            } else {
+                $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
+                $(this).closest("tr").next(".accordion").hide("slow");
+            }
+        });
+        $("button#editBtn").on("click", function() {
             $("#editReturns form")[0].reset();
             $("#editReturns .returnsItemsTable > tbody").empty();
             var retid = $(this).closest("tr").attr("data-id");
             console.log(retid);
-            var suplier = retItems.filter(function(s){
+            var suplier = retItems.filter(function(s) {
                 return s.iID == retid;
             });
             console.log(suplier);
-          showEditModal($("#editReturns"),invRet.filter(item => item.iID === retid)[0],retItems.filter(invIt => invIt.iID === retid));
-        }); 
-}
+            showEditModal($("#editReturns"), invRet.filter(item => item.iID === retid)[0], retItems.filter(invIt => invIt.iID === retid));
+        });
+    }
 
-function showEditModal(modal, allinvoice, invoiceItems){
-    console.log(allinvoice.spID, allinvoice.vID, allinvoice.iRemarks);
-    var count=0;
-    modal.find("input[name='einvoID']").val(allinvoice.iID);
-    modal.find("input[name='esupID']").val(allinvoice.spID);
-    modal.find("input[name='ereceiptNum']").val(allinvoice.iNumber);
-    modal.find("input[name='esourceName']").val(allinvoice.spName);
-    modal.find("input[name='estckID']").val(allinvoice.stID);
-    modal.find("input[name='estatus']").val(allinvoice.resolvedStatus);
-    modal.find("input[name='reDate']").val(allinvoice.iDate);
-    modal.find("input[name='dateRecord']").val(allinvoice.iDateRecorded);
-    modal.find("input[name='eTotal']").val(allinvoice.iTotal);
-    modal.find("input[name='eRemarks']").val(allinvoice.iRemarks);
+    function showEditModal(modal, allinvoice, invoiceItems) {
+        console.log(allinvoice.spID, allinvoice.vID, allinvoice.iRemarks);
+        var count = 0;
+        modal.find("input[name='einvoID']").val(allinvoice.iID);
+        modal.find("input[name='esupID']").val(allinvoice.spID);
+        modal.find("input[name='ereceiptNum']").val(allinvoice.iNumber);
+        modal.find("input[name='esourceName']").val(allinvoice.spName);
+        modal.find("input[name='estckID']").val(allinvoice.stID);
+        modal.find("input[name='estatus']").val(allinvoice.resolvedStatus);
+        modal.find("input[name='reDate']").val(allinvoice.iDate);
+        modal.find("input[name='dateRecord']").val(allinvoice.iDateRecorded);
+        modal.find("input[name='eTotal']").val(allinvoice.iTotal);
+        modal.find("input[name='eRemarks']").val(allinvoice.iRemarks);
 
-    invoiceItems.forEach(invIt =>{
-        console.log(invIt.stName, invIt.iQty,invIt.iUnit, invIt.vID);
-        modal.find(".returnsItemsTable > tbody").append(`
+        invoiceItems.forEach(invIt => {
+            console.log(invIt.stName, invIt.iQty, invIt.iUnit, invIt.vID);
+            modal.find(".returnsItemsTable > tbody").append(`
         <tr class="returnsItems" data-id="${invIt.iItemID}" data-varid="${invIt.vID}" data-stckID="${invIt.stID}">
          <td><input type="text" name="eitemName" value="${invIt.stName}" class="form-control form-control-sm"></td>
          <td><input type="number" name="eoldQty" value="${invIt.iQty}" class="form-control form-control-sm" readonly></td>
@@ -494,11 +493,12 @@ function showEditModal(modal, allinvoice, invoiceItems){
          <td><input type="number" id="eitemSubtotal" name="eitemSubtotal" value="${invIt.iSubTotal}" class="form-control form-control-sm"></td>
      </tr>
         `);
-        
-    })
-}
-function showItems(){
-        invoSup.forEach(function(item){
+
+        })
+    }
+
+    function showItems() {
+        invoSup.forEach(function(item) {
             var tableInvoice = `
                             <tr data-invoiceId="${item.invoSup.iID}">    
                                 <td>${item.invoSup.iNumber}</td>
@@ -550,31 +550,33 @@ function showItems(){
             $("#brochure > tbody").append(accordion);
             $(".invoiceItems table.table > tbody").last().append(invitems);
         });
-    $(".accordionBtnInvoice").on('click', function(){
-    if($(this).closest("tr").next(".accordion").css("display") == 'none'){
-        $(this).closest("tr").next(".accordion").css("display","table-row");
-        $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
-    }else{
-        $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
-        $(this).closest("tr").next(".accordion").hide("slow");
+        $(".accordionBtnInvoice").on('click', function() {
+            if ($(this).closest("tr").next(".accordion").css("display") == 'none') {
+                $(this).closest("tr").next(".accordion").css("display", "table-row");
+                $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
+            } else {
+                $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
+                $(this).closest("tr").next(".accordion").hide("slow");
+            }
+        });
+        $('button#addBtn').on('click', function(e) {
+            var id = $(this).val();
+            $('#newTransaction').modal('show');
+            showAddModal(id);
+        });
     }
-    });
-$('button#addBtn').on('click', function(e){
-    var id = $(this).val();
-        $('#newTransaction').modal('show');
-        showAddModal(id);
-    });
-}
 
 
-function showAddModal(id){
-    console.log(id);
+    function showAddModal(id) {
+        console.log(id);
         $.ajax({
-            url: '<?= base_url("admin/transactions/getReturns")?>',
+            url: '<?= base_url("admin/transactions/getReturns") ?>',
             type: 'POST',
             dataType: 'json',
-            data: {'id' : id},
-            success: function(data){
+            data: {
+                'id': id
+            },
+            success: function(data) {
                 document.getElementById('invoID').value = data.selected[0].iID;
                 document.getElementById('supID').value = data.selected[0].spID;
                 document.getElementById('variance').value = data.selected[0].vID;
@@ -587,44 +589,44 @@ function showAddModal(id){
                 document.getElementById('itemUnit').value = data.selected[0].iUnit;
                 document.getElementById('itemPrice').value = data.selected[0].iPrice;
 
-                $('#returnQty').keyup(function(){
+                $('#returnQty').keyup(function() {
                     var x = $('#returnQty').val();
-                var y = $('#itemPrice').val();
-                var subtotal = x * y;
+                    var y = $('#itemPrice').val();
+                    var subtotal = x * y;
                     $('#itemSubtotal').val(subtotal);
                 });
 
             },
-            error: function(response,setting, errorThrown){
+            error: function(response, setting, errorThrown) {
                 console.log(errorThrown);
                 console.log(response.responseText);
             }
         });
     }
 
-$('#editReturns form#formEdit').on('submit', function(e){
-    event.preventDefault();
-        var eID=$(this).find("input[name='einvoID']").val();
-        var eSpID=$(this).find("input[name='esupID']").val();
-        var eRNum=$(this).find("input[name='ereceiptNum']").val();
-        var eSName=$(this).find("input[name='esourceName']").val();
-        var eStID=$(this).find("input[name='estckID']").val();
-        var eStat=$(this).find("input[name='estatus']").val();
-        var eRDate=$(this).find("input[name='reDate']").val();
-        var eDRec=$(this).find("input[name='dateRecord']").val();
-        var eTotal=$(this).find("input[name='eTotal']").val();
-        var eRemarks=$(this).find("input[name='eRemarks']").val();
+    $('#editReturns form#formEdit').on('submit', function(e) {
+        event.preventDefault();
+        var eID = $(this).find("input[name='einvoID']").val();
+        var eSpID = $(this).find("input[name='esupID']").val();
+        var eRNum = $(this).find("input[name='ereceiptNum']").val();
+        var eSName = $(this).find("input[name='esourceName']").val();
+        var eStID = $(this).find("input[name='estckID']").val();
+        var eStat = $(this).find("input[name='estatus']").val();
+        var eRDate = $(this).find("input[name='reDate']").val();
+        var eDRec = $(this).find("input[name='dateRecord']").val();
+        var eTotal = $(this).find("input[name='eTotal']").val();
+        var eRemarks = $(this).find("input[name='eRemarks']").val();
         var eType = 'return';
 
         var edited = [];
         for (var index = 0; index < $(this).find(".returnsItemsTable > tbody").children().length; index++) {
             var row = $(this).find(".returnsItemsTable > tbody > tr").eq(index);
             edited.push({
-                itemID : parseInt(row.attr('data-id')),
-                varId : parseInt(row.attr('data-varid')),
-                stckId : parseInt(row.attr('data-stckID')),
-                itName : row.find("input[name='eitemName']").val(),
-                itQty :  row.find("input[name='eitemQty']").val(),
+                itemID: parseInt(row.attr('data-id')),
+                varId: parseInt(row.attr('data-varid')),
+                stckId: parseInt(row.attr('data-stckID')),
+                itName: row.find("input[name='eitemName']").val(),
+                itQty: row.find("input[name='eitemQty']").val(),
                 itUnit: row.find("input[name='eitemUnit']").val(),
                 itPri: row.find("input[name='eitemPrice']").val(),
                 itSub: row.find("input[name='eitemSubtotal']").val()
@@ -632,22 +634,22 @@ $('#editReturns form#formEdit').on('submit', function(e){
         }
         console.log(eID, eRemarks);
         $.ajax({
-            url: "<?= site_url("admin/returntransactions/edit")?>",
+            url: "<?= site_url("admin/returntransactions/edit") ?>",
             method: "POST",
-            data : {
-                'eID' : eID,
-                'eSpID' : eSpID,
-                'eRNum' : eRNum,
-                'eSName' : eSName,
-                'eStID' : eStID,
-                'eStat' : eStat,
-                'eRDate' : eRDate,
-                'eDRec' : eDRec,
-                'eTotal' :  eTotal,
-                'eRemarks' : eRemarks,
-                'eType' : eType,
-                'eRetIt' : JSON.stringify(edited)
-                    },
+            data: {
+                'eID': eID,
+                'eSpID': eSpID,
+                'eRNum': eRNum,
+                'eSName': eSName,
+                'eStID': eStID,
+                'eStat': eStat,
+                'eRDate': eRDate,
+                'eDRec': eDRec,
+                'eTotal': eTotal,
+                'eRemarks': eRemarks,
+                'eType': eType,
+                'eRetIt': JSON.stringify(edited)
+            },
             //dataType: "json",
             success: function(data) {
                 console.log(data);
@@ -657,63 +659,64 @@ $('#editReturns form#formEdit').on('submit', function(e){
             complete: function() {
                 $("#editReturns").modal("hide");
             },
-            error: function(response,setting, errorThrown){
-                console.log(errorThrown);
-                console.log(response.responseText);
-            }
-        });
-});
-
-$('#newTransaction form#addReturns').on('submit', function(e){
-    event.preventDefault();
-    var returnQty = document.getElementById("returnQty").value;
-    var returnUnit = document.getElementById("returnUnit").value;
-    var supID = document.getElementById("supID").value;
-    var retDate = document.getElementById("retDate").value;
-    var receiptNum = document.getElementById("receiptNum").value;
-    var remarks = document.getElementById("remarks").value;
-    var retType = document.getElementById("retType").value;
-    var itemName = document.getElementById("itemName").value;
-    var itemSubtotal = document.getElementById("itemSubtotal").value;
-    var variance = document.getElementById("variance").value;
-    var stckID = document.getElementById("stckID").value;
-    var itemPrice = document.getElementById("itemPrice").value;
-
-console.log(returnQty, returnUnit,supID, retDate, receiptNum,remarks,retType,itemName,itemSubtotal,variance,stckID,itemPrice);
-   $('#newTransaction').modal('hide');
-    $.ajax({
-            url: '<?= base_url("admin/returns/add")?>',
-            type: 'POST',
-            data: {
-                'reQty' : returnQty,
-                'reUnit' : returnUnit,
-                'supID' : supID,
-                'dateRet' : retDate,
-                'receipt' : receiptNum,
-                'remarks' : remarks,
-                'reStat' : retType,
-                'stckName' : itemName,
-                'subtotal' : itemSubtotal,
-                'variance' : variance,
-                'stckID' : stckID,
-                'cost' : itemPrice
-                },
-            success: function(data){
-                location.reload();
-                alert('Successful');
-
-            },
-            error: function(response,setting, errorThrown){
+            error: function(response, setting, errorThrown) {
                 console.log(errorThrown);
                 console.log(response.responseText);
             }
         });
     });
-function computeSubtotal(){
-    var quantity = $("#eitemQuantity").val();
-    var price = $("#eitemPrice").val();
-     var subtotal= quantity * price;
-     $("#eitemSubtotal").val(subtotal);
-     $("input[name='eTotal']").val(subtotal);
-}
+
+    $('#newTransaction form#addReturns').on('submit', function(e) {
+        event.preventDefault();
+        var returnQty = document.getElementById("returnQty").value;
+        var returnUnit = document.getElementById("returnUnit").value;
+        var supID = document.getElementById("supID").value;
+        var retDate = document.getElementById("retDate").value;
+        var receiptNum = document.getElementById("receiptNum").value;
+        var remarks = document.getElementById("remarks").value;
+        var retType = document.getElementById("retType").value;
+        var itemName = document.getElementById("itemName").value;
+        var itemSubtotal = document.getElementById("itemSubtotal").value;
+        var variance = document.getElementById("variance").value;
+        var stckID = document.getElementById("stckID").value;
+        var itemPrice = document.getElementById("itemPrice").value;
+
+        console.log(returnQty, returnUnit, supID, retDate, receiptNum, remarks, retType, itemName, itemSubtotal, variance, stckID, itemPrice);
+        $('#newTransaction').modal('hide');
+        $.ajax({
+            url: '<?= base_url("admin/returns/add") ?>',
+            type: 'POST',
+            data: {
+                'reQty': returnQty,
+                'reUnit': returnUnit,
+                'supID': supID,
+                'dateRet': retDate,
+                'receipt': receiptNum,
+                'remarks': remarks,
+                'reStat': retType,
+                'stckName': itemName,
+                'subtotal': itemSubtotal,
+                'variance': variance,
+                'stckID': stckID,
+                'cost': itemPrice
+            },
+            success: function(data) {
+                location.reload();
+                alert('Successful');
+
+            },
+            error: function(response, setting, errorThrown) {
+                console.log(errorThrown);
+                console.log(response.responseText);
+            }
+        });
+    });
+
+    function computeSubtotal() {
+        var quantity = $("#eitemQuantity").val();
+        var price = $("#eitemPrice").val();
+        var subtotal = quantity * price;
+        $("#eitemSubtotal").val(subtotal);
+        $("input[name='eTotal']").val(subtotal);
+    }
 </script>

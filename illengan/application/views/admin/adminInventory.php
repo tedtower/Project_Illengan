@@ -22,8 +22,11 @@
                                 <th><b class="pull-left">Item Name</b></th>
                                 <th><b class="pull-left">Category</b></th>
                                 <th><b class="pull-left">Quantity</b></th>
+                                <th><b class="pull-left">Minimum</b></th>
+                                <th><b class="pull-left">Unit</b></th>
                                 <th><b class="pull-left">Type</b></th>
                                 <th><b class="pull-left">Status</b></th>
+                                <th><b class="pull-left">Location</b></th>
                                 <th><b class="pull-left">Action</b></th>
                             </tr>
                         </thead>
@@ -35,8 +38,11 @@
                                 <td><?= $stock['stName']?></td>
                                 <td><?= $stock['ctName']?></td>
                                 <td><?= $stock['stQty']?></td>
+                                <td><?= $stock['stMin']?></td>
+                                <td><?= $stock['uomAbbreviation']?></td>
                                 <td><?= $stock['stType']?></td>
                                 <td><?= $stock['stStatus']?></td>
+                                <td><?= $stock['stLocation']?></td>
                                 <td>
                                     <button class="editBtn btn btn-primary btn-sm" data-toggle="modal"
                                         data-target="#editStock">Edit</button>
@@ -49,7 +55,7 @@
                                 <td colspan="7">
                                     <div style="margin:1% 4%;overflow:auto;display:none">
                                         <div>
-                                            <span>Variances</span>
+                                            <span>Stock Card</span>
                                             <table class="table table-bordered dt-responsive nowrap">
                                                 <thead style="background:white">
                                                     <tr>
@@ -63,20 +69,6 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                <?php foreach($inventory['variances'] as $variance){ 
-                                                    if($variance['stID'] == $stock['stID']){
-                                                    ?>
-                                                    <tr> 
-                                                        <td><?=$variance['vName']?></td>
-                                                        <td><?=$variance['vUnit']?></td>
-                                                        <td><?=$variance['vSize']?></td>
-                                                        <td><?=$variance['bQty']?></td>
-                                                        <td><?=$variance['vMin']?></td>
-                                                        <td><?=$variance['vQty']?></td>
-                                                        <td><?=$variance['vStatus']?></td>
-                                                    </tr>
-                                                <?php }
-                                                } ?>
                                                 </tbody>
                                             </table>
                                         </div>

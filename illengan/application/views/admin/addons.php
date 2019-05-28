@@ -13,11 +13,11 @@
                         <div class="container-fluid">
                             <!--Table-->
                             <div class="card-content">
-                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newMenu"
+                                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newAddon"
                                     data-original-title style="margin:0;">Add Addons</a>
                                 <br>
                                 <br>
-            <table id="menuTable" class="table table-striped table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
+            <table id="addonTable" class="table table-striped table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
                 <thead>
                     <tr>
                         <th>Addon</th>
@@ -28,165 +28,230 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Milk</td>
-                        <td>20</td>
-                        <td>Drinks</td>
-                        <td>Available</td>
+                <?php
+                    if(isset($addon)){
+                        foreach($addon as $addon){
+                    ?>
+                    <tr data-id ="<?php echo $addon['aoID'];?>">
+                        <td><?php echo $addon['aoName']?></td>
+                        <td><?php echo $addon['aoPrice']?></td>
+                        <td><?php echo $addon['aoCategory']?></td>
+                        <td><?php echo $addon['aoStatus']?></td>
                         <td>
-                        <button class="editBtn btn btn-sm btn-primary">Edit</button>
-                        <button class="deleteBtn btn btn-sm btn-danger">Delete</button>
+                            <button class="btn btn-default btn-sm" name="editAddon" data-toggle="modal" data-target="#editAddon" data-id="<?php echo $addon['aoID']?>">Edit</button>
+                            <button class="deleteBtn btn btn-warning btn-sm" data-toggle="modal" data-target="#deleteAddon" id="<?php echo $addon['aoID'];?>">Delete</button>
                         </td>
                     </tr>
-                    
+                <?php }} ?>                    
                 </tbody>
             </table>
             <!--Start of Modal "Add Menu"-->
-            <div class="modal fade bd-example-modal-lg" id="newMenu" tabindex="-1" role="dialog"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Add Menu Item</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <form action="<?php echo base_url()?>admin/menu/add" method="get"
-                                                accept-charset="utf-8">
-                                                <div class="modal-body">
-                                                    <div class="input-group mb-3"> <!--Menu Image-->
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" style="width:105px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">Image</span>
-                                                        </div>
-                                                        <div class="custom-file">
-                                                            <input type="file" class="custom-file-input" name="menu_image" id="inputGroupFile01">
-                                                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                                                        </div>
-                                                    </div> 
-                                                    <!--Menu Name-->
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                            Name</span>
-                                                        </div>
-                                                        <input type="text" name="menu_name" id="menu_name" class="form-control form-control-sm">
-                                                    </div>  
-                                                    <!--Description-->
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                            Description</span>
-                                                        </div>
-                                                        <textarea type="text" name="menu_description" id="menu_description" class="form-control form-control-sm"></textarea>
-                                                    </div>                                                                                                                                                       
-                                                    <div class="form-row"> <!--Container of receipt no. and transaction date-->
-                                                        <!--Receipt no-->
-                                                        <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                            Category</span>
-                                                        </div>
-                                                        <select class="custom-select" name="category_name" id="category_name">
-                                                            <option selected>Choose</option>
-                                                            <option></option>
-                                                        </select>
-                                                    </div>
-                                                        <!--Transaction date-->
-                                                        <div class="input-group mb-3 col">
-                                                            <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                            Status</span>
-                                                        </div>
-                                                        <select class="custom-select" name="menu_availability" id="menu_availability">
-                                                            <option selected>Choose</option>
-                                                            <option></option>
-                                                        </select>
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    <!--Menu Items-->
-                                                    <a class="btn btn-primary btn-sm" style="color:blue">Add Preferences</a> <!--Button to add row in the table-->
-                                                    <br><br>
-                                                    <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
-                                                        <thead class="thead-light">
-                                                            <tr>
-                                                                <th>Name</th>
-                                                                <th>Temperature</th>
-                                                                <th>Price</th>
-                                                                <th>Status</th>
-                                                                <th></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td><input type="text" name="menu_name" id="menu_name" class="form-control form-control-sm"></td>
-                                                                <td>
-                                                                    <select class="form-control" name="menu_availability" id="menu_availability">
-                                                                        <option selected>Choose</option>
-                                                                        <option></option>
-                                                                    </select>
-                                                                </td>
-                                                                <td><input type="number" name="pref_price" id="pref_price" class="form-control form-control-sm"></td>
-                                                                <td>
-                                                                    <select class="form-control" name="menu_availability" id="menu_availability">
-                                                                        <option selected>Choose</option>
-                                                                        <option></option>
-                                                                    </select>
-                                                                </td>
-                                                                <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
-                                                            </tr>
-                                                    </table>
-                                                    <!--Menu Items-->
-                                                    <a class="btn btn-primary btn-sm" style="color:blue">Add Addons</a> <!--Button to add row in the table-->
-                                                    <br><br>
-                                                    <table class="table table-sm table-borderless"> <!--Table containing the different input fields in adding trans items -->
-                                                        <thead class="thead-light">
-                                                            <tr>
-                                                                <th style="width:50%">Name</th>
-                                                                <th style="width:50%">Price</th>
-                                                                <th></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <select class="form-control" name="menu_availability" id="menu_availability">
-                                                                        <option selected>Choose</option>
-                                                                        <option></option>
-                                                                    </select>
-                                                                </td>
-                                                                <td><input type="number" name="item_qty" id="item_qty" class="form-control form-control-sm"></td>
-                                                                <td><img class="exitBtn" id="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px;right:0"></td>
-                                                            </tr>
-                                                    </table>
-                         
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger btn-sm"
-                                                            data-dismiss="modal">Cancel</button>
-                                                        <button class="btn btn-success btn-sm"
-                                                            type="submit">Insert</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
+            <div class="modal fade bd-example-modal" id="newAddon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document"> 
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Addon</h5>
+                            <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="<?php echo base_url()?>admin/addon/add" method="post" accept-charset="utf-8">
+                            <div class="modal-body">
+                                <!--Addon Name-->
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Name</span>
                                     </div>
+                                    <input type="text" name="aoName" class="form-control form-control-sm">
                                 </div>
-<!--End of Modal "Add Transaction"-->
-
-        </div>
-   
-    </div>
-    </div>
-    </div>
-    
-   
-
+                                <!--Price-->
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Price</span>
+                                    </div>
+                                    <input type="number" name="aoPrice" class="form-control form-control-sm">
+                                </div>   
+                                <!--Category-->                                                                                 
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Category</span>
+                                    </div>
+                                    <select class="custom-select" name="aoCategory">
+                                        <option value="" selected>Choose</option>
+                                        <option value="drinks">Drink</option>
+                                        <option value="food">Food</option>
+                                    </select>
+                                </div>
+                                <!--Status-->                                                                                 
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Status</span>
+                                    </div>
+                                    <select class="custom-select" name="aoStatus">
+                                        <option value="" selected>Choose</option>
+                                        <option value="available">Available</option>
+                                        <option value="unavailable">Unavailable</option>
+                                    </select>
+                                </div>
+        
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                        data-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-success btn-sm"
+                                        type="submit">Insert</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
+<!--End of Modal "Add Transaction"-->
+
+<!--Start of Modal "Add Menu"-->
+            <div class="modal fade bd-example-modal" id="editAddon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Addon</h5>
+                            <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="<?php echo base_url()?>admin/addon/edit" method="post" accept-charset="utf-8">
+                            <div class="modal-body">
+                                <input type="hidden" name="aoID" id="aoID" value="" />
+                                <!--Addon Name-->
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Name</span>
+                                    </div>
+                                    <input type="text" name="aoName" id="aoName" class="form-control form-control-sm">
+                                </div>
+                                <!--Price-->
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Price</span>
+                                    </div>
+                                    <input type="number" name="aoPrice" id="aoPrice" class="form-control form-control-sm">
+                                </div>   
+                                <!--Category-->                                                                                 
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Category</span>
+                                    </div>
+                                    <select class="custom-select" name="aoCategory" id="aoCategory">
+                                        <option value="" selected>Choose</option>
+                                        <option value="drinks">Drink</option>
+                                        <option value="food">Food</option>
+                                    </select>
+                                </div>
+                                <!--Status-->                                                                                 
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Status</span>
+                                    </div>
+                                    <select class="custom-select" name="aoStatus" id="aoStatus">
+                                        <option value="" selected>Choose</option>
+                                        <option value="available">Available</option>
+                                        <option value="unavailable">Unavailable</option>
+                                        <option value="deleted">Deleted</option>
+                                    </select>
+                                </div>
+        
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                        data-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-success btn-sm"
+                                        type="submit">Update</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+<!--End of Modal "Add Transaction"-->
+
+            <!--Start of Delete Modal-->
+            <div class="modal fade" id="deleteAddon" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Delete Addon</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form id="confirmDelete">
+                            <div class="modal-body">
+                                <h6 id="deleteAddonItem"></h6>
+                                <p>Are you sure you want to delete this addon?</p>
+                                <input type="text" name="addonID" hidden="hidden">
+                                <!-- <div>
+                                    Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm">
+                                </div> -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--End of Delete Modal-->
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
 
 <?php include_once('templates/scripts.php') ?>
+<script>
+    $(document).ready(function() {
+        $('.deleteBtn').click(function() {
+            var id = $(this).attr("id");
+            $("#deleteAddonItem").text(`delete ${$(this).attr("id")}`);
+            // $("#deleteAddon").find("input[name='addonID']").val($(this).attr("data-id"));
+            $("#confirmDelete").on('submit', function(event) {
+                event.preventDefault();
+                window.location = "<?php echo base_url();?>/admin/addons/delete/" + id;
+            });
+        });   
+    });
+
+        var tuples = ((document.getElementById('addonTable')).getElementsByTagName('tbody'))[0].getElementsByTagName('tr');
+        var tupleNo = tuples.length;
+        var editButtons = document.getElementsByName('editAddon');
+        var editModal = document.getElementById('editAddon');
+        for (var x = 0; x < tupleNo; x++) {
+            editButtons[x].addEventListener("click", showEditModal);
+        }
+
+        function showEditModal(event) {
+            var row = event.target.parentElement.parentElement;
+            document.getElementById('aoName').value = row.firstElementChild.innerHTML;
+            document.getElementById('aoPrice').value = row.firstElementChild.nextElementSibling.innerHTML;
+            document.getElementById('aoCategory').value = row.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+            document.getElementById('aoStatus').value = row.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
+            document.getElementById('aoID').value = event.target.getAttribute('data-id');
+        }
+
+        // $(".deleteBtn").last().on('click', function() {
+        //     $("#deleteAddonItem").text(
+        //         `Delete addon ${$(this).closest("tr").attr("data-id")}`);
+        //     $("#deleteAddon").find("input[name='addonID']").val($(this).closest("tr").attr(
+        //         "data-id"));
+        // });
+    </script>
