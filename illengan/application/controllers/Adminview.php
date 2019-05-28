@@ -127,7 +127,8 @@ class Adminview extends CI_Controller{
             $data['title'] = "Menu - Addons";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/addons');
+            $data['addon'] = $this->adminmodel->get_addons();
+            $this->load->view('admin/addons', $data);
         }else{
             redirect('login');
         }

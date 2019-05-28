@@ -32,7 +32,7 @@
                     </table>
                     <!--Start of Modal "Add Menu"-->
                     <div class="modal fade bd-example-modal-lg" aria-labelledby="exampleModalLabel" aria-hidden="true" id="newPromo" 
-                        tabindex="-1" role="dialog">
+                        tabindex="-1" role="dialog" style="overflow: auto !important;">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">

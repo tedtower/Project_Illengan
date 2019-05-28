@@ -80,7 +80,7 @@ class Customer extends CI_Controller {
 				$data['menu'] = $this->Customermodel->fetch_menu();
 				//$data['subcats'] = array_merge($this->Customermodel->fetch_allsubcats(), 
 				//$this->Customermodel->fetch_catswithmenu());
-				$data['subcats'] = $this->Customermodel->fetch_allsubcats();
+				$data['subcats'] = $this->Customermodel->fetch_availableSubcategory();
 				sort($data['subcats']);
 				$data['pref_menu'] = $this->Customermodel->fetch_menupref();
 				$data['addons'] = $this->Customermodel->fetch_addon();

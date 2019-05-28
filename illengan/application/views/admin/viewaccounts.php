@@ -35,7 +35,7 @@
                                     </tbody>
                                 </table>
                                 <!-- Start "Add Account" Modal-->
-                                <div class="modal fade" id="addNewAccounts" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="addNewAccounts" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -92,7 +92,7 @@
                                 <!-- End of Add Account Modal-->
 
                                 <!-- Start "Edit Account" Modal-->
-                                <div class="modal fade" id="editAccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="editAccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -140,7 +140,7 @@
                                 <!--End "Edit Account" Modal-->
 
                                 <!--Start "Change Password" Modal-->
-                                <div class="modal fade" id="editPassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="editPassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -334,7 +334,7 @@
         });
     }
       // Edit Account Password===========================================
-      $(document).ready(function() {
+    $(document).ready(function() {
     $("#editPassword form").on('submit', function(event) {
 		event.preventDefault();
 		var aID = $(this).find("input[name='accountId']").val();

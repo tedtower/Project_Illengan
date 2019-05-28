@@ -1,4 +1,4 @@
-<div class="modal fade" id="stock_modal" role="dialog" aria-labelledby="stockModal" aria-hidden="true">
+<div class="modal fade" id="stock_modal" role="dialog" aria-labelledby="stockModal" aria-hidden="true" style="overflow: auto !important;">
     <div class="modal-dialog">
 
       <!-- Modal content-->

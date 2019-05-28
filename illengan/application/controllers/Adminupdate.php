@@ -188,6 +188,20 @@ class Adminupdate extends CI_Controller{
             redirect('login');
         }
     }
+
+    function editAddon(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $aoID = $this->input->post('aoID');
+            $aoName = $this->input->post('aoName');
+            $aoPrice = $this->input->post('aoPrice');
+            $aoCategory = $this->input->post('aoCategory');
+            $aoStatus= $this->input->post('aoStatus');
+            $this->adminmodel->edit_addon($aoName, $aoPrice, $aoCategory, $aoStatus, $aoID);
+            redirect('admin/menu/addons');
+        }else{
+            redirect('login');
+        }
+    }
     function edit_image(){
         $data['image'] = $this->adminmodel->edit_image();
         $this->load->view('admin_module/edit_menuimage', $data);
