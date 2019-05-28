@@ -82,29 +82,39 @@ class Adminmodel extends CI_Model{
         $query = "Insert into categories (ctName, supcatID, ctType) values (?,?,'inventory')";
         return $this->db->query($query,array($ctName,$supcatID));
     }
-    function add_stockItem($stockName,$stockType,$stockCategory,$stockStatus,$stockVariance){
-        $query = "Insert into stockitems (stID,stName,stType,ctID,stStatus) values (NULL,?,?,?,?)";
-        if($this->db->query($query,array($stockName,$stockType,$stockCategory,$stockStatus))){
-            $this->add_stockVariances($this->db->insert_id(), $stockVariance);
+    function add_stockItem($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, $stockBqty, $stockLocation){
+        $query = "INSERT INTO `stockitems`(
+                `stID`,
+                `ctID`,
+                `uomID`,
+                `stName`,
+                `stQty`,
+                `stMin`,
+                `stType`,
+                `stStatus`,
+                `stBqty`,
+                `stLocation`
+            )
+            VALUES(
+                NULL,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?
+            );";
+        if($this->db->query($query,array($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, $stockBqty, $stockLocation))){
             return true;
         }
         return false;
     }
-    function add_stockVariances($stockID,$stockVariance){
-        $query = "Insert into variance (stID, vUnit, vQty, vMin, vSize, vStatus, bQty) values (?,?,?,?,?,?,?)";
-        if(count($stockVariance) > 0){
-            for($index = 0; $index < count($stockVariance) ; $index++){
-                $this->db->query($query, array($stockID, $stockVariance[$index]['varUnit'],$stockVariance[$index]['varQty'],$stockVariance[$index]['varMin'],$stockVariance[$index]['varSize'],$stockVariance[$index]['varStatus'],0));
-            }
-        }
-    }
-    function add_stockVariance($stockID,$stockVariance){
-        $query = "Insert into variance (stID, vUnit, vQty, vMin, vSize, vStatus, bQty) values (?,?,?,?,?,?,?)";
-        return $this->db->query($query, array($stockID, $stockVariance['varUnit'],$stockVariance['varQty'],$stockVariance['varMin'],$stockVariance['varSize'],$stockVariance['varStatus'],0));
-    }
-    function add_table($table_code){
-        $query = "Insert into tables (table_code) values (?);";
-        return $this->db->query($query, array($table_code));
+    function add_table($tableCode){
+        $query = "Insert into tables (tableCode) values (?);";
+        return $this->db->query($query, array($tableCode));
     }
     function add_promo($pmName, $pmStartDate, $pmEndDate, $fbName, $isElective, $prID, $pcType, $pcQty, $prIDfb, $fbQty){
         $query = "insert into promos (pmID, pmName, pmStartDate, pmEndDate) values (NULL,?,?,?)";
