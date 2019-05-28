@@ -35,7 +35,7 @@
   </div>
 
 
-  <div class="select-nav-pill">
+<!-- <div class="select-nav-pill">
     <div class="icon-div active">
       <a href="<?php echo site_url('barista/notifications') ?>">
         <img id="icon" src="<?php echo site_url('assets/media/barista/notifications.png') ?>"></a>
@@ -43,7 +43,7 @@
     <div class="nav-title">
       <p>Notifications</p>
     </div>
-  </div>
+  </div> -->
 
   <a href="<?php echo base_url('login/logout') ?>">
     <div class="select-nav-pill">

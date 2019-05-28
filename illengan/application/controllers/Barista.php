@@ -127,5 +127,16 @@ class Barista extends CI_Controller{
     function inventoryJS(){
         echo json_encode($this->baristamodel->get_inventory());
     }
+    function restockitem(){
+        $stocks = json_decode($this->input->post('stocks'), true);
+        echo json_encode($stocks, true);
+        $this->baristamodel->restock($stocks);
+    }
+    function destockitem(){
+        $stocks = json_decode($this->input->post('stocks'), true);
+        echo json_encode($stocks, true);
+        $this->baristamodel->destock($stocks);
+    }
+    
     }
 ?>
