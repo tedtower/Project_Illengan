@@ -52,8 +52,7 @@ class Adminview extends CI_Controller{
             $this->load->view('admin/templates/sideNav');
             $data['inventory'] = array(
                 "stocks" => $this->adminmodel->get_stocks(),
-                "categories" => $this->adminmodel->get_stockSubCategories(),
-                "variances" => $this->adminmodel->get_stockVariance()
+                "categories" => $this->adminmodel->get_stockSubCategories()
             );
             $data['category'] = $this->adminmodel->get_stockcategories();
             $this->load->view('admin/adminInventory',$data);
@@ -546,6 +545,14 @@ function viewSpoilagesStock(){
     function jsonSuppMerchandise() {
         $spmID = $this->input->post('spmID');
         $data = $this->adminmodel->get_suppMerchandise($spmID);
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+
+    function jsonMenuAddons() {
+        $mID = $this->input->post('mID');
+        $data = $this->adminmodel->get_menuaddons($mID);
+
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
