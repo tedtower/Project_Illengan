@@ -544,31 +544,27 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_stocks(){
-        $query = "SELECT stID, stName, var.vID, IF(SUM(vQty) IS NULL, 0, SUM(vQty)) AS 'stQty', 
-        stStatus, stType, ctName, ctID FROM stockitems 
-        LEFT JOIN variance var USING (stID) INNER JOIN categories USING (ctID) GROUP BY stID";
-        return $this->db->query($query)->result_array();
-    }
-    function get_stockVariance(){
-        $query = "SELECT 
-            vID,
+        $query = "SELECT
             stID,
             stName,
-            CONCAT(stName,
-                    ' ',
-                    vUnit,
-                    IF(vSize IS NULL, '', CONCAT(' ',vSize))) AS vName,
-            vUnit,
-            vSize,
-            vMin,
-            vQty,
-            bQty,
-            vStatus, 
-            stID
+            stMin,
+            stQty,
+            uomID,
+            uomAbbreviation,
+            stBqty,
+            UPPER(stStatus) as stStatus,
+            stType,
+            UPPER(stLocation) as stLocation,
+            ctName,
+            ctID
         FROM
-            variance
-                INNER JOIN
-            stockitems USING (stID);";
+            (
+                stockitems
+            LEFT JOIN uom USING(uomID)
+            )
+        LEFT JOIN categories USING(ctID)
+        GROUP BY
+            stID;";
         return $this->db->query($query)->result_array();
     }
     function get_menuPref(){
@@ -622,7 +618,7 @@ class Adminmodel extends CI_Model{
             poTotal,
             poDateRecorded,
             poRemarks,
-            poStatus,
+            UPPER(poStatus) as poStatus,
             spName,
             spID
         FROM
@@ -743,7 +739,7 @@ class Adminmodel extends CI_Model{
             resolvedStatus
         FROM
             invoice
-                INNER JOIN
+                LEFT JOIN
             supplier USING (spID);";
         return $this->db->query($query)->result_array();
     }

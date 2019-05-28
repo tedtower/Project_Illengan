@@ -52,8 +52,7 @@ class Adminview extends CI_Controller{
             $this->load->view('admin/templates/sideNav');
             $data['inventory'] = array(
                 "stocks" => $this->adminmodel->get_stocks(),
-                "categories" => $this->adminmodel->get_stockSubCategories(),
-                "variances" => $this->adminmodel->get_stockVariance()
+                "categories" => $this->adminmodel->get_stockSubCategories()
             );
             $data['category'] = $this->adminmodel->get_stockcategories();
             $this->load->view('admin/adminInventory',$data);
