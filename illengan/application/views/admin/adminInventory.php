@@ -24,7 +24,6 @@
                                 <th><b class="pull-left">Quantity</b></th>
                                 <th><b class="pull-left">Minimum</b></th>
                                 <th><b class="pull-left">Unit</b></th>
-                                <th><b class="pull-left">Type</b></th>
                                 <th><b class="pull-left">Status</b></th>
                                 <th><b class="pull-left">Location</b></th>
                                 <th><b class="pull-left">Action</b></th>
@@ -40,7 +39,6 @@
                                 <td><?= $stock['stQty']?></td>
                                 <td><?= $stock['stMin']?></td>
                                 <td><?= $stock['uomAbbreviation']?></td>
-                                <td><?= $stock['stType']?></td>
                                 <td><?= $stock['stStatus']?></td>
                                 <td><?= $stock['stLocation']?></td>
                                 <td>
