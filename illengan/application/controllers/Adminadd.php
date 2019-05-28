@@ -288,7 +288,6 @@ class Adminadd extends CI_Controller{
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
             $this->adminmodel->add_stockspoil($date_recorded,$stocks);
-            redirect('admin/stock/spoilages');
         }else{
             redirect('login');
         }

@@ -151,14 +151,14 @@
                                             <form id="formEdit" accept-charset="utf-8" > 
 												<div class="modal-body">
                                                     <!--Quantity-->
-                                                    <!-- <div class="input-group mb-3">
+                                                    <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Quantity</span>
                                                         </div>
                                                         <input type="number" min="1" name="msQty" id="msQty" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("msQty"); ?></span>
-                                                    </div> -->
+                                                    </div>
                                                     <!--Date Spoiled-->
 													<div class="input-group mb-3">
                                                         <div class="input-group-prepend">
@@ -316,15 +316,11 @@
             data: {
 				msID: msID,
                 prID : prID,
-                // msQty: msQty,
+                msQty: msQty,
                 msDate: msDate,
                 msRemarks: msRemarks
             },
             dataType: "json",
-            success: function(data) {
-                alert('Menu Spoilage Updated');
-				console.log(data);
-            },
             complete: function() {
                 $("#editSpoil").modal("hide");
 				location.reload();
