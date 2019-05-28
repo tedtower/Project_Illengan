@@ -57,10 +57,10 @@ class Adminadd extends CI_Controller{
             $osPayDate = trim($this->input->post('osPayDate'));
             $orderlists = json_decode($this->input->post('orderlists'), true);
             $osDateRecorded = date("Y-m-d H:i:s");
-        
+            $addons = json_decode($this->input->post('addons'), true);
             echo json_encode($orderlists, true);
             $this->adminmodel->add_salesOrder($tableCode, $custName, $osTotal, $osDate,
-            $osPayDate, $osDateRecorded, $orderlists);
+            $osPayDate, $osDateRecorded, $orderlists, $addons);
 
         }else{
             redirect('login');

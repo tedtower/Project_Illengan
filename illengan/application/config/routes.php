@@ -167,6 +167,7 @@ $route['admin/jsonSales'] ="adminview/jsonSales";
 $route['admin/jsonPrefDetails'] ="adminview/jsonPrefDetails";
 $route['admin/inventory/getitem'] = "adminview/getStockDetails";
 $route['admin/getPurchaseOrders'] = "adminview/getPurchaseOrders";
+$route['admin/jsonAddons'] = "adminview/jsonMenuAddons";
 //End Admin Json Routes ---------------------------------------
 
 //CUSTOMER ROUTES

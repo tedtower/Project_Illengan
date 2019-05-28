@@ -18,6 +18,7 @@
                                 <th></th>
                                 <th><b class="pull-left">Slip No.</b></th>
                                 <th><b class="pull-left">Table No.</b></th>
+                                <th><b class="pull-left">Customer</b></th>
                                 <th><b class="pull-left">Date</b></th>
                                 <th><b class="pull-left">Total Sale</b></th>
                                 <th><b class="pull-left">Actions</b></th>
@@ -29,7 +30,7 @@
 
                      <!--Start of Modal "Add Sales"-->
                     <div class="modal fade bd-example-modal-lg" id="addSales" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow:auto;">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -51,7 +52,7 @@
                                                         Order Paid Date</span>
                                                 </div>
                                                 <input type="date" name="osPayDate" id="osPayDate"
-                                                    class="form-control form-control-sm">
+                                                    class="form-control form-control-sm" required>
                                             </div>
 
                                             <!--Order date-->
@@ -62,7 +63,7 @@
                                                         Order Date</span>
                                                 </div>
                                                 <input type="date" name="osDate" id="osDate"
-                                                    class="form-control form-control-sm">
+                                                    class="form-control form-control-sm" required>
                                             </div>
                                         </div>
                                         <!-- Customer Name -->
@@ -84,8 +85,7 @@
                                                         style="background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Table Code</span>
                                                 </div>
-                                                <input type="text" name="tableCode" id="tableCode"
-                                                    class="form-control form-control-sm">
+                                                <select class="form-control" name="tableCode" id="tableCode"></select>
                                             </div>
                                         </div>
 
@@ -101,6 +101,7 @@
                                                     <th width="10%">Qty</th>
                                                     <th width="15%">Price</th>
                                                     <th width="15%">Subtotal</th>
+                                                    <th width="15%">Actions</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -249,6 +250,8 @@
 </div>
 </div>
 
+
+
 <?php include_once('templates/scripts.php') ?>
 <script src="<?= admin_js().'addSales.js'?>"></script>
 <script>
@@ -280,9 +283,6 @@ var tables = [];
                 tables = data.tables;
                 showTable();
             },
-            failure: function () {
-                console.log('None');
-            },
             error: function (response, setting, errorThrown) {
                 console.log(errorThrown);
                 console.log(response.responseText);
@@ -292,6 +292,7 @@ var tables = [];
         $("#addMenuItem").on('click',function(){
             setBrochureContent(menuItems);
         });
+        
     });
     function setBrochureContent(menuitems){
         $("#list").empty();
@@ -299,20 +300,24 @@ var tables = [];
             return `<label style="width:96%"><input type="checkbox" name="menuitems[]" class="orderitems mr-2" value="${menu.prID}"> ${menu.prName} - ${parseFloat(menu.prPrice).toFixed(2)}</label>`
         }).join('')}`);
     }
+    
     $('#addBtn').on('click', function() {
         $('.salesTable > tbody').empty();
         $('#addSales form')[0].reset();
         $('#total').empty();
-        $("#list").append(`${menuitems.map(menu => {
-            return `<label style="width:96%"><input type="checkbox" name="menuitems[]" class="orderitems mr-2" value="${menu.prID}"> ${menu.prName} - ${parseFloat(menu.prPrice).toFixed(2)}</label>`
+        $('#tableCode').empty();
+        $("#tableCode").append(`${tables.map(tab => {
+            return `<option value="${tab.tableCode}" selected>${tab.tableCode}</option>`;
         }).join('')}`);
     });
+    
     function showTable() {
        orderslips.forEach(function (item) {
             var tableRow = `
                 <tr class="table_row" data-id="${item.orderslips.osID}">   <!-- table row ng table -->
                     <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
                     <td>${item.orderslips.osID}</td>
+                    <td>${item.orderslips.custName}</td>
                     <td>${item.orderslips.tableCode}</td>
                     <td>${item.orderslips.osPayDate}</td>
                     <td>&#8369; ${(parseFloat(item.orderslips.osTotal)).toFixed(2)}</td>
@@ -322,14 +327,14 @@ var tables = [];
                     </td>
                 </tr>
             `;
-            var preferencesDiv = `
+            var ordersDiv = `
             <div class="preferences" style="float:left;margin-right:3%" > <!-- Preferences table container-->
-                ${item.orders[0].orderlists === 0 ? "No orders" : 
-                `
+                ${parseInt(item.orders[0].orderlists) === 0 ? "No orders" : 
+                `<caption><b>Orders</b></caption>
+                <br>
                 <table id="orderitem" class=" table table-bordered"> <!-- Preferences table-->
                     <thead class="thead-light">
                         <tr>
-                            <th></th>
                             <th scope="col">Item Name</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Price</th>
@@ -340,7 +345,6 @@ var tables = [];
                     ${item.orders.map(ol => {
                         return `
                         <tr>
-                        <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
                             <td>${ol.orderlists.mName} ${ol.orderlists.prName === 'Normal' ? " " : ol.orderlists.prName }</td>
                             <td>${ol.orderlists.olQty}</td>
                             <td>&#8369; ${ol.orderlists.prPrice}</td>
@@ -368,10 +372,12 @@ var tables = [];
                 </td>
             </tr>
             `;
+
             var addonsDiv = `
             <div class="addons" style="float:left;margin-right:3%" > <!-- Preferences table container-->
-                ${item.orders[0].addons.length === 0 ? "No add ons" : 
-                `
+                ${parseInt(item.orders[0].addons.length) === 0 ? " " : 
+                `<caption><b>Add Ons</b></caption>
+                <br>
                 <table class="table table-bordered"> <!-- Preferences table-->
                     <thead class="thead-light">
                         <tr>
@@ -397,26 +403,11 @@ var tables = [];
                 `}
             </div>
             `;
-            var aoAccordion = `
-            <tr class="accordion" style="display:none">
-                <td colspan="10"> <!-- table row ng accordion -->
-                    <div style="overflow:auto;display:none"> <!-- container ng accordion -->
-                        
-                        <div style="width:100%;overflow:auto;padding-left: 5%"> <!-- description, preferences, and addons container -->
-                            
-                            <div class="aoAccordionContent" style="overflow:auto;margin-top:1%"> <!-- Preferences and addons container-->
-                                
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            `;
+        
             $("#salesTable > tbody").append(tableRow);
             $("#salesTable > tbody").append(accordion);
-            $("#orderitem > tbody").append(aoAccordion);
-            $(".poAccordionContent").last().append(preferencesDiv);
-            $(".aoAccordionContent").last().append(addonsDiv);
+            $(".poAccordionContent").last().append(ordersDiv);
+            $(".poAccordionContent").append(addonsDiv);
         });
         $(".accordionBtn").on('click', function () {
             if ($(this).closest("tr").next(".accordion").css("display") == 'none') {
@@ -434,6 +425,7 @@ var tables = [];
         var osID = $(this).closest("tr").attr("data-id");
         //setEditModal($("#editPO"), POs.purchorders.filter(item => item.osID === osID)[0], POs.orderlists.filter(poi => poi.osID === osID));
     });
+    
     }
 
 
