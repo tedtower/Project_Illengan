@@ -9,7 +9,6 @@ class Admindelete extends CI_Controller{
         // code for getting current date and time : date("Y-m-d 2H:i:s")
     }
     function deleteAccount(){
-      
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('accountId', 'Account Id', 'trim|required');
             if($this->form_validation->run()){
@@ -23,6 +22,16 @@ class Admindelete extends CI_Controller{
         }else{
             redirect('login');
         }  
+    }
+
+    function deleteAddon($id){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+                $this->adminmodel->delete_addon($id);
+                redirect('admin/menu/addons');
+            
+        }else{
+            redirect('login');
+        }    
     }
     function deleteMenuCategory($category_id){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){

@@ -117,7 +117,6 @@
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
                 <!-- <?php
@@ -152,7 +151,7 @@
             event.preventDefault();
             var tableCode = $(this).find("input").val();
             $.ajax({
-                url: '<?= site_url('admin/tables/delete') ?>',
+                url: '<?= site_url('admin/addons/delete') ?>',
                 method: 'post',
                 data: {
                     tableCode: tableCode
@@ -168,6 +167,7 @@
                 }
             });
         });
+
         $("#formEdit").on('submit', function(event) {
             event.preventDefault();
             var tableCode = $(this).find("input[name='prevTableCode']").val();

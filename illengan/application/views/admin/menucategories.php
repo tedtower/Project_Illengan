@@ -17,7 +17,7 @@
                                 <br>
                                 <br>
                                 <table id="categTable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                                    <thead>
+                                    <thead style="background:gray;color:grey">
                                         <th><b class="pull-left">Category Name</b></th>
                                         <th><b class="pull-left">Number of Items</b></th>
                                         <th><b class="pull-left">Actions</b></th>
@@ -196,16 +196,4 @@
             document.getElementById('new_name').value = row.firstElementChild.innerHTML;
             document.getElementById('ctID').value = event.target.getAttribute('data-id');
         }
-        $(".addsupcat").on('click',function(){
-        var row=`
-        <div data-id="" style="overflow:auto;margin:2% 1%">
-            <input type="text" name="ctName[]" class="form-control form-control-sm" style="float:left;width:93%" required>
-            <img class="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px;margin:10px 3px;float:right">
-        </div>
-        `;
-        $(this).closest(".modal").find(".supcat").append(row);
-        $(this).closest(".modal").find(".exitBtn").last().on('click',function(){
-            $(this).closest("div").remove();
-        });
-    });
     </script>

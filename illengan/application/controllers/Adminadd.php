@@ -9,7 +9,6 @@ class Adminadd extends CI_Controller{
         // code for getting current date and time : date("Y-m-d H:i:s")
     }
     function addaccounts(){
-
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[50]');
         // $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
         $this->form_validation->set_rules('aUsername','Username','trim|required|is_unique[accounts.aUsername]');
@@ -104,9 +103,22 @@ class Adminadd extends CI_Controller{
         }
 
     }
+
+    function addAddon(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $aoName = $this->input->post('aoName');
+            $aoPrice = $this->input->post('aoPrice');
+            $aoCategory = $this->input->post('aoCategory');
+            $aoStatus = $this->input->post('aoStatus');
+            $this->adminmodel->add_addon($aoName, $aoPrice, $aoCategory, $aoStatus);
+            redirect('admin/menu/addons');
+        }else{
+            redirect('login');
+        }
+    }
+    
     function addSupplierMerchandise(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-           
             $spName = $this->input->post('name');
             $spContactNum = $this->input->post('contactNum');
             $spEmail= $this->input->post('email');

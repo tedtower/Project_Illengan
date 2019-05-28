@@ -98,6 +98,7 @@ $route['admin/transactions/add'] = "adminadd/addtransaction";
 $route['admin/purchaseorder/add'] = "adminadd/addPurchaseOrder";
 $route['admin/inventory/add'] = "adminadd/addstockitem";
 $route['admin/menu/add'] = "adminadd/addMenu";
+$route['admin/addon/add'] = "adminadd/addAddon";
 $route['admin/stockcategories/add'] = "adminadd/addstockcategory";
 $route['admin/menucategories/add'] = "adminadd/addmenucategory";
 $route['admin/submenucategories/add'] = "adminadd/addsubmenucategory";
@@ -118,6 +119,7 @@ $route['admin/consumption/add'] = "adminadd/addConsumption";
 $route['admin/menucategories/edit'] = "adminupdate/editmenucategory/";
 $route['admin/stockcategories/edit'] = "adminupdate/editstockcategory/";
 $route['admin/menu/edit'] = "adminupdate/edit_menu";
+$route['admin/addon/edit'] = "adminupdate/editAddon";
 $route['admin/menu/edit_image'] = "adminupdate/edit_image";
 $route['admin/inventory/edit'] = "adminupdate/editstockitem";
 $route['admin/purchaseorder/edit'] = "adminupdate/editPurchaseOrder";
@@ -135,6 +137,7 @@ $route['admin/returntransactions/edit'] = "adminupdate/editReturnTrans";
 
 //Admin Delete Routes -------------------------------------------
 $route['admin/tables/delete'] = "admindelete/deletetable";
+$route['admin/addons/delete/(:num)'] = "admindelete/deleteaddon/$1";
 $route['admin/menucategories/delete/(:num)'] = "admindelete/deletemenucategory/$1";
 $route['admin/stockcategories/delete/(:num)'] = "admindelete/deletestockcategory/$1";
 $route['admin/inventory/delete/(:num)'] = "admindelete/deletestockitem/$1";

@@ -7,6 +7,10 @@ class Adminmodel extends CI_Model{
     function add_accounts($data){
         $this->db->insert('accounts',$data);
     }
+    function add_addon($aoName, $aoPrice, $aoCategory, $aoStatus){
+        $query = "INSERT into addons (aoName, aoPrice, aoCategory, aoStatus) values (?,?,?,?)";
+        return $this->db->query($query,array($aoName, $aoPrice, $aoCategory, $aoStatus));
+    }
     function add_aospoil($date_recorded,$addons){
         $query = "insert into aospoil (aosID,aosDateRecorded) values (NULL,?)";
         if($this->db->query($query,array($date_recorded))){ 
@@ -157,7 +161,7 @@ class Adminmodel extends CI_Model{
            return false;
        }
     }
-    function add_addon($mID, $addon){
+    function add_menuaddon($mID, $addon){
         $query = "INSERT into menuaddons (mID, aoID) values (?,?)";
         if(count($addon) > 0){
             for($n = 0; $n < count(addon) ; $n++){
@@ -311,6 +315,10 @@ class Adminmodel extends CI_Model{
         $query = "Update accounts set aPassword = ?  where aID = ? ";
         return $this->db->query($query,array($new_password, $aID));  
            
+    }
+    function edit_addon($aoName, $aoPrice, $aoCategory, $aoStatus, $aoID){
+        $query = "UPDATE addons set aoName = ?, aoPrice = ?, aoCategory = ?, aoStatus = ? where aoID = ?";
+        return $this->db->query($query,array($aoName, $aoPrice, $aoCategory, $aoStatus, $aoID));
     }
     function edit_accounts($aID,$aType,$aUsername){
         $query = "update accounts set aUsername = ?, aType = ? where aID = ?";
@@ -587,9 +595,10 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_addons(){
-        $query = "Select aoID,aoName from addons";
+        $query = "Select * from addons";
         return $this->db->query($query)->result_array();
     }
+
     function get_purchOrders() {
         $query ="Select * FROM purchaseorder INNER JOIN supplier USING (spID)";
         return $this->db->query($query)->result_array();
@@ -886,6 +895,10 @@ class Adminmodel extends CI_Model{
     function delete_account($accountId){
         $query = "Delete from accounts where aID = ?";
         return $this->db->query($query, array($accountId));
+    }
+    function delete_addon($id){
+        $query = "UPDATE addons set aoStatus = 'archived' where aoID = ?"; 
+        return $this->db->query($query, array($id));
     }
     function delete_menucategory($ctID){
         $query = "delete from categories where ctID = ? and ctType= 'menu'";

@@ -334,7 +334,7 @@
         });
     }
       // Edit Account Password===========================================
-      $(document).ready(function() {
+    $(document).ready(function() {
     $("#editPassword form").on('submit', function(event) {
 		event.preventDefault();
 		var aID = $(this).find("input[name='accountId']").val();

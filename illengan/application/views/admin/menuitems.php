@@ -1,5 +1,5 @@
 <!--End Side Bar-->
-<div class="content">
+<div class="content" style="background:white">
 <div class="container-fluid">
 <br>
     <p style="text-align:right; font-weight: regular; font-size: 16px">
@@ -26,10 +26,9 @@
                             </div>-->
                                 <br>
                                 <br>
-            <table id="menuTable" class="table dt-responsive nowrap" cellspacing="0" width="100%">
-                <thead class="thead-light">
-                    <tr>
-                        <th></th>
+            <table id="menuTable" class="table  table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
+                <thead class="thead-dark">
+                    <tr class="text-center">
                         <th>Menu Item</th>
                         <th>Category</th>
                         <th>Status</th>
@@ -40,6 +39,7 @@
                     
                 </tbody>
             </table>
+
             <!--Start of Modal "Add Menu"-->
             <div class="modal fade bd-example-modal-lg" id="newMenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
@@ -241,6 +241,11 @@ $(document).ready(function() {
 
     $("#newMenu form").on('submit', function(event) {
         event.preventDefault();
+        // var image = $(this).find("input[name='mImage']")[0].files[0];
+        // var name = $(this).find("input[name='mName']").val();
+        // var description = $(this).find("input[name='mDesc']").val();
+        // var category = $(this).find("input[name='ctName']").val();
+        // var status = $(this).find("input[name='mAvailability']").val();
         var preferences = [];
         for (var index = 0; index < $(this).find(".preferencetable > tbody").children().length; index++) {
             preferences.push({
@@ -260,6 +265,7 @@ $(document).ready(function() {
             url: "<?= site_url("admin/menu/add")?>",
             method: "post",
             data: {
+                formdata: new FormData(this),
                 preferences: JSON.stringify(preferences),
                 addons: JSON.stringify(addons)
             },
@@ -344,10 +350,9 @@ $(document).ready(function() {
         menu.forEach(function(item){
             var tableRow = `                
                 <tr class="table_row" data-menuId="${item.menu.mID}">   <!-- table row ng table -->
-                    <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
-                    <td>${item.menu.mName}</td>
+                    <td><a href="javascript:void(0)" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${item.menu.mName}</td>
                     <td>${item.menu.ctName}</td>
-                    <td>${item.menu.mAvailability}</td>
+                    <td class="text-center">${item.menu.mAvailability}</td>
                     <td>
                         <button class="editBtn btn btn-sm btn-primary">Edit</button>
                         <button class="deleteBtn btn btn-sm btn-danger">Delete</button>
@@ -383,16 +388,16 @@ $(document).ready(function() {
             </div>
             `;
             var accordion = `
-            <tr class="accordion" style="display:none">
+            <tr class="accordion" style="display:none;background: #f9f9f9">
                 <td colspan="5"> <!-- table row ng accordion -->
                     <div style="overflow:auto;display:none"> <!-- container ng accordion -->
                         <div style="width:280px;overflow:auto;float:left;margin-right:3%"> <!-- image container -->
-                            <img src="<?=site_url('uploads/')?>${item.menu.mImage}" style="width:280px;height:180px">
+                            <img src="<?= site_url('uploads/');?>${item.menu.mImage == null ? 'no_image.jpg' : item.menu.mImage}" alt="Missing Image" style="width:280px;height:180px">
                         </div>
                         
                         <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
                             <div><b>Description:</b> <!-- label-->
-                                <p>${item.menu.mDesc}
+                                <p>${item.menu.mDesc == null ? "Description is not available." : item.menu.mDesc}
                                 </p>
                             </div> 
                             <div class="aoAndPreferences" style="overflow:auto;margin-top:1%"> <!-- Preferences and addons container-->
