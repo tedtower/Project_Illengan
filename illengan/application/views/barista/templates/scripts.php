@@ -21,5 +21,4 @@
 <script src="<?= framework_url().'datatables-bootstrap4/js/pdfmake.min.js'?>"></script>
 <script src="<?= framework_url().'datatables-bootstrap4/js/vfs_fonts.js'?>"></script>
 
-
 </html>

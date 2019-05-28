@@ -101,6 +101,7 @@ $route['admin/menu/add'] = "adminadd/addMenu";
 $route['admin/addon/add'] = "adminadd/addAddon";
 $route['admin/stockcategories/add'] = "adminadd/addstockcategory";
 $route['admin/menucategories/add'] = "adminadd/addmenucategory";
+$route['admin/sales/add'] = "adminadd/addSales";
 $route['admin/submenucategories/add'] = "adminadd/addsubmenucategory";
 $route['admin/substockcategories/add'] = "adminadd/addsubstockcategory";
 $route['admin/accounts/add'] = "adminadd/addaccounts";
@@ -165,6 +166,8 @@ $route['admin/addon/spoilages/viewAddonJS'] ="adminview/viewAddonJS";
 $route['admin/jsonPOrders'] ="adminview/jsonPurchaseOrders";
 $route['admin/jsonSupp'] ="adminview/jsonSuppliers";
 $route['admin/jsonMerchandise'] ="adminview/jsonSuppMerchandise";
+$route['admin/jsonSales'] ="adminview/jsonSales";
+$route['admin/jsonPrefDetails'] ="adminview/jsonPrefDetails";
 $route['admin/inventory/getitem'] = "adminview/getStockDetails";
 $route['admin/getPurchaseOrders'] = "adminview/getPurchaseOrders";
 //End Admin Json Routes ---------------------------------------
@@ -186,6 +189,9 @@ $route['barista/orders'] = "barista/pendingOrders";
 $route['barista/billings'] = "barista/getbills";
 $route['barista/getBillDetails'] = "barista/getBillDetails";
 $route['barista/billings/setStatus'] = "barista/setbillstatus";
+$route['barista/inventory'] = "barista/viewInventory";
+$route['barista/inventoryJS'] = "barista/inventoryJS";
+
 
 //BARISTA JS ROUTES
 // $route['barista/orderslipJS'] = "barista/viewOrderslipJS";

@@ -41,7 +41,7 @@
                                 <!--End Table Content-->
 
                                 <!--Start of Modal "Add Transaction"-->
-                                <div class="modal fade bd-example" id="newMCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade bd-example" id="newMCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -115,7 +115,7 @@
                                 <!--End of Modal "Add Menu Category"-->
 
                                 <!--Start of Modal "Edit Transaction"-->
-                                <div class="modal fade bd-example" id="editCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade bd-example" id="editCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">

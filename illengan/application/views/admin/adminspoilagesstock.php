@@ -31,7 +31,7 @@
 							</table>
 							<!--End Table Content-->
 							<!--Start of Modal "Add Stock Spoilages"-->
-							<div class="modal fade bd-example-modal-lg" id="addStockSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal fade bd-example-modal-lg" id="addStockSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
 								<div class="modal-dialog modal-lg" role="document">
 									<div class="modal-content">
 										<div class="modal-header">

@@ -120,5 +120,12 @@ class Barista extends CI_Controller{
                 redirect('login');
             }
         }
+    function viewinventory(){
+        $this->load->view('barista/navigation');
+        $this->load->view('barista/baristaInventory');
+    }
+    function inventoryJS(){
+        echo json_encode($this->baristamodel->get_inventory());
+    }
     }
 ?>

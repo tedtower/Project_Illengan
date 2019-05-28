@@ -46,6 +46,25 @@ class Adminadd extends CI_Controller{
             redirect('login');
         }
     }
+    
+    function addSales() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $tableCode = trim($this->input->post('tableCode'));
+            $custName = trim($this->input->post('custName'));
+            $osTotal = trim($this->input->post('osTotal'));
+            $osDate = trim($this->input->post('osDate'));
+            $osPayDate = trim($this->input->post('osPayDate'));
+            $orderlists = json_decode($this->input->post('orderlists'), true);
+            $osDateRecorded = date("Y-m-d H:i:s");
+        
+            echo json_encode($orderlists, true);
+            $this->adminmodel->add_salesOrder($tableCode, $custName, $osTotal, $osDate,
+            $osPayDate, $osDateRecorded, $orderlists);
+
+        }else{
+            redirect('login');
+        }
+    }
     function addSubMenuCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $ctName = trim($this->input->post('ctName'));

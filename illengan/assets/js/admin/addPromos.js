@@ -54,48 +54,33 @@ $(document).ready(function() {
                ' <td><select class="isElective form-control" name="isElective" id="isElective">' +
                         '<option value="0" selected>Self Freebie</option>' +
                         '<option value="1">Freebie Selection</option></select></td>' +
-                '<td><a id="addFreebie2" class="subFB btn btn-primary btn-sm" style="color:blue">Add Freebies</a></td></tr></table>';
+                '<td><a id="addFreebie2" class="subFB btn btn-primary btn-sm" data-toggle="modal" data-target="#addSubFreebie"'+ 
+                'data-original-title style="margin:0" id="addPOBtn"'+
+                'style="color:blue">Add Freebies</a></td></tr></table>';
         $('#fbTable').append(fbTable);
 
         $('.subFB').on('click', function() {
             var elective = $(this).closest("tr").find("td > select").val();
-            var subTable;
+            console.log(elective);
 
-            if(elective != 0) {
-                subTable = '<table id="subAddFreebie" class="table table-lg table-borderless pmTab">'+
-            '<thead class="thead-light">'+
-                '<tr><th>Menu Item</th>'+
-                    '<th>Quantity Constraint</th>'+
-                    '<th>Freebie Item</th>'+
-                    '<th>Freebie Quantity</th></tr></thead>'+
-            '<tbody><tr><td><select class="form-control promoOpt" name="menu_name" id="menu_name"></select></td>'+
-                    '<td><input type="number" name="pcQty" id="pcQty" min="0" class="form-control form-control-sm"></td>'+
-                    '<td><select class="form-control promoOpt" name="fb_item" id="fb_item"></select></td>'+
-                    '<td><input type="number" name="fbQty" id="fbQty" min="0" class="form-control form-control-sm"></td>'+
-                '</tr></table>';
-                $(this).closest('.pmTab').after(subTable);
-                addItemOptions();
-            } else {
-                subTable = '<table id="subAddFreebie" class="table table-lg table-borderless pmTab">'+
-            '<thead class="thead-light">'+
-                '<tr><th>Menu Item</th>'+
-                    '<th>Quantity Constraint</th>'+
-                    '<th>Freebie Item</th>'+
-                    '<th>Freebie Quantity</th></tr></thead>'+
-            '<tbody><tr><td><select class="form-control promoOpt" name="menu_name" id="menu_name"></select></td>'+
-                    '<td><input type="number" name="pcQty" id="pcQty" min="0" class="form-control form-control-sm"></td>'+
-                    '<td><select class="form-control promoOpt" name="fb_item" id="fb_item" readonly="readonly" disabled></select></td>'+
-                    '<td><input type="number" name="fbQty" id="fbQty" min="0" class="form-control form-control-sm"></td>'+
-                '</tr></table>';
-                $(this).closest('.pmTab').after(subTable);
-                addItemOptions();
-            }
+            if(elective == 0) {
+                    $(".fbItem").val($(".menuName").val());
+                    $(".fbItem").attr("readonly","readonly");
+                    $(".fbItem").attr("disabled", true);    
+            } 
             
+        });
         
+
+        $(".fbItem").on('change', function() {
+            $(".fbItem").val($(".menuName").val());
+            console.log($(fbItem).val())
         });
         });
 
 });
+
+
 
 function addPromos() {
         var pmName = $('#pmName').val();
