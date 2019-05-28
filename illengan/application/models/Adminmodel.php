@@ -601,7 +601,11 @@ class Adminmodel extends CI_Model{
         $query = "Select * from addons";
         return $this->db->query($query)->result_array();
     }
-
+    function get_menuaddons($mID) {
+        $query = "SELECT * FROM menu mn INNER JOIN menuaddons ma USING (mid) INNER JOIN addons ao USING (aoID) 
+        WHERE mn.mID = ? AND ao.aoStatus = 'available'";
+         return $this->db->query($query, array($mID))->result_array();
+    }
     function get_purchOrders() {
         $query ="Select * FROM purchaseorder INNER JOIN supplier USING (spID)";
         return $this->db->query($query)->result_array();
@@ -934,26 +938,41 @@ class Adminmodel extends CI_Model{
     function add_source($data){
         $this->db->insert("sources", $data);
     }
-    function add_salesOrder($tableCode, $custName, $osTotal, $osDate, $osPayDate, $osDateRecorded, $orderlists) {
+    function add_salesOrder($tableCode, $custName, $osTotal, $osDate, $osPayDate, $osDateRecorded, $orderlists, $addons) {
         $query = "insert into orderslips (osID, tableCode, custName, osTotal, payStatus, 
         osDate, osPayDate, osDateRecorded) values (NULL,?,?,?,?,?,?,?);";
         if($this->db->query($query,array($tableCode, $custName, $osTotal, 'paid', $osDate, $osPayDate, $osDateRecorded))) {
-            $this->add_salesList($this->db->insert_id(), $orderlists);
+            $this->add_salesList($this->db->insert_id(), $orderlists, $addons);
             return true;
             }
         }
 
-    function add_salesList($osID, $orderlists) {
+    function add_salesList($osID, $orderlists, $addons) {
         $query = "insert into orderlists (olID, prID, osID, olDesc, olQty, 
         olSubtotal, olStatus, olRemarks) values (NULL,?,?,?,?,?,?,?);";
         if(count($orderlists) > 0){
              for($in = 0; $in < count($orderlists) ; $in++){
-              $this->db->query($query, array($orderlists[$in]['prID'], $osID, $orderlists[$in]['olDesc'], 
-              $orderlists[$in]['olQty'], $orderlists[$in]['olSubtotal'],'served', ' '));
+              if($this->db->query($query, array($orderlists[$in]['prID'], $osID, $orderlists[$in]['olDesc'], 
+              $orderlists[$in]['olQty'], $orderlists[$in]['olSubtotal'],'served', ' ')) && count($addons) > 0) {
+                $this->add_salesAddons($this->db->insert_id(), $orderlists[$in]['prID'], $addons);
+                return true;
+              }
         }
     }   else {
         return false;
     }
+    }
+
+    function add_salesAddons($olID, $olprID, $addons) {
+        $query = "INSERT INTO orderaddons (aoID, olID, aoQty, aoTotal) VALUES (?, ?, ?, ?);";
+        
+          for($in = 0; $in < count($addons); $in++){
+            if($olprID == $addons[$in]['prID']) {
+            $this->db->query($query, array($addons[$in]['aoID'], $olID, $addons[$in]['aoQty'], 
+                  $addons[$in]['aoTotal']));
+            }
+    }
+
     }
     // function add_poItems($poID, $merchandise) {
     //     $query = "insert into poitems (poiID, vID, poID, poiName, poiQty, poiUnit, poiPrice, poiStatus) values

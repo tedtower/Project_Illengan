@@ -549,6 +549,14 @@ function viewSpoilagesStock(){
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
 
+    function jsonMenuAddons() {
+        $mID = $this->input->post('mID');
+        $data = $this->adminmodel->get_menuaddons($mID);
+
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+
 }
 
 ?>
