@@ -201,17 +201,19 @@ class Adminadd extends CI_Controller{
             if($this->form_validation->run() == FALSE){
                 redirect("admin/dashboard");
             }else{
+                $stockCategory = $this->input->post('category'); 
+                $stockBqty = $this->input->post('bqty');
+                $stockLocation = $this->input->post('location');
+                $stockMin = $this->input->post('min');
                 $stockName = $this->input->post('name');
-                $stockType = $this->input->post('type');
-                $stockCategory = $this->input->post('category');
+                $stockQty = $this->input->post('qty');
                 $stockStatus = $this->input->post('status');
-                $stockVariance = json_decode($this->input->post('variances'),true);
-                if($this->adminmodel->add_stockItem($stockName,$stockType,$stockCategory,$stockStatus,$stockVariance)){
+                $stockType = $this->input->post('type');
+                $stockUom = $this->input->post('uom');
+                if($this->adminmodel->add_stockItem($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, $stockBqty, $stockLocation)){
                     echo json_encode(array(
                         "stocks" => $this->adminmodel->get_stocks(),
-                        "categories" => $this->adminmodel->get_stockSubCategories(),
-                        "variances" => $this->adminmodel->get_stockVariance(),
-                        "expirations" => $this->adminmodel->get_stockExpiration()
+                        "categories" => $this->adminmodel->get_stockSubCategories()
                     ));
                 }else{
                     redirect("admin/dashboard");
