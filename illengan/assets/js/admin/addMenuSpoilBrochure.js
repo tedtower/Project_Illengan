@@ -63,10 +63,6 @@ function addMenuItems() {
             menus: JSON.stringify(menus)
         },
         dataType: 'json',
-        success: function (data) {
-            alert('Spoiled Menu Added');
-            newFunction(data);
-        },
         complete: function() {
             $('#addmenuspoilage').modal('hide');
             location.reload();

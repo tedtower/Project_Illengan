@@ -152,14 +152,14 @@
                                             <form id="formEdit" accept-charset="utf-8" > 
 												<div class="modal-body">
                                                     <!--Quantity-->
-                                                    <!-- <div class="input-group mb-3">
+                                                    <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Quantity</span>
                                                         </div>
                                                         <input type="number" min="1" name="aosQty" id="aosQty" class="form-control form-control-sm">
                                                         <span class="text-danger"><?php echo form_error("aosQty"); ?></span>
-                                                    </div> -->
+                                                    </div>
                                                     <!--Date Spoiled-->
 													<div class="input-group mb-3">
                                                         <div class="input-group-prepend">
@@ -307,7 +307,7 @@
 		event.preventDefault();
 		var aoID = $(this).find("input[name='aoID']").val();
 		var aosID = $(this).find("input[name='aosID']").val();
-        // var aosQty = $(this).find("input[name='aosQty']").val();
+        var aosQty = $(this).find("input[name='aosQty']").val();
         var aosDate = $(this).find("input[name='aosDate']").val();
         var aosRemarks = $(this).find("input[name='aosRemarks']").val();
        
@@ -317,15 +317,11 @@
             data: {
 				aoID: aoID,
 				aosID: aosID,
-                // aosQty: aosQty,
+                aosQty: aosQty,
                 aosDate: aosDate,
                 aosRemarks: aosRemarks
             },
             dataType: "json",
-            success: function(data) {
-                alert('Addon Spoilage Updated');
-				console.log(data);
-            },
             complete: function() {
                 $("#editSpoil").modal("hide");
 				location.reload();

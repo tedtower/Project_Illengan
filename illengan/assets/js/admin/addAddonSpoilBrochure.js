@@ -64,10 +64,6 @@ function addAddonItems() {
             addons: JSON.stringify(addons)
         },
         dataType: 'json',
-        success: function (data) {
-            alert('Spoiled Addon Added');
-            newFunction(data);
-        },
         complete: function() {
             $("#formAdd").modal("hide");
             location.reload();
