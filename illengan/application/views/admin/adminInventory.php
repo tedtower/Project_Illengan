@@ -25,6 +25,7 @@
                                 <th><b class="pull-left">Unit</b></th>
                                 <th><b class="pull-left">Storage</b></th>
                                 <th><b class="pull-left">Status</b></th>
+                                <th><b class="pull-left">Location</b></th>
                                 <th><b class="pull-left">Action</b></th>
                             </tr>
 
