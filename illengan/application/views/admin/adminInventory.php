@@ -25,7 +25,6 @@
                                 <th><b class="pull-left">Unit</b></th>
                                 <th><b class="pull-left">Storage</b></th>
                                 <th><b class="pull-left">Status</b></th>
-                                <th><b class="pull-left">Location</b></th>
                                 <th><b class="pull-left">Action</b></th>
                             </tr>
 
@@ -163,10 +162,25 @@
                                                 <input type="text" name="stockName" id="stockName"
                                                     class="form-control form-control-sm">
                                             </div>
+                                            <!--Stock Type-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Type</span>
+                                                </div>
+                                                <select name="stockType" class="form-control">
+                                                    <option value="" selected>Choose</option>
+                                                    <option value="liquid">Liquid</option>
+                                                    <option value="solid">Solid</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
                                             <!--Stock size-->
                                             <div class="input-group mb-3 col">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="">Size</span>
+                                                    <span class="input-group-text" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">Size</span>
                                                 </div>
                                                 <input type="text" name="stockSize" class="form-control">
                                                 <select class="form-control" name="stockUOM" style="border-left:1px solid whitesmoke">
@@ -174,26 +188,17 @@
                                                     <option value=""></option>
                                                 </select>
                                             </div>
-                                        </div>
-
-                                        <div class="form-row">
-                                            <!--Quantity-->
+                                            <!--Stock Storage-->
                                             <div class="input-group mb-3 col">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="inputGroup-sizing-sm"
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                        Quantity</span>
+                                                        Storage</span>
                                                 </div>
-                                                <input type="number" name="stockQty" class="form-control">
-                                            </div>
-                                            <!--Min Quantity-->
-                                            <div class="input-group mb-3 col">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                        style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                        Min Qty</span>
-                                                </div>
-                                                <input type="number" name="stockMinQty" class="form-control">
+                                                <select name="stockStorage" class="form-control">
+                                                    <option value="" selected>Choose</option>
+                                                    <option value=""></option>
+                                                </select>
                                             </div>
                                         </div>
 
@@ -224,34 +229,27 @@
                                                 </select>
                                             </div>
                                         </div>
-
                                         <div class="form-row">
-                                            <!--Stock Type-->
+                                            <!--Quantity-->
                                             <div class="input-group mb-3 col">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="inputGroup-sizing-sm"
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                        Type</span>
+                                                        Quantity</span>
                                                 </div>
-                                                <select name="stockType" class="form-control">
-                                                    <option value="" selected>Choose</option>
-                                                    <option value="liquid">Liquid</option>
-                                                    <option value="solid">Solid</option>
-                                                </select>
+                                                <input type="number" name="stockQty" class="form-control">
                                             </div>
-                                            <!--Stock Storage-->
+                                            <!--Min Quantity-->
                                             <div class="input-group mb-3 col">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="inputGroup-sizing-sm"
                                                         style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                        Storage</span>
+                                                        Min Qty</span>
                                                 </div>
-                                                <select name="stockStorage" class="form-control">
-                                                    <option value="" selected>Choose</option>
-                                                    <option value=""></option>
-                                                </select>
+                                                <input type="number" name="stockMinQty" class="form-control">
                                             </div>
                                         </div>
+
                                     </div>
 
                                     <div class="modal-footer">
