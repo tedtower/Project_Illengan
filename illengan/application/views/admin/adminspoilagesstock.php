@@ -22,9 +22,8 @@
 									<th>Quantity</th>
 									<th>Date Spoiled</th>
 									<th>Date Recorded</th>
-									<th>Remarks</th>
 									<th>Operation</th>
-									
+								
 								</thead>
 								<tbody id="spoilage_data">
 								</tbody>
@@ -238,17 +237,7 @@
 	//-----------------------End of Brochure Populate--------------------------	
 	//POPULATE TABLE
 	var table = $('#spoilagesTable');
-	function format(d) {
-		return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-			'<tr>' +
-			'<td>Remarks</td>' +
-			'</tr>' +
-			'<tr>' +
-			'<td>' + d.ssRemarks + '</td>' +
-			'</tr>' +
-			'</table>';
-
-	}
+	
 	function viewSpoilagesJs() {
         $.ajax({
             url: "<?= site_url('admin/spoilagesstockjson') ?>",
@@ -270,12 +259,11 @@
         }
         spoilages.forEach(table => {
             $("#spoilagesTable> tbody").append(`
-            <tr data-stID="${table.stID}" data-ssID="${table.ssID}" data-spoilname="${table.stName}" data-curQty="${table.ssQty}">
-                <td>${table.stName}</td>
+			<tr data-stID="${table.stID}" data-ssID="${table.ssID}" data-spoilname="${table.stName}" data-curQty="${table.ssQty}">
+			<td><a data-toggle="collapse" href="#collapseExample" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${table.stName}</td>
                 <td>${table.ssQty}</td>
 				<td>${table.ssDate}</td>
 				<td>${table.ssDateRecorded}</td>
-				<td>${table.ssRemarks}</td>
                 <td>
                         <!--Action Buttons-->
                         <div class="onoffswitch">
@@ -288,7 +276,16 @@
                             data-target="#deleteSpoilage">Delete</button>                      
                         </div>
                     </td>
-                </tr>`);
+				</tr>
+				<tr colspan="5">
+				<td><div class="collapse" id="collapseExample">
+						<div >
+						<p><b>Remarks</b></p>
+						${table.ssRemarks}
+						</div>
+					</div>
+				</td>
+				</tr>`);
             $(".updateBtn").last().on('click', function () {
                 $("#editSpoil").find("input[name='ssID']").val($(this).closest("tr").attr(
 					"data-ssID"));

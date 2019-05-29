@@ -24,10 +24,12 @@ function getSelectedAddons() {
                                     class="form-control form-control-sm" value="" required></td>
                             <td><input type="text" id="aosRemarks` + i + `" name="aosRemarks"
                                     class="form-control form-control-sm"  value="" required></td>
-                            <td><img class="exitBtn"
-                                    src="/assets/media/admin/error.png"
-                                    style="width:20px;height:20px"></td>
+                            <td class="text-center" id="temp1"><a href="javascript:void(0)" class="exitBtn" onclick="remove()"><img src="/assets/media/admin/error.png" style="width:20px;height:20px"></a></td>
                             </tr>`;
+                        //    function remove(){
+                        //         $(this).closest("tr").remove();
+                        //    };
+
                     $('.addonspoilageTable > tbody').append(addonChecked);
                 }
 

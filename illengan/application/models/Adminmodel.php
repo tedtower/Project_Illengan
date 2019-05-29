@@ -54,7 +54,7 @@ class Adminmodel extends CI_Model{
             if(count($stocks) > 0){
                 for($in = 0; $in < count($stocks) ; $in++){
                    $this->db->query($query, array($ssID, $stocks[$in]['stID'], $stocks[$in]['ssQty'], $stocks[$in]['ssDate'],$stocks[$in]['ssRemarks']));  
-                   $this->db->query($stocks[$in]['stID'],$stocks[$in]['curQty'],$stocks[$in]['ssQty']);    
+                   $this->destockvarItems($stocks[$in]['stID'],$stocks[$in]['curQty'],$stocks[$in]['ssQty']);    
                 }    
             }
     }

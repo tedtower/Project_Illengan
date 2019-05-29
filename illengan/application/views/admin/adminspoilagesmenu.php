@@ -22,7 +22,6 @@
 									<th>Quantity</th>
 									<th>Date Spoiled</th>
 									<th>Date Recorded</th>
-									<th>Remarks</th>
 									<th>Operation</th>
 									
 								</thead>
@@ -232,17 +231,6 @@
 	//-----------------------End of Brochure Populate--------------------------		
 	//POPULATE TABLE
 	var table = $('#menuTable');
-	function format(d) {
-		return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-			'<tr>' +
-			'<td>Remarks</td>' +
-			'</tr>' +
-			'<tr>' +
-			'<td>' + d.msRemarks + '</td>' +
-			'</tr>' +
-			'</table>';
-
-	}
 	function viewSpoilagesJs() {
         $.ajax({
             url: "<?= site_url('admin/spoilagesmenujson') ?>",
@@ -265,11 +253,10 @@
         spoilages.forEach(table => {
             $("#menuTable> tbody").append(`
             <tr data-prID="${table.prID}" data-msID="${table.msID}" data-spoilname="${table.vName}">
-                <td>${table.mName}</td>
+				<td><a data-toggle="collapse" href="#collapseExample" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${table.mName}</td>
                 <td>${table.msQty}</td>
 				<td>${table.msDate}</td>
 				<td>${table.msDateRecorded}</td>
-				<td>${table.msRemarks}</td>
                 <td>
                         <!--Action Buttons-->
                         <div class="onoffswitch">
@@ -282,7 +269,16 @@
                             data-target="#deleteSpoilage">Delete</button>                      
                         </div>
                     </td>
-                </tr>`);
+                </tr>
+				<tr colspan="5">
+				<td><div class="collapse" id="collapseExample">
+						<div >
+						<p><b>Remarks</b></p>
+						${table.msRemarks}
+						</div>
+					</div>
+				</td>
+				</tr>`);
             $(".updateBtn").last().on('click', function () {
 				$("#editSpoil").find("input[name='prID']").val($(this).closest("tr").attr(
                     "data-prID"));
