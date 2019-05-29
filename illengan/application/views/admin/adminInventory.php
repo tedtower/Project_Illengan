@@ -11,7 +11,7 @@
                 <!--Table-->
                 <div class="container-fluid">
                 <div class="card-content">
-                    <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newStock" data-original-title
+                    <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addEditStock" data-original-title
                         style="margin:0;color:blue" id="addBtn">Add Stock Item</a>
                     <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#restock" data-original-title
                         style="margin:0;color:blue" id="addBtn">Restock</a>
@@ -141,7 +141,7 @@
                     <!--End of Brochure Modal"-->
 
                     <!--Start of Modal "Add Stock Item"-->
-                    <div class="modal fade bd-example-modal-lg" id="newStock" tabindex="-1" role="dialog"
+                    <div class="modal fade bd-example-modal-lg" id="addEditStock" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
@@ -154,38 +154,47 @@
                                 <form action="<?php echo base_url('admin/inventory/add')?>" method="get"
                                     accept-charset="utf-8">
                                     <div class="modal-body" style="margin:1%;">
-                                        <div class="form-row">
-                                            <!--Stock name-->
-                                            <div class="input-group mb-3 col">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                        style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                        Stock Name</span>
-                                                </div>
-                                                <input type="text" name="stockName" id="stockName"
-                                                    class="form-control form-control-sm">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                    Stock Name</span>
                                             </div>
+                                            <input type="text" name="stockName" id="stockName"
+                                                class="form-control form-control-sm">
+                                        </div>
+                                        <div class="form-row">
                                             <!--Stock Type-->
                                             <div class="input-group mb-3 col">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                        style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                        Type</span>
+                                                        <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                            style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46,0.9);font-size:14px;">
+                                                            Type</span>
+                                                    </div>
+                                                    <select name="stockType" class="form-control">
+                                                        <option value="" selected>Choose</option>
+                                                        <option value="liquid">Liquid</option>
+                                                        <option value="solid">Solid</option>
+                                                    </select>
                                                 </div>
-                                                <select name="stockType" class="form-control">
-                                                    <option value="" selected>Choose</option>
-                                                    <option value="liquid">Liquid</option>
-                                                    <option value="solid">Solid</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
                                             <!--Stock size-->
                                             <div class="input-group mb-3 col">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">Size</span>
                                                 </div>
                                                 <input type="text" name="stockSize" class="form-control">
+                                                <select class="form-control" name="stockSizeUOM" style="border-left:1px solid whitesmoke">
+                                                    <option value="">Choose Unit</option>
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <!--Stock UOM-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">Stock UOM</span>
+                                                </div>
                                                 <select class="form-control" name="stockUOM" style="border-left:1px solid whitesmoke">
                                                     <option value="">Choose Unit</option>
                                                     <option value=""></option>
@@ -258,7 +267,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger btn-sm"
                                             data-dismiss="modal">Cancel</button>
-                                        <button class="btn btn-success btn-sm" type="submit">Add</button>
+                                        <button class="btn btn-success btn-sm" type="submit">Insert</button>
                                     </div>
                                 </form>
                             </div>
@@ -329,17 +338,17 @@ $(document).ready(function() {
             $(this).closest("tr").next(".accordion").hide("slow");
         }
     });
-    $("#newStock").find("select[name='stockCategory']").append(`
-    ${inventory.categories.map(category => {
-        return `<option value="${category.ctID}">${category.ctName}</option>`
-    }).join('')}`);
+    $("#addEditStock").find("select[name='stockCategory']").append(`
+        ${inventory.categories.map(category => {
+            return `<option value="${category.ctID}">${category.ctName}</option>`
+        }).join('')}`);
     $("#editStock").find("select[name='stockCategory']").append(`
-    ${inventory.categories.map(category => {
-        return `<option value="${category.ctID}">${category.ctName}</option>`
-    }).join('')}`);
+        ${inventory.categories.map(category => {
+            return `<option value="${category.ctID}">${category.ctName}</option>`
+        }).join('')}`);
     console.log(inventory);
     $("#addBtn").on('click', function() {
-        $("#newStock form")[0].reset();
+        $("#addEditStock form")[0].reset();
         console.log(inventory);
     });
     $(".editBtn").on("click", function() {
@@ -391,7 +400,7 @@ $(document).ready(function() {
         });
     });
     // setTableData();
-    $("#newStock form").on('submit', function(event) {
+    $("#addEditStock form").on('submit', function(event) {
         event.preventDefault();
         var name = $(this).find("input[name='stockName']").val();
         var type = $(this).find("select[name='stockType']").val();
@@ -401,88 +410,45 @@ $(document).ready(function() {
         var min = $(this).find("input[name='stockMinQty']").val();
         var qty = $(this).find("input[name='stockQty']").val();
         var uom = $(this).find("select[name='stockUOM']").val();
-        var size = ;
+        var size = $(this).find("select[name='stockSize']").val().concat($(this).find("select[name='stockSizeUOM']").val());
         $.ajax({
-            url: "<?= site_url("admin/inventory/add")?>",
+            url: "<?= site_url("admin/inventory/addEdit")?>",
             method: "post",
             data: {
                 name: name,
                 type: type,
                 category: category,
                 status: status,
-                variances: JSON.stringify(stockVariances)
+                storage: storage,
+                min: min,
+                qty: qty,
+                uom: uom,
+                size: size
             },
             dataType: "json",
             beforeSend: function() {
-                console.log(name, type, category, status, stockVariances);
+                console.log("Name: ", name, " Type: ", type, " Category: ", category, " Status: ", status, " Storage: ", storage, " Min: ", min, " QTY: ", qty, " UOM: ", uom, " Size: ", size, "");
             },
             success: function(data) {
-                console.log(data);
-                // inventory = data;
-                // lastIndex = 0;
-                // setTableData();
+                 if(data.sessErr){
+                     window.location.replace("<?= site_url('login')?>");
+                 }else if(data.dbErr){
+                     alert("Database Error");
+                 }else{
+                     console.log(data);
+                 }
             },
             error: function(response, setting, error) {
                 console.log(response.responseText);
                 console.log(error);
             },
             complete: function() {
-                $("#newStock").modal("hide");
+                $("#addEditStock").modal("hide");
             }
         });
     });
 
-    $("#editStock form").on('submit', function(event) {
-        event.preventDefault();
-        var id = $(this).find("input[name='stockID']").val();
-        var name = $(this).find("input[name='stockName']").val();
-        var type = $(this).find("select[name='stockType']").val();
-        var category = $(this).find("select[name='stockCategory']").val();
-        var status = $(this).find("select[name='stockStatus']").val();
-        var stockVariances = [];
-        for (var index = 0; index < $(this).find(".varianceTable > tbody").children().length; index++) {
-            var row = $(this).find(".varianceTable > tbody > tr").eq(index);
-            stockVariances.push({
-                varID: isNaN(parseInt(row.attr('data-id'))) ? (null) : parseInt(row.attr(
-                    'data-id')),
-                varUnit: row.find("input[name='varUnit[]']").val(),
-                varSize: row.find("input[name='varSize[]']").val(),
-                varMin: parseInt(row.find("input[name='varMinimum[]']").val()),
-                varQty: parseInt(row.find("input[name='varQty[]']").val()),
-                varStatus: row.find("select[name='varStatus[]']").val()
-            });
-        }
-        console.log(id, name, type, category, status, stockVariances);
-        $.ajax({
-            url: "<?= site_url("admin/inventory/edit")?>",
-            method: "post",
-            data: {
-                id: id,
-                name: name,
-                type: type,
-                category: category,
-                status: status,
-                variances: JSON.stringify(stockVariances)
-            },
-            dataType: "json",
-            beforeSend: function() {
-                console.log(name, type, category, status, stockVariances);
-            },
-            success: function(data) {
-                console.log(data);
-                // inventory = data;
-                // lastIndex = 0;
-                // setTableData();
-            },
-            error: function(response, setting, error) {
-                console.log(response.responseText);
-                console.log(error);
-            },
-            complete: function() {
-                $("#newStock").modal("hide");
-            }
-        });
-    });
+    
 });
 
 function setEditModal(modal, stock, variances) {
@@ -493,32 +459,6 @@ function setEditModal(modal, stock, variances) {
     modal.find("select[name='stockCategory']").find(`option[value=${stock.ctID}]`).attr("selected", "selected");
     modal.find("select[name='stockStatus']").find(`option[value="${stock.stStatus}"]`).attr("selected", "selected");
 
-    variances.forEach(variance => {
-        modal.find(".varianceTable > tbody").append(`
-        <tr data-id="${variance.vID}">
-            <td><input type="text" name="varUnit[]" value="${variance.vUnit}"
-                    class="form-control form-control-sm"></td>
-            <td><input type="text" name="varSize[]" value="${variance.vSize}"
-                    class="form-control form-control-sm"></td>
-            <td><input type="number" name="varMinimum[]" value="${variance.vMin}"
-                    class="form-control form-control-sm"></td>
-            <td><input type="number" name="varQty[]" value="${variance.vQty}"
-                    class="form-control form-control-sm"></td>
-            <td>
-                <select class="form-control" name="varStatus[]">
-                    <option value="" selected>Choose</option>
-                    <option value="available">available</option>
-                    <option value="unavailable">unavailable</option>
-                </select>
-            </td>
-            <td><img class="exitBtn"
-                    src="/assets/media/admin/error.png"
-                    style="width:20px;height:20px"></td>
-        </tr>
-        `);
-        modal.find("select[name='varStatus[]']").last().find(`option[value='${variance.vStatus}']`).attr(
-            "selected", "selected");
-    });
 }
 </script>
 </body>

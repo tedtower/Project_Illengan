@@ -82,7 +82,7 @@ class Adminmodel extends CI_Model{
         $query = "Insert into categories (ctName, supcatID, ctType) values (?,?,'inventory')";
         return $this->db->query($query,array($ctName,$supcatID));
     }
-    function add_stockItem($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, $stockBqty, $stockLocation){
+    function add_stockItem($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, $stockBqty, $stockLocation,$stockSize){
         $query = "INSERT INTO `stockitems`(
                 `stID`,
                 `ctID`,
@@ -93,7 +93,8 @@ class Adminmodel extends CI_Model{
                 `stType`,
                 `stStatus`,
                 `stBqty`,
-                `stLocation`
+                `stLocation`,
+                `stSize`
             )
             VALUES(
                 NULL,
@@ -105,9 +106,10 @@ class Adminmodel extends CI_Model{
                 ?,
                 ?,
                 ?,
+                ?,
                 ?
             );";
-        if($this->db->query($query,array($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, $stockBqty, $stockLocation))){
+        if($this->db->query($query,array($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, $stockBqty, $stockLocation,$stockSize))){
             return true;
         }
         return false;
@@ -395,7 +397,7 @@ class Adminmodel extends CI_Model{
             stID = ?;";
         return $this->db->query($query, array($id))->result_array();
     }
-    function edit_stockItem($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockID){
+    function edit_stockItem($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID){
         $query = "UPDATE
             stockitems
         SET
@@ -407,10 +409,11 @@ class Adminmodel extends CI_Model{
             stQty = ?,
             stStatus = ?,
             stType = ?,
-            uomID = ?
+            uomID = ?,
+            stSize = ?
         WHERE
             stID = ?;";
-        if($this->db->query($query,array($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockID))){
+        if($this->db->query($query,array($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID))){
             return true;
         }
         return false;
