@@ -217,11 +217,16 @@ class Adminadd extends CI_Controller{
                     ));
                 }else{
                     redirect("admin/dashboard");
+                    echo json_encode(array(
+                        "err"
+                    ));
                     // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
                 } 
             }
         }else{
             redirect("login");
+            echo json_encode(array(
+            ));
         }
     }
 
