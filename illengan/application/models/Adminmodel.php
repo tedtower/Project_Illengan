@@ -54,7 +54,7 @@ class Adminmodel extends CI_Model{
             if(count($stocks) > 0){
                 for($in = 0; $in < count($stocks) ; $in++){
                    $this->db->query($query, array($ssID, $stocks[$in]['stID'], $stocks[$in]['ssQty'], $stocks[$in]['ssDate'],$stocks[$in]['ssRemarks']));  
-                   $this->-($stocks[$in]['stID'],$stocks[$in]['curQty'],$stocks[$in]['ssQty']);    
+                   $this->destockvarItems($stocks[$in]['stID'],$stocks[$in]['curQty'],$stocks[$in]['ssQty']);    
                 }    
             }
     }
@@ -542,7 +542,7 @@ class Adminmodel extends CI_Model{
     function get_stocks(){
         $query = "SELECT
             stID,
-            stName,
+            CONCAT(stName, if(stSize IS Null,'', stSize)) as stName,
             stMin,
             stQty,
             uomID,
@@ -577,24 +577,6 @@ class Adminmodel extends CI_Model{
         preferences 
                 INNER JOIN 
         menu USING (mID)";
-        return $this->db->query($query)->result_array();
-    }
-    function get_stockExpiration(){
-        $query = "SELECT 
-            expID,
-            CONCAT(stName,
-                    ' ',
-                    vUnit,
-                    IF(vSize = NULL, '', CONCAT(' ', vSize))) AS vName,
-            expDate,
-            expQty,
-            expMaxTime
-        FROM
-            expiration
-                INNER JOIN
-            variance USING (vID)
-                INNER JOIN
-            stockitems USING (stID);";
         return $this->db->query($query)->result_array();
     }
     function get_addons(){
