@@ -52,8 +52,7 @@ class Adminview extends CI_Controller{
             $this->load->view('admin/templates/sideNav');
             $data['inventory'] = array(
                 "stocks" => $this->adminmodel->get_stocks(),
-                "categories" => $this->adminmodel->get_stockSubCategories(),
-                "variances" => $this->adminmodel->get_stockVariance()
+                "categories" => $this->adminmodel->get_stockSubCategories()
             );
             $data['category'] = $this->adminmodel->get_stockcategories();
             $this->load->view('admin/adminInventory',$data);
@@ -61,6 +60,17 @@ class Adminview extends CI_Controller{
             redirect('login');
         }
     }
+    function viewstockcard(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['title'] = "Admin Stock Card";
+            $this->load->view('admin/templates/head', $data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/stockcard');
+        }else{
+            redirect('login');
+        }
+    }
+
     function viewSupplier(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data['title'] = "Sources";
@@ -127,7 +137,8 @@ class Adminview extends CI_Controller{
             $data['title'] = "Menu - Addons";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/addons');
+            $data['addon'] = $this->adminmodel->get_addons();
+            $this->load->view('admin/addons', $data);
         }else{
             redirect('login');
         }
@@ -176,7 +187,7 @@ class Adminview extends CI_Controller{
         }
     }
     function viewStockJS() {
-        $data=$this->adminmodel->get_stockVariance();
+        $data=$this->adminmodel->get_stocks();
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
@@ -372,6 +383,8 @@ function viewSpoilagesStock(){
         }
     }
 
+
+
     function viewPurchaseOrders(){
         if($this->checkIfLoggedIn()){
             $data['title'] = "Purchase Order";
@@ -492,6 +505,25 @@ function viewSpoilagesStock(){
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
 
+    function jsonSales() {
+        $data = array();
+        $data['orderslips'] = $this->adminmodel->get_osSales();
+        $data['orderlists'] = $this->adminmodel->get_olSales();
+        $data['menuitems'] = $this->adminmodel->get_menuPref();
+        $data['addons'] = $this->adminmodel->get_orderAddon();
+        $data['tables'] = $this->adminmodel->get_tables();
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+
+    function jsonPrefDetails() {
+        $prID = $this->input->post('prID');
+        $data = $this->adminmodel->get_prefDetails($prID);
+
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+
     function jsonPurchaseOrders() {
         $data = array();
         $data['purOrders'] = $this->adminmodel->get_purchOrders();
@@ -526,6 +558,40 @@ function viewSpoilagesStock(){
         $data = $this->adminmodel->get_suppMerchandise($spmID);
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+
+    function jsonMenuAddons() {
+        $mID = $this->input->post('mID');
+        $data = $this->adminmodel->get_menuaddons($mID);
+
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+
+    function getEnumValsForStock(){
+        if($this->checkIfLoggedIn()){
+            $stTypes = $this->adminmodel->get_enumVals('stockitems','stType')[0]['column_type'];
+            $stLocations = $this->adminmodel->get_enumVals('stockitems','stLocation')[0]['column_type'];
+            $stStatuses = $this->adminmodel->get_enumVals('stockitems','stStatus')[0]['column_type'];
+            $uomVariants = $this->adminmodel->get_enumVals('uom','uomVariant')[0]['column_type'];
+            $uomStores  = $this->adminmodel->get_enumVals('uom','uomStore')[0]['column_type'];
+            // preg_match_all("/(\'(\w*)\',?)*/",$this->adminmodel->get_enumVals('stockitems','stType')[0]['column_type'], $stTypes);
+            // preg_match_all("/(\'(\w*)\',?)*/",$this->adminmodel->get_enumVals('stockitems','stLocation')[0]['column_type'],$stLocations);
+            // preg_match_all("/(\'(\w*)\',?)*/",$this->adminmodel->get_enumVals('stockitems','stStatus')[0]['column_type'],$stStatuses);
+            // preg_match_all("/(\'(\w*)\',?)*/",$this->adminmodel->get_enumVals('uom','uomVariant')[0]['column_type'],$uomVariants);
+            // preg_match_all("/(\'(\w*)\',?)*/",$this->adminmodel->get_enumVals('uom','uomStore')[0]['column_type'],$uomStores);
+            echo json_encode(array(
+                "stTypes" => $stTypes/*preg_split('/\,/',preg_replace('/\'/','',$stTypes))*/,
+                "stLocations" => $stLocations/*preg_split('/\,/',preg_replace('/\'/','',$stLocations))*/,
+                "stStatuses" => $stStatuses/*preg_split('/\,/',preg_replace('/\'/','',$stStatuses))*/,
+                "uomVariants" => $uomVariants/*preg_split('/\,/',preg_replace('/\'/','',$uomVariants))*/,
+                "uomStores" => $uomStores/*preg_split('/\,/',preg_replace('/\'/','',$uomStores))*/,
+            ));
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
     }
 
 }

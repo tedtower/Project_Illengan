@@ -8,8 +8,8 @@
             <p class="px-2">Please confirm that all the changes made are the final order list to be submitted.</p>
         </div>
         <div class="modal-footer justify-content-center delius">
-            <button type="button" class="btn btn-outline-dark-green" data-dismiss="modal">I'm Not Done Yet</button>
-            <input type="submit" class="btn btn-dark-green" value="Proceed To Order"></input>
+            <button type="button" class="btn btn-outline-dark-green" id="cosButton">I'm Not Done Yet</button>
+            <input type="submit" class="btn btn-dark-green" value="Proceed To Order">
         </div>
         </div>
     </div>

@@ -9,7 +9,6 @@ class Adminadd extends CI_Controller{
         // code for getting current date and time : date("Y-m-d H:i:s")
     }
     function addaccounts(){
-
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[50]');
         // $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|min_length[5]|max_length[50]|matches[password]');
         $this->form_validation->set_rules('aUsername','Username','trim|required|is_unique[accounts.aUsername]');
@@ -43,6 +42,25 @@ class Adminadd extends CI_Controller{
             $ctName = trim($this->input->post('ctName'));
             $this->adminmodel->add_menucategory($ctName);
             redirect('admin/menucategories');
+        }else{
+            redirect('login');
+        }
+    }
+    
+    function addSales() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $tableCode = trim($this->input->post('tableCode'));
+            $custName = trim($this->input->post('custName'));
+            $osTotal = trim($this->input->post('osTotal'));
+            $osDate = trim($this->input->post('osDate'));
+            $osPayDate = trim($this->input->post('osPayDate'));
+            $orderlists = json_decode($this->input->post('orderlists'), true);
+            $osDateRecorded = date("Y-m-d H:i:s");
+            $addons = json_decode($this->input->post('addons'), true);
+            echo json_encode($orderlists, true);
+            $this->adminmodel->add_salesOrder($tableCode, $custName, $osTotal, $osDate,
+            $osPayDate, $osDateRecorded, $orderlists, $addons);
+
         }else{
             redirect('login');
         }
@@ -104,9 +122,22 @@ class Adminadd extends CI_Controller{
         }
 
     }
+
+    function addAddon(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $aoName = $this->input->post('aoName');
+            $aoPrice = $this->input->post('aoPrice');
+            $aoCategory = $this->input->post('aoCategory');
+            $aoStatus = $this->input->post('aoStatus');
+            $this->adminmodel->add_addon($aoName, $aoPrice, $aoCategory, $aoStatus);
+            redirect('admin/menu/addons');
+        }else{
+            redirect('login');
+        }
+    }
+    
     function addSupplierMerchandise(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-           
             $spName = $this->input->post('name');
             $spContactNum = $this->input->post('contactNum');
             $spEmail= $this->input->post('email');
@@ -130,39 +161,28 @@ class Adminadd extends CI_Controller{
         // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
     }
     function addMenu(){
-        $config = array(
-            'upload_path' => "./uploads/",
-            'allowed_types' => "gif|jpg|png|jpeg|pdf",
-            'overwrite' => TRUE,
-            'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
-            );
-        $this->load->library('upload', $config);
-        if ( ! $this->upload->do_upload('image')){
-            echo 'error';
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+                $mName = $this->input->post('name');
+                $mDesc = $this->input->post('description');
+                $category = $this->input->post('category');
+                $status = $this->input->post('status');
+                $preference = json_decode($this->input->post('preferences'),true);
+                $addon = json_decode($this->input->post('addons'),true);
+                if($this->adminmodel->add_menu($mName, $mDesc, $category, $status, $preference, $addon)){
+                    echo json_encode(array(
+                            'menu' => $this->adminmodel->get_menu(),
+                            'preferences' => $this->adminmodel->get_preferences(),
+                            'addons' => $this->adminmodel->get_addons2()
+                        ));
+                }else{
+                    redirect("admin/menu");
+                    // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
+                }
+        }else{
+            redirect("login");
         }
-        else{
-            $data = $this->upload->data();
-            $image = $data['file_name'];
-            $mName = $this->input->post('name');
-            $mDesc = $this->input->post('description');
-            $category = $this->input->post('category');
-            $status = $this->input->post('status');
-            $preferences = json_decode($this->input->post('preferences'),true);
-            $addons= json_decode($this->input->post('addons'),true);
-            if($this->adminmodel->add_menu($image, $mName, $mDesc, $category, $status, $preferences, $addons)){
-                echo json_encode(array(
-                    'menus' => $this->adminmodel->get_menu(),
-                    'preferences' => $this->adminmodel->get_preferences(),
-                    'addons' => $this->adminmodel->get_addons2()
-                ));
-            }else{
-                redirect("admin/dashboard");
-                // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
-            }
-        redirect('admin/menu');
-        }
-
     }
+
     function addStockItem(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('name','Stock Name','trim|required|alpha_numeric_spaces');
@@ -173,25 +193,41 @@ class Adminadd extends CI_Controller{
             if($this->form_validation->run() == FALSE){
                 redirect("admin/dashboard");
             }else{
-                $stockName = $this->input->post('name');
-                $stockType = $this->input->post('type');
                 $stockCategory = $this->input->post('category');
+                $stockLocation = $this->input->post('location');
+                $stockMin = $this->input->post('min');
+                $stockName = $this->input->post('name');
+                $stockQty = $this->input->post('qty');
                 $stockStatus = $this->input->post('status');
-                $stockVariance = json_decode($this->input->post('variances'),true);
-                if($this->adminmodel->add_stockItem($stockName,$stockType,$stockCategory,$stockStatus,$stockVariance)){
+                $stockType = $this->input->post('type');
+                $stockUom = $this->input->post('uom');
+                $stockSize = $this->input->post('size');
+                $stockID = $this->input->post('id');
+                $dbErr = false;
+                if($stockID == NULL){
+                    if(!$this->adminmodel->add_stockItem($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, 0, $stockLocation)){
+                        $dbErr = true;
+                    }
+                }else{                    
+                    if(!$this->adminmodel->edit_stockItem($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID)){
+                        $dbErr = true;
+                    }
+                }
+                if($dbErr){
                     echo json_encode(array(
-                        "stocks" => $this->adminmodel->get_stocks(),
-                        "categories" => $this->adminmodel->get_stockSubCategories(),
-                        "variances" => $this->adminmodel->get_stockVariance(),
-                        "expirations" => $this->adminmodel->get_stockExpiration()
+                        "dbErr" => true 
                     ));
                 }else{
-                    redirect("admin/dashboard");
-                    // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
-                } 
+                    echo json_encode(array(
+                        "stocks" => $this->adminmodel->get_stocks(),
+                        "categories" => $this->adminmodel->get_stockSubCategories()
+                    ));
+                }
             }
         }else{
-            redirect("login");
+            echo json_encode(array(
+                "sessErr" => true
+            ));
         }
     }
 
@@ -260,7 +296,6 @@ class Adminadd extends CI_Controller{
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
             $this->adminmodel->add_stockspoil($date_recorded,$stocks);
-            redirect('admin/stock/spoilages');
         }else{
             redirect('login');
         }

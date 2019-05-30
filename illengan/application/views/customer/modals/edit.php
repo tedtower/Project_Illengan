@@ -30,8 +30,7 @@
                         <button class="btn btn-md btn-outline-mdb-color m-0 px-3 py-2 z-depth-0" type="button">Add-on</button>
                     </div>
                     <select class="browser-default custom-select w-25" id="inputGroupSelect03" aria-label="Example select with button addon">
-                        <option selected disabled>Choose...</option>
-                        <option value="">No Thank You.</option>
+                        <option selected disabled value="">Choose...</option>
                         <option value="1">Addon One (15 php)</option>
                         <option value="2">Addon Two (20 php)</option>
                         <option value="3">Addon Three (25 php)</option>
@@ -44,7 +43,7 @@
                 </div>
             </div>
             <div class="modal-footer py-1 justify-content-center">
-                <button type="button" class="btn btn-outline-mdb-color" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-mdb-color" id="ceoButton">Close</button>
                 <button type="button" class="btn btn-mdb-color" href="#proceed_order">Save</button>
             </div>
             </div>
