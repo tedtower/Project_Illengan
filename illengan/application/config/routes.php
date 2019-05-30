@@ -179,7 +179,7 @@ $route['customer/menu'] = "customer/view";
 $route['customer/json'] = "customer/json";
 
 // BARISTA ROUTES
-$route['barista/orders'] = "barista/index";
+$route['barista/orders'] = "barista/pendingOrders";
 $route['barista/billings'] = "barista/getbills";
 $route['barista/getBillDetails'] = "barista/getBillDetails";
 $route['barista/billings/setStatus'] = "barista/setbillstatus";

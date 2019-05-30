@@ -20,15 +20,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </head>
 <body>
-
-<div class="nav nav-tabs"><a href="<?php echo site_url('barista/orders'); ?>" class="nav nav-link" role="tab">Orderlist</a> &nbsp;
-              <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="nav nav-link active" role="tab">Pending Orders</a> &nbsp;
-            <a href="<?php echo site_url('barista/servedStatus'); ?>" class="nav nav-link" role="tab">Served Orders</a>
-            <a href="<?php echo site_url('barista/orderslip'); ?>" class="nav nav-link" role="tab">Orderslip</a>
-            </div>
-            <br>
+<?php include_once('headernav.php') ?>
+  <br>
   <div class="container">
-            <table class="table table-striped" id="pendingorders" >
+            <table class="pendOrders dtr-inline collapsed table display" id="pendingordersTable" >
                 <thead>
                     <tr>
                         <!--<th>Slip No.</th> -->
@@ -42,23 +37,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </tr>
                 </thead>
                 <tbody>
-                <?php  if(isset($orders)){
-                          foreach($orders as $row) 
-                          {  
-                            ?> 
-                               <tr>  
-                                    <td><?= $row["olID"]?></td>  
-                                    <td><?= $row["custName"]?></td>  
-                                    <td><?= $row["tableCode"]?></td>  
-                                    <td><?= $row["olDesc"]?></td>  
-                                    <td><?= $row["olQty"]?></td>  
-                                    <td><?= $row["olStatus"]?></td>  
-                                    <td><button id="cancelOrder" class="btn btn-warning btn-sm">Cancel</button></td>  
-                               </tr>    
-                         
-                          <?php } 
-                        } ?>  
-                    
                 </tbody>
             </table>
     </div>
@@ -133,11 +111,68 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <script type="text/javascript" src="<?php echo base_url().'assets/js/barista/dataTables.bootstrap4.js'?>"></script>
 
 <script>
-$(document).ready(function(){
-    $('#pendingorders').DataTable();
+var penOrders = [];
+$(function() {
+		viewpendingOrdersJs();
 });
 
+//POPULATE TABLE
+var table = $('#pendingordersTable');
+	function format(d) {
+		return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+			'<tr>' +
+			'<td>Remarks</td>' +
+			'</tr>' +
+			'<tr>' +
+			'<td>' + d.ssRemarks + '</td>' +
+			'</tr>' +
+			'</table>';
 
+	}
+	function viewpendingOrdersJs() {
+        $.ajax({
+            url: "<?= site_url('barista/pendingOrdersJS') ?>",
+            method: "post",
+            dataType: "json",
+            success: function(data) {
+                penOrders = data;
+                setPenOrdersData(penOrders);
+            },
+            error: function(response, setting, errorThrown) {
+                console.log(response.responseText);
+                console.log(errorThrown);
+            }
+        });
+	}
+	function setPenOrdersData() {
+        if ($("#pendingordersTable> tbody").children().length > 0) {
+            $("#pendingordersTable> tbody").empty();
+        }
+        penOrders.forEach(table => {
+            $("#pendingordersTable> tbody").append(`
+            <tr data-olID="${table.olID}" >
+                <td>${table.olID}</td>
+                <td>${table.custName}</td>
+                <td>${table.tableCode}</td>
+                <td>${table.olDesc}</td>
+                <td>${table.olQty}</td>
+                <td>${table.olStatus}</td>
+                <td>
+                        <!--Action Buttons-->
+                        <div class="onoffswitch">
+                            <!--Delete button-->
+                            <button class="item_delete btn btn-danger btn-sm" data-toggle="modal" 
+                            data-target="#Modal_Remove">Cancel</button>                      
+                        </div>
+                    </td>
+                </tr>`);
+            $(".item_delete").last().on('click', function () {
+                $("#Modal_Remove").find("input[name='olID']").val($(this).closest("tr").attr(
+                          "data-olID"));
+            });
+        });
+	}
+	//END OF POPULATING TABLE
 //start of new function
 /*$('#show_data').on('click','.item_edit',function(){
             var order_id = $(this).data('order_id');
@@ -170,31 +205,31 @@ $(document).ready(function(){
         });*/
 
         //get data for delete record
-        $('#show_data').on('click','.item_delete',function(){
-             var osID = $(this).data('osID');
+        // $('#show_data').on('click','.item_delete',function(){
+        //      var osID = $(this).data('osID');
             
-             $('#Modal_Remove').modal('show');
-             $('[name="order_id_remove"]').val(osID);
-         });
+        //      $('#Modal_Remove').modal('show');
+        //      $('[name="order_id_remove"]').val(osID);
+        //  });
 
-         //delete record to database
-          $('#btn_cancel').on('click',function(){
-             var osID = $('#order_id_remove').val();
-             $.ajax({
-                 type : "POST",
-                 url  : "<?php echo site_url('barista/cancel')?>",
-                 dataType : "JSON",
-                 data : {osID:osID},
-                 success: function(data){
-                     $('[name="order_id_remove"]').val("");
-                     alert("Record removed successfully!");
-                     $('#Modal_Remove').modal('hide');
+        //  //delete record to database
+        //   $('#btn_cancel').on('click',function(){
+        //      var osID = $('#order_id_remove').val();
+        //      $.ajax({
+        //          type : "POST",
+        //          url  : "<?php echo site_url('barista/cancel')?>",
+        //          dataType : "JSON",
+        //          data : {osID:osID},
+        //          success: function(data){
+        //              $('[name="order_id_remove"]').val("");
+        //              alert("Record removed successfully!");
+        //              $('#Modal_Remove').modal('hide');
                     
-                     location.reload();
-                 }
-            });
-             return false;
-         });
+        //              location.reload();
+        //          }
+        //     });
+        //      return false;
+        //  });
 
 // //change status function
 // $('.status').on('click', function() {
