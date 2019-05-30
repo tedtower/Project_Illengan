@@ -172,6 +172,8 @@ $route['admin/jsonPrefDetails'] ="adminview/jsonPrefDetails";
 $route['admin/inventory/getitem'] = "adminview/getStockDetails";
 $route['admin/getPurchaseOrders'] = "adminview/getPurchaseOrders";
 $route['admin/jsonAddons'] = "adminview/jsonMenuAddons";
+
+$route['admin/inventory/getEnumVals'] = "adminview/getEnumValsForStock";
 //End Admin Json Routes ---------------------------------------
 
 //CUSTOMER ROUTES

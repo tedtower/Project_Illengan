@@ -185,7 +185,6 @@
                                                 <input type="text" name="stockSize" class="form-control">
                                                 <select class="form-control" name="stockSizeUOM" style="border-left:1px solid whitesmoke">
                                                     <option value="">Choose Unit</option>
-                                                    <option value=""></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -197,7 +196,6 @@
                                                 </div>
                                                 <select class="form-control" name="stockUOM" style="border-left:1px solid whitesmoke">
                                                     <option value="">Choose Unit</option>
-                                                    <option value=""></option>
                                                 </select>
                                             </div>
                                             <!--Stock Storage-->
@@ -209,7 +207,6 @@
                                                 </div>
                                                 <select name="stockStorage" class="form-control">
                                                     <option value="" selected>Choose</option>
-                                                    <option value=""></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -349,7 +346,7 @@ $(document).ready(function() {
     console.log(inventory);
     $("#addBtn").on('click', function() {
         $("#addEditStock form")[0].reset();
-        console.log(inventory);
+        getEnumVals();
     });
     $(".editBtn").on("click", function() {
         $("#editStock form")[0].reset();
@@ -447,9 +444,22 @@ $(document).ready(function() {
             }
         });
     });
-
-    
 });
+
+function getEnumVals(){
+    $.ajax({
+        method: 'POST',
+        url: '<?= site_url('admin/inventory/getEnumVals')?>',
+        dataType: 'JSON',
+        success: function(data){
+            console.log(data);
+        },
+        error: function(response, setting, error) {
+            console.log(response.responseText);
+            console.log(error);
+        }
+    });
+}
 
 function setEditModal(modal, stock, variances) {
     console.log(stock);
@@ -458,7 +468,6 @@ function setEditModal(modal, stock, variances) {
     modal.find("select[name='stockType']").val(stock.stType);
     modal.find("select[name='stockCategory']").find(`option[value=${stock.ctID}]`).attr("selected", "selected");
     modal.find("select[name='stockStatus']").find(`option[value="${stock.stStatus}"]`).attr("selected", "selected");
-
 }
 </script>
 </body>
