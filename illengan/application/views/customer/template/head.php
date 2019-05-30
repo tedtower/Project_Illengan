@@ -38,7 +38,7 @@
                     </div>
                 </li>
                 <li class="nav-item"><!-- #order_modal -->
-                    <a class="nav-link" data-toggle="modal" href="#order_modal"><i class="fal fa-tasks"></i> Orders</a>
+                    <a class="nav-link" data-toggle="modal" href="#order_modal" id="omButton"><i class="fal fa-tasks"></i> Orders</a>
                 </li>
             </ul>
             <!-- Search form -->

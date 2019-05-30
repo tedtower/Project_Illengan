@@ -143,7 +143,8 @@ class Adminupdate extends CI_Controller{
                 $stockType = $this->input->post('type');
                 $stockUom = $this->input->post('uom');
                 $stockID = $this->input->post('id');
-                if($this->adminmodel->edit_stockItem($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, , $stockID)){
+                $stockSize = $this->input->post('size');
+                if($this->adminmodel->edit_stockItem($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID)){
                     echo json_encode(array(
                         "stocks" => $this->adminmodel->get_stocks(),
                         "categories" => $this->adminmodel->get_stockSubCategories()

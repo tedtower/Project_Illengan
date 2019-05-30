@@ -3,6 +3,11 @@ class Adminmodel extends CI_Model{
     
     private $err = array('Username does not exist!', 'Incorrect password');
 
+    function __construct(){
+        parent:: __construct();
+        $this->infoDB = $this->load->database('information',true);
+    }
+
     //INSERT FUNCTIONS----------------------------------------------------------------
     function add_accounts($data){
         $this->db->insert('accounts',$data);
@@ -1106,6 +1111,17 @@ class Adminmodel extends CI_Model{
                        $eRetIt[$i]['itPri'],$eRetIt[$i]['itUnit'], $eRetIt[$i]['itSub'],$itemID));
                     }
             }
+    }
+
+    function get_enumVals($table,$column){
+        $query = "SELECT 
+            column_type
+        FROM
+            COLUMNS
+        WHERE
+            TABLE_NAME = ?
+                AND COLUMN_NAME = ?;";
+        $this->infoDB->query($query,array($table,$column))->result_array();
     }
 
 }
