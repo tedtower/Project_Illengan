@@ -162,30 +162,22 @@ class Adminadd extends CI_Controller{
     }
     function addMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $config = array(
-                'upload_path' => "./uploads/",
-                'allowed_types' => "gif|jpg|png|jpeg|pdf",
-                'overwrite' => TRUE,
-                'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
-                );
-            $this->load->library('upload', $config);
-            if ( ! $this->upload->do_upload('mImage')){
-                echo 'error';
-            }
-            else{
-                $data = $this->upload->data();
-                $image = $data['file_name'];
-                $mName = $this->input->post('mName');
-                $mDesc = $this->input->post('mDesc');
-                $category = $this->input->post('ctName');
-                $status = $this->input->post('mAvailability');
+                $mName = $this->input->post('name');
+                $mDesc = $this->input->post('description');
+                $category = $this->input->post('category');
+                $status = $this->input->post('status');
                 $preference = json_decode($this->input->post('preferences'),true);
-                echo json_encode($preference, true);
                 $addon = json_decode($this->input->post('addons'),true);
-                echo json_encode($addon, true);
-                $this->adminmodel->add_menu($image, $mName, $mDesc, $category, $status, $preference, $addon);
-                redirect("admin/menu");
-            }
+                if($this->adminmodel->add_menu($mName, $mDesc, $category, $status, $preference, $addon)){
+                    echo json_encode(array(
+                            'menu' => $this->adminmodel->get_menu(),
+                            'preferences' => $this->adminmodel->get_preferences(),
+                            'addons' => $this->adminmodel->get_addons2()
+                        ));
+                }else{
+                    redirect("admin/menu");
+                    // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
+                }
         }else{
             redirect("login");
         }

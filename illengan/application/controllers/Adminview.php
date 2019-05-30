@@ -60,6 +60,17 @@ class Adminview extends CI_Controller{
             redirect('login');
         }
     }
+    function viewstockcard(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['title'] = "Admin Stock Card";
+            $this->load->view('admin/templates/head', $data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/stockcard');
+        }else{
+            redirect('login');
+        }
+    }
+
     function viewSupplier(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data['title'] = "Sources";

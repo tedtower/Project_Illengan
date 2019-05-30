@@ -41,7 +41,7 @@
                                 <td>
                                     <button class="btn btn-default btn-sm">Edit</button>
                                     <button class="btn btn-warning btn-sm">Archived</button>
-                                    <button class="btn btn-success btn-sm">Stock Card</button>
+                                    <a href="<?php echo base_url('admin/inventory/stockcard')?>" class="btn btn-success btn-sm">Stock Card</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -151,38 +151,47 @@
                                 <form action="<?php echo base_url('admin/inventory/add')?>" method="get"
                                     accept-charset="utf-8">
                                     <div class="modal-body" style="margin:1%;">
-                                        <div class="form-row">
-                                            <!--Stock name-->
-                                            <div class="input-group mb-3 col">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                        style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                        Stock Name</span>
-                                                </div>
-                                                <input type="text" name="stockName" id="stockName"
-                                                    class="form-control form-control-sm">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                    Stock Name</span>
                                             </div>
+                                            <input type="text" name="stockName" id="stockName"
+                                                class="form-control form-control-sm">
+                                        </div>
+                                        <div class="form-row">
                                             <!--Stock Type-->
                                             <div class="input-group mb-3 col">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                        style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                        Type</span>
+                                                        <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                            style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                            Type</span>
+                                                    </div>
+                                                    <select name="stockType" class="form-control">
+                                                        <option value="" selected>Choose</option>
+                                                        <option value="liquid">Liquid</option>
+                                                        <option value="solid">Solid</option>
+                                                    </select>
                                                 </div>
-                                                <select name="stockType" class="form-control">
-                                                    <option value="" selected>Choose</option>
-                                                    <option value="liquid">Liquid</option>
-                                                    <option value="solid">Solid</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
                                             <!--Stock size-->
                                             <div class="input-group mb-3 col">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">Size</span>
                                                 </div>
                                                 <input type="text" name="stockSize" class="form-control">
+                                                <select class="form-control" name="stockUOM" style="border-left:1px solid whitesmoke">
+                                                    <option value="">Choose Unit</option>
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <!--Stock UOM-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">Stock UOM</span>
+                                                </div>
                                                 <select class="form-control" name="stockUOM" style="border-left:1px solid whitesmoke">
                                                     <option value="">Choose Unit</option>
                                                     <option value=""></option>

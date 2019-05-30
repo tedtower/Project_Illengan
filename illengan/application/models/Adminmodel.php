@@ -153,11 +153,12 @@ class Adminmodel extends CI_Model{
         $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
     }
 
-    function add_menu($image, $mName, $mDesc, $category, $status, $preference, $addon){
-        $query = "INSERT into menu (mImage, mName, mDesc, ctID, mAvailability) values (?,?,?,?,?);";
-        if($this->db->query($query,array($image, $mName, $mDesc, $category, $status))){
-            $this->add_preference($this->db->insert_id(), $preference);
-            $this->add_addon($this->db->insert_id(), $addon);
+    function add_menu($mName, $mDesc, $category, $status,$preference,$addon){
+        $query = "INSERT into menu (mName, mDesc, ctID, mAvailability) values (?,?,?,?);";
+        if($this->db->query($query,array($mName, $mDesc, $category, $status))){
+            $mID = $this->db->insert_id();
+            $this->add_preference($mID, $preference);
+            $this->add_menuaddon($mID, $addon);
             return true;
         }
     }
@@ -165,17 +166,18 @@ class Adminmodel extends CI_Model{
     function add_preference($mID, $preference){
        $query = "INSERT into preferences (mID, prName, mTemp, prPrice, prStatus) values (?,?,?,?,?)";
        if(count($preference) > 0){
-           for($n = 0; $n < count(preference) ; $n++){
+           for($n = 0; $n < count($preference) ; $n++){
                $this->db->query($query, array($mID, $preference[$n]['prName'], $preference[$n]['mTemp'], $preference[$n]['prPrice'], $preference[$n]['prStatus']));
            }
        } else{
            return false;
        }
     }
+
     function add_menuaddon($mID, $addon){
         $query = "INSERT into menuaddons (mID, aoID) values (?,?)";
         if(count($addon) > 0){
-            for($n = 0; $n < count(addon) ; $n++){
+            for($n = 0; $n < count($addon) ; $n++){
                 $this->db->query($query, array($mID, $addon[$n]['aoID']));
             }
         } else{
