@@ -23,7 +23,6 @@
 									<th>Quantity</th>
 									<th>Date Spoiled</th>
 									<th>Date Recorded</th>
-									<th>Remarks</th>
 									<th>Operation</th>
 									
 								</thead>
@@ -152,14 +151,14 @@
                                             <form id="formEdit" accept-charset="utf-8" > 
 												<div class="modal-body">
                                                     <!--Quantity-->
-                                                    <!-- <div class="input-group mb-3">
+                                                    <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Quantity</span>
                                                         </div>
                                                         <input type="number" min="1" name="aosQty" id="aosQty" class="form-control form-control-sm">
                                                         <span class="text-danger"><?php echo form_error("aosQty"); ?></span>
-                                                    </div> -->
+                                                    </div>
                                                     <!--Date Spoiled-->
 													<div class="input-group mb-3">
                                                         <div class="input-group-prepend">
@@ -233,17 +232,6 @@
 	//-----------------------End of Brochure Populate--------------------------		
 	//POPULATE TABLE
 	var table = $('#addonTable');
-	function format(d) {
-		return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-			'<tr>' +
-			'<td>Remarks</td>' +
-			'</tr>' +
-			'<tr>' +
-			'<td>' + d.aosRemarks + '</td>' +
-			'</tr>' +
-			'</table>';
-
-	}
 	function viewSpoilagesJs() {
         $.ajax({
             url: "<?= site_url('admin/spoilagesaddonsjson') ?>",
@@ -266,13 +254,11 @@
         spoilages.forEach(table => {
             $("#addonTable> tbody").append(`
 			<tr data-aoID="${table.aoID}" data-aosID="${table.aosID}" data-spoilname="${table.aoName}">
-				
-                <td>${table.aoName}</td>
+				<td><a data-toggle="collapse" href="#collapseExample" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${table.aoName}</td>
                 <td>${table.aoCategory}</td>
                 <td>${table.aosQty}</td>
 				<td>${table.aosDate}</td>
 				<td>${table.aosDateRecorded}</td>
-				<td>${table.aosRemarks}</td>
                 <td>
                         <!--Action Buttons-->
                         <div class="onoffswitch">
@@ -285,7 +271,16 @@
                             data-target="#deleteSpoilage">Delete</button>                      
                         </div>
                     </td>
-                </tr>`);
+                </tr>
+				<tr colspan="5">
+				<td><div class="collapse" id="collapseExample">
+						<div >
+						<p><b>Remarks</b></p>
+						${table.aosRemarks}
+						</div>
+					</div>
+				</td>
+				</tr>`);
             $(".updateBtn").last().on('click', function () {
                 $("#editSpoil").find("input[name='aoID']").val($(this).closest("tr").attr(
 					"data-aoID"));
@@ -307,7 +302,7 @@
 		event.preventDefault();
 		var aoID = $(this).find("input[name='aoID']").val();
 		var aosID = $(this).find("input[name='aosID']").val();
-        // var aosQty = $(this).find("input[name='aosQty']").val();
+        var aosQty = $(this).find("input[name='aosQty']").val();
         var aosDate = $(this).find("input[name='aosDate']").val();
         var aosRemarks = $(this).find("input[name='aosRemarks']").val();
        
@@ -317,15 +312,11 @@
             data: {
 				aoID: aoID,
 				aosID: aosID,
-                // aosQty: aosQty,
+                aosQty: aosQty,
                 aosDate: aosDate,
                 aosRemarks: aosRemarks
             },
             dataType: "json",
-            success: function(data) {
-                alert('Addon Spoilage Updated');
-				console.log(data);
-            },
             complete: function() {
                 $("#editSpoil").modal("hide");
 				location.reload();

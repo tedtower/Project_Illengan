@@ -52,8 +52,7 @@ class Adminview extends CI_Controller{
             $this->load->view('admin/templates/sideNav');
             $data['inventory'] = array(
                 "stocks" => $this->adminmodel->get_stocks(),
-                "categories" => $this->adminmodel->get_stockSubCategories(),
-                "variances" => $this->adminmodel->get_stockVariance()
+                "categories" => $this->adminmodel->get_stockSubCategories()
             );
             $data['category'] = $this->adminmodel->get_stockcategories();
             $this->load->view('admin/adminInventory',$data);
@@ -61,6 +60,17 @@ class Adminview extends CI_Controller{
             redirect('login');
         }
     }
+    function viewstockcard(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['title'] = "Admin Stock Card";
+            $this->load->view('admin/templates/head', $data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/stockcard');
+        }else{
+            redirect('login');
+        }
+    }
+
     function viewSupplier(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data['title'] = "Sources";
@@ -127,7 +137,8 @@ class Adminview extends CI_Controller{
             $data['title'] = "Menu - Addons";
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/addons');
+            $data['addon'] = $this->adminmodel->get_addons();
+            $this->load->view('admin/addons', $data);
         }else{
             redirect('login');
         }
@@ -176,7 +187,7 @@ class Adminview extends CI_Controller{
         }
     }
     function viewStockJS() {
-        $data=$this->adminmodel->get_stockVariance();
+        $data=$this->adminmodel->get_stocks();
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
@@ -547,6 +558,18 @@ function viewSpoilagesStock(){
         $data = $this->adminmodel->get_suppMerchandise($spmID);
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+
+    function jsonMenuAddons() {
+        $mID = $this->input->post('mID');
+        $data = $this->adminmodel->get_menuaddons($mID);
+
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+
+    function getUOM($variant){
+        
     }
 
 }

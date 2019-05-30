@@ -24,10 +24,13 @@ function getSelectedPref() {
                                     class="form-control form-control-sm" value="" required></td>
                             <td><input type="text" id="msRemarks` + i + `" name="msRemarks"
                                     class="form-control form-control-sm"  value="" required></td>
-                            <td><img class="exitBtn"
+                            <td><img class="exitBtn1"
                                     src="/assets/media/admin/error.png"
                                     style="width:20px;height:20px"></td>
                             </tr>`;
+                            $(this).closest(".modal").find(".exitBtn1").last().on('click',function(){
+                                $(this).closest("tr").remove();
+                            });
                     $('.menuspoilageTable > tbody').append(menuChecked);
                 }
 
@@ -35,6 +38,7 @@ function getSelectedPref() {
         }
     }
 }
+
 var elements;
 function addMenuItems() {
     elements = document.getElementsByClassName('menuelem');
@@ -62,10 +66,6 @@ function addMenuItems() {
             menus: JSON.stringify(menus)
         },
         dataType: 'json',
-        success: function (data) {
-            alert('Spoiled Menu Added');
-            newFunction(data);
-        },
         complete: function() {
             $('#addmenuspoilage').modal('hide');
             location.reload();
