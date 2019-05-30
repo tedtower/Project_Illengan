@@ -51,7 +51,6 @@ $(document).ready(function(){
         computeSubtotal();
         console.log($("#dc_subtotal").val());
     });         
-
     $("#quantity").on('change', function(){
         var quantity = parseInt($(this).val());
         if(isNaN(quantity)){
@@ -142,7 +141,6 @@ $(document).ready(function(){
             },
             success: function(data) {
                 location.reload();
-                alert("Menu has been added in the orderlist.");
                 console.log(data);
             },
             error: function(response,setting, errorThrown) {
@@ -185,23 +183,27 @@ function setModalContents(item_id){
                 });
             $('#menu_name').text(menu[i].mName);
             if(menu[i].mImage){
-                $('#menu_image').attr("src","<?php echo cmedia_url(); ?>menu/"+menu[i].mImage);
+                $('#menu_image').attr("src","<?= cmedia_url(); ?>menu/"+menu[i].mImage);
             } else {
-                $('#menu_image').attr("src","<?php echo cmedia_url(); ?>menu/no_image.jpg");
+                $('#menu_image').attr("src","<?= cmedia_url(); ?>menu/no_image.jpg");
             }
             $('#menu_price').text(menu[i].prPrice);
             $('#menu_description').text(menu[i].mDesc);
             
             if(menu[i].mAvailability === 'available'){
+                $('#menu_image').css('filter',"brightness(100%)");
                 $('#menu_status').text(menu[i].mAvailability.charAt(0).toUpperCase() + menu[i].mAvailability.slice(1));
                 $('#menu_status').attr("class","teal-text");
                 $('#order-details').show();
                 $('.save-order').show();
+                $('#submit_ol').show();
             } else {
-                $('#menu_status').text("Temporarily Unavailable");
+                $('#menu_image').css('filter',"brightness(40%)");
+                $('#menu_status').text('Unavailable');
                 $('#menu_status').attr("class","text-danger");
                 $('#order-details').hide();
                 $('.save-order').hide();
+                $('#submit_ol').hide();
             }
             if(menu_pref.length > 1){                
                 $('#sizeable').show();                
@@ -210,6 +212,7 @@ function setModalContents(item_id){
                     $('#sizeSelect').append('<option data-price="'+menu_pref[x].prPrice+'" data-name="'+menu_pref[x].prName+'" value="'+menu_pref[x].prID+'">'+menu_pref[x].preference+'</option>');
                 }
                 $("#sizeSelect").on('change',function(){
+                    $('#menu_price').text($("#sizeSelect > option:selected").attr("data-price"));
                     computeSubtotal();
                 });  
                 $(document).ready(function() {
@@ -231,13 +234,6 @@ function setModalContents(item_id){
             if(menu_addon.length > 0){
                 $("#addonSelectBtn").removeAttr('disabled');
                 $('#addonable').show();
-                // if(menu_addon.length != 1){
-                //     $('div.add_butt').show();
-                //     $('div.rem_add').show();
-                // }else{
-                //     $('div.add_butt').hide();
-                //     $('div.rem_add').hide();
-                //}
             }
             break;
         }
@@ -278,5 +274,69 @@ function computeSubtotal(){
     }
     $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
 }
-
+$('#omButton').click(function(){
+    setOrderlist();
+});
+$('#ceoButton').click(function(){
+    $('#editModal').modal('hide');
+});
+$('#cosButton').click(function(){
+    $('#proceed_modal').modal('hide');
+});
+$('#croButton').click(function(){
+    $('#deleteModal').modal('hide');
+});
+$('#craoButton').click(function(){
+    $('#deleteAllModal').modal('hide');
+});
+function setOrderlist() {
+    $('#orderlists').html('');
+    var total_qty=0, total=0;
+    for(var rowid=0; rowid < orders.length; rowid++){
+        var row1 = `<tr>
+                        <form type="hidden" name="`+orders[rowid].id+`">
+                        <th scope="row">`+orders[rowid].name+`</th>
+                        <td>`+orders[rowid].qty+`</td>
+                        <td>`+orders[rowid].subtotal+`</td>
+                        <td>`+orders[rowid].remarks+`</td>
+                        <td>`+orders[rowid].addons+`</td>
+                        <td>
+                            <button type="button" class="btn btn-mdb-color btn-sm m-0 p-2" data-toggle="modal" data-target="#editModal">Edit</button>
+                            <button type="button" class="btn btn-danger btn-sm m-0 p-2 remOrder" data-toggle="modal" data-target="#deleteModal" data-name="`+orders[rowid].name+`" data-id="`+rowid+`">Remove</button>
+                        </td>
+                    </tr>`;
+        $('#orderlists').append(row1);
+        total_qty += orders[rowid].qty;
+        total += orders[rowid].subtotal;
+    }
+    var row2 = `<tr>
+                    <td colspan="3"><h3 class="gab">Total Quantity: `+total_qty+`</h3></td>
+                    <td colspan="3"><h3 class="gab">Total Price: `+total+` php</h3></td>
+                    <input type="hidden" name="total" value="`+total+`"/>
+                </tr>`;
+    $('#orderlists').append(row2);
+    $('.remOrder').click(function(){
+        $('#remName').text("'"+$(this).data('name')+"'");
+        $('#remID').val($(this).data('id'));
+        console.log($('#remID').val());
+    });
+    $('#removo').click(function(){
+        var rowID = $('#remID').val();
+        var rowName = $('#remName').text();
+        $.ajax({
+            method: "post",
+            url: "<?= site_url('customer/menu/removeOrder')?>",
+            data: { id: rowID },
+            success: function($data) {
+                $('#remID').val('');
+                $('#remName').text('');
+                location.reload();
+            },
+            error: function(response,setting, errorThrown) {
+                console.log(response.responseText);
+                console.log(errorThrown);
+            }
+        });
+    });
+}
 </script>

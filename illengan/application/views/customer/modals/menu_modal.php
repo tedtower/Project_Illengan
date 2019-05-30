@@ -20,14 +20,12 @@
                         <h4 class="gab m-0"><i class="far fa-sort-numeric-up"></i> Quantity</h4>
                         <div class="d-flex flex-row mr-5 w-100">
                             <div class="input-group-prepend">
-                                <button id="qtyDecrement" class="btn btn-md btn-light m-0 py-1 px-3 z-depth-0" type="button"
-                                    onclick="freebies_discounts()">
+                                <button id="qtyDecrement" class="btn btn-md btn-light m-0 py-1 px-3 z-depth-0" type="button">
                                     <i class="fa fa-minus" aria-hidden="true"></i>
                                 </button>
                                 <input type="number" class="form-control text-center font-weight-bold px-3"
                                     name="order_quantity" id="quantity" min="1" value="1">
-                                <button id="qtyIncrement" class="btn btn-md btn-light m-0 py-1 px-3 z-depth-0" type="button"
-                                    onclick="freebies_discounts()">
+                                <button id="qtyIncrement" class="btn btn-md btn-light m-0 py-1 px-3 z-depth-0" type="button">
                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                 </button>
                                
@@ -43,12 +41,12 @@
                         </div>
                     </div>
                     <!--Freebies-->
-                    <div class="freebiemain">
+                    <?php /*div class="freebiemain">
                     <div class="freebie col-xs-12" id="freebie">
                     <p class="freebieQty"></p>
                     <span class="please"><i>Please choose your freebie</i></span>
                     </div>
-                    </div>
+                    </div*/ ?>
                     <!--Addons-->
                     <div class="mb-3" id="addonable">
                         <h4 class="gab m-0"><i class="far fa-layer-plus"></i> Add-ons</h4>
@@ -68,10 +66,8 @@
                     <h3 class="gab">Total Price: <span id="menuSubtotal"></span> php</h3>
                 </div>
                 <div class="text-center float-right">
-                    <button type="button" class="btn btn-outline-accent px-3" data-dismiss="modal"
-                        id="close-menu">Close</button>
-                    <button type="submit" onclick="order_freebies()" class="btn btn-accent px-3">Save To Order
-                        List</button>
+                    <button type="button" class="btn btn-outline-accent px-3" data-dismiss="modal" id="close-menu">Close</button>
+                    <button type="submit" class="btn btn-accent px-3" id="submit_ol">Save To Order List</button>
                 </div>
                 <?php echo form_close();?>
             </div>
