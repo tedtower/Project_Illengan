@@ -194,7 +194,7 @@ class Adminadd extends CI_Controller{
                 redirect("admin/dashboard");
             }else{
                 $stockCategory = $this->input->post('category');
-                $stockLocation = $this->input->post('location');
+                $stockLocation = $this->input->post('storage');
                 $stockMin = $this->input->post('min');
                 $stockName = $this->input->post('name');
                 $stockQty = $this->input->post('qty');
@@ -205,7 +205,7 @@ class Adminadd extends CI_Controller{
                 $stockID = $this->input->post('id');
                 $dbErr = false;
                 if($stockID == NULL){
-                    if(!$this->adminmodel->add_stockItem($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, 0, $stockLocation)){
+                    if(!$this->adminmodel->add_stockItem($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, 0, $stockLocation, $stockSize)){
                         $dbErr = true;
                     }
                 }else{                    

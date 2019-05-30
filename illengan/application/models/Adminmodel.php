@@ -552,7 +552,7 @@ class Adminmodel extends CI_Model{
     function get_stocks(){
         $query = "SELECT
             stID,
-            CONCAT(stName, if(stSize IS Null,'', stSize)) as stName,
+            CONCAT(stName, if(stSize IS Null,'', ' ' + stSize)) as stName,
             stMin,
             stQty,
             uomID,
@@ -1121,7 +1121,29 @@ class Adminmodel extends CI_Model{
         WHERE
             TABLE_NAME = ?
                 AND COLUMN_NAME = ?;";
-        $this->infoDB->query($query,array($table,$column))->result_array();
+        return $this->infoDB->query($query,array($table,$column))->result_array();
+    }
+    function get_uomForSizes(){
+        $query = "SELECT
+            uomName,
+            uomAbbreviation,
+            UPPER(uomVariant) as uomVariant
+        FROM
+            uom
+        WHERE
+            uomVariant IS NOT NULL;";
+        return $this->db->query($query)->result_array();
+    }
+    function get_uomForStoring(){
+        $query = "SELECT
+            uomID,
+            uomName,
+            uomAbbreviation
+        FROM
+            uom
+        WHERE
+            uomStore IS NOT NULL;";
+        return $this->db->query($query)->result_array();
     }
 
 }

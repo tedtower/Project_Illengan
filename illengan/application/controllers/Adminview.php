@@ -570,22 +570,18 @@ function viewSpoilagesStock(){
 
     function getEnumValsForStock(){
         if($this->checkIfLoggedIn()){
-            $stTypes = $this->adminmodel->get_enumVals('stockitems','stType')[0]['column_type'];
-            $stLocations = $this->adminmodel->get_enumVals('stockitems','stLocation')[0]['column_type'];
-            $stStatuses = $this->adminmodel->get_enumVals('stockitems','stStatus')[0]['column_type'];
-            $uomVariants = $this->adminmodel->get_enumVals('uom','uomVariant')[0]['column_type'];
-            $uomStores  = $this->adminmodel->get_enumVals('uom','uomStore')[0]['column_type'];
-            // preg_match_all("/(\'(\w*)\',?)*/",$this->adminmodel->get_enumVals('stockitems','stType')[0]['column_type'], $stTypes);
-            // preg_match_all("/(\'(\w*)\',?)*/",$this->adminmodel->get_enumVals('stockitems','stLocation')[0]['column_type'],$stLocations);
-            // preg_match_all("/(\'(\w*)\',?)*/",$this->adminmodel->get_enumVals('stockitems','stStatus')[0]['column_type'],$stStatuses);
-            // preg_match_all("/(\'(\w*)\',?)*/",$this->adminmodel->get_enumVals('uom','uomVariant')[0]['column_type'],$uomVariants);
-            // preg_match_all("/(\'(\w*)\',?)*/",$this->adminmodel->get_enumVals('uom','uomStore')[0]['column_type'],$uomStores);
+            preg_match_all("/\w+\'?\w+?(?=')/",$this->adminmodel->get_enumVals('stockitems','stType')[0]['column_type'], $stTypes);
+            preg_match_all("/\w+\'?\w+?(?=')/",$this->adminmodel->get_enumVals('stockitems','stLocation')[0]['column_type'],$stLocations);
+            preg_match_all("/\w+\'?\w+?(?=')/",$this->adminmodel->get_enumVals('stockitems','stStatus')[0]['column_type'],$stStatuses);
+            // preg_match_all("/\w+\'?\w+?(?=')/",$this->adminmodel->get_enumVals('uom','uomVariant')[0]['column_type'],$uomVariants);
+            // preg_match_all("/\w+\'?\w+?(?=')/",$this->adminmodel->get_enumVals('uom','uomStore')[0]['column_type'],$uomStores);
             echo json_encode(array(
-                "stTypes" => $stTypes/*preg_split('/\,/',preg_replace('/\'/','',$stTypes))*/,
-                "stLocations" => $stLocations/*preg_split('/\,/',preg_replace('/\'/','',$stLocations))*/,
-                "stStatuses" => $stStatuses/*preg_split('/\,/',preg_replace('/\'/','',$stStatuses))*/,
-                "uomVariants" => $uomVariants/*preg_split('/\,/',preg_replace('/\'/','',$uomVariants))*/,
-                "uomStores" => $uomStores/*preg_split('/\,/',preg_replace('/\'/','',$uomStores))*/,
+                "stTypes" => $stTypes[0],
+                "stLocations" => $stLocations[0],
+                "stStatuses" => $stStatuses[0],
+                "uomVariants" => $this->adminmodel->get_uomForSizes(),
+                "uomStores" => $this->adminmodel->get_uomForStoring(),
+                "categories" => $this->adminmodel->get_stockSubCategories()
             ));
         }else{
             echo json_encode(array(
