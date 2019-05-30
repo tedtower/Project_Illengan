@@ -193,8 +193,7 @@ class Adminadd extends CI_Controller{
             if($this->form_validation->run() == FALSE){
                 redirect("admin/dashboard");
             }else{
-                $stockCategory = $this->input->post('category'); 
-                $stockBqty = $this->input->post('bqty');
+                $stockCategory = $this->input->post('category');
                 $stockLocation = $this->input->post('location');
                 $stockMin = $this->input->post('min');
                 $stockName = $this->input->post('name');
@@ -202,18 +201,33 @@ class Adminadd extends CI_Controller{
                 $stockStatus = $this->input->post('status');
                 $stockType = $this->input->post('type');
                 $stockUom = $this->input->post('uom');
-                if($this->adminmodel->add_stockItem($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, $stockBqty, $stockLocation)){
+                $stockSize = $this->input->post('size');
+                $stockID = $this->input->post('id');
+                $dbErr = false;
+                if($stockID == NULL){
+                    if(!$this->adminmodel->add_stockItem($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, 0, $stockLocation)){
+                        $dbErr = true;
+                    }
+                }else{                    
+                    if(!$this->adminmodel->edit_stockItem($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID)){
+                        $dbErr = true;
+                    }
+                }
+                if($dbErr){
+                    echo json_encode(array(
+                        "dbErr" : true 
+                    ));
+                }else{
                     echo json_encode(array(
                         "stocks" => $this->adminmodel->get_stocks(),
                         "categories" => $this->adminmodel->get_stockSubCategories()
                     ));
-                }else{
-                    redirect("admin/dashboard");
-                    // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
-                } 
+                }
             }
         }else{
-            redirect("login");
+            echo json_encode(array(
+                "sessErr" : true
+            ));
         }
     }
 
@@ -282,7 +296,6 @@ class Adminadd extends CI_Controller{
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
             $this->adminmodel->add_stockspoil($date_recorded,$stocks);
-            redirect('admin/stock/spoilages');
         }else{
             redirect('login');
         }

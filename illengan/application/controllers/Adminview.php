@@ -187,7 +187,7 @@ class Adminview extends CI_Controller{
         }
     }
     function viewStockJS() {
-        $data=$this->adminmodel->get_stockVariance();
+        $data=$this->adminmodel->get_stocks();
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
@@ -566,6 +566,10 @@ function viewSpoilagesStock(){
 
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+
+    function getUOM($variant){
+        
     }
 
 }
