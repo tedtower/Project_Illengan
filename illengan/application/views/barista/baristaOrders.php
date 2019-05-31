@@ -20,10 +20,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
 
-  <div class="nav nav-tabs"><a href="<?php echo site_url('barista/orders'); ?>" class="nav nav-link active" role="tab">Orderlist</a> &nbsp;
-            <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="nav nav-link" role="tab">Pending Orders</a> &nbsp;
-            <a href="<?php echo site_url('barista/servedStatus'); ?>" class="nav nav-link" role="tab">Served Orders</a>
-            <a href="<?php echo site_url('barista/orderslip'); ?>" class="nav nav-link" role="tab">Orderslip</a>
+  <div class="nav nav-tabs"><a href="<?php echo site_url('barista/orders'); ?>" class="nav nav-link active" data-toggle="tab">Orderlist</a> &nbsp;
+            <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="nav nav-link" data-toggle="tab">Pending Orders</a> &nbsp;
+            <a href="<?php echo site_url('barista/servedStatus'); ?>" class="nav nav-link" data-toggle="tab">Served Orders</a>
+            <a href="<?php echo site_url('barista/orderslip'); ?>" class="nav nav-link" data-toggle="tab">Orderslip</a>
             </div>
             <br>
  <div class="container">
@@ -176,7 +176,7 @@ $(document).ready(function(){
   });
 
 //For showing the accordion
-  $('#ordersTable tbody').on('click', 'td.details-control', function(){
+  $('#mydata tbody').on('click', 'td.details-control', function(){
     var tr = $(this).closest('tr');
     var row = table.row(tr);
 

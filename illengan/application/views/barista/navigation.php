@@ -27,7 +27,7 @@
 
 <div class="select-nav-pill">
     <div class="icon-div active">
-      <a href="<?php echo site_url('barista/inventory')?>">
+      <a href="<?php echo site_url('admin/inventory/edit')?>">
       <img id="icon" src="<?php echo site_url('assets/media/barista/inventory.png') ?>"></a>
     </div>
     <div class="nav-title">

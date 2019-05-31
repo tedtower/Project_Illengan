@@ -50,19 +50,34 @@ class Barista extends CI_Controller{
         }
     }
     function getBills(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
+        //if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
+                $this->load->view('barista/navigation');
+                //$this->load->model('baristamodel');  
                 $data["bills"] = $this->baristamodel->get_bills();
-                $this->load->view("barista/baristabillings", $data);
-            }else{
-                    redirect('login');
-            }
+                $this->load->view("barista/orderBills", $data);
+           // }
+            // else{
+            //          redirect('login');
+            //  }
     }
+
+    function getOrderBills(){
+        $this->load->view('barista/navigation');
+        $this->load->view('barista/orderBills-default');
+    }
+    
+    function orderBillsJS(){
+        $data= $this->baristamodel->get_bills();
+        echo json_encode($data);
+
+    }
+
     function getBillDetails(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
             $osID = $this->input->post("osID"); 
             $orderdetails = array(
-            'orderslips' => $this->baristamodel->get_orderslip($osID)[0],
-            'orderlists' => $this->baristamodel->get_orderlist($osID)
+            'orderslips' => $this->baristamodel->get_orderslips($osID)[0],
+            'orderlists' => $this->baristamodel->get_orderlists($osID)
             );
                 $this->output->set_output(json_encode($orderdetails));
             }else{
@@ -97,7 +112,7 @@ class Barista extends CI_Controller{
             $payment_date_time = date("Y-m-d H:i:s");
             $date_recorded = date("Y-m-d");
             $osID = $this->input->post("osID");
-            $status = $this->input->post("pay_status");
+            $status = $this->input->post("payStatus");
             
             switch($status){
                 case "p": 
@@ -119,6 +134,10 @@ class Barista extends CI_Controller{
             }else{
                 redirect('login');
             }
+        }
+
+        function sample(){
+            $this->load->view('barista/orderCards');
         }
     }
 ?>

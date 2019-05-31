@@ -22,7 +22,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <body>
 <?php include_once('headernav.php') ?>
   <br>
-  <div class="container">
+  <div class="container"><br>
+  <button class="btn btn-link btn-sm" data-toggle="modal" data-target="#Modal_Add" id="add_modal">Add Order</button>
+  <br>
             <table class="pendOrders dtr-inline collapsed table display" id="pendingordersTable" >
                 <thead>
                     <tr>
@@ -41,7 +43,66 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </table>
     </div>
         
-
+<!-- MODAL ADD -->
+<form>
+            <div class="modal fade" id="Modal_Add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-default" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Name:</label>
+                            <div class="col-md-10">
+                              <input type="text" name="customer_name" id="customer_name" class="form-control" value="" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Table No:</label>
+                            <div class="col-md-10">
+                              <input type="text" name="table_code" id="table_code" class="form-control" value="" required>
+                            </div>
+                        </div>
+                        <h5>Select Menu:</h5>
+                        <form id="formAdd"  method="post" accept-charset="utf-8">
+                                            <div class="modal-body">
+                                                <div style="margin:1% 3%" id="list">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+												<button type="button" class="btn btn-success btn-sm" onclick="getSelectedItems()">Ok</button>
+											</div>
+                      </form>
+                        </div>
+                        <table class="addOrdersTable table table-sm table-borderless">
+													<!--Table containing the different input fields in adding stock spoilages -->
+													<thead class="thead-light">
+														<tr>
+															<th>Order</th>
+															<th width="20%">Qty</th>
+															<th>Price</th>
+															<th>Remarks</th>
+															<th></th>
+														</tr>
+													</thead>
+													<tbody>
+													</tbody>
+												</table>
+					
+												<div class="modal-footer">
+													<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+													<button type="button" class="btn btn-success btn-sm" onclick="addOrderItems()">Add</button>
+												</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+    </form>
+        <!-- END MODAL ADD-->
 
 <!-- MODAL EDIT 
 <form>

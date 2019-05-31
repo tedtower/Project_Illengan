@@ -149,8 +149,8 @@ class Adminupdate extends CI_Controller{
             }
 
         }else{
-            redirect('login');
-        }
+             redirect('login');
+         }
     }
 
     function editSupplierMerchandise(){

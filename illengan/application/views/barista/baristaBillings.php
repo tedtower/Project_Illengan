@@ -1,3 +1,7 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -8,13 +12,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>Il-Lengan | Barista Billings</title>
     <!--Bootstrap core CSS-->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/barista/bootstrap.min.css" rel="stylesheet" />
     <!--Animation library for notifications-->
     <link href="assets/css/animate.min.css" rel="stylesheet" />
     <!--  Light Bootstrap Table core CSS    -->
-    <link href="assets/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" />
+    <link href="assets/css/barista/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" />
     <!--CSS for Demo Purpose, don't include it in your project-->
-    <link href="assets/css/demo.css" rel="stylesheet" />
+    <link href="assets/css/barista/demo.css" rel="stylesheet" />
     <!--Fonts and icons-->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
@@ -23,9 +27,9 @@
 </head>
 
 <body>
-    <div class="wrapper">
+    <!-- <div class="wrapper">
         <div class="sidebar" data-color="brown" data-image="assets/img/Coffee_1.jpg">
-            <!--Left Navigation Bar-->
+            Left Navigation Bar
             <div class="sidebar-wrapper" style="overflow: hidden">
                 <div class="logo">
                     <img src="assets/img/logo_lg.png" alt="il-lengan-logo" img-align="center" width="225px"
@@ -33,12 +37,12 @@
                 </div>
                 <ul class="nav">
                     <li>
-                        <a href="<?php echo site_url('barista/orders'); ?>">
+                        <a href="<//?php echo site_url('barista/orders'); ?>">
                             <p>Orders</p>
                         </a>
                     </li>
                     <li class="active">
-                        <a href="<?php echo site_url('barista/billings'); ?>">
+                        <a href="<//?php echo site_url('barista/billings'); ?>">
                             <p>Billings</p>
                         </a>
                     </li>
@@ -54,7 +58,7 @@
                     </li>
                 </ul>
             </div>
-        </div>
+        </div> -->
         <!--Hamburger Nav
             <nav class="navbar navbar-transparent navbar-absolute">
                 <div class="container-fluid">
@@ -152,28 +156,28 @@
                                 <tr>
                                     <td>
                                         <?php echo $bill['osID'] ?>
-                                        <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                        <!--insert PHP echo e.g. "?php echo $row->code; ?>-->
                                     </td>
                                     <td>
                                         <?php echo $bill['tableCode'] ?>
-                                        <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                        <!--insert PHP echo e.g. "?php echo $row->code; ?>-->
                                     </td>
                                     <td>
-                                        <?php echo $bill['cusName'] ?>
-                                        <!--insert PHP echo (e.g. "?php echo $row->code; ?>-->
+                                        <?php echo $bill['custName'] ?>
+                                        <!--insert PHP echo e.g. "?php echo $row->code; ?>-->
                                     </td>
                                     <td>
-                                        <?php echo $bill['ostotal'] ?>
-                                        <!--insert PHP echo (e.g. "?php echo $row->code; ?>  data-toggle="modal"  data-target=""-->
+                                        <?php echo $bill['osTotal'] ?>
+                                        <!--insert PHP echo e.g. "?php echo $row->code; ?>  data-toggle="modal"  data-target=""-->
                                     </td>
                                     <td>
-                                        <?php echo $bill['pay_status'] ?>
+                                        <?php echo $bill['payStatus'] ?>
                                     </td>
                                     <td>
                                         <div class="onoffswitch">
                                             <!--View button-->
                                             <button class="btn btn-info btn-sm view-btn"
-                                                data-orderid="<?php echo $bill['order_id']?>">View</button>
+                                                data-orderid="<?php echo $bill['osID']?>">View</button>
                                             <!--Cancel button-->
                                             <button class="btn btn-danger btn-sm" data-toggle="modal"
                                                 data-target="">Cancel</button>
@@ -191,15 +195,15 @@
 
 <!--   Core JS Files   -->
 <script src="<?php echo framework_url()."mdb/js/jquery-3.3.1.min.js"?>" type="text/javascript"></script>
-<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="assets/js/barista/bootstrap.min.js" type="text/javascript"></script>
 <!--  Charts Plugin -->
 <script src="assets/js/chartist.min.js"></script>
 <!--  Notifications Plugin    -->
 <script src="assets/js/bootstrap-notify.js"></script>
 <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
-<script src="<?php echo framework_url()?>assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
+<script src="<?php echo framework_url()?>assets/js/barista/light-bootstrap-dashboard.js?v=1.4.0"></script>
 <!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
-<script src="assets/js/demo.js"></script>
+<script src="assets/js/barista/demo.js"></script>
 
 <!-- separate file -->
 <script>
@@ -258,7 +262,7 @@ $(function() {
                 url: "billings/setStatus",
                 data: {
                     osID: orderId,
-                    pay_status: status
+                    payStatus: status
                 }, 
                 dataType: "json",
                 success: function(bill){
@@ -283,15 +287,15 @@ function setModalData(orderId) {
     $("#orderNo").text(bills[orderId]['orderslips']['osID']);
     $("#tableCode").text(bills[orderId]['orderslips']['tableCode']);
     $("#customerName").text(bills[orderId]['orderslips']['custName']);
-    $("#paymentStatus").text(bills[orderId]['orderslips']['pay_status']);
+    $("#paymentStatus").text(bills[orderId]['orderslips']['payStatus']);
     $("#paymentDate").text(bills[orderId]['orderslips']['osPayDate']);
     for(var index = 0 ; index < listLength ; index++){
         $("#billModal table tbody").last().before(listRow);
-        $(".itemNames").eq($("orderList").length-1).text(bills[orderId]['orderlists'][index]["mName"]);
+        $(".itemNames").eq($("orderList").length-1).text(bills[orderId]['orderlists'][index]["olDesc"]);
         $(".itemQty").eq($("orderList").length-1).text(bills[orderId]['orderlists'][index]["olQty"]);
-        $(".itemPrice").eq($("orderList").length-1).text(bills[orderId]['orderlists'][index]["olTotal"]);
+        $(".itemPrice").eq($("orderList").length-1).text(bills[orderId]['orderlists'][index]["olSubtotal"]);
     }
-    if(bills[orderId]["orderslip"]["pay_status"] === "Paid"){
+    if(bills[orderId]["orderslips"]["payStatus"] === "Paid"){
         $("#cash").attr("disabled","disabled");
         $("#change").attr("disabled","disabled");
         $("#update-pay-status-btn").text("Unpay");
@@ -302,7 +306,7 @@ function setModalData(orderId) {
     }
     $("#totalamountpayable").text(bills[orderId]['orderslips']['osTotal']);
     $("#update-pay-status-btn").attr("data-orderid", bills[orderId]["orderslips"]["osID"]);
-    $("#update-pay-status-btn").attr("data-paystatus", bills[orderId]["orderslip"]["pay_status"]);
+    $("#update-pay-status-btn").attr("data-paystatus", bills[orderId]["orderslips"]["payStatus"]);
 }
 
 function removeModalData(){    
