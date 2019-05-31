@@ -14,10 +14,14 @@ class Adminupdate extends CI_Controller{
             $ssID=$this->input->post('ssID');
             $ssDate=$this->input->post('ssDate');
             $ssRemarks=$this->input->post('ssRemarks');
-            $ssQty = $this->input->post('ssQty');
+            $stQty = $this->input->post('stQty');
+            $ssQtyUpdate = $this->input->post('ssQtyUpdate');
+            $curSsQty = $this->input->post('curSsQty');
+            $updateQtyh = $ssQtyUpdate - $curSsQty; //8-7=1
+            $updateQtyl = $curSsQty - $ssQtyUpdate;
             $date_recorded=date("Y-m-d H:i:s");
 
-            $this->adminmodel->edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$ssQty,$date_recorded);
+            $this->adminmodel->edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$updateQtyh,$updateQtyl,$curSsQty,$stQty,$ssQtyUpdate,$date_recorded);
         }else{
             redirect('login');
         } 
