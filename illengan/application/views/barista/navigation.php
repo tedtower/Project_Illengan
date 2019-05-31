@@ -1,7 +1,8 @@
-<div class="sidenav" style="background-color: #9E000C;">
+<div class="sidenav" style="background-color: #504338; min-width: 150px; min-height: 150px;">
   <div class="logo-nav-pill">
-    <a href="#"><img id="icon" src="<?php echo site_url('assets/media/logo.png') ?>"></a>
+    <a href="<?php echo site_url('barista/orders') ?>"><img id="logo" style="height:100%; width:100%;" src="<?php echo site_url('assets/media/logo.png') ?>"></a>
   </div>
+  <br>
   <!-- END FOR LOGO PILL -->
   <div class="select-nav-pill">
     <div class="icon-div active">
@@ -12,6 +13,7 @@
       <p>Orders</p>
     </div>
   </div>
+  <br>
   <!-- END FOR FIRST PILL -->
   <div class="select-nav-pill">
     <div class="icon-div active">
@@ -22,8 +24,8 @@
       <p>Billings</p>
     </div>
   </div>
-
-
+  <br>
+  <!-- END FOR SECOND PILL -->
   <div class="select-nav-pill">
     <div class="icon-div active">
       <a href="<?php echo site_url('barista/inventory') ?>">
@@ -33,12 +35,13 @@
       <p>Inventory</p>
     </div>
   </div>
+  <br>
+  <!-- END FOR THIRD PILL -->
 
-
-<!-- <div class="select-nav-pill">
+  <!-- <div class="select-nav-pill">
     <div class="icon-div active">
-      <a href="<?php echo site_url('barista/notifications') ?>">
-        <img id="icon" src="<?php echo site_url('assets/media/barista/notifications.png') ?>"></a>
+      <a href="?php echo site_url('barista/notifications') ?>">
+        <img id="icon" src="?php echo site_url('assets/media/barista/notifications.png') ?>"></a>
     </div>
     <div class="nav-title">
       <p>Notifications</p>
@@ -56,6 +59,6 @@
       </div>
     </div>
   </a>
-
+  <!-- END FOR FOURTH PILL -->
 </div>
 </div>
