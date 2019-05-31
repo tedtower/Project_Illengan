@@ -51,7 +51,7 @@
                                                         style="background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Order Paid Date</span>
                                                 </div>
-                                                <input type="date" name="osPayDate" id="osPayDate"
+                                                <input type="datetime-local" name="osPayDateTime" id="osPayDateTime"
                                                     class="form-control form-control-sm" required>
                                             </div>
 
@@ -62,7 +62,7 @@
                                                         style="background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Order Date</span>
                                                 </div>
-                                                <input type="date" name="osDate" id="osDate"
+                                                <input type="datetime-local" name="osDateTime" id="osDateTime"
                                                     class="form-control form-control-sm" required>
                                             </div>
                                         </div>
@@ -320,7 +320,7 @@ var tables = [];
                     <td>${item.orderslips.osID}</td>
                     <td>${item.orderslips.custName}</td>
                     <td>${item.orderslips.tableCode}</td>
-                    <td>${item.orderslips.osPayDate}</td>
+                    <td>${item.orderslips.osPayDateTime}</td>
                     <td>&#8369; ${(parseFloat(item.orderslips.osTotal)).toFixed(2)}</td>
                     <td>
                         <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editPO" id="editPOBtn">Edit</button>

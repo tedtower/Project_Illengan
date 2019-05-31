@@ -938,10 +938,10 @@ class Adminmodel extends CI_Model{
     function add_source($data){
         $this->db->insert("sources", $data);
     }
-    function add_salesOrder($tableCode, $custName, $osTotal, $osDate, $osPayDate, $osDateRecorded, $orderlists, $addons) {
+    function add_salesOrder($tableCode, $custName, $osTotal, $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons) {
         $query = "insert into orderslips (osID, tableCode, custName, osTotal, payStatus, 
-        osDate, osPayDate, osDateRecorded) values (NULL,?,?,?,?,?,?,?);";
-        if($this->db->query($query,array($tableCode, $custName, $osTotal, 'paid', $osDate, $osPayDate, $osDateRecorded))) {
+        osDateTime, osPayDateTime, osDateRecorded) values (NULL,?,?,?,?,?,?,?);";
+        if($this->db->query($query,array($tableCode, $custName, $osTotal, 'paid', $osDateTime, $osPayDateTime, $osDateRecorded))) {
             $this->add_salesList($this->db->insert_id(), $orderlists, $addons);
             return true;
             }
@@ -951,8 +951,8 @@ class Adminmodel extends CI_Model{
         $query = "insert into orderlists (olID, prID, osID, olDesc, olQty, 
         olSubtotal, olStatus, olRemarks) values (NULL,?,?,?,?,?,?,?);";
         if(count($orderlists) > 0){
-             for($in = 0; $in < count($orderlists) ; $in++){
-              if($this->db->query($query, array($orderlists[$in]['prID'], $osID, $orderlists[$in]['olDesc'], 
+        for($in = 0; $in < count($orderlists) ; $in++){
+            if($this->db->query($query, array($orderlists[$in]['prID'], $osID, $orderlists[$in]['olDesc'], 
               $orderlists[$in]['olQty'], $orderlists[$in]['olSubtotal'],'served', ' ')) && count($addons) > 0) {
                 $this->add_salesAddons($this->db->insert_id(), $orderlists[$in]['prID'], $addons);
                 return true;
@@ -964,14 +964,13 @@ class Adminmodel extends CI_Model{
     }
 
     function add_salesAddons($olID, $olprID, $addons) {
-        $query = "INSERT INTO orderaddons (aoID, olID, aoQty, aoTotal) VALUES (?, ?, ?, ?);";
-        
-          for($in = 0; $in < count($addons); $in++){
-            if($olprID == $addons[$in]['prID']) {
-            $this->db->query($query, array($addons[$in]['aoID'], $olID, $addons[$in]['aoQty'], 
-                  $addons[$in]['aoTotal']));
-            }
-    }
+                $query = "INSERT INTO orderaddons (aoID, olID, aoQty, aoTotal) VALUES (?, ?, ?, ?);";
+                for($i = 0; $i < count($addons); $i++){
+                  if($olprID == $addons[$i]['prID']) {
+                  $this->db->query($query, array($addons[$i]['aoID'], $olID , $addons[$i]['aoQty'], 
+                        $addons[$i]['aoTotal']));
+                  }
+                }
 
     }
     // function add_poItems($poID, $merchandise) {

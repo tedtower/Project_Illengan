@@ -78,8 +78,8 @@ function addSales() {
     var items = [];
     var addonItems = [];
     var addons = [];
-    var osPayDate = $('#osPayDate').val();
-    var osDate = $('#osDate').val();
+    var osPayDateTime = $('#osPayDateTime').val();
+    var osDateTime = $('#osDateTime').val();
     var custName = $('#custName').val();
     var tableCode = $('#tableCode').val();
     var osTotal = parseInt($('#total').text());
@@ -139,8 +139,8 @@ function addSales() {
             tableCode: tableCode,
             custName: custName,
             osTotal: osTotal,
-            osDate: osDate,
-            osPayDate: osPayDate,
+            osDateTime: osDateTime,
+            osPayDateTime: osPayDateTime,
             orderlists: JSON.stringify(orderlists),
             addons: JSON.stringify(addons)
         },
