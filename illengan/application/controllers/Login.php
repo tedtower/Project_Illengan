@@ -31,7 +31,7 @@ class Login extends CI_Controller{
         }
     }
 
-    function homeRedirect($user_id){        
+    function homeRedirect(){        
         switch ($this->session->userdata('user_type')){
             case 'admin':
                 redirect('admin/dashboard');
