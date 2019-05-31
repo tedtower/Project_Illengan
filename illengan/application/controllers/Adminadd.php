@@ -183,6 +183,30 @@ class Adminadd extends CI_Controller{
         }
     }
 
+    function addImage(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $config = array(
+                'upload_path' => "./uploads/",
+                'allowed_types' => "gif|jpg|png|jpeg|pdf",
+                'overwrite' => TRUE,
+                'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                );
+            $this->load->library('upload', $config);
+            if ( ! $this->upload->do_upload('mImage')){
+                echo 'error';
+            }
+            else{
+                $data = $this->upload->data();
+                $image = $data['file_name'];
+                $mID = $this->input->post('menuId');
+                $this->adminmodel->add_image($image, $mID);
+                redirect("admin/menu");
+            }
+        }else{
+            redirect("login");
+        }
+    }
+
     function addStockItem(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('name','Stock Name','trim|required|alpha_numeric_spaces');

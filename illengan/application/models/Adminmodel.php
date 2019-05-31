@@ -170,6 +170,11 @@ class Adminmodel extends CI_Model{
         }
     }
 
+    function add_image($image, $mID){
+        $query = "UPDATE menu set mImage = ? where mID = ?";
+        return $this->db->query($query,array($image, $mID));
+    }
+
     function add_preference($mID, $preference){
        $query = "INSERT into preferences (mID, prName, mTemp, prPrice, prStatus) values (?,?,?,?,?)";
        if(count($preference) > 0){
