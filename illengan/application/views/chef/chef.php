@@ -4,32 +4,35 @@
 <head>
     <?php include_once('head.php') ?>
 </head>
-
 <body>
-    <?php include_once('navigation.php') ?>
-    <div class="content">
-        <table class="table">
-            <thead class="thead-light">
-                <tr>
-                    <th scope="col">Qty</th>
-                    <th scope="col">Menu</th>
-                    <th scope="col">Customer</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Remarks</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>1</th>
-                    <td>3pcs. Fried Chicken & 3pcs. Buffalo Chicken w/ Mojos</td>
-                    <td>Jessa (T1)</td> <!--Customer name with table number-->
-                    <td>pending</td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
+<?php include_once('navigation.php') ?>
+<div class="container content">
+	<!-- Page Heading -->
+    <div class="row">
+        <div class="col-12">
+    
+            <table class="dataTable  dtr-inline collapsed table stripe table display" id="mydata">
+                <thead>
+                    <tr> 
+                        <th></th>
+                        <th>Menu Name</th>
+                        <th>Customer Name</th>
+                        <th>Table No.</th>
+                        <th>Order Qty</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="show_data">
+                    
+                </tbody>
+            </table>
+        </div>
     </div>
-    <?php include_once('scripts.php') ?>
+        
+</div>
+
+<?php include_once('scripts.php') ?>
+
 </body>
 
 </html>

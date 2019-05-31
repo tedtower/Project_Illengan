@@ -27,9 +27,8 @@ class Chef extends CI_Controller {
 	}
 	
 	function index()
-	{	
-		$data['user_id'] = $this->session->userdata('user_id');
-		$this->load->view('chef/chef', $data); 
+	{
+		$this->load->view('chef/chef'); 
 	}
 
 	function get_orderlist() {
