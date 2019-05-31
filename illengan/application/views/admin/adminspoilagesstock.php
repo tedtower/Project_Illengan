@@ -16,12 +16,13 @@
 							<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addStockSpoilage" data-original-title style="margin:0">Add Stock Spoilage</a><br>
 							<!--eND Add Stock Spoilage BUTTON-->
 							<br>
-							<table id="spoilagesTable" class="spoiltable dtr-inline collapsed table display">
-								<thead>
+							<table id="spoilagesTable" class="spoiltable table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
+								<thead class="thead-dark">
 									<th>Item Name</th>
 									<th>Quantity</th>
 									<th>Date Spoiled</th>
 									<th>Date Recorded</th>
+									<th>Storage</th>
 									<th>Operation</th>
 								
 								</thead>
@@ -160,8 +161,8 @@
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Quantity</span>
                                                         </div>
-                                                        <input type="number" min="1" name="ssQty" id="ssQty" class="form-control form-control-sm" required>
-                                                        <span class="text-danger"><?php echo form_error("ssQty"); ?></span>
+                                                        <input type="number" min="1" name="ssQtyUpdate" id="ssQtyUpdate" class="form-control form-control-sm" required>
+                                                        <span class="text-danger"><?php echo form_error("ssQtyUpdate"); ?></span>
                                                     </div>
                                                     <!--Date Spoiled-->
 													<div class="input-group mb-3">
@@ -182,7 +183,8 @@
                                                     </div>
 													<input name="stID" id="stID" hidden="hidden">
 													<input name="ssID" id="ssID" hidden="hidden">
-													<input name="curQty" id="curQty" hidden="hidden">
+													<input name="stQty" id="stQty" hidden="hidden">
+													<input name="curSsQty" id="curSsQty" hidden="hidden">
                                                     <!--Footer-->
                                                     <div class="modal-footer">
 													<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
@@ -259,11 +261,12 @@
         }
         spoilages.forEach(table => {
             $("#spoilagesTable> tbody").append(`
-			<tr data-stID="${table.stID}" data-ssID="${table.ssID}" data-spoilname="${table.stName}" data-curQty="${table.ssQty}">
+			<tr data-stID="${table.stID}" data-ssID="${table.ssID}" data-spoilname="${table.stName}" data-stQty="${table.stQty}" data-curSsQty="${table.ssQty}">
 			<td><a data-toggle="collapse" href="#collapseExample" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${table.stName}</td>
                 <td>${table.ssQty}</td>
 				<td>${table.ssDate}</td>
 				<td>${table.ssDateRecorded}</td>
+				<td>${table.stLocation}</td>
                 <td>
                         <!--Action Buttons-->
                         <div class="onoffswitch">
@@ -276,21 +279,36 @@
                             data-target="#deleteSpoilage">Delete</button>                      
                         </div>
                     </td>
-				</tr>
-				<tr colspan="5">
-				<td><div class="collapse" id="collapseExample">
-						<div >
-						<p><b>Remarks</b></p>
-						${table.ssRemarks}
-						</div>
-					</div>
-				</td>
 				</tr>`);
-            $(".updateBtn").last().on('click', function () {
+
+			var accordion = `
+            <tr class="accordion" style="display:none;background: #f9f9f9">
+                <td colspan="5"> <!-- table row ng accordion -->
+                    <div style="overflow:auto;display:none"> <!-- container ng accordion -->
+                        
+                        <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
+                            <div><b>Remarks:</b> <!-- label-->
+								<p>
+								${table.ssRemarks == null ? "No Remarks." : table.ssRemarks}
+                                </p>
+                            </div> 
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            `;
+
+			
+			$(".updateBtn").last().on('click', function () {
                 $("#editSpoil").find("input[name='ssID']").val($(this).closest("tr").attr(
 					"data-ssID"));
 				$("#editSpoil").find("input[name='stID']").val($(this).closest("tr").attr(
 					"data-stID"));
+				$("#editSpoil").find("input[name='curSsQty']").val($(this).closest("tr").attr(
+					"data-curSsQty"));
+				$("#editSpoil").find("input[name='stQty']").val($(this).closest("tr").attr(
+					"data-stQty"));
+
             });
             $(".item_delete").last().on('click', function () {
                 $("#deleteSpoilageId").text(
@@ -298,7 +316,18 @@
 				$("#deleteSpoilage").find("input[name='ssID']").val($(this).closest("tr").attr(
                     "data-ssID"));
             });
-        });
+			$("#spoilagesTable > tbody").append(accordion);
+		});
+		$(".accordionBtn").on('click', function(){
+            if($(this).closest("tr").next(".accordion").css("display") == 'none'){
+                $(this).closest("tr").next(".accordion").css("display","table-row");
+				$(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
+			
+            }else{
+                $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
+                $(this).closest("tr").next(".accordion").hide("slow");
+            }
+        	});
 	}
 	//END OF POPULATING TABLE
 	//-------------------------Function for Edit-------------------------------
@@ -307,7 +336,9 @@
 		event.preventDefault();
 		var stID = $(this).find("input[name='stID']").val();
 		var ssID = $(this).find("input[name='ssID']").val(); 
-        var ssQty = $(this).find("input[name='ssQty']").val();
+		var stQty = $(this).find("input[name='stQty']").val(); 
+        var ssQtyUpdate = $(this).find("input[name='ssQtyUpdate']").val();
+		var curSsQty = $(this).find("input[name='curSsQty']").val();
         var ssDate = $(this).find("input[name='ssDate']").val();
         var ssRemarks = $(this).find("input[name='ssRemarks']").val();
       
@@ -317,7 +348,9 @@
             data: {
 				stID: stID,
 				ssID: ssID,
-                ssQty: ssQty,
+				stQty: stQty,
+				ssQtyUpdate: ssQtyUpdate,
+				curSsQty: curSsQty,
                 ssDate: ssDate,
                 ssRemarks: ssRemarks
             },

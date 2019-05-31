@@ -400,9 +400,6 @@ $(document).ready(function() {
                                 <p>${item.menu.mDesc == null ? "Description is not available." : item.menu.mDesc}
                                 </p>
                             </div> 
-                            <div class="aoAndPreferences" style="overflow:auto;margin-top:1%"> <!-- Preferences and addons container-->
-                                
-                            </div>
                         </div>
                     </div>
                 </td>

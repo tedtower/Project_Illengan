@@ -223,7 +223,7 @@ class Adminadd extends CI_Controller{
                 }
                 if($dbErr){
                     echo json_encode(array(
-                        "dbErr" : true 
+                        // "dbErr" : true 
                     ));
                 }else{
                     echo json_encode(array(
@@ -234,7 +234,7 @@ class Adminadd extends CI_Controller{
             }
         }else{
             echo json_encode(array(
-                "sessErr" : true
+                // "sessErr" : true
             ));
         }
     }
