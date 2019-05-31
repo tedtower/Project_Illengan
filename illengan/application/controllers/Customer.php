@@ -6,8 +6,6 @@ class Customer extends CI_Controller {
 		parent:: __construct();
 		$this->load->model("Customermodel");
         date_default_timezone_set('Asia/Manila');  
-        // code for getting current date : date("Y-m-d")
-        // code for getting current date and time : date("Y-m-d H:i:s")
 	}
 
 	//Checks if the user is logged in. *DON'T CHANGE*
@@ -78,16 +76,13 @@ class Customer extends CI_Controller {
 				$data['cart'] = $this->cart->contents();
 				$data['categories'] = $this->Customermodel->fetch_category();
 				$data['menu'] = $this->Customermodel->fetch_menu();
-				//$data['subcats'] = array_merge($this->Customermodel->fetch_allsubcats(), 
-				//$this->Customermodel->fetch_catswithmenu());
 				$data['subcats'] = $this->Customermodel->fetch_availableSubcategory();
 				sort($data['subcats']);
 				$data['pref_menu'] = $this->Customermodel->fetch_menupref();
 				$data['addons'] = $this->Customermodel->fetch_addon();
-				//$this->output->set_output(json_encode($this->session->userdata('orders')));
-				$data['orders'] = json_encode($this->session->userdata('orders'));
+				$data['orders'] = $this->session->userdata('orders');
 				$this->load->view('customer/template/head',$data);
-				$this->load->view('customer/menu',$data);
+				$this->load->view('customer/menu');
 				$this->load->view('customer/template/foot');
 				$this->load->view('customer/template/modal_func');
 			}else{
@@ -96,12 +91,6 @@ class Customer extends CI_Controller {
 		}else{
 			redirect('login');
 		}
-	}
-
-	//Ano to? haha
-	public function set_order(){
-		$orders = $this->input->post();
-		$this->cart->insert($orders);
 	}
 	
 	//Adds selected menu item in the cart
@@ -182,13 +171,26 @@ class Customer extends CI_Controller {
 	}
 	
 	function clearOrder(){
-		$this->session->unset_userdata('orders');
-		redirect('customer/menu');
+		if($this->isLoggedIn()){			
+			if($this->isCheckedIn()){
+				$this->session->unset_userdata('orders');
+				redirect('customer/menu');
+			}else{
+				redirect('customer/checkin');
+			}
+		}else{
+			redirect('login');
+		}
 	}
-	
+
 	function removeOrder() {	
 		if($this->isLoggedIn()){			
 			if($this->isCheckedIn()){
+				$order = $this->session->userdata('orders');
+				$id = $this->input->post('id');
+				unset($_SESSION['orders'][$id]);
+				rsort($_SESSION['orders']);
+				echo json_encode($order);
 			}else{
 				redirect('customer/checkin');
 			}

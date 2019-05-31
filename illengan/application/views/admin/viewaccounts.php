@@ -27,7 +27,7 @@
                                         <th><b class="pull-left">Account No.</b></th>
                                         <th><b class="pull-left">Type</b></th>
                                         <th><b class="pull-left">Username</b></th>
-                                        <th><b class="pull-left">Online</b></th>
+                                        <th><b class="pull-left">Status</b></th>
                                         <th><b class="pull-left">Actions</b></th>
 
                                     </thead>
@@ -299,7 +299,7 @@
                 <td>${table.aID}</td>
                 <td>${table.aType}</td>
                 <td>${table.aUsername}</td>
-                <td>${table.aIsOnline}</td>
+                <td>${table.aIsOnline == 0 ? "Offline" : "Online"}</td>
                 <td>
                         <!--Action Buttons-->
                         <div class="onoffswitch">

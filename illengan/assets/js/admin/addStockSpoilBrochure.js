@@ -10,25 +10,28 @@ function getSelectedStocks() {
                 type: 'POST',
                 url: 'http://www.illengan.com/admin/stock/spoilages/viewStockJS',
                 data: {
-                    vID : value
+                    stID : value
                 },
                 dataType: 'json',
                 async: false,
                 success: function (data) {
                    
-                    stockChecked = `<tr class="stockelem" data-id="` + data[i].vID + `" >
-                            <input type="hidden" id="curQty` + i + `" name="curQty" class="form-control form-control-sm" data-vID="` + data[i].vQty + `" value="` + data[i].vQty + `">
-                            <input type="hidden" id="vID` + i + `" name="vID" class="form-control form-control-sm" data-vID="` + data[i].vID + `" value="` + data[i].vID + `">
+                    stockChecked = `<tr class="stockelem" data-id="` + data[i].stID + `" >
+                            <input type="hidden" id="curQty` + i + `" name="curQty" class="form-control form-control-sm" data-curQty="` + data[i].stQty + `" value="` + data[i].stQty + `">
+                            <input type="hidden" id="stID` + i + `" name="stID" class="form-control form-control-sm" data-stID="` + data[i].stID + `" value="` + data[i].stID + `">
                             <td><input type="text" id="stName` + i + `" name="stName"
-                                    class="form-control form-control-sm" data-stNameID="` + data[i].stName + `" value="` + data[i].vName + `" readonly="readonly" required></td>
+                                    class="form-control form-control-sm" data-stNameID="` + data[i].stName + `" value="` + data[i].stName + `" readonly="readonly" required></td>
                             <td><input type="number" min="1" id="ssQty` + i + `" name="ssQty"
                                     class="form-control form-control-sm" value="" required></td>
                             <td><input type="text" id="ssRemarks` + i + `" name="ssRemarks"
                                     class="form-control form-control-sm"  value="" required></td>
-                            <td><img class="exitBtn"
+                            <td><img class="exitBtn1"
                                     src="/assets/media/admin/error.png"
                                     style="width:20px;height:20px"></td>
                             </tr>`;
+                            $(this).closest(".modal").find(".exitBtn1").last().on('click',function(){
+                                $(this).closest("tr").remove();
+                            });
                     $('.stockSpoilageTable > tbody').append(stockChecked);
                 }
 
@@ -42,15 +45,15 @@ function addStockItems() {
     var ssDate = document.getElementById('spoilDate').value;
     var stockItems = [];
     var stocks = [];
-    var vID,stID,ssQty, ssRemarks;
+    var stID,ssQty, ssRemarks;
     for (var i = 0; i <= elements.length - 1; i++) {
-        vID = document.getElementsByName('vID')[i].value;
+        stID = document.getElementsByName('stID')[i].value;
         curQty = document.getElementsByName('curQty')[i].value;
         ssQty = document.getElementsByName('ssQty')[i].value;
         ssRemarks = document.getElementsByName('ssRemarks')[i].value;
 
         stockItems = {
-            'vID': vID,
+            'stID': stID,
             'curQty': curQty,
             'ssQty': ssQty,
             'ssDate': ssDate,
@@ -65,11 +68,6 @@ function addStockItems() {
             stocks: JSON.stringify(stocks)
         },
         dataType: 'json',
-        success: function (data) {
-            alert('Spoiled Stock Added');
-            newFunction(data);
-            
-        },
         complete: function() {
             $("#formAdd").modal("hide");
             location.reload();
@@ -81,6 +79,3 @@ function addStockItems() {
     });
 }
 
-function newFunction(data) {
-    console.log(data);
-}
