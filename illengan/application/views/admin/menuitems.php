@@ -52,9 +52,9 @@
                             </button>
                         </div>
                         <form action="<?php echo base_url()?>admin/menu/add" method="post"
-                            accept-charset="utf-8" enctype="multipart/form-data">
+                            accept-charset="utf-8">
                             <div class="modal-body">
-                                <div class="input-group mb-3"> <!--Menu Image-->
+                                <!-- <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" style="width:105px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">Image</span>
                                     </div>
@@ -62,7 +62,7 @@
                                         <input type="file" class="custom-file-input" name="mImage" id="mImage">
                                         <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                                     </div>
-                                </div> 
+                                </div>  -->
                                 <!--Menu Name-->
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
@@ -223,7 +223,7 @@ $(document).ready(function() {
         var row=`
         <tr data-id="">
             <td>
-                <select class="form-control" name="aoName[]">
+                <select class="form-control" name="aoID[]">
                 ${addons.map(addon => {
                         return `
                         <option value="${addon.aoID}">${addon.aoName}</option>`
@@ -241,16 +241,15 @@ $(document).ready(function() {
 
     $("#newMenu form").on('submit', function(event) {
         event.preventDefault();
-        // var image = $(this).find("input[name='mImage']")[0].files[0];
-        // var name = $(this).find("input[name='mName']").val();
-        // var description = $(this).find("input[name='mDesc']").val();
-        // var category = $(this).find("input[name='ctName']").val();
-        // var status = $(this).find("input[name='mAvailability']").val();
+        var name = $(this).find("input[name='mName']").val();
+        var description = $(this).find("input[name='mDesc']").val();
+        var category = $(this).find("select[name='ctName']").val();
+        var status = $(this).find("select[name='mAvailability']").val();
         var preferences = [];
         for (var index = 0; index < $(this).find(".preferencetable > tbody").children().length; index++) {
             preferences.push({
                 prName: $(this).find("input[name='prName[]']").eq(index).val(),
-                mTemp: $(this).find("input[name='mTemp[]']").eq(index).val(),
+                mTemp: $(this).find("select[name='mTemp[]']").eq(index).val(),
                 prPrice: $(this).find("input[name='prPrice[]']").eq(index).val(),
                 prStatus: $(this).find("select[name='prStatus[]']").eq(index).val()
             });
@@ -258,22 +257,23 @@ $(document).ready(function() {
         var addons = [];
         for (var index = 0; index < $(this).find(".addontable > tbody").children().length; index++) {
             addons.push({
-                aoName: $(this).find("select[name='aoName[]']").eq(index).val()
+                aoID: $(this).find("select[name='aoID[]']").eq(index).val()
             });
         }
         $.ajax({
-            url: "<?= site_url("admin/menu/add")?>",
+            url: "<?= base_url("admin/menu/add")?>",
             method: "post",
             data: {
-                formdata: new FormData(this),
+                name: name,
+                description: description,
+                category:category,
+                status:status,
                 preferences: JSON.stringify(preferences),
                 addons: JSON.stringify(addons)
             },
-            processData: false,
-            contentType: false,
             dataType: "json",
             beforeSend: function() {
-                console.log(preferences,addons);
+                console.log(name,description,category,status,preferences,addons);
             },
             success: function(data) {
                 console.log(data);
@@ -283,7 +283,6 @@ $(document).ready(function() {
             },
             error: function(response, setting, error) {
                 console.log(error);
-                console.log(response);
             },
             complete: function() {
                 $("#newMenu").modal("hide");

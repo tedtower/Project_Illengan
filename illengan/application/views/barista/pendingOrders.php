@@ -81,6 +81,17 @@ $(function() {
 
 //POPULATE TABLE
 var table = $('#pendingordersTable');
+	// function format(d) {
+	// 	return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+	// 		'<tr>' +
+	// 		'<td>Remarks</td>' +
+	// 		'</tr>' +
+	// 		'<tr>' +
+	// 		'<td>' + d.ssRemarks + '</td>' +
+	// 		'</tr>' +
+	// 		'</table>';
+
+	// }
 
 	function viewpendingOrdersJs() {
         $.ajax({

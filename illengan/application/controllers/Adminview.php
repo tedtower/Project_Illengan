@@ -60,6 +60,17 @@ class Adminview extends CI_Controller{
             redirect('login');
         }
     }
+    function viewstockcard(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $data['title'] = "Admin Stock Card";
+            $this->load->view('admin/templates/head', $data);
+            $this->load->view('admin/templates/sideNav');
+            $this->load->view('admin/stockcard');
+        }else{
+            redirect('login');
+        }
+    }
+
     function viewSupplier(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data['title'] = "Sources";
@@ -557,8 +568,39 @@ function viewSpoilagesStock(){
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
 
-    function getUOM($variant){
-        
+    function getEnumValsForStock(){
+        if($this->checkIfLoggedIn()){
+            preg_match_all("/\w+\'?\w+?(?=')/",$this->adminmodel->get_enumVals('stockitems','stType')[0]['column_type'], $stTypes);
+            preg_match_all("/\w+\'?\w+?(?=')/",$this->adminmodel->get_enumVals('stockitems','stLocation')[0]['column_type'],$stLocations);
+            preg_match_all("/\w+\'?\w+?(?=')/",$this->adminmodel->get_enumVals('stockitems','stStatus')[0]['column_type'],$stStatuses);
+            // preg_match_all("/\w+\'?\w+?(?=')/",$this->adminmodel->get_enumVals('uom','uomVariant')[0]['column_type'],$uomVariants);
+            // preg_match_all("/\w+\'?\w+?(?=')/",$this->adminmodel->get_enumVals('uom','uomStore')[0]['column_type'],$uomStores);
+            echo json_encode(array(
+                "stTypes" => $stTypes[0],
+                "stLocations" => $stLocations[0],
+                "stStatuses" => $stStatuses[0],
+                "uomVariants" => $this->adminmodel->get_uomForSizes(),
+                "uomStores" => $this->adminmodel->get_uomForStoring(),
+                "categories" => $this->adminmodel->get_stockSubCategories()
+            ));
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
+
+    function getStockItem(){
+        if($this->checkIfLoggedIn()){
+            echo json_encode(array(
+                "stock" => $this->adminmodel->get_stockItem($this->input->post('id'))[0],
+                "uomVariants" => $this->adminmodel->get_uomForSizes()
+            ));
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
     }
 
 }

@@ -3,6 +3,11 @@ class Adminmodel extends CI_Model{
     
     private $err = array('Username does not exist!', 'Incorrect password');
 
+    function __construct(){
+        parent:: __construct();
+        $this->infoDB = $this->load->database('information',true);
+    }
+
     //INSERT FUNCTIONS----------------------------------------------------------------
     function add_accounts($data){
         $this->db->insert('accounts',$data);
@@ -155,11 +160,12 @@ class Adminmodel extends CI_Model{
         $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
     }
 
-    function add_menu($image, $mName, $mDesc, $category, $status, $preference, $addon){
-        $query = "INSERT into menu (mImage, mName, mDesc, ctID, mAvailability) values (?,?,?,?,?);";
-        if($this->db->query($query,array($image, $mName, $mDesc, $category, $status))){
-            $this->add_preference($this->db->insert_id(), $preference);
-            $this->add_addon($this->db->insert_id(), $addon);
+    function add_menu($mName, $mDesc, $category, $status,$preference,$addon){
+        $query = "INSERT into menu (mName, mDesc, ctID, mAvailability) values (?,?,?,?);";
+        if($this->db->query($query,array($mName, $mDesc, $category, $status))){
+            $mID = $this->db->insert_id();
+            $this->add_preference($mID, $preference);
+            $this->add_menuaddon($mID, $addon);
             return true;
         }
     }
@@ -167,17 +173,18 @@ class Adminmodel extends CI_Model{
     function add_preference($mID, $preference){
        $query = "INSERT into preferences (mID, prName, mTemp, prPrice, prStatus) values (?,?,?,?,?)";
        if(count($preference) > 0){
-           for($n = 0; $n < count(preference) ; $n++){
+           for($n = 0; $n < count($preference) ; $n++){
                $this->db->query($query, array($mID, $preference[$n]['prName'], $preference[$n]['mTemp'], $preference[$n]['prPrice'], $preference[$n]['prStatus']));
            }
        } else{
            return false;
        }
     }
+
     function add_menuaddon($mID, $addon){
         $query = "INSERT into menuaddons (mID, aoID) values (?,?)";
         if(count($addon) > 0){
-            for($n = 0; $n < count(addon) ; $n++){
+            for($n = 0; $n < count($addon) ; $n++){
                 $this->db->query($query, array($mID, $addon[$n]['aoID']));
             }
         } else{
@@ -413,12 +420,11 @@ class Adminmodel extends CI_Model{
             stID = ?;";
         return $this->db->query($query, array($id))->result_array();
     }
-    function edit_stockItem($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID){
+    function edit_stockItem($stockCategory, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID){
         $query = "UPDATE
             stockitems
         SET
             ctID = ?,
-            stBqty = ?,
             stLocation = ?,
             stMin = ?,
             stName = ?,
@@ -429,7 +435,7 @@ class Adminmodel extends CI_Model{
             stSize = ?
         WHERE
             stID = ?;";
-        if($this->db->query($query,array($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID))){
+        if($this->db->query($query,array($stockCategory, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID))){
             return true;
         }
         return false;
@@ -561,7 +567,7 @@ class Adminmodel extends CI_Model{
     function get_stocks(){
         $query = "SELECT
             stID,
-            CONCAT(stName, if(stSize IS Null,'', stSize)) as stName,
+            CONCAT(stName, if(stSize IS Null,'', ' ' + stSize)) as stName,
             stMin,
             stQty,
             uomID,
@@ -1120,6 +1126,63 @@ class Adminmodel extends CI_Model{
                        $eRetIt[$i]['itPri'],$eRetIt[$i]['itUnit'], $eRetIt[$i]['itSub'],$itemID));
                     }
             }
+    }
+
+    function get_enumVals($table,$column){
+        $query = "SELECT 
+            column_type
+        FROM
+            COLUMNS
+        WHERE
+            TABLE_NAME = ?
+                AND COLUMN_NAME = ?;";
+        return $this->infoDB->query($query,array($table,$column))->result_array();
+    }
+    function get_uomForSizes(){
+        $query = "SELECT
+            uomName,
+            uomAbbreviation,
+            UPPER(uomVariant) as uomVariant
+        FROM
+            uom
+        WHERE
+            uomVariant IS NOT NULL;";
+        return $this->db->query($query)->result_array();
+    }
+    function get_uomForStoring(){
+        $query = "SELECT
+            uomID,
+            uomName,
+            uomAbbreviation
+        FROM
+            uom
+        WHERE
+            uomStore IS NOT NULL;";
+        return $this->db->query($query)->result_array();
+    }
+    function get_stockItem($id){
+        $query = "SELECT
+            ctID,
+            ctName,
+            stID,
+            UPPER(stLocation) AS stLocation,
+            stMin,
+            stName,
+            stQty,
+            stSize,
+            UPPER(stStatus) AS stStatus,
+            UPPER(stType) AS stType,
+            uomID,
+            uomAbbreviation
+        FROM
+            (
+                stockitems
+            LEFT JOIN categories USING(ctID)
+            )
+        LEFT JOIN uom USING(uomID)
+        WHERE
+            stID = ?;";
+        return $this->db->query($query, array($id))->result_array();
     }
 
 }
