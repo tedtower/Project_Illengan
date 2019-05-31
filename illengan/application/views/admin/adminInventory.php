@@ -325,8 +325,10 @@
 
 <script>
 var lastIndex = 0;
+var crudUrl = '<?= site_url("admin/inventory/addEdit")?>';
 var enumValsUrl = '<?= site_url('admin/inventory/getEnumVals')?>';
 var getStockUrl = '<?= site_url('admin/inventory/getStockItem')?>';
+var loginUrl = '<?= site_url('login')?>';
 $(document).ready(function() {
     $("#addBtn").on('click', function() {
         $("#addEditStock form")[0].reset();
@@ -380,7 +382,7 @@ $(document).ready(function() {
         var uom = $(this).find("select[name='stockUOM']").val();
         var size = $(this).find("input[name='stockSize']").val().concat($(this).find("select[name='stockSizeUOM']").val());
         $.ajax({
-            url: "<?= site_url("admin/inventory/addEdit")?>",
+            url: crudUrl,
             method: "POST",
             data: {
                 id: id,
@@ -400,7 +402,7 @@ $(document).ready(function() {
             },
             success: function(data) {
                  if(data.sessErr){
-                     window.location.replace("<?= site_url('login')?>");
+                     window.location.replace(loginUrl);
                  }else if(data.dbErr){
                      alert("Database Error");
                  }else{
