@@ -1,64 +1,30 @@
-<div class="sidenav" style="background-color: #504338; min-width: 150px; min-height: 150px;">
-  <div class="logo-nav-pill">
-    <a href="<?php echo site_url('barista/orders') ?>"><img id="logo" style="height:100%; width:100%;" src="<?php echo site_url('assets/media/logo.png') ?>"></a>
+<nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark scrolling-navbar py-1">
+  <img src="<?php echo base_url();?>assets/media/logo.png" class="nav-logo mr-2 my-1" alt="Il-lengan logo" />
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto delius">
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo base_url('barista/orders')?>"><i class="fal fa-tasks"></i> Orders</a>
+          </li>
+      </ul>
+      <ul class="navbar-nav mr-auto delius">
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo base_url('barista/billings')?>"><i class="fal fa-tasks"></i> Billings</a>
+          </li>
+      </ul>
+      <ul class="navbar-nav mr-auto delius">
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo base_url('barista/orders')?>"><i class="fal fa-tasks"></i> Inventory</a>
+          </li>
+      </ul>
+      <ul class="navbar-nav ml-auto delius">
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo base_url('login/logout')?>"><i class="fal fa-sign-out-alt"></i> Sign Out</a>
+          </li>
+      </ul>
   </div>
-  <br>
-  <!-- END FOR LOGO PILL -->
-  <div class="select-nav-pill">
-    <div class="icon-div active">
-      <a href="<?php echo site_url('barista/orders') ?>">
-        <img id="icon" src="<?php echo site_url('assets/media/barista/orders.png') ?>"></a>
-    </div>
-    <div class="nav-title">
-      <p>Orders</p>
-    </div>
-  </div>
-  <br>
-  <!-- END FOR FIRST PILL -->
-  <div class="select-nav-pill">
-    <div class="icon-div active">
-      <a href="<?php echo site_url('barista/billings') ?>">
-        <img id="icon" src="<?php echo site_url('assets/media/barista/billings.png') ?>"></a>
-    </div>
-    <div class="nav-title">
-      <p>Billings</p>
-    </div>
-  </div>
-  <br>
-  <!-- END FOR SECOND PILL -->
-  <div class="select-nav-pill">
-    <div class="icon-div active">
-      <a href="<?php echo site_url('barista/inventory') ?>">
-        <img id="icon" src="<?php echo site_url('assets/media/barista/inventory.png') ?>"></a>
-    </div>
-    <div class="nav-title">
-      <p>Inventory</p>
-    </div>
-  </div>
-  <br>
-  <!-- END FOR THIRD PILL -->
-
-  <!-- <div class="select-nav-pill">
-    <div class="icon-div active">
-      <a href="?php echo site_url('barista/notifications') ?>">
-        <img id="icon" src="?php echo site_url('assets/media/barista/notifications.png') ?>"></a>
-    </div>
-    <div class="nav-title">
-      <p>Notifications</p>
-    </div>
-  </div> -->
-
-  <a href="<?php echo base_url('login/logout') ?>">
-    <div class="select-nav-pill">
-      <div class="icon-div active">
-
-        <img id="icon" src="<?php echo base_url() . 'assets/media/navigation/sign-out-option.png' ?>">
-      </div>
-      <div class="nav-title">
-        <p>Sign Out</p>
-      </div>
-    </div>
-  </a>
-  <!-- END FOR FOURTH PILL -->
-</div>
-</div>
+</nav>
