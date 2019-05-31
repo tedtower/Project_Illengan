@@ -404,12 +404,11 @@ class Adminmodel extends CI_Model{
             stID = ?;";
         return $this->db->query($query, array($id))->result_array();
     }
-    function edit_stockItem($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID){
+    function edit_stockItem($stockCategory, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID){
         $query = "UPDATE
             stockitems
         SET
             ctID = ?,
-            stBqty = ?,
             stLocation = ?,
             stMin = ?,
             stName = ?,
@@ -420,7 +419,7 @@ class Adminmodel extends CI_Model{
             stSize = ?
         WHERE
             stID = ?;";
-        if($this->db->query($query,array($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID))){
+        if($this->db->query($query,array($stockCategory, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID))){
             return true;
         }
         return false;
@@ -1144,6 +1143,30 @@ class Adminmodel extends CI_Model{
         WHERE
             uomStore IS NOT NULL;";
         return $this->db->query($query)->result_array();
+    }
+    function get_stockItem($id){
+        $query = "SELECT
+            ctID,
+            ctName,
+            stID,
+            UPPER(stLocation) AS stLocation,
+            stMin,
+            stName,
+            stQty,
+            stSize,
+            UPPER(stStatus) AS stStatus,
+            UPPER(stType) AS stType,
+            uomID,
+            uomAbbreviation
+        FROM
+            (
+                stockitems
+            LEFT JOIN categories USING(ctID)
+            )
+        LEFT JOIN uom USING(uomID)
+        WHERE
+            stID = ?;";
+        return $this->db->query($query, array($id))->result_array();
     }
 
 }

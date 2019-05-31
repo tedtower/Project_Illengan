@@ -204,12 +204,12 @@ class Adminadd extends CI_Controller{
                 $stockSize = $this->input->post('size');
                 $stockID = $this->input->post('id');
                 $dbErr = false;
-                if($stockID == NULL){
+                if($stockID == null){
                     if(!$this->adminmodel->add_stockItem($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, 0, $stockLocation, $stockSize)){
                         $dbErr = true;
                     }
-                }else{                    
-                    if(!$this->adminmodel->edit_stockItem($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID)){
+                }else{                 
+                    if(!$this->adminmodel->edit_stockItem($stockCategory, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID)){
                         $dbErr = true;
                     }
                 }

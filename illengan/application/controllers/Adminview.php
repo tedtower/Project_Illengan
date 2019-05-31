@@ -590,6 +590,19 @@ function viewSpoilagesStock(){
         }
     }
 
+    function getStockItem(){
+        if($this->checkIfLoggedIn()){
+            echo json_encode(array(
+                "stock" => $this->adminmodel->get_stockItem($this->input->post('id'))[0],
+                "uomVariants" => $this->adminmodel->get_uomForSizes()
+            ));
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
+
 }
 
 ?>
