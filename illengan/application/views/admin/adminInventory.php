@@ -41,7 +41,7 @@
                                 <td><?= $stock['stStatus']?></td>
                                 <td><?= $stock['stLocation']?></td>
                                 <td>
-                                    <button class="btn btn-default btn-sm">Edit</button>
+                                    <button class="editBtn btn btn-default btn-sm" data-toggle="modal" data-target="#addEditStock">Edit</button>
                                     <button class="btn btn-warning btn-sm">Archived</button>
                                     <a href="<?php echo base_url('admin/inventory/stockcard')?>" class="btn btn-success btn-sm">Stock Card</a>
                                 </td>
@@ -153,6 +153,8 @@
                                 </div>
                                 <form action="<?php echo base_url('admin/inventory/add')?>" method="get"
                                     accept-charset="utf-8">
+                                    <input type="text" name="stockID" id="stockID"
+                                                class="form-control form-control-sm" hidden="hidden">
                                     <div class="modal-body" style="margin:1%;">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
@@ -322,83 +324,26 @@
 <script src="assets/js/admin/demo.js"></script>
 
 <script>
-var inventory = <?= json_encode($inventory)?>;
 var lastIndex = 0;
-var rowsPerPage = inventory.stocks.length;
+var crudUrl = '<?= site_url("admin/inventory/addEdit")?>';
+var enumValsUrl = '<?= site_url('admin/inventory/getEnumVals')?>';
+var getStockUrl = '<?= site_url('admin/inventory/getStockItem')?>';
+var loginUrl = '<?= site_url('login')?>';
 $(document).ready(function() {
-    $(".accordionBtn").on('click', function() {
-        if ($(this).closest("tr").next(".accordion").css("display") == 'none') {
-            $(this).closest("tr").next(".accordion").css("display", "table-row");
-            $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
-        } else {
-            $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
-            $(this).closest("tr").next(".accordion").hide("slow");
-        }
-    });
-    $("#addEditStock").find("select[name='stockCategory']").append(`
-        ${inventory.categories.map(category => {
-            return `<option value="${category.ctID}">${category.ctName}</option>`
-        }).join('')}`);
-    $("#editStock").find("select[name='stockCategory']").append(`
-        ${inventory.categories.map(category => {
-            return `<option value="${category.ctID}">${category.ctName}</option>`
-        }).join('')}`);
-    console.log(inventory);
     $("#addBtn").on('click', function() {
         $("#addEditStock form")[0].reset();
-        getEnumVals();
+        getEnumVals(enumValsUrl);
     });
     $(".editBtn").on("click", function() {
-        $("#editStock form")[0].reset();
-        var id = $(this).closest("tr").attr("data-id")
-        $.ajax({
-            method : 'post',
-            url : '<?=site_url('admin/inventory/getitem')?>',
-            data : {
-                id : id
-            },
-            dataType : "json",
-            success : function (data){
-                console.log(data);
-                $("#editStock .varianceTable > tbody").empty();
-                setEditModal($("#editStock"), data.stock[0], data.variances);
-            },
-            error : function(response, setting, error){
-                console.log(response.responseText);
-            }
-        });
-    });
-    $(".addItemVarianceBtn").on('click', function() {
-        var row = `
-        <tr data-id="">
-            <td><input type="text" name="varUnit[]"
-                    class="form-control form-control-sm"></td>
-            <td><input type="text" name="varSize[]"
-                    class="form-control form-control-sm"></td>
-            <td><input type="number" name="varMinimum[]"
-                    class="form-control form-control-sm"></td>
-            <td><input type="number" name="varQty[]"
-                    class="form-control form-control-sm"></td>
-            <td>
-                <select class="form-control" name="varStatus[]">
-                    <option value="" selected>Choose</option>
-                    <option value="available">available</option>
-                    <option value="unavailable">unavailable</option>
-                </select>
-            </td>
-            <td><img class="exitBtn"
-                    src="/assets/media/admin/error.png"
-                    style="width:20px;height:20px"></td>
-        </tr>
-        `;
-        $(this).closest(".modal").find(".varianceTable > tbody").append(row);
-        $(this).closest(".modal").find(".exitBtn").last().on('click', function() {
-            $(this).closest("tr").remove();
-        });
+        var id = $(this).closest("tr").attr("data-id");
+        getEnumVals(enumValsUrl);
+        populateModalForm(id, getStockUrl);
     });
     // setTableData();
     $("#addEditStock form").on('submit', function(event) {
         event.preventDefault();
+        var id = $(this).find("input[name='stockID']").val();
+        id = isNaN(parseInt(id)) ? (undefined) :  parseInt(id);
         var name = $(this).find("input[name='stockName']").val();
         var type = $(this).find("select[name='stockType']").val();
         var category = $(this).find("select[name='stockCategory']").val();
@@ -407,11 +352,12 @@ $(document).ready(function() {
         var min = $(this).find("input[name='stockMinQty']").val();
         var qty = $(this).find("input[name='stockQty']").val();
         var uom = $(this).find("select[name='stockUOM']").val();
-        var size = $(this).find("select[name='stockSize']").val().concat($(this).find("select[name='stockSizeUOM']").val());
+        var size = $(this).find("input[name='stockSize']").val().concat($(this).find("select[name='stockSizeUOM']").val());
         $.ajax({
-            url: "<?= site_url("admin/inventory/addEdit")?>",
-            method: "post",
+            url: crudUrl,
+            method: "POST",
             data: {
+                id: id,
                 name: name,
                 type: type,
                 category: category,
@@ -422,13 +368,13 @@ $(document).ready(function() {
                 uom: uom,
                 size: size
             },
-            dataType: "json",
+            dataType: "JSON",
             beforeSend: function() {
                 console.log("Name: ", name, " Type: ", type, " Category: ", category, " Status: ", status, " Storage: ", storage, " Min: ", min, " QTY: ", qty, " UOM: ", uom, " Size: ", size, "");
             },
             success: function(data) {
                  if(data.sessErr){
-                     window.location.replace("<?= site_url('login')?>");
+                     window.location.replace(loginUrl);
                  }else if(data.dbErr){
                      alert("Database Error");
                  }else{
@@ -446,13 +392,43 @@ $(document).ready(function() {
     });
 });
 
-function getEnumVals(){
+function getEnumVals(url){
     $.ajax({
         method: 'POST',
-        url: '<?= site_url('admin/inventory/getEnumVals')?>',
+        url: url,
         dataType: 'JSON',
         success: function(data){
-            console.log(data);
+            $("#addEditStock").find("select[name='stockType']").children().first().siblings().remove();
+            $("#addEditStock").find("select[name='stockStatus']").children().first().siblings().remove();
+            $("#addEditStock").find("select[name='stockStorage']").children().first().siblings().remove();
+            $("#addEditStock").find("select[name='stockSizeUOM']").children().first().siblings().remove();
+            $("#addEditStock").find("select[name='stockUOM']").children().first().siblings().remove();
+            $("#addEditStock").find("select[name='stockCategory']").children().first().siblings().remove();
+            $("#addEditStock").find("select[name='stockType']").append(data.stTypes.map(type=>{
+                return `<option value="${type}">${type.toUpperCase()}</option>`; 
+            }).join(''));
+            $("#addEditStock").find("select[name='stockStatus']").append(data.stStatuses.map(status=>{
+                return `<option value="${status}">${status.toUpperCase()}</option>`;
+            }).join(''));
+            $("#addEditStock").find("select[name='stockStorage']").append(data.stLocations.map(storage=>{
+                return `<option value="${storage}">${storage.toUpperCase()}</option>`;
+            }).join(''));
+            $("#addEditStock").find("select[name='stockSizeUOM']").append(data.uomVariants.map(variant=>{
+                return `<option value="${variant.uomAbbreviation}" data-type="${variant.uomVariant}">${variant.uomName} - ${variant.uomAbbreviation}</option>`;
+            }).join(''));
+            $("#addEditStock").find("select[name='stockSizeUOM'] option").hide();
+            $("#addEditStock").find("select[name='stockType']").on('change',function(){
+                $("#addEditStock").find("select[name='stockSizeUOM'] option").hide();
+            });
+            $("#addEditStock").find("select[name='stockSizeUOM']").on('focus',function(){
+                $("#addEditStock").find(`select[name='stockSizeUOM'] option[data-type="${$("#addEditStock").find("select[name='stockType']").val().toUpperCase()}"]`).show();
+            });
+            $("#addEditStock").find("select[name='stockUOM']").append(data.uomStores.map(unit=>{
+                return `<option value="${unit.uomID}">${unit.uomName} - ${unit.uomAbbreviation}</option>`;
+            }).join(''));
+            $("#addEditStock").find("select[name='stockCategory']").append(data.categories.map(category=>{
+                return `<option value="${category.ctID}">${category.ctName.toUpperCase()}</option>`;
+            }).join(''));
         },
         error: function(response, setting, error) {
             console.log(response.responseText);
@@ -461,13 +437,37 @@ function getEnumVals(){
     });
 }
 
-function setEditModal(modal, stock, variances) {
-    console.log(stock);
-    modal.find("input[name='stockID']").val(stock.stID);
-    modal.find("input[name='stockName']").val(stock.stName);
-    modal.find("select[name='stockType']").val(stock.stType);
-    modal.find("select[name='stockCategory']").find(`option[value=${stock.ctID}]`).attr("selected", "selected");
-    modal.find("select[name='stockStatus']").find(`option[value="${stock.stStatus}"]`).attr("selected", "selected");
+function populateModalForm(id, url){
+    var matches;
+    $("#addEditStock form")[0].reset();
+    $.ajax({
+        method: 'POST',
+        url: url,
+        data: {
+            id: id
+        },
+        dataType: 'JSON',
+        success: function(data){
+            matches = data.stock.stSize.match(/\d+|\w+/g);
+            $("#addEditStock").find("input[name='stockID']").val(data.stock.stID);
+            $("#addEditStock").find("input[name='stockName']").val(data.stock.stName);
+            $("#addEditStock").find("select[name='stockType']").find(`option[value="${data.stock.stType.toLowerCase()}"]`).attr("selected","selected");
+            $("#addEditStock").find("select[name='stockCategory']").find(`option[value=${data.stock.ctID}]`).attr("selected","selected");
+            $("#addEditStock").find("select[name='stockStatus']").find(`option[value="${data.stock.stStatus.toLowerCase()}"]`).attr("selected","selected");
+            $("#addEditStock").find("select[name='stockStorage']").find(`option[value="${data.stock.stLocation.toLowerCase()}"]`).attr("selected","selected");
+            $("#addEditStock").find("input[name='stockMinQty']").val(data.stock.stMin);
+            $("#addEditStock").find("input[name='stockQty']").val(data.stock.stQty);
+            $("#addEditStock").find("select[name='stockUOM']").find(`option[value=${data.stock.uomID}]`).attr("selected","selected");
+            if(data.uomVariants.findIndex(variant => variant.uomAbbreviation === matches[matches.length-1]) !== -1){
+                $("#addEditStock").find("select[name='stockSizeUOM']").find(`option[value="${matches.pop().toLowerCase()}"]`).attr("selected","selected");
+            }
+            $("#addEditStock").find("input[name='stockSize']").val(matches.join(' '));
+        },
+        error: function(response, setting, error) {
+            console.log(response.responseText);
+            console.log(error);
+        }
+    });
 }
 </script>
 </body>

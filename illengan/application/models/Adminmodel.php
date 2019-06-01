@@ -358,14 +358,30 @@ class Adminmodel extends CI_Model{
             return false;
         }
     }
-    function edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$ssQty,$date_recorded){
+    function edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$updateQtyh,$updateQtyl,$curSsQty,$stQty,$ssQtyUpdate,$date_recorded){
         $query = "Update stockspoil set ssDateRecorded = ? where ssID=?";
+        
         if($this->db->query($query,array($date_recorded,$ssID))){
-            $query = "Update spoiledstock set ssQty = ?,ssDate = ?, ssRemarks = ? where ssID = ? AND stID = ?";
-            return $this->db->query($query,array($ssQty,$ssDate, $ssRemarks, $ssID, $stID));
+                $query = "Update spoiledstock set ssQty = ?,ssDate = ?, ssRemarks = ? where ssID = ? AND stID = ?";
+                $this->db->query($query,array($ssQtyUpdate ,$ssDate, $ssRemarks, $ssID, $stID));
+                $this->stockitemQty($updateQtyh,$updateQtyl,$stQty, $ssQtyUpdate, $curSsQty, $stID);  
         }else{
             return false;
         }
+    }
+    function stockitemQty($updateQtyh,$updateQtyl, $stQty, $ssQtyUpdate, $curSsQty, $stID){
+            if ($curSsQty > $ssQtyUpdate){
+                $query = "UPDATE stockitems SET stQty = ? + ? WHERE stID = ?;";
+            return $this->db->query($query,array($stQty,$updateQtyl,$stID));
+            }
+            if ($curSsQty < $ssQtyUpdate){
+                $query = "UPDATE stockitems SET stQty = ? - ? WHERE stID = ?;";
+                return $this->db->query($query,array($stQty,$updateQtyh,$stID));
+            }
+            else{
+                $query = "UPDATE stockitems SET stQty = ? WHERE stID = ?;";
+            return $this->db->query($query,array($stQty, $stID));
+            }
     }
     function edit_aospoilage($aoID,$aosID,$aosQty,$aosDate,$aosRemarks,$date_recorded){
         $query = "Update aospoil set aosDateRecorded = ? where aosID=?";
@@ -409,12 +425,11 @@ class Adminmodel extends CI_Model{
             stID = ?;";
         return $this->db->query($query, array($id))->result_array();
     }
-    function edit_stockItem($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID){
+    function edit_stockItem($stockCategory, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID){
         $query = "UPDATE
             stockitems
         SET
             ctID = ?,
-            stBqty = ?,
             stLocation = ?,
             stMin = ?,
             stName = ?,
@@ -425,7 +440,7 @@ class Adminmodel extends CI_Model{
             stSize = ?
         WHERE
             stID = ?;";
-        if($this->db->query($query,array($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID))){
+        if($this->db->query($query,array($stockCategory, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID))){
             return true;
         }
         return false;
@@ -557,7 +572,7 @@ class Adminmodel extends CI_Model{
     function get_stocks(){
         $query = "SELECT
             stID,
-            CONCAT(stName, if(stSize IS Null,'', stSize)) as stName,
+            CONCAT(stName, if(stSize IS Null,'', ' ' + stSize)) as stName,
             stMin,
             stQty,
             uomID,
@@ -689,7 +704,7 @@ class Adminmodel extends CI_Model{
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesstock(){
-        $query = "Select ssID,stID,stName,ssQty,ssDate,ssDateRecorded,ssRemarks from stockspoil inner join spoiledstock using (ssID) inner join stockitems using (stID)";
+        $query = "Select ssID,stID,stName,stLocation,ssQty,stQty,ssDate,ssDateRecorded,ssRemarks from stockspoil inner join spoiledstock using (ssID) inner join stockitems using (stID)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesaddons(){
@@ -1126,7 +1141,53 @@ class Adminmodel extends CI_Model{
         WHERE
             TABLE_NAME = ?
                 AND COLUMN_NAME = ?;";
-        $this->infoDB->query($query,array($table,$column))->result_array();
+        return $this->infoDB->query($query,array($table,$column))->result_array();
+    }
+    function get_uomForSizes(){
+        $query = "SELECT
+            uomName,
+            uomAbbreviation,
+            UPPER(uomVariant) as uomVariant
+        FROM
+            uom
+        WHERE
+            uomVariant IS NOT NULL;";
+        return $this->db->query($query)->result_array();
+    }
+    function get_uomForStoring(){
+        $query = "SELECT
+            uomID,
+            uomName,
+            uomAbbreviation
+        FROM
+            uom
+        WHERE
+            uomStore IS NOT NULL;";
+        return $this->db->query($query)->result_array();
+    }
+    function get_stockItem($id){
+        $query = "SELECT
+            ctID,
+            ctName,
+            stID,
+            UPPER(stLocation) AS stLocation,
+            stMin,
+            stName,
+            stQty,
+            stSize,
+            UPPER(stStatus) AS stStatus,
+            UPPER(stType) AS stType,
+            uomID,
+            uomAbbreviation
+        FROM
+            (
+                stockitems
+            LEFT JOIN categories USING(ctID)
+            )
+        LEFT JOIN uom USING(uomID)
+        WHERE
+            stID = ?;";
+        return $this->db->query($query, array($id))->result_array();
     }
 
 }

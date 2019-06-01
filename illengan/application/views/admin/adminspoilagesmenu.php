@@ -16,7 +16,7 @@
 							<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addMenuSpoilage" data-original-title style="margin:0">Add Menu Spoilage</a><br>
 							<!--eND Add Menu Spoilage BUTTON-->
 							<br>
-							<table id="menuTable" class="spoiltable dtr-inline collapsed table display">
+							<table id="menuTable" class="spoiltable table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
 								<thead>
 									<th>Item Name</th>
 									<th>Quantity</th>
@@ -269,16 +269,24 @@
                             data-target="#deleteSpoilage">Delete</button>                      
                         </div>
                     </td>
+                </tr>`);
+
+				var accordion = `
+            <tr class="accordion" style="display:none;background: #f9f9f9">
+                <td colspan="5"> <!-- table row ng accordion -->
+                    <div style="overflow:auto;display:none"> <!-- container ng accordion -->
+                        
+                        <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
+                            <div><b>Remarks:</b> <!-- label-->
+								<p>
+								${table.msRemarks == null ? "No Remarks." : table.msRemarks}
+                                </p>
+                            </div> 
+                        </div>
+                    </div>
+                </td>
             </tr>
-			<tr colspan="5" style="display:none">
-				<td><div class="collapse" id="collapseExample">
-						<div >
-						<p><b>Remarks</b></p>
-						${table.msRemarks}
-						</div>
-					</div>
-				</td>
-			</tr>`);
+            `;
             $(".updateBtn").last().on('click', function () {
 				$("#editSpoil").find("input[name='prID']").val($(this).closest("tr").attr(
                     "data-prID"));
@@ -293,7 +301,18 @@
 				$("#deleteSpoilage").find("input[name='msID']").val($(this).closest("tr").attr(
                     "data-id"));
             });
+			$("#menuTable > tbody").append(accordion);
         });
+		$(".accordionBtn").on('click', function(){
+            if($(this).closest("tr").next(".accordion").css("display") == 'none'){
+                $(this).closest("tr").next(".accordion").css("display","table-row");
+				$(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
+			
+            }else{
+                $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
+                $(this).closest("tr").next(".accordion").hide("slow");
+            }
+        	});
 	}
 	//END OF POPULATING TABLE
 	//-------------------------Function for Edit-------------------------------
