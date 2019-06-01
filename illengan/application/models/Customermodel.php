@@ -92,9 +92,9 @@
             $query = $this->db->get_where('menu', array('ctID' => '12'));
             return $query->result();
         }
-       function orderInsert($total, $tableCode, $orderlist, $customer, $orderDate){ //insert in table orderslip
-            $query1 = "Insert into orderslips(tableCode, custName, osTotal, osDate, osPayDate, osDateRecorded) values (?,?,?,?,?,?)";
-			$this->db->query($query1, array( $tableCode, $customer, $total, $orderDate,'', $orderDate)); 
+       function orderInsert($total, $tableCode, $orderlist, $customer, $dateTime){ //insert in table orderslip
+            $query1 = "Insert into orderslips(tableCode, custName, osTotal, payStatus, osDateTime, osPayDateTime, osDateRecorded) values (?,?,?,?,?,?,?)";
+			$this->db->query($query1, array( $tableCode, $customer, $total, 'unpaid', $dateTime,'', $dateTime)); 
 			$order_id= $this->db->insert_id();
 			$bool = false;
 			foreach($orderlist as $items){
@@ -103,6 +103,7 @@
 			}
 			return true;
         }
+
 
         function get_menudetails($menu_id){
             $query = "select * from menu where mID = ?";
