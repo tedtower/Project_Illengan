@@ -92,7 +92,28 @@ class Customer extends CI_Controller {
 			redirect('login');
 		}
 	}
-	
+	function category($id){
+		if($this->isLoggedIn()){			
+			if($this->isCheckedIn()){
+				$data = array(
+					'categories' => $this->Customermodel->fetch_category(),
+					'subcats' => $this->Customermodel->fetch_availableSubcategory1($id),
+					'menu' => $this->Customermodel->fetch_menu(),
+					'pref_menu'=> $this->Customermodel->fetch_menupref(),
+					'addons' => $this->Customermodel->fetch_addon(),
+					'orders' => $this->session->userdata('orders')
+				);
+				$this->load->view('customer/template/head',$data);
+				$this->load->view('customer/menu');
+				$this->load->view('customer/template/foot');
+				$this->load->view('customer/template/modal_func');
+			}else{
+				redirect('customer/checkin');
+			}
+		}else{
+			redirect('login');
+		}
+	}
 	//Adds selected menu item in the cart
 	function addOrder() {
 		if($this->isLoggedIn()){
