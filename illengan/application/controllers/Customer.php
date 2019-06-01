@@ -153,15 +153,13 @@ class Customer extends CI_Controller {
 	function completeOrder(){		
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
-				$orderDate  = $this->input->post('date');
+				$dateTime = date('Y-m-d H:i:s');
 				$tableCode = $this->input->post('table_no');
 				$customer = $this->input->post('cust_name');
 				$orderlist = $this->session->userdata('orders');
 				$total = $this->input->post('total');
-				// foreach()
-				$this->Customermodel->orderInsert($total, $tableCode, $orderlist, $customer, $orderDate);
-				echo'<script>alert("Successfully Ordered!")</scipt>';
-				$this->load->view('customer/menu');
+				$this->Customermodel->orderInsert($total, $tableCode, $orderlist, $customer, $dateTime);
+				redirect('customer/clearOrder');
 			}else{
 				redirect('customer/checkin');
 			}
@@ -169,6 +167,7 @@ class Customer extends CI_Controller {
 			redirect('login');
 		}
 	}
+	
 	
 	function clearOrder(){
 		if($this->isLoggedIn()){			
