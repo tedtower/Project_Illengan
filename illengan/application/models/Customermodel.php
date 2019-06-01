@@ -50,6 +50,10 @@
             $query = $this->db->query("SELECT ctID, supcatID, ctName, ctType FROM preferences NATURAL JOIN menu NATURAL JOIN categories WHERE supcatID IS NOT NULL AND ctType = 'menu' GROUP BY ctName ORDER BY ctID, supcatID ASC");
             return $query->result();
         }
+	function fetch_availableSubcategory1($id) {
+            $query = $this->db->query("SELECT ctID, supcatID, ctName, ctType FROM preferences NATURAL JOIN menu NATURAL JOIN categories WHERE supcatID IS NOT NULL AND supcatID = '$id' GROUP BY ctName ORDER BY ctID, supcatID ASC");
+            return $query->result();
+        }
         function fetch_menu(){
             $query = $this->db->query('SELECT menu.mID, categories.ctName, menu.mName, menu.mDesc, menu.mAvailability,
             menu.mImage, categories.ctType, MIN(preferences.prPrice) AS prPrice, preferences.mTemp FROM menu LEFT JOIN categories USING (ctID) NATURAL JOIN preferences WHERE ctType = "menu" GROUP BY mName');
