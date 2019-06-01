@@ -269,8 +269,8 @@
                             data-target="#deleteSpoilage">Delete</button>                      
                         </div>
                     </td>
-                </tr>
-				<tr colspan="5">
+            </tr>
+			<tr colspan="5" style="display:none">
 				<td><div class="collapse" id="collapseExample">
 						<div >
 						<p><b>Remarks</b></p>
@@ -278,7 +278,7 @@
 						</div>
 					</div>
 				</td>
-				</tr>`);
+			</tr>`);
             $(".updateBtn").last().on('click', function () {
 				$("#editSpoil").find("input[name='prID']").val($(this).closest("tr").attr(
                     "data-prID"));
