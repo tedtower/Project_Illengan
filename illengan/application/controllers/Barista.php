@@ -42,6 +42,10 @@ class Barista extends CI_Controller{
         $tableCode =$this->input->post('tableCode');
         $data=$this->baristamodel->edit_tablenumber($tableCode,$osID);
     }
+    function add_order(){
+        $data = $this->baristamodel->add_customerOrder();
+    }
+
     function getOrders(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
             //Code Here

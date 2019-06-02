@@ -48,10 +48,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <td class="clickable"><?= $bill["custName"]?></td>  
                                     <td class="clickable"><?= $bill["tableCode"]?></td>  
                                     <td class="clickable"><?= $bill["osTotal"]?></td>  
-                                    <td class="clickable"><?= $bill["osDate"]?></td>  
-                                    <td class="clickable"><?= $bill["payStatus"]?></td>  
-                                    <td class="clickable"><?= $bill["osPayDate"]?></td>  
-                                    <td class="except" id="except"><button id="remove_modal" class="btn btn-warning btn-sm">Remove</button></td>  
+                                    <td class="clickable"><?= $bill["osDateTime"]?></td>  
+                                    <td class="clickable" id="payStatus"><?= $bill["payStatus"]?></td>  
+                                    <td class="clickable"><?= $bill["osPayDateTime"]?></td>  
+                                    <td class="except"><button id="remove_modal" class="btn btn-warning btn-sm">Remove</button></td>  
                                </tr>    
                          
                           <?php } 
@@ -72,22 +72,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </button>
                   </div>
                   <div class="modal-body">
+                        <!-- <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Slip No.</label>
+                            <div class="col-md-10">
+                              <input type="text" name="slipId" id="slipId" class="form-control" value="<//?php echo $bill['osID'] ?>" readonly>
+                            </div>
+                        </div> -->
                         <div class="form-group row">
                             <label class="col-md-10 col-form-label">Amount Payable: </label>
                             <div class="col-md-10">
-                              <input type="text" name="amount_payable" id="amount_payable" value="<?= $bill["osTotal"] ?>" readonly>
+                              <input type="text"  class="form-control" name="amount_payable" id="amount_payable" value="<?= $bill['osTotal'] ?>" readonly>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label">Cash:</label>
                             <div class="col-md-10">
-                              <input type="text" name="cash" id="cash" value="0.00" required>
+                              <input type="text" class="form-control" name="cash" id="cash" value="0.00" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label">Change:</label>
                             <div class="col-md-10">
-                              <input type="text" name="change" id="change" value="0.00" readonly>
+                              <input type="text" class="form-control" name="change" id="change" value="0.00" readonly>
                             </div>
                         </div>
                   </div>
@@ -155,6 +161,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $('#remove_modal').on('click', function(){
             var osID = $(this).data('osID');
             
+            
             $('#Modal_Remove').modal('show');
             $('[name="osID_remove"]').val(osID);
         });
@@ -180,9 +187,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 //---------MAY AAYUSIN DITO---------------------------------------------------------
       $("#orderslipData> tbody").on("click", function() {
+        var osId       = $(this).data('osID');
         var osTotal       = $(this).data('osTotal');
               $('#billModal').modal('show');
+              $('[name="slipId"]').val(osID);
               $('[name="amount_payable"]').val(osTotal);
+
+              $.ajax({
+                method: "post",
+                data : {
+                  osID : osId,
+                  osTotal : osTotal
+                }
+
+              });
+
+      });
 
 
           //     console.log(orderId);
@@ -202,7 +222,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           //     }else{            
           //         setModalData(orderId);
           //     }
-          });
+         
 
           $("#cash").on('change', function() {
               if (isNaN(parseFloat($(this).val()))) {
@@ -239,7 +259,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 });
             }       
         });
-        });
+      });
 
     </script>
 </body>
