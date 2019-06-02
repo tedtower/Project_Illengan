@@ -99,6 +99,7 @@ $route['admin/transactions/add'] = "adminadd/addtransaction";
 $route['admin/purchaseorder/add'] = "adminadd/addPurchaseOrder";
 $route['admin/inventory/addEdit'] = "adminadd/addstockitem";
 $route['admin/menu/add'] = "adminadd/addMenu";
+$route['admin/menu/image/add'] = "adminadd/addImage";
 $route['admin/addon/add'] = "adminadd/addAddon";
 $route['admin/stockcategories/add'] = "adminadd/addstockcategory";
 $route['admin/menucategories/add'] = "adminadd/addmenucategory";
