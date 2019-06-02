@@ -20,7 +20,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="container" style="overflow: auto;">
         <div class="card border-success" style="display: inline-block;">
             <div class="card-header">
-                <form>
+                <form name="slip_data" action="<?php echo site_url('barista/get_slipData'); ?>" method="post">
                     <label>Slip No : </label>
                     <input style="width: 50px; border: none; background: transparent;" type="text" name="slip_number" id="slip_number" value="">&nbsp;
                     <label>Table No : </label>

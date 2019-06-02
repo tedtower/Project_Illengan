@@ -65,6 +65,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $this->db->query($query, array($item_status, $order_item_id, $order_id));
         }
 
+        //this function is for orderCards
+        function get_slip_data(){
+            $query = "select osID, custName, tableCode, payStatus from orderslips";
+            return $this->db->query($query)->result_array();
+        }
+
 
         function get_bills(){
             $query = "select osID, tableCode, custName, osTotal, osDateTime, if(osPayDateTime is null, 'Unpaid', 'Paid') as payStatus , osPayDateTime from orderslips";
@@ -87,6 +93,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         function get_inventory(){
+            $query = "Select * from stockitems left join variance using (stID)";
             $query = "Select stID,stName,stStatus,stQty from stockitems";
             return $this->db->query($query)->result_array();
         }
