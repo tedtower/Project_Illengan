@@ -18,7 +18,12 @@
       </ul>
       <ul class="navbar-nav mr-auto delius">
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo base_url('barista/orders')?>"><i class="fas fa-boxes"></i></i> Inventory</a>
+            <a class="nav-link" href="<?php echo base_url('barista/transactions')?>"><i class="fal fa-tasks"></i> Transactions</a>
+          </li>
+      </ul>
+      <ul class="navbar-nav mr-auto delius">
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo base_url('barista/inventory')?>"><i class="fas fa-boxes"></i></i> Inventory</a>
           </li>
       </ul>
       <ul class="navbar-nav ml-auto delius">

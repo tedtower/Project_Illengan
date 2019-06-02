@@ -72,7 +72,7 @@
             return $query->result();
         }
         function fetch_addon(){
-            $query = $this->db->query('SELECT * FROM menuaddons NATURAL JOIN addons WHERE aoStatus = "enabled" ORDER BY aoPrice ASC');
+            $query = $this->db->query('SELECT * FROM menuaddons NATURAL JOIN addons WHERE aoStatus = "available" ORDER BY aoPrice ASC');
             return $query->result();
         }
 

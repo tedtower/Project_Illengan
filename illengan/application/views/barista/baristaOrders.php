@@ -119,51 +119,10 @@
 
                 }
 
-                $(document).ready(function() {
-                  var table = $('#ordersTable').DataTable({
-                    ajax: {
-                      url: 'http://www.illengan.com/barista/pendingOrdersJS',
-                      dataSrc: ''
-                    },
-                    colReorder: {
-                      realtime: true
-                    },
-                    "aoColumns": [{
-                        "className": 'details-control',
-                        "data": null,
-                        "defaultContent": 'click!'
-                      },
-                      {
-                        data: 'olID'
-                      },
-                      {
-                        data: 'custName'
-                      },
-                      {
-                        data: 'tableCode'
-                      },
-                      {
-                        data: 'olDesc'
-                      },
-                      {
-                        data: 'olQty'
-                      },
-                      {
-                        data: null,
-                        render: function(data, type, row, meta) {
-                          return '<button id="orderStatus" class="status btn dt-buttons ' + data.item_status +
-                            '" data-order_item_id="' + data.olID + '"' +
-                            ' data-item_status="' + data.item_status + '" onclick="change_status()">' + data.item_status + '</button>';
-                        }
-                      },
-                      {
-                        data: null,
-                        render: function(data, type, row, meta) {
-                          return '<a href="javascript: void(0)" class="btn btn-warning btn-sm item_delete" data-order_id="' + data.osID + '">Cancel</a>';
-                        }
-                      }
-                    ]
-                  });
+//For showing the accordion
+  $('#mydata tbody').on('click', 'td.details-control', function(){
+    var tr = $(this).closest('tr');
+    var row = table.row(tr);
 
                   //For showing the accordion
                   $('#ordersTable tbody').on('click', 'td.details-control', function() {
