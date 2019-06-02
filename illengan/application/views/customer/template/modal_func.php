@@ -83,7 +83,7 @@ $(document).ready(function(){
         event.stopImmediatePropagation();    
         $("#ao_select_div").append(ao_select);
         for(var z=0; z<menu_addon.length; z++){
-            $('#ao_select_div select[name="addon[]"]').eq($("#ao_select_div").children().length-1).append('<option class="addons" data-price="'+menu_addon[z].ao_price+'" data-name="'+menu_addon[z].ao_name+'" value="'+menu_addon[z].ao_id+'">'+menu_addon[z].ao_name+' - '+menu_addon[z].ao_price+'php</option>');
+            $('#ao_select_div select[name="addon[]"]').eq($("#ao_select_div").children().length-1).append('<option class="addons" data-price="'+menu_addon[z].aoPrice+'" data-name="'+menu_addon[z].aoName+'" value="'+menu_addon[z].aoID+'">'+menu_addon[z].aoName+' - '+menu_addon[z].aoPrice+'php</option>');
         }
 
         $("input[name='addonQty[]']").on('change',function(){
