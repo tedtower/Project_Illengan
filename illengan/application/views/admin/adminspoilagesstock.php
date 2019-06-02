@@ -22,16 +22,15 @@
 									<th>Quantity</th>
 									<th>Date Spoiled</th>
 									<th>Date Recorded</th>
-									<th>Remarks</th>
 									<th>Operation</th>
-									
+								
 								</thead>
 								<tbody id="spoilage_data">
 								</tbody>
 							</table>
 							<!--End Table Content-->
 							<!--Start of Modal "Add Stock Spoilages"-->
-							<div class="modal fade bd-example-modal-lg" id="addStockSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal fade bd-example-modal-lg" id="addStockSpoilage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
 								<div class="modal-dialog modal-lg" role="document">
 									<div class="modal-content">
 										<div class="modal-header">
@@ -155,15 +154,15 @@
                                             </div>
                                             <form id="formEdit" accept-charset="utf-8" > 
 												<div class="modal-body">
-                                                    <!--Quantity-->
-                                                    <!-- <div class="input-group mb-3">
+                                                    <!-- Quantity-->
+                                                    <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                                 Quantity</span>
                                                         </div>
                                                         <input type="number" min="1" name="ssQty" id="ssQty" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("ssQty"); ?></span>
-                                                    </div> -->
+                                                    </div>
                                                     <!--Date Spoiled-->
 													<div class="input-group mb-3">
                                                         <div class="input-group-prepend">
@@ -181,8 +180,8 @@
                                                         <input type="text" name="ssRemarks" id="ssRemarks" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("ssRemarks"); ?></span>
                                                     </div>
+													<input name="stID" id="stID" hidden="hidden">
 													<input name="ssID" id="ssID" hidden="hidden">
-													<input name="vID" id="vID" hidden="hidden">
 													<input name="curQty" id="curQty" hidden="hidden">
                                                     <!--Footer-->
                                                     <div class="modal-footer">
@@ -232,23 +231,13 @@
 	function setStockData(stocks){
 			$("#list").empty();
 			$("#list").append(`${stocks.map(stock => {
-				return `<label style="width:96%"><input type="checkbox" name="stockchoice[]" class="choiceStock mr-2" value="${stock.vID}">${stock.vName}</label>`
+				return `<label style="width:96%"><input type="checkbox" name="stockchoice[]" class="choiceStock mr-2" value="${stock.stID}">${stock.stName}</label>`
 			}).join('')}`);
 	}
 	//-----------------------End of Brochure Populate--------------------------	
 	//POPULATE TABLE
 	var table = $('#spoilagesTable');
-	function format(d) {
-		return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-			'<tr>' +
-			'<td>Remarks</td>' +
-			'</tr>' +
-			'<tr>' +
-			'<td>' + d.ssRemarks + '</td>' +
-			'</tr>' +
-			'</table>';
-
-	}
+	
 	function viewSpoilagesJs() {
         $.ajax({
             url: "<?= site_url('admin/spoilagesstockjson') ?>",
@@ -270,12 +259,11 @@
         }
         spoilages.forEach(table => {
             $("#spoilagesTable> tbody").append(`
-            <tr data-vID="${table.vID}" data-ssID="${table.ssID}" data-spoilname="${table.vName}" data-curQty="${table.ssQty}">
-                <td>${table.vName}</td>
+			<tr data-stID="${table.stID}" data-ssID="${table.ssID}" data-spoilname="${table.stName}" data-curQty="${table.ssQty}">
+			<td><a data-toggle="collapse" href="#collapseExample" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${table.stName}</td>
                 <td>${table.ssQty}</td>
 				<td>${table.ssDate}</td>
 				<td>${table.ssDateRecorded}</td>
-				<td>${table.ssRemarks}</td>
                 <td>
                         <!--Action Buttons-->
                         <div class="onoffswitch">
@@ -288,12 +276,21 @@
                             data-target="#deleteSpoilage">Delete</button>                      
                         </div>
                     </td>
-                </tr>`);
+				</tr>
+				<tr colspan="5">
+				<td><div class="collapse" id="collapseExample">
+						<div >
+						<p><b>Remarks</b></p>
+						${table.ssRemarks}
+						</div>
+					</div>
+				</td>
+				</tr>`);
             $(".updateBtn").last().on('click', function () {
-				$("#editSpoil").find("input[name='vID']").val($(this).closest("tr").attr(
-                    "data-vID"));
                 $("#editSpoil").find("input[name='ssID']").val($(this).closest("tr").attr(
 					"data-ssID"));
+				$("#editSpoil").find("input[name='stID']").val($(this).closest("tr").attr(
+					"data-stID"));
             });
             $(".item_delete").last().on('click', function () {
                 $("#deleteSpoilageId").text(
@@ -308,9 +305,9 @@
 	$(document).ready(function() {
     $("#editSpoil form").on('submit', function(event) {
 		event.preventDefault();
-		var ssID = $(this).find("input[name='ssID']").val();
-        var vID = $(this).find("input[name='vID']").val();
-        // var ssQty = $(this).find("input[name='ssQty']").val();
+		var stID = $(this).find("input[name='stID']").val();
+		var ssID = $(this).find("input[name='ssID']").val(); 
+        var ssQty = $(this).find("input[name='ssQty']").val();
         var ssDate = $(this).find("input[name='ssDate']").val();
         var ssRemarks = $(this).find("input[name='ssRemarks']").val();
       
@@ -318,9 +315,9 @@
             url: "<?= site_url("admin/stock/spoilage/edit")?>",
             method: "post",
             data: {
+				stID: stID,
 				ssID: ssID,
-                vID : vID,
-                // ssQty: ssQty,
+                ssQty: ssQty,
                 ssDate: ssDate,
                 ssRemarks: ssRemarks
             },

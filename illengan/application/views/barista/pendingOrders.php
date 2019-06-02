@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php include_once('headernav.php') ?>
   <br>
   <div class="container"><br>
-  <button class="btn btn-link btn-sm" data-toggle="modal" data-target="#Modal_Add" id="add_modal">Add Order</button>
+  <button class="btn btn-link btn-sm" onClick="window.location.href = '<?php echo base_url();?>customer/processCheckIn';return false;">Add Order</button>
   <br>
             <table class="pendOrders dtr-inline collapsed table display" id="pendingordersTable" >
                 <thead>
@@ -35,109 +35,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <th>Order</th>
                         <th>Order Qty</th>
                         <th>Item Status</th>
-                        <th style="text-align: right;">Actions</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                 </tbody>
             </table>
     </div>
-        
-<!-- MODAL ADD -->
-<form>
-            <div class="modal fade" id="Modal_Add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-default" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Order</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                        <div class="form-group row">
-                            <label class="col-md-2 col-form-label">Name:</label>
-                            <div class="col-md-10">
-                              <input type="text" name="customer_name" id="customer_name" class="form-control" value="" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-2 col-form-label">Table No:</label>
-                            <div class="col-md-10">
-                              <input type="text" name="table_code" id="table_code" class="form-control" value="" required>
-                            </div>
-                        </div>
-                        <h5>Select Menu:</h5>
-                        <form id="formAdd"  method="post" accept-charset="utf-8">
-                                            <div class="modal-body">
-                                                <div style="margin:1% 3%" id="list">
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-												<button type="button" class="btn btn-success btn-sm" onclick="getSelectedItems()">Ok</button>
-											</div>
-                      </form>
-                        </div>
-                        <table class="addOrdersTable table table-sm table-borderless">
-													<!--Table containing the different input fields in adding stock spoilages -->
-													<thead class="thead-light">
-														<tr>
-															<th>Order</th>
-															<th width="20%">Qty</th>
-															<th>Price</th>
-															<th>Remarks</th>
-															<th></th>
-														</tr>
-													</thead>
-													<tbody>
-													</tbody>
-												</table>
-					
-												<div class="modal-footer">
-													<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-													<button type="button" class="btn btn-success btn-sm" onclick="addOrderItems()">Add</button>
-												</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-    </form>
-        <!-- END MODAL ADD-->
 
-<!-- MODAL EDIT 
-<form>
-            <div class="modal fade" id="Modal_Edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Table Code</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                        <div class="form-group row">
-                            <label class="col-md-2 col-form-label">Order Id</label>
-                            <div class="col-md-10">
-                              <input type="text" name="order_id_edit" id="order_id_edit" class="form-control" placeholder="Order Id" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-2 col-form-label">New Table Code</label>
-                            <div class="col-md-10">
-                              <input type="text" name="table_code_edit" id="table_code_edit" class="form-control" placeholder="New Table Code">
-                            </div>
-                        </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" type="submit" id="btn_update" class="btn btn-primary">Update</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            </form>
-        END MODAL EDIT-->
 
         <!--MODAL DELETE-->
         <form>
@@ -179,17 +84,18 @@ $(function() {
 
 //POPULATE TABLE
 var table = $('#pendingordersTable');
-	function format(d) {
-		return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-			'<tr>' +
-			'<td>Remarks</td>' +
-			'</tr>' +
-			'<tr>' +
-			'<td>' + d.ssRemarks + '</td>' +
-			'</tr>' +
-			'</table>';
+	// function format(d) {
+	// 	return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+	// 		'<tr>' +
+	// 		'<td>Remarks</td>' +
+	// 		'</tr>' +
+	// 		'<tr>' +
+	// 		'<td>' + d.ssRemarks + '</td>' +
+	// 		'</tr>' +
+	// 		'</table>';
 
-	}
+	// }
+
 	function viewpendingOrdersJs() {
         $.ajax({
             url: "<?= site_url('barista/pendingOrdersJS') ?>",

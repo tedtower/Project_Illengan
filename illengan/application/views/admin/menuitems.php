@@ -1,5 +1,5 @@
 <!--End Side Bar-->
-<div class="content">
+<div class="content" style="background:white">
 <div class="container-fluid">
 <br>
     <p style="text-align:right; font-weight: regular; font-size: 16px">
@@ -26,10 +26,9 @@
                             </div>-->
                                 <br>
                                 <br>
-            <table id="menuTable" class="table dt-responsive nowrap" cellspacing="0" width="100%">
-                <thead class="thead-light">
-                    <tr>
-                        <th></th>
+            <table id="menuTable" class="table  table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
+                <thead class="thead-dark">
+                    <tr class="text-center">
                         <th>Menu Item</th>
                         <th>Category</th>
                         <th>Status</th>
@@ -40,8 +39,9 @@
                     
                 </tbody>
             </table>
+
             <!--Start of Modal "Add Menu"-->
-            <div class="modal fade bd-example-modal-lg" id="newMenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade bd-example-modal-lg" id="newMenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -52,9 +52,9 @@
                             </button>
                         </div>
                         <form action="<?php echo base_url()?>admin/menu/add" method="post"
-                            accept-charset="utf-8" enctype="multipart/form-data">
+                            accept-charset="utf-8">
                             <div class="modal-body">
-                                <div class="input-group mb-3"> <!--Menu Image-->
+                                <!-- <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" style="width:105px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">Image</span>
                                     </div>
@@ -62,7 +62,7 @@
                                         <input type="file" class="custom-file-input" name="mImage" id="mImage">
                                         <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                                     </div>
-                                </div> 
+                                </div>  -->
                                 <!--Menu Name-->
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
@@ -223,7 +223,7 @@ $(document).ready(function() {
         var row=`
         <tr data-id="">
             <td>
-                <select class="form-control" name="aoName[]">
+                <select class="form-control" name="aoID[]">
                 ${addons.map(addon => {
                         return `
                         <option value="${addon.aoID}">${addon.aoName}</option>`
@@ -239,62 +239,56 @@ $(document).ready(function() {
         });
     });
 
-    // $("#newMenu form").on('submit', function(event) {
-    //     event.preventDefault();
-    //     var image = new FormData();
-    //     image.append('image', $(this).find("input[name='mImage']")[0].files[0]);
-    //     var name = $(this).find("input[name='mName']").val();
-    //     var description = $(this).find("textarea[name='mDesc']").val();
-    //     var category = $(this).find("select[name='ctName']").val();
-    //     var status = $(this).find("select[name='mAvailability']").val();
-    //     var preferences = [];
-    //     for (var index = 0; index < $(this).find(".preferencetable > tbody").children().length; index++) {
-    //         preferences.push({
-    //             prName: $(this).find("input[name='prName[]']").eq(index).val(),
-    //             mTemp: $(this).find("input[name='mTemp[]']").eq(index).val(),
-    //             prPrice: $(this).find("input[name='prPrice[]']").eq(index).val(),
-    //             prStatus: $(this).find("select[name='prStatus[]']").eq(index).val()
-    //         });
-    //     }
-    //     var addons = [];
-    //     for (var index = 0; index < $(this).find(".addontable > tbody").children().length; index++) {
-    //         addons.push({
-    //             aoName: $(this).find("select[name='aoName[]']").eq(index).val()
-    //         });
-    //     }
-    //     $.ajax({
-    //         url: "<?= site_url("admin/menu/add")?>",
-    //         method: "post",
-    //         data: {
-    //             image: image,
-    //             name: name,
-    //             description: description,
-    //             category: category,
-    //             status: status,
-    //             preferences: JSON.stringify(preferences),
-    //             addons: JSON.stringify(addons)
-    //         },
-    //         processData: false,
-    //         contentType: false,
-    //         dataType: "json",
-    //         beforeSend: function() {
-    //             console.log(image,name,description,category,status,preferences,addons);
-    //         },
-    //         success: function(data) {
-    //             console.log(data);
-    //             // inventory = data;
-    //             // lastIndex = 0;
-    //             // setTableData();
-    //         },
-    //         error: function(response, setting, error) {
-    //             console.log(error);
-    //             console.log(response);
-    //         },
-    //         complete: function() {
-    //             $("#newMenu").modal("hide");
-    //         }
-    //     });
-    // });
+    $("#newMenu form").on('submit', function(event) {
+        event.preventDefault();
+        var name = $(this).find("input[name='mName']").val();
+        var description = $(this).find("input[name='mDesc']").val();
+        var category = $(this).find("select[name='ctName']").val();
+        var status = $(this).find("select[name='mAvailability']").val();
+        var preferences = [];
+        for (var index = 0; index < $(this).find(".preferencetable > tbody").children().length; index++) {
+            preferences.push({
+                prName: $(this).find("input[name='prName[]']").eq(index).val(),
+                mTemp: $(this).find("select[name='mTemp[]']").eq(index).val(),
+                prPrice: $(this).find("input[name='prPrice[]']").eq(index).val(),
+                prStatus: $(this).find("select[name='prStatus[]']").eq(index).val()
+            });
+        }
+        var addons = [];
+        for (var index = 0; index < $(this).find(".addontable > tbody").children().length; index++) {
+            addons.push({
+                aoID: $(this).find("select[name='aoID[]']").eq(index).val()
+            });
+        }
+        $.ajax({
+            url: "<?= base_url("admin/menu/add")?>",
+            method: "post",
+            data: {
+                name: name,
+                description: description,
+                category:category,
+                status:status,
+                preferences: JSON.stringify(preferences),
+                addons: JSON.stringify(addons)
+            },
+            dataType: "json",
+            beforeSend: function() {
+                console.log(name,description,category,status,preferences,addons);
+            },
+            success: function(data) {
+                console.log(data);
+                // inventory = data;
+                // lastIndex = 0;
+                // setTableData();
+            },
+            error: function(response, setting, error) {
+                console.log(error);
+            },
+            complete: function() {
+                $("#newMenu").modal("hide");
+            }
+        });
+    });
 
     $("#editSupplier form").on('submit', function(event) {
         event.preventDefault();
@@ -355,10 +349,9 @@ $(document).ready(function() {
         menu.forEach(function(item){
             var tableRow = `                
                 <tr class="table_row" data-menuId="${item.menu.mID}">   <!-- table row ng table -->
-                    <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
-                    <td>${item.menu.mName}</td>
+                    <td><a href="javascript:void(0)" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${item.menu.mName}</td>
                     <td>${item.menu.ctName}</td>
-                    <td>${item.menu.mAvailability}</td>
+                    <td class="text-center">${item.menu.mAvailability}</td>
                     <td>
                         <button class="editBtn btn btn-sm btn-primary">Edit</button>
                         <button class="deleteBtn btn btn-sm btn-danger">Delete</button>
@@ -394,16 +387,16 @@ $(document).ready(function() {
             </div>
             `;
             var accordion = `
-            <tr class="accordion" style="display:none">
+            <tr class="accordion" style="display:none;background: #f9f9f9">
                 <td colspan="5"> <!-- table row ng accordion -->
                     <div style="overflow:auto;display:none"> <!-- container ng accordion -->
                         <div style="width:280px;overflow:auto;float:left;margin-right:3%"> <!-- image container -->
-                            <img src="<?=site_url('uploads/')?>${item.menu.mImage}" style="width:280px;height:180px">
+                            <img src="<?= site_url('uploads/');?>${item.menu.mImage == null ? 'no_image.jpg' : item.menu.mImage}" alt="Missing Image" style="width:280px;height:180px">
                         </div>
                         
                         <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
                             <div><b>Description:</b> <!-- label-->
-                                <p>${item.menu.mDesc}
+                                <p>${item.menu.mDesc == null ? "Description is not available." : item.menu.mDesc}
                                 </p>
                             </div> 
                             <div class="aoAndPreferences" style="overflow:auto;margin-top:1%"> <!-- Preferences and addons container-->

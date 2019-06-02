@@ -80,7 +80,7 @@
                                 <!--End Table Content-->
 
                                 <!-- Add Modal Restock-->
-                                <div class="modal fade" id="restockInventory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="restockInventory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -122,7 +122,7 @@
                                 <!--End of Modal "Add Restock Inventory"-->
 
                                 <!-- Add Modal for Restock Inventory-->
-                                <div class="modal fade" id="destockInventory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="destockInventory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">

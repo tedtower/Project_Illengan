@@ -65,8 +65,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $this->db->query($query, array($item_status, $order_item_id, $order_id));
         }
 
+
         function get_bills(){
-            $query = "select osID, tableCode, custName, osTotal, osDate, if(osPayDate is null, 'Unpaid', 'Paid') as payStatus , osPayDate from orderslips";
+            $query = "select osID, tableCode, custName, osTotal, osDateTime, if(osPayDateTime is null, 'Unpaid', 'Paid') as payStatus , osPayDateTime from orderslips";
             return $this->db->query($query)->result_array();
         }
 
@@ -83,6 +84,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         function update_billstatus($osID, $payment_date_time = null, $date_recorded = null){
             $query = "update orderslips set osPayDate = ?, osDateRecorded = ? where osID=?";
             return $this->db->query($query, array($payment_date_time, $date_recorded, $osID));
+        }
+
+        function get_inventory(){
+            $query = "Select stID,stName,stStatus,stQty from stockitems";
+            return $this->db->query($query)->result_array();
+        }
+        function restock($stocks){
+            $query = "Update stockitems set stQty = ? + ? where stID = ?";
+            if(count($stocks) > 0){
+                for($in = 0; $in < count($stocks) ; $in++){
+                    $this->db->query($query, array($stocks[$in]['curQty'], $stocks[$in]['stQty'], $stocks[$in]['stID'],  )); 
+                }
+            }
+        }
+        function destock($stocks){
+            $query = "Update stockitems set stQty = ? - ? where stID = ?";
+            if(count($stocks) > 0){
+                for($in = 0; $in < count($stocks) ; $in++){
+                    $this->db->query($query, array($stocks[$in]['curQty'], $stocks[$in]['stQty'], $stocks[$in]['stID'],  )); 
+                }
+            }
         }
 
     }

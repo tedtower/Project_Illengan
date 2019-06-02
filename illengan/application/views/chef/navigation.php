@@ -1,44 +1,20 @@
-<div class="sidenav">
-<div class="logo-nav-pill">
-      <a href="#"><img id="icon" src="<?php echo base_url().'assets/media/logo.png' ?>"></a>
+<nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark scrolling-navbar py-1">
+  <img src="<?php echo base_url();?>assets/media/logo.png" class="nav-logo mr-2 my-1" alt="Il-lengan logo" />
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto delius">
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo base_url().'index.php/chef/index'?>"><i class="fal fa-tasks"></i> Orders</a>
+          </li>
+      </ul>
+      <ul class="navbar-nav ml-auto delius">
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo base_url('login/logout')?>"><i class="fal fa-sign-out-alt"></i> Sign Out</a>
+          </li>
+      </ul>
   </div>
-<!-- END FOR LOGO PILL -->
-<a href="<?php echo base_url().'index.php/chef/index'?>">
-  <div class="select-nav-pill">
-    <div class="icon-div active">
-     
-      <img id="icon" src="<?php echo base_url().'assets/media/navigation/choices.png' ?>">
-    </div>
-    <div class="nav-title">
-    <p>Orders</p>
-    </div>
-  </div>
-  </a>
-  <!-- END FOR ORDERS PILL -->
-
-  <a href="<?php echo base_url().'chef'?>">
-  <div class="select-nav-pill">
-    <div class="icon-div active">
-     
-      <img id="icon" src="<?php echo base_url().'assets/media/navigation/notification.png' ?>">
-    </div>
-    <div class="nav-title">
-    <p>Notifications</p>
-    </div>
-  </div>
-  </a>
-  <!-- END FOR NOTIFICATIONS -->
-  <a href="<?php echo base_url('login/logout')?>">
-  <div class="select-nav-pill">
-    <div class="icon-div active">
-     
-      <img id="icon" src="<?php echo base_url().'assets/media/navigation/sign-out-option.png' ?>">
-    </div>
-    <div class="nav-title">
-    <p>Sign Out</p>
-    </div>
-  </div>
-  </a>
-</div>
-
-</div>
+</nav>

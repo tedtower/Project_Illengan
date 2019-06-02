@@ -10,13 +10,14 @@ class Adminupdate extends CI_Controller{
     }
     function editStockSpoil(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $stID = $this->input->post('stID');
             $ssID=$this->input->post('ssID');
-            $vID=$this->input->post('vID');
             $ssDate=$this->input->post('ssDate');
             $ssRemarks=$this->input->post('ssRemarks');
+            $ssQty = $this->input->post('ssQty');
             $date_recorded=date("Y-m-d H:i:s");
 
-            $this->adminmodel->edit_stockspoilage($ssID,$vID,$ssDate,$ssRemarks,$date_recorded);
+            $this->adminmodel->edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$ssQty,$date_recorded);
         }else{
             redirect('login');
         } 
@@ -25,12 +26,12 @@ class Adminupdate extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $msID = $this->input->post('msID');
             $prID = $this->input->post('prID');
-            // $msQty = $this->input->post('msQty');
+            $msQty = $this->input->post('msQty');
             $msDate = $this->input->post('msDate');
             $msRemarks = $this->input->post('msRemarks');
             $date_recorded = date("Y-m-d H:i:s");
 
-            $this->adminmodel->edit_menuspoilage($msID,$prID,$msDate,$msRemarks,$date_recorded);
+            $this->adminmodel->edit_menuspoilage($msID,$prID,$msQty,$msDate,$msRemarks,$date_recorded);
         }else{
             redirect('login');
         } 
@@ -39,12 +40,12 @@ class Adminupdate extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $aoID = $this->input->post('aoID');
             $aosID = $this->input->post('aosID');
-            // $aosQty = $this->input->post('msQty');
+            $aosQty = $this->input->post('aosQty');
             $aosDate = $this->input->post('aosDate');
             $aosRemarks = $this->input->post('aosRemarks');
             $date_recorded = date("Y-m-d H:i:s");
 
-            $this->adminmodel->edit_aospoilage($aoID,$aosID,$aosDate,$aosRemarks,$date_recorded);
+            $this->adminmodel->edit_aospoilage($aoID,$aosID,$aosQty,$aosDate,$aosRemarks,$date_recorded);
         }else{
             redirect('login');
         } 
@@ -132,18 +133,21 @@ class Adminupdate extends CI_Controller{
             if($this->form_validation->run() == FALSE){
                 redirect("admin/inventory");
             }else{
-                $stockID = $this->input->post('id');
+                $stockCategory = $this->input->post('category'); 
+                $stockBqty = $this->input->post('bqty');
+                $stockLocation = $this->input->post('location');
+                $stockMin = $this->input->post('min');
                 $stockName = $this->input->post('name');
-                $stockType = $this->input->post('type');
-                $stockCategory = $this->input->post('category');
+                $stockQty = $this->input->post('qty');
                 $stockStatus = $this->input->post('status');
-                $stockVariance = json_decode($this->input->post('variances'),true);
-                if($this->adminmodel->edit_stockItem($stockID,$stockName,$stockType,$stockCategory,$stockStatus,$stockVariance)){
+                $stockType = $this->input->post('type');
+                $stockUom = $this->input->post('uom');
+                $stockID = $this->input->post('id');
+                $stockSize = $this->input->post('size');
+                if($this->adminmodel->edit_stockItem($stockCategory, $stockBqty, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID)){
                     echo json_encode(array(
                         "stocks" => $this->adminmodel->get_stocks(),
-                        "categories" => $this->adminmodel->get_stockSubCategories(),
-                        "variances" => $this->adminmodel->get_stockVariance(),
-                        "expirations" => $this->adminmodel->get_stockExpiration()
+                        "categories" => $this->adminmodel->get_stockSubCategories()
                     ));
                 }
             }
@@ -184,6 +188,20 @@ class Adminupdate extends CI_Controller{
             $menu_availability = $this->input->post('new_availability');
             $data['menu'] = $this->adminmodel->edit_menu($menu_id, $menu_name, $category_id, $menu_description, $menu_price, $menu_availability);
             redirect('admin/menu');
+        }else{
+            redirect('login');
+        }
+    }
+
+    function editAddon(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $aoID = $this->input->post('aoID');
+            $aoName = $this->input->post('aoName');
+            $aoPrice = $this->input->post('aoPrice');
+            $aoCategory = $this->input->post('aoCategory');
+            $aoStatus= $this->input->post('aoStatus');
+            $this->adminmodel->edit_addon($aoName, $aoPrice, $aoCategory, $aoStatus, $aoID);
+            redirect('admin/menu/addons');
         }else{
             redirect('login');
         }

@@ -1,60 +1,39 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?>
-
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta charset="UTF-8">
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'>
-    <meta name="viewport" content="width=device-width">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Il-Lengan | Barista Orders</title>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/bootstrap.css'?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/jquery.dataTables.css'?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/dataTables.bootstrap4.css'?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/responsive.bootstrap.css'?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/select.bootstrap.css'?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/buttons.bootstrap.css'?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/style.css'?>">
+  <?php include_once('templates/head.php') ?>
 </head>
-<body>
 
-  <div class="nav nav-tabs"><a href="<?php echo site_url('barista/orders'); ?>" class="nav nav-link active" data-toggle="tab">Orderlist</a> &nbsp;
-            <a href="<?php echo site_url('barista/pendingStatus'); ?>" class="nav nav-link" data-toggle="tab">Pending Orders</a> &nbsp;
-            <a href="<?php echo site_url('barista/servedStatus'); ?>" class="nav nav-link" data-toggle="tab">Served Orders</a>
-            <a href="<?php echo site_url('barista/orderslip'); ?>" class="nav nav-link" data-toggle="tab">Orderslip</a>
-            </div>
-            <br>
- <div class="container">
-            <div><button class="btn btn-dark" id="btn-show-all-children" type="button">Expand All</button> &nbsp;
-                  <button class="btn btn-dark" id="btn-hide-all-children" type="button">Collapse All</button>
-            </div>
-            <br>
-            <table id="ordersTable" class="table table-striped" >
-                <thead>
-                    <tr>
-                        <!--<th>Slip No.</th> -->
-                        <th></th>
-                        <th>Order Item No.</th>
-                        <th>Customer Name</th>
-                        <th>Table</th>
-                        <th>Order</th>
-                        <th>Order Qty</th>
-                        <th>Item Status</th>
-                        <th style="text-align: right;">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="show_data">
-                    
-                </tbody>
-            </table>
-    </div>
-        
+<body style="background: white">
+  <div class="content">
+    <div class="container-fluid">
+      <br>
+      <p style="text-align:right; font-weight: regular; font-size: 16px">
+        <!-- Real Time Date & Time -->
+        <?php echo date("M j, Y -l"); ?>
+      </p>
+      <div class="content" style="margin-left:250px">
+
+        <!--Table-->
+        <div class="container-fluid">
+          <div class="card-content">
+            <table id="ordersTable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+              <thead class="thead-dark">
+                <tr>
+                  <th><b class="pull-left">Order Item No.</b></th>
+                  <th><b class="pull-left">Customer Name</b></th>
+                  <th><b class="pull-left">Table No</b></th>
+                  <th><b class="pull-left">Order</b></th>
+                  <th><b class="pull-left">Order Qty</b></th>
+                  <th><b class="pull-left">Item Status</b></th>
+                  <th><b class="pull-left">Action</b></th>
+                </tr>
+              </thead>
 
 
-<!-- MODAL EDIT 
-<form>
+              <!-- MODAL EDIT
+            <form>
             <div class="modal fade" id="Modal_Edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -88,188 +67,158 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </form>
         END MODAL EDIT-->
 
-        <!--MODAL DELETE-->
-        <form>
-            <div class="modal fade" id="Modal_Remove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Cancel Order</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                       <strong>Are you sure to remove this record?</strong>
-                  </div>
-                  <div class="modal-footer">
-                    <input type="hidden" name="osID_remove" id="osID_remove" class="form-control">
-                    <button type="button" type="submit" id="btn_cancel" class="btn btn-primary">Yes</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <!--MODAL DELETE-->
+              <form>
+                <div class="modal fade" id="Modal_Remove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cancel Order</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <strong>Are you sure to remove this record?</strong>
+                      </div>
+                      <div class="modal-footer">
+                        <input type="hidden" name="osID_remove" id="osID_remove" class="form-control">
+                        <button type="button" type="submit" id="btn_cancel" class="btn btn-primary">Yes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            </form>
-        <!--END MODAL DELETE-->
+              </form>
+              <!--END MODAL DELETE-->
 
-        
-<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/jquery-3.2.1.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/bootstrap.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/jquery.dataTables.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/dataTables.bootstrap4.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/tables.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/dataTables.responsive.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/dataTables.select.js'?>"></script>
-<script type="text/javascript" src="<?php echo base_url().'assets/js/barista/dataTables.buttons.js'?>"></script>
 
-<script>
-var table = $('#ordersTable');
+              <script type="text/javascript" src="<?php echo base_url() . 'assets/js/barista/jquery-3.2.1.js' ?>"></script>
+              <script type="text/javascript" src="<?php echo base_url() . 'assets/js/barista/bootstrap.js' ?>"></script>
+              <script type="text/javascript" src="<?php echo base_url() . 'assets/js/barista/jquery.dataTables.js' ?>"></script>
+              <script type="text/javascript" src="<?php echo base_url() . 'assets/js/barista/dataTables.bootstrap4.js' ?>"></script>
+              <script type="text/javascript" src="<?php echo base_url() . 'assets/js/barista/tables.js' ?>"></script>
+              <script type="text/javascript" src="<?php echo base_url() . 'assets/js/barista/dataTables.responsive.js' ?>"></script>
+              <script type="text/javascript" src="<?php echo base_url() . 'assets/js/barista/dataTables.select.js' ?>"></script>
+              <script type="text/javascript" src="<?php echo base_url() . 'assets/js/barista/dataTables.buttons.js' ?>"></script>
 
-function format(d){
-  return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-      '<tr>'+
-          '<td>Add Ons</td>'+
-          '<td>Remarks</td>'+
-      '</tr>'+
-      '<tr>'+
-          '<td>---</td>'+
-          '<td>'+d.olRemarks+'</td>'+
-      '</tr>'+
-      '</table>';
+              <script>
+                var table = $('#ordersTable');
 
-}
+                function format(d) {
+                  return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+                    '<tr>' +
+                    '<td>Add Ons</td>' +
+                    '<td>Remarks</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>---</td>' +
+                    '<td>' + d.olRemarks + '</td>' +
+                    '</tr>' +
+                    '</table>';
 
-$(document).ready(function(){
-  var table = $('#ordersTable').DataTable({
-      ajax: {
-      url: 'http://www.illengan.com/barista/pendingOrdersJS',
-      dataSrc: ''
-    },
-    colReorder: {
-      realtime: true
-    },
-    "aoColumns" : [
-      {
-        "className": 'details-control',
-        "data": null,
-        "defaultContent": 'click!'
-      },
-      {data : 'olID'},
-      {data : 'custName'},
-      {data : 'tableCode'},
-      {data : 'olDesc'},
-      {data : 'olQty'},
-      {data : null,
-              render: function(data, type, row, meta){
-                return '<button id="orderStatus" class="status btn dt-buttons '+ data.item_status +
-                        '" data-order_item_id="'+ data.olID +'"'+
-                        ' data-item_status="'+ data.item_status +'" onclick="change_status()">'+ data.item_status +'</button>';
-              }
-      },
-      {data: null,
-            render: function(data, type, row, meta){
-                return '<a href="javascript: void(0)" class="btn btn-warning btn-sm item_delete" data-order_id="'+data.osID+'">Cancel</a>';
-            }
-      }
-    ]
-  });
+                }
 
 //For showing the accordion
   $('#mydata tbody').on('click', 'td.details-control', function(){
     var tr = $(this).closest('tr');
     var row = table.row(tr);
 
-    if (row.child.isShown() ){
-      row.child.hide(); //to hide child row if open
-      tr,removeClass('shown');
-    }else{
-      row.child(format(row.data()) ).show(); //to open the child row
-      tr.addClass('shown');
-    }
-  });  
+                  //For showing the accordion
+                  $('#ordersTable tbody').on('click', 'td.details-control', function() {
+                    var tr = $(this).closest('tr');
+                    var row = table.row(tr);
 
-//function for 'Expand all' button
-$('#btn-show-all-children').on('click', function(){
-    table.rows().every(function(){
-      if(!this.child.isShown()){
-        this.child(format(this.data())).show();
-        $(this.node()).addClass('shown');
-      }
-    });
-});
+                    if (row.child.isShown()) {
+                      row.child.hide(); //to hide child row if open
+                      tr, removeClass('shown');
+                    } else {
+                      row.child(format(row.data())).show(); //to open the child row
+                      tr.addClass('shown');
+                    }
+                  });
 
-$('#btn-hide-all-children').on('click', function(){
-  table.rows().every(function(){
-    if(this.child.isShown()){
-      this.child.hide();
-      $(this.node()).removeClass('shown');
-    }
-  });
-});
+                  //function for 'Expand all' button
+                  $('#btn-show-all-children').on('click', function() {
+                    table.rows().every(function() {
+                      if (!this.child.isShown()) {
+                        this.child(format(this.data())).show();
+                        $(this.node()).addClass('shown');
+                      }
+                    });
+                  });
 
-});
+                  $('#btn-hide-all-children').on('click', function() {
+                    table.rows().every(function() {
+                      if (this.child.isShown()) {
+                        this.child.hide();
+                        $(this.node()).removeClass('shown');
+                      }
+                    });
+                  });
+
+                });
 
 
-//get data for delete record
-$('#show_data').on('click','.item_delete',function(){
-            var osID = $(this).data('osID');
-            
-            $('#Modal_Remove').modal('show');
-            $('[name="osID_remove"]').val(osID);
-        });
+                //get data for delete record
+                $('#show_data').on('click', '.item_delete', function() {
+                  var osID = $(this).data('osID');
 
-        //delete record to database
-         $('#btn_cancel').on('click',function(){
-            var osID = $('#osID_remove').val();
-            $.ajax({
-                type : "POST",
-                url  : "<?php echo site_url('barista/cancel')?>",
-                dataType : "JSON",
-                data : {osID:osID},
-                success: function(data){
-                    $('[name="osID_remove"]').val("");
-                    alert("Record removed successfully!");
-                    $('#Modal_Remove').modal('hide');
-                    
-                    table.DataTable(). ajax.reload(null, false);
+                  $('#Modal_Remove').modal('show');
+                  $('[name="osID_remove"]').val(osID);
+                });
+
+                //delete record to database
+                $('#btn_cancel').on('click', function() {
+                  var osID = $('#osID_remove').val();
+                  $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url('barista/cancel') ?>",
+                    dataType: "JSON",
+                    data: {
+                      osID: osID
+                    },
+                    success: function(data) {
+                      $('[name="osID_remove"]').val("");
+                      alert("Record removed successfully!");
+                      $('#Modal_Remove').modal('hide');
+
+                      table.DataTable().ajax.reload(null, false);
+                    }
+                  });
+                  return false;
+                });
+
+                function change_status() {
+                  $('.orderStatus').on('click', function() {
+                    var orderItemId = $(this).data('olID');
+                    var itemStatus = $(this).data('olStatus');
+                    var item_status;
+
+                    if (itemStatus === "pending") {
+                      item_status = "done";
+                    } else if (itemStatus === "done") {
+                      item_status = "served";
+                    } else if (itemStatus === "served") {
+                      item_status = "pending";
+                    }
+
+                    $.ajax({
+                      type: 'POST',
+                      url: 'http://www.illengan.com/barista/change_status',
+                      data: {
+                        olID: orderItemId,
+                        olStatus: item_status
+                      },
+                      success: function() {
+                        table.DataTable().ajax.reload(null, false);
+                      }
+                    });
+
+                  });
                 }
-            });
-            return false;
-        });
-
-function change_status(){
-  $('.orderStatus').on('click', function(){
-    var orderItemId = $(this).data('olID');
-    var itemStatus = $(this).data('olStatus');
-    var item_status;
-
-    if(itemStatus === "pending"){
-      item_status = "done";
-    }else if(itemStatus === "done"){
-      item_status = "served";
-    }else if(itemStatus === "served"){
-      item_status = "pending";
-    }
-
-    $.ajax({
-      type: 'POST',
-      url: 'http://www.illengan.com/barista/change_status',
-      data : {
-        olID : orderItemId,
-        olStatus: item_status
-      },
-      success: function() {
-        table.DataTable(). ajax.reload(null, false);
-      }
-    });
-
-  });
-}
-
-
-</script>
+              </script>
 
 </body>
-</html>
 
+</html>
