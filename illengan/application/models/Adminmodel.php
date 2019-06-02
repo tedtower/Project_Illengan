@@ -170,6 +170,11 @@ class Adminmodel extends CI_Model{
         }
     }
 
+    function add_image($image, $mID){
+        $query = "UPDATE menu set mImage = ? where mID = ?";
+        return $this->db->query($query,array($image, $mID));
+    }
+
     function add_preference($mID, $preference){
        $query = "INSERT into preferences (mID, prName, mTemp, prPrice, prStatus) values (?,?,?,?,?)";
        if(count($preference) > 0){
@@ -567,7 +572,7 @@ class Adminmodel extends CI_Model{
     function get_stocks(){
         $query = "SELECT
             stID,
-            CONCAT(stName, if(stSize IS Null,'', ' ' + stSize)) as stName,
+            CONCAT(stName, if(stSize IS Null,'', concat(' ',stSize))) as stName,
             stMin,
             stQty,
             uomID,
@@ -1185,6 +1190,24 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query, array($id))->result_array();
     }
 
+    function get_transactions(){
+        $query = "SELECT
+            tID,
+            tNum,
+            tType,
+            tDate,
+            dateRecorded,
+            spID,
+            spName
+        FROM
+            transactions
+        LEFT JOIN supplier USING(spID);";
+        return $this->db->query($query)->result_array();
+    }
+    
+    function get_transitems(){
+        $query;
+    }
 }
 
 ?>

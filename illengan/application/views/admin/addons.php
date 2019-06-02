@@ -1,5 +1,6 @@
 
     <!--End Side Bar-->
+    <body style="background:white">
     <div class="content">
         <div class="container-fluid">
             <br>
@@ -13,12 +14,12 @@
                         <div class="container-fluid">
                             <!--Table-->
                             <div class="card-content">
-                                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newAddon"
-                                    data-original-title style="margin:0;">Add Addons</a>
+                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newAddon"
+                                    data-original-title style="margin:0;">Add Addons</button>
                                 <br>
                                 <br>
-            <table id="addonTable" class="table table-striped table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
-                <thead>
+            <table id="addonTable" class="table table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
+                <thead class="thead-dark">
                     <tr>
                         <th>Addon</th>
                         <th>Price</th>
@@ -39,7 +40,7 @@
                         <td><?php echo $addon['aoStatus']?></td>
                         <td>
                             <button class="btn btn-default btn-sm" name="editAddon" data-toggle="modal" data-target="#editAddon" data-id="<?php echo $addon['aoID']?>">Edit</button>
-                            <button class="deleteBtn btn btn-warning btn-sm" data-toggle="modal" data-target="#deleteAddon" id="<?php echo $addon['aoID'];?>">Delete</button>
+                            <button class="deleteBtn btn btn-warning btn-sm" data-toggle="modal" data-target="#deleteAddon" id="<?php echo $addon['aoID'];?>" data-name="<?php echo $addon['aoName'];?>">Archived</button>
                         </td>
                     </tr>
                 <?php }} ?>                    
@@ -222,7 +223,7 @@
     $(document).ready(function() {
         $('.deleteBtn').click(function() {
             var id = $(this).attr("id");
-            $("#deleteAddonItem").text(`delete ${$(this).attr("id")}`);
+            $("#deleteAddonItem").text(`delete ${$(this).attr("data-name")}`);
             // $("#deleteAddon").find("input[name='addonID']").val($(this).attr("data-id"));
             $("#confirmDelete").on('submit', function(event) {
                 event.preventDefault();
@@ -255,3 +256,4 @@
         //         "data-id"));
         // });
     </script>
+    </body>
