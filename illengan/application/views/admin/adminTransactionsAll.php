@@ -1,4 +1,5 @@
 <!--End Side Bar-->
+<body style="background:white">
 <div class="content">
     <div class="container-fluid">
         <br>
@@ -12,40 +13,33 @@
                     <div class="container-fluid">
                         <!--Table-->
                         <div class="card-content">
-                            <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addEditModal"
-                                data-original-title style="margin:0" id="addTransaction">Add Purchases/Deliveries</a>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addEditModal"
+                                data-original-title style="margin:0" id="addTransaction">Add Purchases/Deliveries</button>
                             <br>
                             <br>
                             <table id="transTable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                                 width="100%">
-                                <thead class="thead-light">
-                                    <th style="width:10px"></th>
+                                <thead class="thead-dark">
                                     <th><b class="pull-left">Receipt No.</b></th>
                                     <th><b class="pull-left">Supplier</b></th>
-                                    <th><b class="pull-left">Transaction Date</b></th>
-                                    <th><b class="pull-left">Total</b></th>
                                     <th><b class="pull-left">Type</b></th>
-                                    <th><b class="pull-left">Status</b></th>
+                                    <th><b class="pull-left">Date</b></th>
+                                    <th><b class="pull-left">Total</b></th>
                                     <th><b class="pull-left">Actions</b></th>
                                 </thead>
                                 <tbody>
                                     <!--Start of Table row-->
-                                    <?php foreach($invoices as $invoice){
-                                    ?>
-                                    <tr data-id="<?= $invoice['iID']?>">
-                                        <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png"
-                                                style="height:15px;width: 15px" /></td>
-                                        <td><?= $invoice['iNumber']?></td>
-                                        <td><?= $invoice['spName']?></td>
-                                        <td><?= $invoice['iDate']?></td>
-                                        <td><?= $invoice['iTotal']?></td>
-                                        <td><?= $invoice['iType']?></td>
-                                        <td><?= $invoice['resolvedStatus']?></td>
+                                    <tr>
+                                        <td><a href="javascript:void(0)" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a> 12345678</td>
+                                        <td>Pepita</td>
+                                        <td>Purchase Order</td>
+                                        <td>June 2, 2019</td>
+                                        <td>&#8369; 1000</td>
                                         <td>
-                                            <button class="editBtn btn btn-sm btn-primary" data-toggle="modal"
+                                            <button class="editBtn btn btn-sm btn-secondary" data-toggle="modal"
                                                 data-target="#addEditModal">Edit</button>
-                                            <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal"
-                                                data-target="#delete">Delete</button>
+                                            <button class="deleteBtn btn btn-sm btn-warning" data-toggle="modal"
+                                                data-target="#delete">Archived</button>
                                         </td>
                                     </tr>
                                     <!--End of Table row-->
@@ -53,41 +47,31 @@
                                     <tr class="accordion" style="display:none">
                                         <td colspan="8">
                                             <div class="container" style="display:none">
-                                                <span>Date Recorded: <?= $invoice['iDateRecorded']?></span>
+                                                <span>Date Recorded:</span>
                                                 <div style="overflow:auto">
                                                     <span style="float:left;margin-right:1%">Remarks:</span>
-                                                    <p style="float:left"><?= $invoice['iRemarks']?></p>
+                                                    <p style="float:left"></p>
                                                     <!--Remarks of Invoice-->
                                                 </div>
                                                 <table class="table">
-                                                    <thead style="background:white">
+                                                    <thead class="thead-light">
                                                         <tr>
-                                                            <th>Item Name</th>
-                                                            <th>Unit</th>
+                                                            <th>Name</th>
                                                             <th>Qty</th>
+                                                            <th>UOM</th>
                                                             <th>Price</th>
+                                                            <th>Discount</th>
+                                                            <th>Status</th>
                                                             <th>Subtotal</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <?php foreach($items as $item){
-                                                        if($item['iID'] == $invoice['iID']){?>
-                                                        <tr>
-                                                            <td><?= $item['iName']?></td>
-                                                            <td><?= $item['iUnit']?></td>
-                                                            <td><?= $item['iQty']?></td>
-                                                            <td><?= $item['iPrice']?></td>
-                                                            <td><?= $item['iSubtotal']?></td>
-                                                        </tr>
-                                                        <?php }
-                                                    } ?>
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </td>
                                     </tr>
                                     <!--End of Table accordion-->
-                                    <?php }?>
                                 </tbody>
                             </table>
                             <!--End Table Content-->
@@ -125,13 +109,10 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"
                                                                 style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Invoice Type</span>
+                                                                Type</span>
                                                         </div>
                                                         <select class="form-control form-control-sm" name="transType">
                                                             <option value="" selected>Choose</option>
-                                                            <option value="purchase">Purchase</option>
-                                                            <option value="delivery">Delivery</option>
-                                                            <option value="return">Return</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -157,33 +138,16 @@
                                                         <input type="date" class="form-control" name="transDate">
                                                     </div>
                                                 </div>
-
-                                                <div class="form-row">
-                                                    <!--Container of supplier and receipt no.-->
-                                                    <!--Status-->
-                                                    <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Return Status</span>
-                                                        </div>
-                                                        <select class="form-control form-control-sm" name="resStatus">
-                                                            <option value="" selected>Choose</option>
-                                                            <option value="pending">Pending</option>
-                                                            <option value="resolved">Resolved</option>
-                                                            <option value="unresolved">Unresolved</option>
-                                                        </select>
+                                                 
+                                                <!--Remarks-->
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                            style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                            Remarks</span>
                                                     </div>
-                                                    <!--Remarks-->
-                                                    <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Remarks</span>
-                                                        </div>
-                                                        <textarea type="text" name="remarks"
-                                                            class="form-control form-control-sm" rows="1"></textarea>
-                                                    </div>
+                                                    <textarea type="text" name="remarks"
+                                                        class="form-control form-control-sm" rows="1"></textarea>
                                                 </div>
 
                                                 <!--Transaction Items-->
@@ -511,3 +475,4 @@ function setBrochureModalTableOneData(array){
         </tr>`}).join('')}`);
 }
 </script>
+</body>
