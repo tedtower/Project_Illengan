@@ -339,34 +339,6 @@ $(document).ready(function() {
         getEnumVals(enumValsUrl);
         populateModalForm(id, getStockUrl);
     });
-    $(".addItemVarianceBtn").on('click', function() {
-        var row = `
-        <tr data-id="">
-            <td><input type="text" name="varUnit[]"
-                    class="form-control form-control-sm"></td>
-            <td><input type="text" name="varSize[]"
-                    class="form-control form-control-sm"></td>
-            <td><input type="number" name="varMinimum[]"
-                    class="form-control form-control-sm"></td>
-            <td><input type="number" name="varQty[]"
-                    class="form-control form-control-sm"></td>
-            <td>
-                <select class="form-control" name="varStatus[]">
-                    <option value="" selected>Choose</option>
-                    <option value="available">available</option>
-                    <option value="unavailable">unavailable</option>
-                </select>
-            </td>
-            <td><img class="exitBtn"
-                    src="/assets/media/admin/error.png"
-                    style="width:20px;height:20px"></td>
-        </tr>
-        `;
-        $(this).closest(".modal").find(".varianceTable > tbody").append(row);
-        $(this).closest(".modal").find(".exitBtn").last().on('click', function() {
-            $(this).closest("tr").remove();
-        });
-    });
     // setTableData();
     $("#addEditStock form").on('submit', function(event) {
         event.preventDefault();

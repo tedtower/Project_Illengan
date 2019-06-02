@@ -170,6 +170,11 @@ class Adminmodel extends CI_Model{
         }
     }
 
+    function add_image($image, $mID){
+        $query = "UPDATE menu set mImage = ? where mID = ?";
+        return $this->db->query($query,array($image, $mID));
+    }
+
     function add_preference($mID, $preference){
        $query = "INSERT into preferences (mID, prName, mTemp, prPrice, prStatus) values (?,?,?,?,?)";
        if(count($preference) > 0){
@@ -353,14 +358,30 @@ class Adminmodel extends CI_Model{
             return false;
         }
     }
-    function edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$ssQty,$date_recorded){
+    function edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$updateQtyh,$updateQtyl,$curSsQty,$stQty,$ssQtyUpdate,$date_recorded){
         $query = "Update stockspoil set ssDateRecorded = ? where ssID=?";
+        
         if($this->db->query($query,array($date_recorded,$ssID))){
-            $query = "Update spoiledstock set ssQty = ?,ssDate = ?, ssRemarks = ? where ssID = ? AND stID = ?";
-            return $this->db->query($query,array($ssQty,$ssDate, $ssRemarks, $ssID, $stID));
+                $query = "Update spoiledstock set ssQty = ?,ssDate = ?, ssRemarks = ? where ssID = ? AND stID = ?";
+                $this->db->query($query,array($ssQtyUpdate ,$ssDate, $ssRemarks, $ssID, $stID));
+                $this->stockitemQty($updateQtyh,$updateQtyl,$stQty, $ssQtyUpdate, $curSsQty, $stID);  
         }else{
             return false;
         }
+    }
+    function stockitemQty($updateQtyh,$updateQtyl, $stQty, $ssQtyUpdate, $curSsQty, $stID){
+            if ($curSsQty > $ssQtyUpdate){
+                $query = "UPDATE stockitems SET stQty = ? + ? WHERE stID = ?;";
+            return $this->db->query($query,array($stQty,$updateQtyl,$stID));
+            }
+            if ($curSsQty < $ssQtyUpdate){
+                $query = "UPDATE stockitems SET stQty = ? - ? WHERE stID = ?;";
+                return $this->db->query($query,array($stQty,$updateQtyh,$stID));
+            }
+            else{
+                $query = "UPDATE stockitems SET stQty = ? WHERE stID = ?;";
+            return $this->db->query($query,array($stQty, $stID));
+            }
     }
     function edit_aospoilage($aoID,$aosID,$aosQty,$aosDate,$aosRemarks,$date_recorded){
         $query = "Update aospoil set aosDateRecorded = ? where aosID=?";
@@ -551,7 +572,7 @@ class Adminmodel extends CI_Model{
     function get_stocks(){
         $query = "SELECT
             stID,
-            CONCAT(stName, if(stSize IS Null,'', ' ' + stSize)) as stName,
+            CONCAT(stName, if(stSize IS Null,'', concat(' ',stSize))) as stName,
             stMin,
             stQty,
             uomID,
@@ -683,7 +704,7 @@ class Adminmodel extends CI_Model{
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesstock(){
-        $query = "Select ssID,stID,stName,ssQty,ssDate,ssDateRecorded,ssRemarks from stockspoil inner join spoiledstock using (ssID) inner join stockitems using (stID)";
+        $query = "Select ssID,stID,stName,stLocation,ssQty,stQty,ssDate,ssDateRecorded,ssRemarks from stockspoil inner join spoiledstock using (ssID) inner join stockitems using (stID)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesaddons(){
@@ -1169,6 +1190,24 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query, array($id))->result_array();
     }
 
+    function get_transactions(){
+        $query = "SELECT
+            tID,
+            tNum,
+            tType,
+            tDate,
+            dateRecorded,
+            spID,
+            spName
+        FROM
+            transactions
+        LEFT JOIN supplier USING(spID);";
+        return $this->db->query($query)->result_array();
+    }
+    
+    function get_transitems(){
+        $query;
+    }
 }
 
 ?>

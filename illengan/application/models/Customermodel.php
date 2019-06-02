@@ -50,6 +50,10 @@
             $query = $this->db->query("SELECT ctID, supcatID, ctName, ctType FROM preferences NATURAL JOIN menu NATURAL JOIN categories WHERE supcatID IS NOT NULL AND ctType = 'menu' GROUP BY ctName ORDER BY ctID, supcatID ASC");
             return $query->result();
         }
+	function fetch_availableSubcategory1($id) {
+            $query = $this->db->query("SELECT ctID, supcatID, ctName, ctType FROM preferences NATURAL JOIN menu NATURAL JOIN categories WHERE supcatID IS NOT NULL AND supcatID = '$id' GROUP BY ctName ORDER BY ctID, supcatID ASC");
+            return $query->result();
+        }
         function fetch_menu(){
             $query = $this->db->query('SELECT menu.mID, categories.ctName, menu.mName, menu.mDesc, menu.mAvailability,
             menu.mImage, categories.ctType, MIN(preferences.prPrice) AS prPrice, preferences.mTemp FROM menu LEFT JOIN categories USING (ctID) NATURAL JOIN preferences WHERE ctType = "menu" GROUP BY mName');
@@ -92,9 +96,9 @@
             $query = $this->db->get_where('menu', array('ctID' => '12'));
             return $query->result();
         }
-       function orderInsert($total, $tableCode, $orderlist, $customer, $orderDate){ //insert in table orderslip
-            $query1 = "Insert into orderslips(tableCode, custName, osTotal, osDate, osPayDate, osDateRecorded) values (?,?,?,?,?,?)";
-			$this->db->query($query1, array( $tableCode, $customer, $total, $orderDate,'', $orderDate)); 
+       function orderInsert($total, $tableCode, $orderlist, $customer, $dateTime){ //insert in table orderslip
+            $query1 = "Insert into orderslips(tableCode, custName, osTotal, payStatus, osDateTime, osPayDateTime, osDateRecorded) values (?,?,?,?,?,?,?)";
+			$this->db->query($query1, array( $tableCode, $customer, $total, 'unpaid', $dateTime,'', $dateTime)); 
 			$order_id= $this->db->insert_id();
 			$bool = false;
 			foreach($orderlist as $items){
@@ -103,6 +107,7 @@
 			}
 			return true;
         }
+
 
         function get_menudetails($menu_id){
             $query = "select * from menu where mID = ?";

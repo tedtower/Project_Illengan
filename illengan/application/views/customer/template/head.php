@@ -32,8 +32,9 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="menu-dd" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fal fa-utensils-alt"></i></i> Menu</a>
                     <div class="dropdown-menu dropdown-default elegant-color c-focus" aria-labelledby="menu-dd">
+                        <a class="dropdown-item categories" href="<?php echo site_url()?>/customer/menu">All Menu</a>
                         <?php foreach($categories as $cat) {?>
-                            <a class="dropdown-item" href="#"><?php echo $cat->ctName; ?></a>
+                            <a class="dropdown-item categories" href="<?php echo site_url()?>/customer/category/<?php echo $cat->ctID;?>"><?php echo $cat->ctName; ?></a>
                         <?php } ?>
                     </div>
                 </li>
