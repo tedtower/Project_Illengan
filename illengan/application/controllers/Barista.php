@@ -10,6 +10,8 @@ class Barista extends CI_Controller{
         // code for getting current date : date("Y-m-d")
         // code for getting current date and time : date("Y-m-d H:i:s")
     }
+
+    //BARISTA ORDER FUNCTIONS
     function pendingOrders(){
         $this->load->view('barista/navigation');
         $this->load->view('barista/pendingOrders'); 
@@ -42,10 +44,8 @@ class Barista extends CI_Controller{
         $tableCode =$this->input->post('tableCode');
         $data=$this->baristamodel->edit_tablenumber($tableCode,$osID);
     }
-    function add_order(){
-        $data = $this->baristamodel->add_customerOrder();
-    }
-
+    
+    //BARISTA BILLINGS FUNCTIONS
     function getOrders(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
             //Code Here
@@ -140,8 +140,37 @@ class Barista extends CI_Controller{
             }
         }
 
+        //BARISTA INVENTORY FUNCTIONS
+        function viewinventory(){
+            $this->load->view('barista/navigation');
+            $this->load->view('barista/baristaInventory'); 
+        }
+        function inventoryJS(){
+            echo json_encode($this->baristamodel->get_inventory());
+        }
+        function restockitem(){
+            $stocks = json_decode($this->input->post('stocks'), true);
+            echo json_encode($stocks, true);
+            $this->baristamodel->restock($stocks);
+        }
+        function destockitem(){
+            $stocks = json_decode($this->input->post('stocks'), true);
+            echo json_encode($stocks, true);
+            $this->baristamodel->destock($stocks);
+        }
+
+        //barista functions for orderslips-cards
+
         function sample(){
             $this->load->view('barista/orderCards');
+        }
+
+        function get_slipData(){
+            $slipID = $this->input->post('osID');
+            $customerName = $this->input->post('custName');
+            $table_code = $this->input->post('tableCode');
+            $status = $this->input->post('payStatus');
+            $this->load->baristamodel->get_slip_data();
         }
     }
 ?>

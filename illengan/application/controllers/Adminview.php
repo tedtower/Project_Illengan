@@ -320,9 +320,9 @@ function viewSpoilagesStock(){
             $data['title'] = "Transactions - All";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $data['invoices'] = $this->adminmodel->get_allTransactions();
-            $data['items'] = $this->adminmodel->get_allTransactionsItems();
-            $this->load->view('admin/adminTransactionsAll',$data);
+            // $data['invoices'] = $this->adminmodel->get_allTransactions();
+            // $data['items'] = $this->adminmodel->get_allTransactionsItems();
+            $this->load->view('admin/adminTransactionsAll');
         }else{
             redirect('login');
         }
