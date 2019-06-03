@@ -73,7 +73,6 @@ class Customer extends CI_Controller {
 		if($this->isLoggedIn()){			
 			if($this->isCheckedIn()){
 				$data = array ();
-				$data['cart'] = $this->cart->contents();
 				$data['categories'] = $this->Customermodel->fetch_category();
 				$data['menu'] = $this->Customermodel->fetch_menu();
 				$data['subcats'] = $this->Customermodel->fetch_availableSubcategory();
@@ -206,11 +205,10 @@ class Customer extends CI_Controller {
 	function removeOrder() {	
 		if($this->isLoggedIn()){			
 			if($this->isCheckedIn()){
-				$order = $this->session->userdata('orders');
 				$id = $this->input->post('id');
 				unset($_SESSION['orders'][$id]);
 				rsort($_SESSION['orders']);
-				echo json_encode($order);
+				echo json_encode($_SESSION['orders']);
 			}else{
 				redirect('customer/checkin');
 			}
@@ -219,7 +217,6 @@ class Customer extends CI_Controller {
 		}
 	}
 
-	
 	function promos() {
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){
