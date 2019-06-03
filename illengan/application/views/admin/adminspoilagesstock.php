@@ -260,8 +260,8 @@
             $("#spoilagesTable> tbody").empty();
         }
         spoilages.forEach(table => {
-            $("#spoilagesTable> tbody").append(`
-			<tr id="spoilagesTabletr"  data-stID="${table.stID}" data-ssID="${table.ssID}" data-spoilname="${table.stName}" data-stQty="${table.stQty}" data-curSsQty="${table.ssQty}">
+            $("#spoilagesTable > tbody").append(`
+			<tr class="spoilagesTabletr"  data-stID="${table.stID}" data-ssID="${table.ssID}" data-spoilname="${table.stName}" data-stQty="${table.stQty}" data-curSsQty="${table.ssQty}" data-ssDate="${table.ssDate}" data-ssRemarks="${table.ssRemarks}">
 				<td><a data-toggle="collapse" href="#collapseExample" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${table.stName}</td>
                 <td>${table.ssQty}</td>
 				<td>${table.ssDate}</td>
@@ -300,6 +300,7 @@
 
 			
 			$(".updateBtn").last().on('click', function () {
+				
                 $("#editSpoil").find("input[name='ssID']").val($(this).closest("tr").attr(
 					"data-ssID"));
 				$("#editSpoil").find("input[name='stID']").val($(this).closest("tr").attr(
@@ -308,7 +309,12 @@
 					"data-curSsQty"));
 				$("#editSpoil").find("input[name='stQty']").val($(this).closest("tr").attr(
 					"data-stQty"));
-
+				$("#editSpoil").find("input[name='ssQtyUpdate']").val($(this).closest("tr").attr(
+					"data-curSsQty"));
+				$("#editSpoil").find("input[name='ssDate']").val($(this).closest("tr").attr(
+					"data-ssDate"));
+				$("#editSpoil").find("input[name='ssRemarks']").val($(this).closest("tr").attr(
+					"data-ssRemarks"));
             });
             $(".item_delete").last().on('click', function () {
                 $("#deleteSpoilageId").text(
@@ -331,21 +337,6 @@
 	}
 	//END OF POPULATING TABLE
 	//-------------------------Function for Edit-------------------------------
-	var tuples = document.getElementById('spoilagesTabletr');
-        var tupleNo = tuples.length;
-		console.log(tupleNo);
-        var editButtons = document.getElementsByName('editSpoil');
-        var editModal = document.getElementById('editSpoil');
-        for (var x = 0; x < tupleNo; x++) {
-            editButtons[x].addEventListener("click", showEditModal);
-        }
-
-        function showEditModal(event) {
-            var row = event.target.parentElement.parentElement;
-            document.getElementById('ssQtyUpdate').value = row.firstElementChild.nextElementSibling.innerHTML;
-            document.getElementById('ssDate').value = row.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
-            document.getElementById('ssRemarks').value = row.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
-        }
 
 	$(document).ready(function() {
     $("#editSpoil form").on('submit', function(event) {

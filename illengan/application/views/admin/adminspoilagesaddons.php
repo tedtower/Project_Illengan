@@ -253,7 +253,7 @@
         }
         spoilages.forEach(table => {
             $("#addonTable> tbody").append(`
-			<tr data-aoID="${table.aoID}" data-aosID="${table.aosID}" data-spoilname="${table.aoName}">
+			<tr data-aoID="${table.aoID}" data-aosID="${table.aosID}" data-aosQty="${table.aosQty}"  data-aosDate="${table.aosDate}"  data-aosRemarks="${table.aosRemarks}"  >
 				<td><a data-toggle="collapse" href="#collapseExample" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${table.aoName}</td>
                 <td>${table.aoCategory}</td>
                 <td>${table.aosQty}</td>
@@ -294,6 +294,12 @@
 					"data-aoID"));
 				$("#editSpoil").find("input[name='aosID']").val($(this).closest("tr").attr(
 					"data-aosID"));
+				$("#editSpoil").find("input[name='aosQty']").val($(this).closest("tr").attr(
+					"data-aosQty"));
+				$("#editSpoil").find("input[name='aosDate']").val($(this).closest("tr").attr(
+					"data-aosDate"));
+				$("#editSpoil").find("input[name='aosRemarks']").val($(this).closest("tr").attr(
+					"data-aosRemarks"));
             });
             $(".item_delete").last().on('click', function () {
                 $("#deleteSpoilageId").text(

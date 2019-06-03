@@ -252,7 +252,7 @@
         }
         spoilages.forEach(table => {
             $("#menuTable> tbody").append(`
-            <tr data-prID="${table.prID}" data-msID="${table.msID}" data-spoilname="${table.vName}">
+            <tr data-prID="${table.prID}" data-msID="${table.msID}" data-msQty="${table.msQty}" data-msDate="${table.msDate}" data-msRemarks="${table.msRemarks}" >
 				<td><a data-toggle="collapse" href="#collapseExample" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${table.mName}</td>
                 <td>${table.msQty}</td>
 				<td>${table.msDate}</td>
@@ -292,6 +292,12 @@
                     "data-prID"));
                 $("#editSpoil").find("input[name='msID']").val($(this).closest("tr").attr(
                     "data-msID"));
+				$("#editSpoil").find("input[name='msQty']").val($(this).closest("tr").attr(
+					"data-msQty"));
+				$("#editSpoil").find("input[name='msDate']").val($(this).closest("tr").attr(
+					"data-msDate"));
+				$("#editSpoil").find("input[name='msRemarks']").val($(this).closest("tr").attr(
+					"data-msRemarks"));
             });
             $(".item_delete").last().on('click', function () {
                 $("#deleteSpoilageId").text(
