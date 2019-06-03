@@ -15,14 +15,13 @@
         <!-- Real Time Date & Time -->
         <?php echo date("M j, Y -l"); ?>
       </p>
-      <div class="content" style="margin-left:250px;">
+      <div class="content" style="margin-left:auto;">
         <div class="conteiner-fluid">
           <!--Start Table-->
           <div class="card-content">
             <table id="ordersTable" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th></th>
                   <th><b class="pull-left">Slip No.</b></th>
                   <th><b class="pull-left">Customer</b></th>
                   <th><b class="pull-left">Table Code</b></th>
