@@ -835,80 +835,7 @@ class Adminmodel extends CI_Model{
                 iType = 'delivery') AS dInvoice USING (iID);";
         return $this->db->query($query)->result_array();
     }
-    function add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks, $total, $transitems, $transID=null){
-        $query = "";
-        $invoiceSuccess = false;
-        if($transID == null){
-            $query = "INSERT INTO invoice (spID, iDate, iDateRecorded, iNumber, iTotal, iRemarks, iType, resolvedStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-            $invoiceSuccess = $this->db->query($query, array($spID, $transDate, $dateRecorded, $receiptNum, $total, $remarks, $transType, $resStatus));
-        }else{
-            $query = "UPDATE invoice 
-                SET 
-                    spID = '',
-                    iDate = '',
-                    iDateRecorded = '',
-                    iNumber = '',
-                    iTotal = '',
-                    iRemarks = '',
-                    iType = '',
-                    resolvedStatus = ''
-                WHERE
-                    transID = '';";
-            $invoiceSuccess = $this->db->query($query, array($spID, $transDate, $dateRecorded, $receiptNumber, $total, $remarks, $transType, $resStatus, $transID));
-        }
-        $id = $this->db->insert_id();
-        if($invoiceSuccess){
-            $indexes = [];
-            $count = 0;
-            foreach($transitems as $item){
-                if(!$this->addEdit_transactionItems($item, $id)){
-                    array_push($indexes,$count);
-                }
-                $count++;
-            }
-            echo json_encode(array("erredQ" =>$indexes, "data"=> $transitems));
-            return true;
-        }
-        return false;
-    }
-    function addEdit_transactionItems($item,$id){
-        $query = "";
-        if($item['itemID'] == null){
-            $query = "INSERT INTO `invoiceitems`(
-                `vID`,
-                `iID`,
-                `iName`,
-                `iQty`,
-                `iPrice`,
-                `iUnit`,
-                `iSubTotal`
-            )
-            VALUES(
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?
-            );";
-            $this->db->query($query, array($item['varID'],$id,$item['itemName'],$item['itemQty'],$item['itemPrice'],$item['itemUnit'],$item['subtotal']));
-        }else{
-            $query = "UPDATE invoiceitems 
-            SET 
-                vID = ?,
-                iID = ?,
-                iName = ?,
-                iQty = ?,
-                iPrice = ?,
-                iUnit = ?,
-                iSubtotal = ?
-            WHERE
-                iItemID = ?;";
-            $this->db->query($query,array($item['varID'],$id,$item['itemName'],$item['itemQty'],$item['itemPrice'],$item['itemUnit'],$item['subtotal'],$item['itemID']));
-        }
-        return;
-    }
+    
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
     function delete_account($accountId){
@@ -1198,15 +1125,116 @@ class Adminmodel extends CI_Model{
             tDate,
             dateRecorded,
             spID,
-            spName
+            spName,
+            SUM(tiSubtotal) AS tTotal
         FROM
-            transactions
-        LEFT JOIN supplier USING(spID);";
+            (
+                transactions
+            LEFT JOIN trans_items USING(tID)
+            )
+        LEFT JOIN supplier USING(spID)
+        GROUP BY
+            tID;";
         return $this->db->query($query)->result_array();
     }
     
     function get_transitems(){
-        $query;
+        $query = "SELECT
+            tID,
+            tiID,
+            tiName,
+            tiQty,
+            uomID,
+            uomAbbreviation,
+            tiPrice,
+            tiDiscount,
+            tiSubtotal,
+            tiStatus
+        FROM
+            (
+                (
+                    transitems
+                LEFT JOIN uom USING(uomID)
+                )
+            LEFT JOIN trans_items USING(tiID)
+            )
+        LEFT JOIN transactions USING(tID)";
+        return $this->db->query($query)->result_array();
+    }
+
+    function add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks, $total, $transitems, $transID=null){
+        $query = "";
+        $invoiceSuccess = false;
+        if($transID == null){
+            $query = "INSERT INTO invoice (spID, iDate, iDateRecorded, iNumber, iTotal, iRemarks, iType, resolvedStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+            $invoiceSuccess = $this->db->query($query, array($spID, $transDate, $dateRecorded, $receiptNum, $total, $remarks, $transType, $resStatus));
+        }else{
+            $query = "UPDATE invoice 
+                SET 
+                    spID = '',
+                    iDate = '',
+                    iDateRecorded = '',
+                    iNumber = '',
+                    iTotal = '',
+                    iRemarks = '',
+                    iType = '',
+                    resolvedStatus = ''
+                WHERE
+                    transID = '';";
+            $invoiceSuccess = $this->db->query($query, array($spID, $transDate, $dateRecorded, $receiptNumber, $total, $remarks, $transType, $resStatus, $transID));
+        }
+        $id = $this->db->insert_id();
+        if($invoiceSuccess){
+            $indexes = [];
+            $count = 0;
+            foreach($transitems as $item){
+                if(!$this->addEdit_transactionItems($item, $id)){
+                    array_push($indexes,$count);
+                }
+                $count++;
+            }
+            echo json_encode(array("erredQ" =>$indexes, "data"=> $transitems));
+            return true;
+        }
+        return false;
+    }
+    function addEdit_transactionItems($item,$id){
+        $query = "";
+        if($item['itemID'] == null){
+            $query = "INSERT INTO `invoiceitems`(
+                `vID`,
+                `iID`,
+                `iName`,
+                `iQty`,
+                `iPrice`,
+                `iUnit`,
+                `iSubTotal`
+            )
+            VALUES(
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?
+            );";
+            $this->db->query($query, array($item['varID'],$id,$item['itemName'],$item['itemQty'],$item['itemPrice'],$item['itemUnit'],$item['subtotal']));
+        }else{
+            $query = "UPDATE invoiceitems 
+            SET 
+                vID = ?,
+                iID = ?,
+                iName = ?,
+                iQty = ?,
+                iPrice = ?,
+                iUnit = ?,
+                iSubtotal = ?
+            WHERE
+                iItemID = ?;";
+            $this->db->query($query,array($item['varID'],$id,$item['itemName'],$item['itemQty'],$item['itemPrice'],$item['itemUnit'],$item['subtotal'],$item['itemID']));
+        }
+        return;
     }
 }
 
