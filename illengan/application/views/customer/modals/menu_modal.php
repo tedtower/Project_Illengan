@@ -51,8 +51,7 @@
                     <div class="mb-3" id="addonable">
                         <h4 class="gab m-0"><i class="far fa-layer-plus"></i> Add-ons</h4>
                         <div class="add_butt">
-                            <button type="button" class="btn btn-outline-accent p-2 ml-0 mb-2" id="addonSelectBtn">Add
-                                Add-on</button>
+                            <button type="button" class="btn btn-outline-accent p-2 ml-0 mb-2" id="addonSelectBtn">Add Add-on</button>
                         </div>
                         <div class="ao_select" id="ao_select_div">
                         </div>

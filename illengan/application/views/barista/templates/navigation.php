@@ -13,12 +13,12 @@
       </ul>
       <ul class="navbar-nav mr-auto delius">
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo base_url('barista/billings')?>"><i class="fas fa-cash-register"></i> Billings</a>
+            <a class="nav-link" href="<?php echo base_url('barista/billings')?>"><i class="fas fa-money-bill-wave"></i> Billings</a>
           </li>
       </ul>
       <ul class="navbar-nav mr-auto delius">
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo base_url('barista/transactions')?>"><i class="fal fa-tasks"></i> Transactions</a>
+            <a class="nav-link" href="<?php echo base_url('barista/transactions')?>"><i class="fas fa-receipt"></i> Transactions</a>
           </li>
       </ul>
       <ul class="navbar-nav mr-auto delius">

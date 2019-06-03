@@ -22,14 +22,12 @@
             <table id="ordersTable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
               <thead class="thead-dark">
                 <tr>
-                  <th><b class="pull-left">SLIP NO.</b></th>
-                  <th><b class="pull-left">CUSTOMER</b></th>
-                  <th><b class="pull-left">TABLE CODE</b></th>
-                  <th><b class="pull-left">TOTAL PAYABLE</b></th>
-                  <th><b class="pull-left">ORDER DATE</b></th>
-                  <th><b class="pull-left">STATUS</b></th>
-                  <th><b class="pull-left">STATUS PAID</b></th>
-                  <th><b class="pull-left">ACTIONS</b></th>
+                  <th class="pull-left">SLIP NO.</th>
+                  <th class="pull-left">CUSTOMER NAME</th>
+                  <th class="pull-left">TABLE CODE</th>
+                  <th class="pull-left">DATE</th>
+                  <th class="pull-left">TOTAL</th>
+                  <th class="pull-center">ACTIONS</th>
                 </tr>
               </thead>
               <!--Start Table Body-->
@@ -41,12 +39,10 @@
                       <td><?= $bill["osID"] ?></td>
                       <td><?= $bill["custName"] ?></td>
                       <td><?= $bill["tableCode"] ?></td>
-                      <td><?= $bill["osTotal"] ?></td>
                       <td><?= $bill["osDateTime"] ?></td>
-                      <td id="payStatus"><?= $bill["payStatus"] ?></td>
-                      <td><?= $bill["osPayDateTime"] ?></td>
+                      <td><?= $bill["osTotal"] ?></td>
                       <td>
-                        <button class="editBtn btn btn-sm btn-info" data-toggle="modal" data-target="#Modal_Pay">Pay</button>
+                        <button class="editBtn btn btn-sm btn-info" data-toggle="modal" data-target="#Modal_Pay">Edit</button>
                         <button class="deleteBtn btn btn-sm btn-warning" data-toggle="modal" data-target="#Modal_Remove">Archived</button>
                       </td>
                     </tr>
@@ -62,69 +58,16 @@
     </div>
   </div>
 
-  <!--Start MODAL for BILL COMPUTATION-->
+  <!--Start MODAL for EDIT TRANSACTION-->    
   
-  <div class="modal fade bd-example-sm" id="Modal_Pay" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
-    <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Payment</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <!--Modal Content-->
-            <form id="formAdd" action="<?= site_url('barista/billings/add')?>" method="POST" accept-charset="utf-8">
-              <div class="modal-body">
-              <!--Amount Payable-->
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                      Amount Payable:</span>
-                  </div>
-                    <input type="text" class="form-control" name="amount_payable" id="amount_payable" value="<?= $bill['osTotal'] ?>" readonly>
-                      <span class="text-danger"><?php echo form_error("amount_payable"); ?></span>
-                </div>
-                <!--Cash-->
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                      Cash:</span>
-                  </div>
-                    <input type="text" class="form-control" name="cash" id="cash" value="0.00" required>
-                      <span class="text-danger"><?php echo form_error("cash"); ?></span>
-                </div>
-                <!--Change-->
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                      Change:</span>
-                  </div>
-                  <input type="text" class="form-control" name="change" id="change" value="0.00" readonly>
-                      <span class="text-danger"><?php echo form_error("change"); ?></span>
-                </div>
-        
-          <!--Footer-->
-          <div class="modal-footer">
-          <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-          <button class="btn btn-success btn-sm" type="submit">Done</button>
-          </div>
-              </div>
-            </form>
-      </div>
-    </div>
-  </div>
-  
-    
-  
-  <!--End MODAL for BILL COMPUTATION-->
+  <!--End MODAL for EDIT TRANSACTION-->
 
   <!--Start MODAL for DELETE-->
   <div class="modal fade" id="Modal_Remove" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Remove Order</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Remove Transaction</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -132,7 +75,7 @@
         <form id="confirmDelete">
           <div class="modal-body">
             <h6 id="deleteTableCode"></h6>
-            <p style="text-align:center;">Are you sure to remove the selected orderslip?</p>
+            <p style="text-align:center;">Are you sure to remove the selected transaction?</p>
             <input type="text" name="" hidden="hidden">
             <div>
               Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm">

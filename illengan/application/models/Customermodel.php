@@ -43,7 +43,7 @@
 
 
         function fetch_category(){
-            $query = $this->db->query('SELECT ctName, ctID FROM categories WHERE supcatID IS NULL AND ctType = "menu" GROUP BY ctName ASC');
+            $query = $this->db->query('SELECT ctID, ctName FROM categories WHERE supcatID IS NULL AND ctType = "menu" GROUP BY ctName ASC');
             return $query->result();
         }
         function fetch_availableSubcategory() {
