@@ -1,4 +1,5 @@
 <!--End Side Bar-->
+<body style="background:white">
 <div class="content">
     <div class="container-fluid">
         <br>
@@ -12,88 +13,72 @@
                     <div class="container-fluid">
                         <!--Table-->
                         <div class="card-content">
-                            <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addEditModal"
-                                data-original-title style="margin:0" id="addTransaction">Add Purchases/Deliveries</a>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addTransaction"
+                                data-original-title style="margin:0">Add Purchases/Deliveries</button>
                             <br>
                             <br>
                             <table id="transTable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                                 width="100%">
-                                <thead class="thead-light">
-                                    <th style="width:10px"></th>
+                                <thead class="thead-dark">
                                     <th><b class="pull-left">Receipt No.</b></th>
                                     <th><b class="pull-left">Supplier</b></th>
-                                    <th><b class="pull-left">Transaction Date</b></th>
-                                    <th><b class="pull-left">Total</b></th>
                                     <th><b class="pull-left">Type</b></th>
-                                    <th><b class="pull-left">Status</b></th>
+                                    <th><b class="pull-left">Date</b></th>
+                                    <th><b class="pull-left">Total</b></th>
                                     <th><b class="pull-left">Actions</b></th>
                                 </thead>
                                 <tbody>
                                     <!--Start of Table row-->
-                                    <?php foreach($invoices as $invoice){
-                                    ?>
-                                    <tr data-id="<?= $invoice['iID']?>">
-                                        <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png"
-                                                style="height:15px;width: 15px" /></td>
-                                        <td><?= $invoice['iNumber']?></td>
-                                        <td><?= $invoice['spName']?></td>
-                                        <td><?= $invoice['iDate']?></td>
-                                        <td><?= $invoice['iTotal']?></td>
-                                        <td><?= $invoice['iType']?></td>
-                                        <td><?= $invoice['resolvedStatus']?></td>
+                                    <tr>
+                                        <td><a href="javascript:void(0)" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a> 12345678</td>
+                                        <td>Pepita</td>
+                                        <td>Purchase Order</td>
+                                        <td>June 2, 2019</td>
+                                        <td>&#8369; 1000</td>
                                         <td>
-                                            <button class="editBtn btn btn-sm btn-primary" data-toggle="modal"
-                                                data-target="#addEditModal">Edit</button>
-                                            <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal"
-                                                data-target="#delete">Delete</button>
+                                            <button class="editBtn btn btn-sm btn-secondary" data-toggle="modal"
+                                                data-target="#editTransaction">Edit</button>
+                                            <button class="deleteBtn btn btn-sm btn-warning" data-toggle="modal"
+                                                data-target="#delete">Archived</button>
                                         </td>
                                     </tr>
                                     <!--End of Table row-->
+
                                     <!--Start of Table accordion-->
                                     <tr class="accordion" style="display:none">
                                         <td colspan="8">
                                             <div class="container" style="display:none">
-                                                <span>Date Recorded: <?= $invoice['iDateRecorded']?></span>
+                                                <span>Date Recorded:</span>
                                                 <div style="overflow:auto">
                                                     <span style="float:left;margin-right:1%">Remarks:</span>
-                                                    <p style="float:left"><?= $invoice['iRemarks']?></p>
+                                                    <p style="float:left"></p>
                                                     <!--Remarks of Invoice-->
                                                 </div>
                                                 <table class="table">
-                                                    <thead style="background:white">
+                                                    <thead class="thead-light">
                                                         <tr>
-                                                            <th>Item Name</th>
-                                                            <th>Unit</th>
+                                                            <th>Name</th>
                                                             <th>Qty</th>
+                                                            <th>UOM</th>
                                                             <th>Price</th>
+                                                            <th>Discount</th>
+                                                            <th>Status</th>
                                                             <th>Subtotal</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <?php foreach($items as $item){
-                                                        if($item['iID'] == $invoice['iID']){?>
-                                                        <tr>
-                                                            <td><?= $item['iName']?></td>
-                                                            <td><?= $item['iUnit']?></td>
-                                                            <td><?= $item['iQty']?></td>
-                                                            <td><?= $item['iPrice']?></td>
-                                                            <td><?= $item['iSubtotal']?></td>
-                                                        </tr>
-                                                        <?php }
-                                                    } ?>
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </td>
                                     </tr>
                                     <!--End of Table accordion-->
-                                    <?php }?>
                                 </tbody>
                             </table>
                             <!--End Table Content-->
 
                             <!--Start of Modal "Add Transaction"-->
-                            <div class="modal fade bd-example-modal-lg" id="addEditModal" tabindex="-1" role="dialog"
+                            <div class="modal fade bd-example-modal-lg" id="addTransaction" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
@@ -103,35 +88,29 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <form id="form" action="<?= site_url('admin/transactions/add')?>"
-                                            method="post" accept-charset="utf-8">
+                                        <form accept-charset="utf-8">
                                             <div class="modal-body">
                                                 <div class="form-row">
-                                                    <input type="text" name="transID" hidden="hidden"/>
-                                                    <!--Container of supplier and receipt no.-->
                                                     <!--Source Name-->
                                                     <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                            <span class="input-group-text border border-secondary"
+                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
                                                                 Supplier</span>
                                                         </div>
-                                                        <select class="form-control form-control-sm" name="spID">
+                                                        <select class="form-control form-control-sm  border-left-0" name="spID" >
                                                             <option value="" selected>Choose</option>
                                                         </select>
                                                     </div>
                                                     <!--Invoice Type-->
                                                     <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"
-                                                                style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Invoice Type</span>
+                                                            <span class="input-group-text border border-secondary"
+                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">      
+                                                                Type</span>
                                                         </div>
-                                                        <select class="form-control form-control-sm" name="transType">
+                                                        <select class="form-control form-control-sm  border-left-0" name="transType">
                                                             <option value="" selected>Choose</option>
-                                                            <option value="purchase">Purchase</option>
-                                                            <option value="delivery">Delivery</option>
-                                                            <option value="return">Return</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -141,93 +120,69 @@
                                                     <!--Receipt Number-->
                                                     <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        <span class="input-group-text border border-secondary"
+                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
                                                                 Receipt No.</span>
                                                         </div>
-                                                        <input type="text" class="form-control" name="receiptNum">
+                                                        <input type="text" class="form-control  border-left-0" name="receiptNum">
                                                     </div>
                                                     <!--Invoice Type-->
                                                     <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        <span class="input-group-text border border-secondary"
+                                                                style="width:142px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
                                                                 Transaction Date</span>
                                                         </div>
-                                                        <input type="date" class="form-control" name="transDate">
+                                                        <input type="date" class="form-control  border-left-0" name="transDate">
                                                     </div>
                                                 </div>
-
-                                                <div class="form-row">
-                                                    <!--Container of supplier and receipt no.-->
-                                                    <!--Status-->
-                                                    <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text"
-                                                                style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Return Status</span>
-                                                        </div>
-                                                        <select class="form-control form-control-sm" name="resStatus">
-                                                            <option value="" selected>Choose</option>
-                                                            <option value="pending">Pending</option>
-                                                            <option value="resolved">Resolved</option>
-                                                            <option value="unresolved">Unresolved</option>
-                                                        </select>
+                                                 
+                                                <!--Remarks-->
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                    <span class="input-group-text border border-secondary"
+                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
+                                                            Remarks</span>
                                                     </div>
-                                                    <!--Remarks-->
-                                                    <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm"
-                                                                style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                Remarks</span>
-                                                        </div>
-                                                        <textarea type="text" name="remarks"
-                                                            class="form-control form-control-sm" rows="1"></textarea>
-                                                    </div>
+                                                    <textarea type="text" name="remarks"
+                                                        class="form-control form-control-sm  border-left-0" rows="1"></textarea>
                                                 </div>
 
                                                 <!--Transaction Items-->
-                                                <a class="btn btn-default btn-sm" data-toggle="modal"
-                                                    data-target="#brochure" data-original-title style="margin:0"
-                                                    id="addPOItems">Add PO Items</a>
-                                                <!--Button to add launce the brochure modal-->
+                                                <a class="btn btn-primary btn-sm" data-original-title style="margin:0;color:white;font-weight:600;background:#0073e6">Add Items</a>
+                                                <!--Transaction PO Items-->
+                                                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#brochure" style="color:white;font-weight:600;background:#0073e6">Add PO Items</a>
                                                 <br><br>
-                                                <table class="subTable1 table table-sm table-borderless">
-                                                    <!--Table containing the different input fields in adding trans items -->
-                                                    <thead class="thead-light">
-                                                        <tr>
-                                                            <th width="40%">Name</th>
-                                                            <th>Qty</th>
-                                                            <th>Unit</th>
-                                                            <th>Price</th>
-                                                            <th>Subtotal</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr data-id="" data-id2="">
-                                                            <td><input type="text" name="itemName[]"
-                                                                    class="form-control form-control-sm"></td>
-                                                            <td><input type="number" name="itemQty[]"
-                                                                    class="form-control form-control-sm"></td>
-                                                            <td><input type="text" name="itemUnit[]"
-                                                                    class="form-control form-control-sm"></td>
-                                                            <td><input type="number" name="itemPrice[]"
-                                                                    class="form-control form-control-sm"></td>
-                                                            <td><input type="number" name="itemSubtotal[]"
-                                                                    class="form-control form-control-sm"></td>
-                                                            <td><img class="exitBtn" id="exitBtn"
-                                                                    src="/assets/media/admin/error.png"
-                                                                    style="width:20px;height:20px"></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                <!--div containing the different input fields in adding trans items -->
+                                                <div class="container mb-3" style="overflow:auto;width:100%">
+                                                    <div style="float:left;width:95%;overflow:auto;">
+                                                        <div class="input-group mb-1">
+                                                            <input type="text" name="itemName[]" class="form-control form-control-sm" placeholder="Item Name" style="width:305px;"> 
+                                                            <input type="number" name="itemQty[]" class="form-control form-control-sm" placeholder="Quantity">
+                                                            <input type="number" name="actualQty[]"class="form-control form-control-sm" placeholder="Actual Qty">
+
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <input type="text" name="itemUnit[]" class="form-control form-control-sm " placeholder="Unit">
+                                                            <input type="text" name="actualUnit[]" class="form-control form-control-sm " placeholder="Actual Unit">
+                                                            <input type="number" name="itemPrice[]" class="form-control form-control-sm " placeholder="Price">
+                                                            <input type="number" name="itemSubtotal[]" class="form-control form-control-sm " placeholder="Subtotal">
+                                                            <select  name="itemStatus[]"class="form-control form-control-sm ">
+                                                                <option value="" selected>Choose Status</option>
+                                                                <option value="" ></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mt-4" style="float:left:width:3%;overflow:auto;">
+                                                        <img class="exitBtn" id="exitBtn"src="/assets/media/admin/error.png" style="width:20px;height:20px;float:right;">
+                                                    </div>
+                                                </div>
                                                 <span>Total: &#8369;<span class="total">0</span></span>
                                                 <!--Total of the trans items-->
 
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger btn-sm"
-                                                        data-dismiss="modal">Cancel</button>
+                                                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
                                                     <button class="btn btn-success btn-sm" type="submit">Insert</button>
                                                 </div>
                                             </div>
@@ -236,11 +191,123 @@
                                 </div>
                             </div>
                             <!--End of Modal "Add Transaction"-->
+                            <!--Start of Modal "Edit Transaction"-->
+                            <div class="modal fade bd-example-modal-lg" id="editTransaction" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Edit Transaction</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form accept-charset="utf-8">
+                                            <div class="modal-body">
+                                                <div class="form-row">
+                                                    <!--Source Name-->
+                                                    <div class="input-group mb-3 col">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text border border-secondary"
+                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
+                                                                Supplier</span>
+                                                        </div>
+                                                        <select class="form-control form-control-sm  border-left-0" name="spID" >
+                                                            <option value="" selected>Choose</option>
+                                                        </select>
+                                                    </div>
+                                                    <!--Invoice Type-->
+                                                    <div class="input-group mb-3 col">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text border border-secondary"
+                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">      
+                                                                Type</span>
+                                                        </div>
+                                                        <select class="form-control form-control-sm  border-left-0" name="transType">
+                                                            <option value="" selected>Choose</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-row">
+                                                    <!--Container of supplier and receipt no.-->
+                                                    <!--Receipt Number-->
+                                                    <div class="input-group mb-3 col">
+                                                        <div class="input-group-prepend">
+                                                        <span class="input-group-text border border-secondary"
+                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
+                                                                Receipt No.</span>
+                                                        </div>
+                                                        <input type="text" class="form-control  border-left-0" name="receiptNum">
+                                                    </div>
+                                                    <!--Invoice Type-->
+                                                    <div class="input-group mb-3 col">
+                                                        <div class="input-group-prepend">
+                                                        <span class="input-group-text border border-secondary"
+                                                                style="width:142px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
+                                                                Transaction Date</span>
+                                                        </div>
+                                                        <input type="date" class="form-control  border-left-0" name="transDate">
+                                                    </div>
+                                                </div>
+                                                 
+                                                <!--Remarks-->
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                    <span class="input-group-text border border-secondary"
+                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
+                                                            Remarks</span>
+                                                    </div>
+                                                    <textarea type="text" name="remarks"
+                                                        class="form-control form-control-sm  border-left-0" rows="1"></textarea>
+                                                </div>
+
+                                                <!--Transaction Items-->
+                                                <a class="btn btn-primary btn-sm" data-original-title style="margin:0;color:white;font-weight:600;background:#0073e6">Add Items</a>
+                                                <!--Transaction PO Items-->
+                                                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#brochure" style="color:white;font-weight:600;background:#0073e6">Add PO Items</a>
+                                                <br><br>
+                                                <!--div containing the different input fields in adding trans items -->
+                                                <div class="container mb-3" style="overflow:auto;width:100%">
+                                                    <div style="float:left;width:95%;overflow:auto;">
+                                                        <div class="input-group mb-1">
+                                                            <input type="text" name="itemName[]" class="form-control form-control-sm" placeholder="Item Name" style="width:305px;"> 
+                                                            <input type="number" name="itemQty[]" class="form-control form-control-sm" placeholder="Quantity">
+                                                            <input type="number" name="actualQty[]"class="form-control form-control-sm" placeholder="Actual Qty">
+
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <input type="text" name="itemUnit[]" class="form-control form-control-sm " placeholder="Unit">
+                                                            <input type="text" name="actualUnit[]" class="form-control form-control-sm " placeholder="Actual Unit">
+                                                            <input type="number" name="itemPrice[]" class="form-control form-control-sm " placeholder="Price">
+                                                            <input type="number" name="itemSubtotal[]" class="form-control form-control-sm " placeholder="Subtotal">
+                                                            <select  name="itemStatus[]"class="form-control form-control-sm ">
+                                                                <option value="" selected>Choose Status</option>
+                                                                <option value="" ></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mt-4" style="float:left:width:3%;overflow:auto;">
+                                                        <img class="exitBtn" id="exitBtn"src="/assets/media/admin/error.png" style="width:20px;height:20px;float:right;">
+                                                    </div>
+                                                </div>
+                                                <span>Total: &#8369;<span class="total">0</span></span>
+                                                <!--Total of the trans items-->
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                                    <button class="btn btn-success btn-sm" type="submit">Update</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End of Modal "Edit Transaction"-->
 
                             <!--Start of Brochure Modal"-->
-                            <div class="modal fade bd-example-modal" id="brochure" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true"
-                                style="background:rgba(0, 0, 0, 0.3)">
+                            <div class="modal fade bd-example-modal-lg" id="brochure" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background:rgba(0, 0, 0, 0.3)">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -249,13 +316,12 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <form id="formAdd" action="<?= site_url('admin/transactions/add')?>"
-                                            method="post" accept-charset="utf-8">
+                                        <form>
                                             <div class="modal-body">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"
-                                                            style="width:120px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        <span class="input-group-text "
+                                                            style="width:130px;background:#737373;color:white;font-size:14px;font-weight:600">  
                                                             Purchase Order</span>
                                                     </div>
                                                     <select class="form-control form-control-sm" name="po">
@@ -276,12 +342,30 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                        <tr>
+                                                            <td><input type="checkbox" ></td>
+                                                            <td>Nestle Milk 500 ml</td>
+                                                            <td>cn</td>
+                                                            <td>12</td>
+                                                            <td>100</td>
+                                                            <td>1200</td>
+                                                            <td>pending</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td><input type="checkbox" ></td>
+                                                            <td>Nestle Milk 500 ml</td>
+                                                            <td>cn</td>
+                                                            <td>12</td>
+                                                            <td>100</td>
+                                                            <td>1200</td>
+                                                            <td>pending</td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger btn-sm"
-                                                    data-dismiss="modal">Cancel</button>
+                                                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
                                                 <button class="btn btn-success btn-sm" type="submit">Ok</button>
                                             </div>
                                         </form>
@@ -333,181 +417,4 @@
 </div>
 </div>
 <?php include_once('templates/scripts.php') ?>
-<script>
-var suppliers = [];
-
-$(function() {
-    $("#addTransaction").on('click',function(){
-        $("#form")[0].reset();
-        $("#form").find(".table tbody").empty();
-        $.ajax({
-            method : 'post',
-            url : '<?= site_url('admin/jsonSupp')?>',
-            dataType : 'json',
-            success : function(data){
-                suppliers = data;
-            },
-            error : function (response, settings, error){
-                console.log(response.responseText);
-            },
-            complete: function(){                
-                setSuppliers();
-            }
-        });
-    });
-    $(".accordionBtn").on('click', function() {
-        if ($(this).closest("tr").next(".accordion").css("display") == 'none') {
-            $(this).closest("tr").next(".accordion").css("display", "table-row");
-            $(this).closest("tr").next(".accordion").find("td > div").slideDown("slow");
-        } else {
-            $(this).closest("tr").next(".accordion").find("td > div").slideUp("slow");
-            $(this).closest("tr").next(".accordion").hide("slow");
-        }
-    });
-    $("#addPOItems").on('click',function(){
-        $("#brochure").find("form")[0].reset();
-        $("#brochure").find(".table tbody").empty();
-        $.ajax({
-            method : 'post',
-            url : '<?= site_url('admin/getPurchaseOrders')?>',
-            data : {
-                id : $("#addEditModal").find("select[name='spID']").val()
-            },
-            dataType : 'json',
-            success : function(data){
-                setPurchaseOrders(data);
-            },
-            error : function (response, settings, error){
-                console.log(response.responseText);
-            }
-        });
-    });
-    $("#form").on('submit',function(event){
-        event.preventDefault();
-        var transID = isNaN(parseInt($(this).find("input[name='transID']").val())) ? (null) : parseInt($(this).find("input[name='transID']").val());
-        var spID = $(this).find("select[name='spID']").val();
-        var transType = $(this).find("select[name='transType']").val();
-        var receiptNum = $(this).find("input[name='receiptNum']").val();
-        var transDate = $(this).find("input[name='transDate']").val();
-        var resStatus= $(this).find("select[name='resStatus']").val();
-        var remarks = $(this).find("textarea[name='remarks']").val();
-        var transitems = [];
-        var row;
-        for(var index = 0; index < $(this).find(".subTable1 > tbody").children().length;index++){
-            row = $(this).find(".subTable1 > tbody > tr").eq(index);
-            transitems.push({
-                itemID : isNaN(parseInt(row.attr("data-id"))) ? (null) : parseInt(row.attr("data-id")),
-                poiID : isNaN(parseInt(row.attr("data-id3"))) ? (null) : parseInt(row.attr("data-id3")),
-                varID : row.attr("data-id2"),
-                itemName : row.find("input[name='itemName[]']").val(),
-                itemQty : row.find("input[name='actualItemQty[]']").val(),
-                itemUnit : row.find("input[name='itemUnit[]']").val(),
-                itemPrice : row.find("input[name='itemPrice[]']").val() 
-            });
-        }
-        $.ajax({
-            method : 'post',
-            url : "<?= site_url('admin/transactions/add')?>",
-            data : {
-                transID : transID,
-                spID : spID,
-                transType : transType,
-                receiptNum : receiptNum,
-                transDate : transDate,
-                resStatus : resStatus,
-                remarks : remarks,
-                transitems : JSON.stringify(transitems)
-            },
-            dataType : 'json',
-            beforeSend : function(){
-                console.log(transID, spID, transType, receiptNum, transDate, resStatus, remarks, transitems);
-            },
-            success : function(response){
-                if(response.loginErr !== null){
-                    window.location.href = '<?= site_url('login')?>';
-                }else if(response.dataErr == true){
-                    console.log(response.errIndexes);
-                }
-            },
-            error : function (response, setting, error){
-                console.log(response.responseText);
-            },
-            complete : function(){
-                $(this).closest(".modal").modal("hide");
-            }
-        });
-    });
-});
-function setSuppliers(){
-    $("#addEditModal").find('select[name="spID"]').children().first().siblings().remove();
-    $("#addEditModal").find('select[name="spID"]').append(`
-        ${suppliers.map(supplier => {
-            return `<option value="${supplier.spID}">${supplier.spName}</option>`
-        }).join('')}
-    `);
-}
-function setPurchaseOrders(po){
-    var id = 0;
-    var pois = [];
-    var poIDs = [];
-    var values = [];
-    $("#brochure").find("select[name='po'] option").first().siblings().remove();
-    $("#brochure").find("select[name='po']").append(`
-    ${po.po.map(po => {
-        return `<option value="${po.poID}">${po.poID} - ${po.poDate}</option>`
-    }).join('')}
-    `);
-    $("#brochure").find("select[name='po']").on('change',function(){
-        id = $(this).val();
-        pois = po.poItems.filter(item => item.poID === id );
-        setBrochureModalTableOneData(pois);
-    });
-    $("#brochure form").on('submit',function(event){
-        event.preventDefault();
-        $.each($("input[name='poiID[]']:checked"),function(){
-            values.push($(this).val());
-        });
-        $("#brochure").modal('hide');
-        setModalTableOneData(pois,values);
-    });
-}
-//array 1 : array of objects from DB
-//array 2 : array of poiIDs as selected by the user from the brochure
-function setModalTableOneData(array1, array2){
-    $("#form").find(".table").eq(0).find("tbody").empty();
-    $("#form").find(".table").eq(0).find("tbody").append(`${
-        array1.filter(item => array2.includes(item.poiID)).map(item => {
-            return `<tr data-id="" data-id2="${item.vID}" data-id3="${item.poiID}">
-                <td><input type="text" name="itemName[]"
-                        class="form-control form-control-sm" value="${item.poiName}" readonly="readonly"></td>
-                <td><input type="number" name="actualItemQty[]"
-                        class="form-control form-control-sm" value=""></td>
-                <td><input type="number" name="itemQty[]"
-                        class="form-control form-control-sm" value="${item.poiQty}" readonly="readonly"></td>
-                <td><input type="text" name="itemUnit[]"
-                        class="form-control form-control-sm" value="${item.poiUnit}" readonly="readonly"></td>
-                <td><input type="number" name="itemPrice[]"
-                        class="form-control form-control-sm" value="${item.poiPrice}" readonly="readonly"></td>
-                <td><input type="number" name="itemSubtotal[]"
-                        class="form-control form-control-sm" value="${parseFloat(item.poiPrice) * parseInt(item.poiQty)}" readonly="readonly"></td>
-                <td><img class="exitBtn" id="exitBtn"
-                        src="/assets/media/admin/error.png"
-                        style="width:20px;height:20px"></td>
-            </tr>`;
-        }).join('')
-    }`);
-}
-function setBrochureModalTableOneData(array){
-    $("#brochure").find('.table tbody').eq(0).children().remove();
-    $("#brochure").find('.table tbody').eq(0).append(`${array.map(item => { return `
-        <tr>
-            <td><input type="checkbox" class="mr-2" name="poiID[]" value="${item.poiID}"></td>
-            <td>${item.poiName}</td>
-            <td>${item.poiUnit}</td>
-            <td>${item.poiQty}</td>
-            <td>${item.poiPrice}</td>
-            <td>${(parseFloat(item.poiPrice) * parseInt(item.poiQty)).toFixed(2)}</td>
-            <td>${item.poiStatus}</td>
-        </tr>`}).join('')}`);
-}
-</script>
+</body>
