@@ -10,15 +10,17 @@ class Barista extends CI_Controller{
         // code for getting current date : date("Y-m-d")
         // code for getting current date and time : date("Y-m-d H:i:s")
     }
+
+    //BARISTA ORDER FUNCTIONS
     function pendingOrders(){
-        $this->load->view('barista/navigation');
+        $this->load->view('barista/templates/navigation');
         $this->load->view('barista/pendingOrders'); 
     }
     function pendingOrdersJS(){
         echo json_encode($this->baristamodel->get_pendingOrders());
     }
     function servedOrders(){
-        $this->load->view('barista/navigation');
+        $this->load->view('barista/templates/navigation');
         $this->load->view('barista/servedOrders');  
     }
     function servedOrdersJS(){
@@ -26,7 +28,7 @@ class Barista extends CI_Controller{
        echo json_encode($data);
     }
     function vieworderslip(){
-        $this->load->view('barista/navigation');
+        $this->load->view('barista/templates/navigation');
         $this->load->view('barista/orderslip');
     }
     function viewOrderslipJS(){
@@ -42,6 +44,8 @@ class Barista extends CI_Controller{
         $tableCode =$this->input->post('tableCode');
         $data=$this->baristamodel->edit_tablenumber($tableCode,$osID);
     }
+    
+    //BARISTA BILLINGS FUNCTIONS
     function getOrders(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
             //Code Here
@@ -50,19 +54,34 @@ class Barista extends CI_Controller{
         }
     }
     function getBills(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
+        //if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
+                $this->load->view('barista/templates/navigation');
+                //$this->load->model('baristamodel');  
                 $data["bills"] = $this->baristamodel->get_bills();
-                $this->load->view("barista/baristabillings", $data);
-            }else{
-                    redirect('login');
-            }
+                $this->load->view("barista/orderBills", $data);
+           // }
+            // else{
+            //          redirect('login');
+            //  }
     }
+
+    function getOrderBills(){
+        $this->load->view('barista/templates/navigation');
+        $this->load->view('barista/orderBills-default');
+    }
+    
+    function orderBillsJS(){
+        $data= $this->baristamodel->get_bills();
+        echo json_encode($data);
+
+    }
+
     function getBillDetails(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
             $osID = $this->input->post("osID"); 
             $orderdetails = array(
-            'orderslips' => $this->baristamodel->get_orderslip($osID)[0],
-            'orderlists' => $this->baristamodel->get_orderlist($osID)
+            'orderslips' => $this->baristamodel->get_orderslips($osID)[0],
+            'orderlists' => $this->baristamodel->get_orderlists($osID)
             );
                 $this->output->set_output(json_encode($orderdetails));
             }else{
@@ -97,7 +116,7 @@ class Barista extends CI_Controller{
             $payment_date_time = date("Y-m-d H:i:s");
             $date_recorded = date("Y-m-d");
             $osID = $this->input->post("osID");
-            $status = $this->input->post("pay_status");
+            $status = $this->input->post("payStatus");
             
             switch($status){
                 case "p": 
@@ -120,23 +139,38 @@ class Barista extends CI_Controller{
                 redirect('login');
             }
         }
-    function viewinventory(){
-        $this->load->view('barista/navigation');
-        $this->load->view('barista/baristaInventory');
-    }
-    function inventoryJS(){
-        echo json_encode($this->baristamodel->get_inventory());
-    }
-    function restockitem(){
-        $stocks = json_decode($this->input->post('stocks'), true);
-        echo json_encode($stocks, true);
-        $this->baristamodel->restock($stocks);
-    }
-    function destockitem(){
-        $stocks = json_decode($this->input->post('stocks'), true);
-        echo json_encode($stocks, true);
-        $this->baristamodel->destock($stocks);
-    }
-    
+
+        //BARISTA INVENTORY FUNCTIONS
+        function viewinventory(){
+            $this->load->view('barista/templates/navigation');
+            $this->load->view('barista/baristaInventory'); 
+        }
+        function inventoryJS(){
+            echo json_encode($this->baristamodel->get_inventory());
+        }
+        function restockitem(){
+            $stocks = json_decode($this->input->post('stocks'), true);
+            echo json_encode($stocks, true);
+            $this->baristamodel->restock($stocks);
+        }
+        function destockitem(){
+            $stocks = json_decode($this->input->post('stocks'), true);
+            echo json_encode($stocks, true);
+            $this->baristamodel->destock($stocks);
+        }
+
+        //barista functions for orderslips-cards
+
+        function sample(){
+            $this->load->view('barista/orderCards');
+        }
+
+        function get_slipData(){
+            $slipID = $this->input->post('osID');
+            $customerName = $this->input->post('custName');
+            $table_code = $this->input->post('tableCode');
+            $status = $this->input->post('payStatus');
+            $this->load->baristamodel->get_slip_data();
+        }
     }
 ?>

@@ -20,9 +20,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </head>
 <body>
-<?php include_once('headernav.php') ?>
   <br>
-  <div class="container">
+  <div class="container"><br>
+  <button class="btn btn-link btn-sm" onClick="window.location.href = '<?php echo base_url();?>customer/processCheckIn';return false;">Add Order</button>
+  <br>
             <table class="pendOrders dtr-inline collapsed table display" id="pendingordersTable" >
                 <thead>
                     <tr>
@@ -40,7 +41,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </tbody>
             </table>
     </div>
-        
+
+
         <!--MODAL DELETE-->
         <form>
             <div class="modal fade" id="Modal_Remove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

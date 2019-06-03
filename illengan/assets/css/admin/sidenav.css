@@ -104,3 +104,24 @@ li.has-oul ul li a {
 ul#sidelist li {
     font-size: 14.5px;
 }
+
+::-webkit-input-placeholder {
+    color:grey !important;
+}
+
+::-moz-placeholder {
+    color:grey !important;
+}
+
+::-ms-placeholder {
+    color:grey!important;
+}
+
+::placeholder {
+    color:grey !important;
+}
+
+input,select,textarea{
+    border:1px solid #b3b3b3 !important;
+}
+

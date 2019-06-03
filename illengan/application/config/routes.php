@@ -82,7 +82,7 @@ $route['admin/addons/spoilages'] = "adminview/viewspoilagesaddons";
 $route['admin/log/stocks'] = "adminview/viewLogStock";
 $route['admin/log/activity'] = "adminview/viewActivityLog";
 $route['admin/consumption'] = "adminview/viewConsumptions";
-$route['admin/transactions'] = "adminview/viewalltransactions";
+$route['admin/transactions'] = "adminview/viewTransactions";
 $route['admin/transactions/delivery'] = "adminview/viewDeliveryTransactions";
 $route['admin/transactions/purchase'] = "adminview/viewpurchasetransactions";
 $route['admin/transactions/return'] = "adminview/viewreturntransactions";
@@ -176,6 +176,7 @@ $route['admin/jsonAddons'] = "adminview/jsonMenuAddons";
 
 $route['admin/inventory/getEnumVals'] = "adminview/getEnumValsForStock";
 $route['admin/inventory/getStockItem'] = "adminview/getStockItem";
+$route['admin/transactions/getEnumVals'] = "adminview/getEnumValsForTransaction";
 //End Admin Json Routes ---------------------------------------
 
 //CUSTOMER ROUTES
@@ -193,7 +194,8 @@ $route['customer/menu/removeOrder'] = "customer/removeOrder";
 
 // BARISTA ROUTES
 $route['barista/orders'] = "barista/pendingOrders";
-$route['barista/billings'] = "barista/getbills";
+$route['barista/billings'] = "barista/getBills";
+$route['barista/bills'] = "barista/getOrderBills";
 $route['barista/getBillDetails'] = "barista/getBillDetails";
 $route['barista/billings/setStatus'] = "barista/setbillstatus";
 $route['barista/inventory'] = "barista/viewinventory";
