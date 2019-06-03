@@ -177,6 +177,7 @@ $route['admin/jsonAddons'] = "adminview/jsonMenuAddons";
 $route['admin/inventory/getEnumVals'] = "adminview/getEnumValsForStock";
 $route['admin/inventory/getStockItem'] = "adminview/getStockItem";
 $route['admin/transactions/getEnumVals'] = "adminview/getEnumValsForTransaction";
+$route['admin/transaction/getTransaction'] = "adminview/getTransaction";
 //End Admin Json Routes ---------------------------------------
 
 //CUSTOMER ROUTES

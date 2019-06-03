@@ -607,17 +607,33 @@ function viewSpoilagesStock(){
 
     function getEnumValsForTransaction(){
         if($this->checkIfLoggedIn()){
-            preg_match_all("/\w+\'?\w+?(?=')/",$this->adminmodel->get_enumVals('transactions','tType')[0]['column_type'], $tTypes);
-            preg_match_all("/\w+\'?\w+?(?=')/",$this->adminmodel->get_enumVals('transitems','tiStatus')[0]['column_type'], $tiStatuses);
+            preg_match_all("/\w+(\s+)?(\w+)?(\'\w+)?(?=')/",$this->adminmodel->get_enumVals('transactions','tType')[0]['column_type'], $tTypes);
+            preg_match_all("/\w+(\s+)?(\w+)?(\'\w+)?(?=')/",$this->adminmodel->get_enumVals('transitems','tiStatus')[0]['column_type'], $tiStatuses);
             echo json_encode(array(
-                "tTypes" => $tTypes,
-                "tiStatuses" => $tiStatuses,
+                "tTypes" => $tTypes[0],
+                "tiStatuses" => $tiStatuses[0],
                 "suppliers" => $this->adminmodel->get_supplierNames(),
                 "uoms" => $this->adminmodel->get_uomForStoring(),
-                "stockItems" => $this->adminmodel->get_stockItemNames()
+                "stocks" => $this->adminmodel->get_stockItemNames()
             ));
         }else{
-            redirect('login');
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
+
+    function getTransaction(){
+        if($this->checkIfLoggedIn()){
+            $id = $this->input->post('id');
+            echo json_encode(array(
+                "transaction" => $this->adminmodel->get_transaction($id),
+                "transitems" => $this->adminmodel->get_transitems($id)
+            ));
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
         }
     }
 
