@@ -690,6 +690,10 @@ class Adminmodel extends CI_Model{
         $query = "Select * from supplier order by spName";
         return $this->db->query($query)->result_array();
     }
+    function get_supplierNames(){
+        $query = "Select spID, spName from supplier order by spName";
+        return $this->db->query($query)->result_array();
+    }
     function get_suppliermerch(){
         $query = "SELECT *, CONCAT(spmDesc,' ',stName,' ',vUnit,' ','(',vSize,')') as merchandise, CONCAT(stName,' ',vUnit,' ','(',vSize,')') as stockvariance  from supplier natural join suppliermerchandise natural join variance natural join stockitems";
         return $this->db->query($query)->result_array();
@@ -1115,6 +1119,9 @@ class Adminmodel extends CI_Model{
         WHERE
             stID = ?;";
         return $this->db->query($query, array($id))->result_array();
+    }
+    function get_stockItemNames(){
+        $query = "";
     }
 
     function get_transactions(){

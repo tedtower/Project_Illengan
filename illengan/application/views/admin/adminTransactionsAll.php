@@ -14,7 +14,7 @@
                         <!--Table-->
                         <div class="card-content">
                             <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addEditTransaction"
-                                data-original-title style="margin:0">Add Purchases/Deliveries</button>
+                                data-original-title style="margin:0" id="addBtn">Add Transaction</button>
                             <br>
                             <br>
                             <table id="transTable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
@@ -173,13 +173,21 @@
                                                 <!--Transaction PO Items-->
                                                 <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#brochure" style="color:white;font-weight:600;background:#0073e6">Add PO Items</a>
                                                 <br><br>
+
+               
                                                 <!--div containing the different input fields in adding trans items -->
                                                 <div class="container mb-3 inputGroup1" style="overflow:auto;width:100%">
                                                     <div style="float:left;width:95%;overflow:auto;">
+                                                    
                                                         <div class="input-group mb-1">
-                                                            <input type="text" name="itemName[]" class="form-control form-control-sm" placeholder="Item Name" style="width:305px;"> 
-                                                            <input type="number" name="itemQty[]" class="form-control form-control-sm" placeholder="Quantity">
+                                                            <input type="text" name="itemName[]" class="form-control form-control-sm" placeholder="Item Name" style="width:24%">
+                                                            <input type="text" class="form-control border-right-0" placeholder="Stock" style="width:15%">
+                                                            <div class="input-group-append" style="border-top:1px solid #b3b3b3 !important;border-bottom:1px solid #b3b3b3 !important">
+                                                                <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#stock" type="button" >Button</button>
+                                                            </div>
+                                                            <input type="number" name="itemQty[]" class="form-control form-control-sm" placeholder="Quantity" >
                                                             <input type="number" name="actualQty[]"class="form-control form-control-sm" placeholder="Actual Qty">
+                                                            
                                                         </div>
                                                         <div class="input-group">
                                                             <select name="itemUnit[]" class="form-control form-control-sm">
@@ -282,6 +290,33 @@
                             </div>
                             <!--End of Brochure Modal"-->
 
+                            <!--Start of Brochure Modal"-->
+                            <div class="modal fade bd-example-modal-sm" id="stock" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background:rgba(0, 0, 0, 0.3)">
+                                <div class="modal-dialog " role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Select Stock Item</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form>
+                                            <div class="modal-body">
+                                                <div class="d-flex d-inline-block">
+                                                    <div><input type="checkbox" class="mr-3"/></div>
+                                                    <div>basta</div>
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                                <button class="btn btn-success btn-sm" type="submit">Ok</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End of Brochure Modal"-->
                             <!--Start of Modal "Delete Stock Item"-->
                             <div class="modal fade" id="delete" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -326,6 +361,7 @@
 </div>
 <?php include_once('templates/scripts.php') ?>
 <script>
+var getEnumValsUrl = '<?= site_url('admin/transactions/getEnumVals')?>';
     $(function(){
         $(".accordionBtn").on('click',function(){
             if($(this).closest('tr').next('.accordion').css('display') === 'none'){
@@ -335,6 +371,9 @@
                 $(this).closest('tr').next('.accordion').find('div').slideUp();
                 $(this).closest('tr').next('.accordion').slideUp();
             }
+        });
+        $("#addBtn, .editBtn").on('click',function(){
+
         });
     });
 </script>
