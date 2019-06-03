@@ -1,26 +1,52 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?> 
-
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'>
-        <meta name="viewport" content="width=device-width">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <title>Il-Lengan | Barista Orders</title>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/bootstrap.css'?>">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/responsive.bootstrap.css'?>">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/select.bootstrap.css'?>">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/buttons.bootstrap.css'?>">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/style.css'?>">
+       <?php include_once('head.php') ?>
     </head>
     <body>
-    <div class="container" style="overflow: auto;">
+        <?php include_once('navigation.php') ?>
+    <div class="container" style="overflow: auto; margin-left:0px;">
+        <div class="card border-success" style="width:40%; display: inline-block;">
+            <div class="card-header">
+                <form>
+                    <label>Slip No : </label>
+                    <input style="width: 20px; border: none; background: transparent;" type="text" name="slip_number" id="slip_number" value="">&nbsp;
+                    <label>Table No : </label>
+                    <input style="width: 20px; border: none; background: transparent" type="text" name="slip_number" id="slip_number" value=""><br>
+                    <label>Name : </label>
+                    <input style="border: none; background: transparent" type="text" name="slip_number" id="slip_number" value="">&nbsp; 
+                    <label>Status : </label>
+                    <input style="border: none; background: transparent" type="text" name="slip_number" id="slip_number" value="">
+                </form>
+            </div>
+            <div class="card card-body" style="width: auto; height: auto;">
+                
+                
+                <button class="btn btn-link btn-sm" data-toggle="modal" data-target="#Modal_Add" id="add_modal">Add Order</button>
+
+                <br>
+                <table class="pendOrders dtr-inline collapsed table display table-sm" id="pendingordersTable" style="width: auto; height: auto;">
+                  <thead>
+                      <tr>
+                          <th style="text-align: center;">Qty</th>
+                          <th style="text-align: center;">Order</th>
+                          <th style="text-align: center;">Subtotal</th>
+                          <th style="text-align: center;">Item Status</th>
+                          <th style="text-align: center;">Actions</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+            </table>
+            <br>
+                <label>Total: <input type="text" style="border: 2px solid black; align: right" name="total_amount" id="total_amount" readonly></label><br>
+                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ModalBill" id="bill_modal">Payment</button>
+            </div>
+        </div>
+        <br><br>
         <div class="card border-success" style="display: inline-block;">
             <div class="card-header">
-                <form name="slip_data" action="<?php echo site_url('barista/get_slipData'); ?>" method="post">
+                <form>
                     <label>Slip No : </label>
                     <input style="width: 50px; border: none; background: transparent;" type="text" name="slip_number" id="slip_number" value="">&nbsp;
                     <label>Table No : </label>

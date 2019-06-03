@@ -13,7 +13,7 @@
       </ul>
       <ul class="navbar-nav mr-auto delius">
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo base_url('barista/billings')?>"><i class="fal fa-tasks"></i> Billings</a>
+            <a class="nav-link" href="<?php echo base_url('barista/billings')?>"><i class="fas fa-cash-register"></i> Billings</a>
           </li>
       </ul>
       <ul class="navbar-nav mr-auto delius">
