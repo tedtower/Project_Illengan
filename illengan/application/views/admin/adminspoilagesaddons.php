@@ -18,12 +18,12 @@
 							<br>
 							<table id="addonTable" class="spoiltable table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
 								<thead>
-									<th>Item Name</th>
-									<th>Category</th>
-									<th>Quantity</th>
-									<th>Date Spoiled</th>
-									<th>Date Recorded</th>
-									<th>Operation</th>
+									<th>ITEM NAME</th>
+									<th>CATEGORY</th>
+									<th>QUANTITY</th>
+									<th>DATE SPOILED</th>
+									<th>DATE RECORDED</th>
+									<th>OPERATION</th>
 									
 								</thead>
 								<tbody id="addon_data">
@@ -253,7 +253,7 @@
         }
         spoilages.forEach(table => {
             $("#addonTable> tbody").append(`
-			<tr data-aoID="${table.aoID}" data-aosID="${table.aosID}" data-spoilname="${table.aoName}">
+			<tr data-aoID="${table.aoID}" data-aosID="${table.aosID}" data-aosQty="${table.aosQty}"  data-aosDate="${table.aosDate}"  data-aosRemarks="${table.aosRemarks}"  >
 				<td><a data-toggle="collapse" href="#collapseExample" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${table.aoName}</td>
                 <td>${table.aoCategory}</td>
                 <td>${table.aosQty}</td>
@@ -268,18 +268,18 @@
                                 data-target="#editSpoil">Edit</button>
                             <!--Delete button-->
                             <button class="item_delete btn btn-danger btn-sm" data-toggle="modal" 
-                            data-target="#deleteSpoilage">Delete</button>                      
+                            data-target="#deleteSpoilage">Archive</button>                      
                         </div>
                     </td>
                 </tr>`);
 
 				var accordion = `
             <tr class="accordion" style="display:none;background: #f9f9f9">
-                <td colspan="5"> <!-- table row ng accordion -->
+                <td colspan="6"> <!-- table row ng accordion -->
                     <div style="overflow:auto;display:none"> <!-- container ng accordion -->
                         
                         <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
-                            <div><b>Remarks:</b> <!-- label-->
+                            <div><b>REMARKS:</b> <!-- label-->
 								<p>
 								${table.aosRemarks == null ? "No Remarks." : table.aosRemarks}
                                 </p>
@@ -294,6 +294,12 @@
 					"data-aoID"));
 				$("#editSpoil").find("input[name='aosID']").val($(this).closest("tr").attr(
 					"data-aosID"));
+				$("#editSpoil").find("input[name='aosQty']").val($(this).closest("tr").attr(
+					"data-aosQty"));
+				$("#editSpoil").find("input[name='aosDate']").val($(this).closest("tr").attr(
+					"data-aosDate"));
+				$("#editSpoil").find("input[name='aosRemarks']").val($(this).closest("tr").attr(
+					"data-aosRemarks"));
             });
             $(".item_delete").last().on('click', function () {
                 $("#deleteSpoilageId").text(
