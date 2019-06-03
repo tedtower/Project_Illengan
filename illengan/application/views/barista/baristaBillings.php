@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <?php include_once('head.php') ?>
+        <?php include_once('templates/head.php') ?>
     </head>
     <body>
-        <?php include_once('navigation.php') ?>
+        <?php include_once('templates/navigation.php') ?>
         <!--End Top Nav-->
         <div id="billModal">
             <h5>Order No : </h5><!-- Order ID -->

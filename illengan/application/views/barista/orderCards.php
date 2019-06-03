@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-       <?php include_once('head.php') ?>
+       <?php include_once('templates/head.php') ?>
     </head>
     <body>
-        <?php include_once('navigation.php') ?>
+        <?php include_once('templates/navigation.php') ?>
     <div class="container" style="overflow: auto; margin-left:0px;">
         <div class="card border-success" style="width:40%; display: inline-block;">
             <div class="card-header">
@@ -133,11 +133,7 @@
         
         <!--END FOR MODAL COMPUTATION-->
 
-    <script type="text/javascript" src="<?php echo base_url().'assets/js/barista/jquery-3.2.1.js'?>"></script>
-    <script type="text/javascript" src="<?php echo base_url().'assets/js/barista/bootstrap.js'?>"></script>
-    <script type="text/javascript" src="<?php echo base_url().'assets/js/barista/jquery.dataTables.js'?>"></script>
-    <script type="text/javascript" src="<?php echo base_url().'assets/js/barista/tables.js'?>"></script>
-
+        <?php include_once('templates/scripts.php') ?>
 
     </body>
 

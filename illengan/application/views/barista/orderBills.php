@@ -2,11 +2,11 @@
 <html>
 
 <head>
-  <?php include_once('head.php') ?>
+  <?php include_once('templates/head.php') ?>
 </head>
 
 <body>
-  <?php include_once('navigation.php') ?>
+  <?php include_once('templates/navigation.php') ?>
   <!--End Top Nav-->
   <div class="content">
     <div class="container-fluid">
@@ -131,7 +131,7 @@
   </div>
   <!--End MODAL for DELETE-->
 
-  <?php include_once('scripts.php') ?>
+  <?php include_once('templates/scripts.php') ?>
 
   <script>
     $(document).ready(function() {
