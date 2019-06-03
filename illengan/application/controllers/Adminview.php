@@ -312,19 +312,6 @@ function viewSpoilagesStock(){
     //         redirect('login');
     //     }
     // }
-
-    function viewAllTransactions(){
-        if($this->checkIfLoggedIn()){
-            $data['title'] = "Transactions - All";
-            $this->load->view('admin/templates/head', $data);
-            $this->load->view('admin/templates/sideNav');
-            // $data['invoices'] = $this->adminmodel->get_allTransactions();
-            // $data['items'] = $this->adminmodel->get_allTransactionsItems();
-            $this->load->view('admin/adminTransactionsAll');
-        }else{
-            redirect('login');
-        }
-    }
     function viewDeliveryTransactions(){
         if($this->checkIfLoggedIn()){
             $data['title'] = "Transactios - Deliveries";
@@ -600,6 +587,19 @@ function viewSpoilagesStock(){
             echo json_encode(array(
                 "sessErr" => true
             ));
+        }
+    }
+
+    function viewTransactions(){
+        if($this->checkIfLoggedIn()){
+            $head['title'] = "Admin Transactions";
+            $this->load->view('admin/templates/head',$head);
+            $this->load->view('admin/templates/sideNav');
+            $data['transactions'] = $this->adminmodel->get_transactions();
+            $data['transitems'] = $this->adminmodel->get_transitems();
+            $this->load->view('admin/adminTransactionsAll',$data);
+        }else{
+            redirect('login');
         }
     }
 

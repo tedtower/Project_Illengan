@@ -13,7 +13,7 @@
                     <div class="container-fluid">
                         <!--Table-->
                         <div class="card-content">
-                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addTransaction"
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addEditTransaction"
                                 data-original-title style="margin:0">Add Purchases/Deliveries</button>
                             <br>
                             <br>
@@ -29,12 +29,15 @@
                                 </thead>
                                 <tbody>
                                     <!--Start of Table row-->
-                                    <tr>
-                                        <td><a href="javascript:void(0)" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a> 12345678</td>
-                                        <td>Pepita</td>
-                                        <td>Purchase Order</td>
-                                        <td>June 2, 2019</td>
-                                        <td>&#8369; 1000</td>
+                                    <?php if($transactions[0] != null){
+                                        foreach($transactions as $transaction){
+                                    ?>
+                                    <tr data-id="<?= $transaction['tID']?>">
+                                        <td><a href="javascript:void(0)" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a><?= $transaction['tNum']?></td>
+                                        <td><?= ucwords($transaction['spName'])?></td>
+                                        <td><?= ucwords($transaction['tType'])?></td>
+                                        <td><?= $transaction['tDate']?></td>
+                                        <td>&#8369; <?=$transaction['tTotal']?></td>
                                         <td>
                                             <button class="editBtn btn btn-sm btn-secondary" data-toggle="modal"
                                                 data-target="#editTransaction">Edit</button>
@@ -48,10 +51,10 @@
                                     <tr class="accordion" style="display:none">
                                         <td colspan="8">
                                             <div class="container" style="display:none">
-                                                <span>Date Recorded:</span>
+                                                <span>Date Recorded: <?= $transaction['dateRecorded'] == null ? "N/A" : $transaction['dateRecorded']?></span>
                                                 <div style="overflow:auto">
-                                                    <span style="float:left;margin-right:1%">Remarks:</span>
-                                                    <p style="float:left"></p>
+                                                    <span style="float:left;margin-right:1%">Remarks: </span>
+                                                    <p style="float:left"><?= $transaction['tRemarks'] == null ? "No remarks" : $transaction['tRemarks']?></p>
                                                     <!--Remarks of Invoice-->
                                                 </div>
                                                 <table class="table">
@@ -67,18 +70,34 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                    <?php foreach($transitems as $transitem){
+                                                        if($transitem['tID'] == $transaction['tID']){?>
+                                                        <tr>
+                                                            <td><?= ucwords($transitem['tiName'])?></td>
+                                                            <td><?= $transitem['tiQty']?></td>
+                                                            <td><?= strtolower($transitem['uomAbbreviation'])?></td>
+                                                            <td><?= number_format($transitem['tiPrice'],2,".",',')?></td>
+                                                            <td><?= number_format($transitem['tiDiscount'],2,".",',')?></td>
+                                                            <td><?= ucwords($transitem['tiStatus'])?></td>
+                                                            <td><?= number_format($transitem['tiSubtotal'],2,".",',')?></td>
+                                                        </tr>
+                                                    <?php }
+                                                    }?>
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </td>
                                     </tr>
+                                    <?php
+                                        }
+                                    }?>
                                     <!--End of Table accordion-->
                                 </tbody>
                             </table>
                             <!--End Table Content-->
 
                             <!--Start of Modal "Add Transaction"-->
-                            <div class="modal fade bd-example-modal-lg" id="addTransaction" tabindex="-1" role="dialog"
+                            <div class="modal fade bd-example-modal-lg" id="addEditTransaction" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
@@ -89,6 +108,7 @@
                                             </button>
                                         </div>
                                         <form accept-charset="utf-8">
+                                            <input type="text" name="tID" hidden="hidden">
                                             <div class="modal-body">
                                                 <div class="form-row">
                                                     <!--Source Name-->
@@ -109,7 +129,7 @@
                                                                 style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">      
                                                                 Type</span>
                                                         </div>
-                                                        <select class="form-control form-control-sm  border-left-0" name="transType">
+                                                        <select class="form-control form-control-sm  border-left-0" name="tType">
                                                             <option value="" selected>Choose</option>
                                                         </select>
                                                     </div>
@@ -124,7 +144,7 @@
                                                                 style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
                                                                 Receipt No.</span>
                                                         </div>
-                                                        <input type="text" class="form-control  border-left-0" name="receiptNum">
+                                                        <input type="text" class="form-control  border-left-0" name="tNum">
                                                     </div>
                                                     <!--Invoice Type-->
                                                     <div class="input-group mb-3 col">
@@ -133,7 +153,7 @@
                                                                 style="width:142px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
                                                                 Transaction Date</span>
                                                         </div>
-                                                        <input type="date" class="form-control  border-left-0" name="transDate">
+                                                        <input type="date" class="form-control  border-left-0" name="tDate">
                                                     </div>
                                                 </div>
                                                  
@@ -144,7 +164,7 @@
                                                                 style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
                                                             Remarks</span>
                                                     </div>
-                                                    <textarea type="text" name="remarks"
+                                                    <textarea type="text" name="tRemarks"
                                                         class="form-control form-control-sm  border-left-0" rows="1"></textarea>
                                                 </div>
 
@@ -154,22 +174,24 @@
                                                 <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#brochure" style="color:white;font-weight:600;background:#0073e6">Add PO Items</a>
                                                 <br><br>
                                                 <!--div containing the different input fields in adding trans items -->
-                                                <div class="container mb-3" style="overflow:auto;width:100%">
+                                                <div class="container mb-3 inputGroup1" style="overflow:auto;width:100%">
                                                     <div style="float:left;width:95%;overflow:auto;">
                                                         <div class="input-group mb-1">
                                                             <input type="text" name="itemName[]" class="form-control form-control-sm" placeholder="Item Name" style="width:305px;"> 
                                                             <input type="number" name="itemQty[]" class="form-control form-control-sm" placeholder="Quantity">
                                                             <input type="number" name="actualQty[]"class="form-control form-control-sm" placeholder="Actual Qty">
-
                                                         </div>
                                                         <div class="input-group">
-                                                            <input type="text" name="itemUnit[]" class="form-control form-control-sm " placeholder="Unit">
-                                                            <input type="text" name="actualUnit[]" class="form-control form-control-sm " placeholder="Actual Unit">
+                                                            <select name="itemUnit[]" class="form-control form-control-sm">
+                                                                <option value="" selected="selected">Unit</option>
+                                                            </select>
+                                                            <select name="actualUnit[]" class="form-control form-control-sm">
+                                                                <option value="" selected="selected">Actual Unit</option>
+                                                            </select>
                                                             <input type="number" name="itemPrice[]" class="form-control form-control-sm " placeholder="Price">
                                                             <input type="number" name="itemSubtotal[]" class="form-control form-control-sm " placeholder="Subtotal">
                                                             <select  name="itemStatus[]"class="form-control form-control-sm ">
                                                                 <option value="" selected>Choose Status</option>
-                                                                <option value="" ></option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -191,121 +213,7 @@
                                 </div>
                             </div>
                             <!--End of Modal "Add Transaction"-->
-                            <!--Start of Modal "Edit Transaction"-->
-                            <div class="modal fade bd-example-modal-lg" id="editTransaction" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
-                                <div class="modal-dialog modal-lg" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Edit Transaction</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <form accept-charset="utf-8">
-                                            <div class="modal-body">
-                                                <div class="form-row">
-                                                    <!--Source Name-->
-                                                    <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text border border-secondary"
-                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
-                                                                Supplier</span>
-                                                        </div>
-                                                        <select class="form-control form-control-sm  border-left-0" name="spID" >
-                                                            <option value="" selected>Choose</option>
-                                                        </select>
-                                                    </div>
-                                                    <!--Invoice Type-->
-                                                    <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text border border-secondary"
-                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">      
-                                                                Type</span>
-                                                        </div>
-                                                        <select class="form-control form-control-sm  border-left-0" name="transType">
-                                                            <option value="" selected>Choose</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-row">
-                                                    <!--Container of supplier and receipt no.-->
-                                                    <!--Receipt Number-->
-                                                    <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">
-                                                        <span class="input-group-text border border-secondary"
-                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
-                                                                Receipt No.</span>
-                                                        </div>
-                                                        <input type="text" class="form-control  border-left-0" name="receiptNum">
-                                                    </div>
-                                                    <!--Invoice Type-->
-                                                    <div class="input-group mb-3 col">
-                                                        <div class="input-group-prepend">
-                                                        <span class="input-group-text border border-secondary"
-                                                                style="width:142px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
-                                                                Transaction Date</span>
-                                                        </div>
-                                                        <input type="date" class="form-control  border-left-0" name="transDate">
-                                                    </div>
-                                                </div>
-                                                 
-                                                <!--Remarks-->
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                    <span class="input-group-text border border-secondary"
-                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
-                                                            Remarks</span>
-                                                    </div>
-                                                    <textarea type="text" name="remarks"
-                                                        class="form-control form-control-sm  border-left-0" rows="1"></textarea>
-                                                </div>
-
-                                                <!--Transaction Items-->
-                                                <a class="btn btn-primary btn-sm" data-original-title style="margin:0;color:white;font-weight:600;background:#0073e6">Add Items</a>
-                                                <!--Transaction PO Items-->
-                                                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#brochure" style="color:white;font-weight:600;background:#0073e6">Add PO Items</a>
-                                                <br><br>
-                                                <!--div containing the different input fields in adding trans items -->
-                                                <div class="container mb-3" style="overflow:auto;width:100%">
-                                                    <div style="float:left;width:95%;overflow:auto;">
-                                                        <div class="input-group mb-1">
-                                                            <input type="text" name="itemName[]" class="form-control form-control-sm" placeholder="Item Name" style="width:305px;"> 
-                                                            <input type="number" name="itemQty[]" class="form-control form-control-sm" placeholder="Quantity">
-                                                            <input type="number" name="actualQty[]"class="form-control form-control-sm" placeholder="Actual Qty">
-
-                                                        </div>
-                                                        <div class="input-group">
-                                                            <input type="text" name="itemUnit[]" class="form-control form-control-sm " placeholder="Unit">
-                                                            <input type="text" name="actualUnit[]" class="form-control form-control-sm " placeholder="Actual Unit">
-                                                            <input type="number" name="itemPrice[]" class="form-control form-control-sm " placeholder="Price">
-                                                            <input type="number" name="itemSubtotal[]" class="form-control form-control-sm " placeholder="Subtotal">
-                                                            <select  name="itemStatus[]"class="form-control form-control-sm ">
-                                                                <option value="" selected>Choose Status</option>
-                                                                <option value="" ></option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="mt-4" style="float:left:width:3%;overflow:auto;">
-                                                        <img class="exitBtn" id="exitBtn"src="/assets/media/admin/error.png" style="width:20px;height:20px;float:right;">
-                                                    </div>
-                                                </div>
-                                                <span>Total: &#8369;<span class="total">0</span></span>
-                                                <!--Total of the trans items-->
-
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                                    <button class="btn btn-success btn-sm" type="submit">Update</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--End of Modal "Edit Transaction"-->
-
+                            
                             <!--Start of Brochure Modal"-->
                             <div class="modal fade bd-example-modal-lg" id="brochure" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background:rgba(0, 0, 0, 0.3)">
                                 <div class="modal-dialog modal-lg" role="document">
@@ -417,4 +325,17 @@
 </div>
 </div>
 <?php include_once('templates/scripts.php') ?>
+<script>
+    $(function(){
+        $(".accordionBtn").on('click',function(){
+            if($(this).closest('tr').next('.accordion').css('display') === 'none'){
+                $(this).closest('tr').next('.accordion').slideDown();
+                $(this).closest('tr').next('.accordion').find('div').slideDown();
+            }else{
+                $(this).closest('tr').next('.accordion').find('div').slideUp();
+                $(this).closest('tr').next('.accordion').slideUp();
+            }
+        });
+    });
+</script>
 </body>

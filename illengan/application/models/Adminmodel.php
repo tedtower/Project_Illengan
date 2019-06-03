@@ -1126,7 +1126,8 @@ class Adminmodel extends CI_Model{
             dateRecorded,
             spID,
             spName,
-            SUM(tiSubtotal) AS tTotal
+            SUM(tiSubtotal) AS tTotal,
+            tRemarks
         FROM
             (
                 transactions
