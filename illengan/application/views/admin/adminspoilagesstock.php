@@ -17,13 +17,13 @@
 							<!--eND Add Stock Spoilage BUTTON-->
 							<br>
 							<table id="spoilagesTable" class="spoiltable table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
-								<thead class="thead-dark">
-									<th>Item Name</th>
-									<th>Quantity</th>
-									<th>Date Spoiled</th>
-									<th>Date Recorded</th>
-									<th>Storage</th>
-									<th>Operation</th>
+								<thead class="thead-dark" >
+									<th>ITEM NAME</th>
+									<th>QUANTITY</th>
+									<th>DATE SPOILED</th>
+									<th>DATE RECORDED</th>
+									<th>STORAGE</th>
+									<th>OPERATION</th>
 								
 								</thead>
 								<tbody id="spoilage_data">
@@ -261,8 +261,8 @@
         }
         spoilages.forEach(table => {
             $("#spoilagesTable> tbody").append(`
-			<tr data-stID="${table.stID}" data-ssID="${table.ssID}" data-spoilname="${table.stName}" data-stQty="${table.stQty}" data-curSsQty="${table.ssQty}">
-			<td><a data-toggle="collapse" href="#collapseExample" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${table.stName}</td>
+			<tr id="spoilagesTabletr"  data-stID="${table.stID}" data-ssID="${table.ssID}" data-spoilname="${table.stName}" data-stQty="${table.stQty}" data-curSsQty="${table.ssQty}">
+				<td><a data-toggle="collapse" href="#collapseExample" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${table.stName}</td>
                 <td>${table.ssQty}</td>
 				<td>${table.ssDate}</td>
 				<td>${table.ssDateRecorded}</td>
@@ -276,18 +276,18 @@
                                 data-target="#editSpoil">Edit</button>
                             <!--Delete button-->
                             <button class="item_delete btn btn-danger btn-sm" data-toggle="modal" 
-                            data-target="#deleteSpoilage">Delete</button>                      
+                            data-target="#deleteSpoilage">Archive</button>                      
                         </div>
                     </td>
 				</tr>`);
 
 			var accordion = `
             <tr class="accordion" style="display:none;background: #f9f9f9">
-                <td colspan="5"> <!-- table row ng accordion -->
+                <td colspan="6"> <!-- table row ng accordion -->
                     <div style="overflow:auto;display:none"> <!-- container ng accordion -->
                         
                         <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
-                            <div><b>Remarks:</b> <!-- label-->
+                            <div><b>REMARKS:</b><!-- label-->
 								<p>
 								${table.ssRemarks == null ? "No Remarks." : table.ssRemarks}
                                 </p>
@@ -331,6 +331,22 @@
 	}
 	//END OF POPULATING TABLE
 	//-------------------------Function for Edit-------------------------------
+	var tuples = document.getElementById('spoilagesTabletr');
+        var tupleNo = tuples.length;
+		console.log(tupleNo);
+        var editButtons = document.getElementsByName('editSpoil');
+        var editModal = document.getElementById('editSpoil');
+        for (var x = 0; x < tupleNo; x++) {
+            editButtons[x].addEventListener("click", showEditModal);
+        }
+
+        function showEditModal(event) {
+            var row = event.target.parentElement.parentElement;
+            document.getElementById('ssQtyUpdate').value = row.firstElementChild.nextElementSibling.innerHTML;
+            document.getElementById('ssDate').value = row.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+            document.getElementById('ssRemarks').value = row.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
+        }
+
 	$(document).ready(function() {
     $("#editSpoil form").on('submit', function(event) {
 		event.preventDefault();

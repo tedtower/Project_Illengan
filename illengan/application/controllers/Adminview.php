@@ -233,7 +233,8 @@ function viewSpoilagesStock(){
     }
     function viewSpoilagesMenu(){
         if($this->checkIfLoggedIn()){
-            $this->load->view('admin/templates/head');
+            $data['title'] = "Spoilages - Menu";
+            $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminspoilagesmenu');
             $this->load->view('admin/templates/footer');
@@ -255,7 +256,8 @@ function viewSpoilagesStock(){
     }
     function viewSpoilagesAddons(){
         if($this->checkIfLoggedIn()){
-            $this->load->view('admin/templates/head');
+            $data['title'] = "Spoilages - Addons";
+            $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminspoilagesaddons');
             $this->load->view('admin/templates/footer');

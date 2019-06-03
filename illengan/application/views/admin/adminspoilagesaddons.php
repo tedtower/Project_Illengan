@@ -18,12 +18,12 @@
 							<br>
 							<table id="addonTable" class="spoiltable table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
 								<thead>
-									<th>Item Name</th>
-									<th>Category</th>
-									<th>Quantity</th>
-									<th>Date Spoiled</th>
-									<th>Date Recorded</th>
-									<th>Operation</th>
+									<th>ITEM NAME</th>
+									<th>CATEGORY</th>
+									<th>QUANTITY</th>
+									<th>DATE SPOILED</th>
+									<th>DATE RECORDED</th>
+									<th>OPERATION</th>
 									
 								</thead>
 								<tbody id="addon_data">
@@ -268,18 +268,18 @@
                                 data-target="#editSpoil">Edit</button>
                             <!--Delete button-->
                             <button class="item_delete btn btn-danger btn-sm" data-toggle="modal" 
-                            data-target="#deleteSpoilage">Delete</button>                      
+                            data-target="#deleteSpoilage">Archive</button>                      
                         </div>
                     </td>
                 </tr>`);
 
 				var accordion = `
             <tr class="accordion" style="display:none;background: #f9f9f9">
-                <td colspan="5"> <!-- table row ng accordion -->
+                <td colspan="6"> <!-- table row ng accordion -->
                     <div style="overflow:auto;display:none"> <!-- container ng accordion -->
                         
                         <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
-                            <div><b>Remarks:</b> <!-- label-->
+                            <div><b>REMARKS:</b> <!-- label-->
 								<p>
 								${table.aosRemarks == null ? "No Remarks." : table.aosRemarks}
                                 </p>
