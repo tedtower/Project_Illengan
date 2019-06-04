@@ -116,7 +116,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger btn-sm"
                                                 data-dismiss="modal">Cancel</button>
-                                            <button class="btn btn-success btn-sm" onclick="addSales()" type="submit">Add</button>
+                                            <button class="btn btn-success btn-sm" onclick="addSales()" type="button">Add</button>
                                         </div>
                                     </div>
                                 </form>

@@ -167,14 +167,47 @@ class Adminmodel extends CI_Model{
             return false;
         }
      }
+     function add_salesOrder($tableCode, $custName, $osTotal, $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons) {
+        $query = "insert into orderslips (osID, tableCode, custName, osTotal, payStatus, 
+        osDateTime, osPayDateTime, osDateRecorded) values (NULL,?,?,?,?,?,?,?);";
+        if($this->db->query($query,array($tableCode, $custName, $osTotal, 'paid', $osDateTime, $osPayDateTime, $osDateRecorded))) {
+            $this->add_salesList($this->db->insert_id(), $orderlists, $addons);
+            }
+        }
 
+    function add_salesList($osID, $orderlists, $addons) {
+        $query = "insert into orderlists (olID, prID, osID, olDesc, olQty, 
+        olSubtotal, olStatus, olRemarks) values (NULL,?,?,?,?,?,?,?);";
+        if(count($orderlists) > 0){
+             for($in = 0; $in < count($orderlists) ; $in++){
+              if($this->db->query($query, array($orderlists[$in]['prID'], $osID, $orderlists[$in]['olDesc'], 
+              $orderlists[$in]['olQty'], $orderlists[$in]['olSubtotal'],'served', ' '))) {
+                if(count($addons) > 0) {
+                    $this->add_salesAddons($this->db->insert_id(), $orderlists[$in]['prID'], $addons);
+                }
+              }
+        }
+    }   else {
+        return false;
+    }
+    }
+    function add_salesAddons($olID, $olprID, $addons) {
+        $query = "INSERT INTO orderaddons (aoID, olID, aoQty, aoTotal) VALUES (?, ?, ?, ?);";
+          for($in = 0; $in < count($addons); $in++){
+            if($olprID == $addons[$in]['prID']) {
+            $this->db->query($query, array($addons[$in]['aoID'], $olID, $addons[$in]['aoQty'], 
+                  $addons[$in]['aoTotal']));
+            }
+    }
+
+    }
     function add_PurchaseOrder($poDate,$edDate,$poTotal,$poDateRecorded,$poStatus, $poRemarks, $spID, $merchandise){
         $query = "insert into purchaseorder (poID, poDate, edDate, poTotal, poDateRecorded, poStatus, 
         poRemarks, spID) values (NULL,?,?,?,?,?,?,?);";
         if($this->db->query($query,array($poDate,$edDate,$poTotal,$poDateRecorded,$poStatus, $poRemarks, $spID))) {
             $this->add_poItems($this->db->insert_id(), $merchandise);
             return true;
-            }
+        }
     }
     function add_poItems($poID, $merchandise) {
         $query = "insert into poitems (poiID, vID, poID, poiName, poiQty, poiUnit, poiPrice, poiStatus) values
@@ -307,6 +340,49 @@ class Adminmodel extends CI_Model{
     }
     // UPDATE FUNCTIONS-------------------------------------------------------------
 
+    
+    function edit_sales($osID, $tableCodes, $custName, $osTotal, $payStatus, 
+    $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons) {
+        $query = "UPDATE orderslips SET tableCode = ?, custName = ?, osTotal = ?, 
+        osDateTime = ?, osPayDateTime = ? WHERE orderslips.osID = ?;";
+        if($this->db->query($query, array($tableCodes, $custName, $osTotal, $osDateTime, $osPayDateTime, $osID))) {
+            for($i = 0; $i < count($orderlists); $i++) {
+                if($orderlists[$i]['olID'] != null) {
+                    $orlist = array(
+                        'olID' => $orderlists[$i]['olID'],
+                        'prID' => $orderlists[$i]['prID'],
+                        'osID' => $orderlists[$i]['osID'],
+                        'olDesc' => $orderlists[$i]['olDesc'],
+                        'olQty' => $orderlists[$i]['olQty'],
+                        'olSubtotal' => $orderlists[$i]['olSubtotal'],
+                        'olStatus' => $orderlists[$i]['olStatus'],
+                        'olRemarks' => $orderlists[$i]['olRemarks']
+                    );
+                    $this->edit_salesorders($orlist, $addons);
+                } else {
+                    $orderlists = array();
+                    $olist = array(
+                        'prID' => $orderlists[$i]['prID'],
+                        'osID' => $orderlists[$i]['osID'],
+                        'olDesc' => $orderlists[$i]['olDesc'],
+                        'olQty' => $orderlists[$i]['olQty'],
+                        'olSubtotal' => $orderlists[$i]['olSubtotal'],
+                        'olStatus' => $orderlists[$i]['olStatus'],
+                        'olRemarks' => $orderlists[$i]['olRemarks']
+                    );
+                    array_push($orderlists, $olist);
+                    $this->add_salesList($osID, $orderlists, $addons);
+                } }   
+        }
+    }
+
+    function edit_salesorders($orlist, $addons) {
+        $query = "UPDATE orderlists SET prID = ?, osID = ?, olDesc = ?, 
+        olQty = ?, olSubtotal = ? WHERE orderlists.olID = ?;";
+        $this->db->query($query, array($orlist['prID'], $orlist['osID'], $orlist['olDesc'], 
+        $orlist['olQty'], $orlist['olSubtotal'], $orlist['olID'])); 
+        
+    }
     function change_aPassword($new_password, $aID){
         $query = "Update accounts set aPassword = ?  where aID = ? ";
         return $this->db->query($query,array($new_password, $aID));  
@@ -934,46 +1010,7 @@ class Adminmodel extends CI_Model{
     function add_source($data){
         $this->db->insert("sources", $data);
     }
-    function add_salesOrder($tableCode, $custName, $osTotal, $osDate, $osPayDate, $osDateRecorded, $orderlists, $addons) {
-        $query = "insert into orderslips (osID, tableCode, custName, osTotal, payStatus, 
-        osDate, osPayDate, osDateRecorded) values (NULL,?,?,?,?,?,?,?);";
-        if($this->db->query($query,array($tableCode, $custName, $osTotal, 'paid', $osDate, $osPayDate, $osDateRecorded))) {
-            $this->add_salesList($this->db->insert_id(), $orderlists, $addons);
-            return true;
-            }
-        }
 
-    function add_salesList($osID, $orderlists, $addons) {
-        $query = "insert into orderlists (olID, prID, osID, olDesc, olQty, 
-        olSubtotal, olStatus, olRemarks) values (NULL,?,?,?,?,?,?,?);";
-        if(count($orderlists) > 0){
-             for($in = 0; $in < count($orderlists) ; $in++){
-              if($this->db->query($query, array($orderlists[$in]['prID'], $osID, $orderlists[$in]['olDesc'], 
-              $orderlists[$in]['olQty'], $orderlists[$in]['olSubtotal'],'served', ' '))) {
-                $this->add_salesAddons($this->db->insert_id(), $orderlists[$in]['prID'], $addons);
-                return true;
-              }
-        }
-    }   else {
-        return false;
-    }
-    }
-
-    function add_salesAddons($olID, $olprID, $addons) {
-        $query = "INSERT INTO orderaddons (aoID, olID, aoQty, aoTotal) VALUES (?, ?, ?, ?);";
-        if(count($addons) > 0){
-          for($in = 0; $in < count($addons) ; $in++){
-            if($olprID === $addons[$in]['prID']) {
-            $this->db->query($query, array($addons[$in]['aoID'], $olID, $addons[$in]['aoQty'], 
-                  $addons[$in]['aoTotal']));
-
-            }
-        }
-    }   else {
-        return false;
-    }
-
-    }
     // function add_poItems($poID, $merchandise) {
     //     $query = "insert into poitems (poiID, vID, poID, poiName, poiQty, poiUnit, poiPrice, poiStatus) values
     //     (NULL,?,?,?,?,?,?,?)";

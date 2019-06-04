@@ -42,8 +42,7 @@ function getSelectedMenu() {
                         } else {
                             $('.editsalesTable > tbody').append(merchChecked);
                         }
-    
-    
+
                         setSubtotal();
                     }
                 });
@@ -167,8 +166,6 @@ function setSubtotal() {
             console.log('no addons');
         }
 
-       
-        
         if ($('#addSales').is(':visible')) {
             $('#total').text(total);
         } else {
@@ -223,7 +220,6 @@ function addSales() {
             'aoQty': aoQty,
             'aoTotal': aoTotal
         }
-
         addons.push(addonItems);
         
         }
