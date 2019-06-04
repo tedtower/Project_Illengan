@@ -1228,29 +1228,37 @@ class Adminmodel extends CI_Model{
         }
     } 
 
-    function add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks, $total, $transitems, $transID=null){
+    function add_transaction($id, $supplier, $receipt, $date, $type, $dateRecorded, $remarks, $transitems){
         $query = "";
-        $invoiceSuccess = false;
-        if($transID == null){
-            $query = "INSERT INTO invoice (spID, iDate, iDateRecorded, iNumber, iTotal, iRemarks, iType, resolvedStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-            $invoiceSuccess = $this->db->query($query, array($spID, $transDate, $dateRecorded, $receiptNum, $total, $remarks, $transType, $resStatus));
+        $insertSuccess = false;
+        if($id == null){
+            $query = "INSERT INTO `transactions`(
+                `tID`,
+                `spID`,
+                `tNum`,
+                `tDate`,
+                `tType`,
+                `dateRecorded`,
+                `tRemarks`
+            )
+            VALUES(NULL, ?, ?, ?, ?, ?, ?);";
+            $insertSuccess = $this->db->query($query, 
+            array($supplier, $receipt, $date, $type, $dateRecorded, $remarks));
+            $id = $this->db->insert_id();
         }else{
-            $query = "UPDATE invoice 
+            $query = "UPDATE transactions 
                 SET 
-                    spID = '',
-                    iDate = '',
-                    iDateRecorded = '',
-                    iNumber = '',
-                    iTotal = '',
-                    iRemarks = '',
-                    iType = '',
-                    resolvedStatus = ''
+                    spID = ?,
+                    tNum = ?,
+                    tDate = ?,
+                    tType = ?,
+                    dateRecorded = ?,
+                    tRemarks = ?
                 WHERE
-                    transID = '';";
-            $invoiceSuccess = $this->db->query($query, array($spID, $transDate, $dateRecorded, $receiptNumber, $total, $remarks, $transType, $resStatus, $transID));
+                    tID = '?;";
+            $insertSuccess = $this->db->query($query, array($supplier, $receipt, $date, $type, $dateRecorded, $remarks, $id));
         }
-        $id = $this->db->insert_id();
-        if($invoiceSuccess){
+        if($insertSuccess){
             $indexes = [];
             $count = 0;
             foreach($transitems as $item){
@@ -1259,7 +1267,7 @@ class Adminmodel extends CI_Model{
                 }
                 $count++;
             }
-            echo json_encode(array("erredQ" =>$indexes, "data"=> $transitems));
+            // echo json_encode(array("erredQ" =>$indexes, "data"=> $transitems));
             return true;
         }
         return false;
@@ -1268,40 +1276,90 @@ class Adminmodel extends CI_Model{
         $query = "";
         if($item['itemID'] == null){
             $query = "INSERT INTO `invoiceitems`(
-                `vID`,
-                `iID`,
-                `iName`,
-                `iQty`,
-                `iPrice`,
-                `iUnit`,
-                `iSubTotal`
+                tiID,
+                uomID,
+                stID,
+                tiName,
+                tiPrice,
+                tiDiscount,
+                tiStatus
             )
-            VALUES(
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?
-            );";
-            $this->db->query($query, array($item['varID'],$id,$item['itemName'],$item['itemQty'],$item['itemPrice'],$item['itemUnit'],$item['subtotal']));
+            VALUES(NULL, ?, ?, ?, ?, ?, ?);";
+            $this->db->query($query, 
+            array($item['tiID'],$item['tiUnit'],$item['stID'],$item['tiName'],$item['tiPrice'],$item['tiDiscount'],$item['tiStatus']));
+            $itemID = $this->db->insert_id();
+            $this->add_trans_item($itemID, $id, $item['tiQty'], $item['tiSubtotal'], $item['stQty']);
         }else{
-            $query = "UPDATE invoiceitems 
+            $query = "UPDATE transitems 
             SET 
-                vID = ?,
-                iID = ?,
-                iName = ?,
-                iQty = ?,
-                iPrice = ?,
-                iUnit = ?,
-                iSubtotal = ?
+                uomID = ?,
+                stID = ?,
+                tiName = ?,
+                tiPrice = ?,
+                tiDiscount = ?,
+                tiStatus = ?
             WHERE
-                iItemID = ?;";
-            $this->db->query($query,array($item['varID'],$id,$item['itemName'],$item['itemQty'],$item['itemPrice'],$item['itemUnit'],$item['subtotal'],$item['itemID']));
+                tiID = ?;";
+            $this->db->query($query,
+            array($item['tiUnit'],$item['stID'],$item['tiName'],$item['tiPrice'],$item['tiDiscount'],$item['tiStatus'],$item['tiID']));
+            $trans_itemsResult = $this->db->query('SELECT
+                tiID,
+                tID
+            FROM
+                trans_items
+            WHERE
+                tiID = ? AND tID = ?;', array($item['tiID'], $id));
+            if($trans_itemsResult->num_rows() === 1){
+                $this->db->query('UPDATE trans_items
+                SET
+                    tiQty,
+                    tiSubtotal,
+                    tiActualQty
+                WHERE
+                    tiID = ? and tID = ?',array($item['tiID'], $id));
+            }else{
+                $this->add_trans_item($item['tiID'], $id, $item['tiQty'], $item['tiSubtotal'], $item['stQty']);
+            }
         }
         return;
     }
+
+    function add_trans_item($tiID, $tID, $tiQty, $tiSubtotal, $tiActualQty){
+        $query = "INSERT INTO trans_item (
+            tiID,
+            tID,
+            tiQty,
+            tiSubtotal,
+            tiActualQty
+        )
+        VALUES(?, ?, ?, ?, ?);";
+        $this->db->query($query, array($tiID, $tID, $tiQty, $tiSubtotal, $tiActualQty));
+    }
+
+    function add_stockLog($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks){
+        $query = "INSERT INTO `stocklog`(
+            `slID`,
+            `stID`,
+            `tID`,
+            `slType`,
+            `slDateTime`,
+            `dateRecorded`,
+            `slQty`,
+            `slRemarks`
+        )
+        VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
+        return $this->db->query($query, array($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks));
+    }
+
+    function add_stockQty($stID, $stQty){
+        $query = "UPDATE stockitems
+        SET
+            stQty = stQty + ?
+        WHERE
+            stID = ?";
+        return $this->db->query($query, array($stQty, $stID));
+    }
+
 }
 
 ?>
