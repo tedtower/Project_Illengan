@@ -5,7 +5,7 @@
   <?php include_once('templates/head.php') ?>
 </head>
 
-<body>
+<body style="background:white">
   <?php include_once('templates/navigation.php') ?>
   <!--End Top Nav-->
   <div class="content">
@@ -13,9 +13,9 @@
       <br>
       <p style="text-align:right; font-weight: regular; font-size: 16px">
         <!-- Real Time Date & Time -->
-        <?php echo date("M j, Y -l"); ?>
+        <?php echo date("M j, Y - l"); ?>
       </p>
-      <div class="content" style="margin-left:250px;">
+      <div class="content" style="margin-left:auto;">
         <div class="conteiner-fluid">
           <!--Start Table-->
           <div class="card-content">
@@ -113,7 +113,7 @@
         <form id="confirmDelete">
           <div class="modal-body">
             <h6 id="deleteTableCode"></h6>
-            <p>Remove orderslip?</p>
+            <p style="text-align:center;">Are you sure to remove the selected orderslip?</p>
             <input type="text" name="" hidden="hidden">
             <div>
               Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm">

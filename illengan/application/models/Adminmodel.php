@@ -690,6 +690,10 @@ class Adminmodel extends CI_Model{
         $query = "Select * from supplier order by spName";
         return $this->db->query($query)->result_array();
     }
+    function get_supplierNames(){
+        $query = "Select spID, spName from supplier order by spName";
+        return $this->db->query($query)->result_array();
+    }
     function get_suppliermerch(){
         $query = "SELECT *, CONCAT(spmDesc,' ',stName,' ',vUnit,' ','(',vSize,')') as merchandise, CONCAT(stName,' ',vUnit,' ','(',vSize,')') as stockvariance  from supplier natural join suppliermerchandise natural join variance natural join stockitems";
         return $this->db->query($query)->result_array();
@@ -1116,6 +1120,17 @@ class Adminmodel extends CI_Model{
             stID = ?;";
         return $this->db->query($query, array($id))->result_array();
     }
+    function get_stockItemNames(){
+        $query = "SELECT
+            stID,
+            stName,
+            uomID,
+            uomAbbreviation
+        FROM
+            stockitems
+        LEFT JOIN uom USING(uomID);";
+        return $this->db->query($query)->result_array();
+    }
 
     function get_transactions(){
         $query = "SELECT
@@ -1126,7 +1141,8 @@ class Adminmodel extends CI_Model{
             dateRecorded,
             spID,
             spName,
-            SUM(tiSubtotal) AS tTotal
+            SUM(tiSubtotal) AS tTotal,
+            tRemarks
         FROM
             (
                 transactions
@@ -1137,30 +1153,80 @@ class Adminmodel extends CI_Model{
             tID;";
         return $this->db->query($query)->result_array();
     }
-    
-    function get_transitems(){
+    function get_transaction($id){
         $query = "SELECT
             tID,
-            tiID,
-            tiName,
-            tiQty,
-            uomID,
-            uomAbbreviation,
-            tiPrice,
-            tiDiscount,
-            tiSubtotal,
-            tiStatus
+            tNum,
+            tType,
+            tDate,
+            dateRecorded,
+            spID,
+            spName,
+            SUM(tiSubtotal) AS tTotal,
+            tRemarks
         FROM
             (
-                (
-                    transitems
-                LEFT JOIN uom USING(uomID)
-                )
-            LEFT JOIN trans_items USING(tiID)
+                transactions
+            LEFT JOIN trans_items USING(tID)
             )
-        LEFT JOIN transactions USING(tID)";
-        return $this->db->query($query)->result_array();
+        LEFT JOIN supplier USING(spID)
+        GROUP BY
+            tID
+        WHERE 
+            tID = ?;";
+        return $this->db->query($query, arrray($id))->result_array();
     }
+    function get_transitems($id=null){
+        if($id!= null){
+            $query = "SELECT
+                tID,
+                tiID,
+                tiName,
+                tiQty,
+                tiActualQty,
+                uomID,
+                uomAbbreviation,
+                tiPrice,
+                tiDiscount,
+                tiSubtotal,
+                tiStatus
+            FROM
+                (
+                    (
+                        transitems
+                    LEFT JOIN uom USING(uomID)
+                    )
+                LEFT JOIN trans_items USING(tiID)
+                )
+            LEFT JOIN transactions USING(tID)";
+            return $this->db->query($query)->result_array();
+        }else{
+            $query = "SELECT
+                tID,
+                tiID,
+                tiName,
+                tiQty,
+                tiActualQty,
+                uomID,
+                uomAbbreviation,
+                tiPrice,
+                tiDiscount,
+                tiSubtotal,
+                tiStatus
+            FROM
+                (
+                    (
+                        transitems
+                    LEFT JOIN uom USING(uomID)
+                    )
+                LEFT JOIN trans_items USING(tiID)
+                )
+            LEFT JOIN transactions USING(tID)
+            WHERE
+                tID = ?;";
+            return $this->db->query($query,array($id))->result_array();
+        }
+    } 
 
     function add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks, $total, $transitems, $transID=null){
         $query = "";

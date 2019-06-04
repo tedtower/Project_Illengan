@@ -20,7 +20,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </head>
 <body>
-
   <br>
   <div class="container"><br>
   <button class="btn btn-link btn-sm" onClick="window.location.href = '<?php echo base_url();?>customer/processCheckIn';return false;">Add Order</button>
