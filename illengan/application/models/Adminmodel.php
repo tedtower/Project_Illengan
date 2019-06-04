@@ -3,18 +3,9 @@ class Adminmodel extends CI_Model{
     
     private $err = array('Username does not exist!', 'Incorrect password');
 
-    function __construct(){
-        parent:: __construct();
-        $this->infoDB = $this->load->database('information',true);
-    }
-
     //INSERT FUNCTIONS----------------------------------------------------------------
     function add_accounts($data){
         $this->db->insert('accounts',$data);
-    }
-    function add_addon($aoName, $aoPrice, $aoCategory, $aoStatus){
-        $query = "INSERT into addons (aoName, aoPrice, aoCategory, aoStatus) values (?,?,?,?)";
-        return $this->db->query($query,array($aoName, $aoPrice, $aoCategory, $aoStatus));
     }
     function add_aospoil($date_recorded,$addons){
         $query = "insert into aospoil (aosID,aosDateRecorded) values (NULL,?)";
@@ -55,21 +46,21 @@ class Adminmodel extends CI_Model{
         }
     }
     function add_varspoilitems($ssID,$stocks){
-        $query = "insert into spoiledstock (ssID,stID,ssQty,ssDate,ssRemarks) values (?,?,?,?,?)";
+        $query = "insert into varspoilitems (ssID,vID,ssQty,ssDate,ssRemarks) values (?,?,?,?,?)";
             if(count($stocks) > 0){
                 for($in = 0; $in < count($stocks) ; $in++){
-                   $this->db->query($query, array($ssID, $stocks[$in]['stID'], $stocks[$in]['ssQty'], $stocks[$in]['ssDate'],$stocks[$in]['ssRemarks']));  
-                   $this->destockvarItems($stocks[$in]['stID'],$stocks[$in]['curQty'],$stocks[$in]['ssQty']);    
+                   $this->db->query($query, array($ssID, $stocks[$in]['vID'], $stocks[$in]['ssQty'], $stocks[$in]['ssDate'],$stocks[$in]['ssRemarks']));  
+                   $this->destockvarItems($stocks[$in]['vID'],$stocks[$in]['curQty'],$stocks[$in]['ssQty']);    
                 }    
             }
     }
-    function destockvarItems($stID,$curQty,$ssQty){
-        $query = "UPDATE stockitems 
+    function destockvarItems($vID,$curQty,$ssQty){
+        $query = "UPDATE variance 
         SET 
-            stQty = ? - ?
+            vQty = ? - ?
         WHERE
-            stID = ?;";
-        return $this->db->query($query,array($curQty,$ssQty,$stID));
+            vID = ?;";
+        return $this->db->query($query,array($curQty,$ssQty,$vID));
     }
     function add_menucategory($ctName){
         $query = "Insert into categories (ctName, ctType) values (?,'menu')";
@@ -87,42 +78,29 @@ class Adminmodel extends CI_Model{
         $query = "Insert into categories (ctName, supcatID, ctType) values (?,?,'inventory')";
         return $this->db->query($query,array($ctName,$supcatID));
     }
-    function add_stockItem($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, $stockBqty, $stockLocation,$stockSize){
-        $query = "INSERT INTO `stockitems`(
-                `stID`,
-                `ctID`,
-                `uomID`,
-                `stName`,
-                `stQty`,
-                `stMin`,
-                `stType`,
-                `stStatus`,
-                `stBqty`,
-                `stLocation`,
-                `stSize`
-            )
-            VALUES(
-                NULL,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?
-            );";
-        if($this->db->query($query,array($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, $stockBqty, $stockLocation,$stockSize))){
+    function add_stockItem($stockName,$stockType,$stockCategory,$stockStatus,$stockVariance){
+        $query = "Insert into stockitems (stID,stName,stType,ctID,stStatus) values (NULL,?,?,?,?)";
+        if($this->db->query($query,array($stockName,$stockType,$stockCategory,$stockStatus))){
+            $this->add_stockVariances($this->db->insert_id(), $stockVariance);
             return true;
         }
         return false;
     }
-    function add_table($tableCode){
-        $query = "INSERT INTO TABLES(tableCode)
-        VALUES(?);";
-        return $this->db->query($query, array($tableCode));
+    function add_stockVariances($stockID,$stockVariance){
+        $query = "Insert into variance (stID, vUnit, vQty, vMin, vSize, vStatus, bQty) values (?,?,?,?,?,?,?)";
+        if(count($stockVariance) > 0){
+            for($index = 0; $index < count($stockVariance) ; $index++){
+                $this->db->query($query, array($stockID, $stockVariance[$index]['varUnit'],$stockVariance[$index]['varQty'],$stockVariance[$index]['varMin'],$stockVariance[$index]['varSize'],$stockVariance[$index]['varStatus'],0));
+            }
+        }
+    }
+    function add_stockVariance($stockID,$stockVariance){
+        $query = "Insert into variance (stID, vUnit, vQty, vMin, vSize, vStatus, bQty) values (?,?,?,?,?,?,?)";
+        return $this->db->query($query, array($stockID, $stockVariance['varUnit'],$stockVariance['varQty'],$stockVariance['varMin'],$stockVariance['varSize'],$stockVariance['varStatus'],0));
+    }
+    function add_table($table_code){
+        $query = "Insert into tables (table_code) values (?);";
+        return $this->db->query($query, array($table_code));
     }
     function add_promo($pmName, $pmStartDate, $pmEndDate, $fbName, $isElective, $prID, $pcType, $pcQty, $prIDfb, $fbQty){
         $query = "insert into promos (pmID, pmName, pmStartDate, pmEndDate) values (NULL,?,?,?)";
@@ -160,36 +138,29 @@ class Adminmodel extends CI_Model{
         $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
     }
 
-    function add_menu($mName, $mDesc, $category, $status,$preference,$addon){
-        $query = "INSERT into menu (mName, mDesc, ctID, mAvailability) values (?,?,?,?);";
-        if($this->db->query($query,array($mName, $mDesc, $category, $status))){
-            $mID = $this->db->insert_id();
-            $this->add_preference($mID, $preference);
-            $this->add_menuaddon($mID, $addon);
+    function add_menu($image, $mName, $mDesc, $category, $status, $preference, $addon){
+        $query = "INSERT into menu (mImage, mName, mDesc, ctID, mAvailability) values (?,?,?,?,?);";
+        if($this->db->query($query,array($image, $mName, $mDesc, $category, $status))){
+            $this->add_preference($this->db->insert_id(), $preference);
+            $this->add_addon($this->db->insert_id(), $addon);
             return true;
         }
-    }
-
-    function add_image($image, $mID){
-        $query = "UPDATE menu set mImage = ? where mID = ?";
-        return $this->db->query($query,array($image, $mID));
     }
 
     function add_preference($mID, $preference){
        $query = "INSERT into preferences (mID, prName, mTemp, prPrice, prStatus) values (?,?,?,?,?)";
        if(count($preference) > 0){
-           for($n = 0; $n < count($preference) ; $n++){
+           for($n = 0; $n < count(preference) ; $n++){
                $this->db->query($query, array($mID, $preference[$n]['prName'], $preference[$n]['mTemp'], $preference[$n]['prPrice'], $preference[$n]['prStatus']));
            }
        } else{
            return false;
        }
     }
-
-    function add_menuaddon($mID, $addon){
+    function add_addon($mID, $addon){
         $query = "INSERT into menuaddons (mID, aoID) values (?,?)";
         if(count($addon) > 0){
-            for($n = 0; $n < count($addon) ; $n++){
+            for($n = 0; $n < count(addon) ; $n++){
                 $this->db->query($query, array($mID, $addon[$n]['aoID']));
             }
         } else{
@@ -341,53 +312,33 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query,array($new_password, $aID));  
            
     }
-    function edit_addon($aoName, $aoPrice, $aoCategory, $aoStatus, $aoID){
-        $query = "UPDATE addons set aoName = ?, aoPrice = ?, aoCategory = ?, aoStatus = ? where aoID = ?";
-        return $this->db->query($query,array($aoName, $aoPrice, $aoCategory, $aoStatus, $aoID));
-    }
     function edit_accounts($aID,$aType,$aUsername){
         $query = "update accounts set aUsername = ?, aType = ? where aID = ?";
         return $this->db->query($query,array($aUsername, $aType, $aID));
     }
-    function edit_menuspoilage($msID,$prID,$msQty,$msDate,$msRemarks,$date_recorded){
+    function edit_menuspoilage($msID,$prID,$msDate,$msRemarks,$date_recorded){
         $query = "Update menuspoil set msDateRecorded = ? where msID=?";
         if($this->db->query($query,array($date_recorded,$msID))){
-            $query = "Update spoiledmenu set msQty = ?, msDate = ?,msRemarks = ? where msID = ? AND prID = ?";
-            return $this->db->query($query,array($msQty,$msDate,$msRemarks,$msID,$prID));
+            $query = "Update spoiledmenu set msDate = ?,msRemarks = ? where msID = ? AND prID = ?";
+            return $this->db->query($query,array($msDate,$msRemarks,$msID,$prID));
         }else{
             return false;
         }
     }
-    function edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$updateQtyh,$updateQtyl,$curSsQty,$stQty,$ssQtyUpdate,$date_recorded){
+    function edit_stockspoilage($ssID,$vID,$ssDate,$ssRemarks,$date_recorded){
         $query = "Update stockspoil set ssDateRecorded = ? where ssID=?";
-        
         if($this->db->query($query,array($date_recorded,$ssID))){
-                $query = "Update spoiledstock set ssQty = ?,ssDate = ?, ssRemarks = ? where ssID = ? AND stID = ?";
-                $this->db->query($query,array($ssQtyUpdate ,$ssDate, $ssRemarks, $ssID, $stID));
-                $this->stockitemQty($updateQtyh,$updateQtyl,$stQty, $ssQtyUpdate, $curSsQty, $stID);  
+            $query = "Update varspoilitems set ssDate = ?,ssRemarks = ? where ssID = ? AND vID = ?";
+            return $this->db->query($query,array($ssDate,$ssRemarks,$ssID,$vID));
         }else{
             return false;
         }
     }
-    function stockitemQty($updateQtyh,$updateQtyl, $stQty, $ssQtyUpdate, $curSsQty, $stID){
-            if ($curSsQty > $ssQtyUpdate){
-                $query = "UPDATE stockitems SET stQty = ? + ? WHERE stID = ?;";
-            return $this->db->query($query,array($stQty,$updateQtyl,$stID));
-            }
-            if ($curSsQty < $ssQtyUpdate){
-                $query = "UPDATE stockitems SET stQty = ? - ? WHERE stID = ?;";
-                return $this->db->query($query,array($stQty,$updateQtyh,$stID));
-            }
-            else{
-                $query = "UPDATE stockitems SET stQty = ? WHERE stID = ?;";
-            return $this->db->query($query,array($stQty, $stID));
-            }
-    }
-    function edit_aospoilage($aoID,$aosID,$aosQty,$aosDate,$aosRemarks,$date_recorded){
+    function edit_aospoilage($aoID,$aosID,$aosDate,$aosRemarks,$date_recorded){
         $query = "Update aospoil set aosDateRecorded = ? where aosID=?";
         if($this->db->query($query,array($date_recorded,$aosID))){
-            $query = "Update addonspoil set aosQty = ?,aosDate = ?,aosRemarks = ? where aoID = ?";
-            return $this->db->query($query,array($aosQty,$aosDate,$aosRemarks,$aoID));
+            $query = "Update addonspoil set aosDate = ?,aosRemarks = ? where aoID = ?";
+            return $this->db->query($query,array($aosDate,$aosRemarks,$aoID));
         }else{
             return false;
         }
@@ -425,25 +376,40 @@ class Adminmodel extends CI_Model{
             stID = ?;";
         return $this->db->query($query, array($id))->result_array();
     }
-    function edit_stockItem($stockCategory, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID){
-        $query = "UPDATE
-            stockitems
-        SET
-            ctID = ?,
-            stLocation = ?,
-            stMin = ?,
-            stName = ?,
-            stQty = ?,
-            stStatus = ?,
-            stType = ?,
-            uomID = ?,
-            stSize = ?
-        WHERE
-            stID = ?;";
-        if($this->db->query($query,array($stockCategory, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID))){
+    function edit_stockItem($stockID,$stockName,$stockType,$stockCategory,$stockStatus,$stockVariance){
+        $query = "UPDATE stockitems 
+            SET 
+                stName = ?,
+                stType = ?,
+                ctID = ?,
+                stStatus = ?
+            WHERE
+                stID = ?;";
+        if($this->db->query($query,array($stockName,$stockType,$stockCategory,$stockStatus,$stockID))){
+            if(count($stockVariance) > 0){
+                foreach($stockVariance as $variance){
+                    if($variance['varID'] == NULL){
+                        $this->add_stockVariance($stockID, $variance);
+                    }else{
+                        $this->edit_stockVariance($variance);
+                    }
+                }
+            }
             return true;
         }
         return false;
+    }
+    function edit_stockVariance($variance){
+        $query = "UPDATE variance 
+            SET 
+                vUnit = ?,
+                vSize = ?,
+                vMin = ?,
+                vQty = ?,
+                vStatus = ?
+            WHERE
+                vID = ?;";
+        return $this->db->query($query, array($variance['varUnit'],$variance['varSize'],$variance['varMin'],$variance['varQty'],$variance['varStatus'],$variance['varID']));
     }
 
     function edit_transaction($trans_id, $receiptNo, $transDate, $source, $remarks, $total, $dateRecorded, $transItems){
@@ -570,27 +536,31 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_stocks(){
-        $query = "SELECT
+        $query = "SELECT stID, stName, var.vID, IF(SUM(vQty) IS NULL, 0, SUM(vQty)) AS 'stQty', 
+        stStatus, stType, ctName, ctID FROM stockitems 
+        LEFT JOIN variance var USING (stID) INNER JOIN categories USING (ctID) GROUP BY stID";
+        return $this->db->query($query)->result_array();
+    }
+    function get_stockVariance(){
+        $query = "SELECT 
+            vID,
             stID,
-            CONCAT(stName, if(stSize IS Null,'', concat(' ',stSize))) as stName,
-            stMin,
-            stQty,
-            uomID,
-            uomAbbreviation,
-            stBqty,
-            UPPER(stStatus) as stStatus,
-            stType,
-            UPPER(stLocation) as stLocation,
-            ctName,
-            ctID
+            stName,
+            CONCAT(stName,
+                    ' ',
+                    vUnit,
+                    IF(vSize IS NULL, '', CONCAT(' ',vSize))) AS vName,
+            vUnit,
+            vSize,
+            vMin,
+            vQty,
+            bQty,
+            vStatus, 
+            stID
         FROM
-            (
-                stockitems
-            LEFT JOIN uom USING(uomID)
-            )
-        LEFT JOIN categories USING(ctID)
-        GROUP BY
-            stID;";
+            variance
+                INNER JOIN
+            stockitems USING (stID);";
         return $this->db->query($query)->result_array();
     }
     function get_menuPref(){
@@ -609,8 +579,26 @@ class Adminmodel extends CI_Model{
         menu USING (mID)";
         return $this->db->query($query)->result_array();
     }
+    function get_stockExpiration(){
+        $query = "SELECT 
+            expID,
+            CONCAT(stName,
+                    ' ',
+                    vUnit,
+                    IF(vSize = NULL, '', CONCAT(' ', vSize))) AS vName,
+            expDate,
+            expQty,
+            expMaxTime
+        FROM
+            expiration
+                INNER JOIN
+            variance USING (vID)
+                INNER JOIN
+            stockitems USING (stID);";
+        return $this->db->query($query)->result_array();
+    }
     function get_addons(){
-        $query = "Select * from addons";
+        $query = "Select aoID,aoName from addons";
         return $this->db->query($query)->result_array();
     }
     function get_menuaddons($mID) {
@@ -630,7 +618,7 @@ class Adminmodel extends CI_Model{
             poTotal,
             poDateRecorded,
             poRemarks,
-            UPPER(poStatus) as poStatus,
+            poStatus,
             spName,
             spID
         FROM
@@ -690,10 +678,6 @@ class Adminmodel extends CI_Model{
         $query = "Select * from supplier order by spName";
         return $this->db->query($query)->result_array();
     }
-    function get_supplierNames(){
-        $query = "Select spID, spName from supplier order by spName";
-        return $this->db->query($query)->result_array();
-    }
     function get_suppliermerch(){
         $query = "SELECT *, CONCAT(spmDesc,' ',stName,' ',vUnit,' ','(',vSize,')') as merchandise, CONCAT(stName,' ',vUnit,' ','(',vSize,')') as stockvariance  from supplier natural join suppliermerchandise natural join variance natural join stockitems";
         return $this->db->query($query)->result_array();
@@ -708,7 +692,7 @@ class Adminmodel extends CI_Model{
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesstock(){
-        $query = "Select ssID,stID,stName,stLocation,ssQty,stQty,ssDate,ssDateRecorded,ssRemarks from stockspoil inner join spoiledstock using (ssID) inner join stockitems using (stID)";
+        $query = "Select ssID,vID,CONCAT(stName,' ',vUnit, IF(vSize = NULL, '', CONCAT(' ', vSize))) AS vName,ssQty,vUnit,ssDate,ssDateRecorded,ssRemarks from stockspoil inner join varspoilitems using (ssID) inner join variance using (vID) inner join stockitems using (stID)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesaddons(){
@@ -755,7 +739,7 @@ class Adminmodel extends CI_Model{
             resolvedStatus
         FROM
             invoice
-                LEFT JOIN
+                INNER JOIN
             supplier USING (spID);";
         return $this->db->query($query)->result_array();
     }
@@ -839,16 +823,85 @@ class Adminmodel extends CI_Model{
                 iType = 'delivery') AS dInvoice USING (iID);";
         return $this->db->query($query)->result_array();
     }
-    
+    function add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks, $total, $transitems, $transID=null){
+        $query = "";
+        $invoiceSuccess = false;
+        if($transID == null){
+            $query = "INSERT INTO invoice (spID, iDate, iDateRecorded, iNumber, iTotal, iRemarks, iType, resolvedStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+            $invoiceSuccess = $this->db->query($query, array($spID, $transDate, $dateRecorded, $receiptNum, $total, $remarks, $transType, $resStatus));
+        }else{
+            $query = "UPDATE invoice 
+                SET 
+                    spID = '',
+                    iDate = '',
+                    iDateRecorded = '',
+                    iNumber = '',
+                    iTotal = '',
+                    iRemarks = '',
+                    iType = '',
+                    resolvedStatus = ''
+                WHERE
+                    transID = '';";
+            $invoiceSuccess = $this->db->query($query, array($spID, $transDate, $dateRecorded, $receiptNumber, $total, $remarks, $transType, $resStatus, $transID));
+        }
+        $id = $this->db->insert_id();
+        if($invoiceSuccess){
+            $indexes = [];
+            $count = 0;
+            foreach($transitems as $item){
+                if(!$this->addEdit_transactionItems($item, $id)){
+                    array_push($indexes,$count);
+                }
+                $count++;
+            }
+            echo json_encode(array("erredQ" =>$indexes, "data"=> $transitems));
+            return true;
+        }
+        return false;
+    }
+    function addEdit_transactionItems($item,$id){
+        $query = "";
+        if($item['itemID'] == null){
+            $query = "INSERT INTO `invoiceitems`(
+                `vID`,
+                `iID`,
+                `iName`,
+                `iQty`,
+                `iPrice`,
+                `iUnit`,
+                `iSubTotal`
+            )
+            VALUES(
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?
+            );";
+            $this->db->query($query, array($item['varID'],$id,$item['itemName'],$item['itemQty'],$item['itemPrice'],$item['itemUnit'],$item['subtotal']));
+        }else{
+            $query = "UPDATE invoiceitems 
+            SET 
+                vID = ?,
+                iID = ?,
+                iName = ?,
+                iQty = ?,
+                iPrice = ?,
+                iUnit = ?,
+                iSubtotal = ?
+            WHERE
+                iItemID = ?;";
+            $this->db->query($query,array($item['varID'],$id,$item['itemName'],$item['itemQty'],$item['itemPrice'],$item['itemUnit'],$item['subtotal'],$item['itemID']));
+        }
+        return;
+    }
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
     function delete_account($accountId){
         $query = "Delete from accounts where aID = ?";
         return $this->db->query($query, array($accountId));
-    }
-    function delete_addon($id){
-        $query = "UPDATE addons set aoStatus = 'archived' where aoID = ?"; 
-        return $this->db->query($query, array($id));
     }
     function delete_menucategory($ctID){
         $query = "delete from categories where ctID = ? and ctType= 'menu'";
@@ -896,7 +949,7 @@ class Adminmodel extends CI_Model{
         if(count($orderlists) > 0){
              for($in = 0; $in < count($orderlists) ; $in++){
               if($this->db->query($query, array($orderlists[$in]['prID'], $osID, $orderlists[$in]['olDesc'], 
-              $orderlists[$in]['olQty'], $orderlists[$in]['olSubtotal'],'served', ' ')) && count($addons) > 0) {
+              $orderlists[$in]['olQty'], $orderlists[$in]['olSubtotal'],'served', ' '))) {
                 $this->add_salesAddons($this->db->insert_id(), $orderlists[$in]['prID'], $addons);
                 return true;
               }
@@ -908,12 +961,16 @@ class Adminmodel extends CI_Model{
 
     function add_salesAddons($olID, $olprID, $addons) {
         $query = "INSERT INTO orderaddons (aoID, olID, aoQty, aoTotal) VALUES (?, ?, ?, ?);";
-        
-          for($in = 0; $in < count($addons); $in++){
-            if($olprID == $addons[$in]['prID']) {
+        if(count($addons) > 0){
+          for($in = 0; $in < count($addons) ; $in++){
+            if($olprID === $addons[$in]['prID']) {
             $this->db->query($query, array($addons[$in]['aoID'], $olID, $addons[$in]['aoQty'], 
                   $addons[$in]['aoTotal']));
+
             }
+        }
+    }   else {
+        return false;
     }
 
     }
@@ -1064,244 +1121,6 @@ class Adminmodel extends CI_Model{
             }
     }
 
-    function get_enumVals($table,$column){
-        $query = "SELECT 
-            column_type
-        FROM
-            COLUMNS
-        WHERE
-            TABLE_NAME = ?
-                AND COLUMN_NAME = ?;";
-        return $this->infoDB->query($query,array($table,$column))->result_array();
-    }
-    function get_uomForSizes(){
-        $query = "SELECT
-            uomName,
-            uomAbbreviation,
-            UPPER(uomVariant) as uomVariant
-        FROM
-            uom
-        WHERE
-            uomVariant IS NOT NULL;";
-        return $this->db->query($query)->result_array();
-    }
-    function get_uomForStoring(){
-        $query = "SELECT
-            uomID,
-            uomName,
-            uomAbbreviation
-        FROM
-            uom
-        WHERE
-            uomStore IS NOT NULL;";
-        return $this->db->query($query)->result_array();
-    }
-    function get_stockItem($id){
-        $query = "SELECT
-            ctID,
-            ctName,
-            stID,
-            UPPER(stLocation) AS stLocation,
-            stMin,
-            stName,
-            stQty,
-            stSize,
-            UPPER(stStatus) AS stStatus,
-            UPPER(stType) AS stType,
-            uomID,
-            uomAbbreviation
-        FROM
-            (
-                stockitems
-            LEFT JOIN categories USING(ctID)
-            )
-        LEFT JOIN uom USING(uomID)
-        WHERE
-            stID = ?;";
-        return $this->db->query($query, array($id))->result_array();
-    }
-    function get_stockItemNames(){
-        $query = "SELECT
-            stID,
-            stName,
-            uomID,
-            uomAbbreviation
-        FROM
-            stockitems
-        LEFT JOIN uom USING(uomID);";
-        return $this->db->query($query)->result_array();
-    }
-
-    function get_transactions(){
-        $query = "SELECT
-            tID,
-            tNum,
-            tType,
-            tDate,
-            dateRecorded,
-            spID,
-            spName,
-            SUM(tiSubtotal) AS tTotal,
-            tRemarks
-        FROM
-            (
-                transactions
-            LEFT JOIN trans_items USING(tID)
-            )
-        LEFT JOIN supplier USING(spID)
-        GROUP BY
-            tID;";
-        return $this->db->query($query)->result_array();
-    }
-    function get_transaction($id){
-        $query = "SELECT
-            tID,
-            tNum,
-            tType,
-            tDate,
-            dateRecorded,
-            spID,
-            spName,
-            SUM(tiSubtotal) AS tTotal,
-            tRemarks
-        FROM
-            (
-                transactions
-            LEFT JOIN trans_items USING(tID)
-            )
-        LEFT JOIN supplier USING(spID)
-        GROUP BY
-            tID
-        WHERE 
-            tID = ?;";
-        return $this->db->query($query, arrray($id))->result_array();
-    }
-    function get_transitems($id=null){
-        if($id!= null){
-            $query = "SELECT
-                tID,
-                tiID,
-                tiName,
-                tiQty,
-                tiActualQty,
-                uomID,
-                uomAbbreviation,
-                tiPrice,
-                tiDiscount,
-                tiSubtotal,
-                tiStatus
-            FROM
-                (
-                    (
-                        transitems
-                    LEFT JOIN uom USING(uomID)
-                    )
-                LEFT JOIN trans_items USING(tiID)
-                )
-            LEFT JOIN transactions USING(tID)";
-            return $this->db->query($query)->result_array();
-        }else{
-            $query = "SELECT
-                tID,
-                tiID,
-                tiName,
-                tiQty,
-                tiActualQty,
-                uomID,
-                uomAbbreviation,
-                tiPrice,
-                tiDiscount,
-                tiSubtotal,
-                tiStatus
-            FROM
-                (
-                    (
-                        transitems
-                    LEFT JOIN uom USING(uomID)
-                    )
-                LEFT JOIN trans_items USING(tiID)
-                )
-            LEFT JOIN transactions USING(tID)
-            WHERE
-                tID = ?;";
-            return $this->db->query($query,array($id))->result_array();
-        }
-    } 
-
-    function add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks, $total, $transitems, $transID=null){
-        $query = "";
-        $invoiceSuccess = false;
-        if($transID == null){
-            $query = "INSERT INTO invoice (spID, iDate, iDateRecorded, iNumber, iTotal, iRemarks, iType, resolvedStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-            $invoiceSuccess = $this->db->query($query, array($spID, $transDate, $dateRecorded, $receiptNum, $total, $remarks, $transType, $resStatus));
-        }else{
-            $query = "UPDATE invoice 
-                SET 
-                    spID = '',
-                    iDate = '',
-                    iDateRecorded = '',
-                    iNumber = '',
-                    iTotal = '',
-                    iRemarks = '',
-                    iType = '',
-                    resolvedStatus = ''
-                WHERE
-                    transID = '';";
-            $invoiceSuccess = $this->db->query($query, array($spID, $transDate, $dateRecorded, $receiptNumber, $total, $remarks, $transType, $resStatus, $transID));
-        }
-        $id = $this->db->insert_id();
-        if($invoiceSuccess){
-            $indexes = [];
-            $count = 0;
-            foreach($transitems as $item){
-                if(!$this->addEdit_transactionItems($item, $id)){
-                    array_push($indexes,$count);
-                }
-                $count++;
-            }
-            echo json_encode(array("erredQ" =>$indexes, "data"=> $transitems));
-            return true;
-        }
-        return false;
-    }
-    function addEdit_transactionItems($item,$id){
-        $query = "";
-        if($item['itemID'] == null){
-            $query = "INSERT INTO `invoiceitems`(
-                `vID`,
-                `iID`,
-                `iName`,
-                `iQty`,
-                `iPrice`,
-                `iUnit`,
-                `iSubTotal`
-            )
-            VALUES(
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?
-            );";
-            $this->db->query($query, array($item['varID'],$id,$item['itemName'],$item['itemQty'],$item['itemPrice'],$item['itemUnit'],$item['subtotal']));
-        }else{
-            $query = "UPDATE invoiceitems 
-            SET 
-                vID = ?,
-                iID = ?,
-                iName = ?,
-                iQty = ?,
-                iPrice = ?,
-                iUnit = ?,
-                iSubtotal = ?
-            WHERE
-                iItemID = ?;";
-            $this->db->query($query,array($item['varID'],$id,$item['itemName'],$item['itemQty'],$item['itemPrice'],$item['itemUnit'],$item['subtotal'],$item['itemID']));
-        }
-        return;
-    }
 }
 
 ?>

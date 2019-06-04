@@ -52,14 +52,14 @@ class Adminadd extends CI_Controller{
             $tableCode = trim($this->input->post('tableCode'));
             $custName = trim($this->input->post('custName'));
             $osTotal = trim($this->input->post('osTotal'));
-            $osDate = trim($this->input->post('osDate'));
-            $osPayDate = trim($this->input->post('osPayDate'));
+            $osDateTime = trim($this->input->post('osDateTime'));
+            $osPayDateTime = trim($this->input->post('osPayDateTime'));
             $orderlists = json_decode($this->input->post('orderlists'), true);
             $osDateRecorded = date("Y-m-d H:i:s");
             $addons = json_decode($this->input->post('addons'), true);
-            echo json_encode($orderlists, true);
-            $this->adminmodel->add_salesOrder($tableCode, $custName, $osTotal, $osDate,
-            $osPayDate, $osDateRecorded, $orderlists, $addons);
+           
+            $this->adminmodel->add_salesOrder($tableCode, $custName, $osTotal, $osDateTime,
+            $osPayDateTime, $osDateRecorded, $orderlists, $addons);
 
         }else{
             redirect('login');
@@ -178,30 +178,6 @@ class Adminadd extends CI_Controller{
                     redirect("admin/menu");
                     // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
                 }
-        }else{
-            redirect("login");
-        }
-    }
-
-    function addImage(){
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $config = array(
-                'upload_path' => "./uploads/",
-                'allowed_types' => "gif|jpg|png|jpeg|pdf",
-                'overwrite' => TRUE,
-                'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
-                );
-            $this->load->library('upload', $config);
-            if ( ! $this->upload->do_upload('mImage')){
-                echo 'error';
-            }
-            else{
-                $data = $this->upload->data();
-                $image = $data['file_name'];
-                $mID = $this->input->post('menuId');
-                $this->adminmodel->add_image($image, $mID);
-                redirect("admin/menu");
-            }
         }else{
             redirect("login");
         }
