@@ -19,17 +19,16 @@
         <div class="conteiner-fluid">
           <!--Start Table-->
           <div class="card-content">
-            <table id="ordersTable" class="orderbills table-striped table-bordered dt-responsive nowrap" cellspacing="0"
-              width="100%">
-              <thead>
+            <table id="ordersTable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+              <thead class="thead-dark">
                 <tr>
-                  <th><b class="pull-left">Slip No.</b></th>
-                  <th><b class="pull-left">Customer</b></th>
-                  <th><b class="pull-left">Table Code</b></th>
-                  <th><b class="pull-left">Total Payable</b></th>
-                  <th><b class="pull-left">Order Date</b></th>
-                  <th><b class="pull-left">Status Paid</b></th>
-                  <th><b class="text-align:center;">Actions</b></th>
+                  <th><b class="pull-left">SLIP NO.</b></th>
+                  <th><b class="pull-left">CUSTOMER</b></th>
+                  <th><b class="pull-left">TABLE CODE</b></th>
+                  <th><b class="pull-left">TOTAL PAYABLE</b></th>
+                  <th><b class="pull-left">ORDER DATE</b></th>
+                  <th><b class="pull-left">STATUS</b></th>
+                  <th><b class="pull-left">ACTIONS</b></th>
                 </tr>
               </thead>
               <!--Start Table Body-->
@@ -54,6 +53,30 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <!--Modal Content-->
+          <!--Table containing the different input fields in billings -->
+          <table class="salesTable table table-sm table-borderless">
+            <thead class="thead-light">
+              <tr>
+                <th></th>
+                <th>Qty</th>
+                <th>Item Name</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <th></th>
+                <!--Insert table content here-->
+                <th>2</th>
+                <th>Iced Americano</th>
+                <th>90</th>
+                <th>180</th>
+              <th></th>
+            </tbody>
+          </table>
+          <!--End Table Content-->
         <form id="formEdit" accept-charset="utf-8">
           <div class="modal-body">
             <!--Quantity-->
@@ -85,7 +108,6 @@
               <input type="text" step="any" min="0" class="form-control" name="change" id="change" value="0.00" readonly>
               <span class="text-danger"><?php echo form_error("change"); ?></span>
             </div>
-
             <!--Footer-->
             <div class="modal-footer">
               <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
@@ -170,13 +192,8 @@
                     <td>
                                     <!--Action Buttons-->
                                     <div class="onoffswitch">
-
-                                        <!--Edit button-->
-                                        <button class="pay btn btn-default btn-sm" data-toggle="modal"
-                                            data-target="#Modal_Pay">Pay</button>
-                                        <!--Delete button-->
-                                        <button class="item_delete btn btn-danger btn-sm" data-toggle="modal" 
-                                        data-target="#Modal_Remove">Archive</button>                      
+                                    <!--Pay Button-->
+                                    <button class="editBtn btn btn-sm btn-info" data-toggle="modal" data-target="#Modal_Pay">Pay</button>           
                                     </div>
                     </td>
             </tr>`);
