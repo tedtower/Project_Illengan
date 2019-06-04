@@ -20,7 +20,7 @@ function getSelectedStocks() {
                             <input type="hidden" id="curQty` + i + `" name="curQty" class="form-control form-control-sm" data-curQty="` + data[i].stQty + `" value="` + data[i].stQty + `">
                             <input type="hidden" id="stID` + i + `" name="stID" class="form-control form-control-sm" data-stID="` + data[i].stID + `" value="` + data[i].stID + `">
                             <td><input type="text" id="stName` + i + `" name="stName"
-                                    class="form-control form-control-sm" data-stNameID="` + data[i].stName + `" value="` + data[i].stName + `" readonly="readonly" required></td>
+                                    class="form-control form-control-sm"  value="` + data[i].stName + `"  required></td>
                             <td><input type="number" min="1" id="ssQty` + i + `" name="ssQty"
                                     class="form-control form-control-sm" value="" required></td>
                             <td><input type="text" id="ssRemarks` + i + `" name="ssRemarks"

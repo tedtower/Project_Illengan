@@ -13,14 +13,14 @@ class Barista extends CI_Controller{
 
     //BARISTA ORDER FUNCTIONS
     function pendingOrders(){
-        $this->load->view('barista/navigation');
+        $this->load->view('barista/templates/navigation');
         $this->load->view('barista/pendingOrders'); 
     }
     function pendingOrdersJS(){
         echo json_encode($this->baristamodel->get_pendingOrders());
     }
     function servedOrders(){
-        $this->load->view('barista/navigation');
+        $this->load->view('barista/templates/navigation');
         $this->load->view('barista/servedOrders');  
     }
     function servedOrdersJS(){
@@ -28,7 +28,7 @@ class Barista extends CI_Controller{
        echo json_encode($data);
     }
     function vieworderslip(){
-        $this->load->view('barista/navigation');
+        $this->load->view('barista/templates/navigation');
         $this->load->view('barista/orderslip');
     }
     function viewOrderslipJS(){
@@ -53,21 +53,10 @@ class Barista extends CI_Controller{
             redirect('login');
         }
     }
-    function getBills(){
-        //if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
-                $this->load->view('barista/navigation');
-                //$this->load->model('baristamodel');  
-                $data["bills"] = $this->baristamodel->get_bills();
-                $this->load->view("barista/orderBills", $data);
-           // }
-            // else{
-            //          redirect('login');
-            //  }
-    }
 
     function getOrderBills(){
-        $this->load->view('barista/navigation');
-        $this->load->view('barista/orderBills-default');
+        $this->load->view('barista/templates/navigation');
+        $this->load->view('barista/orderBills');
     }
     
     function orderBillsJS(){
@@ -142,7 +131,7 @@ class Barista extends CI_Controller{
 
         //BARISTA INVENTORY FUNCTIONS
         function viewinventory(){
-            $this->load->view('barista/navigation');
+            $this->load->view('barista/templates/navigation');
             $this->load->view('barista/baristaInventory'); 
         }
         function inventoryJS(){

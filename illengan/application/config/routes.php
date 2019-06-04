@@ -193,8 +193,7 @@ $route['customer/menu/removeOrder'] = "customer/removeOrder";
 
 // BARISTA ROUTES
 $route['barista/orders'] = "barista/pendingOrders";
-$route['barista/billings'] = "barista/getBills";
-$route['barista/bills'] = "barista/getOrderBills";
+$route['barista/billings'] = "barista/getOrderBills";
 $route['barista/getBillDetails'] = "barista/getBillDetails";
 $route['barista/billings/setStatus'] = "barista/setbillstatus";
 $route['barista/inventory'] = "barista/viewinventory";
