@@ -295,6 +295,7 @@ $('#craoButton').click(function(){
 function setOrderlist(ol){
     event.preventDefault();
     $('#ol_main').empty();
+    $('#order_footer').empty();
     var total_qty=0, total=0;
     if(jQuery.isEmptyObject(ol)){
         $('#ol_main').append('<h5>You have no saved orders. To order menu items click on <span style="color:#b96e43">"Save to Orderlist"</span> button.</h5>');
@@ -378,55 +379,4 @@ function removeOrder(){
     });
 }
 
-
-/*function setOrderlist() {
-    $('#orderlists').html('');
-    var total_qty=0, total=0;
-    for(var rowid=0; rowid < orders.length; rowid++){
-        var row1 = `<tr>
-                        <form type="hidden" name="`+orders[rowid].id+`">
-                        <th scope="row">`+orders[rowid].name+`</th>
-                        <td>`+orders[rowid].qty+`</td>
-                        <td>`+orders[rowid].subtotal+`</td>
-                        <td>`+orders[rowid].remarks+`</td>
-                        <td>`+orders[rowid].addons+`</td>
-                        <td>
-                            <button type="button" class="btn btn-mdb-color btn-sm m-0 p-2" data-toggle="modal" data-target="#editModal">Edit</button>
-                            <button type="button" class="btn btn-danger btn-sm m-0 p-2 remOrder" data-toggle="modal" data-target="#deleteModal" data-name="`+orders[rowid].name+`" data-id="`+rowid+`">Remove</button>
-                        </td>
-                    </tr>`;
-        $('#orderlists').append(row1);
-        total_qty += orders[rowid].qty;
-        total += orders[rowid].subtotal;
-    }
-    var row2 = `<tr>
-                    <td colspan="3"><h3 class="gab">Total Quantity: `+total_qty+`</h3></td>
-                    <td colspan="3"><h3 class="gab">Total Price: `+total+` php</h3></td>
-                    <input type="hidden" name="total" value="`+total+`"/>
-                </tr>`;
-    $('#orderlists').append(row2);
-    $('.remOrder').click(function(){
-        $('#remName').text("'"+$(this).data('name')+"'");
-        $('#remID').val($(this).data('id'));
-        console.log($('#remID').val());
-    });
-    $('#removo').click(function(){
-        var rowID = $('#remID').val();
-        var rowName = $('#remName').text();
-        $.ajax({
-            method: "post",
-            url: "<= site_url('customer/menu/removeOrder')>",
-            data: { id: rowID },
-            success: function($data) {
-                $('#remID').val('');
-                $('#remName').text('');
-                location.reload();
-            },
-            error: function(response,setting, errorThrown) {
-                console.log(response.responseText);
-                console.log(errorThrown);
-            }
-        });
-    });
-}*/
 </script>
