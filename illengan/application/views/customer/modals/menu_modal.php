@@ -1,5 +1,5 @@
 <div class="modal fade" id="menu_modal" tabindex="-1" role="dialog" aria-labelledby="menuItemModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content" style="padding:0px;">
             <div class="modal-body">
                 <?php echo form_open('customer/menu/addOrder', "id='menumodalform'");?>

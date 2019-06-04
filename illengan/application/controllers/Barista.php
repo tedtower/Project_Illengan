@@ -53,21 +53,10 @@ class Barista extends CI_Controller{
             redirect('login');
         }
     }
-    function getBills(){
-        //if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
-                $this->load->view('barista/templates/navigation');
-                //$this->load->model('baristamodel');  
-                $data["bills"] = $this->baristamodel->get_bills();
-                $this->load->view("barista/orderBills", $data);
-           // }
-            // else{
-            //          redirect('login');
-            //  }
-    }
 
     function getOrderBills(){
         $this->load->view('barista/templates/navigation');
-        $this->load->view('barista/orderBills-default');
+        $this->load->view('barista/orderBills');
     }
     
     function orderBillsJS(){
