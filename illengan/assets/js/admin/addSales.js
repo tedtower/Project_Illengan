@@ -1,4 +1,51 @@
 function getSelectedMenu() {
+<<<<<<< HEAD
+    $(document).ready(function() {
+        var value = 0;
+        var choices = document.getElementsByClassName('orderitems');
+        var merchChecked;
+        for (var i = 0; i <= choices.length - 1; i++) {
+            if (choices[i].checked) {
+                value = choices[i].value;
+    
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://www.illengan.com/admin/jsonPrefDetails',
+                    data: {
+                        prID: value
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        var prName;
+                        if(data[0].prName === 'Normal') {
+                            prName = " ";
+                        } else {
+                            prName = ", "+data[0].prName;
+                        }
+                        merchChecked = `<tr class="salesElem">
+                        <input type="hidden" name="prID" id="prID" value="` + data[0].prID + `">
+                        <input type="hidden" class="mID" id="mID" name="mID" value="` + data[0].mID + `">
+                        <td ><input type="text" id="olDesc" name="olDesc"
+                                 class="olDesc form-control form-control-sm" value="` + data[0].mName + `` + prName + `" readonly="readonly"></td>
+                         <td><input type="text" id="olQty" onchange="setSubtotal()" name="olQty"
+                                 class="form-control form-control-sm" value="1" ></td>
+                         <td><input type="number" id="prPrice" name="prPrice"
+                                 class="spmPrice form-control form-control-sm" onchange="setSubtotal()" value="` + data[0].prPrice + `" ></td>
+                         <td><input type="number" name="subtotal" class="subtotal form-control form-control-sm" value="" readonly="readonly"></td>
+                        <td><a class="addAddons btn btn-default btn-sm" style="margin:0;" onclick="addAddons(this);" id="addAddons">Add Addons</a></td>
+                        </td><td><img class="delBtn"
+                                 src="/assets/media/admin/error.png"
+                                 style="width:20px;height:20px" onclick="removeItem(this)"></td>
+                         </tr>
+                         `;
+                        if ($('#addSales').is(':visible')) {
+                            $('.salesTable > tbody').append(merchChecked);
+                        } else {
+                            $('.editsalesTable > tbody').append(merchChecked);
+                        }
+
+                        setSubtotal();
+=======
     var value = 0;
     var choices = document.getElementsByClassName('orderitems');
     var merchChecked;
@@ -19,6 +66,7 @@ function getSelectedMenu() {
                         prName = " ";
                     } else {
                         prName = ", "+data[0].prName;
+>>>>>>> parent of ebf546a... Sales add and edit
                     }
                     merchChecked = `<tr class="salesElem">
                     <input type="hidden" name="prID" id="prID" value="` + data[0].prID + `">
@@ -64,6 +112,18 @@ function setSubtotal() {
             var subtotal = parseInt(document.getElementsByName('subtotal')[i].value);
             total = total + subtotal;
         }
+<<<<<<< HEAD
+    
+        try {
+            if(elSubtotal.length != 0) {
+            total = total + parseInt(aosubtotal);
+        }
+        } catch(err) {
+            console.log('no addons');
+        }
+
+=======
+>>>>>>> parent of ebf546a... Sales add and edit
         if ($('#addSales').is(':visible')) {
             $('#total').text(total);
         } else {
@@ -119,7 +179,6 @@ function addSales() {
             'aoQty': aoQty,
             'aoTotal': aoTotal
         }
-
         addons.push(addonItems);
         
         }

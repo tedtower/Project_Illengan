@@ -334,27 +334,26 @@ class Adminadd extends CI_Controller{
         redirect('adminview/viewReturns');
     }
     function addTransaction(){
-        $transID = $this->input->post('transID');
-        $spID = $this->input->post('spID');
-        $transType = $this->input->post('transType');
-        $receiptNum = $this->input->post('receiptNum');
-        $transDate = $this->input->post('transDate');
-        $resStatus = $this->input->post('resStatus');
+        $id = $this->input->post('id');
+        $supplier = $this->input->post('supplier');
+        $type = $this->input->post('type');
+        $receipt = $this->input->post('receipt');
+        $date = $this->input->post('date');
         $remarks = $this->input->post('remarks');
         $transitems = json_decode($this->input->post('transitems'),true);
         $dateRecorded = date("Y-m-d");
         $total = 0.00;
-        for($index = 0 ; $index < count($transitems) ; $index++){
-            $transitems[$index]['subtotal'] = (float) $transitems[$index]['itemPrice'] * (float) $transitems[$index]['itemQty'];
-            $total += $transitems[$index]['subtotal'];
+        for($i = 0 ; $i < count($transitems) ; $i++){
+            $transitems[$i]['tiSubtotal'] = (float) $transitems[$i]['tiPrice'] * (float) $transitems[$i]['tiQty'];
+            $total += $transitems[$i]['tiSubtotal'];
         }
-        if($this->adminmodel->add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks,$total, $transitems)){
+        if($this->adminmodel->add_transaction($id, $supplier, $receipt, $date, $type, $dateRecorded, $remarks, $transitems)){
             echo json_encode(array(
                 "dataSuccess" => true
             ));
         }else{
             echo json_encode(array(
-                "dataErr" => true
+                "dbErr" => true
             ));
         }
     }

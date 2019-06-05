@@ -181,17 +181,23 @@ class Adminupdate extends CI_Controller{
             redirect('login');
         }
     }
-    function edit_menu(){
+    function editMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $menu_id = $this->input->post('menu_id');
-            $menu_name = $this->input->post('new_name');
-            $menu_description = $this->input->post('new_description');
-            $category_id = $this->input->post('new_category');
-            $string_price = $this->input->post('new_price');
-            $menu_price = floatval($string_price);
-            $menu_availability = $this->input->post('new_availability');
-            $data['menu'] = $this->adminmodel->edit_menu($menu_id, $menu_name, $category_id, $menu_description, $menu_price, $menu_availability);
-            redirect('admin/menu');
+            $mID = $this->input->post('id');
+            $mName = $this->input->post('name');
+            $mDesc = $this->input->post('description');
+            $mCat = $this->input->post('category');
+            $mAvailability = $this->input->post('status');
+            $preference = json_decode($this->input->post('preferences'),true);
+            $addon = json_decode($this->input->post('addons'),true);
+            if($this->adminmodel->edit_menu($mName, $mDesc, $mCat, $mAvailability, $preference, $addon, $mID)){
+                echo json_encode(array(
+                    'menu' => $this->adminmodel->get_menu(),
+                    'preferences' => $this->adminmodel->get_preferences(),
+                    'addons' => $this->adminmodel->get_addons2(),
+                    'categories' => $this->adminmodel->get_menucategories()
+                ));
+            }
         }else{
             redirect('login');
         }

@@ -96,16 +96,37 @@
             $query = $this->db->get_where('menu', array('ctID' => '12'));
             return $query->result();
         }
-       function orderInsert($total, $tableCode, $orderlist, $customer, $dateTime){ //insert in table orderslip
+        function orderInsert($total, $tableCode, $orderlist, $customer, $dateTime){//insert in table orderslip
             $query1 = "Insert into orderslips(tableCode, custName, osTotal, payStatus, osDateTime, osPayDateTime, osDateRecorded) values (?,?,?,?,?,?,?)";
 			$this->db->query($query1, array( $tableCode, $customer, $total, 'unpaid', $dateTime,'', $dateTime)); 
 			$order_id= $this->db->insert_id();
 			$bool = false;
-			foreach($orderlist as $items){
-				$query2 = "Insert into orderlists (olID, osID, prID, olDesc, olQty, olSubtotal, olStatus, olRemarks) values (?,?,?,?,?,?,?,?)";
-				$bool = $this->db->query($query2, array(NULL,$order_id, $items['id'],'',$items['qty'], $total, 'pending', $items['remarks'])); 
-			}
-			return true;
+	foreach($orderlist as $items){
+		$query2 = "Insert into orderlists (olID, osID, prID, olDesc, olQty, olSubtotal, olStatus, olRemarks) values (?,?,?,?,?,?,?,?)";
+                $this->db->query($query2, array(NULL,$order_id, $items['id'],'',$items['qty'], $total, 'pending', $items['remarks']));
+                $olID = $this->db->insert_id(); 
+            
+                $addOns = $items['addons'];
+                if(!empty($addOns)){
+                foreach($addOns as $key => $value){
+                   if($key == 'addonIds'){
+                    $addonIds = $value;
+                    }else if($key == 'addonQtys'){
+                        $addonQtys = $value;
+                    }else if($key == 'addonSubtotals'){
+                        $addonSubtotals = $value;
+                    }
+                }
+               }
+            
+            for($i = 0, $q=0, $s=0; $i < count($addonIds), $q <  count($addonQtys),$s <  count($addonSubtotals)
+                     ; $i++, $q++, $s++){
+                $query3 ="Insert into orderaddons(aoID, olID, aoQty, aoTotal)values(?,?,?,?)";
+                $bool = $this->db->query($query3, array($addonIds[$i], $olID, $addonQtys[$q], $addonSubtotals[$s]));
+               }     
+            }
+    return true;
+           
         }
 
 

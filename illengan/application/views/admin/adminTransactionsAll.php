@@ -321,6 +321,7 @@
                                     </div>
                                 </div>
                                 <!--End of Brochure Modal"-->
+                                
                                 <!--Start of Modal "Delete Stock Item"-->
                                 <div class="modal fade" id="delete" tabindex="-1" role="dialog"
                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -407,13 +408,40 @@
                     tiUnit: $(this).find('select[name = "itemUnit[]"]').eq(x).val(),
                     stUnit: $(this).find('select[name = "actualUnit[]"]').eq(x).val(),
                     tiPrice: $(this).find('input[name = "itemPrice[]"]').eq(x).val(),
-                    tiSubtotal: $(this).find('input[name = "itemSubtotal[]"]').eq(x).val(),
+                    // tiSubtotal: $(this).find('input[name = "itemSubtotal[]"]').eq(x).val(),
                     tiStatus: $(this).find('select[name = "itemStatus[]"]').eq(x).val()
                 });
             }
+            $.ajax({
+                method: 'POST',
+                url: crudUrl,
+                data: {
+                    id: id,
+                    supplier: supplier,
+                    type: type,
+                    receipt: receipt,
+                    date: date,
+                    remarks: remarks,
+                    transitems: JSON.stringify(transitems)
+                },
+                dataType: 'JSON',
+                success: function(data){
+
+                },
+                error: function(response, setting, error) {
+                    console.log(response.responseText);
+                    console.log(error);
+                }
+            });
         });
     });
 
+    // <div class="input-group-append"
+    //                                 style="border-top:1px solid #b3b3b3 !important;border-bottom:1px solid #b3b3b3 !important">
+    //                                 <button class="btn btn-sm btn-outline-secondary"
+    //                                     data-toggle="modal" data-target="#stockBrochure"
+    //                                     type="button">Button</button>
+    //                             </div>
     function getEnumVals(url) {
         $.ajax({
             method: 'POST',
@@ -441,12 +469,6 @@
                                 <input name="stID[]" type="text"
                                     class="form-control border-right-0"
                                     placeholder="Stock" style="width:15%">
-                                <div class="input-group-append"
-                                    style="border-top:1px solid #b3b3b3 !important;border-bottom:1px solid #b3b3b3 !important">
-                                    <button class="btn btn-sm btn-outline-secondary"
-                                        data-toggle="modal" data-target="#stockBrochure"
-                                        type="button">Button</button>
-                                </div>
                                 <input type="number" name="itemQty[]"
                                     class="form-control form-control-sm"
                                     placeholder="Quantity">
@@ -481,11 +503,14 @@
 
                         <div class="mt-4"
                             style="float:left:width:3%;overflow:auto;">
-                            <img class="exitBtn" id="exitBtn"
+                            <img class="exitBtn"
                                 src="/assets/media/admin/error.png"
                                 style="width:20px;height:20px;float:right;">
                         </div>
                     </div>`);
+                    $("#addEditTransaction").find(".exitBtn").last().on('click',function(){
+                        $(this).closest(".inputGroup1").remove();
+                    });
                     $("#addEditTransaction").find("select[name='itemUnit[]']").last().append(data.uoms.map(uom=>{
                         return `<option value="${uom.uomID}">${uom.uomAbbreviation}</option>`;
                     }).join(''));

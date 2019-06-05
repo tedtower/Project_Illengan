@@ -82,7 +82,7 @@ $route['admin/addons/spoilages'] = "adminview/viewspoilagesaddons";
 $route['admin/log/stocks'] = "adminview/viewLogStock";
 $route['admin/log/activity'] = "adminview/viewActivityLog";
 $route['admin/consumption'] = "adminview/viewConsumptions";
-$route['admin/transactions'] = "adminview/viewTransactions";
+$route['admin/transactions'] = "adminview/viewtransactions";
 $route['admin/transactions/delivery'] = "adminview/viewDeliveryTransactions";
 $route['admin/transactions/purchase'] = "adminview/viewpurchasetransactions";
 $route['admin/transactions/return'] = "adminview/viewreturntransactions";
@@ -121,7 +121,7 @@ $route['admin/consumption/add'] = "adminadd/addConsumption";
 //Admin Update Routes -------------------------------------------
 $route['admin/menucategories/edit'] = "adminupdate/editmenucategory/";
 $route['admin/stockcategories/edit'] = "adminupdate/editstockcategory/";
-$route['admin/menu/edit'] = "adminupdate/edit_menu";
+$route['admin/menu/edit'] = "adminupdate/editmenu";
 $route['admin/addon/edit'] = "adminupdate/editAddon";
 $route['admin/menu/edit_image'] = "adminupdate/edit_image";
 $route['admin/inventory/edit'] = "adminupdate/editstockitem";
@@ -130,9 +130,10 @@ $route['admin/transactions/edit'] = "adminupdate/edittransactions";
 $route['admin/accounts/changepassword'] = "adminupdate/changeAccountPassword";
 $route['admin/accounts/edit'] = "adminupdate/editAccounts";
 $route['admin/supplier/edit'] = "adminupdate/editSupplierMerchandise";
-$route['admin/tables/edit'] = "adminupdate/edittable";
+$route['admin/sales/edit'] = "adminupdate/editSales";
 $route['admin/stockqty/edit'] = "adminupdate/editStockQty";
 $route['admin/stock/spoilage/edit'] = "adminupdate/editStockSpoil";
+$route['admin/tables/edit'] = "adminupdate/edittable";
 $route['admin/menu/spoilage/edit'] = "adminupdate/editMenuSpoil";
 $route['admin/addons/spoilage/edit'] = "adminupdate/editAoSpoil";
 $route['admin/returntransactions/edit'] = "adminupdate/editReturnTrans";
@@ -174,8 +175,6 @@ $route['admin/inventory/getitem'] = "adminview/getStockDetails";
 $route['admin/getPurchaseOrders'] = "adminview/getPurchaseOrders";
 $route['admin/jsonAddons'] = "adminview/jsonMenuAddons";
 
-$route['admin/inventory/getEnumVals'] = "adminview/getEnumValsForStock";
-$route['admin/inventory/getStockItem'] = "adminview/getStockItem";
 $route['admin/transactions/getEnumVals'] = "adminview/getEnumValsForTransaction";
 $route['admin/transaction/getTransaction'] = "adminview/getTransaction";
 //End Admin Json Routes ---------------------------------------
@@ -195,7 +194,7 @@ $route['customer/menu/removeOrder'] = "customer/removeOrder";
 
 // BARISTA ROUTES
 $route['barista/orders'] = "barista/pendingOrders";
-$route['barista/billings'] = "barista/getOrderBills";
+$route['barista/billings'] = "barista/getbills";
 $route['barista/getBillDetails'] = "barista/getBillDetails";
 $route['barista/billings/setStatus'] = "barista/setbillstatus";
 $route['barista/inventory'] = "barista/viewinventory";

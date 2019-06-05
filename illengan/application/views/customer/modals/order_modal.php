@@ -22,15 +22,11 @@
                     }else{
                         echo '<div class="mb-3"><strong>Customer Name:</strong>'.$cust_name.'<br><strong>Table Code: </strong>'.$table_no['table_code'].'<br><b>Date:&nbsp;</b>'.$date.'<br></div>';
                     }
-                    if(empty($orders)) { //check if the customer did not order yet
+                    if(empty($orders)) {
                         echo '<h5>You have no saved orders. To order menu items click on <span style="color:#b96e43">"Save to Orderlist"</span> button.</h5>';
                     }else{ ?>
-                    <div class="text-center" id="ol_main">
-                        
-                    </div>
-                    <div id="order_footer">
-                        
-                    </div>
+                    <div class="text-center" id="ol_main"></div>
+                    <div id="order_footer"></div>
                 </div>
 				</form>
 				<?php }; ?>
