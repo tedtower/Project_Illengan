@@ -160,30 +160,14 @@ class Adminmodel extends CI_Model{
         $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
     }
 
+
     function add_menu($mName, $mDesc, $category, $status,$preference,$addon){
         $query = "INSERT into menu (mName, mDesc, ctID, mAvailability) values (?,?,?,?);";
         if($this->db->query($query,array($mName, $mDesc, $category, $status))){
             $mID = $this->db->insert_id();
-<<<<<<< HEAD
-            if(count($preference) > 0){
-                foreach($preference as $preference){
-                    $this->add_preference($mID, $preference);
-                }
-            }
-            
-            if(count($addon) > 0){
-                foreach($addon as $ao){
-                    $this->add_menuaddon($mID, $addon);
-
-                }
-            }
-=======
             $this->add_preference($mID, $preference);
             $this->add_menuaddon($mID, $addon);
             return true;
->>>>>>> parent of ebf546a... Sales add and edit
-        }
-        return false;
     }
 
     function add_image($image, $mID){
@@ -265,6 +249,7 @@ class Adminmodel extends CI_Model{
         } else {
             return false;
         }
+   
     }
     
     function add_consumption($id,$cd,$rDate,$cnd){
@@ -324,43 +309,6 @@ class Adminmodel extends CI_Model{
             WHERE
                 spmID = ?;";
         $this->db->query($query,array($merch['varID'],$merch['merchName'],$merch['merchUnit'],$merch['merchPrice'], $merch['spmID']));
-    }
-
-    function edit_menu($mName, $mDesc, $mCat, $mAvailability, $preference, $addon, $mID){
-        $query = "UPDATE menu SET mName = ?, mDesc = ?, ctID = ?, mAvailability = ? WHERE mID = ?";
-        if($this->db->query($query, array($mName, $mDesc, $mCat, $mAvailability,$mID))){
-            if(count($preference) > 0){
-                foreach($preference as $preference){
-                    if($preference['prID'] == null){
-                        $this->add_preference($mID, $preference);
-                    }else{
-                        $this->edit_preference($preference);
-                    }
-                }
-            }
-
-            if(count($addon) > 0){
-                foreach($addon as $ao){
-                    if($ao['aoID'] == NULL){
-                        $this->add_menuaddon($ao, $mID);
-                    }else{
-                        $this->edit_menuaddon($ao, $mID);
-                    }
-                }
-            }
-        }
-        return false;
-
-    }
-
-    function edit_preference($preference){
-        $query = "UPDATE preferences SET prName = ?, mTemp = ?,	prPrice = ?, prStatus = ? where prID = ?";
-        $this->db->query($query,array($preference['prName'],$preference['mTemp'],$preference['prPrice'],$preference['prStatus'], $preference['prID']));
-    }
-
-    function edit_menuaddon($ao, $mID){
-        $query = "UPDATE menuaddons SET aoID = ? WHERE menuaddons.mID = ? AND menuaddons.aoID = ?";
-        $this->db->query($query,array($ao['aoID'],$mID, $ao['oldaoID']));
     }
 
     function add_poItem(){
@@ -967,11 +915,7 @@ class Adminmodel extends CI_Model{
                 iType = 'delivery') AS dInvoice USING (iID);";
         return $this->db->query($query)->result_array();
     }
-<<<<<<< HEAD
-   
-=======
     
->>>>>>> parent of ebf546a... Sales add and edit
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
     function delete_account($accountId){
@@ -1013,9 +957,6 @@ class Adminmodel extends CI_Model{
     function add_source($data){
         $this->db->insert("sources", $data);
     }
-<<<<<<< HEAD
-
-=======
     function add_salesOrder($tableCode, $custName, $osTotal, $osDate, $osPayDate, $osDateRecorded, $orderlists, $addons) {
         $query = "insert into orderslips (osID, tableCode, custName, osTotal, payStatus, 
         osDate, osPayDate, osDateRecorded) values (NULL,?,?,?,?,?,?,?);";
@@ -1052,7 +993,6 @@ class Adminmodel extends CI_Model{
     }
 
     }
->>>>>>> parent of ebf546a... Sales add and edit
     // function add_poItems($poID, $merchandise) {
     //     $query = "insert into poitems (poiID, vID, poID, poiName, poiQty, poiUnit, poiPrice, poiStatus) values
     //     (NULL,?,?,?,?,?,?,?)";
@@ -1079,6 +1019,11 @@ class Adminmodel extends CI_Model{
         $this->db->where("mID", $id);
         $this->db->delete("menu");
     }
+    function edit_menu($menu_id, $mName, $ctID, $menu_description, $menu_price, $menu_availability){
+        $query = "update menu set mName = ?, ctID = ?, menu_description = ?, menu_price = ?, menu_availability = ? where menu_id = ?";
+        return $this->db->query($query,array($mName, $ctID, $menu_description, $menu_price, $menu_availability, $menu_id));
+    }
+    
     function edit_table($newTableCode, $previousTableCode){
         $query = "Update tables set table_code = ? where table_code = ?;";
         return $this->db->query($query, array($newTableCode, $previousTableCode));
@@ -1359,7 +1304,13 @@ class Adminmodel extends CI_Model{
         }
     } 
 
-<<<<<<< HEAD
+
+    /*
+     * 1] Add a transaction record (add_transaction function)
+     * 2] Add the items under the transaction receipt (addEdit_transitem function)
+     * 3] Add a log for stocks
+     * 4] Make changes to stock quantity 
+     */
     function add_transaction($id, $supplier, $receipt, $date, $type, $dateRecorded, $remarks, $transitems){
         $query = "";
         $insertSuccess = false;
@@ -1390,97 +1341,78 @@ class Adminmodel extends CI_Model{
                     tID = '?;";
             $insertSuccess = $this->db->query($query, array($supplier, $receipt, $date, $type, $dateRecorded, $remarks, $id));
         }
-        if($insertSuccess){
-=======
-    function add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks, $total, $transitems, $transID=null){
-        $query = "";
-        $invoiceSuccess = false;
-        if($transID == null){
-            $query = "INSERT INTO invoice (spID, iDate, iDateRecorded, iNumber, iTotal, iRemarks, iType, resolvedStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-            $invoiceSuccess = $this->db->query($query, array($spID, $transDate, $dateRecorded, $receiptNum, $total, $remarks, $transType, $resStatus));
-        }else{
-            $query = "UPDATE invoice 
-                SET 
-                    spID = '',
-                    iDate = '',
-                    iDateRecorded = '',
-                    iNumber = '',
-                    iTotal = '',
-                    iRemarks = '',
-                    iType = '',
-                    resolvedStatus = ''
-                WHERE
-                    transID = '';";
-            $invoiceSuccess = $this->db->query($query, array($spID, $transDate, $dateRecorded, $receiptNumber, $total, $remarks, $transType, $resStatus, $transID));
-        }
         $id = $this->db->insert_id();
         if($invoiceSuccess){
->>>>>>> parent of ebf546a... Sales add and edit
             $indexes = [];
             $count = 0;
             foreach($transitems as $item){
-                if(!$this->addEdit_transactionItems($item, $id)){
+                if(!$this->addEdit_transactionItem($item, $id, $tType)){
                     array_push($indexes,$count);
                 }
                 $count++;
             }
-<<<<<<< HEAD
             // echo json_encode(array("erredQ" =>$indexes, "data"=> $transitems));
-=======
-            echo json_encode(array("erredQ" =>$indexes, "data"=> $transitems));
->>>>>>> parent of ebf546a... Sales add and edit
             return true;
         }
         return false;
     }
-    function addEdit_transactionItems($item,$id){
+    function addEdit_transactionItem($item,$id, $type){
         $query = "";
         if($item['itemID'] == null){
-            $query = "INSERT INTO `invoiceitems`(
-<<<<<<< HEAD
-                tiID,
-                uomID,
-                stID,
-                tiName,
-                tiPrice,
-                tiDiscount,
-                tiStatus
-            )
-            VALUES(NULL, ?, ?, ?, ?, ?, ?);";
+            $query = "INSERT INTO `transitems`(
+                    tiID,
+                    uomID,
+                    stID,
+                    tiName,
+                    tiPrice,
+                    tiDiscount,
+                    tiStatus
+                )
+                VALUES(NULL, ?, ?, ?, ?, ?, ?);";
             $this->db->query($query, 
-            array($item['tiID'],$item['tiUnit'],$item['stID'],$item['tiName'],$item['tiPrice'],$item['tiDiscount'],$item['tiStatus']));
+                array($item['tiID'],$item['tiUnit'],$item['stID'],$item['tiName'],$item['tiPrice'],$item['tiDiscount'],$item['tiStatus']));
             $itemID = $this->db->insert_id();
             $this->add_trans_item($itemID, $id, $item['tiQty'], $item['tiSubtotal'], $item['stQty']);
         }else{
             $query = "UPDATE transitems 
-            SET 
-                uomID = ?,
-                stID = ?,
-                tiName = ?,
-                tiPrice = ?,
-                tiDiscount = ?,
-                tiStatus = ?
-            WHERE
-                tiID = ?;";
-            $this->db->query($query,
-            array($item['tiUnit'],$item['stID'],$item['tiName'],$item['tiPrice'],$item['tiDiscount'],$item['tiStatus'],$item['tiID']));
-            $trans_itemsResult = $this->db->query('SELECT
-                tiID,
-                tID
-            FROM
-                trans_items
-            WHERE
-                tiID = ? AND tID = ?;', array($item['tiID'], $id));
-            if($trans_itemsResult->num_rows() === 1){
-                $this->db->query('UPDATE trans_items
-                SET
-                    tiQty,
-                    tiSubtotal,
-                    tiActualQty
+                SET 
+                    uomID = ?,
+                    stID = ?,
+                    tiName = ?,
+                    tiPrice = ?,
+                    tiDiscount = ?,
+                    tiStatus = ?
                 WHERE
-                    tiID = ? and tID = ?',array($item['tiID'], $id));
+                    tiID = ?;";
+            $this->db->query($query,
+                array($item['tiUnit'],$item['stID'],$item['tiName'],$item['tiPrice'],$item['tiDiscount'],$item['tiStatus'],$item['tiID']));
+            $result = $this->db->query('SELECT
+                    tiID,
+                    tID,
+                    tiQty,
+                    tiActualQty,
+                    stID
+                FROM
+                    trans_items
+                LEFT JOIN transitems USING(tiID)
+                WHERE
+                    tiID = ? AND tID = ?;', array($item['tiID'], $id));
+            //insert codes to add adjusting entry for previous stock item
+            //then add entry for new item
+            if($result->num_rows() === 1){
+                $result = $result->result_array();
+                $qty = $result[0]['tiQty'] < $item['tiQty'] ? $item['tiQty'] - $result[0]['tiQty'] : $result[0]['tiQty'] - $item['tiQty'];
+                $this->db->query('UPDATE trans_items
+                    SET
+                        tiQty,
+                        tiSubtotal,
+                        tiActualQty
+                    WHERE
+                        tiID = ? and tID = ?',array($item['tiID'], $id));
             }else{
-                $this->add_trans_item($item['tiID'], $id, $item['tiQty'], $item['tiSubtotal'], $item['stQty']);
+                if($this->add_trans_item($item['tiID'], $id, $item['tiQty'], $item['tiSubtotal'], $item['stQty'])){
+
+                }
             }
         }
         return;
@@ -1488,28 +1420,28 @@ class Adminmodel extends CI_Model{
 
     function add_trans_item($tiID, $tID, $tiQty, $tiSubtotal, $tiActualQty){
         $query = "INSERT INTO trans_item (
-            tiID,
-            tID,
-            tiQty,
-            tiSubtotal,
-            tiActualQty
-        )
-        VALUES(?, ?, ?, ?, ?);";
-        $this->db->query($query, array($tiID, $tID, $tiQty, $tiSubtotal, $tiActualQty));
+                tiID,
+                tID,
+                tiQty,
+                tiSubtotal,
+                tiActualQty
+            )
+            VALUES(?, ?, ?, ?, ?);";
+        return $this->db->query($query, array($tiID, $tID, $tiQty, $tiSubtotal, $tiActualQty));
     }
 
     function add_stockLog($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks){
         $query = "INSERT INTO `stocklog`(
-            `slID`,
-            `stID`,
-            `tID`,
-            `slType`,
-            `slDateTime`,
-            `dateRecorded`,
-            `slQty`,
-            `slRemarks`
-        )
-        VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
+                `slID`,
+                `stID`,
+                `tID`,
+                `slType`,
+                `slDateTime`,
+                `dateRecorded`,
+                `slQty`,
+                `slRemarks`
+            )
+            VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
         return $this->db->query($query, array($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks));
     }
 
@@ -1522,42 +1454,6 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query, array($stQty, $stID));
     }
 
-=======
-                `vID`,
-                `iID`,
-                `iName`,
-                `iQty`,
-                `iPrice`,
-                `iUnit`,
-                `iSubTotal`
-            )
-            VALUES(
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?
-            );";
-            $this->db->query($query, array($item['varID'],$id,$item['itemName'],$item['itemQty'],$item['itemPrice'],$item['itemUnit'],$item['subtotal']));
-        }else{
-            $query = "UPDATE invoiceitems 
-            SET 
-                vID = ?,
-                iID = ?,
-                iName = ?,
-                iQty = ?,
-                iPrice = ?,
-                iUnit = ?,
-                iSubtotal = ?
-            WHERE
-                iItemID = ?;";
-            $this->db->query($query,array($item['varID'],$id,$item['itemName'],$item['itemQty'],$item['itemPrice'],$item['itemUnit'],$item['subtotal'],$item['itemID']));
-        }
-        return;
-    }
->>>>>>> parent of ebf546a... Sales add and edit
 }
 
 ?>
