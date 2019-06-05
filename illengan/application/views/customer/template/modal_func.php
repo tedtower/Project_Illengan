@@ -189,7 +189,6 @@ function setModalContents(item_id){
             }
             $('#menu_price').text(menu[i].prPrice);
             $('#menu_description').text(menu[i].mDesc);
-            
             if(menu[i].mAvailability === 'available'){
                 $('#menu_image').css('filter',"brightness(100%)");
                 $('#menu_status').text(menu[i].mAvailability.charAt(0).toUpperCase() + menu[i].mAvailability.slice(1));
@@ -232,8 +231,11 @@ function setModalContents(item_id){
                 $("#menuSubtotal").text(parseFloat(menu_pref[0].prPrice));
             }
             if(menu_addon.length > 0){
+                console.log("Amazing Addons");
                 $("#addonSelectBtn").removeAttr('disabled');
-                $('#addonable').show();
+                $('#addonable').show(); 
+            } else {
+                console.log("Fucking Addons");
             }
             break;
         }
@@ -275,7 +277,7 @@ function computeSubtotal(){
     $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
 }
 $('#omButton').click(function(){
-    setOrderlist();
+    setOrderlist(orders);
 });
 $('#ceoButton').click(function(){
     $('#editModal').modal('hide');
@@ -289,10 +291,32 @@ $('#croButton').click(function(){
 $('#craoButton').click(function(){
     $('#deleteAllModal').modal('hide');
 });
-function setOrderlist() {
-    $('#orderlists').html('');
+
+function setOrderlist(ol){
+    event.preventDefault();
+    $('#ol_main').empty();
+    $('#order_footer').empty();
     var total_qty=0, total=0;
-    for(var rowid=0; rowid < orders.length; rowid++){
+    if(jQuery.isEmptyObject(ol)){
+        $('#ol_main').append('<h5>You have no saved orders. To order menu items click on <span style="color:#b96e43">"Save to Orderlist"</span> button.</h5>');
+    } else {
+        row = ` <h1 class="gab">Orderlist</h1>
+                <table class="table table-sm table-hover w-responsive mx-auto delius">
+                    <thead>
+                        <tr>
+                            <th scope="col">Menu Name</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total Price</th>
+                            <th scope="col">Remarks</th>
+                            <th scope="col">Add Ons</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderlists">
+                    </tbody>
+                </table>`;
+        $('#ol_main').append(row);
+        for(var rowid=0; rowid < orders.length; rowid++){
         var row1 = `<tr>
                         <form type="hidden" name="`+orders[rowid].id+`">
                         <th scope="row">`+orders[rowid].name+`</th>
@@ -308,35 +332,51 @@ function setOrderlist() {
         $('#orderlists').append(row1);
         total_qty += orders[rowid].qty;
         total += orders[rowid].subtotal;
+        }
+        var row2 = `<tr>
+                        <td colspan="3"><h3 class="gab">Total Quantity: `+total_qty+`</h3></td>
+                        <td colspan="3"><h3 class="gab">Total Price: `+total+` php</h3></td>
+                        <input type="hidden" name="total" value="`+total+`"/>
+                    </tr>`;
+        $('#orderlists').append(row2);
+        var row3 = `<div class="text-center">
+                        <button type="button" data-toggle="modal" class="btn btn-green btn-md delius" href="#proceed_modal">Order Now</button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-danger btn-md delius" data-toggle="modal" data-target="#deleteAllModal">Clear</button>
+                    </div>`;
+        $('#order_footer').append(row3);
     }
-    var row2 = `<tr>
-                    <td colspan="3"><h3 class="gab">Total Quantity: `+total_qty+`</h3></td>
-                    <td colspan="3"><h3 class="gab">Total Price: `+total+` php</h3></td>
-                    <input type="hidden" name="total" value="`+total+`"/>
-                </tr>`;
-    $('#orderlists').append(row2);
     $('.remOrder').click(function(){
         $('#remName').text("'"+$(this).data('name')+"'");
         $('#remID').val($(this).data('id'));
-        console.log($('#remID').val());
-    });
-    $('#removo').click(function(){
-        var rowID = $('#remID').val();
-        var rowName = $('#remName').text();
-        $.ajax({
-            method: "post",
-            url: "<?= site_url('customer/menu/removeOrder')?>",
-            data: { id: rowID },
-            success: function($data) {
-                $('#remID').val('');
-                $('#remName').text('');
-                location.reload();
-            },
-            error: function(response,setting, errorThrown) {
-                console.log(response.responseText);
-                console.log(errorThrown);
-            }
-        });
     });
 }
+$('#removo').click(function(){
+    removeOrder();
+});
+function removeOrder(){
+    $('#deleteModal').modal('hide');
+    var rowID = $('#remID').val();
+    var rowName = $('#remName').text();
+    orders.splice(rowID,1);
+    console.log(rowID);
+    console.log(orders);
+    $.ajax({
+        method: "post",
+        url: "<?= site_url('customer/menu/removeOrder')?>",
+        data: { id: rowID },
+        success: function(data) {
+            $('#remID').val('');
+            $('#remName').text('');
+            console.log('New:'+data);
+            setOrderlist(orders);
+        },
+        error: function(response,setting, errorThrown) {
+            console.log(response.responseText);
+            console.log(errorThrown);
+        }
+    });
+}
+
 </script>
