@@ -22,18 +22,42 @@
                     }else{
                         echo '<div class="mb-3"><strong>Customer Name:</strong>'.$cust_name.'<br><strong>Table Code: </strong>'.$table_no['table_code'].'<br><b>Date:&nbsp;</b>'.$date.'<br></div>';
                     }
-                    if(empty($orders)) {
+                    if(empty($orders)) { //check if the customer did not order yet
                         echo '<h5>You have no saved orders. To order menu items click on <span style="color:#b96e43">"Save to Orderlist"</span> button.</h5>';
                     }else{ ?>
-                    <div class="text-center" id="ol_main"></div>
-                    <div id="order_footer"></div>
+                    <div class="text-center">
+                        <h1 class="gab">Orderlist</h1>
+                            <table class="table table-sm table-hover w-responsive mx-auto delius">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Menu Name</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Total Price</th>
+                                        <th scope="col">Remarks</th>
+                                        <th scope="col">Add Ons</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="orderlists">
+                                    
+                                </tbody>
+                            </table>
+                    </div>
+                    <div>
+                        <div class="text-center">
+                            <button type="button" data-toggle="modal" class="btn btn-green btn-md delius" href="#proceed_modal">Order Now</button>
+                            <?php include 'orderslip.php'; ?>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-danger btn-md delius" data-toggle="modal" data-target="#deleteAllModal">Clear</button>
+                            <?php include 'remove_all.php'; ?>
+                        </div>
+                    </div>
                 </div>
 				</form>
 				<?php }; ?>
             </div>
         </div>
-    </div>
-    <?php include 'orderslip.php'; ?>
+    </div>	
     <?php include 'edit.php'; ?>    
     <?php include 'remove.php'; ?>
-    <?php include 'remove_all.php'; ?>

@@ -165,7 +165,7 @@
                                         <option value="" selected>Choose</option>
                                         <option value="available">Available</option>
                                         <option value="unavailable">Unavailable</option>
-                                        <option value="deleted">Deleted</option>
+                                        <option value="archived">Archived</option>
                                     </select>
                                 </div>
         
