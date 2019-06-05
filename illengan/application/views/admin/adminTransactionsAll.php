@@ -306,7 +306,7 @@
                                                 <div class="modal-body">
                                                     <div id="stockList">
                                                         <div class="d-flex d-inline-block">
-                                                            <div><input name="stocks[]" type="checkbox" class="mr-3" value=/></div>
+                                                            <div><input name="stocks[]" type="radio" class="mr-3" value=/></div>
                                                             <div>basta</div>
                                                         </div>
                                                     </div>
@@ -368,8 +368,8 @@
     <?php include_once('templates/scripts.php') ?>
     <script>
     var getEnumValsUrl = '<?= site_url('admin/transactions/getEnumVals')?>';
-    var crudUrl = '<?= site_url('admin/transaction/add')?>';
-    var getTransUrl = '<?= site_url('admin/transaction/getTransaction')?>';
+    var crudUrl = '<?= site_url('admin/transactions/add')?>';
+    var getTransUrl = '<?= site_url('admin/transactions/getTransaction')?>';
     var loginUrl = '<?= site_url('login')?>';
     $(function() {
         $(".accordionBtn").on('click', function() {
@@ -401,6 +401,7 @@
             var transitems = [];
             for(var x = 0; x < $(this).find('.inputGroup1').length ; x++){
                 transitems.push({
+                    tiID: $(this).find('.inputGroup1').eq(x).attr("data-id"),
                     tiName: $(this).find('input[name = "itemName[]"]').eq(x).val(),
                     stID: $(this).find('input[name = "stID[]"]').eq(x).val(),
                     tiQty: $(this).find('input[name = "itemQty[]"]').eq(x).val(),
@@ -436,12 +437,6 @@
         });
     });
 
-    // <div class="input-group-append"
-    //                                 style="border-top:1px solid #b3b3b3 !important;border-bottom:1px solid #b3b3b3 !important">
-    //                                 <button class="btn btn-sm btn-outline-secondary"
-    //                                     data-toggle="modal" data-target="#stockBrochure"
-    //                                     type="button">Button</button>
-    //                             </div>
     function getEnumVals(url) {
         $.ajax({
             method: 'POST',
@@ -521,6 +516,8 @@
                         return `<option value="${status}">${status.toUpperCase()}</option>`;
                     }).join(''));
                     $("#addEditTransaction").find("input[name='stID[]']").last().on('focus', function(){
+                        var input = $(this);
+                        console.log(input.val());
                         $("#stockList").empty();
                         $("#stockList").append(data.stocks.map(stock =>{
                             return `
@@ -530,6 +527,13 @@
                             </div>`;
                         }).join(''));
                         $("#stockBrochure").modal('show');
+                        $("#stockBrochure form").on('submit',function(event){
+                            event.preventDefault();
+                            console.log(input.val());
+                            input.val($(this).find("input[name='stocks']:checked").val());
+                            $(this)[0].reset();
+                            $("#stockBrochure").modal("hide");
+                        });
                     });
                 });
             },

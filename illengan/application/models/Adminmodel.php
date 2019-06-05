@@ -6,6 +6,7 @@ class Adminmodel extends CI_Model{
     function __construct(){
         parent:: __construct();
         $this->infoDB = $this->load->database('information',true);
+        date_default_timezone_set('Asia/Manila'); 
     }
 
     //INSERT FUNCTIONS----------------------------------------------------------------
@@ -1218,7 +1219,7 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query, arrray($id))->result_array();
     }
     function get_transitems($id=null){
-        if($id!= null){
+        if($id == null){
             $query = "SELECT
                 tID,
                 tiID,
@@ -1239,7 +1240,7 @@ class Adminmodel extends CI_Model{
                     )
                 LEFT JOIN trans_items USING(tiID)
                 )
-            LEFT JOIN transactions USING(tID)";
+            LEFT JOIN transactions USING(tID);";
             return $this->db->query($query)->result_array();
         }else{
             $query = "SELECT
@@ -1306,12 +1307,11 @@ class Adminmodel extends CI_Model{
                     tID = '?;";
             $insertSuccess = $this->db->query($query, array($supplier, $receipt, $date, $type, $dateRecorded, $remarks, $id));
         }
-        $id = $this->db->insert_id();
-        if($invoiceSuccess){
+        if($insertSuccess){
             $indexes = [];
             $count = 0;
             foreach($transitems as $item){
-                if(!$this->addEdit_transactionItem($item, $id, $tType)){
+                if(!$this->addEdit_transactionItem($item, $id, $type)){
                     array_push($indexes,$count);
                 }
                 $count++;
@@ -1323,19 +1323,22 @@ class Adminmodel extends CI_Model{
     }
     function addEdit_transactionItem($item,$id, $type){
         $query = "";
-        if($item['itemID'] == null){
+        if($item['tiID'] == null){
+            //add tiDiscount after tiPrice
             $query = "INSERT INTO `transitems`(
                     tiID,
                     uomID,
                     stID,
                     tiName,
                     tiPrice,
-                    tiDiscount,
                     tiStatus
                 )
-                VALUES(NULL, ?, ?, ?, ?, ?, ?);";
+                VALUES(NULL, ?, ?, ?, ?
+                , ?);";
             $this->db->query($query, 
-                array($item['tiID'],$item['tiUnit'],$item['stID'],$item['tiName'],$item['tiPrice'],$item['tiDiscount'],$item['tiStatus']));
+                array($item['tiUnit'],$item['stID'],$item['tiName'],$item['tiPrice']
+                // ,$item['tiDiscount']
+                ,$item['tiStatus']));
             $itemID = $this->db->insert_id();
             $this->add_trans_item($itemID, $id, $item['tiQty'], $item['tiSubtotal'], $item['stQty']);
         }else{
@@ -1369,22 +1372,53 @@ class Adminmodel extends CI_Model{
                 $qty = $result[0]['tiQty'] < $item['tiQty'] ? $item['tiQty'] - $result[0]['tiQty'] : $result[0]['tiQty'] - $item['tiQty'];
                 $this->db->query('UPDATE trans_items
                     SET
-                        tiQty,
-                        tiSubtotal,
-                        tiActualQty
+                        tiQty = ?,
+                        tiSubtotal = ?,
+                        tiActualQty = ?
                     WHERE
                         tiID = ? and tID = ?',array($item['tiID'], $id));
             }else{
                 if($this->add_trans_item($item['tiID'], $id, $item['tiQty'], $item['tiSubtotal'], $item['stQty'])){
-
+                    $qty = (int) $item['tiQty'] * (int) $item['stQty'];
+                    switch($type){
+                        case "delivery receipt" : 
+                            if($this->add_stockLog($item['stID'],$id,'restock', date("Y-m-d H:i:s"), $qty)){
+                                $this->add_stockQty($item['stID'], $qty);
+                            }
+                            break;
+                        case "official receipt" :
+                            $result = $this->db->query("SELECT
+                                    tiID,
+                                    tID,
+                                    tType
+                                FROM
+                                    (
+                                        transitems
+                                    LEFT JOIN trans_items USING(tiID)
+                                    )
+                                LEFT JOIN transactions USING(tID)
+                                WHERE
+                                    tType = 'delivery receipt' and tiID = ?;", array($item['tiID']));
+                            if($result->num_rows() == 0){
+                                if($this->add_stockLog($item['stID'],$id,'restock', date("Y-m-d H:i:s"), $qty)){
+                                    $this->add_stockQty($item['stID'], $qty);
+                                }
+                            }
+                    }
                 }
             }
         }
         return;
     }
+    //
+    // $this->db->query("UPDATE transitems
+    // SET
+    //     tiStatus = 'paid'
+    // WHERE
+    //     tiID = ?",array($item['tiID']));
 
     function add_trans_item($tiID, $tID, $tiQty, $tiSubtotal, $tiActualQty){
-        $query = "INSERT INTO trans_item (
+        $query = "INSERT INTO trans_items (
                 tiID,
                 tID,
                 tiQty,
