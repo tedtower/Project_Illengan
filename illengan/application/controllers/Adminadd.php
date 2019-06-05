@@ -52,14 +52,14 @@ class Adminadd extends CI_Controller{
             $tableCode = trim($this->input->post('tableCode'));
             $custName = trim($this->input->post('custName'));
             $osTotal = trim($this->input->post('osTotal'));
-            $osDateTime = trim($this->input->post('osDateTime'));
-            $osPayDateTime = trim($this->input->post('osPayDateTime'));
+            $osDate = trim($this->input->post('osDate'));
+            $osPayDate = trim($this->input->post('osPayDate'));
             $orderlists = json_decode($this->input->post('orderlists'), true);
             $osDateRecorded = date("Y-m-d H:i:s");
             $addons = json_decode($this->input->post('addons'), true);
-           
-            $this->adminmodel->add_salesOrder($tableCode, $custName, $osTotal, $osDateTime,
-            $osPayDateTime, $osDateRecorded, $orderlists, $addons);
+            echo json_encode($orderlists, true);
+            $this->adminmodel->add_salesOrder($tableCode, $custName, $osTotal, $osDate,
+            $osPayDate, $osDateRecorded, $orderlists, $addons);
 
         }else{
             redirect('login');
@@ -178,6 +178,30 @@ class Adminadd extends CI_Controller{
                     redirect("admin/menu");
                     // echo json_encode(array("stock" => $stockName, "stock" => $stockCategory, "stock" => $stockStatus, "stock" => $stockType, "stock" => $stockVariance));
                 }
+        }else{
+            redirect("login");
+        }
+    }
+
+    function addImage(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $config = array(
+                'upload_path' => "./uploads/",
+                'allowed_types' => "gif|jpg|png|jpeg|pdf",
+                'overwrite' => TRUE,
+                'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                );
+            $this->load->library('upload', $config);
+            if ( ! $this->upload->do_upload('mImage')){
+                echo 'error';
+            }
+            else{
+                $data = $this->upload->data();
+                $image = $data['file_name'];
+                $mID = $this->input->post('menuId');
+                $this->adminmodel->add_image($image, $mID);
+                redirect("admin/menu");
+            }
         }else{
             redirect("login");
         }
@@ -310,26 +334,27 @@ class Adminadd extends CI_Controller{
         redirect('adminview/viewReturns');
     }
     function addTransaction(){
-        $id = $this->input->post('id');
-        $supplier = $this->input->post('supplier');
-        $type = $this->input->post('type');
-        $receipt = $this->input->post('receipt');
-        $date = $this->input->post('date');
+        $transID = $this->input->post('transID');
+        $spID = $this->input->post('spID');
+        $transType = $this->input->post('transType');
+        $receiptNum = $this->input->post('receiptNum');
+        $transDate = $this->input->post('transDate');
+        $resStatus = $this->input->post('resStatus');
         $remarks = $this->input->post('remarks');
         $transitems = json_decode($this->input->post('transitems'),true);
         $dateRecorded = date("Y-m-d");
         $total = 0.00;
-        for($i = 0 ; $i < count($transitems) ; $i++){
-            $transitems[$i]['tiSubtotal'] = (float) $transitems[$i]['tiPrice'] * (float) $transitems[$i]['tiQty'];
-            $total += $transitems[$i]['tiSubtotal'];
+        for($index = 0 ; $index < count($transitems) ; $index++){
+            $transitems[$index]['subtotal'] = (float) $transitems[$index]['itemPrice'] * (float) $transitems[$index]['itemQty'];
+            $total += $transitems[$index]['subtotal'];
         }
-        if($this->adminmodel->add_transaction($id, $supplier, $receipt, $date, $type, $dateRecorded, $remarks, $transitems)){
+        if($this->adminmodel->add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks,$total, $transitems)){
             echo json_encode(array(
                 "dataSuccess" => true
             ));
         }else{
             echo json_encode(array(
-                "dbErr" => true
+                "dataErr" => true
             ));
         }
     }

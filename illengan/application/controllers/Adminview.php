@@ -181,9 +181,8 @@ class Adminview extends CI_Controller{
             $data['title'] = "Sales";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $data['mnaddons'] = $this->adminmodel->get_addons();
             // $data['sales'] = $this->adminmodel->get_sales();
-            $this->load->view('admin/adminSales', $data);
+            $this->load->view('admin/adminSales');
         }else{
             redirect('login');
         }
@@ -320,9 +319,9 @@ function viewSpoilagesStock(){
             $data['title'] = "Transactions - All";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
-            $data['invoices'] = $this->adminmodel->get_allTransactions();
-            $data['items'] = $this->adminmodel->get_allTransactionsItems();
-            $this->load->view('admin/adminTransactionsAll',$data);
+            // $data['invoices'] = $this->adminmodel->get_allTransactions();
+            // $data['items'] = $this->adminmodel->get_allTransactionsItems();
+            $this->load->view('admin/adminTransactionsAll');
         }else{
             redirect('login');
         }

@@ -18,11 +18,11 @@
 							<br>
 							<table id="menuTable" class="spoiltable table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
 								<thead>
-									<th>ITEM NAME</th>
-									<th>QUANTITY</th>
-									<th>DATE SPOILED</th>
-									<th>DATE RECORDED</th>
-									<th>OPERATION</th>
+									<th>Item Name</th>
+									<th>Quantity</th>
+									<th>Date Spoiled</th>
+									<th>Date Recorded</th>
+									<th>Operation</th>
 									
 								</thead>
 								<tbody id="menu_data">
@@ -252,7 +252,7 @@
         }
         spoilages.forEach(table => {
             $("#menuTable> tbody").append(`
-            <tr data-prID="${table.prID}" data-msID="${table.msID}" data-msQty="${table.msQty}" data-msDate="${table.msDate}" data-msRemarks="${table.msRemarks}" >
+            <tr data-prID="${table.prID}" data-msID="${table.msID}" data-spoilname="${table.vName}">
 				<td><a data-toggle="collapse" href="#collapseExample" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${table.mName}</td>
                 <td>${table.msQty}</td>
 				<td>${table.msDate}</td>
@@ -266,18 +266,18 @@
                                 data-target="#editSpoil">Edit</button>
                             <!--Delete button-->
                             <button class="item_delete btn btn-danger btn-sm" data-toggle="modal" 
-                            data-target="#deleteSpoilage">Archive</button>                      
+                            data-target="#deleteSpoilage">Delete</button>                      
                         </div>
                     </td>
                 </tr>`);
 
 				var accordion = `
             <tr class="accordion" style="display:none;background: #f9f9f9">
-                <td colspan="6"> <!-- table row ng accordion -->
+                <td colspan="5"> <!-- table row ng accordion -->
                     <div style="overflow:auto;display:none"> <!-- container ng accordion -->
                         
                         <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
-                            <div><b>REMARKS:</b> <!-- label-->
+                            <div><b>Remarks:</b> <!-- label-->
 								<p>
 								${table.msRemarks == null ? "No Remarks." : table.msRemarks}
                                 </p>
@@ -292,12 +292,6 @@
                     "data-prID"));
                 $("#editSpoil").find("input[name='msID']").val($(this).closest("tr").attr(
                     "data-msID"));
-				$("#editSpoil").find("input[name='msQty']").val($(this).closest("tr").attr(
-					"data-msQty"));
-				$("#editSpoil").find("input[name='msDate']").val($(this).closest("tr").attr(
-					"data-msDate"));
-				$("#editSpoil").find("input[name='msRemarks']").val($(this).closest("tr").attr(
-					"data-msRemarks"));
             });
             $(".item_delete").last().on('click', function () {
                 $("#deleteSpoilageId").text(
