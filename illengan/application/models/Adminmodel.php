@@ -145,6 +145,7 @@ class Adminmodel extends CI_Model{
             $this->add_addon($this->db->insert_id(), $addon);
             return true;
         }
+        return false;
     }
 
     function add_preference($mID, $preference){
