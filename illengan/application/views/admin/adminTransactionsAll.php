@@ -321,6 +321,7 @@
                                     </div>
                                 </div>
                                 <!--End of Brochure Modal"-->
+                                
                                 <!--Start of Modal "Delete Stock Item"-->
                                 <div class="modal fade" id="delete" tabindex="-1" role="dialog"
                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
