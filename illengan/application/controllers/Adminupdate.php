@@ -17,7 +17,7 @@ class Adminupdate extends CI_Controller{
             $stQty = $this->input->post('stQty');
             $ssQtyUpdate = $this->input->post('ssQtyUpdate');
             $curSsQty = $this->input->post('curSsQty');
-            $updateQtyh = $ssQtyUpdate - $curSsQty; //8-7=1
+            $updateQtyh = $ssQtyUpdate - $curSsQty; 
             $updateQtyl = $curSsQty - $ssQtyUpdate;
             $date_recorded=date("Y-m-d H:i:s");
 

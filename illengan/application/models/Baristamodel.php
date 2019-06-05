@@ -31,6 +31,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $query = $this->db->query('SELECT osID, tableCode, custName, osTotal, payStatus, olQty, olDesc, olSubtotal, olStatus from orderslips inner join orderlists using (osID) GROUP BY osID, tableCode' );
             return $query->result();
     }
+        function get_orderitems($osID){
+            $query = "SELECT olDesc, olSubtotal,olQty,(SELECT SUM(olQty * olSubtotal)FROM orderlists) as subtotal from orderlists WHERE osID = ?";
+            return $this->db->query($query,array($osID))->result_array();
+        }
 
         function get_availableTables(){
             $query = "SELECT t.tableCode FROM tables t LEFT JOIN orderslips os on t.tableCode = os.tableCode where os.tableCode IS NULL ";
@@ -73,7 +77,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
         function get_bills(){
-            $query = "select osID, tableCode, custName, osTotal, osDateTime, if(osPayDateTime is null, 'Unpaid', 'Paid') as payStatus , osPayDateTime from orderslips";
+            $query = "select osID, tableCode, custName, osTotal, osDateTime, payStatus , osPayDateTime from orderslips order by osDateTime DESC";
             return $this->db->query($query)->result_array();
         }
 
@@ -112,6 +116,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     $this->db->query($query, array($stocks[$in]['curQty'], $stocks[$in]['stQty'], $stocks[$in]['stID'],  )); 
                 }
             }
+        }
+        function update_payment($status,$osID,$custName,$payDate, $date_recorded){
+            $query = "Update orderslips set payStatus = ?, osPayDateTime = ?, osDateRecorded = ? where osID = ? AND custName = ?";
+            $this->db->query($query, array($status,$payDate, $date_recorded, $osID, $custName));
         }
 
     }
