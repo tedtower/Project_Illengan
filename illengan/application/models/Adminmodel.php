@@ -164,10 +164,20 @@ class Adminmodel extends CI_Model{
         $query = "INSERT into menu (mName, mDesc, ctID, mAvailability) values (?,?,?,?);";
         if($this->db->query($query,array($mName, $mDesc, $category, $status))){
             $mID = $this->db->insert_id();
-            $this->add_preference($mID, $preference);
-            $this->add_menuaddon($mID, $addon);
-            return true;
+            if(count($preference) > 0){
+                foreach($preference as $preference){
+                    $this->add_preference($mID, $preference);
+                }
+            }
+            
+            if(count($addon) > 0){
+                foreach($addon as $ao){
+                    $this->add_menuaddon($mID, $addon);
+
+                }
+            }
         }
+        return false;
     }
 
     function add_image($image, $mID){
@@ -216,7 +226,6 @@ class Adminmodel extends CI_Model{
         } else {
             return false;
         }
-   
     }
     
     function add_consumption($id,$cd,$rDate,$cnd){
@@ -276,6 +285,43 @@ class Adminmodel extends CI_Model{
             WHERE
                 spmID = ?;";
         $this->db->query($query,array($merch['varID'],$merch['merchName'],$merch['merchUnit'],$merch['merchPrice'], $merch['spmID']));
+    }
+
+    function edit_menu($mName, $mDesc, $mCat, $mAvailability, $preference, $addon, $mID){
+        $query = "UPDATE menu SET mName = ?, mDesc = ?, ctID = ?, mAvailability = ? WHERE mID = ?";
+        if($this->db->query($query, array($mName, $mDesc, $mCat, $mAvailability,$mID))){
+            if(count($preference) > 0){
+                foreach($preference as $preference){
+                    if($preference['prID'] == null){
+                        $this->add_preference($mID, $preference);
+                    }else{
+                        $this->edit_preference($preference);
+                    }
+                }
+            }
+
+            if(count($addon) > 0){
+                foreach($addon as $ao){
+                    if($ao['aoID'] == NULL){
+                        $this->add_menuaddon($ao, $mID);
+                    }else{
+                        $this->edit_menuaddon($ao, $mID);
+                    }
+                }
+            }
+        }
+        return false;
+
+    }
+
+    function edit_preference($preference){
+        $query = "UPDATE preferences SET prName = ?, mTemp = ?,	prPrice = ?, prStatus = ? where prID = ?";
+        $this->db->query($query,array($preference['prName'],$preference['mTemp'],$preference['prPrice'],$preference['prStatus'], $preference['prID']));
+    }
+
+    function edit_menuaddon($ao, $mID){
+        $query = "UPDATE menuaddons SET aoID = ? WHERE menuaddons.mID = ? AND menuaddons.aoID = ?";
+        $this->db->query($query,array($ao['aoID'],$mID, $ao['oldaoID']));
     }
 
     function add_poItem(){
@@ -939,11 +985,6 @@ class Adminmodel extends CI_Model{
         $this->db->where("mID", $id);
         $this->db->delete("menu");
     }
-    function edit_menu($menu_id, $mName, $ctID, $menu_description, $menu_price, $menu_availability){
-        $query = "update menu set mName = ?, ctID = ?, menu_description = ?, menu_price = ?, menu_availability = ? where menu_id = ?";
-        return $this->db->query($query,array($mName, $ctID, $menu_description, $menu_price, $menu_availability, $menu_id));
-    }
-    
     function edit_table($newTableCode, $previousTableCode){
         $query = "Update tables set table_code = ? where table_code = ?;";
         return $this->db->query($query, array($newTableCode, $previousTableCode));

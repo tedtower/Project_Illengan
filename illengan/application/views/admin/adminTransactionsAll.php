@@ -95,7 +95,7 @@
                                                     <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text border border-secondary"
-                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
+                                                                style="width:100px;background:#8c8c8c;color:white;font-size:14px;font-weight:600">
                                                                 Supplier</span>
                                                         </div>
                                                         <select class="form-control form-control-sm  border-left-0" name="spID" >
@@ -106,7 +106,7 @@
                                                     <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text border border-secondary"
-                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">      
+                                                                style="width:100px;background:#8c8c8c;color:white;font-size:14px;font-weight:600">      
                                                                 Type</span>
                                                         </div>
                                                         <select class="form-control form-control-sm  border-left-0" name="transType">
@@ -121,7 +121,7 @@
                                                     <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                         <span class="input-group-text border border-secondary"
-                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
+                                                                style="width:100px;background:#8c8c8c;color:white;font-size:14px;font-weight:600">
                                                                 Receipt No.</span>
                                                         </div>
                                                         <input type="text" class="form-control  border-left-0" name="receiptNum">
@@ -130,7 +130,7 @@
                                                     <div class="input-group mb-3 col">
                                                         <div class="input-group-prepend">
                                                         <span class="input-group-text border border-secondary"
-                                                                style="width:142px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
+                                                                style="width:142px;background:#8c8c8c;color:white;font-size:14px;font-weight:600">
                                                                 Transaction Date</span>
                                                         </div>
                                                         <input type="date" class="form-control  border-left-0" name="transDate">
@@ -141,7 +141,7 @@
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                     <span class="input-group-text border border-secondary"
-                                                                style="width:100px;background:#bfbfbf;color:white;font-size:14px;font-weight:600">
+                                                                style="width:100px;background:#8c8c8c;color:white;font-size:14px;font-weight:600">
                                                             Remarks</span>
                                                     </div>
                                                     <textarea type="text" name="remarks"

@@ -124,7 +124,8 @@ class Adminview extends CI_Controller{
             $data = array(
                 'menu' => $this->adminmodel->get_menu(),
                 'preferences' => $this->adminmodel->get_preferences(),
-                'addons' => $this->adminmodel->get_addons2()
+                'addons' => $this->adminmodel->get_addons2(),
+                'categories' => $this->adminmodel->get_menucategories()
             );
             header('Content-Type: application/json');
             echo json_encode($data, JSON_PRETTY_PRINT);

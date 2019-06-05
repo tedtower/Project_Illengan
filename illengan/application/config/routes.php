@@ -121,7 +121,7 @@ $route['admin/consumption/add'] = "adminadd/addConsumption";
 //Admin Update Routes -------------------------------------------
 $route['admin/menucategories/edit'] = "adminupdate/editmenucategory/";
 $route['admin/stockcategories/edit'] = "adminupdate/editstockcategory/";
-$route['admin/menu/edit'] = "adminupdate/edit_menu";
+$route['admin/menu/edit'] = "adminupdate/editmenu";
 $route['admin/addon/edit'] = "adminupdate/editAddon";
 $route['admin/menu/edit_image'] = "adminupdate/edit_image";
 $route['admin/inventory/edit'] = "adminupdate/editstockitem";
