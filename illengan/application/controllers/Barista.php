@@ -64,7 +64,12 @@ class Barista extends CI_Controller{
         echo json_encode($data);
 
     }
+    function getOrderItems(){
+        $osID = $this->input->post('osID');
+        $data = $this->baristamodel->get_orderitems($osID);
 
+        echo json_encode($data);
+    }
     function getBillDetails(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
             $osID = $this->input->post("osID"); 
@@ -160,6 +165,14 @@ class Barista extends CI_Controller{
             $table_code = $this->input->post('tableCode');
             $status = $this->input->post('payStatus');
             $this->load->baristamodel->get_slip_data();
+        }
+        function updatePayment(){
+            $status = "paid";
+            $osID = $this->input->post('osID');
+            $custName = $this->input->post('custName');
+            $payDate = date("Y-m-d H:i:s");
+            $date_recorded = date("Y-m-d H:i:s");
+            $this->baristamodel->update_payment($status,$osID,$custName,$payDate, $date_recorded);
         }
     }
 ?>
