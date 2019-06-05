@@ -116,11 +116,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger btn-sm"
                                                 data-dismiss="modal">Cancel</button>
-<<<<<<< HEAD
-                                            <button class="btn btn-success btn-sm" onclick="addSales()" type="button">Add</button>
-=======
                                             <button class="btn btn-success btn-sm" id="submitPOrder" onclick="addSales()" type="button">Add</button>
->>>>>>> parent of ebf546a... Sales add and edit
                                         </div>
                                     </div>
                                 </form>
