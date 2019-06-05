@@ -96,7 +96,7 @@
             $query = $this->db->get_where('menu', array('ctID' => '12'));
             return $query->result();
         }
-        function orderInsert($total, $tableCode, $orderlist, $customer, $dateTime){//, $addonIds, $addonQtys, $addonSubtotals){ //insert in table orderslip
+        function orderInsert($total, $tableCode, $orderlist, $customer, $dateTime){//insert in table orderslip
             $query1 = "Insert into orderslips(tableCode, custName, osTotal, payStatus, osDateTime, osPayDateTime, osDateRecorded) values (?,?,?,?,?,?,?)";
 			$this->db->query($query1, array( $tableCode, $customer, $total, 'unpaid', $dateTime,'', $dateTime)); 
 			$order_id= $this->db->insert_id();
