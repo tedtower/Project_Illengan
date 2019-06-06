@@ -180,7 +180,6 @@ class Customer extends CI_Controller {
 				$orderlist = $this->session->userdata('orders');
 				$total = $this->input->post('total');
 				$this->Customermodel->orderInsert($total, $tableCode, $orderlist, $customer, $dateTime);
-				redirect('customer/clearOrder');
 			}else{
 				redirect('customer/checkin');
 			}
