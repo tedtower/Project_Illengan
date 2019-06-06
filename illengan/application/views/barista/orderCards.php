@@ -17,34 +17,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/style.css'?>">
     </head>
     <body>
-    <div class="container" style="overflow: auto;">
-        <div class="card border-success" style="display: inline-block;">
+    <?php  if(isset($slip)){
+                          foreach($slip as $slips): 
+                            
+                            ?> 
+    <div class="container">
+    <div class="row" style="overflow-x: auto;">
+    <div class="card" style="display: inline-block;">
+        <div class="card border-info">
             <div class="card-header">
-                <form name="slip_data" action="<?php echo site_url('barista/get_slipData'); ?>" method="post">
+                <!-- <form name="slip_data" action="form/get_slipData" method="post">
                     <label>Slip No : </label>
-                    <input style="width: 50px; border: none; background: transparent;" type="text" name="slip_number" id="slip_number" value="">&nbsp;
+                    <input style="width: 50px; border: none; background: transparent;" type="text" name="osID" id="osID" value="">&nbsp;
                     <label>Table No : </label>
-                    <input style="width: 50px; border: none; background: transparent" type="text" name="slip_number" id="slip_number" value=""><br>
+                    <input style="width: 50px; border: none; background: transparent" type="text" name="tableCode" id="tableCode" value=""><br>
                     <label>Name : </label>
-                    <input style="border: none; background: transparent" type="text" name="slip_number" id="slip_number" value="">&nbsp; 
+                    <input style="border: none; background: transparent" type="text" name="custName" id="custName" value="">&nbsp; 
                     <label>Status : </label>
-                    <input style="border: none; background: transparent" type="text" name="slip_number" id="slip_number" value="">
-                </form>
-            </div>
-            <div class="card card-body" style="width: auto; height: auto;">
-                
-                <br>
-                <button class="btn btn-link btn-sm" data-toggle="modal" data-target="#Modal_Add" id="add_modal">Add Order</button>
+                    <input style="border: none; background: transparent" type="text" name="payStatus" id="payStatus" value="">
+                </form> --> 
+                <table class="table table-borderless table-sm">
+                    <tr>
+                        <td>Slip No:<?php echo $slips['osID'] ?></td>
+                        <td>Table: <?php echo $slips['tableCode'] ?> </td>
 
+                    </tr>
+                    <tr>
+                        <td>Name: <?php echo $slips['custName'] ?></td>
+                        <td>Status: <?php echo $slips['payStatus'] ?></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-body" style="width: auto; height: auto;">
+                <br>
+                <button class="btn btn-link btn-sm" onClick="window.location.href = '<?php echo base_url();?>customer/processCheckIn';return false;">Add Order</button>
                 <br>
                 <table class="pendOrders dtr-inline collapsed table display table-sm" id="pendingordersTable" style="width: auto; height: auto;">
                   <thead>
                       <tr>
-                          <!--<th>Slip No.</th> -->
-                          <!-- <th>Order Item No.</th> -->
-                          <!-- <th>Customer Name</th>
-                          <th>Table</th> -->
-                          <th></th>
+                          <!-- <th>Slip No.</th>
+                          <th>Order Item No.</th> 
+                         <th>Customer Name</th> -->
+                          <th>Order Id</th>
                           <th>Qty</th>
                           <th>Order</th>
                           <th>Subtotal</th>
@@ -56,62 +70,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   </tbody>
             </table>
             <br>
-                <label>Total: <input type="text" style="border: 2px solid black; align: right" name="total_amount" id="total_amount" readonly></label><br>
-                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ModalBill" id="bill_modal">Payment</button>
+                <label>Total: <input type="text" style="border: 2px solid black; align: right" name="total_amount" id="total_amount" readonly></label>
+            <div class="card-footer">
+                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ModalBill" id="bill_modal">Remove Slip</button>
+            </div>
+            </div> 
+        </div>
+     </div>
+     </div>
+    </div>
+    <br>
+    <?php 
+      endforeach;
+
+}            
+?>
+
+           <!--MODAL DELETE-->
+
+           <div class="modal fade" id="deleteOrder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cancel Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="confirmDelete">
+                    <div class="modal-body">
+                    <strong>Are you sure to remove this record?</strong>
+                    <input type="hidden" name="olID" id="olID" class="form-control">
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </div>
+                </form>
+                </div>
             </div>
         </div>
-    </div>
-
-
-         <!--MODAL FOR BILL COMPUTATION-->  
-         <form>
-            <div class="modal fade" id="Modal_Pay" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-sm" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Payment</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                        <div class="form-group row">
-                            <label class="col-md-10 col-form-label">Amount Payable: </label>
-                            <div class="col-md-10">
-                              <input type="text" name="amount_payable" id="amount_payable" value="" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-5 col-form-label">Cash:</label>
-                            <div class="col-md-10">
-                              <input type="text" name="cash" id="cash" value="0.00" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-5 col-form-label">Change:</label>
-                            <div class="col-md-10">
-                              <input type="text" name="change" id="change" value="0.00" readonly>
-                            </div>
-                        </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-sm" id="update-pay-status-btn" data-orderid="">Submit</button>
-                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            </div>
-        </form>
-
-        
-        <!--END FOR MODAL COMPUTATION-->
 
     <script type="text/javascript" src="<?php echo base_url().'assets/js/barista/jquery-3.2.1.js'?>"></script>
     <script type="text/javascript" src="<?php echo base_url().'assets/js/barista/bootstrap.js'?>"></script>
     <script type="text/javascript" src="<?php echo base_url().'assets/js/barista/jquery.dataTables.js'?>"></script>
     <script type="text/javascript" src="<?php echo base_url().'assets/js/barista/tables.js'?>"></script>
-
 
     </body>
 
@@ -136,7 +139,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             }
             function viewOrderslipsJs() {
                   $.ajax({
-                      url: "<?= site_url('barista/viewOrderslipJS') ?>",
+                      url: "<?= site_url('barista/orderData') ?>",
                       method: "post",
                       dataType: "json",
                       success: function(data) {
@@ -155,70 +158,61 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   }
                   penOrders.forEach(table => {
                       $("#pendingordersTable> tbody").append(`
-                      <tr data-osID="${table.osID}" >
-                          <td><input type="checkbox" name="orderlist_checkbox"></td>
+                      <tr data-olID="${table.olID}" >
+                          <td>${table.olID}</td>
                           <td>${table.olQty}</td>
                           <td>${table.olDesc}</td>
                           <td>${table.olSubtotal}</td>
-                          <td>${table.olStatus}</td>
+                          <td><button id="status" class="status btn dt-buttons"></button></td>
                           <td>
                                   <!--Action Buttons-->
                                   <div class="onoffswitch">
                                       <!--Delete button-->
                                       <button class="item_delete btn btn-danger btn-sm" data-toggle="modal" 
-                                      data-target="#Modal_Remove">Cancel</button>                      
+                                      data-target="#deleteOrder">Cancel</button>                      
                                   </div>
                               </td>
-                          </tr>`);
+                          </tr>
+                          <tr>$nbsp;$nbsp;$nbsp;
+                            <td></td>
+                            <td>${table.aoName}</td>
+                            <td>${table.aoPrice}</td>
+                            <td>${table.olRemarks}</td>
+                            </tr>`);
                       $(".item_delete").last().on('click', function () {
-                          $("#Modal_Remove").find("input[name='olID']").val($(this).closest("tr").attr(
+                          $("#deleteOrder").find("input[name='olID']").val($(this).closest("tr").attr(
                                     "data-olID"));
                       });
+
+                      //change status function
+                                //function change_status() {
+                                    $('.status').on('click', function() {
+                                    var orderItemId = $(this).data('olID');
+                                    var itemStatus = $(this).data('olStatus');
+                                    var item_status;
+
+                                    if (itemStatus === "pending") {
+                                    item_status = "served";
+                                    } else if (itemStatus === "served") {
+                                    item_status = "pending";
+                                    }
+
+                                    $.ajax({
+                                    type: 'POST',
+                                    url: 'http://www.illengan.com/barista/change_status',
+                                    data: {
+                                        olID: orderItemId,
+                                        olStatus: item_status
+                                    },
+                                    success: function() {
+                                       // table.DataTable().ajax.reload(null, false);
+                                    }
+                                    });
+
+                                });
+              //  }
                   });
             }
-
-        $(document).ready(function(){
-          $("#bill_modal").click(function(){
-            $("#Modal_Pay").modal();
-          });
-
-          //---------MAY AAYUSIN DITO---------------------------------------------------------
-          $("#cash").on('change', function() {
-              if (isNaN(parseFloat($(this).val()))) {
-                  $(this).val('0.00');
-                  $("#change").val('0.00');
-              } else {
-                  $(this).val(parseInt($(this).val()).toFixed(2));
-                  $("#change").val((parseFloat($(this).val()) - parseFloat($("#amount_payable").text())).toFixed(2));
-              }
-          });
-
-        $("#update-pay-status-btn").on('click', function(event){
-            var status;
-            if($(this).attr("data-paystatus") === "Paid"){
-                status = "p";
-            }else{
-                status = "u";
-            }
-            if(parseFloat($("#cash").val()) < parseFloat($("#amount_payable").text()) && status === "u"){
-                alert("Customer Payment is insufficient!");
-            }else{
-                var orderId = $(this).attr("data-orderid");
-                $.ajax({
-                    method: "post",
-                    url: "billings/setStatus",
-                    data: {
-                        osID: orderId,
-                        payStatus: status
-                    }, 
-                    dataType: "json",
-                    success: function(bill){
-                        console.log(bill);
-                    }
-                });
-            }       
-        });
-      });
 
     </script>
 

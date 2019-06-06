@@ -12,7 +12,7 @@ class Barista extends CI_Controller{
     }
 
     //BARISTA ORDER FUNCTIONS
-    function pendingOrders(){
+    function orders(){
         $this->load->view('barista/navigation');
         $this->load->view('barista/pendingOrders'); 
     }
@@ -95,13 +95,12 @@ class Barista extends CI_Controller{
         $format = "%Y-%m-%d %h:%i %A";
         echo mdate($format);
     }
+
     function change_status() {
-        $item_status = $this->input->post('olStatus');
         $olID = $this->input->post('olID');
-        $osID = $this->input->post('osID');
+		$order_status = $this->input->post('olStatus');
+		$this->baristamodel->update_status( $order_status, $olID);
         
-        $this->baristamodel->update_status($osID, $olID, $item_status);
-        $this->get_orderlist();
     }
     function cancel(){
         $data=$this->baristamodel->cancelOrder();
@@ -162,15 +161,27 @@ class Barista extends CI_Controller{
         //barista functions for orderslips-cards
 
         function sample(){
-            $this->load->view('barista/orderCards');
+            $this->load->view('barista/navigation'); 
+                $data["slip"] = $this->baristamodel->slipData();
+                $this->load->view("barista/orderCards", $data);
         }
 
         function get_slipData(){
-            $slipID = $this->input->post('osID');
-            $customerName = $this->input->post('custName');
-            $table_code = $this->input->post('tableCode');
-            $status = $this->input->post('payStatus');
-            $this->load->baristamodel->get_slip_data();
+            $this->load->helper->form();
+            $data = array(
+                $slip_id => $this->input->post('osID'),
+                'table_code' => $this->input->post('tableCode'),
+                'customerName' => $this->input->post('custName'),
+                'paymentStatus' => $this->input->post('payStatus'),
+            );
+            $this->load->view('barista/orderCards', $data);
+            //$this->load->view('barista/viewOrderslipJS', $data);
         }
+
+        function orderData(){
+            $data= $this->baristamodel->get_ordersData();
+            echo json_encode($data);
+        }
+
     }
 ?>

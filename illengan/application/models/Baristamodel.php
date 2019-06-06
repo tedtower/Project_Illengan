@@ -42,8 +42,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
              return $this->db->query($query,array($tableCode,$osID));
         }
         function cancelOrder(){
-            $osID=$this->input->post('osID');
-            $this->db->where('osID', $osID);
+            $olID=$this->input->post('olID');
+            $this->db->where('olID', $olID);
             $result=$this->db->delete('orderlists');
             return $result;
         }
@@ -59,16 +59,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          return $query->result_array();
       }*/
 
-        function update_status($order_id, $order_desc, $item_status) {
-            $data['item_status'] = $item_status;
-            $query = $this->db->query('UPDATE orderlists SET olStatus = ? WHERE olID = ? AND osID = ?');
-            $this->db->query($query, array($item_status, $order_item_id, $order_id));
-        }
-
-        //this function is for orderCards
-        function get_slip_data(){
-            $query = "select osID, custName, tableCode, payStatus from orderslips";
-            return $this->db->query($query)->result_array();
+        function update_status($order_status, $olID) {
+            $query = "UPDATE orderlists SET olStatus = ? WHERE olID = ?";
+            return $this->db->query($query, array($order_status, $olID));
         }
 
 
@@ -114,7 +107,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             }
         }
 
+        function slipData(){
+            $query = "SELECT osID, tableCode, custName, payStatus from orderslips";
+            return $this->db->query($query)->result_array();
+        } 
+
+        function get_ordersData(){
+            $query = "SELECT
+            orderlists.olID,
+            olQty,
+            olDesc,
+            olSubtotal,
+            olRemarks,
+            aoName,
+            aoPrice
+        FROM
+            orderslips
+        LEFT JOIN orderlists ON orderslips.osID = orderlists.osID
+        LEFT JOIN orderaddons ON orderlists.olID = orderaddons.olID
+        LEFT JOIN addons ON orderaddons.aoID = addons.aoID "; //where osID = ?
+            return $this->db->query($query)->result_array();
+        }
+        //$query2 = "SELECT olID, aoName, aoPrice, olRemarks from orderlists inner join orderaddons using (olID) inner join addons using (aoID)";
+
     }
 
 ?>
-

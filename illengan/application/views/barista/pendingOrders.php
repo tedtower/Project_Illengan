@@ -83,6 +83,7 @@ $(function() {
 });
 
 //POPULATE TABLE
+let UPDATE = 5000;
 var table = $('#pendingordersTable');
 	// function format(d) {
 	// 	return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
@@ -123,7 +124,7 @@ var table = $('#pendingordersTable');
                 <td>${table.tableCode}</td>
                 <td>${table.olDesc}</td>
                 <td>${table.olQty}</td>
-                <td>${table.olStatus}</td>
+                <td><button><input type="button" onclick = "change()"/></button></td>
                 <td>
                         <!--Action Buttons-->
                         <div class="onoffswitch">
@@ -137,6 +138,32 @@ var table = $('#pendingordersTable');
                 $("#Modal_Remove").find("input[name='olID']").val($(this).closest("tr").attr(
                           "data-olID"));
             });
+          
+            $(".status").on('click', function() {
+                var olID = $(this).data('olID');
+                var order_status = $(this).data('olStatus');
+                var item_status;
+
+                if (order_status === "pending") {
+                    item_status = "served";
+                } else if (order_status === "served") {
+                    item_status = "pending";
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://www.illengan.com/barista/change_status',
+                    data: {
+                        olID: olID,
+                        olStatus: item_status
+                    },
+                    success: function() {
+                        location.reload();
+                    }
+                });
+
+            });
+            
         });
 	}
 	//END OF POPULATING TABLE
