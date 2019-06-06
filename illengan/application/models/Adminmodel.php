@@ -544,14 +544,13 @@ class Adminmodel extends CI_Model{
             stLocation = ?,
             stMin = ?,
             stName = ?,
-            stQty = ?,
             stStatus = ?,
             stType = ?,
             uomID = ?,
             stSize = ?
         WHERE
             stID = ?;";
-        if($this->db->query($query,array($stockCategory, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID))){
+        if($this->db->query($query,array($stockCategory, $stockLocation, $stockMin, $stockName, $stockStatus, $stockType, $stockUom, $stockSize, $stockID))){
             return true;
         }
         return false;
@@ -1423,26 +1422,17 @@ class Adminmodel extends CI_Model{
             );";
         return $this->db->query($query,array($stID,$stID))->result_array();
     }
-    // INSERT INTO stocklog(
-    //     slID,
-    //     slType,
-    //     slDateTime,
-    //     slQty,
-    //     slRemarks,
-    //     stID,
-    //     dateRecorded
-    // )
-    // VALUES(NULL, 'beginning', '', '', '', '', '')
-        function get_invPeriodStart($stID){
-            return $this->db->query("SELECT
-                        MAX(slDateTime) AS maxDate,
-                        slQty
-                    FROM
-                        stocklog
-                    WHERE
-                        slType = 'beginning' AND stID = ?
-                ;",array($stID))->result_array();
-        }
+    
+    function get_invPeriodStart($stID){
+        return $this->db->query("SELECT
+                    DATE_FORMAT(MAX(slDateTime), '%b %d, %Y %r') AS maxDate,
+                    slQty
+                FROM
+                    stocklog
+                WHERE
+                    slType = 'beginning' AND stID = ?
+            ;",array($stID))->result_array();
+    }
 }
 
 ?>

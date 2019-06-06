@@ -39,7 +39,7 @@
                         </thead>
                         <tbody>
                         <?php if(!empty($logs)){
-                            $bQty = $stock['stBqty'];
+                            $bQty = $currentInv['slQty'];
                             $icon;
                             foreach($logs as $log){
                                 switch($log['slType']){

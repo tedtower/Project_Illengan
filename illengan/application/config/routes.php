@@ -177,6 +177,8 @@ $route['admin/inventory/getEnumVals'] = "adminview/getEnumValsForStock";
 $route['admin/inventory/getStockItem'] = "adminview/getStockItem";
 $route['admin/transactions/getEnumVals'] = "adminview/getEnumValsForTransaction";
 $route['admin/transactions/getTransaction'] = "adminview/getTransaction";
+$route['admin/inventory/getStockItems'] = "adminview/getStockItems";
+$route['admin/inventory/restock'] = "adminadd/addRestockLog";
 //End Admin Json Routes ---------------------------------------
 
 //CUSTOMER ROUTES

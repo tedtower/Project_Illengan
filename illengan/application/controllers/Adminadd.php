@@ -386,6 +386,29 @@ class Adminadd extends CI_Controller{
         redirect('adminview/viewReturnTransactions');
     }
 
+    function addRestockLog(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $restockQtys = json_decode($this->input->post('rsQtys'),true);
+            foreach($restockQtys as $item){
+                if($this->adminmodel->add_stockLog($item['id'], NULL, "restock", date("Y-m-d H:i:s"), date("Y-m-d H:i:s"), $item['qty'], NULL)){
+                    if(!$this->adminmodel->add_stockQty($item['id'], $item['qty'])){
+                        echo json_encode(array(
+                            "crudErr" => true
+                        ));
+                    }
+                }else{
+                    echo json_encode(array(
+                        "crudErr" => true
+                    ));
+                }
+            }
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
+
 
 }
 ?>

@@ -641,6 +641,16 @@ function viewSpoilagesStock(){
         }
     }
 
+    function getStockItems(){
+        if($this->checkIfLoggedIn()){
+            echo json_encode($this->adminmodel->get_stocks());
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
+
 }
 
 ?>
