@@ -39,3 +39,4 @@
     <?php include 'edit.php'; ?>    
     <?php include 'remove.php'; ?>
     <?php include 'remove_all.php'; ?>
+    <?php include 'ordered_modal.php'?>
