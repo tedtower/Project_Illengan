@@ -180,6 +180,7 @@ class Adminview extends CI_Controller{
             $data['title'] = "Sales";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
+            $data['mnaddons'] = $this->adminmodel->get_mnAddons();
             // $data['sales'] = $this->adminmodel->get_sales();
             $this->load->view('admin/adminSales');
         }else{
