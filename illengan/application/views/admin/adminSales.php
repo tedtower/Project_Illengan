@@ -51,7 +51,7 @@
                                                         style="background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Order Paid Date</span>
                                                 </div>
-                                                <input type="date" name="osPayDateTime" id="osPayDateTime"
+                                                <input type="date" name="osPayDate" id="osPayDate"
                                                     class="form-control form-control-sm" required>
                                             </div>
 
@@ -62,7 +62,7 @@
                                                         style="background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Order Date</span>
                                                 </div>
-                                                <input type="date" name="osDateTime" id="osDateTime"
+                                                <input type="date" name="osDate" id="osDate"
                                                     class="form-control form-control-sm" required>
                                             </div>
                                         </div>
@@ -90,7 +90,7 @@
                                         </div>
 
                                         <!--Button to add row in the table-->
-                                        <a class="addMenuItem btn btn-default btn-sm" data-toggle="modal" data-target="#menuItems"
+                                        <a id="addMenuItem" class="btn btn-default btn-sm" data-toggle="modal" data-target="#menuItems"
                                             data-original-title style="margin:0" id="">Add Items</a>
                                         <br><br>
                                         <!--Table containing the different input fields in adding PO items -->
@@ -116,7 +116,11 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger btn-sm"
                                                 data-dismiss="modal">Cancel</button>
+<<<<<<< HEAD
                                             <button class="btn btn-success btn-sm" type="submit">Add</button>
+=======
+                                            <button class="btn btn-success btn-sm" id="submitPOrder" onclick="addSales()" type="button">Add</button>
+>>>>>>> f42ca62c9587119f4fab9a725d402d21041af50e
                                         </div>
                                     </div>
                                 </form>
@@ -124,6 +128,7 @@
                         </div>
                     </div>
                     <!-- End of Modal "Add Sales" -->
+<<<<<<< HEAD
 
                     <!--Start of Modal "Edit Sales"-->
                     <div class="modal fade bd-example-modal-lg" id="editSales" tabindex="-1" role="dialog"
@@ -222,6 +227,8 @@
                         </div>
                     </div>
                     <!-- END OF EDIT SALES MODAL -->
+=======
+>>>>>>> f42ca62c9587119f4fab9a725d402d21041af50e
                     
                      <!--Start of Menu Items Modal"-->
                      <div class="modal fade bd-example-modal" id="menuItems" tabindex="-1" role="dialog"
@@ -359,9 +366,6 @@ var orderlists = [];
 var orderslips = [];
 var menuItems = [];
 var tables = [];
-var addons = [];
-var mnaddons = <?= json_encode($mnaddons) ?>;
-var sales = [];
      $(function () {
         $.ajax({
             url: '/admin/jsonSales',
@@ -381,10 +385,8 @@ var sales = [];
                     });
                     orderslips[index].orders = orderlists.filter(ol => ol.orderlists.osID == item.osID);
                 });
-                sales = data;
                 menuItems = data.menuitems;
                 tables = data.tables;
-                addons = data.addons;
                 showTable();
                 console.log(orderslips);
             },
@@ -394,9 +396,8 @@ var sales = [];
             }
         });
 
-        $(".addMenuItem").on('click',function(){
+        $("#addMenuItem").on('click',function(){
             setBrochureContent(menuItems);
-           
         });
         
     });
@@ -420,17 +421,15 @@ var sales = [];
     }
     
     $('#addBtn').on('click', function() {
-        $("#editSales form")[0].reset();
-        $(".editsalesTable > tbody").empty();
         $('.salesTable > tbody').empty();
         $('#addSales form')[0].reset();
         $('#total').empty();
         $('#tableCode').empty();
         $("#tableCode").append(`${tables.map(tab => {
-            return `<option value="${tab.tableCode}">${tab.tableCode}</option>`;
+            return `<option value="${tab.tableCode}" selected>${tab.tableCode}</option>`;
         }).join('')}`);
     });
-   
+    
     function showTable() {
        orderslips.forEach(function (item) {
             var tableRow = `
@@ -439,23 +438,22 @@ var sales = [];
                     <td>${item.orderslips.osID}</td>
                     <td>${item.orderslips.custName}</td>
                     <td>${item.orderslips.tableCode}</td>
-                    <td>${item.orderslips.osPayDateTime}</td>
+                    <td>${item.orderslips.osPayDate}</td>
                     <td>&#8369; ${(parseFloat(item.orderslips.osTotal)).toFixed(2)}</td>
                     <td>
-                        <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editSales" id="editSalesBtn">Edit</button>
+                        <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editPO" id="editPOBtn">Edit</button>
                         <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#delete">Delete</button>
                     </td>
                 </tr>
             `;
             var ordersDiv = `
             <div class="preferences" style="float:left;margin-right:3%" > <!-- Preferences table container-->
-                ${item.orders[0].orderlists.length === 0 ? "No orders" : 
+                ${parseInt(item.orders[0].orderlists) === 0 ? "No orders" : 
                 `<caption><b>Orders</b></caption>
                 <br>
                 <table id="orderitem" class=" table table-bordered"> <!-- Preferences table-->
                     <thead class="thead-light">
                         <tr>
-                        <th></th>
                             <th scope="col">Item Name</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Price</th>
@@ -465,8 +463,7 @@ var sales = [];
                     <tbody>
                     ${item.orders.map(ol => {
                         return `
-                        <tr id="${ol.orderlists.olID}">
-                            <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
+                        <tr>
                             <td>${ol.orderlists.mName} ${ol.orderlists.prName === 'Normal' ? " " : ol.orderlists.prName }</td>
                             <td>${ol.orderlists.olQty}</td>
                             <td>&#8369; ${ol.orderlists.prPrice}</td>
@@ -494,10 +491,42 @@ var sales = [];
                 </td>
             </tr>
             `;
+
+            var addonsDiv = `
+            <div class="addons" style="float:left;margin-right:3%" > <!-- Preferences table container-->
+                ${parseInt(item.orders[0].addons.length) === 0 ? " " : 
+                `<caption><b>Add Ons</b></caption>
+                <br>
+                <table class="table table-bordered"> <!-- Preferences table-->
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Add On</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Subtotal Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    ${item.orders[0].addons.map(or => {
+                        return `
+                        <tr>
+                            <td>${or.aoName}</td>
+                            <td>${or.aoQty}</td>
+                            <td>&#8369; ${or.aoPrice}</td>
+                            <td>&#8369; ${(parseFloat(or.aoTotal)).toFixed(2)}</td>
+                        </tr>
+                        `;
+                    }).join('')}
+                    </tbody>
+                </table>
+                `}
+            </div>
+            `;
         
             $("#salesTable > tbody").append(tableRow);
             $("#salesTable > tbody").append(accordion);
             $(".poAccordionContent").last().append(ordersDiv);
+            $(".poAccordionContent").append(addonsDiv);
         });
         $(".accordionBtn").on('click', function () {
             if ($(this).closest("tr").next(".accordion").css("display") == 'none') {
@@ -510,17 +539,10 @@ var sales = [];
         });
 
         $(".editBtn").on("click", function() {
-        $('.salesTable > tbody').empty();
-        $('#addSales form')[0].reset();
-        $("#editSales form")[0].reset();
-        $(".editsalesTable > tbody").empty();
-        $('#tableCodes').empty();
-        $("#tableCodes").append(`${tables.map(tab => {
-            return `<option value="${tab.tableCode}">${tab.tableCode}</option>`;
-        }).join('')}`);
+        $("#editPO form")[0].reset();
+        $("#editPO .poItemsTables > tbody").empty();
         var osID = $(this).closest("tr").attr("data-id");
-        setEditModal($("#editSales"), sales.orderslips.filter(item => item.osID === osID)[0], 
-        sales.orderlists.filter(ol => ol.osID === osID), addons);
+        //setEditModal($("#editPO"), POs.purchorders.filter(item => item.osID === osID)[0], POs.orderlists.filter(poi => poi.osID === osID));
     });
     showAddOns();
     }
@@ -736,4 +758,5 @@ $(document).ready(function() {
 });
 
 
+    
 </script>

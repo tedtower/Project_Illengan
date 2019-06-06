@@ -262,8 +262,6 @@ $(document).ready(function() {
     el[0].style.textDecoration = "line-through";
     el[0].style.opacity = "0.6";
     btn.attr("onclick", " ");
-    console.log(btn);
-    
 
     try {
         if($(el).next(".addonsTable") != null) {
@@ -277,6 +275,4 @@ $(document).ready(function() {
     } catch(error) {
 
     }
-
-    console.log('EYEYE');
  }

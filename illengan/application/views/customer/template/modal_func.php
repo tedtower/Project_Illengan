@@ -68,7 +68,7 @@ $(document).ready(function(){
                 <select class="browser-default custom-select w-50 addonSelect" name="addon[]">
                     <option selected disabled>Choose...</option>
                 </select>
-                <input type="number" min="1" placeholder="Qty" aria-label="Add-on Quantity"
+                <input type="number" min="1" value="1" placeholder="Qty" aria-label="Add-on Quantity"
                 class="form-control" name="addonQty[]">
                 <div class="input-group-prepend">
                     <!--Subtotal-->
@@ -317,6 +317,42 @@ function setOrderlist(ol){
                 </table>`;
         $('#ol_main').append(row);
         for(var rowid=0; rowid < orders.length; rowid++){
+             var orderedaddon = orders[rowid].addons;
+             var name= "";
+                    for(var keys in orderedaddon){
+                        var id= orderedaddon[keys];
+                    if(keys == 'addonIds'){
+                    for(var row=0;  row < id.length; row++){       
+                                var val= orderedaddon[keys][row];
+                                var names = addon.filter(function (n) {
+                                    return n.aoID == val;
+                                });
+                                for(var na=0; na<names.length;na++){
+                                    name += "<i>"+names[na].aoName+"</i><br>";
+                                }
+                        }
+                    }
+                    }
+        var quantity="";
+                for(var keys in orderedaddon){
+                        var id= orderedaddon[keys];
+                    if(keys == 'addonQtys'){
+                    for(var row=0;  row < id.length; row++){       
+                                var val= orderedaddon[keys][row];
+                                quantity += "<i>"+val+"</i><br>";
+                        }
+                    }
+                    }
+        var subtotal="";
+                for(var keys in orderedaddon){
+                        var id= orderedaddon[keys];
+                    if(keys == 'addonSubtotals'){
+                    for(var row=0;  row < id.length; row++){       
+                                var val= orderedaddon[keys][row];
+                                subtotal +="<i>"+val+"&nbsp;php</i><br>";
+                        }
+                    }
+                 }
         var row1 = `<tr>
                         <form type="hidden" name="`+orders[rowid].id+`">
                         <th scope="row">`+orders[rowid].name+`</th>
@@ -328,6 +364,12 @@ function setOrderlist(ol){
                             <button type="button" class="btn btn-mdb-color btn-sm m-0 p-2" data-toggle="modal" data-target="#editModal">Edit</button>
                             <button type="button" class="btn btn-danger btn-sm m-0 p-2 remOrder" data-toggle="modal" data-target="#deleteModal" data-name="`+orders[rowid].name+`" data-id="`+rowid+`">Remove</button>
                         </td>
+                    </tr>
+                    <tr id="values">
+                    <td></td>
+                    <td id="qty">`+quantity+`</td>
+                    <td colspan="2" id="name">`+name+`</td>
+                    <td id="subtotal">`+subtotal+`</td>
                     </tr>`;
         $('#orderlists').append(row1);
         total_qty += orders[rowid].qty;

@@ -6,7 +6,7 @@ class Adminupdate extends CI_Controller{
         $this->load->model('adminmodel'); 
         date_default_timezone_set('Asia/Manila');  
         // code for getting current date : date("Y-m-d")
-        // code for getting current date and time : date("Y-m-d 2H:i:s")
+        // code for getting current date and time : date("Y-m-d H:i:s")
     }
     function editStockSpoil(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
@@ -14,10 +14,14 @@ class Adminupdate extends CI_Controller{
             $ssID=$this->input->post('ssID');
             $ssDate=$this->input->post('ssDate');
             $ssRemarks=$this->input->post('ssRemarks');
-            $ssQty = $this->input->post('ssQty');
+            $stQty = $this->input->post('stQty');
+            $ssQtyUpdate = $this->input->post('ssQtyUpdate');
+            $curSsQty = $this->input->post('curSsQty');
+            $updateQtyh = $ssQtyUpdate - $curSsQty; 
+            $updateQtyl = $curSsQty - $ssQtyUpdate;
             $date_recorded=date("Y-m-d H:i:s");
 
-            $this->adminmodel->edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$ssQty,$date_recorded);
+            $this->adminmodel->edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$updateQtyh,$updateQtyl,$curSsQty,$stQty,$ssQtyUpdate,$date_recorded);
         }else{
             redirect('login');
         } 
@@ -66,26 +70,6 @@ class Adminupdate extends CI_Controller{
             $ctName = $this->input->post('new_name');
             $this->adminmodel->edit_stockcategory($ctID, $ctName);
             redirect('admin/stockcategories');
-        }else{
-            redirect('login');
-        }
-    }
-
-    function editSales() {
-        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $osID = $this->input->post('osID');
-            $tableCodes = $this->input->post('tableCodes');
-            $custName = $this->input->post('custName');
-            $osTotal = $this->input->post('osTotal');
-            $payStatus = $this->input->post('payStatus');
-            $osDateTime = $this->input->post('osDateTime');
-            $osPayDateTime = $this->input->post('osPayDateTime');
-            $osDateRecorded = date("Y-m-d H:i:s");
-            $orderlists = json_decode($this->input->post('orderlists'), true);
-            $addons = json_decode($this->input->post('addons'), true);
-               
-            $this->adminmodel->edit_sales($osID, $tableCodes, $custName, $osTotal, $payStatus, 
-            $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons);
         }else{
             redirect('login');
         }
@@ -173,8 +157,8 @@ class Adminupdate extends CI_Controller{
             }
 
         }else{
-            redirect('login');
-        }
+             redirect('login');
+         }
     }
 
     function editSupplierMerchandise(){
@@ -197,17 +181,23 @@ class Adminupdate extends CI_Controller{
             redirect('login');
         }
     }
-    function edit_menu(){
+    function editMenu(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $menu_id = $this->input->post('menu_id');
-            $menu_name = $this->input->post('new_name');
-            $menu_description = $this->input->post('new_description');
-            $category_id = $this->input->post('new_category');
-            $string_price = $this->input->post('new_price');
-            $menu_price = floatval($string_price);
-            $menu_availability = $this->input->post('new_availability');
-            $data['menu'] = $this->adminmodel->edit_menu($menu_id, $menu_name, $category_id, $menu_description, $menu_price, $menu_availability);
-            redirect('admin/menu');
+            $mID = $this->input->post('id');
+            $mName = $this->input->post('name');
+            $mDesc = $this->input->post('description');
+            $mCat = $this->input->post('category');
+            $mAvailability = $this->input->post('status');
+            $preference = json_decode($this->input->post('preferences'),true);
+            $addon = json_decode($this->input->post('addons'),true);
+            if($this->adminmodel->edit_menu($mName, $mDesc, $mCat, $mAvailability, $preference, $addon, $mID)){
+                echo json_encode(array(
+                    'menu' => $this->adminmodel->get_menu(),
+                    'preferences' => $this->adminmodel->get_preferences(),
+                    'addons' => $this->adminmodel->get_addons2(),
+                    'categories' => $this->adminmodel->get_menucategories()
+                ));
+            }
         }else{
             redirect('login');
         }

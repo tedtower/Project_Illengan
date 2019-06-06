@@ -124,7 +124,8 @@ class Adminview extends CI_Controller{
             $data = array(
                 'menu' => $this->adminmodel->get_menu(),
                 'preferences' => $this->adminmodel->get_preferences(),
-                'addons' => $this->adminmodel->get_addons2()
+                'addons' => $this->adminmodel->get_addons2(),
+                'categories' => $this->adminmodel->get_menucategories()
             );
             header('Content-Type: application/json');
             echo json_encode($data, JSON_PRETTY_PRINT);
@@ -182,7 +183,7 @@ class Adminview extends CI_Controller{
             $this->load->view('admin/templates/sideNav');
             $data['mnaddons'] = $this->adminmodel->get_mnAddons();
             // $data['sales'] = $this->adminmodel->get_sales();
-            $this->load->view('admin/adminSales', $data);
+            $this->load->view('admin/adminSales');
         }else{
             redirect('login');
         }
@@ -234,7 +235,8 @@ function viewSpoilagesStock(){
     }
     function viewSpoilagesMenu(){
         if($this->checkIfLoggedIn()){
-            $this->load->view('admin/templates/head');
+            $data['title'] = "Spoilages - Menu";
+            $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminspoilagesmenu');
             $this->load->view('admin/templates/footer');
@@ -256,7 +258,8 @@ function viewSpoilagesStock(){
     }
     function viewSpoilagesAddons(){
         if($this->checkIfLoggedIn()){
-            $this->load->view('admin/templates/head');
+            $data['title'] = "Spoilages - Addons";
+            $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminspoilagesaddons');
             $this->load->view('admin/templates/footer');
@@ -313,19 +316,6 @@ function viewSpoilagesStock(){
     //         redirect('login');
     //     }
     // }
-
-    function viewAllTransactions(){
-        if($this->checkIfLoggedIn()){
-            $data['title'] = "Transactions - All";
-            $this->load->view('admin/templates/head', $data);
-            $this->load->view('admin/templates/sideNav');
-            $data['invoices'] = $this->adminmodel->get_allTransactions();
-            $data['items'] = $this->adminmodel->get_allTransactionsItems();
-            $this->load->view('admin/adminTransactionsAll',$data);
-        }else{
-            redirect('login');
-        }
-    }
     function viewDeliveryTransactions(){
         if($this->checkIfLoggedIn()){
             $data['title'] = "Transactios - Deliveries";
@@ -596,6 +586,51 @@ function viewSpoilagesStock(){
             echo json_encode(array(
                 "stock" => $this->adminmodel->get_stockItem($this->input->post('id'))[0],
                 "uomVariants" => $this->adminmodel->get_uomForSizes()
+            ));
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
+
+    function viewTransactions(){
+        if($this->checkIfLoggedIn()){
+            $head['title'] = "Admin Transactions";
+            $this->load->view('admin/templates/head',$head);
+            $this->load->view('admin/templates/sideNav');
+            $data['transactions'] = $this->adminmodel->get_transactions();
+            $data['transitems'] = $this->adminmodel->get_transitems();
+            $this->load->view('admin/adminTransactionsAll',$data);
+        }else{
+            redirect('login');
+        }
+    }
+
+    function getEnumValsForTransaction(){
+        if($this->checkIfLoggedIn()){
+            preg_match_all("/\w+(\s+)?(\w+)?(\'\w+)?(?=')/",$this->adminmodel->get_enumVals('transactions','tType')[0]['column_type'], $tTypes);
+            preg_match_all("/\w+(\s+)?(\w+)?(\'\w+)?(?=')/",$this->adminmodel->get_enumVals('transitems','tiStatus')[0]['column_type'], $tiStatuses);
+            echo json_encode(array(
+                "tTypes" => $tTypes[0],
+                "tiStatuses" => $tiStatuses[0],
+                "suppliers" => $this->adminmodel->get_supplierNames(),
+                "uoms" => $this->adminmodel->get_uomForStoring(),
+                "stocks" => $this->adminmodel->get_stockItemNames()
+            ));
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
+
+    function getTransaction(){
+        if($this->checkIfLoggedIn()){
+            $id = $this->input->post('id');
+            echo json_encode(array(
+                "transaction" => $this->adminmodel->get_transaction($id),
+                "transitems" => $this->adminmodel->get_transitems($id)
             ));
         }else{
             echo json_encode(array(
