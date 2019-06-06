@@ -125,16 +125,17 @@ class Customer extends CI_Controller {
 					$addonsPrices = $this->Customermodel->get_addonPrices($rawAddons['addonIds']);					
 					for($index = 0 ; $index < count($rawAddons['addonIds']) ; $index++){
 						foreach($addonsPrices as $addon){
-							if($addon['ao_id'] == $rawAddons['addonIds'][$index]){
+							if($addon['aoID'] == $rawAddons['addonIds'][$index]){
 								$rawAddons['addonIds'][$index] = intval($rawAddons['addonIds'][$index]);
 								$rawAddons['addonQtys'][$index] = intval($rawAddons['addonQtys'][$index]);
-								array_push($rawAddons['addonSubtotals'], floatval($addon['ao_price'])*intval($rawAddons['addonQtys'][$index]));
+								array_push($rawAddons['addonSubtotals'], floatval($addon['aoPrice'])*intval($rawAddons['addonQtys'][$index]));
 							}
 						}
 					}
 				}
 				$data = array(
 					'id' => intval($this->input->post('preference')),
+					'menu_id' => intval($preference['mID']),
 					'name' => $preference['order'],
 					'qty' => intval($this->input->post('quantity')),
 					'orderDesc' => $preference['order'],

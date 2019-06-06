@@ -210,7 +210,6 @@
 				url: '<?= site_url('admin/addon/spoilages/viewAddonJS') ?>',
 				dataType: 'json',
 				success: function (data) {
-					var poLastIndex = 0;
 					addons = data;
 					setAddonData(addons);
 				},

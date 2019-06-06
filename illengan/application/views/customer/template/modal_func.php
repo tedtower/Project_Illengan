@@ -28,11 +28,9 @@ $(document).ready(function(){
     });
     $("#qtyIncrement").on('click',function(){
         var quantity = parseInt($("#quantity").val());
-        if(isNaN(quantity)){
+        if(isNaN(quantity) || quantity < 1){
             $("#quantity").val(1); 
-        }else if (quantity < 1){
-            $("#quantity").val(1);
-        }else{
+        } else {
             quantity++;
             $("#quantity").val(quantity);
         }
@@ -40,11 +38,9 @@ $(document).ready(function(){
     });
     $("#qtyDecrement").on('click',function(){
         var quantity = parseInt($("#quantity").val());
-        if(isNaN(quantity)){
+        if(isNaN(quantity) || quantity == 1){
             $("#quantity").val(1); 
-        }else if (quantity == 1){
-            $("#quantity").val(1);
-        }else{
+        } else {
             quantity--;
             $("#quantity").val(quantity);
         }
@@ -53,10 +49,8 @@ $(document).ready(function(){
     });         
     $("#quantity").on('change', function(){
         var quantity = parseInt($(this).val());
-        if(isNaN(quantity)){
+        if(isNaN(quantity) || quantity < 1){
             $(this).val(1); 
-        }else if (quantity < 1){
-            $(this).val(1);
         }
         computeSubtotal();
         console.log($("#dc_subtotal").val());
@@ -68,7 +62,7 @@ $(document).ready(function(){
                 <select class="browser-default custom-select w-50 addonSelect" name="addon[]">
                     <option selected disabled>Choose...</option>
                 </select>
-                <input type="number" min="1" placeholder="Qty" aria-label="Add-on Quantity"
+                <input type="number" min="1" value="1" placeholder="Qty" aria-label="Add-on Quantity"
                 class="form-control" name="addonQty[]">
                 <div class="input-group-prepend">
                     <!--Subtotal-->
@@ -141,7 +135,6 @@ $(document).ready(function(){
             },
             success: function(data) {
                 location.reload();
-                console.log(data);
             },
             error: function(response,setting, errorThrown) {
                 console.log(response.responseText);
@@ -279,9 +272,6 @@ function computeSubtotal(){
 $('#omButton').click(function(){
     setOrderlist(orders);
 });
-$('#ceoButton').click(function(){
-    $('#editModal').modal('hide');
-});
 $('#cosButton').click(function(){
     $('#proceed_modal').modal('hide');
 });
@@ -291,7 +281,24 @@ $('#croButton').click(function(){
 $('#craoButton').click(function(){
     $('#deleteAllModal').modal('hide');
 });
-
+$('#qty-plus').click(function(){
+    var quantity = parseInt($("#quantity[name='edit_qty']").val());
+    if(isNaN(quantity) || quantity <= 0){
+        $("#quantity[name='edit_qty']").val(1);
+    } else {
+        quantity++;
+        $("#quantity[name='edit_qty']").val(quantity);
+    }
+});
+$('#qty-minus').click(function(){
+    var quantity = parseInt($("#quantity[name='edit_qty']").val());
+    if(isNaN(quantity) || quantity == 1){
+        $("#quantity[name='edit_qty']").val(1);
+    } else {
+        quantity--;
+        $("#quantity[name='edit_qty']").val(quantity);
+    }
+});
 function setOrderlist(ol){
     event.preventDefault();
     $('#ol_main').empty();
@@ -308,7 +315,6 @@ function setOrderlist(ol){
                             <th scope="col">Quantity</th>
                             <th scope="col">Total Price</th>
                             <th scope="col">Remarks</th>
-                            <th scope="col">Add Ons</th>
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
@@ -317,17 +323,58 @@ function setOrderlist(ol){
                 </table>`;
         $('#ol_main').append(row);
         for(var rowid=0; rowid < orders.length; rowid++){
+             var orderedaddon = orders[rowid].addons;
+             var name= "";
+                    for(var keys in orderedaddon){
+                        var id= orderedaddon[keys];
+                    if(keys == 'addonIds'){
+                    for(var row=0;  row < id.length; row++){       
+                                var val= orderedaddon[keys][row];
+                                var names = addon.filter(function (n) {
+                                    return n.aoID == val;
+                                });
+                                for(var na=0; na<names.length;na++){
+                                    name += "<i>"+names[na].aoName+"</i><br>";
+                                }
+                        }
+                    }
+                    }
+        var quantity="";
+                for(var keys in orderedaddon){
+                        var id= orderedaddon[keys];
+                    if(keys == 'addonQtys'){
+                    for(var row=0;  row < id.length; row++){       
+                                var val= orderedaddon[keys][row];
+                                quantity += "<i>"+val+"</i><br>";
+                        }
+                    }
+                    }
+        var subtotal="";
+                for(var keys in orderedaddon){
+                        var id= orderedaddon[keys];
+                    if(keys == 'addonSubtotals'){
+                    for(var row=0;  row < id.length; row++){       
+                                var val= orderedaddon[keys][row];
+                                subtotal +="<i>"+val+"&nbsp;php</i><br>";
+                        }
+                    }
+                 }
         var row1 = `<tr>
                         <form type="hidden" name="`+orders[rowid].id+`">
                         <th scope="row">`+orders[rowid].name+`</th>
                         <td>`+orders[rowid].qty+`</td>
                         <td>`+orders[rowid].subtotal+`</td>
                         <td>`+orders[rowid].remarks+`</td>
-                        <td>`+orders[rowid].addons+`</td>
                         <td>
-                            <button type="button" class="btn btn-mdb-color btn-sm m-0 p-2" data-toggle="modal" data-target="#editModal">Edit</button>
+                            <button type="button" class="btn btn-mdb-color btn-sm m-0 p-2 ediOrder" data-toggle="modal" data-target="#editModal" data-name="`+orders[rowid].name+`" data-id="`+rowid+`">Edit</button>
                             <button type="button" class="btn btn-danger btn-sm m-0 p-2 remOrder" data-toggle="modal" data-target="#deleteModal" data-name="`+orders[rowid].name+`" data-id="`+rowid+`">Remove</button>
                         </td>
+                    </tr>
+                    <tr id="values">
+                    <td></td>
+                    <td id="qty">`+quantity+`</td>
+                    <td colspan="2" id="name">`+name+`</td>
+                    <td id="subtotal">`+subtotal+`</td>
                     </tr>`;
         $('#orderlists').append(row1);
         total_qty += orders[rowid].qty;
@@ -350,6 +397,9 @@ function setOrderlist(ol){
     $('.remOrder').click(function(){
         $('#remName').text("'"+$(this).data('name')+"'");
         $('#remID').val($(this).data('id'));
+    });
+    $('.ediOrder').click(function(){
+        editOrder($(this).data('id'),$(this).data('name'));
     });
 }
 $('#removo').click(function(){
@@ -377,6 +427,11 @@ function removeOrder(){
             console.log(errorThrown);
         }
     });
+}
+function editOrder(id,name){
+    $('#edit_name').text(name);
+    $("input#quantity[name='edit_qty']").val(orders[id].qty);
+    console.log();
 }
 
 </script>

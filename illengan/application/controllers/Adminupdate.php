@@ -6,7 +6,7 @@ class Adminupdate extends CI_Controller{
         $this->load->model('adminmodel'); 
         date_default_timezone_set('Asia/Manila');  
         // code for getting current date : date("Y-m-d")
-        // code for getting current date and time : date("Y-m-d 2H:i:s")
+        // code for getting current date and time : date("Y-m-d H:i:s")
     }
     function editStockSpoil(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
@@ -17,7 +17,7 @@ class Adminupdate extends CI_Controller{
             $stQty = $this->input->post('stQty');
             $ssQtyUpdate = $this->input->post('ssQtyUpdate');
             $curSsQty = $this->input->post('curSsQty');
-            $updateQtyh = $ssQtyUpdate - $curSsQty; //8-7=1
+            $updateQtyh = $ssQtyUpdate - $curSsQty; 
             $updateQtyl = $curSsQty - $ssQtyUpdate;
             $date_recorded=date("Y-m-d H:i:s");
 

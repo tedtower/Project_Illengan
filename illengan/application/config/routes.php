@@ -99,7 +99,6 @@ $route['admin/transactions/add'] = "adminadd/addtransaction";
 $route['admin/purchaseorder/add'] = "adminadd/addPurchaseOrder";
 $route['admin/inventory/addEdit'] = "adminadd/addstockitem";
 $route['admin/menu/add'] = "adminadd/addMenu";
-$route['admin/menu/image/add'] = "adminadd/addImage";
 $route['admin/addon/add'] = "adminadd/addAddon";
 $route['admin/stockcategories/add'] = "adminadd/addstockcategory";
 $route['admin/menucategories/add'] = "adminadd/addmenucategory";
@@ -174,9 +173,10 @@ $route['admin/jsonPrefDetails'] ="adminview/jsonPrefDetails";
 $route['admin/inventory/getitem'] = "adminview/getStockDetails";
 $route['admin/getPurchaseOrders'] = "adminview/getPurchaseOrders";
 $route['admin/jsonAddons'] = "adminview/jsonMenuAddons";
-
+$route['admin/inventory/getEnumVals'] = "adminview/getEnumValsForStock";
+$route['admin/inventory/getStockItem'] = "adminview/getStockItem";
 $route['admin/transactions/getEnumVals'] = "adminview/getEnumValsForTransaction";
-$route['admin/transaction/getTransaction'] = "adminview/getTransaction";
+$route['admin/transactions/getTransaction'] = "adminview/getTransaction";
 //End Admin Json Routes ---------------------------------------
 
 //CUSTOMER ROUTES
