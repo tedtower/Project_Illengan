@@ -486,23 +486,6 @@ class Adminmodel extends CI_Model{
             stID = ?;";
         return $this->db->query($query, array($id))->result_array();
     }
-    function get_variances($id){
-        $query = "SELECT 
-            vID,
-            vUnit,
-            vSize,
-            vMin,
-            vQty,
-            vStatus,
-            stID
-        FROM
-            variance
-                INNER JOIN
-            stockitems USING (stID)
-        WHERE
-            stID = ?;";
-        return $this->db->query($query, array($id))->result_array();
-    }
     function edit_stockItem($stockCategory, $stockLocation, $stockMin, $stockName, $stockQty, $stockStatus, $stockType, $stockUom, $stockSize, $stockID){
         $query = "UPDATE
             stockitems
@@ -773,7 +756,7 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_suppliermerch(){
-        $query = "SELECT *, CONCAT(spmDesc,' ',stName,' ',vUnit,' ','(',vSize,')') as merchandise, CONCAT(stName,' ',vUnit,' ','(',vSize,')') as stockvariance  from supplier natural join suppliermerchandise natural join variance natural join stockitems";
+        $query = "SELECT *, CONCAT(spmName,' ',stName,' ',uomAbbreviation,' ','(',stSize,')') as merchandise, CONCAT(stName,' ',uomAbbreviation,' ','(',stSize,')') as stockvariant  from supplier natural join suppliermerchandise natural join stockitems left join uom using (uomID);";
         return $this->db->query($query)->result_array();
     }
     function get_suppMerchandise($spmID){
@@ -1270,13 +1253,6 @@ class Adminmodel extends CI_Model{
         }
     } 
 
-
-    /*
-     * 1] Add a transaction record (add_transaction function)
-     * 2] Add the items under the transaction receipt (addEdit_transitem function)
-     * 3] Add a log for stocks
-     * 4] Make changes to stock quantity 
-     */
     function add_transaction($id, $supplier, $receipt, $date, $type, $dateRecorded, $remarks, $transitems){
         $query = "";
         $insertSuccess = false;

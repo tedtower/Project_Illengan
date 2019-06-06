@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 27, 2019 at 01:20 AM
--- Server version: 5.7.24
--- PHP Version: 7.2.14
+-- Generation Time: Jun 06, 2019 at 02:03 AM
+-- Server version: 5.7.21
+-- PHP Version: 5.6.35
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -35,15 +35,19 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `aUsername` varchar(25) NOT NULL,
   `aPassword` char(64) NOT NULL,
   `aIsOnline` enum('1','0') NOT NULL,
+  `aStatus` enum('active','inactive','archived') NOT NULL,
   PRIMARY KEY (`aID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `accounts`
 --
 
-INSERT INTO `accounts` (`aID`, `aType`, `aUsername`, `aPassword`, `aIsOnline`) VALUES
-(1, 'admin', 'manager', 'manager', '1');
+INSERT INTO `accounts` (`aID`, `aType`, `aUsername`, `aPassword`, `aIsOnline`, `aStatus`) VALUES
+(1, 'admin', 'manager', 'manager', '0', 'active'),
+(2, 'barista', 'barista', 'barista', '0', 'active'),
+(3, 'chef', 'chef', 'chef', '0', 'active'),
+(4, 'customer', 'customer', 'customer', '0', 'active');
 
 -- --------------------------------------------------------
 
@@ -57,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `activitylog` (
   `aID` int(11) NOT NULL,
   `alDate` datetime NOT NULL,
   `alDesc` varchar(120) NOT NULL,
-  `alType` enum('add','update','delete') NOT NULL,
+  `alType` enum('add','update','archived') NOT NULL,
   `additionalRemarks` longtext,
   PRIMARY KEY (`alID`),
   KEY `activity log aID_idx` (`aID`)
@@ -75,9 +79,9 @@ CREATE TABLE IF NOT EXISTS `addons` (
   `aoName` varchar(45) NOT NULL,
   `aoCategory` enum('food','drinks') NOT NULL,
   `aoPrice` double NOT NULL,
-  `aoStatus` enum('availabe','unavailable','deleted') NOT NULL,
+  `aoStatus` enum('available','unavailable','archived') NOT NULL,
   PRIMARY KEY (`aoID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -94,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `addonspoil` (
   `aosRemarks` longtext,
   PRIMARY KEY (`aoID`,`aosID`),
   KEY `addonspoil aoID_idx` (`aoID`),
-  KEY `addonspoil aosID_idx` (`aosID`)
+  KEY `addons aosID_idx` (`aosID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -108,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `aospoil` (
   `aosID` int(11) NOT NULL AUTO_INCREMENT,
   `aosDateRecorded` datetime NOT NULL,
   PRIMARY KEY (`aosID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -124,35 +128,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `ctType` enum('menu','inventory') NOT NULL,
   PRIMARY KEY (`ctID`),
   KEY `super category_idx` (`supcatID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `categories`
---
-
-INSERT INTO `categories` (`ctID`, `supcatID`, `ctName`, `ctType`) VALUES
-(1, NULL, 'Cake', 'inventory');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `consumption`
---
-
-DROP TABLE IF EXISTS `consumption`;
-CREATE TABLE IF NOT EXISTS `consumption` (
-  `cnID` int(11) NOT NULL AUTO_INCREMENT,
-  `cnDate` date NOT NULL,
-  `cnDateRecorded` datetime NOT NULL,
-  PRIMARY KEY (`cnID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `consumption`
---
-
-INSERT INTO `consumption` (`cnID`, `cnDate`, `cnDateRecorded`) VALUES
-(1, '2019-05-26', '2019-05-26 10:00:59');
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -166,23 +142,6 @@ CREATE TABLE IF NOT EXISTS `discounts` (
   `dcName` varchar(45) NOT NULL,
   PRIMARY KEY (`pmID`),
   KEY `index2` (`pmID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `expiration`
---
-
-DROP TABLE IF EXISTS `expiration`;
-CREATE TABLE IF NOT EXISTS `expiration` (
-  `expID` int(11) NOT NULL AUTO_INCREMENT,
-  `vID` int(11) NOT NULL,
-  `expDate` date DEFAULT NULL,
-  `expQty` int(11) NOT NULL,
-  `expMaxTime` int(11) DEFAULT NULL,
-  PRIMARY KEY (`expID`),
-  KEY `expiration vID_idx` (`vID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -202,86 +161,6 @@ CREATE TABLE IF NOT EXISTS `freebies` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `invoice`
---
-
-DROP TABLE IF EXISTS `invoice`;
-CREATE TABLE IF NOT EXISTS `invoice` (
-  `iID` int(11) NOT NULL AUTO_INCREMENT,
-  `spID` int(11) NOT NULL,
-  `iDate` date NOT NULL,
-  `iDateRecorded` datetime NOT NULL,
-  `iNumber` varchar(45) DEFAULT NULL,
-  `iTotal` double NOT NULL,
-  `iRemarks` longtext,
-  `iType` enum('purchase','return','delivery') NOT NULL,
-  `resolvedStatus` enum('pending','partially resolved','resolved') NOT NULL,
-  PRIMARY KEY (`iID`),
-  KEY `invoice spID_idx` (`spID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `invoice`
---
-
-INSERT INTO `invoice` (`iID`, `spID`, `iDate`, `iDateRecorded`, `iNumber`, `iTotal`, `iRemarks`, `iType`, `resolvedStatus`) VALUES
-(1, 1, '2019-05-25', '2019-05-25 15:21:10', '2154632', 1000, NULL, 'purchase', 'resolved');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `invoiceitems`
---
-
-DROP TABLE IF EXISTS `invoiceitems`;
-CREATE TABLE IF NOT EXISTS `invoiceitems` (
-  `iItemID` int(11) NOT NULL AUTO_INCREMENT,
-  `vID` int(11) NOT NULL,
-  `iID` int(11) NOT NULL,
-  `iName` varchar(64) NOT NULL,
-  `iQty` int(11) NOT NULL,
-  `iPrice` double NOT NULL,
-  `iUnit` varchar(24) NOT NULL,
-  `iSubTotal` double NOT NULL,
-  PRIMARY KEY (`iItemID`),
-  KEY `invoiceitems iID_idx` (`iID`),
-  KEY `vID_idx` (`vID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `invoiceitems`
---
-
-INSERT INTO `invoiceitems` (`iItemID`, `vID`, `iID`, `iName`, `iQty`, `iPrice`, `iUnit`, `iSubTotal`) VALUES
-(1, 1, 1, 'Alaska Milk', 1, 500, 'bag', 500),
-(2, 2, 1, 'Bearbrand Gatas Na Choco', 1, 300, 'bag', 300),
-(3, 3, 1, 'Plantain', 1, 200, 'box', 200);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `invoicepo`
---
-
-DROP TABLE IF EXISTS `invoicepo`;
-CREATE TABLE IF NOT EXISTS `invoicepo` (
-  `iID` int(11) NOT NULL,
-  `poID` int(11) NOT NULL,
-  PRIMARY KEY (`iID`,`poID`),
-  KEY `invoicepo iItemID_idx` (`iID`),
-  KEY `invoicepo poiID_idx` (`poID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `invoicepo`
---
-
-INSERT INTO `invoicepo` (`iID`, `poID`) VALUES
-(1, 1);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `menu`
 --
 
@@ -290,12 +169,12 @@ CREATE TABLE IF NOT EXISTS `menu` (
   `mID` int(11) NOT NULL AUTO_INCREMENT,
   `ctID` int(11) NOT NULL,
   `mName` varchar(64) NOT NULL,
-  `mDesc` varchar(120) NOT NULL,
-  `mAvailability` enum('available','unavailable','deleted') NOT NULL,
-  `mImage` varchar(64) NOT NULL,
+  `mDesc` varchar(120) DEFAULT NULL,
+  `mAvailability` enum('available','unavailable','archived') NOT NULL,
+  `mImage` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`mID`),
   KEY `menu ctID_idx` (`ctID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -353,7 +232,7 @@ CREATE TABLE IF NOT EXISTS `menuspoil` (
   `msID` int(11) NOT NULL AUTO_INCREMENT,
   `msDateRecorded` datetime NOT NULL,
   PRIMARY KEY (`msID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -386,8 +265,10 @@ CREATE TABLE IF NOT EXISTS `orderlists` (
   `olDesc` varchar(120) NOT NULL,
   `olQty` int(11) NOT NULL,
   `olSubtotal` double NOT NULL,
-  `olStatus` enum('pending','done','served') NOT NULL,
+  `olStatus` enum('pending','served') NOT NULL,
   `olRemarks` longtext,
+  `olPrice` double DEFAULT '0',
+  `olDiscount` double DEFAULT '0',
   PRIMARY KEY (`olID`),
   KEY `orderlists prID_idx` (`prID`),
   KEY `orderlists osID_idx` (`osID`)
@@ -403,43 +284,15 @@ DROP TABLE IF EXISTS `orderslips`;
 CREATE TABLE IF NOT EXISTS `orderslips` (
   `osID` int(11) NOT NULL AUTO_INCREMENT,
   `tableCode` varchar(11) NOT NULL,
-  `custName` varchar(45) NOT NULL,
+  `custName` varchar(45) DEFAULT NULL,
   `osTotal` double NOT NULL,
-  `osDate` date NOT NULL,
-  `osPayDate` date NOT NULL,
+  `payStatus` enum('paid','unpaid') NOT NULL,
+  `osDateTime` datetime NOT NULL,
+  `osPayDateTime` datetime NOT NULL,
   `osDateRecorded` datetime NOT NULL,
   PRIMARY KEY (`osID`),
-  KEY `orderslips tableCode_idx` (`tableCode`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `poitems`
---
-
-DROP TABLE IF EXISTS `poitems`;
-CREATE TABLE IF NOT EXISTS `poitems` (
-  `poiID` int(11) NOT NULL AUTO_INCREMENT,
-  `vID` int(11) NOT NULL,
-  `poID` int(11) NOT NULL,
-  `poiQty` int(11) NOT NULL,
-  `poiUnit` varchar(24) NOT NULL,
-  `poiPrice` double NOT NULL,
-  `poiStatus` enum('pending','delivered','partially delivered','deleted') NOT NULL,
-  PRIMARY KEY (`poiID`),
-  KEY `poitems poID_idx` (`poID`),
-  KEY `poitems vID_idx` (`vID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `poitems`
---
-
-INSERT INTO `poitems` (`poiID`, `vID`, `poID`, `poiQty`, `poiUnit`, `poiPrice`, `poiStatus`) VALUES
-(1, 1, 1, 1, 'bag', 500, 'delivered'),
-(2, 2, 1, 1, 'bag', 300, 'delivered'),
-(3, 3, 1, 1, 'box', 200, 'delivered');
+  KEY `ordertableCode_idx` (`tableCode`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -452,8 +305,9 @@ CREATE TABLE IF NOT EXISTS `preferences` (
   `prID` int(11) NOT NULL AUTO_INCREMENT,
   `mID` int(11) NOT NULL,
   `prName` varchar(64) NOT NULL,
-  `mTemp` enum('h','c') DEFAULT NULL,
+  `mTemp` enum('h','c','hc') DEFAULT NULL,
   `prPrice` double NOT NULL,
+  `prStatus` enum('available','unavailable','archived') NOT NULL,
   PRIMARY KEY (`prID`),
   KEY `preferences mID_idx` (`mID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -489,36 +343,9 @@ CREATE TABLE IF NOT EXISTS `promos` (
   `pmEndDate` date NOT NULL,
   `freebie` char(1) DEFAULT NULL,
   `discount` char(1) DEFAULT NULL,
-  `status` enum('enabled','disabled','deleted') NOT NULL,
+  `status` enum('enabled','disabled','archived') NOT NULL,
   PRIMARY KEY (`pmID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `purchaseorder`
---
-
-DROP TABLE IF EXISTS `purchaseorder`;
-CREATE TABLE IF NOT EXISTS `purchaseorder` (
-  `poID` int(11) NOT NULL AUTO_INCREMENT,
-  `spID` int(11) NOT NULL,
-  `poDate` date NOT NULL,
-  `edDate` date NOT NULL,
-  `poTotal` double NOT NULL,
-  `poDateRecorded` datetime NOT NULL,
-  `poRemarks` longtext,
-  `poStatus` enum('pending','delivered','partially delivered','deleted') NOT NULL DEFAULT 'pending',
-  PRIMARY KEY (`poID`),
-  KEY `purchaseorder spID_idx` (`spID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `purchaseorder`
---
-
-INSERT INTO `purchaseorder` (`poID`, `spID`, `poDate`, `edDate`, `poTotal`, `poDateRecorded`, `poRemarks`, `poStatus`) VALUES
-(1, 1, '2019-05-15', '2019-05-25', 1000, '2019-05-15 18:15:35', NULL, 'delivered');
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -534,8 +361,24 @@ CREATE TABLE IF NOT EXISTS `spoiledmenu` (
   `msDate` date NOT NULL,
   `msRemarks` longtext NOT NULL,
   PRIMARY KEY (`prID`,`msID`),
-  KEY `spoiledmenu mID_idx` (`prID`),
-  KEY `spoiledmenu msID_idx` (`msID`)
+  KEY `spoiledmenuMsID_idx` (`msID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `spoiledstock`
+--
+
+DROP TABLE IF EXISTS `spoiledstock`;
+CREATE TABLE IF NOT EXISTS `spoiledstock` (
+  `ssID` int(11) NOT NULL,
+  `stID` int(11) NOT NULL,
+  `ssQty` int(11) NOT NULL,
+  `ssDate` date NOT NULL,
+  `ssRemarks` longtext,
+  PRIMARY KEY (`ssID`,`stID`),
+  KEY `spoiledmenuSID_idx` (`stID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -548,20 +391,40 @@ DROP TABLE IF EXISTS `stockitems`;
 CREATE TABLE IF NOT EXISTS `stockitems` (
   `stID` int(11) NOT NULL AUTO_INCREMENT,
   `ctID` int(11) NOT NULL,
+  `uomID` int(11) NOT NULL,
   `stName` varchar(64) NOT NULL,
-  `stStatus` enum('available','unavailable','temp unavailable','deleted') NOT NULL,
+  `stQty` int(11) NOT NULL,
+  `stMin` int(11) NOT NULL,
+  `stSize` varchar(24) NOT NULL,
+  `stLocation` enum('kitchen','stockroom') NOT NULL,
+  `stStatus` enum('available','unavailable','archived') NOT NULL,
+  `stBqty` int(11) NOT NULL,
   `stType` enum('liquid','solid') NOT NULL,
   PRIMARY KEY (`stID`),
-  KEY `stockitems ctID_idx` (`ctID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  KEY `stockCategoryID_idx` (`ctID`),
+  KEY `stockUomID_idx` (`uomID`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `stockitems`
+-- Table structure for table `stocklog`
 --
 
-INSERT INTO `stockitems` (`stID`, `ctID`, `stName`, `stStatus`, `stType`) VALUES
-(1, 1, 'Milk Powder', 'available', 'solid'),
-(2, 1, 'Banana', 'available', 'solid');
+DROP TABLE IF EXISTS `stocklog`;
+CREATE TABLE IF NOT EXISTS `stocklog` (
+  `slID` int(11) NOT NULL AUTO_INCREMENT,
+  `stID` int(11) NOT NULL,
+  `tID` int(11) DEFAULT NULL,
+  `slType` enum('consumed','restock','spoilage','return','other') NOT NULL,
+  `slDateTime` datetime NOT NULL,
+  `dateRecorded` datetime NOT NULL,
+  `slQty` int(11) NOT NULL,
+  `slRemarks` longtext,
+  PRIMARY KEY (`slID`),
+  KEY `stocklogStID_idx` (`stID`),
+  KEY `stocklogTID_idx` (`tID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -585,19 +448,13 @@ CREATE TABLE IF NOT EXISTS `stockspoil` (
 DROP TABLE IF EXISTS `supplier`;
 CREATE TABLE IF NOT EXISTS `supplier` (
   `spID` int(11) NOT NULL AUTO_INCREMENT,
-  `spName` varchar(64) NOT NULL,
-  `spContactNum` varchar(13) NOT NULL,
-  `spEmail` varchar(45) NOT NULL,
-  `spStatus` enum('active','inactive','deleted') NOT NULL,
+  `spName` varchar(45) NOT NULL,
+  `spContactNum` varchar(20) NOT NULL,
+  `spEmail` varchar(45) DEFAULT NULL,
+  `spStatus` enum('active','inactive','archived') NOT NULL,
+  `spAddress` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`spID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `supplier`
---
-
-INSERT INTO `supplier` (`spID`, `spName`, `spContactNum`, `spEmail`, `spStatus`) VALUES
-(1, 'Example Inc.', '+639179354463', 'example@ex.com', 'active');
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -608,14 +465,16 @@ INSERT INTO `supplier` (`spID`, `spName`, `spContactNum`, `spEmail`, `spStatus`)
 DROP TABLE IF EXISTS `suppliermerchandise`;
 CREATE TABLE IF NOT EXISTS `suppliermerchandise` (
   `spmID` int(11) NOT NULL AUTO_INCREMENT,
-  `vID` int(11) NOT NULL,
   `spID` int(11) NOT NULL,
-  `spmDesc` varchar(120) NOT NULL,
-  `spmUnit` varchar(24) NOT NULL,
+  `stID` int(11) NOT NULL,
+  `uomID` int(11) NOT NULL,
+  `spmName` varchar(45) NOT NULL,
+  `spmActualQty` int(11) NOT NULL,
   `spmPrice` double NOT NULL,
   PRIMARY KEY (`spmID`),
-  KEY `suppliermerchandise vID_idx` (`vID`),
-  KEY `suppliermerchandise spID_idx` (`spID`)
+  KEY `suppliermerchandiseSpID_idx` (`spID`),
+  KEY `suppliermerchandiseStID_idx` (`stID`),
+  KEY `suppliermerchandiseUomID_idx` (`uomID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -633,73 +492,74 @@ CREATE TABLE IF NOT EXISTS `tables` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `varconsumptionitems`
+-- Table structure for table `transactions`
 --
 
-DROP TABLE IF EXISTS `varconsumptionitems`;
-CREATE TABLE IF NOT EXISTS `varconsumptionitems` (
-  `cnID` int(11) NOT NULL,
-  `vID` int(11) NOT NULL,
-  `cnQty` int(11) NOT NULL,
-  `remainingQty` int(11) NOT NULL,
-  PRIMARY KEY (`cnID`,`vID`),
-  KEY `vct cnID_idx` (`cnID`),
-  KEY `vct vID_idx` (`vID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `varconsumptionitems`
---
-
-INSERT INTO `varconsumptionitems` (`cnID`, `vID`, `cnQty`, `remainingQty`) VALUES
-(1, 1, 1, 0);
+DROP TABLE IF EXISTS `transactions`;
+CREATE TABLE IF NOT EXISTS `transactions` (
+  `tID` int(11) NOT NULL AUTO_INCREMENT,
+  `spID` int(11) DEFAULT NULL,
+  `tNum` varchar(64) NOT NULL,
+  `tDate` date NOT NULL,
+  `tType` enum('delivery receipt','purchase order','official receipt') NOT NULL,
+  `dateRecorded` datetime NOT NULL,
+  `tRemarks` longtext,
+  PRIMARY KEY (`tID`),
+  KEY `transactionsSpID_idx` (`spID`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `variance`
+-- Table structure for table `transitems`
 --
 
-DROP TABLE IF EXISTS `variance`;
-CREATE TABLE IF NOT EXISTS `variance` (
-  `vID` int(11) NOT NULL AUTO_INCREMENT,
-  `stID` int(11) NOT NULL,
-  `vUnit` varchar(24) NOT NULL,
-  `vSize` varchar(24) NOT NULL,
-  `vMin` int(11) NOT NULL,
-  `vQty` int(11) NOT NULL,
-  `bQTy` int(11) NOT NULL,
-  `vStatus` enum('available','unavailable','temp unavailable','deleted') NOT NULL,
-  PRIMARY KEY (`vID`),
-  KEY `variance stID_idx` (`stID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `variance`
---
-
-INSERT INTO `variance` (`vID`, `stID`, `vUnit`, `vSize`, `vMin`, `vQty`, `bQTy`, `vStatus`) VALUES
-(1, 1, 'bag', '1 kg', 1, 1, 1, 'available'),
-(2, 1, 'bag', '500 g', 1, 1, 1, 'available'),
-(3, 2, 'box', '12 pcs', 1, 1, 1, 'available');
+DROP TABLE IF EXISTS `transitems`;
+CREATE TABLE IF NOT EXISTS `transitems` (
+  `tiID` int(11) NOT NULL AUTO_INCREMENT,
+  `uomID` int(11) NOT NULL,
+  `stID` int(11) DEFAULT NULL,
+  `tiName` varchar(45) NOT NULL,
+  `tiPrice` double NOT NULL DEFAULT '0',
+  `tiDiscount` double DEFAULT '0',
+  `tiStatus` enum('pending','partially delivered','delivered','paid') DEFAULT NULL,
+  PRIMARY KEY (`tiID`),
+  KEY `transitemsUomID_idx` (`uomID`),
+  KEY `transitemsStID_idx` (`stID`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `varspoilitems`
+-- Table structure for table `trans_items`
 --
 
-DROP TABLE IF EXISTS `varspoilitems`;
-CREATE TABLE IF NOT EXISTS `varspoilitems` (
-  `ssID` int(11) NOT NULL,
-  `vID` int(11) NOT NULL,
-  `ssQty` int(11) NOT NULL,
-  `ssDate` date NOT NULL,
-  `ssRemarks` longtext,
-  PRIMARY KEY (`ssID`,`vID`),
-  KEY `varspoilitems vID_idx` (`vID`),
-  KEY `varspoilitems ssID_idx` (`ssID`)
+DROP TABLE IF EXISTS `trans_items`;
+CREATE TABLE IF NOT EXISTS `trans_items` (
+  `tiID` int(11) NOT NULL,
+  `tID` int(11) NOT NULL,
+  `tiQty` int(11) NOT NULL,
+  `tiSubtotal` double NOT NULL,
+  `tiActualQty` int(11) NOT NULL,
+  PRIMARY KEY (`tiID`,`tID`),
+  KEY `trans_itemsTID_idx` (`tID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `uom`
+--
+
+DROP TABLE IF EXISTS `uom`;
+CREATE TABLE IF NOT EXISTS `uom` (
+  `uomID` int(11) NOT NULL AUTO_INCREMENT,
+  `uomName` varchar(45) NOT NULL,
+  `uomAbbreviation` varchar(45) NOT NULL,
+  `uomVariant` enum('liquid','solid') DEFAULT NULL,
+  `uomStore` enum('single','set') DEFAULT NULL,
+  PRIMARY KEY (`uomID`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 --
 -- Constraints for dumped tables
@@ -716,7 +576,7 @@ ALTER TABLE `activitylog`
 --
 ALTER TABLE `addonspoil`
   ADD CONSTRAINT `addons aoID` FOREIGN KEY (`aoID`) REFERENCES `addons` (`aoID`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `addons aosID` FOREIGN KEY (`aosID`) REFERENCES `addonspoil` (`aoID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `addons aosID` FOREIGN KEY (`aosID`) REFERENCES `aospoil` (`aosID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `categories`
@@ -731,36 +591,10 @@ ALTER TABLE `discounts`
   ADD CONSTRAINT `discounts` FOREIGN KEY (`pmID`) REFERENCES `promos` (`pmID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `expiration`
---
-ALTER TABLE `expiration`
-  ADD CONSTRAINT `expiration vID` FOREIGN KEY (`vID`) REFERENCES `variance` (`vID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `freebies`
 --
 ALTER TABLE `freebies`
   ADD CONSTRAINT `freebies pmID` FOREIGN KEY (`pmID`) REFERENCES `promos` (`pmID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `invoice`
---
-ALTER TABLE `invoice`
-  ADD CONSTRAINT `invoice spID` FOREIGN KEY (`spID`) REFERENCES `supplier` (`spID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `invoiceitems`
---
-ALTER TABLE `invoiceitems`
-  ADD CONSTRAINT `invoiceitems iID` FOREIGN KEY (`iID`) REFERENCES `invoice` (`iID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `invoiceitems vID` FOREIGN KEY (`vID`) REFERENCES `variance` (`vID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `invoicepo`
---
-ALTER TABLE `invoicepo`
-  ADD CONSTRAINT `invoicepo iItemID` FOREIGN KEY (`iID`) REFERENCES `invoice` (`iID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `invoicepo poiID` FOREIGN KEY (`poID`) REFERENCES `purchaseorder` (`poID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `menu`
@@ -801,20 +635,13 @@ ALTER TABLE `orderaddons`
 --
 ALTER TABLE `orderlists`
   ADD CONSTRAINT `orderlists osID` FOREIGN KEY (`osID`) REFERENCES `orderslips` (`osID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `orderlists prID` FOREIGN KEY (`prID`) REFERENCES `preferences` (`prID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `orderlists prID` FOREIGN KEY (`prID`) REFERENCES `preferences` (`prID`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `orderslips`
 --
 ALTER TABLE `orderslips`
-  ADD CONSTRAINT `orderslips tableCode` FOREIGN KEY (`tableCode`) REFERENCES `tables` (`tableCode`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `poitems`
---
-ALTER TABLE `poitems`
-  ADD CONSTRAINT `poitems poID` FOREIGN KEY (`poID`) REFERENCES `purchaseorder` (`poID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `poitems vID` FOREIGN KEY (`vID`) REFERENCES `variance` (`vID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ordertableCode` FOREIGN KEY (`tableCode`) REFERENCES `tables` (`tableCode`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `preferences`
@@ -830,50 +657,60 @@ ALTER TABLE `promoconstraint`
   ADD CONSTRAINT `promocontraint pmID` FOREIGN KEY (`pmID`) REFERENCES `promos` (`pmID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `purchaseorder`
---
-ALTER TABLE `purchaseorder`
-  ADD CONSTRAINT `purchaseorder spID` FOREIGN KEY (`spID`) REFERENCES `supplier` (`spID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `spoiledmenu`
 --
 ALTER TABLE `spoiledmenu`
-  ADD CONSTRAINT `spoiledmenu msiD` FOREIGN KEY (`msID`) REFERENCES `menuspoil` (`msID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `spoiledmenu priD` FOREIGN KEY (`prID`) REFERENCES `preferences` (`prID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `spoiledmenuMsID` FOREIGN KEY (`msID`) REFERENCES `menuspoil` (`msID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `spoiledmenuPrID` FOREIGN KEY (`prID`) REFERENCES `preferences` (`prID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `spoiledstock`
+--
+ALTER TABLE `spoiledstock`
+  ADD CONSTRAINT `spoiledmenuSID` FOREIGN KEY (`stID`) REFERENCES `stockitems` (`stID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `spoiledmenuSsiD` FOREIGN KEY (`ssID`) REFERENCES `stockspoil` (`ssID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `stockitems`
 --
 ALTER TABLE `stockitems`
-  ADD CONSTRAINT `stockitems ctID` FOREIGN KEY (`ctID`) REFERENCES `categories` (`ctID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `stockCategoryID` FOREIGN KEY (`ctID`) REFERENCES `categories` (`ctID`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `stockUomID` FOREIGN KEY (`uomID`) REFERENCES `uom` (`uomID`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `stocklog`
+--
+ALTER TABLE `stocklog`
+  ADD CONSTRAINT `stocklogStID` FOREIGN KEY (`stID`) REFERENCES `stockitems` (`stID`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `stocklogTID` FOREIGN KEY (`tID`) REFERENCES `transactions` (`tID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `suppliermerchandise`
 --
 ALTER TABLE `suppliermerchandise`
-  ADD CONSTRAINT `suppliermerchandise spID` FOREIGN KEY (`spID`) REFERENCES `supplier` (`spID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `suppliermerchandise vID` FOREIGN KEY (`vID`) REFERENCES `variance` (`vID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `suppliermerchandiseSpID` FOREIGN KEY (`spID`) REFERENCES `supplier` (`spID`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `suppliermerchandiseStID` FOREIGN KEY (`stID`) REFERENCES `stockitems` (`stID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `suppliermerchandiseUomID` FOREIGN KEY (`uomID`) REFERENCES `uom` (`uomID`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `varconsumptionitems`
+-- Constraints for table `transactions`
 --
-ALTER TABLE `varconsumptionitems`
-  ADD CONSTRAINT `vct cnID` FOREIGN KEY (`cnID`) REFERENCES `consumption` (`cnID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `vct vID` FOREIGN KEY (`vID`) REFERENCES `variance` (`vID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `transactions`
+  ADD CONSTRAINT `transactionsSpID` FOREIGN KEY (`spID`) REFERENCES `supplier` (`spID`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `variance`
+-- Constraints for table `transitems`
 --
-ALTER TABLE `variance`
-  ADD CONSTRAINT `variance stID` FOREIGN KEY (`stID`) REFERENCES `stockitems` (`stID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `transitems`
+  ADD CONSTRAINT `transitemsStID` FOREIGN KEY (`stID`) REFERENCES `stockitems` (`stID`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `transitemsUomID` FOREIGN KEY (`uomID`) REFERENCES `uom` (`uomID`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `varspoilitems`
+-- Constraints for table `trans_items`
 --
-ALTER TABLE `varspoilitems`
-  ADD CONSTRAINT `varspoilitems ssID` FOREIGN KEY (`ssID`) REFERENCES `stockspoil` (`ssID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `varspoilitems vID` FOREIGN KEY (`vID`) REFERENCES `variance` (`vID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `trans_items`
+  ADD CONSTRAINT `trans_itemsTID` FOREIGN KEY (`tID`) REFERENCES `transactions` (`tID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `trans_itemsTiID` FOREIGN KEY (`tiID`) REFERENCES `transitems` (`tiID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
