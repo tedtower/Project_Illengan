@@ -26,7 +26,7 @@
                   <th><b class="pull-left">CUSTOMER</b></th>
                   <th><b class="pull-left">TABLE CODE</b></th>
                   <th><b class="pull-left">TOTAL PAYABLE</b></th>
-                  <th><b class="pull-left">ORDER DATE</b></th>
+                  <th><b class="pull-left">ORDER TIME</b></th>
                   <th><b class="pull-left">STATUS</b></th>
                   <th><b class="pull-left">ACTIONS</b></th>
                 </tr>
@@ -59,8 +59,8 @@
           <thead class="thead-light">
             <tr>
               <th></th>
-              <th>Qty</th>
               <th>Item Name</th>
+              <th>Qty</th>
               <th>Price</th>
               <th></th>
             </tr>
@@ -186,7 +186,7 @@
                     <td>${orders.custName}</td>
                     <td>${orders.tableCode}</td>
                     <td>${orders.osTotal}</td>
-                    <td>${orders.osDateTime}</td>
+                    <td>${orders.time}</td>
                     <td>${orders.payStatus}</td>
                     <td>
                                     <!--Action Buttons-->
@@ -210,7 +210,8 @@
           //---------------------------------Populate OrderItems in Brochure--------------------------
           function setOsID($osID) {
             var value = $osID;
-
+            $('#formEdit')[0].reset();
+          
             $.ajax({
               type: 'POST',
               url: 'http://www.illengan.com/barista/getOrderItems',
@@ -222,7 +223,8 @@
                 item = data;
                 setItemData(item);
                 for (var i = 0; i <= item.length - 1; i++) {
-                  $("#Modal_Pay").find("input[name='amount_payable']").val(parseInt(data[i].subtotal));
+                  console.log(data[i].subtotal);
+                  $("#Modal_Pay").find("input[name='amount_payable']").val(parseInt(data[i].osTotal));
                 }
 
               },
@@ -237,12 +239,13 @@
           }
 
           function setItemData(item) {
+            $('#formEdit')[0].reset();
             $(".orderitemsTable> tbody").empty();
             $(".orderitemsTable> tbody").append(`${item.map(items =>{
               return `<tr>
                             <td></td>
-                            <td><input type="text" name="olQty" class="form-control form-control-sm"  value="${items.olQty}" required readonly></td>
                             <td><input type="text" name="olDesc" class="form-control form-control-sm"  value="${items.olDesc}" required readonly></td>
+                            <td><input type="text" name="olQty" class="form-control form-control-sm"  value="${items.olQty}" required readonly></td>
                             <td><input type="text" name="olSubtotal" class="form-control form-control-sm"  value=${items.olSubtotal} required readonly></td>
                             <td></td>
                             </tr>`
@@ -263,10 +266,10 @@
                       custName: custName
                   },
                   dataType: "json",
-                  // complete: function() {
-                  //     $("#Modal_Pay").modal("hide");
-                  //     location.reload();
-                  // },
+                  complete: function() {
+                      $("#Modal_Pay").modal("hide");
+                      location.reload();
+                  },
                   error: function(error) {
                       console.log(error);
                   }
@@ -276,9 +279,12 @@
           });
 
           //---------------------For the Payment Modal-------------------------
+          document.getElementById("payBtn").disabled = true;
+          
           $("#cash").on('change', function () {
             var payable = parseFloat(document.getElementById('amount_payable').value);
             var cash = parseFloat(document.getElementById('cash').value);
+    
             if (cash < payable) {
               $("#Modal_Pay").find("input[name='change']").val("Insufficient Amount");
               document.getElementById("payBtn").disabled = true;

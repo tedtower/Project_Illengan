@@ -20,8 +20,12 @@ class Adminupdate extends CI_Controller{
             $updateQtyh = $ssQtyUpdate - $curSsQty; 
             $updateQtyl = $curSsQty - $ssQtyUpdate;
             $date_recorded=date("Y-m-d H:i:s");
+            $slType = "spoilage";
+            $slDateTime = date('Y-m-d', strtotime($ssDate));
 
             $this->adminmodel->edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$updateQtyh,$updateQtyl,$curSsQty,$stQty,$ssQtyUpdate,$date_recorded);
+            $this->adminmodel->add_stockLog2($stID, $slType, $date_recorded, $slDateTime, $ssQty, $ssRemarks, $updateQtyh, $updateQtyl,$curSsQty,$ssQtyUpdate);
+           
         }else{
             redirect('login');
         } 

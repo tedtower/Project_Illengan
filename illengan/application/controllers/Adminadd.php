@@ -317,9 +317,11 @@ class Adminadd extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
             $date_recorded = date("Y-m-d H:i:s");
+            $slType = "spoilage";
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
-            $this->adminmodel->add_stockspoil($date_recorded,$stocks);
+            $this->adminmodel->add_stockspoil($date_recorded,$stocks,$slType);
+            
         }else{
             redirect('login');
         }
