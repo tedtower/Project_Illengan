@@ -142,6 +142,33 @@ $(document).ready(function(){
             }
         });
     });
+     $("#orderedForm").on('submit', function(event) {        
+        event.preventDefault();
+        var table_no = $("input#table_no").val();
+        var cust_name = $("input#cust_name").val();
+        var total = $("input#total").val();
+
+        $.ajax({
+            method: "post",
+            url: "<?php echo site_url('customer/completeOrder')?>",
+            data: {
+                'table_no': table_no,
+                'cust_name': cust_name,
+                'total' : total
+            },
+            beforeSend: function(){
+                console.log(table_no, cust_name, total);
+            },
+            success: function(data) {
+                console.log(data);
+                $('#ordered_modal').modal('show');
+            },
+            error: function(response,setting, errorThrown) {
+                console.log(response.responseText);
+                console.log(errorThrown);
+            }
+        });
+    });
 });
 
 function setOrderslipModal(cart){
