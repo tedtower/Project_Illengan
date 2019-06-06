@@ -315,7 +315,6 @@ function setOrderlist(ol){
                             <th scope="col">Quantity</th>
                             <th scope="col">Total Price</th>
                             <th scope="col">Remarks</th>
-                            <th scope="col">Add Ons</th>
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
@@ -366,7 +365,6 @@ function setOrderlist(ol){
                         <td>`+orders[rowid].qty+`</td>
                         <td>`+orders[rowid].subtotal+`</td>
                         <td>`+orders[rowid].remarks+`</td>
-                        <td>`+orders[rowid].addons+`</td>
                         <td>
                             <button type="button" class="btn btn-mdb-color btn-sm m-0 p-2 ediOrder" data-toggle="modal" data-target="#editModal" data-name="`+orders[rowid].name+`" data-id="`+rowid+`">Edit</button>
                             <button type="button" class="btn btn-danger btn-sm m-0 p-2 remOrder" data-toggle="modal" data-target="#deleteModal" data-name="`+orders[rowid].name+`" data-id="`+rowid+`">Remove</button>
@@ -431,10 +429,9 @@ function removeOrder(){
     });
 }
 function editOrder(id,name){
-    console.log('Order ID: '+id);
     $('#edit_name').text(name);
     $("input#quantity[name='edit_qty']").val(orders[id].qty);
-    
+    console.log();
 }
 
 </script>
