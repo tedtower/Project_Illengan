@@ -183,7 +183,7 @@ class Adminmodel extends CI_Model{
               if($this->db->query($query, array($orderlists[$in]['prID'], $osID, $orderlists[$in]['olDesc'], 
               $orderlists[$in]['olQty'], $orderlists[$in]['olSubtotal'],'served', ' '))) {
                 if(count($addons) > 0) {
-                    $this->add_salesAddons($this->db->insert_id(), $orderlists[$in]['prID'], $addons);
+                    $this->update_salesaddons($this->db->insert_id(), $orderlists[$in]['prID'], $addons);
                 }
               }
         }
@@ -347,7 +347,10 @@ class Adminmodel extends CI_Model{
         osDateTime = ?, osPayDateTime = ? WHERE orderslips.osID = ?;";
         if($this->db->query($query, array($tableCodes, $custName, $osTotal, $osDateTime, $osPayDateTime, $osID))) {
             for($i = 0; $i < count($orderlists); $i++) {
-                if($orderlists[$i]['olID'] != null) {
+                if($orderlists[$i]['del'] === 0) {
+                    $this->delete_salesOrderitem($orderlists[$i]['olID']);
+                }
+                else if($orderlists[$i]['olID'] != null) {
                     $orlist = array(
                         'olID' => $orderlists[$i]['olID'],
                         'prID' => $orderlists[$i]['prID'],
@@ -360,7 +363,7 @@ class Adminmodel extends CI_Model{
                     );
                     $this->edit_salesorders($orlist, $addons);
                 } else {
-                    $orderlists = array();
+                    $orderlist = array();
                     $olist = array(
                         'prID' => $orderlists[$i]['prID'],
                         'osID' => $orderlists[$i]['osID'],
@@ -370,8 +373,8 @@ class Adminmodel extends CI_Model{
                         'olStatus' => $orderlists[$i]['olStatus'],
                         'olRemarks' => $orderlists[$i]['olRemarks']
                     );
-                    array_push($orderlists, $olist);
-                    $this->add_salesList($osID, $orderlists, $addons);
+                    array_push($orderlist, $olist);
+                    $this->add_salesList($osID, $orderlist, $addons);
                 } }   
         }
     }
@@ -379,10 +382,55 @@ class Adminmodel extends CI_Model{
     function edit_salesorders($orlist, $addons) {
         $query = "UPDATE orderlists SET prID = ?, osID = ?, olDesc = ?, 
         olQty = ?, olSubtotal = ? WHERE orderlists.olID = ?;";
-        $this->db->query($query, array($orlist['prID'], $orlist['osID'], $orlist['olDesc'], 
-        $orlist['olQty'], $orlist['olSubtotal'], $orlist['olID'])); 
+        if($this->db->query($query, array($orlist['prID'], $orlist['osID'], $orlist['olDesc'], 
+        $orlist['olQty'], $orlist['olSubtotal'], $orlist['olID'])))  {
+            if(count($addons) > 0) {
+              $this->update_salesaddons($orlist['olID'], $orlist['prID'], $addons);
+            }
+        }
         
     }
+
+    function update_salesaddons($olID, $prID, $addons) {
+            for($i = 0; $i < count($addons); $i++) {
+                if($addons[$i]['del'] === 0 ) {
+                    $this->delete_salesAddons($addons[$i]['aoID'], $addons[$i]['olID']);
+                } else if($addons[$i]['oldaoID'] != $addons[$i]['aoID']) {
+                    $this->update_changedAddon($addons[$i]['oldaoID'], $addons[$i]['aoID'], $addons[$i]['olID']);
+                } else if($addons[$i]['prID'] == $prID && $addons[$i]['olID'] != null) {
+                    $aolist = array(
+                        'aoID' => $addons[$i]['aoID'],
+                        'olID' => $addons[$i]['olID'],
+                        'aoQty' => $addons[$i]['aoQty'],
+                        'aoTotal' => $addons[$i]['aoTotal']
+                    );
+                    $this->edit_salesaddons($aolist);
+                } else if($addons[$i]['olID'] == null){
+                    $addonsArr = array();
+                    $aolist = array(
+                        'prID' => $addons[$i]['prID'],
+                        'aoID' => $addons[$i]['aoID'],
+                        'aoQty' => $addons[$i]['aoQty'],
+                        'aoTotal' => $addons[$i]['aoTotal']
+                    );
+                    array_push($addonsArr, $aolist);
+                    $this->add_salesAddons($olID, $prID, $addonsArr);
+                } 
+            }
+    }
+
+    function edit_salesaddons($addon) {
+        $query = "UPDATE orderaddons SET aoQty = ?, aoTotal = ? WHERE orderaddons.aoID = ?
+        AND orderaddons.olID = ?;";
+        $this->db->query($query, array($addon['aoQty'], $addon['aoTotal'], $addon['aoID'], $addon['olID']));
+    }
+
+    function update_changedAddon($aoID, $oldaoID, $olID) {
+        $query = "UPDATE orderaddons SET aoID = ? WHERE orderaddons.aoID = ? AND orderaddons.olID = ?;";
+        $this->db->query($query, array($aoID, $oldaoID, $olID));
+
+    }
+
     function change_aPassword($new_password, $aID){
         $query = "Update accounts set aPassword = ?  where aID = ? ";
         return $this->db->query($query,array($new_password, $aID));  
@@ -675,6 +723,10 @@ class Adminmodel extends CI_Model{
     }
     function get_addons(){
         $query = "Select aoID,aoName from addons";
+        return $this->db->query($query)->result_array();
+    }
+    function get_mnAddons() {
+        $query = "SELECT * FROM addons INNER JOIN menuaddons USING (aoID);";
         return $this->db->query($query)->result_array();
     }
     function get_menuaddons($mID) {
@@ -1007,6 +1059,15 @@ class Adminmodel extends CI_Model{
         $query = "Delete from transitems where trans_id=? and item_name=?";
         return $this->db->query($query, array($trans_id, $item_name));
     }
+    function delete_salesOrderitem($olID) {
+        $query = "DELETE FROM orderlists WHERE orderlists.olID = ?";
+        return $this->db->query($query, array($olID));
+    }
+    function delete_salesAddons($aoID, $olID) {
+        $query = "DELETE FROM orderaddons WHERE orderaddons.aoID = ? AND orderaddons.olID = ?";
+        return $this->db->query($query, array($aoID, $olID));
+    }
+
     function add_source($data){
         $this->db->insert("sources", $data);
     }

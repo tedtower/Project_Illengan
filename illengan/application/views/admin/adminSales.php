@@ -17,8 +17,8 @@
                             <tr>
                                 <th></th>
                                 <th><b class="pull-left">Slip No.</b></th>
-                                <th><b class="pull-left">Table No.</b></th>
                                 <th><b class="pull-left">Customer</b></th>
+                                <th><b class="pull-left">Table No.</b></th>
                                 <th><b class="pull-left">Date</b></th>
                                 <th><b class="pull-left">Total Sale</b></th>
                                 <th><b class="pull-left">Actions</b></th>
@@ -116,7 +116,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger btn-sm"
                                                 data-dismiss="modal">Cancel</button>
-                                            <button class="btn btn-success btn-sm" onclick="addSales()" type="button">Add</button>
+                                            <button class="btn btn-success btn-sm" type="submit">Add</button>
                                         </div>
                                     </div>
                                 </form>
@@ -183,7 +183,7 @@
                                                         style="background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                                         Table Code</span>
                                                 </div>
-                                                <select class="form-control" name="tableCodes" id="tableCodes"></select>
+                                                <select class="form-control" name="tableCodes" id="tableCodes" required></select>
                                             </div>
                                         </div>
 
@@ -386,6 +386,7 @@ var sales = [];
                 tables = data.tables;
                 addons = data.addons;
                 showTable();
+                console.log(orderslips);
             },
             error: function (response, setting, errorThrown) {
                 console.log(errorThrown);
@@ -402,8 +403,20 @@ var sales = [];
     function setBrochureContent(menuitems){
         $("#list").empty();
         $("#list").append(`${menuitems.map(menu => {
-            return `<label style="width:96%"><input type="checkbox" name="menuitems[]" class="orderitems mr-2" value="${menu.prID}"> ${menu.prName} - ${parseFloat(menu.prPrice).toFixed(2)}</label>`
+            return `<label style="width:96%"><input type="checkbox" id="prID${menu.prID}" name="menuitems[]" class="orderitems mr-2" 
+            value="${menu.prID}"> ${menu.prName} - ${parseFloat(menu.prPrice).toFixed(2)}</label>`
         }).join('')}`);
+        disableSelected();
+    }
+
+    function disableSelected() {
+        if($('.salesElem') != 0 || $('.salesElem') != null) {
+            var addedItems = $('.salesElem').find('#prID');
+        for(var i = 0; i <= addedItems.length-1; i++) {
+           var id = addedItems[i].value;
+           $('#prID'+id).attr("disabled","disabled");
+        }
+        }
     }
     
     $('#addBtn').on('click', function() {
@@ -528,10 +541,6 @@ var sales = [];
     var olAddons = [];
     var options = [];
    
-    for(var i = 0; i <= mnaddons.length-1; i++) {
-       var option = `<option value="`+mnaddons[i].aoID+`">`+mnaddons[i].aoName+`</option>`;
-       options.push(option);
-    }
     // Conversion of Date to Datetime-local format
     var osDateTime = new Date(saleslist.osDateTime);
     var osPayDateTime = new Date(saleslist.osPayDateTime);
@@ -555,31 +564,29 @@ var sales = [];
             <input type="hidden" class="mID" id="mID" name="mID" value="${ol.mID}">
                 <td><input type="text" id="olDesc" name="olDesc"
                   class="olDesc form-control form-control-sm" value="${ol.olDesc}" readonly="readonly"></td>
-                <td><input type="text" id="olQty" onchange="setSubtotal()" name="olQty"
-                  class="form-control form-control-sm" value="${ol.olQty}" ></td>
+                <td><input type="number" id="olQty" onchange="setSubtotal()" name="olQty"
+                  class="form-control form-control-sm" value="${ol.olQty}" required min="1"></td>
                 <td><input type="number" id="prPrice" name="prPrice"
                   class="spmPrice form-control form-control-sm" onchange="setSubtotal()" value="${ol.prPrice}" ></td>
                 <td><input type="number" name="subtotal" class="subtotal form-control form-control-sm" value="${ol.olSubtotal}" readonly="readonly"></td>
                 <td><a class="addAddons btn btn-default btn-sm" style="margin:0;" onclick="addAddons(this);" id="addAddons">Add Addons</a></td>
-                </td><td><img class="delBtn" onclick="removeItem(this)" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+                </td><td><img class="delBtn" onclick="deleteItem(this)" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
           </tr>
         `);
-    
+        mID = ol.mID;
         olAddons = addons.filter(ao => ao.olID == ol.olID);
         var prID = ol.prID;
         olAddons.forEach(oa => {
             modal.find(".editsalesTable > tbody").last('tr').append(`
             <tr class="addonsTable" data-id="${oa.olID}">
-            <input type="hidden" name="aoprID" value="`+prID+`">
+            <input type="hidden" name="aoprID" id="aoprID" value="${prID}">
+            <input type="hidden" name="oldaoID" id="oldaoID" value="${oa.aoID}">
             <td>
-                    <select class="form-control" style="font-size: 14px;" onchange="setAddOnVal(this)" name="aoID" id="addon" required>
-                    <option value="null" selected>--- Add On ---</option>
-                    <option value="${oa.aoID}" selected>${oa.aoName}</option>
-                    `+options+`
-                    </select>
+                    <select id="ao${oa.olID}${oa.aoID}" class="addonsSelect form-control" style="font-size: 14px;" 
+                    onchange="onchangeAddon(this)" name="aoID" id="addon" required></select>
             </td>
             <td>
-                <input type="number" name="aoQty" id="aoQty" onchange="setAddOnSubtotal()" value="${oa.aoQty}" class="form-control form-control-sm">
+                <input type="number" name="aoQty" id="aoQty" onchange="onchangeAddonQuantity(this);" value="${oa.aoQty}" class="form-control form-control-sm" required min="1">
             </td>
             <td>
                 <input type="number" name="aoPrice" id="aoPrice" value="${oa.aoPrice}" class="form-control form-control-sm" readonly>
@@ -588,18 +595,68 @@ var sales = [];
                 <input type="number" name="aoSubtotal" id="aoSubtotal" value="${oa.aoTotal}" class="aoSubtotal form-control form-control-sm" readonly>
             </td>
             <td style="text-align:center"> <b> --- </b></td>
-            <td><img class="delBtn" src="/assets/media/admin/error.png" onclick="removeItem(this)" style="width:20px;height:20px"></td>
+            <td><img class="delBtn" src="/assets/media/admin/error.png" onclick="deleteItem(this)" style="width:20px;height:20px"></td>
         </tr>`);
+            setAddonOptions(modal, mID, oa.olID, oa.aoID);
+
         });
         
     });
+   
     if(olAddons.length > 0) {
         setAddonTotal();
     }
     setSubtotal();
 
 }
+function setAddonOptions(modal, mID, olID, aoID) {
+    mnaddon = mnaddons.filter(item => item.mID === mID);
+    mnaddon.forEach(ma => {
+                modal.find("#ao"+olID+aoID).append(`
+                <option value="${ma.aoID}">${ma.aoName}</option>`);
+    });
 
+    modal.find("select[id='ao"+olID+aoID+"']").find(`option[value=${aoID}]`).attr("selected","selected");
+
+}
+
+var input, aoPrice;
+function onchangeAddon(select) {
+    input = $(select);
+    var aoID = $(select).val();
+    
+    try {
+        var arr = mnaddons.filter(ao => ao.aoID === aoID);
+        aoPrice = arr[0].aoPrice;
+        $(select).closest('td').nextAll('td').find('#aoPrice')[0].value = aoPrice;
+        console.log(aoPrice);
+
+        setAddOnsSubtotal();
+    } catch(error) {
+        console.log('No addon');
+        aoPrice = 0;
+        $(select).closest('td').nextAll('td').find('#aoPrice')[0].value = 0;
+
+        setAddOnsSubtotal();
+    }
+}
+function setAddOnsSubtotal() {
+        var aoQty = $(input).closest('td').next('td').find('#aoQty').val();
+        console.log(input);
+        var aoSubtotal = parseFloat(aoPrice * aoQty);
+        $(input).closest('td').nextAll('td').find('#aoSubtotal')[0].value = aoSubtotal;
+       
+        setAddonTotal();
+}
+function onchangeAddonQuantity(quantity) {
+    var aoQty = $(quantity).val();
+    var aoPrice =  $(quantity).closest('td').nextAll('td').find('#aoPrice')[0].value;
+    var aoSubtotal = parseFloat(aoPrice * aoQty);
+    $(quantity).closest('td').nextAll('td').find('#aoSubtotal')[0].value = aoSubtotal;
+    
+    setAddonTotal();
+   
+}
 // --------------------- Editing sales ---------------------------------
 $(document).ready(function() {
     $("#editSales form").on('submit', function(event) {
@@ -622,7 +679,8 @@ $(document).ready(function() {
                 olQty: row.find("input[name='olQty']").val(),
                 olSubtotal: row.find("input[name='subtotal']").val(),
                 olStatus: 'served',
-                olRemarks: ' '
+                olRemarks: ' ',
+                del: isNaN(parseInt(row.attr('data-delete'))) ?  (null) : parseInt(row.attr('data-delete'))
             });
         }
 
@@ -632,12 +690,19 @@ $(document).ready(function() {
             addons.push({
                 prID: row.find("input[name='aoprID']").val(),
                 olID:  isNaN(parseInt(row.attr('data-id'))) ?  (null) : parseInt(row.attr('data-id')),
+                oldaoID: row.find("input[name='oldaoID']").val(),
                 aoID :  row.find("select[name='aoID']").val(),
                 aoQty: row.find("input[name='aoQty']").val(),
-                aoTotal: row.find("input[name='aoSubtotal']").val()
+                aoTotal: row.find("input[name='aoSubtotal']").val(),
+                del: isNaN(parseInt(row.attr('data-delete'))) ?  (null) : parseInt(row.attr('data-delete'))
             });
         }
 
+        try {
+
+        } catch(error) {
+            alert("There are add on duplicates on an item");
+        }
         $.ajax({
             url: "<?= site_url("admin/sales/edit")?>",
             method: "post",
@@ -654,7 +719,7 @@ $(document).ready(function() {
             },
             beforeSend: function() {
                 console.log('OR');
-                console.log(ol);
+                console.log(addons);
             },
             success: function(data) {
                 alert('Sales Updated');
@@ -662,6 +727,7 @@ $(document).ready(function() {
                 //location.reload();
             },
             error: function (response, setting, errorThrown) {
+                alert("There are add on duplicates on an item");
                 console.log(errorThrown);
                 console.log(response.responseText);
             }
