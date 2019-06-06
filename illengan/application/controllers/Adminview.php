@@ -183,7 +183,7 @@ class Adminview extends CI_Controller{
             $this->load->view('admin/templates/sideNav');
             $data['mnaddons'] = $this->adminmodel->get_mnAddons();
             // $data['sales'] = $this->adminmodel->get_sales();
-            $this->load->view('admin/adminSales');
+            $this->load->view('admin/adminSales', $data);
         }else{
             redirect('login');
         }
