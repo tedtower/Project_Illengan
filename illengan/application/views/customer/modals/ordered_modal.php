@@ -9,7 +9,7 @@
                 
                 <div class="modal-body">
                 <a class="delius " href="<?php echo site_url("customer/clearOrder")?>">
-                <button class="btn btn-dark-green"><h4>New order</h4></button></a>
+                <button class="btn btn-dark-green"><h4>Order again</h4></button></a>
                      <br><br><br>
                 <a class="delius font-weight-bold" href="<?php echo site_url("customer/checkin")?>">
                 <button class="btn btn-dark-green"><h4>New customer</h4></button></a>
