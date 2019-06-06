@@ -135,6 +135,7 @@ class Customer extends CI_Controller {
 				}
 				$data = array(
 					'id' => intval($this->input->post('preference')),
+					'menu_id' => intval($preference['mID']),
 					'name' => $preference['order'],
 					'qty' => intval($this->input->post('quantity')),
 					'orderDesc' => $preference['order'],
