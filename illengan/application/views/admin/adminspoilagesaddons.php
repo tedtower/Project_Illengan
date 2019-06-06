@@ -1,3 +1,4 @@
+<body style="background:white">
 <div class="content">
 	<div class="container-fluid">
 		<br>
@@ -13,11 +14,11 @@
 						<div class="card-content">
 
 							<!--Add Addon Spoilage BUTTON-->
-							<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addAddonSpoilage" data-original-title style="margin:0">Add Addon Spoilage</a><br>
+							<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addAddonSpoilage" data-original-title style="margin:0">Add Addon Spoilage</button><br>
 							<!--eND Add Addon Spoilage BUTTON-->
 							<br>
-							<table id="addonTable" class="spoiltable table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
-								<thead>
+							<table id="addonTable" class="spoiltable table table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
+								<thead class="thead-dark">
 									<th>ITEM NAME</th>
 									<th>CATEGORY</th>
 									<th>QUANTITY</th>
@@ -264,11 +265,11 @@
                         <div class="onoffswitch">
 
                             <!--Edit button-->
-                            <button class="updateBtn btn btn-default btn-sm" data-toggle="modal"
+                            <button class="updateBtn btn btn-secondary btn-sm" data-toggle="modal"
                                 data-target="#editSpoil">Edit</button>
                             <!--Delete button-->
-                            <button class="item_delete btn btn-danger btn-sm" data-toggle="modal" 
-                            data-target="#deleteSpoilage">Archive</button>                      
+                            <button class="item_delete btn btn-warning btn-sm" data-toggle="modal" 
+                            data-target="#deleteSpoilage">Archived</button>                      
                         </div>
                     </td>
                 </tr>`);
@@ -278,10 +279,11 @@
                 <td colspan="6"> <!-- table row ng accordion -->
                     <div style="overflow:auto;display:none"> <!-- container ng accordion -->
                         
-                        <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
-                            <div><b>REMARKS:</b> <!-- label-->
-								<p>
-								${table.aosRemarks == null ? "No Remarks." : table.aosRemarks}
+					<div style="overflow:auto;"> <!-- description, preferences, and addons container -->
+                            <div style="margin:0 46px;overflow:auto;">
+							<b style="float:left;">Remarks: </b><!-- label-->
+								<p style="float:left;margin-left:2%">
+								${table.aosRemarks == null || table.aosRemarks == '' ? "No remarks." : table.aosRemarks}
                                 </p>
                             </div> 
                         </div>
@@ -360,5 +362,4 @@
 
 </script> 
 </body>
-
 </html>

@@ -1,3 +1,4 @@
+<body style="background:white">
 <div class="content">
     <div class="container-fluid">
         <br>
@@ -9,11 +10,11 @@
             <div class="container-fluid">
                 <!--Table-->
                 <div class="card-content">
-                    <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addSales" data-original-title
-                        style="margin:0;" id="addBtn">Add Sales</a>
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addSales" data-original-title
+                        style="margin:0;" id="addBtn">Add Sales</button>
                     <br><br>
-                    <table id="salesTable" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                        <thead>
+                    <table id="salesTable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                        <thead class="thead-dark">
                             <tr>
                                 <th></th>
                                 <th><b class="pull-left">Slip No.</b></th>
@@ -316,15 +317,14 @@ var tables = [];
        orderslips.forEach(function (item) {
             var tableRow = `
                 <tr class="table_row" data-id="${item.orderslips.osID}">   <!-- table row ng table -->
-                    <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
-                    <td>${item.orderslips.osID}</td>
+                    <td><a href="javascript:void(0)" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${item.orderslips.osID}</td>
                     <td>${item.orderslips.custName}</td>
                     <td>${item.orderslips.tableCode}</td>
                     <td>${item.orderslips.osPayDate}</td>
                     <td>&#8369; ${(parseFloat(item.orderslips.osTotal)).toFixed(2)}</td>
                     <td>
-                        <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editPO" id="editPOBtn">Edit</button>
-                        <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#delete">Delete</button>
+                        <button class="editBtn btn btn-sm btn-secondary" data-toggle="modal" data-target="#editPO" id="editPOBtn">Edit</button>
+                        <button class="deleteBtn btn btn-sm btn-warning" data-toggle="modal" data-target="#delete">Archived</button>
                     </td>
                 </tr>
             `;
@@ -360,7 +360,7 @@ var tables = [];
             `;
             var accordion = `
             <tr class="accordion" style="display:none">
-                <td colspan="10"> <!-- table row ng accordion -->
+                <td colspan="6"> <!-- table row ng accordion -->
                     <div style="overflow:auto;display:none"> <!-- container ng accordion -->
                         
                         <div style="width:100%;overflow:auto;padding-left: 5%"> <!-- description, preferences, and addons container -->
@@ -428,7 +428,6 @@ var tables = [];
     });
     
     }
-
-
-    
+ 
 </script>
+</body>
