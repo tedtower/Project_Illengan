@@ -28,7 +28,6 @@ class Adminview extends CI_Controller{
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/viewaccounts', $data);
-            $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }   
@@ -60,12 +59,15 @@ class Adminview extends CI_Controller{
             redirect('login');
         }
     }
-    function viewstockcard(){
+    function viewStockCard($stID){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $data['title'] = "Admin Stock Card";
-            $this->load->view('admin/templates/head', $data);
+            $head['title'] = "Admin - Stock Card";
+            $this->load->view('admin/templates/head', $head);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/stockcard');
+            $data['logs'] = $this->adminmodel->get_stockLog($stID);
+            $data['stock'] = $this->adminmodel->get_stockItem($stID)[0];
+            $data['currentInv'] = $this->adminmodel->get_invPeriodStart($stID)[0];
+            $this->load->view('admin/stockcard',$data);
         }else{
             redirect('login');
         }
@@ -79,8 +81,7 @@ class Adminview extends CI_Controller{
 
             $data['supplier'] = array(
                 'sources' => $this->adminmodel->get_supplier(),
-                'merchandises' => $this->adminmodel->get_suppliermerch(),
-                'stockvariances' => $this->adminmodel->get_stockVariance()
+                'merchandises' => $this->adminmodel->get_suppliermerch()
             );
             $this->load->view('admin/adminSources', $data);
             // $this->load->view('admin/templates/scripts');
@@ -181,8 +182,9 @@ class Adminview extends CI_Controller{
             $data['title'] = "Sales";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
+            $data['mnaddons'] = $this->adminmodel->get_mnAddons();
             // $data['sales'] = $this->adminmodel->get_sales();
-            $this->load->view('admin/adminSales');
+            $this->load->view('admin/adminSales', $data);
         }else{
             redirect('login');
         }
@@ -287,7 +289,6 @@ function viewSpoilagesStock(){
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminTables');
-            // $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }
@@ -631,6 +632,16 @@ function viewSpoilagesStock(){
                 "transaction" => $this->adminmodel->get_transaction($id),
                 "transitems" => $this->adminmodel->get_transitems($id)
             ));
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
+
+    function getStockItems(){
+        if($this->checkIfLoggedIn()){
+            echo json_encode($this->adminmodel->get_stocks());
         }else{
             echo json_encode(array(
                 "sessErr" => true

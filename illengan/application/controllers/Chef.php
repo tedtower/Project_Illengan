@@ -33,12 +33,14 @@ class Chef extends CI_Controller {
 
 	function get_orderlist() {
 		$data = array();
-		$data['data'] = $this->Chefmodel->return_orderlist();
-
-		header('Content-Type: application/json');
-		echo json_encode($data, JSON_PRETTY_PRINT);
+        $data['orders'] = $this->Chefmodel->get_orders();
+        $data['addons'] = $this->Chefmodel->get_addons();
+        
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
 		
 	}
+	
 
 
 	function change_status() {

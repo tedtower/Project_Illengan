@@ -1,3 +1,4 @@
+<body style="background:white">
 <div class="content">
 	<div class="container-fluid">
 		<br>
@@ -13,17 +14,16 @@
 						<div class="card-content">
 
 							<!--Add Menu Spoilage BUTTON-->
-							<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addMenuSpoilage" data-original-title style="margin:0">Add Menu Spoilage</a><br>
+							<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addMenuSpoilage" data-original-title style="margin:0">Add Menu Spoilage</button><br>
 							<!--eND Add Menu Spoilage BUTTON-->
 							<br>
-							<table id="menuTable" class="spoiltable table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
-								<thead>
+							<table id="menuTable" class="spoiltable table table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
+								<thead class="thead-dark">
 									<th>ITEM NAME</th>
 									<th>QUANTITY</th>
 									<th>DATE SPOILED</th>
 									<th>DATE RECORDED</th>
 									<th>OPERATION</th>
-									
 								</thead>
 								<tbody id="menu_data">
 								</tbody>
@@ -262,11 +262,11 @@
                         <div class="onoffswitch">
 
                             <!--Edit button-->
-                            <button class="updateBtn btn btn-default btn-sm" data-toggle="modal"
+                            <button class="updateBtn btn btn-secondary btn-sm" data-toggle="modal"
                                 data-target="#editSpoil">Edit</button>
                             <!--Delete button-->
-                            <button class="item_delete btn btn-danger btn-sm" data-toggle="modal" 
-                            data-target="#deleteSpoilage">Archive</button>                      
+                            <button class="item_delete btn btn-warning btn-sm" data-toggle="modal" 
+                            data-target="#deleteSpoilage">Archived</button>                      
                         </div>
                     </td>
                 </tr>`);
@@ -276,10 +276,11 @@
                 <td colspan="6"> <!-- table row ng accordion -->
                     <div style="overflow:auto;display:none"> <!-- container ng accordion -->
                         
-                        <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
-                            <div><b>REMARKS:</b> <!-- label-->
-								<p>
-								${table.msRemarks == null ? "No Remarks." : table.msRemarks}
+					<div style="overflow:auto;"> <!-- description, preferences, and addons container -->
+                            <div style="margin:0 46px;overflow:auto;">
+							<b style="float:left;">Remarks: </b><!-- label-->
+								<p style="float:left;margin-left:2%">
+								${table.msRemarks == null || table.msRemarks == '' ? "No remarks." : table.msRemarks}
                                 </p>
                             </div> 
                         </div>

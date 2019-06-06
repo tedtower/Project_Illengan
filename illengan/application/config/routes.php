@@ -71,7 +71,7 @@ $route['admin/supplier'] = "adminview/viewsupplier";
 $route['admin/supplier/getDetails'] = "adminview/supplierGetDetails";
 $route['admin/accounts'] = "adminview/viewaccounts";
 $route['admin/inventory'] = "adminview/viewinventory";
-$route['admin/inventory/stockcard'] = "adminview/viewstockcard";
+$route['admin/inventory/stockcard/(:num)'] = "adminview/viewstockcard/$1";
 $route['admin/purchaseorders'] = "adminview/viewpurchaseorders";
 $route['admin/spoilages/menu/add'] ="adminview/viewInsertSpoilageMenu";
 $route['admin/spoilages/stock/add'] ="adminview/viewInsertSpoilageStock";
@@ -99,7 +99,6 @@ $route['admin/transactions/add'] = "adminadd/addtransaction";
 $route['admin/purchaseorder/add'] = "adminadd/addPurchaseOrder";
 $route['admin/inventory/addEdit'] = "adminadd/addstockitem";
 $route['admin/menu/add'] = "adminadd/addMenu";
-$route['admin/menu/image/add'] = "adminadd/addImage";
 $route['admin/addon/add'] = "adminadd/addAddon";
 $route['admin/stockcategories/add'] = "adminadd/addstockcategory";
 $route['admin/menucategories/add'] = "adminadd/addmenucategory";
@@ -174,9 +173,12 @@ $route['admin/jsonPrefDetails'] ="adminview/jsonPrefDetails";
 $route['admin/inventory/getitem'] = "adminview/getStockDetails";
 $route['admin/getPurchaseOrders'] = "adminview/getPurchaseOrders";
 $route['admin/jsonAddons'] = "adminview/jsonMenuAddons";
-
+$route['admin/inventory/getEnumVals'] = "adminview/getEnumValsForStock";
+$route['admin/inventory/getStockItem'] = "adminview/getStockItem";
 $route['admin/transactions/getEnumVals'] = "adminview/getEnumValsForTransaction";
-$route['admin/transaction/getTransaction'] = "adminview/getTransaction";
+$route['admin/transactions/getTransaction'] = "adminview/getTransaction";
+$route['admin/inventory/getStockItems'] = "adminview/getStockItems";
+$route['admin/inventory/restock'] = "adminadd/addRestockLog";
 //End Admin Json Routes ---------------------------------------
 
 //CUSTOMER ROUTES
@@ -208,5 +210,5 @@ $route['barista/destock'] = "barista/destockitem";
 // $route['barista/pendingOrdersJS'] ="barista/pendingOrdersJS";
 
 // CHEF ROUTES
-$route['chef/get_orderlist'] = "chef/get_orderlist";
+$route['chef/orders'] = "chef/get_orderlist";
 $route['chef/change_status'] = "chef/change_status";

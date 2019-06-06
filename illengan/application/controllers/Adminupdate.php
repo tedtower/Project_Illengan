@@ -6,7 +6,7 @@ class Adminupdate extends CI_Controller{
         $this->load->model('adminmodel'); 
         date_default_timezone_set('Asia/Manila');  
         // code for getting current date : date("Y-m-d")
-        // code for getting current date and time : date("Y-m-d 2H:i:s")
+        // code for getting current date and time : date("Y-m-d H:i:s")
     }
     function editStockSpoil(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
@@ -74,6 +74,25 @@ class Adminupdate extends CI_Controller{
             $ctName = $this->input->post('new_name');
             $this->adminmodel->edit_stockcategory($ctID, $ctName);
             redirect('admin/stockcategories');
+        }else{
+            redirect('login');
+        }
+    }
+    function editSales() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $osID = $this->input->post('osID');
+            $tableCodes = $this->input->post('tableCodes');
+            $custName = $this->input->post('custName');
+            $osTotal = $this->input->post('osTotal');
+            $payStatus = $this->input->post('payStatus');
+            $osDateTime = $this->input->post('osDateTime');
+            $osPayDateTime = $this->input->post('osPayDateTime');
+            $osDateRecorded = date("Y-m-d H:i:s");
+            $orderlists = json_decode($this->input->post('orderlists'), true);
+            $addons = json_decode($this->input->post('addons'), true);
+               
+            $this->adminmodel->edit_sales($osID, $tableCodes, $custName, $osTotal, $payStatus, 
+            $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons);
         }else{
             redirect('login');
         }

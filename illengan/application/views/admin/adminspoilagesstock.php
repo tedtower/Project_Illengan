@@ -1,3 +1,4 @@
+<body style="background:white">
 <div class="content">
 	<div class="container-fluid">
 		<br>
@@ -13,11 +14,11 @@
 						<div class="card-content">
 
 							<!--Add Stock Spoilage BUTTON-->
-							<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addStockSpoilage" data-original-title style="margin:0">Add Stock Spoilage</a><br>
+							<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addStockSpoilage" data-original-title style="margin:0">Add Stock Spoilage</button><br>
 							<!--eND Add Stock Spoilage BUTTON-->
 							<br>
-							<table id="spoilagesTable" class="spoiltable table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
-								<thead class="thead-dark" >
+							<table id="spoilagesTable" class="spoiltable table table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
+								<thead class="thead-dark" style="font-weight:900">
 									<th>ITEM NAME</th>
 									<th>QUANTITY</th>
 									<th>DATE SPOILED</th>
@@ -272,10 +273,10 @@
                         <div class="onoffswitch">
 
                             <!--Edit button-->
-                            <button class="updateBtn btn btn-default btn-sm" data-toggle="modal"
+                            <button class="updateBtn btn btn-secondary btn-sm" data-toggle="modal"
                                 data-target="#editSpoil">Edit</button>
                             <!--Delete button-->
-                            <button class="item_delete btn btn-danger btn-sm" data-toggle="modal" 
+                            <button class="item_delete btn btn-warning btn-sm" data-toggle="modal" 
                             data-target="#deleteSpoilage">Archive</button>                      
                         </div>
                     </td>
@@ -286,10 +287,11 @@
                 <td colspan="6"> <!-- table row ng accordion -->
                     <div style="overflow:auto;display:none"> <!-- container ng accordion -->
                         
-                        <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
-                            <div><b>REMARKS:</b><!-- label-->
-								<p>
-								${table.ssRemarks == null ? "No Remarks." : table.ssRemarks}
+                        <div style="overflow:auto;"> <!-- description, preferences, and addons container -->
+                            <div style="margin:0 46px;overflow:auto;">
+							<b style="float:left;">Remarks: </b><!-- label-->
+								<p style="float:left;margin-left:2%">
+								${table.ssRemarks == null || table.ssRemarks == '' ?  "No remarks." : table.ssRemarks}
                                 </p>
                             </div> 
                         </div>
