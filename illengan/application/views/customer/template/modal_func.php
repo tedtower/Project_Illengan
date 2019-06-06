@@ -28,11 +28,9 @@ $(document).ready(function(){
     });
     $("#qtyIncrement").on('click',function(){
         var quantity = parseInt($("#quantity").val());
-        if(isNaN(quantity)){
+        if(isNaN(quantity) || quantity < 1){
             $("#quantity").val(1); 
-        }else if (quantity < 1){
-            $("#quantity").val(1);
-        }else{
+        } else {
             quantity++;
             $("#quantity").val(quantity);
         }
@@ -40,11 +38,9 @@ $(document).ready(function(){
     });
     $("#qtyDecrement").on('click',function(){
         var quantity = parseInt($("#quantity").val());
-        if(isNaN(quantity)){
+        if(isNaN(quantity) || quantity == 1){
             $("#quantity").val(1); 
-        }else if (quantity == 1){
-            $("#quantity").val(1);
-        }else{
+        } else {
             quantity--;
             $("#quantity").val(quantity);
         }
@@ -53,10 +49,8 @@ $(document).ready(function(){
     });         
     $("#quantity").on('change', function(){
         var quantity = parseInt($(this).val());
-        if(isNaN(quantity)){
+        if(isNaN(quantity) || quantity < 1){
             $(this).val(1); 
-        }else if (quantity < 1){
-            $(this).val(1);
         }
         computeSubtotal();
         console.log($("#dc_subtotal").val());
@@ -141,7 +135,6 @@ $(document).ready(function(){
             },
             success: function(data) {
                 location.reload();
-                console.log(data);
             },
             error: function(response,setting, errorThrown) {
                 console.log(response.responseText);
@@ -279,9 +272,6 @@ function computeSubtotal(){
 $('#omButton').click(function(){
     setOrderlist(orders);
 });
-$('#ceoButton').click(function(){
-    $('#editModal').modal('hide');
-});
 $('#cosButton').click(function(){
     $('#proceed_modal').modal('hide');
 });
@@ -291,7 +281,24 @@ $('#croButton').click(function(){
 $('#craoButton').click(function(){
     $('#deleteAllModal').modal('hide');
 });
-
+$('#qty-plus').click(function(){
+    var quantity = parseInt($("#quantity[name='edit_qty']").val());
+    if(isNaN(quantity) || quantity <= 0){
+        $("#quantity[name='edit_qty']").val(1);
+    } else {
+        quantity++;
+        $("#quantity[name='edit_qty']").val(quantity);
+    }
+});
+$('#qty-minus').click(function(){
+    var quantity = parseInt($("#quantity[name='edit_qty']").val());
+    if(isNaN(quantity) || quantity == 1){
+        $("#quantity[name='edit_qty']").val(1);
+    } else {
+        quantity--;
+        $("#quantity[name='edit_qty']").val(quantity);
+    }
+});
 function setOrderlist(ol){
     event.preventDefault();
     $('#ol_main').empty();
@@ -325,7 +332,7 @@ function setOrderlist(ol){
                         <td>`+orders[rowid].remarks+`</td>
                         <td>`+orders[rowid].addons+`</td>
                         <td>
-                            <button type="button" class="btn btn-mdb-color btn-sm m-0 p-2" data-toggle="modal" data-target="#editModal">Edit</button>
+                            <button type="button" class="btn btn-mdb-color btn-sm m-0 p-2 ediOrder" data-toggle="modal" data-target="#editModal" data-name="`+orders[rowid].name+`" data-id="`+rowid+`">Edit</button>
                             <button type="button" class="btn btn-danger btn-sm m-0 p-2 remOrder" data-toggle="modal" data-target="#deleteModal" data-name="`+orders[rowid].name+`" data-id="`+rowid+`">Remove</button>
                         </td>
                     </tr>`;
@@ -350,6 +357,9 @@ function setOrderlist(ol){
     $('.remOrder').click(function(){
         $('#remName').text("'"+$(this).data('name')+"'");
         $('#remID').val($(this).data('id'));
+    });
+    $('.ediOrder').click(function(){
+        editOrder($(this).data('id'),$(this).data('name'));
     });
 }
 $('#removo').click(function(){
@@ -377,6 +387,12 @@ function removeOrder(){
             console.log(errorThrown);
         }
     });
+}
+function editOrder(id,name){
+    console.log('Order ID: '+id);
+    $('#edit_name').text(name);
+    $("input#quantity[name='edit_qty']").val(orders[id].qty);
+    
 }
 
 </script>
