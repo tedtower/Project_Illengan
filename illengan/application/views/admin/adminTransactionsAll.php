@@ -430,7 +430,7 @@
                 },
                 dataType: 'JSON',
                 success: function(data){
-
+                    console.log(data);
                 },
                 error: function(response, setting, error) {
                     console.log(response.responseText);
@@ -532,8 +532,8 @@
                         $("#stockBrochure").modal('show');
                         $("#stockBrochure form").on('submit',function(event){
                             event.preventDefault();
-                            console.log(input.val());
                             input.val($(this).find("input[name='stocks']:checked").val());
+                            console.log(input.val());
                             $(this)[0].reset();
                             $("#stockBrochure").modal("hide");
                         });
