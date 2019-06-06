@@ -1,51 +1,146 @@
 function getSelectedMenu() {
-    var value = 0;
-    var choices = document.getElementsByClassName('orderitems');
-    var merchChecked;
-    for (var i = 0; i <= choices.length - 1; i++) {
-        if (choices[i].checked) {
-            value = choices[i].value;
+    $(document).ready(function() {
+        var value = 0;
+        var choices = document.getElementsByClassName('orderitems');
+        var merchChecked;
+        for (var i = 0; i <= choices.length - 1; i++) {
+            if (choices[i].checked) {
+                value = choices[i].value;
+    
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://www.illengan.com/admin/jsonPrefDetails',
+                    data: {
+                        prID: value
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        var prName;
+                        if(data[0].prName === 'Normal') {
+                            prName = " ";
+                        } else {
+                            prName = ", "+data[0].prName;
+                        }
+                        merchChecked = `<tr class="salesElem">
+                        <input type="hidden" name="prID" id="prID" value="` + data[0].prID + `">
+                        <input type="hidden" class="mID" id="mID" name="mID" value="` + data[0].mID + `">
+                        <td ><input type="text" id="olDesc" name="olDesc"
+                                 class="olDesc form-control form-control-sm" value="` + data[0].mName + `` + prName + `" readonly="readonly"></td>
+                         <td><input type="number" id="olQty" onchange="setSubtotal()" name="olQty"
+                                 class="form-control form-control-sm" value="1" required min="1"></td>
+                         <td><input type="number" id="prPrice" name="prPrice"
+                                 class="spmPrice form-control form-control-sm" onchange="setSubtotal()" value="` + data[0].prPrice + `" ></td>
+                         <td><input type="number" name="subtotal" class="subtotal form-control form-control-sm" value="" readonly="readonly"></td>
+                        <td><a class="addAddons btn btn-default btn-sm" style="margin:0;" onclick="addAddons(this);" id="addAddons">Add Addons</a></td>
+                        </td><td><img class="delBtn"
+                                 src="/assets/media/admin/error.png"
+                                 style="width:20px;height:20px" onclick="removeItem(this)"></td>
+                         </tr>
+                         `;
+                        if ($('#addSales').is(':visible')) {
+                            $('.salesTable > tbody').append(merchChecked);
+                        } else {
+                            $('.editsalesTable > tbody').append(merchChecked);
+                        }
 
-            $.ajax({
-                type: 'POST',
-                url: 'http://www.illengan.com/admin/jsonPrefDetails',
-                data: {
-                    prID: value
-                },
-                dataType: 'json',
-                success: function (data) {
-                    var prName;
-                    if(data[0].prName === 'Normal') {
-                        prName = " ";
-                    } else {
-                        prName = ", "+data[0].prName;
+                        setSubtotal();
                     }
-                    merchChecked = `<tr class="salesElem">
-                    <input type="hidden" name="prID" id="prID" value="` + data[0].prID + `">
-                    <input type="hidden" class="mID" id="mID" name="mID" value="` + data[0].mID + `">
-                    <td ><input type="text" id="olDesc" name="olDesc"
-                             class="olDesc form-control form-control-sm" value="` + data[0].mName + `` + prName + `" readonly="readonly"></td>
-                     <td><input type="text" id="olQty" onchange="setSubtotal()" name="olQty"
-                             class="form-control form-control-sm" value="1" ></td>
-                     <td><input type="number" id="prPrice" name="prPrice"
-                             class="spmPrice form-control form-control-sm" onchange="setSubtotal()" value="` + data[0].prPrice + `" ></td>
-                     <td><input type="number" name="subtotal" class="subtotal form-control form-control-sm" value="" readonly="readonly"></td>
-                    <td><a class="addAddons btn btn-default btn-sm" style="margin:0;" onclick="addAddons(this);" id="addAddons">Add Addons</a></td>
-                    </td><td><img class="exitBtn"
-                             src="/assets/media/admin/error.png"
-                             style="width:20px;height:20px"></td>
-                     </tr>
-                     `;
-                    if ($('#editPO').is(':visible')) {
-                        $('.salesTable > tbody').append(merchChecked);
-                    } else {
-                        $('.salesTable > tbody').append(merchChecked);
-                    }
-                    setSubtotal();
-                }
-            });
+                });
+            }
         }
+
+    }); 
+   
+}
+
+var addonsArr;
+function addAddons(btn) {
+    var mID = $(btn).closest('tr').find('.mID').val();
+    var prID = $(btn).closest('tr').find('#prID').val();
+    console.log(mID);
+    $.ajax({
+        type: 'POST',
+        url: 'http://www.illengan.com/admin/jsonAddons',
+        data: {
+            mID: mID
+        },
+        dataType: 'json',
+        success: function (data) {
+            if(data.length !== 0) {
+            addonsArr = data;
+            var options = [];
+            for(var i = 0; i <= data.length-1; i++) {
+            var option = `  <option value="`+data[i].aoID+`">`+data[i].aoName+`</option>`;
+            options.push(option);
+            }
+         
+            var addOns = `
+            <tr class="addonsTable" data-id="">
+            <input type="hidden" name="aoprID" value="` + prID + `">
+            <td>
+                <select class="form-control" style="font-size: 14px;" onchange="setAddOnVal(this)" name="aoID" id="addon" required>
+                <option></option>`+options+`
+                </select>
+            </td>
+            <td>
+                <input type="number" name="aoQty" id="aoQty" onchange="setAddOnSubtotal()" value="1" class="form-control form-control-sm" required min="1">
+            </td>
+            <td>
+                <input type="number" name="aoPrice" id="aoPrice" value="0" class="form-control form-control-sm" readonly>
+            </td>
+            <td>
+                <input type="number" name="aoSubtotal" id="aoSubtotal" value="0" class="aoSubtotal form-control form-control-sm" readonly>
+            </td>
+            <td style="text-align:center"> <b> --- </b></td>
+            <td><img class="delBtn" src="/assets/media/admin/error.png" onclick="removeItem(this)" style="width:20px;height:20px"></td>
+        </tr>`;
+    
+                $(btn).closest('tr').after(addOns);
+            } 
+        }
+    });
+    
+}
+ 
+var select, aoPrice;
+function setAddOnVal(input) {
+    select = $(input);
+    var aoID = input.value;
+
+    try {
+        var arr = addonsArr.filter(ao => ao.aoID === aoID);
+        aoPrice = arr[0].aoPrice;
+        $(input).closest('td').nextAll('td').find('#aoPrice')[0].value = aoPrice;
+    
+        setAddOnSubtotal();
+    } catch(error) {
+        console.log('No addon');
+        aoPrice = 0;
+        $(input).closest('td').nextAll('td').find('#aoPrice')[0].value = 0;
+
+        setAddOnSubtotal();
     }
+   
+}
+var aosubtotal = 0;
+var elSubtotal;
+function setAddOnSubtotal() {
+        var aoQty = $(select).closest('td').next('td').find('#aoQty').val();
+        var aoSubtotal = parseFloat(aoPrice * aoQty);
+        $(select).closest('td').nextAll('td').find('#aoSubtotal')[0].value = aoSubtotal;
+        console.log(select);
+        setAddonTotal();
+}
+
+function setAddonTotal() {
+    aosubtotal = 0;
+    elSubtotal = document.getElementsByClassName('aoSubtotal');
+    var val = 0; 
+    for(var i = 0; i <= elSubtotal.length-1; i++) {
+        val = parseInt(elSubtotal[i].value);
+        aosubtotal = parseInt(aosubtotal + val);
+    }
+    setSubtotal();
 }
 
 function setSubtotal() {
@@ -53,17 +148,23 @@ function setSubtotal() {
         var prPrice, olQty;
         elements = document.getElementsByClassName('salesElem');
         total = 0;
-
+      
         for (var i = 0; i <= elements.length - 1; i++) {
             prPrice = parseFloat(document.getElementsByName('prPrice')[i].value);
             olQty = parseInt(document.getElementsByName('olQty')[i].value);
             document.getElementsByName('subtotal')[i].value = olQty * prPrice;
-
-        }
-        for (var i = 0; i <= elements.length - 1; i++) {
             var subtotal = parseInt(document.getElementsByName('subtotal')[i].value);
             total = total + subtotal;
         }
+    
+        try {
+            if(elSubtotal.length != 0) {
+            total = total + parseInt(aosubtotal);
+        }
+        } catch(err) {
+            console.log('no addons');
+        }
+
         if ($('#addSales').is(':visible')) {
             $('#total').text(total);
         } else {
@@ -73,13 +174,15 @@ function setSubtotal() {
     });
 }
 
-function addSales() {
+$(document).ready(function() {
+    $("#addSales form").on('submit', function(event) {
+    event.preventDefault();
     var orderlists = [];
     var items = [];
     var addonItems = [];
     var addons = [];
-    var osPayDate = $('#osPayDate').val();
-    var osDate = $('#osDate').val();
+    var osPayDateTime = $('#osPayDateTime').val();
+    var osDateTime = $('#osDateTime').val();
     var custName = $('#custName').val();
     var tableCode = $('#tableCode').val();
     var osTotal = parseInt($('#total').text());
@@ -112,26 +215,17 @@ function addSales() {
             aoQty = document.getElementsByName('aoQty')[i].value;
             aoTotal = document.getElementsByName('aoSubtotal')[i].value;
 
-        console.log('mid '+prID+' aoID '+aoID+' aoQty '+aoQty+' aoTotal '+aoTotal);
         addonItems = {
             'prID': prID,
             'aoID': aoID,
             'aoQty': aoQty,
             'aoTotal': aoTotal
         }
-
         addons.push(addonItems);
         
         }
     }
-    console.log('ADDONS');
-    console.log(addons);
-    console.log('LENGTH '+ addons.length);
-    console.log(addons.length === 0);
-    console.log('ORDERLIST');
-    console.log(orderlists);
-    console.log('LENGTH'+ orderlists.length);
-    console.log(orderlists.length === 0);
+   
     $.ajax({
         type: 'POST',
         url: 'http://www.illengan.com/admin/sales/add',
@@ -139,104 +233,46 @@ function addSales() {
             tableCode: tableCode,
             custName: custName,
             osTotal: osTotal,
-            osDate: osDate,
-            osPayDate: osPayDate,
+            osDateTime: osDateTime,
+            osPayDateTime: osPayDateTime,
             orderlists: JSON.stringify(orderlists),
             addons: JSON.stringify(addons)
         },
-        dataType: 'json',
-        success: function(data) {
+        success: function() {
             alert('Sales added');
-            console.log('DATAAA');
-            console.log(data);
-            //location.reload();
+            location.reload();
         },
         error: function (response, setting, errorThrown) {
             console.log(errorThrown);
             console.log(response.responseText);
-        },
-        failure: function() {
-            console.log('oh no');
         }
     });
-      
-}
-var addonsArr;
-function addAddons(btn) {
-    var mID = $(btn).closest('tr').find('.mID').val();
-    var prID = $(btn).closest('tr').find('#prID').val();
-    
-    $.ajax({
-        type: 'POST',
-        url: 'http://www.illengan.com/admin/jsonAddons',
-        data: {
-            mID: mID
-        },
-        dataType: 'json',
-        success: function (data) {
-            if(data.length !== 0) {
-                addonsArr = data;
-            var options = [];
-            for(var i = 0; i <= data.length-1; i++) {
-            var option = `  <option value="`+data[i].aoID+`">`+data[i].aoName+`</option>`;
-            options.push(option);
-            }
-            
-            var addOns = `
-            <tr class="addonsTable">
-            <input type="hidden" name="aoprID" value="` + prID + `">
-            <td>
-                    <select class="form-control" style="font-size: 14px;" onchange="setAddOnVal(this)" name="aoID" id="addon" required>
-                    <option value="null" selected>--- Add On ---</option>
-                    `+options+`
-                    </select>
-            </td>
-            <td>
-                <input type="number" name="aoQty" id="aoQty" onchange="setAddOnSubtotal()" value="1" class="form-control form-control-sm">
-            </td>
-            <td>
-                <input type="number" name="aoPrice" id="aoPrice" class="form-control form-control-sm" readonly>
-            </td>
-            <td>
-                <input type="number" name="aoSubtotal" id="aoSubtotal" class="form-control form-control-sm" readonly>
-            </td>
-            <td style="text-align:center"> <b> --- </b></td>
-            <td><img class="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
-        </tr>`;
-    
-                $(btn).closest('tr').after(addOns);
-            } 
-            
-        }
-    });
-    
-    
-};
-var select, aoPrice;
-function setAddOnVal(input) {
-    select = $(input);
-    var aoID = input.value;
-    
+ });
+});
+
+ function removeItem(remove) {
+    $(remove).closest("tr").remove();
+    setSubtotal();
+ }
+
+ function deleteItem(element) {
+    var el = $(element).closest("tr");
+    var btn = el.find(".addAddons");
+    el.attr("data-delete", "0");
+    el[0].style.textDecoration = "line-through";
+    el[0].style.opacity = "0.6";
+    btn.attr("onclick", " ");
+
     try {
-        var arr = addonsArr.filter(ao => ao.aoID === aoID);
-        aoPrice = arr[0].aoPrice;
-        $(input).closest('td').nextAll('td').find('#aoPrice')[0].value = aoPrice;
-    
-        setAddOnSubtotal();
+        if($(el).next(".addonsTable") != null) {
+            nextTr = $(el).nextAll(".salesElem");
+            addonEl = $(el).nextUntil(nextTr, "tr");
+            for(var i = 0; i <= addonEl.length-1; i++) {
+                addonEl[i].style.textDecoration = "line-through";
+                addonEl[i].style.opacity = "0.5";
+            }
+        }
     } catch(error) {
-        console.log('No addon');
-        aoPrice = 0;
-        $(input).closest('td').nextAll('td').find('#aoPrice')[0].value = 0;
 
-        setAddOnSubtotal();
     }
-   
-}
-
-function setAddOnSubtotal() {
-    var aoQty = $(select).closest('td').next('td').find('#aoQty').val();
-    var aoSubtotal = parseFloat(aoPrice * aoQty);
-
-    $(select).closest('td').nextAll('td').find('#aoSubtotal')[0].value = aoSubtotal;
-
-}
+ }

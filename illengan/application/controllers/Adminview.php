@@ -79,8 +79,7 @@ class Adminview extends CI_Controller{
 
             $data['supplier'] = array(
                 'sources' => $this->adminmodel->get_supplier(),
-                'merchandises' => $this->adminmodel->get_suppliermerch(),
-                'stockvariances' => $this->adminmodel->get_stockVariance()
+                'merchandises' => $this->adminmodel->get_suppliermerch()
             );
             $this->load->view('admin/adminSources', $data);
             // $this->load->view('admin/templates/scripts');
@@ -124,7 +123,8 @@ class Adminview extends CI_Controller{
             $data = array(
                 'menu' => $this->adminmodel->get_menu(),
                 'preferences' => $this->adminmodel->get_preferences(),
-                'addons' => $this->adminmodel->get_addons2()
+                'addons' => $this->adminmodel->get_addons2(),
+                'categories' => $this->adminmodel->get_menucategories()
             );
             header('Content-Type: application/json');
             echo json_encode($data, JSON_PRETTY_PRINT);
@@ -180,6 +180,7 @@ class Adminview extends CI_Controller{
             $data['title'] = "Sales";
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
+            $data['mnaddons'] = $this->adminmodel->get_mnAddons();
             // $data['sales'] = $this->adminmodel->get_sales();
             $this->load->view('admin/adminSales');
         }else{

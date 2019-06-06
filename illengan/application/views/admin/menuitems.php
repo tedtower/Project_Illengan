@@ -179,11 +179,8 @@
                                         <span class="input-group-text" id="inputGroup-sizing-sm" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                                         Category</span>
                                     </div>
-                                    <select class="custom-select" name="ctName" required>
+                                    <select class="custom-select" name="ctName" id="ctName" required>
                                         <option value="" selected disabled>Choose</option>
-                                        <?php foreach($category as $category){?>
-                                            <option value="<?= $category['ctID']?>"><?= $category['ctName']?></option>
-                                        <?php }?>
                                     </select>
                                 </div>
                                     <!--Transaction date-->
@@ -287,7 +284,11 @@
 <?php include_once('templates/scripts.php') ?>
 <script>
 var menu = [];
+var menuedit =[];
 var addons = <?= json_encode($addons)?>;
+var categories = [];
+console.log(categories);
+
 $(document).ready(function() {
     $(function(){
         $.ajax({
@@ -302,6 +303,9 @@ $(document).ready(function() {
                     menu[index].addons = data.addons.filter(ao => ao.mID == item.mID);
                 });
                 showTable();
+                menuedit = data;
+                categories = data.categories;
+
             },
             error: function(response,setting, errorThrown){
                 console.log(errorThrown);
@@ -345,7 +349,7 @@ $(document).ready(function() {
     });
     $(".addAddon").on('click',function(){
         var row=`
-        <tr data-id="">
+        <tr>
             <td>
                 <select class="form-control" name="aoID[]">
                 ${addons.map(addon => {
@@ -366,7 +370,7 @@ $(document).ready(function() {
     $("#newMenu form").on('submit', function(event) {
         event.preventDefault();
         var name = $(this).find("input[name='mName']").val();
-        var description = $(this).find("input[name='mDesc']").val();
+        var description = $(this).find("textarea[name='mDesc']").val();
         var category = $(this).find("select[name='ctName']").val();
         var status = $(this).find("select[name='mAvailability']").val();
         var preferences = [];
@@ -374,7 +378,7 @@ $(document).ready(function() {
             preferences.push({
                 prName: $(this).find("input[name='prName[]']").eq(index).val(),
                 mTemp: $(this).find("select[name='mTemp[]']").eq(index).val(),
-                prPrice: $(this).find("input[name='prPrice[]']").eq(index).val(),
+                prPrice: parseFloat($(this).find("input[name='prPrice[]']").eq(index).val()),
                 prStatus: $(this).find("select[name='prStatus[]']").eq(index).val()
             });
         }
@@ -402,10 +406,9 @@ $(document).ready(function() {
                 console.log(name,description,category,status,preferences,addons);
             },
             success: function(data) {
-                console.log(data);
-                // inventory = data;
-                // lastIndex = 0;
-                // setTableData();
+                if(data.success == true){
+                    window.location = "<?php echo base_url();?>/admin/menu";
+                }
             },
             error: function(response, setting, error) {
                 console.log(error);
@@ -416,11 +419,11 @@ $(document).ready(function() {
         });
     });
 
-    $("#editSupplier form").on('submit', function(event) {
+    $("#editMenu form").on('submit', function(event) {
         event.preventDefault();
         var id = $(this).find("input[name='menuID']").val();
         var name = $(this).find("input[name='mName']").val();
-        var description = $(this).find("input[name='mDesc']").val();
+        var description = $(this).find("textarea[name='mDesc']").val();
         var category = $(this).find("select[name='ctName']").val();
         var status = $(this).find("select[name='mAvailability']").val();
         var preferences = [];
@@ -437,11 +440,11 @@ $(document).ready(function() {
         }
         var addons = [];
         for (var index = 0; index < $(this).find(".addontable > tbody").children().length; index++) {
-            var row = $(this).find(".addon > tbody > tr").eq(index);
+            var row = $(this).find(".addontable > tbody > tr").eq(index);
             console.log(row);
             addons.push({
-                addonID : isNaN(parseInt(row.attr('data-id'))) ?  (null) : parseInt(row.attr('data-id')),
-                aoID: parseInt(row.find("input[name='aoID[]']").val())
+                oldaoID: parseInt(row.find("input[name='oldaoID']").val()),
+                aoID: parseInt(row.find("select[name='aoID[]']").val())
             });
         }
         console.log(id, name, description, category, status, preferences, addons);
@@ -461,11 +464,8 @@ $(document).ready(function() {
             beforeSend: function() {
                 console.log(id, name, description, category, status, preferences, addons);
             },
-            success: function(data) {
-                console.log(data);
-                // inventory = data;
-                // lastIndex = 0;
-                // setTableData();
+            success: function() {
+                location.reload();
             },
             error: function(response, setting, error) {
                 console.log(error);
@@ -484,9 +484,9 @@ $(document).ready(function() {
                 <tr class="table_row" data-menuId="${item.menu.mID}">   <!-- table row ng table -->
                     <td><a href="javascript:void(0)" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${item.menu.mName}</td>
                     <td>${item.menu.ctName}</td>
-                    <td class="text-center">${item.menu.mAvailability}</td>
+                    <td class="text-center">${item.menu.mAvailability.toUpperCase()}</td>
                     <td>
-                        <button class="editBtn btn btn-sm btn-secondary" data-toggle="modal" data-target="#editMenu">Edit</button>
+                        <button class="editBtn btn btn-sm btn-secondary" data-toggle="modal" data-target="#editMenu" data-id="${item.menu.mID}">Edit</button>
                         <button class="deleteBtn btn btn-sm btn-warning">Archived</button>
                     </td>
                 </tr>
@@ -508,7 +508,7 @@ $(document).ready(function() {
                     ${item.preferences.map(pref => {
                         return `
                         <tr>
-                            <td>${pref.prName.toLowerCase() === 'normal' ? `${pref.mTemp == null || pref.mTemp == '' ? "Regular" : pref.mTemp === 'h' ? "Hot" : pref.mTemp === 'c' ? "Cold" : "Hot and Cold" }` : `${pref.prName+ " "+ `${pref.mTemp == null ? "" : pref.mTemp}`}`}</td>
+                            <td>${pref.prName.toLowerCase() === 'normal' || pref.prName == '' ? `${pref.mTemp == null || pref.mTemp == '' ? "Regular" : pref.mTemp === 'h' ? "Hot" : pref.mTemp === 'c' ? "Cold" : "Hot and Cold" }` : `${pref.prName+ " "+ `${pref.mTemp == null ? "" : pref.mTemp}`}`}</td>
                             <td>&#8369; ${pref.prPrice}</td>
                             <td>${pref.prStatus}</td>
                         </tr>
@@ -537,6 +537,9 @@ $(document).ready(function() {
                                 <p>${item.menu.mDesc == null ? "Description is not available." : item.menu.mDesc}
                                 </p>
                             </div> 
+                            <div class="aoAndPreferences" style="overflow:auto;margin-top:1%"> <!-- Preferences and addons container-->
+                                
+                            </div>
                         </div>
                     </div>
                 </td>
@@ -568,6 +571,7 @@ $(document).ready(function() {
             $("#menuTable > tbody").append(accordion);
             $(".aoAndPreferences").last().append(preferencesDiv);
             $(".aoAndPreferences").last().append(addonsDiv);
+
         });
         $(".accordionBtn").on('click', function(){
             if($(this).closest("tr").next(".accordion").css("display") == 'none'){
@@ -578,19 +582,26 @@ $(document).ready(function() {
                 $(this).closest("tr").next(".accordion").hide("slow");
             }
         });
-        $(".editBtn").on("click",function(){
-            $("#editMenu form")[0].reset();
-                $("#editMenu .preferencetable > tbody").empty();
-                var menuID = $(this).closest("tr").attr("data-menuID");
-                setEditModal("#editMenu");
 
+        $(".editBtn").on("click",function(){
+                $("#editMenu form")[0].reset();
+                $("#editMenu .preferencetable > tbody").empty();
+                $("#editMenu .addontable > tbody").empty();
+                var menuID = $(this).closest("tr").attr("data-menuId");
+                $('#ctName').empty();
+                $("#ctName").append(`${categories.map(category => {
+                    return `<option value="${category.ctID}">${category.ctName}</option>`;
+                }).join('')}`);
+                setEditModal($("#editMenu"), menuedit.menu.filter(menu => menu.mID === menuID)[0], menuedit.addons.filter(addon => addon.mID === menuID), menuedit.preferences.filter(preference => preference.mID === menuID));
         });
+
         $('.addMenuImage').on('click', function(){
                 $("#menuItemName").text(
                     `Menu Name: ${$(this).closest("tr").attr("data-name")}`);
                 $("#addImage").find("input[name='menuId']").val($(this).closest("tr").attr(
                     "data-id"));
         });
+
     } 
 
     $('input[type="file"]').change(function(e){
@@ -598,14 +609,15 @@ $(document).ready(function() {
         $('.custom-file-label').html(fileName);
     });
 
-    function setEditModal(modal, menu) {
+    
+    function setEditModal(modal, menu, addon, preference) {
         modal.find("input[name='menuID']").val(menu.mID);
         modal.find("input[name='mName']").val(menu.mName);
-        modal.find("input[name='mDesc']").val(item.menu.mDesc);
-        modal.find("select[name='ctName']").val(item.menu.ctName);
-        modal.find("select[name='mAvailability']").find(`option[value='${item.menu.mAvailability}']`).attr("selected", "selected");
-
-        item.preferences.forEach(preference => {
+        modal.find("input[name='mDesc']").val(menu.mDesc);
+        modal.find("select[name='ctName']").find(`option[value='${menu.ctID}']`).attr("selected", "selected");
+        modal.find("select[name='mAvailability']").find(`option[value='${menu.mAvailability}']`).attr("selected", "selected");
+        console.log(menu);
+        preference.forEach(preference => {
             modal.find(".preferencetable > tbody").append(`
             <tr data-id="${preference.prID}">
                 <td><input type="text" name="prName[]" value="${preference.prName}" class="form-control form-control-sm"></td>
@@ -628,24 +640,28 @@ $(document).ready(function() {
                 </td>
                 <td><img class="exitBtn1" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
             </tr>
-        `); 
+        `);
+        modal.find("select[name='prStatus[]']").last().find(`option[value='${preference.prStatus}']`).attr("selected", "selected");
+        modal.find("select[name='mTemp[]']").last().find(`option[value='${preference.mTemp}']`).attr("selected", "selected");
+
         });
 
-        item.addons.forEach(addon => {
+        addon.forEach(addon => {
             modal.find(".addontable > tbody").append(`
-                <tr data-id="${addon.aoID}">
+                <tr>
                     <td>
+                        <input type="hidden" name="oldaoID" value="${addon.aoID}">
                         <select class="form-control" name="aoID[]">
                         ${addons.map(addon => {
                                 return `
-                                <option value="${addon.aoID}">${addon.aoName}</option>`
+                                <option value="${addon.aoID}">${addon.aoName}</option>`;
                             }).join('')}
                         </select>
                     </td>
                     <td><img class="exitBtn2" src="/assets/media/admin/error.png" style="width:20px;height:20px;right:0"></td>
                 </tr>
             `);
-            modal.find("select[name='aoiD[]']").last().find(`option[value='${addon.aoID}']`).attr("selected", "selected");
+            modal.find("select[name='aoID[]']").last().find(`option[value='${addon.aoID}']`).attr("selected", "selected");
         })
     }
 </script>

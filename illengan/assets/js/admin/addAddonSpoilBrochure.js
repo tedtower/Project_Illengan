@@ -77,6 +77,3 @@ function addAddonItems() {
     });
 }
 
-function newFunction(data) {
-    console.log(data);
-}
