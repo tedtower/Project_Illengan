@@ -116,7 +116,9 @@ class Adminmodel extends CI_Model{
                 ?
             );";
         if($this->db->query($query,array($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, $stockBqty, $stockLocation,$stockSize))){
-            return true;
+            if($this->add_stockLog($this->db->insert_id(), NULL, 'beginning', date("Y-m-d H:i:s"), date("Y-m-d H:i:s"), $stockQty, "New item")){
+                return true;
+            }
         }
         return false;
     }
@@ -817,15 +819,15 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query, array($spmID))->result_array();
     }
     function get_spoilagesmenu(){
-        $query = "Select msID,prID, mName,msQty,msDate,msDateRecorded,msRemarks from menuspoil inner join spoiledmenu using (msID) inner join preferences using (prID) inner join menu using (mID)";
+        $query = "Select msID,prID, mName,msQty,DATE_FORMAT(msDate, '%b %d, %Y %r') AS msDate,DATE_FORMAT(msDateRecorded, '%b %d, %Y %r') AS msDateRecorded,msRemarks from menuspoil inner join spoiledmenu using (msID) inner join preferences using (prID) inner join menu using (mID)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesstock(){
-        $query = "Select ssID,stID,stName,stLocation,ssQty,stQty,ssDate,ssDateRecorded,ssRemarks from stockspoil inner join spoiledstock using (ssID) inner join stockitems using (stID)";
+        $query = "Select ssID,stID,stName,stLocation,ssQty,stQty,DATE_FORMAT(ssDate, '%b %d, %Y %r') AS ssDate,DATE_FORMAT(ssDateRecorded, '%b %d, %Y %r') AS ssDateRecorded,ssRemarks from stockspoil inner join spoiledstock using (ssID) inner join stockitems using (stID)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesaddons(){
-        $query = "Select aoID,aosID, aoName,aosQty, aoCategory,aosDate, aosDateRecorded, aosRemarks from addonspoil INNER JOIN aospoil using (aosID)INNER JOIN addons using (aoID)";
+        $query = "Select aoID,aosID, aoName,aosQty, aoCategory,DATE_FORMAT(aosDate, '%b %d, %Y %r') AS aosDate, DATE_FORMAT(aosDateRecorded, '%b %d, %Y %r') AS aosDateRecorded, aosRemarks from addonspoil INNER JOIN aospoil using (aosID)INNER JOIN addons using (aoID)";
         return  $this->db->query($query)->result_array();
     }
     function get_tables(){
@@ -853,106 +855,7 @@ class Adminmodel extends CI_Model{
     function get_consumptionItems(){
         $query = "SELECT stID, cnID, cnQty, remainingQty, stName, vUnit, vSize  FROM varconsumptionitems NATURAL JOIN consumption NATURAL JOIN variance NATURAL JOIN stockitems";
         return $this->db->query($query)->result_array();
-    }
-    function get_allTransactions(){
-        $query = "SELECT 
-            iID,
-            spID,
-            spName,
-            iType,
-            iNumber,
-            iTotal,
-            iRemarks,
-            iDate,
-            iDateRecorded,
-            resolvedStatus
-        FROM
-            invoice
-                LEFT JOIN
-            supplier USING (spID);";
-        return $this->db->query($query)->result_array();
-    }
-    function get_purchaseTransactions(){
-        $query = "SELECT 
-            iID,
-            spID,
-            spName,
-            iType,
-            iNumber,
-            iTotal,
-            iRemarks,
-            iDate,
-            iDateRecorded,
-            resolvedStatus
-        FROM
-            invoice
-                INNER JOIN
-            supplier USING (spID)
-        WHERE
-            iType = 'purchase';";
-        return $this->db->query($query)->result_array();
-    } 
-    function get_deliveryTransactions(){
-        $query = "SELECT 
-            iID,
-            spID,
-            spName,
-            iType,
-            iNumber,
-            iTotal,
-            iRemarks,
-            iDate,
-            iDateRecorded,
-            resolvedStatus
-        FROM
-            invoice
-                INNER JOIN
-            supplier USING (spID)
-        WHERE
-            iType = 'delivery';";
-        return $this->db->query($query)->result_array();
-    }
-    function get_allTransactionsItems(){
-        $query = "SELECT 
-            iID, iName, iQty, iPrice, iUnit, iSubtotal
-        FROM
-            invoiceitems
-                INNER JOIN
-            (SELECT 
-                iID
-            FROM
-                invoice) AS aInvoice USING (iID);";
-        return $this->db->query($query)->result_array();
-    }
-    function get_purchaseTransactionsItems(){
-        $query = "SELECT 
-            iID, iName, iQty, iPrice, iUnit, iSubtotal
-        FROM
-            invoiceitems
-                INNER JOIN
-            (SELECT 
-                iID
-            FROM
-                invoice
-            WHERE
-                iType = 'purchase') AS pInvoice USING (iID);";
-        return $this->db->query($query)->result_array();
-    }
-    function get_deliveryTransactionsItems(){
-        $query = "SELECT
-            iID, iName, iQty, iPrice, iUnit, iSubtotal
-        FROM
-            invoiceitems
-                INNER JOIN
-            (SELECT 
-                iID
-            FROM
-                invoice
-            WHERE
-                iType = 'delivery') AS dInvoice USING (iID);";
-        return $this->db->query($query)->result_array();
-    }
-    
+    }   
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
     function delete_account($accountId){
@@ -1195,7 +1098,8 @@ class Adminmodel extends CI_Model{
             UPPER(stStatus) AS stStatus,
             UPPER(stType) AS stType,
             uomID,
-            uomAbbreviation
+            uomAbbreviation,
+            stBqty
         FROM
             (
                 stockitems
@@ -1223,8 +1127,8 @@ class Adminmodel extends CI_Model{
             tID,
             tNum,
             tType,
-            tDate,
-            dateRecorded,
+            DATE_FORMAT(tDate, '%b %d, %Y %r') AS tDate,
+            DATE_FORMAT(dateRecorded, '%b %d, %Y %r') AS dateRecorded,
             spID,
             spName,
             SUM(tiSubtotal) AS tTotal,
@@ -1244,8 +1148,8 @@ class Adminmodel extends CI_Model{
             tID,
             tNum,
             tType,
-            tDate,
-            dateRecorded,
+            DATE_FORMAT(tDate, '%b %d, %Y %r') AS tDate,
+            DATE_FORMAT(dateRecorded, '%b %d, %Y %r') AS dateRecorded,
             spID,
             spName,
             SUM(tiSubtotal) AS tTotal,
@@ -1490,6 +1394,55 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query, array($stQty, $stID));
     }
 
+    function get_stockLog($stID){
+        $query = "SELECT
+                slID,
+                stID,
+                uomAbbreviation,
+                slType,
+                DATE_FORMAT(slDateTime, '%b %d, %Y %r') AS slDateTime,
+                stocklog.dateRecorded,
+                slQty,
+                slRemarks,
+                tNum
+            FROM
+                (
+                    stocklog
+                LEFT JOIN stockitems USING(stID)
+                )
+            LEFT JOIN transactions USING(tID)
+            LEFT JOIN uom USING(uomID)
+            WHERE
+                stID = ? AND slDateTime >= (
+                SELECT
+                    MAX(slDateTime) AS maxDate
+                FROM
+                    stocklog
+                WHERE
+                    slType = 'beginning' AND stID = ?
+            );";
+        return $this->db->query($query,array($stID,$stID))->result_array();
+    }
+    // INSERT INTO stocklog(
+    //     slID,
+    //     slType,
+    //     slDateTime,
+    //     slQty,
+    //     slRemarks,
+    //     stID,
+    //     dateRecorded
+    // )
+    // VALUES(NULL, 'beginning', '', '', '', '', '')
+        function get_invPeriodStart($stID){
+            return $this->db->query("SELECT
+                        MAX(slDateTime) AS maxDate,
+                        slQty
+                    FROM
+                        stocklog
+                    WHERE
+                        slType = 'beginning' AND stID = ?
+                ;",array($stID))->result_array();
+        }
 }
 
 ?>

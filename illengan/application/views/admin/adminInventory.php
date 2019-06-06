@@ -43,7 +43,7 @@
                                 <td>
                                     <button class="editBtn btn btn-default btn-sm" data-toggle="modal" data-target="#addEditStock">Edit</button>
                                     <button class="btn btn-warning btn-sm">Archived</button>
-                                    <a href="<?php echo base_url('admin/inventory/stockcard')?>" class="btn btn-success btn-sm">Stock Card</a>
+                                    <a href="<?= site_url('admin/inventory/stockcard/'.$stock['stID'])?>" class="btn btn-success btn-sm">Stock Card</a>
                                 </td>
                                 <?php } ?>
                             </tr>
