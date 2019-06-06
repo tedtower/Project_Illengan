@@ -210,5 +210,5 @@ $route['barista/destock'] = "barista/destockitem";
 // $route['barista/pendingOrdersJS'] ="barista/pendingOrdersJS";
 
 // CHEF ROUTES
-$route['chef/get_orderlist'] = "chef/get_orderlist";
+$route['chef/orders'] = "chef/get_orderlist";
 $route['chef/change_status'] = "chef/change_status";

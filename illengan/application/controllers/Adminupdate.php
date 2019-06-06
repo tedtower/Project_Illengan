@@ -74,6 +74,25 @@ class Adminupdate extends CI_Controller{
             redirect('login');
         }
     }
+    function editSales() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $osID = $this->input->post('osID');
+            $tableCodes = $this->input->post('tableCodes');
+            $custName = $this->input->post('custName');
+            $osTotal = $this->input->post('osTotal');
+            $payStatus = $this->input->post('payStatus');
+            $osDateTime = $this->input->post('osDateTime');
+            $osPayDateTime = $this->input->post('osPayDateTime');
+            $osDateRecorded = date("Y-m-d H:i:s");
+            $orderlists = json_decode($this->input->post('orderlists'), true);
+            $addons = json_decode($this->input->post('addons'), true);
+               
+            $this->adminmodel->edit_sales($osID, $tableCodes, $custName, $osTotal, $payStatus, 
+            $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons);
+        }else{
+            redirect('login');
+        }
+    }
     function editTable(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->form_validation->set_rules('prevTableCode', 'Table Code', 'trim|required|alpha_numeric_spaces|max_length[10]');

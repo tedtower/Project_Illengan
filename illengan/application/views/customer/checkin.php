@@ -19,7 +19,7 @@
                 <div class="modal-body">
 				<h4 class="gab">Table Code:</h4>
 				<select class="form-control mb-2 delius" name="table_no" required>
-				    <option value="">Please Select</option>
+				    <option value="" disabled selected>Please Select</option>
                     <?php foreach($number as $row){ 
                         echo '<option value="'.$row->tableCode.'">'.$row->tableCode.'</option>';
                     }?>

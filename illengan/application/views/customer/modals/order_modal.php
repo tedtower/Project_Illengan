@@ -27,13 +27,15 @@
                     }else{ ?>
                     <div class="text-center" id="ol_main"></div>
                     <div id="order_footer"></div>
-                </div>
-				</form>
-				<?php }; ?>
+                
+		    <?php include 'orderslip.php'; 
+		     }; ?>
+		    </form>
+		    </div>
+		
             </div>
         </div>
     </div>
-    <?php include 'orderslip.php'; ?>
     <?php include 'edit.php'; ?>    
     <?php include 'remove.php'; ?>
     <?php include 'remove_all.php'; ?>

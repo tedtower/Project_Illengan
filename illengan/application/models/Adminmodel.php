@@ -426,19 +426,7 @@ class Adminmodel extends CI_Model{
 
     function update_salesaddons($olID, $prID, $addons) {
             for($i = 0; $i < count($addons); $i++) {
-                if($addons[$i]['del'] === 0 ) {
-                    $this->delete_salesAddons($addons[$i]['aoID'], $addons[$i]['olID']);
-                } else if($addons[$i]['oldaoID'] != $addons[$i]['aoID']) {
-                    $this->update_changedAddon($addons[$i]['oldaoID'], $addons[$i]['aoID'], $addons[$i]['olID']);
-                } else if($addons[$i]['prID'] == $prID && $addons[$i]['olID'] != null) {
-                    $aolist = array(
-                        'aoID' => $addons[$i]['aoID'],
-                        'olID' => $addons[$i]['olID'],
-                        'aoQty' => $addons[$i]['aoQty'],
-                        'aoTotal' => $addons[$i]['aoTotal']
-                    );
-                    $this->edit_salesaddons($aolist);
-                } else if($addons[$i]['olID'] == null){
+                if($addons[$i]['olID'] == null){
                     $addonsArr = array();
                     $aolist = array(
                         'prID' => $addons[$i]['prID'],
@@ -449,6 +437,20 @@ class Adminmodel extends CI_Model{
                     array_push($addonsArr, $aolist);
                     $this->add_salesAddons($olID, $prID, $addonsArr);
                 } 
+                else if($addons[$i]['del'] === 0 ) {
+                    $this->delete_salesAddons($addons[$i]['aoID'], $addons[$i]['olID']);
+                } else if($addons[$i]['oldaoID'] !== $addons[$i]['aoID']) {
+                    $this->update_changedAddon($addons[$i]['aoID'], $addons[$i]['oldaoID'], $addons[$i]['olID']);
+                } else if($addons[$i]['prID'] == $prID && $addons[$i]['olID'] != null) {
+                    $aolist = array(
+                        'aoID' => $addons[$i]['aoID'],
+                        'olID' => $addons[$i]['olID'],
+                        'aoQty' => $addons[$i]['aoQty'],
+                        'aoTotal' => $addons[$i]['aoTotal']
+                    );
+                    $this->edit_salesaddons($aolist);
+                }
+
             }
     }
 
@@ -460,7 +462,7 @@ class Adminmodel extends CI_Model{
 
     function update_changedAddon($aoID, $oldaoID, $olID) {
         $query = "UPDATE orderaddons SET aoID = ? WHERE orderaddons.aoID = ? AND orderaddons.olID = ?;";
-        $this->db->query($query, array($aoID, $oldaoID, $olID));
+        $this->db->query($query, array(intval($aoID), intval($oldaoID), intval($olID)));
 
     }
 
