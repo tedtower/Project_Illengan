@@ -1,4 +1,5 @@
 <!--End Side Bar-->
+<body style="background:white">
 <div class="content">
     <div class="container-fluid">
         <br>
@@ -10,14 +11,13 @@
             <div class="container-fluid">
                 <!--Table-->
                 <div class="card-content">
-                    <a id="addPromo" class="btn btn-default btn-sm" onclick="addItemOptions();removeOptions()"
-                        data-toggle="modal" data-target="#newPromo" data-original-title style="margin:0">Add Promo</a>
+                    <button id="addPromo" class="btn btn-primary btn-sm" onclick="addItemOptions();removeOptions()"
+                        data-toggle="modal" data-target="#newPromo" data-original-title style="margin:0">Add Promo</button>
                     <br>
                     <br>
-                    <table id="menuTable" class="table dt-responsive nowrap" cellspacing="0" width="100%">
-                        <thead class="thead-light">
+                    <table id="menuTable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                        <thead class="thead-dark">
                             <tr>
-                                <th></th>
                                 <th>Promo Name</th>
                                 <th>Promo Type</th>
                                 <th>Start Date</th>
@@ -229,16 +229,15 @@
         promos.forEach(function(item){
             var tableRow = `                
                 <tr class="table_row" data-promoId="${item.promos.pmID}">   <!-- table row ng table -->
-                    <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></td>
-                    <td>${item.promos.pmName}</td>
+                    <td><a href="javascript:void(0)" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${item.promos.pmName}</td>
                     <td>${item.promos.freebie != null ? "Freebie" : ""}
                     ${item.promos.discount != null ? "Discount" : ""}</td>
                     <td>${item.promos.pmStartDate}</td>
                     <td>${item.promos.pmEndDate}</td>
                     <td>${item.promos.status}</td>
                     <td>
-                        <button class="editBtn btn btn-sm btn-primary">Edit</button>
-                        <button class="deleteBtn btn btn-sm btn-danger">Delete</button>
+                        <button class="editBtn btn btn-sm btn-secondary">Edit</button>
+                        <button class="deleteBtn btn btn-sm btn-warning">Archived</button>
                     </td>
                 </tr>
             `;
@@ -277,7 +276,7 @@
             `;
             var accordion = `
             <tr class="accordion" style="display:none">
-                <td colspan="7"> <!-- table row ng accordion -->
+                <td colspan="6"> <!-- table row ng accordion -->
                     <div style="overflow:auto;display:none"> <!-- container ng accordion -->
                         
                         <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
@@ -351,3 +350,4 @@
         });
     });
 </script>
+</body>

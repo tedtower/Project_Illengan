@@ -28,7 +28,6 @@ class Adminview extends CI_Controller{
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/viewaccounts', $data);
-            $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }   
@@ -79,8 +78,7 @@ class Adminview extends CI_Controller{
 
             $data['supplier'] = array(
                 'sources' => $this->adminmodel->get_supplier(),
-                'merchandises' => $this->adminmodel->get_suppliermerch(),
-                'stockvariances' => $this->adminmodel->get_stockVariance()
+                'merchandises' => $this->adminmodel->get_suppliermerch()
             );
             $this->load->view('admin/adminSources', $data);
             // $this->load->view('admin/templates/scripts');
@@ -288,7 +286,6 @@ function viewSpoilagesStock(){
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminTables');
-            // $this->load->view('admin/templates/scripts');
         }else{
             redirect('login');
         }

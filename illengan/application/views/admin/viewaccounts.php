@@ -2,7 +2,7 @@
 <html lang="en">
 </head>
 
-<body>
+<body style="background:white">
 
     <!--End Side Bar-->
     <div class="content">
@@ -18,12 +18,12 @@
                         <div class="container-fluid">
                             <!--Table-->
                             <div class="card-content">
-                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewAccounts" data-original-title style="margin: 0;">Add New
-                                    Account</a>
+                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addNewAccounts" data-original-title style="margin: 0;">Add New
+                                    Account</button>
 
                                 <br><br>
-                                <table id="accountsTable" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                                    <thead>
+                                <table id="accountsTable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                                    <thead class="thead-dark">
                                         <th><b class="pull-left">Account No.</b></th>
                                         <th><b class="pull-left">Type</b></th>
                                         <th><b class="pull-left">Username</b></th>
@@ -219,7 +219,7 @@
                         </div>
                     </div>
                 </div>
-    </body>
+
 
 <?php include_once('templates/scripts.php') ?>
 <script type="text/javascript" src="<?php echo base_url().'assets/js/admin/jquery.validate.min.js'?>"></script>
@@ -305,14 +305,14 @@
                         <div class="onoffswitch">
 
                             <!--Edit button-->
-                            <button class="updateBtn btn btn-default btn-sm" data-toggle="modal"
+                            <button class="updateBtn btn btn-secondary btn-sm" data-toggle="modal"
                                 data-target="#editAccount">Edit</button>
                             <!--Delete button-->
-                            <button class="item_delete btn btn-danger btn-sm" data-toggle="modal" 
-                            data-target="#deleteAccount">Delete</button>
+                            <button class="item_delete btn btn-warning btn-sm" data-toggle="modal" 
+                            data-target="#deleteAccount">Archived</button>
                             <!--Change Pass button-->
-                            <a class="updatePassBtn btn btn-info btn-sm" data-toggle="modal" data-target="#editPassword"
-                            data-original-title style="float: left" >Change Password</a>
+                            <button class="updatePassBtn btn btn-info btn-sm" data-toggle="modal" data-target="#editPassword"
+                            data-original-title style="float: left" >Change Password</button>
                                                   
                         </div>
                     </td>
@@ -366,5 +366,5 @@
 
 
 </script>
-
+</body>
 </html>

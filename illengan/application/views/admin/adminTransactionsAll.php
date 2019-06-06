@@ -389,6 +389,10 @@
         });
         $(".editBtn").on('click', function() {
             var id = $(this).closest("tr").attr("data-id");
+            $("#addEditTransaction form")[0].reset();
+            $("#inputGroups1").children().remove();
+            $("#addItemBtn").unbind();
+            getEnumVals(getEnumValsUrl);
         });
         $("#addEditTransaction form").on('submit', function(event) {
             event.preventDefault();
@@ -409,7 +413,6 @@
                     tiUnit: $(this).find('select[name = "itemUnit[]"]').eq(x).val(),
                     stUnit: $(this).find('select[name = "actualUnit[]"]').eq(x).val(),
                     tiPrice: $(this).find('input[name = "itemPrice[]"]').eq(x).val(),
-                    // tiSubtotal: $(this).find('input[name = "itemSubtotal[]"]').eq(x).val(),
                     tiStatus: $(this).find('select[name = "itemStatus[]"]').eq(x).val()
                 });
             }

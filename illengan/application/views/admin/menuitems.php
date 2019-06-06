@@ -27,7 +27,7 @@
                             </div>-->
                                 <br>
                                 <br>
-            <table id="menuTable" class="table  table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
+            <table id="menuTable" class="table table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
                 <thead class="thead-dark">
                     <tr class="text-center">
                         <th>Menu Item</th>
@@ -484,7 +484,7 @@ $(document).ready(function() {
                 <tr class="table_row" data-menuId="${item.menu.mID}">   <!-- table row ng table -->
                     <td><a href="javascript:void(0)" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${item.menu.mName}</td>
                     <td>${item.menu.ctName}</td>
-                    <td class="text-center">${item.menu.mAvailability.toUpperCase()}</td>
+                    <td class="text-center">${item.menu.mAvailability}</td>
                     <td>
                         <button class="editBtn btn btn-sm btn-secondary" data-toggle="modal" data-target="#editMenu" data-id="${item.menu.mID}">Edit</button>
                         <button class="deleteBtn btn btn-sm btn-warning">Archived</button>
