@@ -59,7 +59,7 @@
                             <tr>
                                 <td><img src="/assets/media/admin/<?= $icon?>.png" style="height:18px;width:18px"/></td>
                                 <td><?= ucwords($log['slType'])?></td>
-                                <td><?= $log['tNum'] == null ? "N/A" : $log['tNum']?></td>
+                                <td><?= $log['tNum'] == NULL ? "N/A" : $log['tNum']?></td>
                                 <td><?= $log['slDateTime']?></td>
                                 <td><?= $log['slQty']?></td>
                                 <td><?= $bQty?></td>

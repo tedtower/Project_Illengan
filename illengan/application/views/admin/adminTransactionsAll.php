@@ -404,8 +404,9 @@
             var remarks = $(this).find('textarea[name="tRemarks"]').val();
             var transitems = [];
             for(var x = 0; x < $(this).find('.inputGroup1').length ; x++){
+                var tiID = $(this).find('.inputGroup1').eq(x).attr("data-id");
                 transitems.push({
-                    tiID: $(this).find('.inputGroup1').eq(x).attr("data-id"),
+                    tiID: isNaN(parseInt(tiID)) ? (undefined) : tiID,
                     tiName: $(this).find('input[name = "itemName[]"]').eq(x).val(),
                     stID: $(this).find('input[name = "stID[]"]').eq(x).val(),
                     tiQty: $(this).find('input[name = "itemQty[]"]').eq(x).val(),
@@ -429,6 +430,9 @@
                     transitems: JSON.stringify(transitems)
                 },
                 dataType: 'JSON',
+                beforeSend: function(){
+                    console.log(transitems);
+                },
                 success: function(data){
                     console.log(data);
                 },
