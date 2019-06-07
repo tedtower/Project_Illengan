@@ -48,29 +48,33 @@ class Adminmodel extends CI_Model{
             }    
         }
     }
-    function add_stockspoil($date_recorded,$stocks){
+    function add_stockspoil($date_recorded,$stocks,$slType){
         $query = "insert into stockspoil (ssID,ssDateRecorded) values (NULL,?)";
         if($this->db->query($query,array($date_recorded))){ 
-            $this->add_varspoilitems($this->db->insert_id(),$stocks);
+            $this->add_varspoilitems($this->db->insert_id(),$stocks,$date_recorded,$slType);
             return true;
         }
     }
-    function add_varspoilitems($ssID,$stocks){
+    function add_varspoilitems($ssID,$stocks,$date_recorded,$slType){ 
+        $tID = NULL;
         $query = "insert into spoiledstock (ssID,stID,ssQty,ssDate,ssRemarks) values (?,?,?,?,?)";
             if(count($stocks) > 0){
                 for($in = 0; $in < count($stocks) ; $in++){
                    $this->db->query($query, array($ssID, $stocks[$in]['stID'], $stocks[$in]['ssQty'], $stocks[$in]['ssDate'],$stocks[$in]['ssRemarks']));  
-                   $this->destockvarItems($stocks[$in]['stID'],$stocks[$in]['curQty'],$stocks[$in]['ssQty']);    
+                   $this->destockvarItems($stocks[$in]['stID'],$tID,$stocks[$in]['curstQty'],$stocks[$in]['ssQty'], $slType, $date_recorded, $stocks[$in]['ssDate'], $stocks[$in]['ssRemarks'] );   
                 }    
             }
     }
-    function destockvarItems($stID,$curQty,$ssQty){
+    function destockvarItems($stID,$tID,$curstQty,$ssQty,$slType,$date_recorded, $dateTime, $remarks){
         $query = "UPDATE stockitems 
         SET 
             stQty = ? - ?
         WHERE
             stID = ?;";
-        return $this->db->query($query,array($curQty,$ssQty,$stID));
+        return $this->db->query($query,array($curstQty,$ssQty,$stID));
+
+        $this->add_stockLog($stID, $tID, $slType, $date_recorded, $dateTime, $slQty, $slRemarks);
+       
     }
     function add_menucategory($ctName){
         $query = "Insert into categories (ctName, ctType) values (?,'menu')";
@@ -149,18 +153,18 @@ class Adminmodel extends CI_Model{
         if($this->db->query($query,array($spName, $spContactNum, $spEmail, $spStatus, $spAddress))){
             $spID = $this->db->insert_id();
             if(count($spMerch) > 0){
-                foreach ($spMerch as $merch) {
+                foreach($spMerch as $merch) {
                     $this->add_supplierMerchandise($merch, $spID);
                 }
             }
-            return true;            
+            return true;          
         }
         return false;
     }
 
-    function add_supplierMerchandise($merch, $id) {
-        $query = "insert into suppliermerchandise (vID, spID, spmDesc, spmUnit, spmPrice) values (?,?,?,?,?);";
-        $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
+    function add_supplierMerchandise($merch, $spID) {
+        $query = "insert into suppliermerchandise (stID, spID, uomID, spmName, spmActualQty, spmPrice) values (?,?,?,?,?,?);";
+        $this->db->query($query,array($merch['stID'],$spID,$merch['merchUnit'],$merch['merchName'],$merch['merchActualQty'],$merch['merchPrice']));
     }
 
 
@@ -306,13 +310,14 @@ class Adminmodel extends CI_Model{
     function edit_supplierMerchandise($merch){
         $query = "UPDATE suppliermerchandise 
             SET 
-                vID = ?,
-                spmDesc = ?,
-                spmUnit = ?,
+                stID = ?,
+                uomID = ?,
+                spmName = ?,
+                spmActualQty = ?,
                 spmPrice = ?
             WHERE
                 spmID = ?;";
-        $this->db->query($query,array($merch['varID'],$merch['merchName'],$merch['merchUnit'],$merch['merchPrice'], $merch['spmID']));
+        $this->db->query($query,array($merch['stID'],$merch['merchUnit'],$merch['merchName'],$merch['merchActualQty'],$merch['merchPrice'], $merch['spmID']));
     }
 
     function add_poItem(){
@@ -500,7 +505,7 @@ class Adminmodel extends CI_Model{
     function stockitemQty($updateQtyh,$updateQtyl, $stQty, $ssQtyUpdate, $curSsQty, $stID){
             if ($curSsQty > $ssQtyUpdate){
                 $query = "UPDATE stockitems SET stQty = ? + ? WHERE stID = ?;";
-            return $this->db->query($query,array($stQty,$updateQtyl,$stID));
+                return $this->db->query($query,array($stQty,$updateQtyl,$stID));
             }
             if ($curSsQty < $ssQtyUpdate){
                 $query = "UPDATE stockitems SET stQty = ? - ? WHERE stID = ?;";
@@ -508,7 +513,7 @@ class Adminmodel extends CI_Model{
             }
             else{
                 $query = "UPDATE stockitems SET stQty = ? WHERE stID = ?;";
-            return $this->db->query($query,array($stQty, $stID));
+                return $this->db->query($query,array($stQty, $stID));
             }
     }
     function edit_aospoilage($aoID,$aosID,$aosQty,$aosDate,$aosRemarks,$date_recorded){
@@ -1051,7 +1056,10 @@ class Adminmodel extends CI_Model{
                     }
             }
     }
-
+    function get_uom(){
+        $query = "SELECT * from uom";
+        return $this->db->query($query)->result_array();
+    }
     function get_enumVals($table,$column){
         $query = "SELECT 
             column_type
@@ -1361,6 +1369,47 @@ class Adminmodel extends CI_Model{
             )
             VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
         return $this->db->query($query, array($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks));
+    }
+    function add_stockLog2($stID, $slType, $date_recorded, $slDateTime, $ssQty, $ssRemarks, $updateQtyh, $updateQtyl,$curSsQty,$ssQtyUpdate){
+        if ($curSsQty > $ssQtyUpdate){
+        $query = "INSERT INTO `stocklog`(
+                `slID`,
+                `stID`,
+                `slType`,
+                `slDateTime`,
+                `dateRecorded`,
+                `slQty`,
+                `slRemarks`
+            )
+            VALUES(NULL, ?, ?, ?, ?, ?, ?);";
+            return $this->db->query($query, array($stID, $slType, $date_recorded, $slDateTime, $updateQtyl, $ssRemarks));
+        }
+        if ($curSsQty < $ssQtyUpdate){
+            $query = "INSERT INTO `stocklog`(
+                `slID`,
+                `stID`,
+                `slType`,
+                `slDateTime`,
+                `dateRecorded`,
+                `slQty`,
+                `slRemarks`
+            )
+            VALUES(NULL, ?, ?, ?, ?, ?, ?);";
+            return $this->db->query($query, array($stID, $slType, $date_recorded, $slDateTime, $updateQtyh, $ssRemarks));
+            
+        }else{
+            $query = "INSERT INTO `stocklog`(
+                `slID`,
+                `stID`,
+                `slType`,
+                `slDateTime`,
+                `dateRecorded`,
+                `slQty`,
+                `slRemarks`
+            )
+            VALUES(NULL, ?, ?, ?, ?, ?, ?);";
+            return $this->db->query($query, array($stID, $slType, $date_recorded, $slDateTime, $ssQty, $ssRemarks));
+        }
     }
 
     function add_stockQty($stID, $stQty){

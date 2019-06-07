@@ -150,7 +150,8 @@ class Adminadd extends CI_Controller{
                 echo json_encode(array(
                     'sources' => $this->adminmodel->get_supplier(),
                     'merchandises' => $this->adminmodel->get_suppliermerch(),
-                    'stockvariances' => $this->adminmodel->get_stockVariance()
+                    'stocks' => $this->adminmodel->get_stocks(),
+                    'uom' => $this->adminmodel->get_uom()
                 ));
             }else{
                 redirect("admin/dashboard");
@@ -319,9 +320,11 @@ class Adminadd extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
             $date_recorded = date("Y-m-d H:i:s");
+            $slType = "spoilage";
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
-            $this->adminmodel->add_stockspoil($date_recorded,$stocks);
+            $this->adminmodel->add_stockspoil($date_recorded,$stocks,$slType);
+            
         }else{
             redirect('login');
         }

@@ -81,7 +81,9 @@ class Adminview extends CI_Controller{
 
             $data['supplier'] = array(
                 'sources' => $this->adminmodel->get_supplier(),
-                'merchandises' => $this->adminmodel->get_suppliermerch()
+                'merchandises' => $this->adminmodel->get_suppliermerch(),
+                'stocks' => $this->adminmodel->get_stocks(),
+                'uom' => $this->adminmodel->get_uom()
             );
             $this->load->view('admin/adminSources', $data);
             // $this->load->view('admin/templates/scripts');
