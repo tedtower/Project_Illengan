@@ -206,7 +206,8 @@ class Adminupdate extends CI_Controller{
                 echo json_encode(array(
                     'sources' => $this->adminmodel->get_supplier(),
                     'merchandises' => $this->adminmodel->get_suppliermerch(),
-                    'stockvariances' => $this->adminmodel->get_stockVariance()
+                    'stocks' => $this->adminmodel->get_stocks(),
+                    'uom' => $this->adminmodel->get_uom()
                 ));
             }
         }else{
