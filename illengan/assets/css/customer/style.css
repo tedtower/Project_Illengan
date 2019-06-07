@@ -108,7 +108,7 @@ input .hc{
     border: 1px solid #b96e43;
     box-shadow: 0 0 0 0.2rem #b96e434d;
 }
-input#addon-qty{
+input#addon-qty, input#edit-qty{
     width: 75px;
 }
 .freebiemain {
@@ -136,6 +136,7 @@ input#addon-qty{
     position: relative;
     width: 100%;
 }
+
 @media (min-width : 320px) and (max-width : 480px){
     .cd-mw {
         max-width: 100%;

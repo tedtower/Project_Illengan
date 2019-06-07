@@ -28,11 +28,9 @@ $(document).ready(function(){
     });
     $("#qtyIncrement").on('click',function(){
         var quantity = parseInt($("#quantity").val());
-        if(isNaN(quantity)){
+        if(isNaN(quantity) || quantity < 1){
             $("#quantity").val(1); 
-        }else if (quantity < 1){
-            $("#quantity").val(1);
-        }else{
+        } else {
             quantity++;
             $("#quantity").val(quantity);
         }
@@ -40,11 +38,9 @@ $(document).ready(function(){
     });
     $("#qtyDecrement").on('click',function(){
         var quantity = parseInt($("#quantity").val());
-        if(isNaN(quantity)){
+        if(isNaN(quantity) || quantity == 1){
             $("#quantity").val(1); 
-        }else if (quantity == 1){
-            $("#quantity").val(1);
-        }else{
+        } else {
             quantity--;
             $("#quantity").val(quantity);
         }
@@ -53,10 +49,8 @@ $(document).ready(function(){
     });         
     $("#quantity").on('change', function(){
         var quantity = parseInt($(this).val());
-        if(isNaN(quantity)){
+        if(isNaN(quantity) || quantity < 1){
             $(this).val(1); 
-        }else if (quantity < 1){
-            $(this).val(1);
         }
         computeSubtotal();
         console.log($("#dc_subtotal").val());
@@ -68,7 +62,7 @@ $(document).ready(function(){
                 <select class="browser-default custom-select w-50 addonSelect" name="addon[]">
                     <option selected disabled>Choose...</option>
                 </select>
-                <input type="number" min="1" placeholder="Qty" aria-label="Add-on Quantity"
+                <input type="number" min="1" value="1" placeholder="Qty" aria-label="Add-on Quantity"
                 class="form-control" name="addonQty[]">
                 <div class="input-group-prepend">
                     <!--Subtotal-->
@@ -141,7 +135,33 @@ $(document).ready(function(){
             },
             success: function(data) {
                 location.reload();
+            },
+            error: function(response,setting, errorThrown) {
+                console.log(response.responseText);
+                console.log(errorThrown);
+            }
+        });
+    });
+     $("#orderedForm").on('submit', function(event) {        
+        event.preventDefault();
+        var table_no = $("input#table_no").val();
+        var cust_name = $("input#cust_name").val();
+        var total = $("input#total").val();
+
+        $.ajax({
+            method: "post",
+            url: "<?php echo site_url('customer/completeOrder')?>",
+            data: {
+                'table_no': table_no,
+                'cust_name': cust_name,
+                'total' : total
+            },
+            beforeSend: function(){
+                console.log(table_no, cust_name, total);
+            },
+            success: function(data) {
                 console.log(data);
+                $('#ordered_modal').modal('show');
             },
             error: function(response,setting, errorThrown) {
                 console.log(response.responseText);
@@ -189,7 +209,6 @@ function setModalContents(item_id){
             }
             $('#menu_price').text(menu[i].prPrice);
             $('#menu_description').text(menu[i].mDesc);
-            
             if(menu[i].mAvailability === 'available'){
                 $('#menu_image').css('filter',"brightness(100%)");
                 $('#menu_status').text(menu[i].mAvailability.charAt(0).toUpperCase() + menu[i].mAvailability.slice(1));
@@ -232,8 +251,11 @@ function setModalContents(item_id){
                 $("#menuSubtotal").text(parseFloat(menu_pref[0].prPrice));
             }
             if(menu_addon.length > 0){
+                console.log("Amazing Addons");
                 $("#addonSelectBtn").removeAttr('disabled');
-                $('#addonable').show();
+                $('#addonable').show(); 
+            } else {
+                console.log("Fucking Addons");
             }
             break;
         }
@@ -275,10 +297,7 @@ function computeSubtotal(){
     $("#menuSubtotal").text(mainSubtotal+addonSubtotal);
 }
 $('#omButton').click(function(){
-    setOrderlist();
-});
-$('#ceoButton').click(function(){
-    $('#editModal').modal('hide');
+    setOrderlist(orders);
 });
 $('#cosButton').click(function(){
     $('#proceed_modal').modal('hide');
@@ -289,54 +308,157 @@ $('#croButton').click(function(){
 $('#craoButton').click(function(){
     $('#deleteAllModal').modal('hide');
 });
-function setOrderlist() {
-    $('#orderlists').html('');
+$('#qty-plus').click(function(){
+    var quantity = parseInt($("#quantity[name='edit_qty']").val());
+    if(isNaN(quantity) || quantity <= 0){
+        $("#quantity[name='edit_qty']").val(1);
+    } else {
+        quantity++;
+        $("#quantity[name='edit_qty']").val(quantity);
+    }
+});
+$('#qty-minus').click(function(){
+    var quantity = parseInt($("#quantity[name='edit_qty']").val());
+    if(isNaN(quantity) || quantity == 1){
+        $("#quantity[name='edit_qty']").val(1);
+    } else {
+        quantity--;
+        $("#quantity[name='edit_qty']").val(quantity);
+    }
+});
+function setOrderlist(ol){
+    event.preventDefault();
+    $('#ol_main').empty();
+    $('#order_footer').empty();
     var total_qty=0, total=0;
-    for(var rowid=0; rowid < orders.length; rowid++){
+    if(jQuery.isEmptyObject(ol)){
+        $('#ol_main').append('<h5>You have no saved orders. To order menu items click on <span style="color:#b96e43">"Save to Orderlist"</span> button.</h5>');
+    } else {
+        row = ` <h1 class="gab">Orderlist</h1>
+                <table class="table table-sm table-hover w-responsive mx-auto delius">
+                    <thead>
+                        <tr>
+                            <th scope="col">Menu Name</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total Price</th>
+                            <th scope="col">Remarks</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderlists">
+                    </tbody>
+                </table>`;
+        $('#ol_main').append(row);
+        for(var rowid=0; rowid < orders.length; rowid++){
+             var orderedaddon = orders[rowid].addons;
+             var name= "";
+                    for(var keys in orderedaddon){
+                        var id= orderedaddon[keys];
+                    if(keys == 'addonIds'){
+                    for(var row=0;  row < id.length; row++){       
+                                var val= orderedaddon[keys][row];
+                                var names = addon.filter(function (n) {
+                                    return n.aoID == val;
+                                });
+                                for(var na=0; na<names.length;na++){
+                                    name += "<i>"+names[na].aoName+"</i><br>";
+                                }
+                        }
+                    }
+                    }
+        var quantity="";
+                for(var keys in orderedaddon){
+                        var id= orderedaddon[keys];
+                    if(keys == 'addonQtys'){
+                    for(var row=0;  row < id.length; row++){       
+                                var val= orderedaddon[keys][row];
+                                quantity += "<i>"+val+"</i><br>";
+                        }
+                    }
+                    }
+        var subtotal="";
+                for(var keys in orderedaddon){
+                        var id= orderedaddon[keys];
+                    if(keys == 'addonSubtotals'){
+                    for(var row=0;  row < id.length; row++){       
+                                var val= orderedaddon[keys][row];
+                                subtotal +="<i>"+val+"&nbsp;php</i><br>";
+                        }
+                    }
+                 }
         var row1 = `<tr>
                         <form type="hidden" name="`+orders[rowid].id+`">
                         <th scope="row">`+orders[rowid].name+`</th>
                         <td>`+orders[rowid].qty+`</td>
                         <td>`+orders[rowid].subtotal+`</td>
                         <td>`+orders[rowid].remarks+`</td>
-                        <td>`+orders[rowid].addons+`</td>
                         <td>
-                            <button type="button" class="btn btn-mdb-color btn-sm m-0 p-2" data-toggle="modal" data-target="#editModal">Edit</button>
+                            <button type="button" class="btn btn-mdb-color btn-sm m-0 p-2 ediOrder" data-toggle="modal" data-target="#editModal" data-name="`+orders[rowid].name+`" data-id="`+rowid+`">Edit</button>
                             <button type="button" class="btn btn-danger btn-sm m-0 p-2 remOrder" data-toggle="modal" data-target="#deleteModal" data-name="`+orders[rowid].name+`" data-id="`+rowid+`">Remove</button>
                         </td>
+                    </tr>
+                    <tr id="values">
+                    <td></td>
+                    <td id="qty">`+quantity+`</td>
+                    <td colspan="2" id="name">`+name+`</td>
+                    <td id="subtotal">`+subtotal+`</td>
                     </tr>`;
         $('#orderlists').append(row1);
         total_qty += orders[rowid].qty;
         total += orders[rowid].subtotal;
+        }
+        var row2 = `<tr>
+                        <td colspan="3"><h3 class="gab">Total Quantity: `+total_qty+`</h3></td>
+                        <td colspan="3"><h3 class="gab">Total Price: `+total+` php</h3></td>
+                        <input type="hidden" name="total" value="`+total+`"/>
+                    </tr>`;
+        $('#orderlists').append(row2);
+        var row3 = `<div class="text-center">
+                        <button type="button" data-toggle="modal" class="btn btn-green btn-md delius" href="#proceed_modal">Order Now</button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-danger btn-md delius" data-toggle="modal" data-target="#deleteAllModal">Clear</button>
+                    </div>`;
+        $('#order_footer').append(row3);
     }
-    var row2 = `<tr>
-                    <td colspan="3"><h3 class="gab">Total Quantity: `+total_qty+`</h3></td>
-                    <td colspan="3"><h3 class="gab">Total Price: `+total+` php</h3></td>
-                    <input type="hidden" name="total" value="`+total+`"/>
-                </tr>`;
-    $('#orderlists').append(row2);
     $('.remOrder').click(function(){
         $('#remName').text("'"+$(this).data('name')+"'");
         $('#remID').val($(this).data('id'));
-        console.log($('#remID').val());
     });
-    $('#removo').click(function(){
-        var rowID = $('#remID').val();
-        var rowName = $('#remName').text();
-        $.ajax({
-            method: "post",
-            url: "<?= site_url('customer/menu/removeOrder')?>",
-            data: { id: rowID },
-            success: function($data) {
-                $('#remID').val('');
-                $('#remName').text('');
-                location.reload();
-            },
-            error: function(response,setting, errorThrown) {
-                console.log(response.responseText);
-                console.log(errorThrown);
-            }
-        });
+    $('.ediOrder').click(function(){
+        editOrder($(this).data('id'),$(this).data('name'));
     });
 }
+$('#removo').click(function(){
+    removeOrder();
+});
+function removeOrder(){
+    $('#deleteModal').modal('hide');
+    var rowID = $('#remID').val();
+    var rowName = $('#remName').text();
+    orders.splice(rowID,1);
+    console.log(rowID);
+    console.log(orders);
+    $.ajax({
+        method: "post",
+        url: "<?= site_url('customer/menu/removeOrder')?>",
+        data: { id: rowID },
+        success: function(data) {
+            $('#remID').val('');
+            $('#remName').text('');
+            console.log('New:'+data);
+            setOrderlist(orders);
+        },
+        error: function(response,setting, errorThrown) {
+            console.log(response.responseText);
+            console.log(errorThrown);
+        }
+    });
+}
+function editOrder(id,name){
+    $('#edit_name').text(name);
+    $("input#quantity[name='edit_qty']").val(orders[id].qty);
+    console.log();
+}
+
 </script>

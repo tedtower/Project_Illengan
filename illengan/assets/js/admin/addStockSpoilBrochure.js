@@ -17,10 +17,10 @@ function getSelectedStocks() {
                 success: function (data) {
                    
                     stockChecked = `<tr class="stockelem" data-id="` + data[i].stID + `" >
-                            <input type="hidden" id="curQty` + i + `" name="curQty" class="form-control form-control-sm" data-curQty="` + data[i].stQty + `" value="` + data[i].stQty + `">
+                            <input type="hidden" id="curstQty` + i + `" name="curstQty" class="form-control form-control-sm" data-curstQty="` + data[i].stQty + `" value="` + data[i].stQty + `">
                             <input type="hidden" id="stID` + i + `" name="stID" class="form-control form-control-sm" data-stID="` + data[i].stID + `" value="` + data[i].stID + `">
                             <td><input type="text" id="stName` + i + `" name="stName"
-                                    class="form-control form-control-sm" data-stNameID="` + data[i].stName + `" value="` + data[i].stName + `" readonly="readonly" required></td>
+                                    class="form-control form-control-sm"  value="` + data[i].stName + `"  required></td>
                             <td><input type="number" min="1" id="ssQty` + i + `" name="ssQty"
                                     class="form-control form-control-sm" value="" required></td>
                             <td><input type="text" id="ssRemarks` + i + `" name="ssRemarks"
@@ -48,13 +48,13 @@ function addStockItems() {
     var stID,ssQty, ssRemarks;
     for (var i = 0; i <= elements.length - 1; i++) {
         stID = document.getElementsByName('stID')[i].value;
-        curQty = document.getElementsByName('curQty')[i].value;
+        curstQty = document.getElementsByName('curstQty')[i].value;
         ssQty = document.getElementsByName('ssQty')[i].value;
         ssRemarks = document.getElementsByName('ssRemarks')[i].value;
 
         stockItems = {
             'stID': stID,
-            'curQty': curQty,
+            'curstQty': curstQty,
             'ssQty': ssQty,
             'ssDate': ssDate,
             'ssRemarks': ssRemarks

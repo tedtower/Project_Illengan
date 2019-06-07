@@ -1,79 +1,11 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?>
-
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'>
-    <meta name="viewport" content="width=device-width">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Il-Lengan | Barista Billings</title>
-    <!--Bootstrap core CSS-->
-    <link href="assets/css/barista/bootstrap.min.css" rel="stylesheet" />
-    <!--Animation library for notifications-->
-    <link href="assets/css/animate.min.css" rel="stylesheet" />
-    <!--  Light Bootstrap Table core CSS    -->
-    <link href="assets/css/barista/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" />
-    <!--CSS for Demo Purpose, don't include it in your project-->
-    <link href="assets/css/barista/demo.css" rel="stylesheet" />
-    <!--Fonts and icons-->
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
-    <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
-
-</head>
-
-<body>
-    <!-- <div class="wrapper">
-        <div class="sidebar" data-color="brown" data-image="assets/img/Coffee_1.jpg">
-            Left Navigation Bar
-            <div class="sidebar-wrapper" style="overflow: hidden">
-                <div class="logo">
-                    <img src="assets/img/logo_lg.png" alt="il-lengan-logo" img-align="center" width="225px"
-                        height="135px">
-                </div>
-                <ul class="nav">
-                    <li>
-                        <a href="<//?php echo site_url('barista/orders'); ?>">
-                            <p>Orders</p>
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="<//?php echo site_url('barista/billings'); ?>">
-                            <p>Billings</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="baristaInventory.html">
-                            <p>Inventory</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="baristaNotifications.html">
-                            <p>Notifications</p>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div> -->
-        <!--Hamburger Nav
-            <nav class="navbar navbar-transparent navbar-absolute">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse">
-                            <span class="sr-only"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#"></a>
-                    </div>
-                </div>
-            </nav>-->
-        <!--End Side Bar-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include_once('templates/head.php') ?>
+    </head>
+    <body>
+        <?php include_once('templates/navigation.php') ?>
+        <!--End Top Nav-->
         <div id="billModal">
             <h5>Order No : </h5><!-- Order ID -->
             <p id="orderNo"></p>

@@ -12,15 +12,15 @@ class Barista extends CI_Controller{
     }
 
     //BARISTA ORDER FUNCTIONS
-    function orders(){
-        $this->load->view('barista/navigation');
+    function pendingOrders(){
+        $this->load->view('barista/templates/navigation');
         $this->load->view('barista/pendingOrders'); 
     }
     function pendingOrdersJS(){
         echo json_encode($this->baristamodel->get_pendingOrders());
     }
     function servedOrders(){
-        $this->load->view('barista/navigation');
+        $this->load->view('barista/templates/navigation');
         $this->load->view('barista/servedOrders');  
     }
     function servedOrdersJS(){
@@ -28,7 +28,7 @@ class Barista extends CI_Controller{
        echo json_encode($data);
     }
     function vieworderslip(){
-        $this->load->view('barista/navigation');
+        $this->load->view('barista/templates/navigation');
         $this->load->view('barista/orderslip');
     }
     function viewOrderslipJS(){
@@ -53,21 +53,10 @@ class Barista extends CI_Controller{
             redirect('login');
         }
     }
-    function getBills(){
-        //if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
-                $this->load->view('barista/navigation');
-                //$this->load->model('baristamodel');  
-                $data["bills"] = $this->baristamodel->get_bills();
-                $this->load->view("barista/orderBills", $data);
-           // }
-            // else{
-            //          redirect('login');
-            //  }
-    }
 
     function getOrderBills(){
-        $this->load->view('barista/navigation');
-        $this->load->view('barista/orderBills-default');
+        $this->load->view('barista/templates/navigation');
+        $this->load->view('barista/orderBills');
     }
     
     function orderBillsJS(){
@@ -75,7 +64,12 @@ class Barista extends CI_Controller{
         echo json_encode($data);
 
     }
+    function getOrderItems(){
+        $osID = $this->input->post('osID');
+        $data = $this->baristamodel->get_orderitems($osID);
 
+        echo json_encode($data);
+    }
     function getBillDetails(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Barista'){
             $osID = $this->input->post("osID"); 
@@ -141,7 +135,7 @@ class Barista extends CI_Controller{
 
         //BARISTA INVENTORY FUNCTIONS
         function viewinventory(){
-            $this->load->view('barista/navigation');
+            $this->load->view('barista/templates/navigation');
             $this->load->view('barista/baristaInventory'); 
         }
         function inventoryJS(){
@@ -183,5 +177,13 @@ class Barista extends CI_Controller{
             echo json_encode($data);
         }
 
+        function updatePayment(){
+            $status = "paid";
+            $osID = $this->input->post('osID');
+            $custName = $this->input->post('custName');
+            $payDate = date("Y-m-d H:i:s");
+            $date_recorded = date("Y-m-d H:i:s");
+            $this->baristamodel->update_payment($status,$osID,$custName,$payDate, $date_recorded);
+        }
     }
 ?>

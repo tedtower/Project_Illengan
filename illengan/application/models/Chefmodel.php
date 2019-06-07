@@ -2,17 +2,20 @@
     class Chefmodel extends CI_Model {
         
         
-        function return_orderlist() {
+        function get_orders() {
             $this->load->database();
-            $query = $this->db->query('SELECT * FROM ((((orderlists ol INNER JOIN orderslips os USING (osID)) 
-            INNER JOIN preferences USING (prID)) 
-            INNER JOIN menu mn USING (mID)) 
-            LEFT JOIN orderaddons oa USING (olID)) 
-            LEFT JOIN addons aon USING (aoID);');
-            return $query->result();
+            $query = "SELECT os.osID, os.tableCode, os.custName, os.osDateTime, ol.olID, ol.olDesc, ol.olQty, ol.olRemarks
+            FROM orderlists ol INNER JOIN orderslips os USING (osID) INNER JOIN preferences USING (prID) 
+            INNER JOIN menu USING (mID) INNER JOIN categories cat USING (ctID) 
+            WHERE cat.supcatID = '1' AND ol.olStatus='pending'";
+            return $this->db->query($query)->result_array();
         }
     
+        function get_addons() {
+            $query = "SELECT * FROM orderaddons INNER JOIN addons USING (aoID)";
+            return $this->db->query($query)->result_array();
 
+        }
         function update_status($item_status, $order_item_id) {
             $this->load->database();
             $query = "UPDATE orderlists SET

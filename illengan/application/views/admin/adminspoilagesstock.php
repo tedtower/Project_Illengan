@@ -1,3 +1,4 @@
+<body style="background:white">
 <div class="content">
 	<div class="container-fluid">
 		<br>
@@ -13,17 +14,17 @@
 						<div class="card-content">
 
 							<!--Add Stock Spoilage BUTTON-->
-							<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addStockSpoilage" data-original-title style="margin:0">Add Stock Spoilage</a><br>
+							<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addStockSpoilage" data-original-title style="margin:0">Add Stock Spoilage</button><br>
 							<!--eND Add Stock Spoilage BUTTON-->
 							<br>
-							<table id="spoilagesTable" class="spoiltable table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
-								<thead class="thead-dark">
-									<th>Item Name</th>
-									<th>Quantity</th>
-									<th>Date Spoiled</th>
-									<th>Date Recorded</th>
-									<th>Storage</th>
-									<th>Operation</th>
+							<table id="spoilagesTable" class="spoiltable table table-bordered dt-responsive nowrap" cellpadding="0" width="100%">
+								<thead class="thead-dark" style="font-weight:900">
+									<th>ITEM NAME</th>
+									<th>QUANTITY</th>
+									<th>DATE SPOILED</th>
+									<th>DATE RECORDED</th>
+									<th>STORAGE</th>
+									<th>OPERATION</th>
 								
 								</thead>
 								<tbody id="spoilage_data">
@@ -260,9 +261,9 @@
             $("#spoilagesTable> tbody").empty();
         }
         spoilages.forEach(table => {
-            $("#spoilagesTable> tbody").append(`
-			<tr data-stID="${table.stID}" data-ssID="${table.ssID}" data-spoilname="${table.stName}" data-stQty="${table.stQty}" data-curSsQty="${table.ssQty}">
-			<td><a data-toggle="collapse" href="#collapseExample" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${table.stName}</td>
+            $("#spoilagesTable > tbody").append(`
+			<tr class="spoilagesTabletr"  data-stID="${table.stID}" data-ssID="${table.ssID}" data-spoilname="${table.stName}" data-stQty="${table.stQty}" data-curSsQty="${table.ssQty}" data-ssDate="${table.ssDate}" data-ssRemarks="${table.ssRemarks}">
+				<td><a data-toggle="collapse" href="#collapseExample" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${table.stName}</td>
                 <td>${table.ssQty}</td>
 				<td>${table.ssDate}</td>
 				<td>${table.ssDateRecorded}</td>
@@ -272,24 +273,25 @@
                         <div class="onoffswitch">
 
                             <!--Edit button-->
-                            <button class="updateBtn btn btn-default btn-sm" data-toggle="modal"
+                            <button class="updateBtn btn btn-secondary btn-sm" data-toggle="modal"
                                 data-target="#editSpoil">Edit</button>
                             <!--Delete button-->
-                            <button class="item_delete btn btn-danger btn-sm" data-toggle="modal" 
-                            data-target="#deleteSpoilage">Delete</button>                      
+                            <button class="item_delete btn btn-warning btn-sm" data-toggle="modal" 
+                            data-target="#deleteSpoilage">Archive</button>                      
                         </div>
                     </td>
 				</tr>`);
 
 			var accordion = `
             <tr class="accordion" style="display:none;background: #f9f9f9">
-                <td colspan="5"> <!-- table row ng accordion -->
+                <td colspan="6"> <!-- table row ng accordion -->
                     <div style="overflow:auto;display:none"> <!-- container ng accordion -->
                         
-                        <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
-                            <div><b>Remarks:</b> <!-- label-->
-								<p>
-								${table.ssRemarks == null ? "No Remarks." : table.ssRemarks}
+                        <div style="overflow:auto;"> <!-- description, preferences, and addons container -->
+                            <div style="margin:0 46px;overflow:auto;">
+							<b style="float:left;">Remarks: </b><!-- label-->
+								<p style="float:left;margin-left:2%">
+								${table.ssRemarks == null || table.ssRemarks == '' ?  "No remarks." : table.ssRemarks}
                                 </p>
                             </div> 
                         </div>
@@ -300,15 +302,21 @@
 
 			
 			$(".updateBtn").last().on('click', function () {
+				
                 $("#editSpoil").find("input[name='ssID']").val($(this).closest("tr").attr(
 					"data-ssID"));
 				$("#editSpoil").find("input[name='stID']").val($(this).closest("tr").attr(
-					"data-stID"));
+					"data-stID")); 
 				$("#editSpoil").find("input[name='curSsQty']").val($(this).closest("tr").attr(
 					"data-curSsQty"));
 				$("#editSpoil").find("input[name='stQty']").val($(this).closest("tr").attr(
 					"data-stQty"));
-
+				$("#editSpoil").find("input[name='ssQtyUpdate']").val($(this).closest("tr").attr(
+					"data-curSsQty"));
+				$("#editSpoil").find("input[name='ssDate']").val($(this).closest("tr").attr(
+					"data-ssDate"));
+				$("#editSpoil").find("input[name='ssRemarks']").val($(this).closest("tr").attr(
+					"data-ssRemarks"));
             });
             $(".item_delete").last().on('click', function () {
                 $("#deleteSpoilageId").text(
@@ -331,6 +339,7 @@
 	}
 	//END OF POPULATING TABLE
 	//-------------------------Function for Edit-------------------------------
+
 	$(document).ready(function() {
     $("#editSpoil form").on('submit', function(event) {
 		event.preventDefault();

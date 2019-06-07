@@ -73,7 +73,6 @@ class Customer extends CI_Controller {
 		if($this->isLoggedIn()){			
 			if($this->isCheckedIn()){
 				$data = array ();
-				$data['cart'] = $this->cart->contents();
 				$data['categories'] = $this->Customermodel->fetch_category();
 				$data['menu'] = $this->Customermodel->fetch_menu();
 				$data['subcats'] = $this->Customermodel->fetch_availableSubcategory();
@@ -126,16 +125,17 @@ class Customer extends CI_Controller {
 					$addonsPrices = $this->Customermodel->get_addonPrices($rawAddons['addonIds']);					
 					for($index = 0 ; $index < count($rawAddons['addonIds']) ; $index++){
 						foreach($addonsPrices as $addon){
-							if($addon['ao_id'] == $rawAddons['addonIds'][$index]){
+							if($addon['aoID'] == $rawAddons['addonIds'][$index]){
 								$rawAddons['addonIds'][$index] = intval($rawAddons['addonIds'][$index]);
 								$rawAddons['addonQtys'][$index] = intval($rawAddons['addonQtys'][$index]);
-								array_push($rawAddons['addonSubtotals'], floatval($addon['ao_price'])*intval($rawAddons['addonQtys'][$index]));
+								array_push($rawAddons['addonSubtotals'], floatval($addon['aoPrice'])*intval($rawAddons['addonQtys'][$index]));
 							}
 						}
 					}
 				}
 				$data = array(
 					'id' => intval($this->input->post('preference')),
+					'menu_id' => intval($preference['mID']),
 					'name' => $preference['order'],
 					'qty' => intval($this->input->post('quantity')),
 					'orderDesc' => $preference['order'],
@@ -180,7 +180,6 @@ class Customer extends CI_Controller {
 				$orderlist = $this->session->userdata('orders');
 				$total = $this->input->post('total');
 				$this->Customermodel->orderInsert($total, $tableCode, $orderlist, $customer, $dateTime);
-				redirect('customer/clearOrder');
 			}else{
 				redirect('customer/checkin');
 			}
@@ -206,11 +205,10 @@ class Customer extends CI_Controller {
 	function removeOrder() {	
 		if($this->isLoggedIn()){			
 			if($this->isCheckedIn()){
-				$order = $this->session->userdata('orders');
 				$id = $this->input->post('id');
 				unset($_SESSION['orders'][$id]);
 				rsort($_SESSION['orders']);
-				echo json_encode($order);
+				echo json_encode($_SESSION['orders']);
 			}else{
 				redirect('customer/checkin');
 			}
@@ -219,7 +217,6 @@ class Customer extends CI_Controller {
 		}
 	}
 
-	
 	function promos() {
 		if($this->isLoggedIn()){
 			if($this->isCheckedIn()){

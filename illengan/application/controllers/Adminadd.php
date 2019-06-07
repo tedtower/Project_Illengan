@@ -52,14 +52,16 @@ class Adminadd extends CI_Controller{
             $tableCode = trim($this->input->post('tableCode'));
             $custName = trim($this->input->post('custName'));
             $osTotal = trim($this->input->post('osTotal'));
+            $osDateTime = trim($this->input->post('osDateTime'));
+            $osPayDateTime = trim($this->input->post('osPayDateTime'));
             $osDate = trim($this->input->post('osDate'));
             $osPayDate = trim($this->input->post('osPayDate'));
             $orderlists = json_decode($this->input->post('orderlists'), true);
             $osDateRecorded = date("Y-m-d H:i:s");
             $addons = json_decode($this->input->post('addons'), true);
-            echo json_encode($orderlists, true);
-            $this->adminmodel->add_salesOrder($tableCode, $custName, $osTotal, $osDate,
-            $osPayDate, $osDateRecorded, $orderlists, $addons);
+           
+            $this->adminmodel->add_salesOrder($tableCode, $custName, $osTotal, $osDateTime,
+            $osPayDateTime, $osDateRecorded, $orderlists, $addons);
 
         }else{
             redirect('login');
@@ -317,9 +319,11 @@ class Adminadd extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
             $date_recorded = date("Y-m-d H:i:s");
+            $slType = "spoilage";
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
-            $this->adminmodel->add_stockspoil($date_recorded,$stocks);
+            $this->adminmodel->add_stockspoil($date_recorded,$stocks,$slType);
+            
         }else{
             redirect('login');
         }
@@ -334,27 +338,26 @@ class Adminadd extends CI_Controller{
         redirect('adminview/viewReturns');
     }
     function addTransaction(){
-        $transID = $this->input->post('transID');
-        $spID = $this->input->post('spID');
-        $transType = $this->input->post('transType');
-        $receiptNum = $this->input->post('receiptNum');
-        $transDate = $this->input->post('transDate');
-        $resStatus = $this->input->post('resStatus');
+        $id = $this->input->post('id');
+        $supplier = $this->input->post('supplier');
+        $type = $this->input->post('type');
+        $receipt = $this->input->post('receipt');
+        $date = $this->input->post('date');
         $remarks = $this->input->post('remarks');
         $transitems = json_decode($this->input->post('transitems'),true);
         $dateRecorded = date("Y-m-d");
         $total = 0.00;
-        for($index = 0 ; $index < count($transitems) ; $index++){
-            $transitems[$index]['subtotal'] = (float) $transitems[$index]['itemPrice'] * (float) $transitems[$index]['itemQty'];
-            $total += $transitems[$index]['subtotal'];
+        for($i = 0 ; $i < count($transitems) ; $i++){
+            $transitems[$i]['tiSubtotal'] = (float) $transitems[$i]['tiPrice'] * (float) $transitems[$i]['tiQty'];
+            $total += $transitems[$i]['tiSubtotal'];
         }
-        if($this->adminmodel->add_transaction($spID, $transType, $receiptNum, $transDate, $dateRecorded, $resStatus, $remarks,$total, $transitems)){
+        if($this->adminmodel->add_transaction($id, $supplier, $receipt, $date, $type, $dateRecorded, $remarks, $transitems)){
             echo json_encode(array(
                 "dataSuccess" => true
             ));
         }else{
             echo json_encode(array(
-                "dataErr" => true
+                "dbErr" => true
             ));
         }
     }
@@ -385,6 +388,29 @@ class Adminadd extends CI_Controller{
         $stckID= $this->input->post('stckID');
         $this->adminmodel->add_returns($idate, $reQty, $reUnit, $supID, $dateRet, $receipt, $cost, $remarks,$reStat,  $stckName, $subtotal, $variance, $stckID);
         redirect('adminview/viewReturnTransactions');
+    }
+
+    function addRestockLog(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $restockQtys = json_decode($this->input->post('rsQtys'),true);
+            foreach($restockQtys as $item){
+                if($this->adminmodel->add_stockLog($item['id'], NULL, "restock", date("Y-m-d H:i:s"), date("Y-m-d H:i:s"), $item['qty'], NULL)){
+                    if(!$this->adminmodel->add_stockQty($item['id'], $item['qty'])){
+                        echo json_encode(array(
+                            "crudErr" => true
+                        ));
+                    }
+                }else{
+                    echo json_encode(array(
+                        "crudErr" => true
+                    ));
+                }
+            }
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
     }
 
 
