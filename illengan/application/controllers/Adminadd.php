@@ -17,6 +17,7 @@ class Adminadd extends CI_Controller{
             $password = password_hash($this->input->post("password"),PASSWORD_DEFAULT);
             $username = $this->input->post("aUsername");
             $aType = $this->input->post("aType");
+            $date_recorded = date("Y-m-d H:i:s");
 
         // if($this->form_validation->run()){
         //     $data = array(
@@ -34,6 +35,8 @@ class Adminadd extends CI_Controller{
                 'aType'=>$aType
             );
             $this->adminmodel->add_accounts($data);
+            $this->adminmodel->add_actlog(1,$date_recorded, "Admin added account $username .", "add", NULL);
+
             redirect('admin/accounts');
         // }
     }
@@ -307,6 +310,7 @@ class Adminadd extends CI_Controller{
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->load->model('adminmodel');
             $date_recorded = date("Y-m-d H:i:s");
+            $slType = "spoilage";
             $menus = json_decode($this->input->post('menus'), true);
             echo json_encode($menus, true);
             $this->adminmodel->add_menuspoil($date_recorded,$menus);
