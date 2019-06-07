@@ -155,7 +155,7 @@ class Barista extends CI_Controller{
         //barista functions for orderslips-cards
 
         function sample(){
-            $this->load->view('barista/navigation'); 
+            $this->load->view('barista/templates/navigation'); 
                 $data["slip"] = $this->baristamodel->slipData();
                 $this->load->view("barista/orderCards", $data);
         }
