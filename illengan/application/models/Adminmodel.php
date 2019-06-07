@@ -1120,7 +1120,7 @@ class Adminmodel extends CI_Model{
     function get_stockItemNames(){
         $query = "SELECT
             stID,
-            stName,
+            CONCAT(stName, ' ', stSize) as stName,
             uomID,
             uomAbbreviation
         FROM
@@ -1461,6 +1461,33 @@ class Adminmodel extends CI_Model{
                     slType = 'beginning' AND stID = ?
             ;",array($stID))->result_array();
     }
+//     "SELECT
+//     stID,
+//     CONCAT(
+//         stName,
+//         IF(
+//             stSize IS NULL,
+//             '',
+//             CONCAT(' ', stSize)
+//         )
+//     ) AS stName,
+//     suppliermerchandise.uomID,
+//     uomAbbreviation,
+//     spmID,
+//     spmName,
+//     spmPrice,
+//     spmActualQty,
+//     spID,
+//     spName
+// FROM
+//     (
+//         stockitems
+//     RIGHT JOIN(
+//             suppliermerchandise
+//         LEFT JOIN supplier USING(spID)
+//         ) USING(stID)
+//     )
+// LEFT JOIN uom on (suppliermerchandise.uomID = uom.uomID)";
 }
 
 ?>
