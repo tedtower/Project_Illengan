@@ -147,18 +147,18 @@ class Adminmodel extends CI_Model{
         if($this->db->query($query,array($spName, $spContactNum, $spEmail, $spStatus, $spAddress))){
             $spID = $this->db->insert_id();
             if(count($spMerch) > 0){
-                foreach ($spMerch as $merch) {
+                foreach($spMerch as $merch) {
                     $this->add_supplierMerchandise($merch, $spID);
                 }
             }
-            return true;            
+            return true;          
         }
         return false;
     }
 
-    function add_supplierMerchandise($merch, $id) {
-        $query = "insert into suppliermerchandise (vID, spID, spmDesc, spmUnit, spmPrice) values (?,?,?,?,?);";
-        $this->db->query($query,array($merch['varID'],$id,$merch['merchName'],$merch['merchUnit'],$merch['merchPrice']));
+    function add_supplierMerchandise($merch, $spID) {
+        $query = "insert into suppliermerchandise (stID, spID, uomID, spmName, spmActualQty, spmPrice) values (?,?,?,?,?,?);";
+        $this->db->query($query,array($merch['stID'],$spID,$merch['merchUnit'],$merch['merchName'],$merch['merchActualQty'],$merch['merchPrice']));
     }
 
 
@@ -304,13 +304,14 @@ class Adminmodel extends CI_Model{
     function edit_supplierMerchandise($merch){
         $query = "UPDATE suppliermerchandise 
             SET 
-                vID = ?,
-                spmDesc = ?,
-                spmUnit = ?,
+                stID = ?,
+                uomID = ?,
+                spmName = ?,
+                spmActualQty = ?,
                 spmPrice = ?
             WHERE
                 spmID = ?;";
-        $this->db->query($query,array($merch['varID'],$merch['merchName'],$merch['merchUnit'],$merch['merchPrice'], $merch['spmID']));
+        $this->db->query($query,array($merch['stID'],$merch['merchUnit'],$merch['merchName'],$merch['merchActualQty'],$merch['merchPrice'], $merch['spmID']));
     }
 
     function add_poItem(){
@@ -1149,7 +1150,10 @@ class Adminmodel extends CI_Model{
                     }
             }
     }
-
+    function get_uom(){
+        $query = "SELECT * from uom";
+        return $this->db->query($query)->result_array();
+    }
     function get_enumVals($table,$column){
         $query = "SELECT 
             column_type
