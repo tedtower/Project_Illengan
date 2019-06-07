@@ -32,7 +32,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $query->result();
     }
         function get_orderitems($osID){
-            $query = "SELECT olDesc, olSubtotal,olQty,(SELECT SUM(olQty * olSubtotal)FROM orderlists) as subtotal from orderlists WHERE osID = ?";
+            $query = "SELECT olDesc, olSubtotal,olQty,osTotal from orderlists join orderslips USING (osID) WHERE osID = ?";
             return $this->db->query($query,array($osID))->result_array();
         }
 
@@ -77,7 +77,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
         function get_bills(){
-            $query = "select osID, tableCode, custName, osTotal, osDateTime, payStatus , osPayDateTime from orderslips order by osDateTime DESC";
+            $query = "select osID, tableCode, custName, osTotal, osDateTime,(CAST(osDateTime AS time)) as time, payStatus , osPayDateTime from orderslips where CAST(osDateTime AS date) = cast((now()) as date) ORDER BY `orderslips`.`osDateTime` DESC ";
             return $this->db->query($query)->result_array();
         }
 
