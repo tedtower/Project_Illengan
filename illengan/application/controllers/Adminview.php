@@ -651,6 +651,33 @@ function viewSpoilagesStock(){
         }
     }
 
+    function getPOs(){
+        if($this->checkIfLoggedIn()){
+            echo json_encode($this->adminmodel->get_stocks());
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
+    function getDRs(){
+        if($this->checkIfLoggedIn()){
+            echo json_encode($this->adminmodel->get_stocks());
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
+    function getSPMs(){
+        if($this->checkIfLoggedIn()){
+            echo json_encode($this->adminmodel->get_stocks());
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
 }
 
 ?>
