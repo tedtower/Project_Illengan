@@ -526,9 +526,15 @@
             <td><img class="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
         </tr>
         `);
+            modal.find(".exitBtn").last().on('click', function() {
+            $(this).closest("tr").remove();
+            });
             modal.find("select[name='variance[]']").last().find(`option[value='${merchandise.stID}']`).attr("selected", "selected");
             modal.find("select[name='merchUnit[]']").last().find(`option[value='${merchandise.uomID}']`).attr("selected", "selected");
         });
+
     }
+
+
 </script>
 </body>
