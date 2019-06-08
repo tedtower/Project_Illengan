@@ -7,22 +7,16 @@
   
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto delius">
-          <li class="nav-item">
+          <li class="nav-item pl-3 pr-3">
             <a class="nav-link" href="<?php echo base_url('barista/orders')?>"><i class="fal fa-tasks"></i> Orders</a>
           </li>
-      </ul>
-      <ul class="navbar-nav mr-auto delius">
-          <li class="nav-item">
+          <li class="nav-itempl-3 pr-3">
             <a class="nav-link" href="<?php echo base_url('barista/billings')?>"><i class="fas fa-money-bill-wave"></i> Billings</a>
           </li>
-      </ul>
-      <ul class="navbar-nav mr-auto delius">
-          <li class="nav-item">
+          <li class="nav-item pl-3 pr-3">
             <a class="nav-link" href="<?php echo base_url('barista/transactions')?>"><i class="fas fa-receipt"></i> Transactions</a>
           </li>
-      </ul>
-      <ul class="navbar-nav mr-auto delius">
-          <li class="nav-item">
+          <li class="nav-item pl-3 pr-3">
             <a class="nav-link" href="<?php echo base_url('barista/inventory')?>"><i class="fas fa-boxes"></i></i> Inventory</a>
           </li>
       </ul>
