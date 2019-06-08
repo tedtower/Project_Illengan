@@ -417,3 +417,35 @@ class Adminadd extends CI_Controller{
 
 }
 ?>
+
+var btn = el.find(".addAddons");
+    btn.attr("onclick", " ");
+
+   
+    if($(el).hasClass("salesElem")) {
+        $(el).attr("data-delete", "0");
+        $(el).attr("class", "deleted");
+        
+        console.log("Order Item");
+    } else if($(el).hasClass("addonsTable")) {
+        $(el).attr("data-delete", "0");
+        $(el).attr("class", "deleted");
+
+        console.log("Addons");
+
+    } else {
+        return false;
+    }
+
+    try {
+        if($(el).next(".addonsTable") != null) {
+            nextTr = $(el).nextAll(".salesElem");
+            addonEl = $(el).nextUntil(nextTr, "tr");
+            for(var i = 0; i <= addonEl.length-1; i++) {
+                addonEl[i].style.textDecoration = "line-through";
+                addonEl[i].style.opacity = "0.5";
+            }
+        }
+    } catch(error) {
+
+    }

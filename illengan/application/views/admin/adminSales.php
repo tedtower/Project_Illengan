@@ -16,9 +16,7 @@
                     <table id="salesTable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead class="thead-dark">
                             <tr>
-                                <th></th>
                                 <th><b class="pull-left">Slip No.</b></th>
-                                <th><b class="pull-left">Customer</b></th>
                                 <th><b class="pull-left">Table No.</b></th>
                                 <th><b class="pull-left">Date</b></th>
                                 <th><b class="pull-left">Total Sale</b></th>
@@ -387,7 +385,6 @@ var sales = [];
                 tables = data.tables;
                 addons = data.addons;
                 showTable();
-                console.log(orderslips);
             },
             error: function (response, setting, errorThrown) {
                 console.log(errorThrown);
@@ -429,20 +426,23 @@ var sales = [];
         $("#tableCode").append(`${tables.map(tab => {
             return `<option value="${tab.tableCode}">${tab.tableCode}</option>`;
         }).join('')}`);
+        subPrice = 0;
+
     });
     
     function showTable() {
        orderslips.forEach(function (item) {
             var tableRow = `
                 <tr class="table_row" data-id="${item.orderslips.osID}">   <!-- table row ng table -->
-                    <td><a href="javascript:void(0)" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${item.orderslips.osID}</td>
-                    <td>${item.orderslips.custName}</td>
+                    <td><a href="javascript:void(0)" class="ml-2 mr-4">
+                    <img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>
+                    ${item.orderslips.osID}</td>                    
                     <td>${item.orderslips.tableCode}</td>
                     <td>${item.orderslips.osPayDateTime}</td>
                     <td>&#8369; ${(parseFloat(item.orderslips.osTotal)).toFixed(2)}</td>
                     <td>
-                    <button class="editBtn btn btn-sm btn-primary" data-toggle="modal" data-target="#editSales" id="editSalesBtn">Edit</button>
-                        <button class="deleteBtn btn btn-sm btn-danger" data-toggle="modal" data-target="#delete">Delete</button>
+                    <button class="editBtn btn btn-sm btn-secondary" data-toggle="modal" data-target="#editSales" id="editSalesBtn">Edit</button>
+                        <button class="deleteBtn btn btn-sm btn-warning" data-toggle="modal" data-target="#delete">Archive</button>
                     </td>
                 </tr>
             `;
@@ -518,6 +518,7 @@ var sales = [];
         $("#tableCodes").append(`${tables.map(tab => {
             return `<option value="${tab.tableCode}">${tab.tableCode}</option>`;
         }).join('')}`);
+        subPrice = 0;
         var osID = $(this).closest("tr").attr("data-id");
         setEditModal($("#editSales"), sales.orderslips.filter(item => item.osID === osID)[0], 
         sales.orderlists.filter(ol => ol.osID === osID), addons);
@@ -558,16 +559,16 @@ var sales = [];
 
     ol.forEach(ol => {
         modal.find(".editsalesTable > tbody").append(`
-        <tr class="salesElem" data-id="${ol.olID}">
+        <tr class="salesElem salesElements" data-id="${ol.olID}">
             <input type="hidden" name="prID" id="prID" value="${ol.prID}">
             <input type="hidden" name="osID" id="osID" value="${ol.osID}">
             <input type="hidden" class="mID" id="mID" name="mID" value="${ol.mID}">
                 <td><input type="text" id="olDesc" name="olDesc"
                   class="olDesc form-control form-control-sm" value="${ol.olDesc}" readonly="readonly"></td>
                 <td><input type="number" id="olQty" onchange="setSubtotal()" name="olQty"
-                  class="form-control form-control-sm" value="${ol.olQty}" required min="1"></td>
+                  class="olQty form-control form-control-sm" value="${ol.olQty}" required min="1"></td>
                 <td><input type="number" id="prPrice" name="prPrice"
-                  class="spmPrice form-control form-control-sm" onchange="setSubtotal()" value="${ol.prPrice}" ></td>
+                  class="prPrice form-control form-control-sm" onchange="setSubtotal()" value="${ol.prPrice}" ></td>
                 <td><input type="number" name="subtotal" class="subtotal form-control form-control-sm" value="${ol.olSubtotal}" readonly="readonly"></td>
                 <td><a class="addAddons btn btn-default btn-sm" style="margin:0;" onclick="addAddons(this);" id="addAddons">Add Addons</a></td>
                 </td><td><img class="delBtn" onclick="deleteItem(this)" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
@@ -578,7 +579,7 @@ var sales = [];
         var prID = ol.prID;
         olAddons.forEach(oa => {
             modal.find(".editsalesTable > tbody").last('tr').append(`
-            <tr class="addonsTable" data-id="${oa.olID}">
+            <tr class="addonsTable addonsTables" data-id="${oa.olID}">
             <input type="hidden" name="aoprID" id="aoprID" value="${prID}">
             <input type="hidden" name="oldaoID" id="oldaoID" value="${oa.aoID}">
             <td>
@@ -586,10 +587,10 @@ var sales = [];
                     onchange="onchangeAddon(this)" name="aoID" id="addon" required></select>
             </td>
             <td>
-                <input type="number" name="aoQty" id="aoQty" onchange="onchangeAddonQuantity(this);" value="${oa.aoQty}" class="form-control form-control-sm" required min="1">
+                <input type="number" name="aoQty" id="aoQty" onchange="onchangeAddonQuantity(this);" value="${oa.aoQty}" class="aoQty form-control form-control-sm" required min="1">
             </td>
             <td>
-                <input type="number" name="aoPrice" id="aoPrice" value="${oa.aoPrice}" class="form-control form-control-sm" readonly>
+                <input type="number" name="aoPrice" id="aoPrice" value="${oa.aoPrice}" class="aoPrice form-control form-control-sm" readonly>
             </td>
             <td>
                 <input type="number" name="aoSubtotal" id="aoSubtotal" value="${oa.aoTotal}" class="aoSubtotal form-control form-control-sm" readonly>
@@ -616,8 +617,7 @@ function setAddonOptions(modal, mID, olID, aoID) {
                 modal.find("#ao"+olID+aoID).append(`
                 <option value="${ma.aoID}">${ma.aoName}</option>`);
     });
-    console.log(mnaddon);
-    console.log(aoID);
+
     modal.find("select[id='ao"+olID+aoID+"']").find(`option[value=${aoID}]`).attr("selected","selected");
 
 }
@@ -631,11 +631,9 @@ function onchangeAddon(select) {
         var arr = mnaddons.filter(ao => ao.aoID === aoID);
         aoPrice = arr[0].aoPrice;
         $(select).closest('td').nextAll('td').find('#aoPrice')[0].value = aoPrice;
-        console.log(aoPrice);
 
         setAddOnsSubtotal();
     } catch(error) {
-        console.log('No addon');
         aoPrice = 0;
         $(select).closest('td').nextAll('td').find('#aoPrice')[0].value = 0;
 
@@ -644,7 +642,6 @@ function onchangeAddon(select) {
 }
 function setAddOnsSubtotal() {
         var aoQty = $(input).closest('td').next('td').find('#aoQty').val();
-        console.log(input);
         var aoSubtotal = parseFloat(aoPrice * aoQty);
         $(input).closest('td').nextAll('td').find('#aoSubtotal')[0].value = aoSubtotal;
        
@@ -671,8 +668,8 @@ $(document).ready(function() {
         var tableCodes = $(this).find("select[name='tableCodes']").val();
        
         var ol = [];
-        for (var index = 0; index < $(this).find(".salesElem").length; index++) {
-            var row = $(this).find(".salesElem").eq(index);
+        for (var index = 0; index < $(this).find(".salesElements").length; index++) {
+            var row = $(this).find(".salesElements").eq(index);
             ol.push({
                 olID:  isNaN(parseInt(row.attr('data-id'))) ?  (null) : parseInt(row.attr('data-id')),
                 prID :  row.find("input[name='prID']").val(),
@@ -687,8 +684,8 @@ $(document).ready(function() {
         }
 
         var addons = [];
-        for (var index = 0; index < $(this).find(".addonsTable").length; index++) {
-            var row = $(this).find(".addonsTable").eq(index);
+        for (var index = 0; index < $(this).find(".addonsTables").length; index++) {
+            var row = $(this).find(".addonsTables").eq(index);
             addons.push({
                 prID: row.find("input[name='aoprID']").val(),
                 olID:  isNaN(parseInt(row.attr('data-id'))) ?  (null) : parseInt(row.attr('data-id')),
@@ -700,11 +697,6 @@ $(document).ready(function() {
             });
         }
 
-        try {
-
-        } catch(error) {
-            alert("There are add on duplicates on an item");
-        }
         $.ajax({
             url: "<?= site_url("admin/sales/edit")?>",
             method: "post",
@@ -719,13 +711,8 @@ $(document).ready(function() {
                 orderlists: JSON.stringify(ol),
                 addons: JSON.stringify(addons)
             },
-            beforeSend: function() {
-                console.log('ADDONS ON EDIT');
-                console.log(addons);
-            },
-            success: function(data) {
+            success: function() {
                 alert('Sales Updated');
-                console.log(data);
                 //location.reload();
             },
             error: function (response, setting, errorThrown) {
