@@ -1,4 +1,7 @@
 <!--End Side Bar-->
+<body style="background:white">
+
+    <!--End Side Bar-->
     <div class="content">
         <div class="container-fluid">
             <br>
@@ -8,12 +11,14 @@
             </p>
             <div class="content" style="margin-left:250px;">
                 <div class="container-fluid">
-                    <!--Table-->
-                    <div class="card-content">
-                        <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#addNewTable" data-original-title style="margin:0;">Add New Table</a><br>
+                    <div class="content">
+                        <div class="container-fluid">
+                            <!--Table-->
+                            <div class="card-content">
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addNewTable" data-original-title style="margin:0;">Add Table</button><br>
                         <br>
-                        <table id="tablesTable" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                            <thead>
+                        <table id="tablesTable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                            <thead class="thead-dark">
                                 <th><b class="pull-left">Table Code</b></th>
                                 <th><b class="pull-left">Actions</b></th>
                             </thead>
@@ -142,7 +147,6 @@
         </div>
     </div>
     <?php include_once('templates/scripts.php') ?>
-</body>
 <script>
     var tables = [];
     $(function() {
@@ -240,11 +244,11 @@
                 <!--Action Buttons-->
                 <div class="onoffswitch">
                     <!--Edit button-->
-                    <button class="updateBtn btn btn-default btn-sm" data-toggle="modal"
+                    <button class="updateBtn btn btn-secondary btn-sm" data-toggle="modal"
                         data-target="#editTable">Edit</button>
                     <!--Delete button-->
-                    <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"
-                        data-target="#deleteTable">Delete</button>
+                    <button class="deleteBtn btn btn-warning btn-sm" data-toggle="modal"
+                        data-target="#deleteTable">Archived</button>
                 </div>
             </td>
         </tr>`);
@@ -265,5 +269,5 @@
     //     $("#txtlname").val($(this).closest('tr').children()[1].textContent);
     // });
 </script>
-
+</body>
 </html>

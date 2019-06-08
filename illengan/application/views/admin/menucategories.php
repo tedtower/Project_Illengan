@@ -1,4 +1,5 @@
     <!--End Side Bar-->
+    <body style="background:white">
     <div class="content">
         <div class="container-fluid">
             <br>
@@ -12,12 +13,12 @@
                         <div class="container-fluid">
                             <!--Table-->
                             <div class="card-content">
-                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newMCategory" data-original-title style="margin:0" id="addCategroy">Add Category</a>
-                                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newSCategory" data-original-title style="margin:0" id="addCategroy">Add Subcategory</a>
+                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newMCategory" data-original-title style="margin:0" id="addCategroy">Add Category</button>
+                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newSCategory" data-original-title style="margin:0" id="addCategroy">Add Subcategory</button>
                                 <br>
                                 <br>
                                 <table id="categTable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                                    <thead style="background:gray;color:grey">
+                                    <thead class="thead-dark">
                                         <th><b class="pull-left">Category Name</b></th>
                                         <th><b class="pull-left">Number of Items</b></th>
                                         <th><b class="pull-left">Actions</b></th>
@@ -31,8 +32,8 @@
                                             <td><?php echo $category['ctName']?></td>
                                             <td><?php echo $category['menu_no']?></td>
                                             <td>
-                                                <button class="btn btn-primary btn-sm" name="editCategory" data-toggle="modal" data-target="#editCategory" data-id="<?php echo $category['ctID']?>">Edit</button>
-                                                <a class="btn btn-danger btn-sm" href="<?php echo site_url('admin/menucategories/delete/'.$category['ctID'])?>">Delete</a>
+                                                <button class="btn btn-secondary btn-sm" name="editCategory" data-toggle="modal" data-target="#editCategory" data-id="<?php echo $category['ctID']?>">Edit</button>
+                                                <a class="btn btn-warning btn-sm" href="<?php echo site_url('admin/menucategories/delete/'.$category['ctID'])?>">Archived</a>
                                             </td>
                                         </tr>
                                     <?php }} ?>
@@ -197,3 +198,4 @@
             document.getElementById('ctID').value = event.target.getAttribute('data-id');
         }
     </script>
+    </body>

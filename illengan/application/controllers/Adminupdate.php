@@ -20,8 +20,12 @@ class Adminupdate extends CI_Controller{
             $updateQtyh = $ssQtyUpdate - $curSsQty; 
             $updateQtyl = $curSsQty - $ssQtyUpdate;
             $date_recorded=date("Y-m-d H:i:s");
+            $slType = "spoilage";
+            $slDateTime = date('Y-m-d', strtotime($ssDate));
 
             $this->adminmodel->edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$updateQtyh,$updateQtyl,$curSsQty,$stQty,$ssQtyUpdate,$date_recorded);
+            $this->adminmodel->add_stockLog2($stID, $slType, $date_recorded, $slDateTime, $ssQty, $ssRemarks, $updateQtyh, $updateQtyl,$curSsQty,$ssQtyUpdate);
+           
         }else{
             redirect('login');
         } 
@@ -70,6 +74,25 @@ class Adminupdate extends CI_Controller{
             $ctName = $this->input->post('new_name');
             $this->adminmodel->edit_stockcategory($ctID, $ctName);
             redirect('admin/stockcategories');
+        }else{
+            redirect('login');
+        }
+    }
+    function editSales() {
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $osID = $this->input->post('osID');
+            $tableCodes = $this->input->post('tableCodes');
+            $custName = $this->input->post('custName');
+            $osTotal = $this->input->post('osTotal');
+            $payStatus = $this->input->post('payStatus');
+            $osDateTime = $this->input->post('osDateTime');
+            $osPayDateTime = $this->input->post('osPayDateTime');
+            $osDateRecorded = date("Y-m-d H:i:s");
+            $orderlists = json_decode($this->input->post('orderlists'), true);
+            $addons = json_decode($this->input->post('addons'), true);
+               
+            $this->adminmodel->edit_sales($osID, $tableCodes, $custName, $osTotal, $payStatus, 
+            $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons);
         }else{
             redirect('login');
         }
@@ -174,7 +197,8 @@ class Adminupdate extends CI_Controller{
                 echo json_encode(array(
                     'sources' => $this->adminmodel->get_supplier(),
                     'merchandises' => $this->adminmodel->get_suppliermerch(),
-                    'stockvariances' => $this->adminmodel->get_stockVariance()
+                    'stocks' => $this->adminmodel->get_stocks(),
+                    'uom' => $this->adminmodel->get_uom()
                 ));
             }
         }else{
