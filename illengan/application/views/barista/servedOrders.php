@@ -22,8 +22,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   </head>
 <body>
 <?php include_once('headernav.php') ?>
-<div class="tab-content" id="servedTab">
-  <br>
   <div class="container">
             <table  class="pendOrders dtr-inline collapsed table display" id="servedordersTable" >
                 <thead>

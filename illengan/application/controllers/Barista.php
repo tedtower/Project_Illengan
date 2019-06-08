@@ -185,5 +185,9 @@ class Barista extends CI_Controller{
             $date_recorded = date("Y-m-d H:i:s");
             $this->baristamodel->update_payment($status,$osID,$custName,$payDate, $date_recorded);
         }
+
+        // function slipCards(){
+        //     $this->load->view('barista/orderslipCards');
+        // }
     }
 ?>

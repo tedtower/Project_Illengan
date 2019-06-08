@@ -70,7 +70,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
         function get_bills(){
-            $query = "select osID, tableCode, custName, osTotal, osDateTime,(CAST(osDateTime AS time)) as time, payStatus , osPayDateTime from orderslips where CAST(osDateTime AS date) = cast((now()) as date) ORDER BY `orderslips`.`osDateTime` DESC ";
+            $query = "SELECT
+            osID,
+            tableCode,
+            custName,
+            osTotal,
+            osDateTime,
+            (CAST(osDateTime AS TIME)) AS TIME,
+            payStatus,
+            osPayDateTime
+        FROM
+            orderslips
+        WHERE
+            CAST(osDateTime AS DATE) = CAST((NOW()) AS DATE)
+        ORDER BY
+            `orderslips`.`osDateTime`
+        DESC
+             ";
             return $this->db->query($query)->result_array();
         }
 
@@ -122,7 +138,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         function get_ordersData(){
             $query = "SELECT
-            orderlists.olID,
             olQty,
             olDesc,
             olSubtotal,
@@ -137,7 +152,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $this->db->query($query)->result_array();
         }
         //$query2 = "SELECT olID, aoName, aoPrice, olRemarks from orderlists inner join orderaddons using (olID) inner join addons using (aoID)";
-
     }
 
 ?>

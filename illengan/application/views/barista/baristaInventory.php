@@ -36,7 +36,10 @@
 							</thead>
 							<!--Start Table Body-->
 							<tbody>
-                            <?php foreach($inventory['stocks'] as $stock){?>
+                            <?php 
+                                if(isset($inventory)){
+                                    foreach($inventory['stocks'] as $stock){
+                                        ?>
                             <tr data-id="<?= $stock['stID']?>">
                                 <td><?= $stock['stName']?></td>
                                 <td><?= $stock['ctName']?></td>
@@ -49,7 +52,9 @@
                                     <button class="editBtn btn btn-default btn-sm" data-toggle="modal" data-target="#addEditStock">Edit</button>
                                     <button class="btn btn-warning btn-sm">Archived</button>
                                 </td>
-                                <?php } ?>
+                                <?php }
+                                } 
+                                ?>
                             </tr>
                         </tbody>
 						</table>
