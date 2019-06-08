@@ -1156,20 +1156,13 @@ class Adminmodel extends CI_Model{
             tID,
             tNum,
             tType,
-            DATE_FORMAT(tDate, '%b %d, %Y %r') AS tDate,
-            DATE_FORMAT(dateRecorded, '%b %d, %Y %r') AS dateRecorded,
+            tDate,
             spID,
             spName,
-            SUM(tiSubtotal) AS tTotal,
             tRemarks
         FROM
-            (
-                transactions
-            LEFT JOIN trans_items USING(tID)
-            )
+            transactions
         LEFT JOIN supplier USING(spID)
-        GROUP BY
-            tID
         WHERE 
             tID = ?;";
         return $this->db->query($query, arrray($id))->result_array();
@@ -1461,33 +1454,77 @@ class Adminmodel extends CI_Model{
                     slType = 'beginning' AND stID = ?
             ;",array($stID))->result_array();
     }
-//     "SELECT
-//     stID,
-//     CONCAT(
-//         stName,
-//         IF(
-//             stSize IS NULL,
-//             '',
-//             CONCAT(' ', stSize)
-//         )
-//     ) AS stName,
-//     suppliermerchandise.uomID,
-//     uomAbbreviation,
-//     spmID,
-//     spmName,
-//     spmPrice,
-//     spmActualQty,
-//     spID,
-//     spName
-// FROM
-//     (
-//         stockitems
-//     RIGHT JOIN(
-//             suppliermerchandise
-//         LEFT JOIN supplier USING(spID)
-//         ) USING(stID)
-//     )
-// LEFT JOIN uom on (suppliermerchandise.uomID = uom.uomID)";
+    function get_SPMs($spID){
+        $query = "SELECT
+            stID,
+            CONCAT(
+                stName,
+                IF(
+                    stSize IS NULL,
+                    '',
+                    CONCAT(' ', stSize)
+                )
+            ) AS stName,
+            suppliermerchandise.uomID,
+            uomAbbreviation,
+            spmID,
+            spmName,
+            spmPrice,
+            spmActualQty,
+            spID,
+            spName
+        FROM
+            (
+                stockitems
+            RIGHT JOIN(
+                    suppliermerchandise
+                LEFT JOIN supplier USING(spID)
+                ) USING(stID)
+            )
+        LEFT JOIN uom on (suppliermerchandise.uomID = uom.uomID) 
+        WHERE spID = ?";
+        return $this->db->query($query, array($spID));
+    }
+    function get_transactionsBySupplier($spID, $tTypes){
+        $query = "SELECT
+                spID,
+                tID,
+                tNum,
+                DATE_FORMAT(tDate, '%b %d, %Y %r') AS tDate,
+                DATE_FORMAT(dateRecorded, '%b %d, %Y %r') AS dateRecorded,
+                tType
+            FROM
+                transactions
+            LEFT JOIN supplier USING(spID)
+            WHERE
+                spID = ? AND tType IN ?;";
+        return $this->db->query($query, array($spID, $tTypes))->result_array();
+    }
+    function get_transitemsBySupplier($spID, $tTypes){
+        $query = "SELECT
+            spID, tID, tiID, tiName, tiPrice, tiDiscount, tiStatus, tNum, tType,
+            stID, ti.uomID AS uomID, uomAbbreviation, tiQty, tiActualQty
+        FROM
+            (
+                (
+                    (
+                        (
+                            transitems AS ti
+                        LEFT JOIN uom ON
+                            (ti.uomID = uom.uomID)
+                        )
+                    LEFT JOIN trans_items USING(tiID)
+                    )
+                LEFT JOIN transactions USING(tID)
+                )
+            LEFT JOIN supplier USING(spID)
+            )
+        LEFT JOIN stockitems AS st USING(stID)
+        WHERE
+            spID = ? AND tType IN ?;";
+        return $this->db->query($query, array($spID, $tTypes))->result_array();
+    }
+    
 }
 
 ?>
