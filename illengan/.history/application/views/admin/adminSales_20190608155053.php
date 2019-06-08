@@ -689,7 +689,7 @@ $(document).ready(function() {
             addons.push({
                 prID: row.find("input[name='aoprID']").val(),
                 olID:  isNaN(parseInt(row.attr('data-id'))) ?  (null) : parseInt(row.attr('data-id')),
-                oldaoID: isNaN(parseInt(row.find("input[name='oldaoID']").val())) ?  (null): parseInt(row.find("input[name='oldaoID']").val()),
+                oldaoID: parseInt((row.find("input[name='oldaoID']").val()).trim()),
                 aoID :  parseInt((row.find("select[name='aoID']").val()).trim()),
                 aoQty: row.find("input[name='aoQty']").val(),
                 aoTotal: row.find("input[name='aoSubtotal']").val(),
@@ -711,6 +711,7 @@ $(document).ready(function() {
                 orderlists: JSON.stringify(ol),
                 addons: JSON.stringify(addons)
             },
+
             success: function() {
                 alert('Sales Updated');
                 //location.reload();

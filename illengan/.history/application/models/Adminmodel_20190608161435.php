@@ -232,8 +232,7 @@ class Adminmodel extends CI_Model{
         $query = "INSERT INTO orderaddons (aoID, olID, aoQty, aoTotal) VALUES (?, ?, ?, ?);";
           for($in = 0; $in < count($addons); $in++){
             if($olprID == $addons[$in]['prID']) {
-            $this->db->query($query, array($addons[$in]['aoID'], $olID, $addons[$in]['aoQty'], 
-            $addons[$in]['aoTotal']));
+            $this->db->query($query, array(16, 28, 1, 20));
             }
     }
 
@@ -433,18 +432,8 @@ class Adminmodel extends CI_Model{
             for($i = 0; $i < count($addons); $i++) {
                 if($addons[$i]['del'] === 0 ) {
                     $this->delete_salesAddons($addons[$i]['aoID'], $addons[$i]['olID']);
-                } else if($addons[$i]['olID'] === null){
-                    $addonsArr = array();
-                    $aolist = array(
-                        'prID' => $addons[$i]['prID'],
-                        'aoID' => $addons[$i]['aoID'],
-                        'aoQty' => $addons[$i]['aoQty'],
-                        'aoTotal' => $addons[$i]['aoTotal']
-                    );
-                    array_push($addonsArr, $aolist);
-                    $this->add_salesAddons($olID, $prID, $addonsArr);
-                } else if(intval($addons[$i]['oldaoID']) != intval($addons[$i]['aoID'])) {
-                    $this->update_changedAddon($addons[$i]['aoID'], $addons[$i]['oldaoID'], $addons[$i]['olID']);
+                } else if($addons[$i]['oldaoID'] != $addons[$i]['aoID']) {
+                    $this->update_changedAddon($addons[$i]['oldaoID'], $addons[$i]['aoID'], $addons[$i]['olID']);
                 } else if($addons[$i]['prID'] == $prID && $addons[$i]['olID'] != null) {
                     $aolist = array(
                         'aoID' => $addons[$i]['aoID'],

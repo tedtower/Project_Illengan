@@ -669,7 +669,7 @@ $(document).ready(function() {
        
         var ol = [];
         for (var index = 0; index < $(this).find(".salesElements").length; index++) {
-            var row = $(this).find(".salesElements").eq(index);
+            var row = $(this).find(".salesElements").eq(index); //tr
             ol.push({
                 olID:  isNaN(parseInt(row.attr('data-id'))) ?  (null) : parseInt(row.attr('data-id')),
                 prID :  row.find("input[name='prID']").val(),
@@ -679,7 +679,7 @@ $(document).ready(function() {
                 olSubtotal: row.find("input[name='subtotal']").val(),
                 olStatus: 'served',
                 olRemarks: ' ',
-                del: isNaN(parseInt(row.attr('data-delete'))) ?  (null) : parseInt(row.attr('data-delete'))
+                del: isNaN(parseInt(row.attr('data-delete'))) ?  (null) : parseInt(row.attr('data-delete').val())
             });
         }
 
@@ -689,11 +689,11 @@ $(document).ready(function() {
             addons.push({
                 prID: row.find("input[name='aoprID']").val(),
                 olID:  isNaN(parseInt(row.attr('data-id'))) ?  (null) : parseInt(row.attr('data-id')),
-                oldaoID: isNaN(parseInt(row.find("input[name='oldaoID']").val())) ?  (null): parseInt(row.find("input[name='oldaoID']").val()),
+                oldaoID: parseInt((row.find("input[name='oldaoID']").val()).trim()),
                 aoID :  parseInt((row.find("select[name='aoID']").val()).trim()),
                 aoQty: row.find("input[name='aoQty']").val(),
                 aoTotal: row.find("input[name='aoSubtotal']").val(),
-                del: isNaN(parseInt(row.attr('data-delete'))) ?  (null) : parseInt(row.attr('data-delete'))
+                del: isNaN(parseInt(row.attr('data-delete'))) ?  (null) : parseInt(row.attr('data-delete').val())
             });
         }
 

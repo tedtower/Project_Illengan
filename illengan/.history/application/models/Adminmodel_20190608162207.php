@@ -443,8 +443,6 @@ class Adminmodel extends CI_Model{
                     );
                     array_push($addonsArr, $aolist);
                     $this->add_salesAddons($olID, $prID, $addonsArr);
-                } else if(intval($addons[$i]['oldaoID']) != intval($addons[$i]['aoID'])) {
-                    $this->update_changedAddon($addons[$i]['aoID'], $addons[$i]['oldaoID'], $addons[$i]['olID']);
                 } else if($addons[$i]['prID'] == $prID && $addons[$i]['olID'] != null) {
                     $aolist = array(
                         'aoID' => $addons[$i]['aoID'],
