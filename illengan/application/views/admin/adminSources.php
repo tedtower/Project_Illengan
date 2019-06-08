@@ -424,6 +424,8 @@
                 $("#editSupplier form")[0].reset();
                 $("#editSupplier .merchandisetable > tbody").empty();
                 var sourceID = $(this).closest("tr").attr("data-id");
+                console.log("suppplierrr");
+                console.log(supplier);
                 setEditModal($("#editSupplier"), supplier.sources.filter(item => item.spID === sourceID)[0], supplier.merchandises.filter(merchandise => merchandise.spID === sourceID));
             });
         } else {
@@ -456,6 +458,8 @@
     }
 
     function appendAccordion(merchandises) {
+        console.log("merchandises");
+        console.log(merchandises);
         var row = `
     <tr class="accordion" style="display:none;background: #f9f9f9">
         <td colspan="6">
