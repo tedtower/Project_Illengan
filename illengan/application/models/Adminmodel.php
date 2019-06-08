@@ -816,7 +816,8 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_suppliermerch(){
-        $query = "SELECT *, CONCAT(spmName,' ',stName,' ',uomAbbreviation,' ','(',stSize,')') as merchandise, CONCAT(stName,' ',uomAbbreviation,' ','(',stSize,')') as stockvariant  from supplier natural join suppliermerchandise natural join stockitems left join uom using (uomID);";
+        $query = "SELECT stID, CONCAT( stName, IF( stSize IS NULL, '', CONCAT(' ', stSize) ) ) AS stName, suppliermerchandise.uomID, uomAbbreviation,uomName, spmID, spmName, spmPrice, spmActualQty, spID, spName FROM ( stockitems RIGHT JOIN( suppliermerchandise LEFT JOIN supplier USING(spID) ) USING(stID) ) LEFT JOIN uom on (suppliermerchandise.uomID = uom.uomID)
+        ";
         return $this->db->query($query)->result_array();
     }
     function get_suppMerchandise($spmID){
@@ -1459,33 +1460,5 @@ class Adminmodel extends CI_Model{
                     slType = 'beginning' AND stID = ?
             ;",array($stID))->result_array();
     }
-//     "SELECT
-//     stID,
-//     CONCAT(
-//         stName,
-//         IF(
-//             stSize IS NULL,
-//             '',
-//             CONCAT(' ', stSize)
-//         )
-//     ) AS stName,
-//     suppliermerchandise.uomID,
-//     uomAbbreviation,
-//     spmID,
-//     spmName,
-//     spmPrice,
-//     spmActualQty,
-//     spID,
-//     spName
-// FROM
-//     (
-//         stockitems
-//     RIGHT JOIN(
-//             suppliermerchandise
-//         LEFT JOIN supplier USING(spID)
-//         ) USING(stID)
-//     )
-// LEFT JOIN uom on (suppliermerchandise.uomID = uom.uomID)";
 }
-
 ?>
