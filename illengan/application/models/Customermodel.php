@@ -148,7 +148,7 @@
                         mID,
                         prPrice,
                         CONCAT(mName,
-                                IF(prName = 'Normal',
+                                IF(prName = 'normal' OR prName = 'Normal',
                                     '',
                                     CONCAT(' - ', prName)),
                                 IF(mTemp IS NULL,
