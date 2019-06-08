@@ -233,7 +233,7 @@ class Adminmodel extends CI_Model{
           for($in = 0; $in < count($addons); $in++){
             if($olprID == $addons[$in]['prID']) {
             $this->db->query($query, array($addons[$in]['aoID'], $olID, $addons[$in]['aoQty'], 
-                  $addons[$in]['aoTotal']));
+            $addons[$in]['aoTotal']));
             }
     }
 
@@ -433,17 +433,7 @@ class Adminmodel extends CI_Model{
             for($i = 0; $i < count($addons); $i++) {
                 if($addons[$i]['del'] === 0 ) {
                     $this->delete_salesAddons($addons[$i]['aoID'], $addons[$i]['olID']);
-                } else if($addons[$i]['oldaoID'] != $addons[$i]['aoID']) {
-                    $this->update_changedAddon($addons[$i]['oldaoID'], $addons[$i]['aoID'], $addons[$i]['olID']);
-                } else if($addons[$i]['prID'] == $prID && $addons[$i]['olID'] != null) {
-                    $aolist = array(
-                        'aoID' => $addons[$i]['aoID'],
-                        'olID' => $addons[$i]['olID'],
-                        'aoQty' => $addons[$i]['aoQty'],
-                        'aoTotal' => $addons[$i]['aoTotal']
-                    );
-                    $this->edit_salesaddons($aolist);
-                } else if($addons[$i]['olID'] == null){
+                } else if($addons[$i]['olID'] === null){
                     $addonsArr = array();
                     $aolist = array(
                         'prID' => $addons[$i]['prID'],
@@ -453,6 +443,16 @@ class Adminmodel extends CI_Model{
                     );
                     array_push($addonsArr, $aolist);
                     $this->add_salesAddons($olID, $prID, $addonsArr);
+                } else if(intval($addons[$i]['oldaoID']) != intval($addons[$i]['aoID'])) {
+                    $this->update_changedAddon($addons[$i]['aoID'], $addons[$i]['oldaoID'], $addons[$i]['olID']);
+                } else if($addons[$i]['prID'] == $prID && $addons[$i]['olID'] != null) {
+                    $aolist = array(
+                        'aoID' => $addons[$i]['aoID'],
+                        'olID' => $addons[$i]['olID'],
+                        'aoQty' => $addons[$i]['aoQty'],
+                        'aoTotal' => $addons[$i]['aoTotal']
+                    );
+                    $this->edit_salesaddons($aolist);
                 } 
             }
     }
@@ -525,13 +525,12 @@ class Adminmodel extends CI_Model{
             return false;
         }
     }
-    function edit_menucategory($ctID,$ctName){
-        $query = "update categories set ctName = ?  where ctID = ? and ctType='menu'";
-        return $this->db->query($query,array($ctName,$ctID));
+
+    function edit_category($ctName, $ctStatus, $ctID){
+        $query = "UPDATE categories SET ctName = ?, ctStatus = ? where ctID = ?";
+        return $this->db->query($query,array($ctName, $ctStatus, $ctID));
     }
-    function edit_stockcategory($ctID,$ctName){
-        $query = "update categories set ctName = ?  where ctID = ? and ctType='inventory'";
-    }
+
     function get_stockDetails($id){
         $query = "SELECT 
             stID, stName, stStatus, stType, ctID
@@ -576,7 +575,6 @@ class Adminmodel extends CI_Model{
         return true;
         // return $bool;
     }
-
 
     //SELECT FUNCTIONS------------------------------------------------------------------
     function get_nextIDConsumption(){
@@ -659,18 +657,22 @@ class Adminmodel extends CI_Model{
         $query = "select mID, prName, prPrice from sizes";
         return $this->db->query($query)->result_array();
     }
+    
     function get_menucategories(){
-        $query = "Select ctID, ctName, ctType, COUNT(mID) as menu_no from categories left join menu using (ctID) where ctType = 'menu' group by ctID order by ctName asc";
+        $query = "Select ctID, ctName, ctType, ctStatus, COUNT(mID) as menu_no from categories left join menu using (ctID) where ctType = 'menu' group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
     }
+
     function get_menumaincategories(){
-        $query = "Select ctID, ctName, ctType, COUNT(mID) as menu_no from categories left join menu using (ctID) where ctType = 'menu' and supcatID is null group by ctID order by ctName asc";
+        $query = "Select ctID, ctName, ctType, ctStatus, COUNT(mID) as menu_no from categories left join menu using (ctID) where ctType = 'menu' and supcatID is null group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
     }
+
     function get_menusubcategories(){
-        $query = "Select ctID, ctName, ctType, COUNT(mID) as menu_no from categories left join menu using (ctID) where ctType = 'menu' and supcatID is not null group by ctID order by ctName asc";
+        $query = "Select ctID, ctName, ctType, ctStatus, COUNT(mID) as menu_no from categories left join menu using (ctID) where ctType = 'menu' and supcatID is not null group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
     }
+
     function get_maincat(){
         $query = "SELECT * from categories where supcatID is null AND ctType = 'menu' group by ctName order by ctName asc";
         return $this->db->query($query)->result_array();
@@ -780,16 +782,16 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_stockCategories(){
-        $query = "Select ctID, ctName, ctType, COUNT(stID) as stockCount from categories left join stockitems using (ctID) where ctType = 'inventory' group by ctID order by ctName asc";
+        $query = "Select ctID, ctName, ctType, ctStatus, COUNT(stID) as stockCount from categories left join stockitems using (ctID) where ctType = 'inventory' group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
     }
     function get_stockMainCategories(){
-        $query = "Select ctID, ctName, ctType, COUNT(stID) as stockCount from categories left join stockitems using (ctID) where ctType = 'inventory' and supcatID is null group by ctID order by ctName asc";
+        $query = "Select ctID, ctName, ctType, ctStatus, COUNT(stID) as stockCount from categories left join stockitems using (ctID) where ctType = 'inventory' and supcatID is null group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
     }
     function get_stockSubcategories(){
         $query = "SELECT 
-            ctID, ctName, ctType, COUNT(stID) AS stockCount
+            ctID, ctName, ctType, ctStatus, COUNT(stID) AS stockCount
         FROM
             categories
                 LEFT JOIN
@@ -814,7 +816,8 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_suppliermerch(){
-        $query = "SELECT *, CONCAT(spmName,' ',stName,' ',uomAbbreviation,' ','(',stSize,')') as merchandise, CONCAT(stName,' ',uomAbbreviation,' ','(',stSize,')') as stockvariant  from supplier natural join suppliermerchandise natural join stockitems left join uom using (uomID);";
+        $query = "SELECT stID, CONCAT( stName, IF( stSize IS NULL, '', CONCAT(' ', stSize) ) ) AS stName, suppliermerchandise.uomID, uomAbbreviation,uomName, spmID, spmName, spmPrice, spmActualQty, spID, spName FROM ( stockitems RIGHT JOIN( suppliermerchandise LEFT JOIN supplier USING(spID) ) USING(stID) ) LEFT JOIN uom on (suppliermerchandise.uomID = uom.uomID)
+        ";
         return $this->db->query($query)->result_array();
     }
     function get_suppMerchandise($spmID){
@@ -866,21 +869,17 @@ class Adminmodel extends CI_Model{
         $query = "Delete from accounts where aID = ?";
         return $this->db->query($query, array($accountId));
     }
+    function delete_category($id){
+        $query = "UPDATE categories set ctStatus = 'archived' where ctID = ?";
+        return $this->db->query($query, array($id));
+    }
     function delete_addon($id){
         $query = "UPDATE addons set aoStatus = 'archived' where aoID = ?"; 
         return $this->db->query($query, array($id));
     }
-    function delete_menucategory($ctID){
-        $query = "delete from categories where ctID = ? and ctType= 'menu'";
-        return $this->db->query($query,array($ctID));
-    }
     function delete_spoilages($ssID, $delRemarks){
         $query ="Delete from stockspoil where ssID = ?";
         return $this->db->query(query, array($ssID));
-    }
-    function delete_stockcategory($ctID){
-        $query = "delete from categories where ctID = ? and ctType= 'inventory'";
-        return $this->db->query($query,array($ctID));
     }
     function delete_stockitem($stID){
         $query = "Delete from stockitems where stID=?;";
@@ -1526,5 +1525,4 @@ class Adminmodel extends CI_Model{
     }
     
 }
-
 ?>

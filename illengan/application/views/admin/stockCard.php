@@ -13,13 +13,15 @@
                     <div class="card" style="background:whitesmoke">
                         <div class="card-body">
                         <div style="width:100%;overflow:auto;">
-                            <span style="float:left;width:25%"><b>Stock Item:</b> <?= $stock['stName'] . " " . $stock['stSize']?></span>
-                            <span style="float:left;width:25%"><b>Beginning Inventory Date:</b> <?= $currentInv['maxDate']?></span>
-                            <span style="float:left;width:25%"><b>Beginning Qty:</b> <?= $currentInv['slQty'] . " " . $stock['uomAbbreviation']?></span>
-                            <div style="width:75%;float:right">
-                            <span style="float:right;margin:0 2%"><b>Storage:</b> <?= $stock['stLocation']?></span>
-                            <span style="float:right;margin:0 2%"><b>Category:</b> <?= $stock['ctName']?></span>
-                            <span style="float:right;margin:0 2%"><b>Status:</b> <?= $stock['stStatus']?></span>
+                            <div style="overflow:auto;">
+                            <span style="float:left;width:40%;"><b>Stock Item:</b> <?= $stock['stName'] . " " . $stock['stSize']?></span>
+                                <span style="float:left;width:35%"><b>Beginning Inventory Date:</b> <?= $currentInv['maxDate']?></span>
+                                <span style="float:left;width:25%"><b>Beginning Qty:</b> <?= $currentInv['slQty'] . " " . $stock['uomAbbreviation']?></span>
+                            </div>
+                            <div style="overflow:auto;">
+                                <span style="float:left;width:40%"><b>Storage:</b> <?= $stock['stLocation']?></span>
+                                <span style="float:left;width:35%"><b>Category:</b> <?= $stock['ctName']?></span>
+                                <span style="float:left;width:25%"><b>Status:</b> <?= $stock['stStatus']?></span>
                             </div>
                         </div>
                         </div>
