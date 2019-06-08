@@ -231,7 +231,7 @@
                     </div>
                     <!--Footer-->
                     <div class="card-footer text-muted">
-                        <button style="width:100%;padding:6%;background:blue;color:white;border:0;border-radius:5px">Payment</button>
+                        <button style="width:100%;padding:6%;background:blue;color:white;border:0;border-radius:5px">Remove Slip</button>
                     </div>
                 </div>
             </div>
