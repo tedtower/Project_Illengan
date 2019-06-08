@@ -59,7 +59,7 @@ $(document).ready(function(){
     $('#addonSelectBtn').on('click', function(event){
         var ao_select = `<!--Select For Addons-->
             <div class="input-group mb-3 delius">
-                <select class="browser-default custom-select w-50 addonSelect" name="addon[]">
+                <select class="browser-default custom-select w-50 addonSelect" name="addon[]" required>
                     <option selected disabled>Choose...</option>
                 </select>
                 <input type="number" min="1" value="1" placeholder="Qty" aria-label="Add-on Quantity"
@@ -69,7 +69,7 @@ $(document).ready(function(){
                     <span class="aoSub mt-2 ml-1"></span>
                     <div class="rem_add mt-2">
                         <!--Delete Button-->
-                        <a href="javascript:void(0)" class="text-danger ml-1 px-2"><i class="fal fa-times"></i></a>
+                        <a href="javascript:void(0)" class="text-danger ml-1 px-2" onclick="$(this).parent().parent().parent().remove();computeSubtotal();"><i class="fal fa-times"></i></a>
                     </div>
                 </div>
             </div>`;
@@ -262,12 +262,7 @@ function setModalContents(item_id){
     }
 }
 function computeSubtotal(){
-    var addon = 0;
-    var addonQty = 0;
-    var aoSub = 0;
-    var addonSubtotal = 0;
-    var mainSubtotal = 0;
-    var prefPrice = 0;
+    var addon = 0,addonQty = 0,aoSub = 0,addonSubtotal = 0,mainSubtotal = 0,prefPrice = 0;
     var quantity = parseInt($("#quantity").val());
     if($('#dc_subtotal').val() != null) {
         mainSubtotal = parseFloat($('#dc_subtotal').val());
@@ -340,6 +335,7 @@ function setOrderlist(ol){
                         <tr>
                             <th scope="col">Menu Name</th>
                             <th scope="col">Quantity</th>
+                            <th scope="col">Unit Price</th>
                             <th scope="col">Total Price</th>
                             <th scope="col">Remarks</th>
                             <th scope="col">Actions</th>
@@ -390,20 +386,23 @@ function setOrderlist(ol){
                         <form type="hidden" name="`+orders[rowid].id+`">
                         <th scope="row">`+orders[rowid].name+`</th>
                         <td>`+orders[rowid].qty+`</td>
+                        <td>`+orders[rowid].unit_price+`</td>
                         <td>`+orders[rowid].subtotal+`</td>
                         <td>`+orders[rowid].remarks+`</td>
                         <td>
                             <button type="button" class="btn btn-mdb-color btn-sm m-0 p-2 ediOrder" data-toggle="modal" data-target="#editModal" data-name="`+orders[rowid].name+`" data-id="`+rowid+`">Edit</button>
                             <button type="button" class="btn btn-danger btn-sm m-0 p-2 remOrder" data-toggle="modal" data-target="#deleteModal" data-name="`+orders[rowid].name+`" data-id="`+rowid+`">Remove</button>
                         </td>
-                    </tr>
-                    <tr id="values">
-                    <td></td>
-                    <td id="qty">`+quantity+`</td>
-                    <td colspan="2" id="name">`+name+`</td>
-                    <td id="subtotal">`+subtotal+`</td>
                     </tr>`;
         $('#orderlists').append(row1);
+        if(!(quantity === '')){
+            $('#orderlists').append(`<tr id="values" class="text-center">
+                            <td id="qty">`+quantity+`</td>
+                            <td colspan="3" id="name">`+name+`</td>
+                            <td id="subtotal">`+subtotal+`</td>
+                            <td></td>
+                        </tr>`)
+        }
         total_qty += orders[rowid].qty;
         total += orders[rowid].subtotal;
         }
@@ -437,8 +436,6 @@ function removeOrder(){
     var rowID = $('#remID').val();
     var rowName = $('#remName').text();
     orders.splice(rowID,1);
-    console.log(rowID);
-    console.log(orders);
     $.ajax({
         method: "post",
         url: "<?= site_url('customer/menu/removeOrder')?>",
@@ -446,7 +443,6 @@ function removeOrder(){
         success: function(data) {
             $('#remID').val('');
             $('#remName').text('');
-            console.log('New:'+data);
             setOrderlist(orders);
         },
         error: function(response,setting, errorThrown) {
@@ -455,10 +451,128 @@ function removeOrder(){
         }
     });
 }
+$('#edit_orderlist').click(function(){
+    var subtotal = 0;
+    var addonIds = [],addonQtys = [], addonSubtotals = [];
+    var rowID = parseInt($('#edit_row').text());
+    var epqty = parseFloat($('input[name="edit_qty"]').val());
+    if($('select[name="edit_addons[]"]').val()){
+        for(var ai=0; ai < $('select[name="edit_addons[]"]').length; ai++){
+            var aoi = parseFloat($("select[name='edit_addons[]']").eq(ai).find("option:selected").val()),
+                aoq = parseInt($("input[name='edit_aoqtys[]']").eq(ai).val()),
+                aos = aoq * parseFloat($("select[name='edit_addons[]']").eq(ai).find("option:selected").attr("data-price")); 
+            addonIds.push(aoi); addonQtys.push(aoq); addonSubtotals.push(aos);
+        }
+    }
+    if($('input[name="only_pref"]').val()){
+        var eprid = $('input[name="only_pref"]').val();
+        var epprice = $('input[name="only_pref"]').data('price');
+    }else{
+        var eprid = $('select[name="edit_pref"]').val();
+        var epprice = $('select[name="edit_pref"] option:selected').data('price');
+    }
+    var remark = $('textarea#edit_remarks').val();
+    $.each(addonSubtotals,function() {subtotal += parseInt(this, 10);});
+    subtotal = (epqty * epprice) + subtotal;
+    $('#editModal').modal('hide');
+    $.ajax({
+        method: "post",
+        url: "<?php echo site_url('customer/menu/editOrder')?>",
+        data: {
+            rowID: rowID,
+            preference: eprid,
+            subtotal: subtotal,
+            quantity: epqty,
+            remarks: remark,
+            addons: JSON.stringify({                
+                "addonIds": addonIds,
+                "addonQtys": addonQtys,
+                "addonSubtotals" : addonSubtotals
+            })            
+        },
+        success: function(data) {
+            orders = JSON.parse(data);
+            setOrderlist(orders);
+        },
+        error: function(response,setting, errorThrown) {
+            console.log(response.responseText);
+            console.log(errorThrown);
+        }
+    });
+});
 function editOrder(id,name){
+    $('div#edit_preferencable').empty();
+    var edpref  =   `<label>Preference: &nbsp;</label>
+                    <select name="edit_pref" id="edit_pref" class="form-control"></select>`;
+    $('#edit_row').text(id);
     $('#edit_name').text(name);
     $("input#quantity[name='edit_qty']").val(orders[id].qty);
-    console.log();
+    var edit_pref = jQuery.grep(pref,function(obj){
+        return obj.mID == orders[id].menu_id;
+    });
+    edit_addon = jQuery.grep(addon,function(obj){
+        return obj.mID == orders[id].menu_id;
+    });
+    if(edit_pref.length > 1){
+        $('div#edit_preferencable').append(edpref);
+        appendExistingPreference(edit_pref,id);
+    } else if(edit_pref.length == 1){
+        $('div#edit_preferencable').append('<input type="text" name="only_pref" data-price="'+edit_pref[0].prPrice+'" value="'+orders[id].id+'" hidden>');
+    } 
+    if(edit_addon.length > 0) {
+        $('div#edaddbutt').show();
+        appendExistingAddons(edit_addon,orders[id].addons);
+    } else {
+        $('div#edaddbutt').hide();
+        $('#edit_addonable').empty();
+    }
+    $('#edit_remarks').val(orders[id].remarks);
 }
-
+$('#addOnButt').click(function(){
+    appendEditAddonSelect();
+    appendNewAddonOption(edit_addon);
+});
+function appendExistingPreference(ep,pid){
+    $('#edit_pref').empty();
+    for(var m=0; m < ep.length; m++){
+        if(orders[pid].id == ep[m].prID){
+            $('#edit_pref').append('<option data-price="'+ep[m].prPrice+'" data-name="'+ep[m].prName+'" value="'+ep[m].prID+'" selected>'+ep[m].preference+'</option>');
+        } else {
+            $('#edit_pref').append('<option data-price="'+ep[m].prPrice+'" data-name="'+ep[m].prName+'" value="'+ep[m].prID+'">'+ep[m].preference+'</option>');
+        }
+    }
+}
+function appendExistingAddons(ea,addons){
+    $('#edit_addonable').empty();
+    if(addons != '') {
+        for(var u=0; u < addons.addonIds.length; u++){
+            appendEditAddonSelect();
+            appendEditAddonOption(ea,addons,u);         
+        }
+    }
+}
+function appendEditAddonSelect(){
+    $('#edit_addonable').append(`
+        <div class="input-group mb-2 delius d-flex align-items-center">
+            <select class="browser-default custom-select edit_addons" name="edit_addons[]" required></select>
+            <input type="number" min="1" value="1" name="edit_aoqtys[]" placeholder="Quantity..." aria-label="Add-on Quantity" class="form-control text-center">
+            <a href="javascript:void(0)" class="text-danger ml-1 px-2" onclick="$(this).parent().remove();"><i class="fal fa-times"></i></a>
+        </div>`);
+}
+function appendEditAddonOption(ea,addons,u){
+    for(var o=0; o < ea.length; o++){
+        if(addons.addonIds[u] == ea[o].aoID){
+            $('select[name="edit_addons[]"]').eq($("#edit_addonable").children().length-1).append('<option class="edit_addons" data-price="'+ea[o].aoPrice+'" data-name="'+ea[o].aoName+'" value="'+ea[o].aoID+'" selected>'+ea[o].aoName+' - '+ea[o].aoPrice+'php</option>');
+            $('input[name="edit_aoqtys[]"]').eq($("#edit_addonable").children().length-1).val(addons.addonQtys[u]);
+        } else {
+            $('select[name="edit_addons[]"]').eq($("#edit_addonable").children().length-1).append('<option class="edit_addons" data-price="'+ea[o].aoPrice+'" data-name="'+ea[o].aoName+'" value="'+ea[o].aoID+'">'+ea[o].aoName+' - '+ea[o].aoPrice+'php</option>');
+        }
+    }
+}
+function appendNewAddonOption(ea){
+    $('select[name="edit_addons[]"]').eq($("#edit_addonable").children().length-1).append('<option value="" disabled selected>Choose...</option>');
+    for(var f=0; f < ea.length; f++){
+        $('select[name="edit_addons[]"]').eq($("#edit_addonable").children().length-1).append('<option class="edit_addons" data-price="'+ea[f].aoPrice+'" data-name="'+ea[f].aoName+'" value="'+ea[f].aoID+'">'+ea[f].aoName+' - '+ea[f].aoPrice+'php</option>');
+    }
+}
 </script>
