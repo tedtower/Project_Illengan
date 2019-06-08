@@ -13,11 +13,15 @@
                     <div class="card" style="background:whitesmoke">
                         <div class="card-body">
                         <div style="width:100%;overflow:auto;">
-                            <span style="float:left;width:40%"><b>Stock Item:</b> Milk 500 ml</span>
-                            <div style="width:60%;float:right">
-                            <span style="float:right;margin:0 2%"><b>Storage:</b> Stock Room</span>
-                            <span style="float:right;margin:0 2%"><b>Category:</b> Condiments</span>
-                            <span style="float:right;margin:0 2%"><b>Status:</b> Available</span>
+                            <div style="overflow:auto;">
+                            <span style="float:left;width:40%;"><b>Stock Item:</b> <?= $stock['stName'] . " " . $stock['stSize']?></span>
+                                <span style="float:left;width:35%"><b>Beginning Inventory Date:</b> <?= $currentInv['maxDate']?></span>
+                                <span style="float:left;width:25%"><b>Beginning Qty:</b> <?= $currentInv['slQty'] . " " . $stock['uomAbbreviation']?></span>
+                            </div>
+                            <div style="overflow:auto;">
+                                <span style="float:left;width:40%"><b>Storage:</b> <?= $stock['stLocation']?></span>
+                                <span style="float:left;width:35%"><b>Category:</b> <?= $stock['ctName']?></span>
+                                <span style="float:left;width:25%"><b>Status:</b> <?= $stock['stStatus']?></span>
                             </div>
                         </div>
                         </div>
@@ -28,30 +32,44 @@
                             <tr>
                                 <th style="width:2%"></th>
                                 <th><b class="pull-left">Transaction</b></th>
+                                <th><b class="pull-left">Receipt No.</b></th>
                                 <th><b class="pull-left">Date</b></th>
                                 <th><b class="pull-left">Quantity</b></th>
-                                <th><b cla   ss="pull-left">Remaining Qty</b></th>
+                                <th><b class="pull-left">Remaining Qty</b></th>
                                 <th><b class="pull-left">Remarks</b></th>
                             </tr>
                         </thead>
                         <tbody>
+                        <?php if(!empty($logs)){
+                            $bQty = $currentInv['slQty'];
+                            $icon;
+                            foreach($logs as $log){
+                                switch($log['slType']){
+                                    case 'restock':
+                                        $bQty = $bQty + $log['slQty'];
+                                        $icon = "plus";
+                                        break;
+                                    case 'beginning':
+                                        $icon = "plus";
+                                        break;
+                                    default:
+                                        $bQty = $bQty - $log['slQty'];
+                                        $icon = "negative";
+                                        break;
+                                }
+                        ?>
                             <tr>
-                                <td><img src="/assets/media/admin/negative.png" style="height:18px;width:18px"/></td>
-                                <td>Cosumed</td>
-                                <td>May 28, 2019</td>
-                                <td>10</td>
-                                <td>15</td>
-                                <td></td>
+                                <td><img src="/assets/media/admin/<?= $icon?>.png" style="height:18px;width:18px"/></td>
+                                <td><?= ucwords($log['slType'])?></td>
+                                <td><?= $log['tNum'] == NULL ? "N/A" : $log['tNum']?></td>
+                                <td><?= $log['slDateTime']?></td>
+                                <td><?= $log['slQty']?></td>
+                                <td><?= $bQty?></td>
+                                <td><?= $log['slRemarks']?></td>
                             </tr>
-
-                            <tr>
-                                <td><img src="/assets/media/admin/plus.png" style="height:18px;width: 18px"/></td>
-                                <td>Restock</td>
-                                <td>May 28, 2019</td>
-                                <td>10</td>
-                                <td>25</td>
-                                <td></td>
-                            </tr>
+                        <?php
+                            }
+                        }?>
                         </tbody>
                     </table>
                     </div>

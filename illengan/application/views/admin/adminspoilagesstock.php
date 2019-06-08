@@ -306,7 +306,7 @@
                 $("#editSpoil").find("input[name='ssID']").val($(this).closest("tr").attr(
 					"data-ssID"));
 				$("#editSpoil").find("input[name='stID']").val($(this).closest("tr").attr(
-					"data-stID"));
+					"data-stID")); 
 				$("#editSpoil").find("input[name='curSsQty']").val($(this).closest("tr").attr(
 					"data-curSsQty"));
 				$("#editSpoil").find("input[name='stQty']").val($(this).closest("tr").attr(

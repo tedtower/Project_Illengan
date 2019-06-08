@@ -14,7 +14,7 @@
                     <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addEditStock" data-original-title
                         style="margin:0;color:blue" id="addBtn">Add Stock Item</a>
                     <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#restock" data-original-title
-                        style="margin:0;color:blue" id="addBtn">Restock</a>
+                        style="margin:0;color:blue" id="rBtn">Restock</a>
                     <br><br>
                     <table id="stockTable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%" >
                         <thead class="thead-dark">
@@ -43,7 +43,7 @@
                                 <td>
                                     <button class="editBtn btn btn-default btn-sm" data-toggle="modal" data-target="#addEditStock">Edit</button>
                                     <button class="btn btn-warning btn-sm">Archived</button>
-                                    <a href="<?php echo base_url('admin/inventory/stockcard')?>" class="btn btn-success btn-sm">Stock Card</a>
+                                    <a href="<?= site_url('admin/inventory/stockcard/'.$stock['stID'])?>" class="btn btn-success btn-sm">Stock Card</a>
                                 </td>
                                 <?php } ?>
                             </tr>
@@ -66,33 +66,21 @@
                                     <div class="modal-body">
                                         <!--Add Stock Item-->
                                         <a class="btn btn-primary btn-sm" style="color:blue;margin:0"
-                                            data-toggle="modal" data-target="#brochure">Add Item</a>
+                                            data-toggle="modal" data-target="#stockBrochure">Add Item</a>
                                         <!--Button to add row in the table-->
                                         <br><br>
-                                        <table class="varianceTable table table-sm table-borderless">
+                                        <table class="varianceTable table table-sm table-borderless inputTable">
                                             <!--Table containing the different input fields in adding trans items -->
                                             <thead style="border-bottom:2px solid #cecece">
                                                 <tr class="text-center">
                                                     <th><b>Stock Name</b></th>
-                                                    <th><b>Unit</b></th>
                                                     <th><b>Current Qty</b></th>
+                                                    <th><b>Unit</b></th>
                                                     <th><b>Restock Qty</b></th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td><input type="text" name="stockName[]"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><input type="text" name="stockUnit[]"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><input type="number" name="currentQty[]"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><input type="number" name="restockQty[]"
-                                                            class="form-control form-control-sm"></td>
-                                                    <td><img class="exitBtn" src="/assets/media/admin/error.png"
-                                                        style="width:20px;height:20px"></td>
-                                                </tr>
+                                            <tbody class="inputContainerParent">
                                             </tbody>
                                         </table>
                                         <div class="modal-footer">
@@ -105,10 +93,10 @@
                             </div>
                         </div>
                     </div>
-                    <!--End of Modal "Retock item"-->
+                    <!--End of Modal "Restock item"-->
 
                     <!--Start of Brochure Modal"-->
-                    <div class="modal fade bd-example-modal" id="brochure" tabindex="-1" role="dialog"
+                    <div class="modal fade bd-example-modal" id="stockBrochure" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalLabel" aria-hidden="true" style="background:rgba(0, 0, 0, 0.3)">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -118,15 +106,10 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form id="formAdd" action="<?= site_url('admin/transactions/add')?>" method="post"
+                                <form id="formAdd" method="post"
                                     accept-charset="utf-8">
                                     <div class="modal-body">
-                                        <div style="margin:1% 3%">
-                                            <!--checkboxes-->
-                                            <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample
-                                                data 1</label>
-                                            <label style="width:96%"><input type="checkbox" class="mr-2" value="">Sample
-                                                data 2</label>
+                                        <div class="inputContainerParent" style="margin:1% 3%">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -328,15 +311,88 @@ var lastIndex = 0;
 var crudUrl = '<?= site_url("admin/inventory/addEdit")?>';
 var enumValsUrl = '<?= site_url('admin/inventory/getEnumVals')?>';
 var getStockUrl = '<?= site_url('admin/inventory/getStockItem')?>';
+var restockUrl = '<?= site_url('admin/inventory/restock')?>';
+var getStockBrochure = '<?= site_url('admin/inventory/getStockItems')?>';
 var loginUrl = '<?= site_url('login')?>';
 $(document).ready(function() {
     $("#addBtn").on('click', function() {
         $("#addEditStock form")[0].reset();
         getEnumVals(enumValsUrl);
+        $("#addEditStock").find("input[name='stockQty']").removeAttr("readonly");
+    });
+    $("#rBtn").on("click",function(){
+        $.ajax({
+            method: "POST",
+            url: getStockBrochure,
+            dataType: "JSON",
+            success: function(data){
+                var selectItems = [];
+                $("#restock").find(".inputContainerParent").empty();
+                $("#stockBrochure").find(".inputContainerParent").empty();
+                $("#stockBrochure").find(".inputContainerParent").append(data.map(item => {
+                    return `<label style="width:96%">
+                <input name="stock" type="checkbox" class="mr-2" value="${item.stID}">${item.stName} - ${item.stQty} ${item.uomAbbreviation}</label>`;
+                }).join(''));
+                $("#stockBrochure form").on('submit',function(event){
+                    event.preventDefault();
+                    $(this).find("input[name='stock']:checked").each(function(index,element){
+                        selectItems.push(element.value);
+                    });
+                    $("#stockBrochure").modal('hide');
+                    $(this)[0].reset();
+                    $("#restock").find(".inputContainerParent").append(data.filter(stock => selectItems.includes(stock.stID)).map(stock=>{
+                        return `
+                            <tr data-id="${stock.stID}" class="inputContainer">
+                                <td>${stock.stName}</td>
+                                <td>${stock.stQty}</td>
+                                <td>${stock.uomAbbreviation}</td>
+                                <td><input type="number" name="restockQty[]"
+                                        class="form-control form-control-sm"></td>
+                                <td><img class="exitBtn" src="/assets/media/admin/error.png"
+                                    style="width:20px;height:20px"></td>
+                            </tr>`;
+                    }).join(''));
+                });
+            },
+            error: function(response, setting, error) {
+                console.log(response.responseText);
+                console.log(error);
+            }
+        });
+    });
+    $("#restock form").on("submit",function(event){
+        event.preventDefault();
+        var stockQtys = [];
+        for(var x = 0 ;x<$(this).find(".inputContainer").length;x++){
+            console.log($(this).find(".inputContainer").eq(x));
+            stockQtys.push({
+                id: $(this).find(".inputContainer").eq(x).attr("data-id"),
+                qty: $(this).find(".inputContainer").eq(x).find("input[name='restockQty[]']").val()
+            });
+        }
+        $.ajax({
+            method: "POST",
+            url: restockUrl,
+            data: {
+                rsQtys: JSON.stringify(stockQtys)
+            },
+            dataType: "JSON",
+            beforeSend: function(){
+                console.log(stockQtys);
+            },
+            success: function(data){
+                if(data.sessErr){
+                    location.replace(loginUrl);
+                }else{
+                    console.log(data);
+                    location.reload();
+                }
+            }
+        });
     });
     $(".editBtn").on("click", function() {
-        var id = $(this).closest("tr").attr("data-id");
         getEnumVals(enumValsUrl);
+        var id = $(this).closest("tr").attr("data-id");
         populateModalForm(id, getStockUrl);
     });
     // setTableData();
@@ -373,13 +429,12 @@ $(document).ready(function() {
                 console.log("Name: ", name, " Type: ", type, " Category: ", category, " Status: ", status, " Storage: ", storage, " Min: ", min, " QTY: ", qty, " UOM: ", uom, " Size: ", size, "");
             },
             success: function(data) {
-                 if(data.sessErr){
-                     window.location.replace(loginUrl);
-                 }else if(data.dbErr){
-                     alert("Database Error");
-                 }else{
-                     console.log(data);
-                 }
+                if(data.sessErr){
+                    location.replace(loginUrl);
+                }else{
+                    console.log(data);
+                    location.reload();
+                }
             },
             error: function(response, setting, error) {
                 console.log(response.responseText);
@@ -457,6 +512,7 @@ function populateModalForm(id, url){
             $("#addEditStock").find("select[name='stockStorage']").find(`option[value="${data.stock.stLocation.toLowerCase()}"]`).attr("selected","selected");
             $("#addEditStock").find("input[name='stockMinQty']").val(data.stock.stMin);
             $("#addEditStock").find("input[name='stockQty']").val(data.stock.stQty);
+            $("#addEditStock").find("input[name='stockQty']").attr("readonly","readonly");
             $("#addEditStock").find("select[name='stockUOM']").find(`option[value=${data.stock.uomID}]`).attr("selected","selected");
             if(data.uomVariants.findIndex(variant => variant.uomAbbreviation === matches[matches.length-1]) !== -1){
                 $("#addEditStock").find("select[name='stockSizeUOM']").find(`option[value="${matches.pop().toLowerCase()}"]`).attr("selected","selected");

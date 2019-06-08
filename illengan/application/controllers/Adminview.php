@@ -59,12 +59,15 @@ class Adminview extends CI_Controller{
             redirect('login');
         }
     }
-    function viewstockcard(){
+    function viewStockCard($stID){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            $data['title'] = "Admin Stock Card";
-            $this->load->view('admin/templates/head', $data);
+            $head['title'] = "Admin - Stock Card";
+            $this->load->view('admin/templates/head', $head);
             $this->load->view('admin/templates/sideNav');
-            $this->load->view('admin/stockcard');
+            $data['logs'] = $this->adminmodel->get_stockLog($stID);
+            $data['stock'] = $this->adminmodel->get_stockItem($stID)[0];
+            $data['currentInv'] = $this->adminmodel->get_invPeriodStart($stID)[0];
+            $this->load->view('admin/stockcard',$data);
         }else{
             redirect('login');
         }
@@ -78,7 +81,9 @@ class Adminview extends CI_Controller{
 
             $data['supplier'] = array(
                 'sources' => $this->adminmodel->get_supplier(),
-                'merchandises' => $this->adminmodel->get_suppliermerch()
+                'merchandises' => $this->adminmodel->get_suppliermerch(),
+                'stocks' => $this->adminmodel->get_stocks(),
+                'uom' => $this->adminmodel->get_uom()
             );
             $this->load->view('admin/adminSources', $data);
             // $this->load->view('admin/templates/scripts');
@@ -636,6 +641,43 @@ function viewSpoilagesStock(){
         }
     }
 
+    function getStockItems(){
+        if($this->checkIfLoggedIn()){
+            echo json_encode($this->adminmodel->get_stocks());
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
+
+    function getPOs(){
+        if($this->checkIfLoggedIn()){
+            echo json_encode($this->adminmodel->get_stocks());
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
+    function getDRs(){
+        if($this->checkIfLoggedIn()){
+            echo json_encode($this->adminmodel->get_stocks());
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
+    function getSPMs(){
+        if($this->checkIfLoggedIn()){
+            echo json_encode($this->adminmodel->get_stocks());
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
 }
 
 ?>

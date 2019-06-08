@@ -1,4 +1,5 @@
 <!--End Side Bar-->
+<body style="background:white">
 <div class="content">
     <div class="container-fluid">
         <br>
@@ -12,12 +13,11 @@
                     <div class="container-fluid">
                         <!--Table-->
                         <div class="card-content">
-                            <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#newSupplier" id="addBtn" data-original-title style="margin:0;">Add New Source</a><br>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newSupplier" id="addBtn" data-original-title style="margin:0;">Add New Source</button><br>
 
                             <br>
                             <table id="suppliertable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                                <thead class="thead-light">
-                                    <th style="width:3%"></th>
+                                <thead class="thead-dark">
                                     <th><b class="pull-left">Name</b></th>
                                     <th><b class="pull-left">Number</b></th>
                                     <th><b class="pull-left">Email</b></th>
@@ -99,11 +99,12 @@
                                                     <!--Table containing the different input fields in adding trans items -->
                                                     <thead class="thead-light">
                                                         <tr>
-                                                            <th>Item Name</th>
-                                                            <th style="width:15%">Unit</th>
-                                                            <th style="width:15%">Price</th>
-                                                            <th style="width:35%">Variance</th>
-                                                            <th style="width:4%"></th>
+                                                            <th width="26%">Item Name</th>
+                                                            <th width="20%">Unit</th>
+                                                            <th width="13%">Actual Qty</th>
+                                                            <th width="13%">Price</th>
+                                                            <th width="26%">Variance</th>
+                                                            <th width="2%"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -190,11 +191,12 @@
                                                 <!--Table containing the different input fields in adding trans items -->
                                                 <thead class="thead-light">
                                                     <tr>
-                                                        <th>Item Name</th>
-                                                        <th style="width:15%">Unit</th>
-                                                        <th style="width:15%">Price</th>
-                                                        <th style="width:35%">Variance</th>
-                                                        <th style="width:4%"></th>
+                                                        <th width="26%">Item Name</th>
+                                                        <th width="20%">Unit</th>
+                                                        <th width="13%">Actual Qty</th>
+                                                        <th width="13%">Price</th>
+                                                        <th width="26%">Variance</th>
+                                                        <th width="2%"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -265,14 +267,23 @@
             var row = `
         <tr data-id="">
             <td><input type="text" name="merchName[]" class="form-control form-control-sm" required></td>
-            <td><input type="text" name="merchUnit[]" class="form-control form-control-sm"></td>
+            <td>
+                <select class="form-control" name="merchUnit[]" required>
+                    <option value="">Choose</option>
+                        ${supplier.uom.map(uom => {
+                            return `
+                            <option value="${uom.uomID}">${uom.uomName} (${uom.uomAbbreviation})</option>`
+                        }).join('')}
+                </select>   
+            </td>
+            <td><input type="number" name="merchActualQty[]" class="form-control form-control-sm" required></td>
             <td><input type="number" name="merchPrice[]" class="form-control form-control-sm" required></td>
             <td>
                 <select class="form-control" name="variance[]" required>
                 <option value="">Choose</option>
-                    ${supplier.stockvariances.map(variance => {
+                    ${supplier.stocks.map(stock => {
                         return `
-                        <option value="${variance.vID}">${variance.vName}</option>`
+                        <option value="${stock.stID}">${stock.stName}</option>`
                     }).join('')}
                 </select>
             </td>
@@ -296,9 +307,10 @@
             for (var index = 0; index < $(this).find(".merchandisetable > tbody").children().length; index++) {
                 supplierMerchandise.push({
                     merchName: $(this).find("input[name='merchName[]']").eq(index).val(),
-                    merchUnit: $(this).find("input[name='merchUnit[]']").eq(index).val(),
+                    merchUnit: $(this).find("select[name='merchUnit[]']").eq(index).val(),
+                    merchActualQty: $(this).find("input[name='merchActualQty[]']").eq(index).val(),
                     merchPrice: $(this).find("input[name='merchPrice[]']").eq(index).val(),
-                    varID: $(this).find("select[name='variance[]']").eq(index).val()
+                    stID: parseInt($(this).find("select[name='variance[]']").eq(index).val())
                 });
             }
             $.ajax({
@@ -323,6 +335,7 @@
                     // setTableData();
                 },
                 error: function(response, setting, error) {
+                    console.log(response.responseText);
                     console.log(error);
                 },
                 complete: function() {
@@ -346,9 +359,10 @@
                 supplierMerchandise.push({
                     spmID: isNaN(parseInt(row.attr('data-id'))) ? (null) : parseInt(row.attr('data-id')),
                     merchName: row.find("input[name='merchName[]']").val(),
-                    merchUnit: row.find("input[name='merchUnit[]']").val(),
+                    merchUnit: row.find("select[name='merchUnit[]']").val(),
+                    merchActualQty: row.find("input[name='merchActualQty[]']").val(),
                     merchPrice: parseFloat(row.find("input[name='merchPrice[]']").val()),
-                    varID: parseInt(row.find("select[name='variance[]']").val())
+                    stID: parseInt($(this).find("select[name='variance[]']").eq(index).val())
                 });
             }
 
@@ -421,18 +435,16 @@
         var nullVal = false;
         var row = `${source.spID == null ? nullVal = true : `
     <tr data-id="${source.spID}">
-    <td><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png"
-                style="height:15px;width:15px" /></td>
-        <td>${source.spName}</td>
+        <td><a href="javascript:void(0)" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${source.spName}</td>
         <td>${source.spContactNum}</td>
-        <td>${source.spEmail}</td>
-        <td>${source.spAddress}</td>
+        <td>${source.spEmail == null ? source.spEmail = "N/A" : source.spEmail}</td>
+        <td>${source.spAddress == null ? source.spAddress = "N/A" : source.spAddress}</td>
         <td>${source.spStatus}</td>
         <td>
-            <button class="editBtn btn btn-primary btn-sm" data-toggle="modal"
+            <button class="editBtn btn btn-secondary btn-sm" data-toggle="modal"
                 data-target="#editSupplier">Edit</button>
-            <button class="deleteBtn btn btn-danger btn-sm" data-toggle="modal"
-                data-target="#deleteStock">Delete</button>
+            <button class="deleteBtn btn btn-warning btn-sm" data-toggle="modal"
+                data-target="#deleteStock">Archive</button>
         </td>
     </tr>`}`;
         if (nullVal) {
@@ -445,8 +457,8 @@
 
     function appendAccordion(merchandises) {
         var row = `
-    <tr class="accordion" style="display:none">
-        <td colspan="7">
+    <tr class="accordion" style="display:none;background: #f9f9f9">
+        <td colspan="6">
         <div class="suppliermerch" style="margin:1% 5%">
                 ${merchandises.length === 0 ? "No merchandise products are set for this supplier." : 
                 `<span>Merchandise Items</span>
@@ -455,6 +467,7 @@
                             <tr>
                             <th scope="col">Item Name</th>
                             <th scope="col">Unit</th>
+                            <th scope="col">Actual Qty</th>
                             <th scope="col">Price</th>
                             </tr>
                         </thead>
@@ -462,8 +475,9 @@
                     ${merchandises.map(merchandise => {
                         return `
                         <tr>
-                        <td>${merchandise.merchandise}</td>
-                        <td>${merchandise.spmUnit}</td>
+                        <td>${merchandise.spmName}</td>
+                        <td>${merchandise.uomName}</td>
+                        <td>${merchandise.spmActualQty}</td>
                         <td>${merchandise.spmPrice}</td>
                         </tr> 
                         `;
@@ -489,21 +503,38 @@
         merchandises.forEach(merchandise => {
             modal.find(".merchandisetable > tbody").append(`
         <tr data-id="${merchandise.spmID}">
-            <td><input type="text" name="merchName[]" value="${merchandise.spmDesc}" class="form-control form-control-sm" required></td>
-            <td><input type="text" name="merchUnit[]" value="${merchandise.spmUnit}" class="form-control form-control-sm"></td>
+            <td><input type="text" name="merchName[]" value="${merchandise.spmName}" class="form-control form-control-sm" required></td>
+            <td>
+                <select class="form-control" name="merchUnit[]" required>
+                    <option value="">Choose</option>
+                    ${supplier.uom.map(uom => {
+                        return `
+                    <option value="${uom.uomID}">${uom.uomName} (${uom.uomAbbreviation})</option>`
+                    }).join('')}
+                </select>
+            </td>
+            <td><input type="number" name="merchActualQty[]" value="${merchandise.spmActualQty}" class="form-control form-control-sm" required></td>
             <td><input type="number" name="merchPrice[]" value="${merchandise.spmPrice}" class="form-control form-control-sm" required></td>
             <td>
             <select class="form-control" name="variance[]" required>
-                ${supplier.stockvariances.map(variance => {
+                ${supplier.stocks.map(stock => {
                         return `
-                        <option value="${variance.vID}">${variance.vName}</option>`
+                        <option value="${stock.stID}">${stock.stName}</option>`
                     }).join('')}
             </select>
             </td>
             <td><img class="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
         </tr>
         `);
-            modal.find("select[name='variance[]']").last().find(`option[value='${merchandise.vID}']`).attr("selected", "selected");
+            modal.find(".exitBtn").last().on('click', function() {
+            $(this).closest("tr").remove();
+            });
+            modal.find("select[name='variance[]']").last().find(`option[value='${merchandise.stID}']`).attr("selected", "selected");
+            modal.find("select[name='merchUnit[]']").last().find(`option[value='${merchandise.uomID}']`).attr("selected", "selected");
         });
+
     }
+
+
 </script>
+</body>

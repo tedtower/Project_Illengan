@@ -114,10 +114,8 @@
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Add Purchases/Deliveries
-                                                </h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
+                                                <h5 class="modal-title" id="exampleModalLabel">Add Transactions</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -189,17 +187,18 @@
 
                                                     <!--Transaction Items-->
                                                     <a id="addItemBtn" class="btn btn-primary btn-sm" data-original-title
-                                                        style="margin:0;color:white;font-weight:600;background:#0073e6">Add
-                                                        Items</a>
+                                                        style="margin:0;color:white;font-weight:600;background:#0073e6">Add Unknown Item</a>
                                                     <!--Transaction PO Items-->
-                                                    <a class="btn btn-primary btn-sm" data-toggle="modal"
-                                                        data-target="#brochure"
-                                                        style="color:white;font-weight:600;background:#0073e6">Add PO
-                                                        Items</a>
+                                                    <a id="addPOBtn" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                        data-target="#transactionBrochure"
+                                                        style="color:white;font-weight:600;background:#0073e6">Add PO Items</a>
+                                                    <a id="addDRBtn" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                        data-target="#transactionBrochure"
+                                                        style="color:white;font-weight:600;background:#0073e6">Add DR Items</a>
                                                     <br><br>
 
                                                     <!--div containing the different input fields in adding trans items -->
-                                                    <div id="inputGroups1">
+                                                    <div class="inputContainerParent">
                                                     </div>
                                                     <span>Total: &#8369;<span class="total">0</span></span>
                                                     <!--Total of the trans items-->
@@ -218,7 +217,7 @@
                                 <!--End of Modal "Add Transaction"-->
 
                                 <!--Start of Brochure Modal"-->
-                                <div class="modal fade bd-example-modal-lg" id="brochure" tabindex="-1" role="dialog"
+                                <div class="modal fade bd-example-modal-lg" id="transactionBrochure" tabindex="-1" role="dialog"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true"
                                     style="background:rgba(0, 0, 0, 0.3)">
                                     <div class="modal-dialog modal-lg" role="document">
@@ -232,6 +231,10 @@
                                             </div>
                                             <form>
                                                 <div class="modal-body">
+                                                    <div>
+                                                        <label><input type="checkbox" name="tType" value="po"/>Purchase Order</label>
+                                                        <label><input type="checkbox" name="tType" value="dr"/>Delivery Receipt</label>
+                                                    </div>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text "
@@ -247,6 +250,7 @@
                                                         <thead class="thead-light">
                                                             <tr>
                                                                 <th style="width:2%"></th>
+                                                                <th>Receipt</th>
                                                                 <th>Item</th>
                                                                 <th>Unit</th>
                                                                 <th>Qty</th>
@@ -255,9 +259,10 @@
                                                                 <th>Status</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td><input type="checkbox"></td>
+                                                        <tbody class="inputContainerParent">
+                                                            <tr class="inputContainer">
+                                                                <td><input type="checkbox" name="tiID[]" value="" data-tID=""></td>
+                                                                <td>12345</td>
                                                                 <td>Nestle Milk 500 ml</td>
                                                                 <td>cn</td>
                                                                 <td>12</td>
@@ -328,8 +333,8 @@
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLongTitle">Delete
-                                                    Purchases/Deliveries
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Delete/Archive
+                                                    Transaction
                                                 </h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
@@ -339,7 +344,7 @@
                                             <form id="confirmDelete">
                                                 <div class="modal-body">
                                                     <h6 id="deleteTableCode"></h6>
-                                                    <p>Are you sure you want to delete this item?</p>
+                                                    <p>Are you sure you want to delete/archive this item?</p>
                                                     <input type="text" name="" hidden="hidden">
                                                     <div>
                                                         Remarks:<input type="text" name="deleteRemarks"
@@ -371,7 +376,48 @@
     var crudUrl = '<?= site_url('admin/transactions/add')?>';
     var getTransUrl = '<?= site_url('admin/transactions/getTransaction')?>';
     var loginUrl = '<?= site_url('login')?>';
+    var getPOs = '<?= site_url('admin/transactions/getPOs')?>';
+    var getDRs = '<?= site_url('admin/transactions/getDRs')?>';
+    var getSPMs = '<?= site_url('admin/transactions/getSPMs')?>';
     $(function() {
+        $("#addBtn").on('click', function(){
+            var previousVal;
+            $("#addEditTransaction form")[0].reset();
+            $("#addPOBtn").prop("disabled",true);
+            $("#addDRBtn").prop("disabled",true);
+            $('#addEditTransaction').find("select[name='spID']").on("focus",function(){
+                previousVal = $(this).val();
+            }).change(function(){
+                if(!isNaN(parseInt(previousVal))){
+                    $("#addEditTransaction").find(".inputContainerParent").children().remove();
+                }
+                previousVal = $(this).val();
+            });
+            $("#addEditTransaction").find("select[name='tType']").on("change",function(){
+                switch($(this).val()){
+                    case "purchase order" : 
+                        $("#addPOBtn").prop("disabled",true);
+                        $("#addDRBtn").prop("disabled",true);
+                        break;
+                    case "delivery receipt" :
+                        $("#addPOBtn").prop("disabled",false);
+                        $("#addDRBtn").prop("disabled",true);
+                        break;
+                    case "official receipt" :
+                        $("#addPOBtn").prop("disabled",false);
+                        $("#addDRBtn").prop("disabled",false);
+                        break;
+                    default:
+                        break;
+                }
+            });
+            $("#addEditTransaction").find(".inputContainerParent").children().remove();
+            getEnumVals(getEnumValsUrl);
+        });
+        $('#addEditTransaction').on('hidden.bs.modal', function () {
+            $(this).find("select[name='spID']").off('change');
+            $("#addItemBtn").off('click');
+        })
         $(".accordionBtn").on('click', function() {
             if ($(this).closest('tr').next('.accordion').css('display') === 'none') {
                 $(this).closest('tr').next('.accordion').slideDown();
@@ -381,18 +427,20 @@
                 $(this).closest('tr').next('.accordion').slideUp();
             }
         });
-        $("#addBtn").on('click', function() {
-            $("#addEditTransaction form")[0].reset();
-            $("#inputGroups1").children().remove();
-            $("#addItemBtn").unbind();
-            getEnumVals(getEnumValsUrl);
-        });
         $(".editBtn").on('click', function() {
             var id = $(this).closest("tr").attr("data-id");
             $("#addEditTransaction form")[0].reset();
-            $("#inputGroups1").children().remove();
+            $("#inputContainerParent").children().remove();
             $("#addItemBtn").unbind();
             getEnumVals(getEnumValsUrl);
+        });
+        $("#stockBrochure form").on('submit',function(event){
+            event.preventDefault();
+            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='stID[]']").val($(this).find("input[name='stocks']:checked").attr("data-name"));
+            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='stID[]']").attr("data-id", $(this).find("input[name='stocks']:checked").val());
+            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("select[name='actualUnit[]']").trigger('change');
+            $(this)[0].reset();
+            $("#stockBrochure").modal("hide");
         });
         $("#addEditTransaction form").on('submit', function(event) {
             event.preventDefault();
@@ -403,11 +451,12 @@
             var date = $(this).find('input[name="tDate"]').val();
             var remarks = $(this).find('textarea[name="tRemarks"]').val();
             var transitems = [];
-            for(var x = 0; x < $(this).find('.inputGroup1').length ; x++){
+            for(var x = 0; x < $(this).find('.inputContainer').length ; x++){
+                var tiID = $(this).find('.inputContainer').eq(x).attr("data-id");
                 transitems.push({
-                    tiID: $(this).find('.inputGroup1').eq(x).attr("data-id"),
+                    tiID: isNaN(parseInt(tiID)) ? (undefined) : tiID,
                     tiName: $(this).find('input[name = "itemName[]"]').eq(x).val(),
-                    stID: $(this).find('input[name = "stID[]"]').eq(x).val(),
+                    stID: $(this).find('input[name = "stID[]"]').eq(x).attr("data-id"),
                     tiQty: $(this).find('input[name = "itemQty[]"]').eq(x).val(),
                     stQty: $(this).find('input[name = "actualQty[]"]').eq(x).val(),
                     tiUnit: $(this).find('select[name = "itemUnit[]"]').eq(x).val(),
@@ -429,8 +478,11 @@
                     transitems: JSON.stringify(transitems)
                 },
                 dataType: 'JSON',
+                beforeSend: function(){
+                    console.log(transitems);
+                },
                 success: function(data){
-
+                    console.log(data);
                 },
                 error: function(response, setting, error) {
                     console.log(response.responseText);
@@ -446,6 +498,7 @@
             url: url,
             dataType: 'JSON',
             success: function(data) {
+                var input;
                 $("#addEditTransaction").find('select[name="spID"]').children().first().siblings().remove();
                 $("#addEditTransaction").find('select[name="tType"]').children().first().siblings().remove();
                 $("#addEditTransaction").find('select[name="spID"]').append(data.suppliers.map(supplier => {
@@ -455,8 +508,8 @@
                     return `<option value="${type}">${type.toUpperCase()}</option>`;
                 }).join(''));
                 $("#addItemBtn").on('click',function(){
-                    $("#inputGroups1").append(`
-                    <div class="container mb-3 inputGroup1"
+                    $("#addEditTransaction").find(".inputContainerParent").append(`
+                    <div class="container mb-3 inputContainer"
                         style="overflow:auto;width:100%" data-id="">
                         <div style="float:left;width:95%;overflow:auto;">
 
@@ -507,7 +560,7 @@
                         </div>
                     </div>`);
                     $("#addEditTransaction").find(".exitBtn").last().on('click',function(){
-                        $(this).closest(".inputGroup1").remove();
+                        $(this).closest(".inputContainer").remove();
                     });
                     $("#addEditTransaction").find("select[name='itemUnit[]']").last().append(data.uoms.map(uom=>{
                         return `<option value="${uom.uomID}">${uom.uomAbbreviation}</option>`;
@@ -518,25 +571,34 @@
                     $("#addEditTransaction").find("select[name='itemStatus[]']").last().append(data.tiStatuses.map(status=>{
                         return `<option value="${status}">${status.toUpperCase()}</option>`;
                     }).join(''));
+                    $("#addEditTransaction").find(".inputContainer *").on("focus",function(){
+                        if(!$(this).closest(".inputContainer").attr("data-focus")){
+                            $("#addEditTransaction").find(".inputContainer").removeAttr("data-focus");
+                            $(this).closest(".inputContainer").attr("data-focus",true);
+                        }
+                    });
                     $("#addEditTransaction").find("input[name='stID[]']").last().on('focus', function(){
-                        var input = $(this);
-                        console.log(input.val());
                         $("#stockList").empty();
                         $("#stockList").append(data.stocks.map(stock =>{
-                            return `
-                            <div class="d-flex d-inline-block">
-                                <div><input name="stocks" type="radio" class="mr-3" value=${stock.stID} /></div>
-                                <div>${stock.stName}</div>
+                            return `<div class="d-flex d-inline-block"><label>
+                                <div><input name="stocks" type="radio" class="mr-3" value=${stock.stID} data-name="${stock.stName}" /></div>
+                                <div>${stock.stName}</div></label>
                             </div>`;
                         }).join(''));
                         $("#stockBrochure").modal('show');
-                        $("#stockBrochure form").on('submit',function(event){
-                            event.preventDefault();
-                            console.log(input.val());
-                            input.val($(this).find("input[name='stocks']:checked").val());
-                            $(this)[0].reset();
-                            $("#stockBrochure").modal("hide");
-                        });
+                    });
+                    $("#addEditTransaction").find("select[name='actualUnit[]']").last().on('change', function(event){
+                        var stID = $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='stID[]']").attr("data-id");
+                        $(this).find(`option[value=${data.stocks.filter(stock=>stock.stID == stID)[0].uomID}]`).attr("selected","selected");
+                    });
+                    $("#addEditTransaction").find("input[name='itemPrice[]']").last().on('change', function(event){
+                        computeICSubtotal();
+                    });
+                    $("#addEditTransaction").find("input[name='itemQty[]']").last().on('change', function(event){
+                        computeICSubtotal();
+                    });
+                    $("#addEditTransaction").find("input[name='itemSubtotal[]']").last().on('change', function(event){
+                        computeICSubtotal();
                     });
                 });
             },
@@ -545,6 +607,21 @@
                 console.log(error);
             }
         });
+    }
+    function computeICSubtotal(){
+        var qty = parseInt($("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='itemQty[]']").val());
+        var price = parseFloat($("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='itemPrice[]']").val());
+        var subtotal;
+        if(isNaN(qty)){
+            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='itemQty[]']").val(0);
+            qty = 0;
+        }
+        if(isNaN(price)){
+            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='itemPrice[]']").val(0);
+            price = 0;
+        }
+        subtotal = qty * price;
+        $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='itemSubtotal[]']").val(subtotal.toFixed(2));
     }
     function populateModalForm(url, id) {
         $.ajax({

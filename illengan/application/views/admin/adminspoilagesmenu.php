@@ -354,10 +354,7 @@
         });
     });
 });
-	//--------------------End of Function for Edit-----------------------------
 	
-	//End Function Delete
-
 </script> 
 </body>
 

@@ -139,6 +139,7 @@ class Customer extends CI_Controller {
 					'name' => $preference['order'],
 					'qty' => intval($this->input->post('quantity')),
 					'orderDesc' => $preference['order'],
+					'unit_price' => intval($preference['prPrice']),
 					'subtotal' => floatval($this->input->post('subtotal')) ,
 					'remarks' => $this->input->post('remarks'),
 					'addons' => $rawAddons
@@ -180,7 +181,6 @@ class Customer extends CI_Controller {
 				$orderlist = $this->session->userdata('orders');
 				$total = $this->input->post('total');
 				$this->Customermodel->orderInsert($total, $tableCode, $orderlist, $customer, $dateTime);
-				redirect('customer/clearOrder');
 			}else{
 				redirect('customer/checkin');
 			}
@@ -195,6 +195,40 @@ class Customer extends CI_Controller {
 			if($this->isCheckedIn()){
 				$this->session->unset_userdata('orders');
 				redirect('customer/menu');
+			}else{
+				redirect('customer/checkin');
+			}
+		}else{
+			redirect('login');
+		}
+	}
+
+	function editOrder() {	
+		if($this->isLoggedIn()){			
+			if($this->isCheckedIn()){
+				$id = $this->input->post('rowID');
+				$preference = $this->Customermodel->get_preference($this->input->post('preference'))[0];
+				$rawAddons = json_decode($this->input->post('addons'),true);
+				for($index = 0; $index < count($rawAddons['addonIds']); $index++){
+					$rawAddons['addonIds'][$index] = intval($rawAddons['addonIds'][$index]);
+					$rawAddons['addonQtys'][$index] = intval($rawAddons['addonQtys'][$index]);
+					$rawAddons['addonSubtotals'][$index] = floatval($rawAddons['addonSubtotals'][$index]);
+				}
+				$data = array(
+					'id' => intval($this->input->post('preference')),
+					'menu_id' => intval($preference['mID']),
+					'name' => $preference['order'],
+					'qty' => intval($this->input->post('quantity')),
+					'orderDesc' => $preference['order'],
+					'unit_price' => intval($preference['prPrice']),
+					'subtotal' => floatval($this->input->post('subtotal')),
+					'remarks' => $this->input->post('remarks'),
+					'addons' => $rawAddons
+				);
+				unset($_SESSION['orders'][$id]);
+				rsort($_SESSION['orders']);
+				array_push($_SESSION['orders'], $data);
+				echo json_encode($_SESSION['orders']);
 			}else{
 				redirect('customer/checkin');
 			}
@@ -236,7 +270,9 @@ class Customer extends CI_Controller {
 			$data = array();
 			$data['freebies'] = $this->Customermodel->fetch_freebies($pref_id);
 			$data['discounts'] = $this->Customermodel->fetch_discounts($pref_id);
-	
+			if(empty($rawAddons['addonIds'])){
+				$rawAddons = "";
+			}
 			echo json_encode($data);
 	}
  }
