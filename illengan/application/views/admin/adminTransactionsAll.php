@@ -189,16 +189,16 @@
                                                     <a id="addItemBtn" class="btn btn-primary btn-sm" data-original-title
                                                         style="margin:0;color:white;font-weight:600;background:#0073e6">Add Unknown Item</a>
                                                     <!--Transaction PO Items-->
-                                                    <a class="btn btn-primary btn-sm" data-toggle="modal"
+                                                    <a id="addPOBtn" class="btn btn-primary btn-sm" data-toggle="modal"
                                                         data-target="#transactionBrochure"
                                                         style="color:white;font-weight:600;background:#0073e6">Add PO Items</a>
-                                                    <a class="btn btn-primary btn-sm" data-toggle="modal"
+                                                    <a id="addDRBtn" class="btn btn-primary btn-sm" data-toggle="modal"
                                                         data-target="#transactionBrochure"
                                                         style="color:white;font-weight:600;background:#0073e6">Add DR Items</a>
                                                     <br><br>
 
                                                     <!--div containing the different input fields in adding trans items -->
-                                                    <div id="inputContainerParent">
+                                                    <div class="inputContainerParent">
                                                     </div>
                                                     <span>Total: &#8369;<span class="total">0</span></span>
                                                     <!--Total of the trans items-->
@@ -376,13 +376,48 @@
     var crudUrl = '<?= site_url('admin/transactions/add')?>';
     var getTransUrl = '<?= site_url('admin/transactions/getTransaction')?>';
     var loginUrl = '<?= site_url('login')?>';
+    var getPOs = '<?= site_url('admin/transactions/getPOs')?>';
+    var getDRs = '<?= site_url('admin/transactions/getDRs')?>';
+    var getSPMs = '<?= site_url('admin/transactions/getSPMs')?>';
     $(function() {
         $("#addBtn").on('click', function(){
+            var previousVal;
             $("#addEditTransaction form")[0].reset();
-            $("#inputContainerParent").children().remove();
-            $("#addItemBtn").off();
+            $("#addPOBtn").prop("disabled",true);
+            $("#addDRBtn").prop("disabled",true);
+            $('#addEditTransaction').find("select[name='spID']").on("focus",function(){
+                previousVal = $(this).val();
+            }).change(function(){
+                if(!isNaN(parseInt(previousVal))){
+                    $("#addEditTransaction").find(".inputContainerParent").children().remove();
+                }
+                previousVal = $(this).val();
+            });
+            $("#addEditTransaction").find("select[name='tType']").on("change",function(){
+                switch($(this).val()){
+                    case "purchase order" : 
+                        $("#addPOBtn").prop("disabled",true);
+                        $("#addDRBtn").prop("disabled",true);
+                        break;
+                    case "delivery receipt" :
+                        $("#addPOBtn").prop("disabled",false);
+                        $("#addDRBtn").prop("disabled",true);
+                        break;
+                    case "official receipt" :
+                        $("#addPOBtn").prop("disabled",false);
+                        $("#addDRBtn").prop("disabled",false);
+                        break;
+                    default:
+                        break;
+                }
+            });
+            $("#addEditTransaction").find(".inputContainerParent").children().remove();
             getEnumVals(getEnumValsUrl);
         });
+        $('#addEditTransaction').on('hidden.bs.modal', function () {
+            $(this).find("select[name='spID']").off('change');
+            $("#addItemBtn").off('click');
+        })
         $(".accordionBtn").on('click', function() {
             if ($(this).closest('tr').next('.accordion').css('display') === 'none') {
                 $(this).closest('tr').next('.accordion').slideDown();
@@ -473,7 +508,7 @@
                     return `<option value="${type}">${type.toUpperCase()}</option>`;
                 }).join(''));
                 $("#addItemBtn").on('click',function(){
-                    $("#inputContainerParent").append(`
+                    $("#addEditTransaction").find(".inputContainerParent").append(`
                     <div class="container mb-3 inputContainer"
                         style="overflow:auto;width:100%" data-id="">
                         <div style="float:left;width:95%;overflow:auto;">
