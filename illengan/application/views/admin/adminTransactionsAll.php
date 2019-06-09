@@ -45,7 +45,7 @@
                                             <td>&#8369; <?=$transaction['tTotal']?></td>
                                             <td>
                                                 <button class="editBtn btn btn-sm btn-secondary" data-toggle="modal"
-                                                    data-target="#addEditTransaction">Edit</button>
+                                                    data-target="#editTransaction">Edit</button>
                                                 <button class="deleteBtn btn btn-sm btn-warning" data-toggle="modal"
                                                     data-target="#delete">Archived</button>
                                             </td>
@@ -188,9 +188,6 @@
                                                     <!--Transaction Items-->
                                                     <a id="addItemBtn" class="btn btn-primary btn-sm" data-original-title
                                                         style="margin:0;color:white;font-weight:600;background:#0073e6">Add Unknown Item</a>
-                                                    <a id="addMBtn" class="btn btn-primary btn-sm" data-toggle="modal"
-                                                        data-target="#merchandiseBrochure"  data-original-title
-                                                        style="margin:0;color:white;font-weight:600;background:#0073e6">Add Merchandise</a>
                                                     <!--Transaction PO Items-->
                                                     <a id="addPOBtn" class="btn btn-primary btn-sm" data-toggle="modal"
                                                         data-target="#transactionBrochure"
@@ -329,43 +326,6 @@
                                     </div>
                                 </div>
                                 <!--End of Brochure Modal"-->
-
-                                <!--Start of Brochure Modal"-->
-                                <div class="modal fade bd-example-modal-sm" id="merchandiseBrochure" tabindex="-1" role="dialog"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true" style="background:rgba(0, 0, 0, 0.3)">
-                                    <div class="modal-dialog " role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Select Stock Item</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <form>
-                                                <div class="modal-body">
-                                                    <table>
-                                                        <thead>
-                                                            <th></th>
-                                                            <th>Name</th>
-                                                            <th>UOM</th>
-                                                            <th>Price</th>
-                                                            <th>Stock</th>
-                                                            <th>Qty/UOM</th>
-                                                        </thead>
-                                                        <tbody class="inputContainerParent">
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger btn-sm"
-                                                        data-dismiss="modal">Cancel</button>
-                                                    <button class="btn btn-success btn-sm" type="submit">Ok</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--End of Brochure Modal"-->
                                 
                                 <!--Start of Modal "Delete Stock Item"-->
                                 <div class="modal fade" id="delete" tabindex="-1" role="dialog"
@@ -416,26 +376,48 @@
     var crudUrl = '<?= site_url('admin/transactions/add')?>';
     var getTransUrl = '<?= site_url('admin/transactions/getTransaction')?>';
     var loginUrl = '<?= site_url('login')?>';
-    var getPOsUrl = '<?= site_url('admin/transactions/getPOs')?>';
-    var getDRsandPOsUrl = '<?= site_url('admin/transactions/getDRsandPOs')?>';
-    var getSPMsUrl = '<?= site_url('admin/transactions/getSPMs')?>';
+    var getPOs = '<?= site_url('admin/transactions/getPOs')?>';
+    var getDRs = '<?= site_url('admin/transactions/getDRs')?>';
+    var getSPMs = '<?= site_url('admin/transactions/getSPMs')?>';
     $(function() {
-        $("#addBtn").on("click", function(){
-            setAddEditBtnHandlers();
+        $("#addBtn").on('click', function(){
+            var previousVal;
+            $("#addEditTransaction form")[0].reset();
+            $("#addPOBtn").prop("disabled",true);
+            $("#addDRBtn").prop("disabled",true);
+            $('#addEditTransaction').find("select[name='spID']").on("focus",function(){
+                previousVal = $(this).val();
+            }).change(function(){
+                if(!isNaN(parseInt(previousVal))){
+                    $("#addEditTransaction").find(".inputContainerParent").children().remove();
+                }
+                previousVal = $(this).val();
+            });
+            $("#addEditTransaction").find("select[name='tType']").on("change",function(){
+                switch($(this).val()){
+                    case "purchase order" : 
+                        $("#addPOBtn").prop("disabled",true);
+                        $("#addDRBtn").prop("disabled",true);
+                        break;
+                    case "delivery receipt" :
+                        $("#addPOBtn").prop("disabled",false);
+                        $("#addDRBtn").prop("disabled",true);
+                        break;
+                    case "official receipt" :
+                        $("#addPOBtn").prop("disabled",false);
+                        $("#addDRBtn").prop("disabled",false);
+                        break;
+                    default:
+                        break;
+                }
+            });
+            $("#addEditTransaction").find(".inputContainerParent").children().remove();
+            getEnumVals(getEnumValsUrl);
         });
         $('#addEditTransaction').on('hidden.bs.modal', function () {
-            $("#addEditTransaction form")[0].reset();
             $(this).find("select[name='spID']").off('change');
             $("#addItemBtn").off('click');
-            $("#addPOBtn").off('click');
-            $("#addDRBtn").off('click');
-            $("#addMBtn").off('click');
-            $("#addEditTransaction").find(".inputContainerParent").empty();
-        });
-        $("#merchandiseBrochure, #stockBrochure").on("hidden.bs.modal", function(){
-            $(this).find(".inputContainerParent").empty();
-            $(this).find("form")[0].reset();
-        });
+        })
         $(".accordionBtn").on('click', function() {
             if ($(this).closest('tr').next('.accordion').css('display') === 'none') {
                 $(this).closest('tr').next('.accordion').slideDown();
@@ -447,8 +429,18 @@
         });
         $(".editBtn").on('click', function() {
             var id = $(this).closest("tr").attr("data-id");
-            setAddEditBtnHandlers();
-            populateModalForm(getTransUrl, id);
+            $("#addEditTransaction form")[0].reset();
+            $("#inputContainerParent").children().remove();
+            $("#addItemBtn").unbind();
+            getEnumVals(getEnumValsUrl);
+        });
+        $("#stockBrochure form").on('submit',function(event){
+            event.preventDefault();
+            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='stID[]']").val($(this).find("input[name='stocks']:checked").attr("data-name"));
+            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='stID[]']").attr("data-id", $(this).find("input[name='stocks']:checked").val());
+            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("select[name='actualUnit[]']").trigger('change');
+            $(this)[0].reset();
+            $("#stockBrochure").modal("hide");
         });
         $("#addEditTransaction form").on('submit', function(event) {
             event.preventDefault();
@@ -498,14 +490,6 @@
                 }
             });
         });
-        $("#stockBrochure form").on('submit',function(event){
-            event.preventDefault();
-            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='stID[]']").val($(this).find("input[name='stocks']:checked").attr("data-name"));
-            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='stID[]']").attr("data-id", $(this).find("input[name='stocks']:checked").val());
-            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("select[name='actualUnit[]']").trigger('change');
-            $(this)[0].reset();
-            $("#stockBrochure").modal("hide");
-        });
     });
 
     function getEnumVals(url) {
@@ -514,7 +498,6 @@
             url: url,
             dataType: 'JSON',
             success: function(data) {
-                console.log(data);
                 var input;
                 $("#addEditTransaction").find('select[name="spID"]').children().first().siblings().remove();
                 $("#addEditTransaction").find('select[name="tType"]').children().first().siblings().remove();
@@ -649,31 +632,14 @@
             },
             dataType: 'JSON',
             success: function(data) {
-                console.log(data);
-                if(!data.inputErr){
-                    $("#addEditTransaction").find('input[name="tID"]').val(data.transaction[0].tID);
-                    $("#addEditTransaction").find('select[name="spID"]').children(`option[value=${data.transaction[0].spID}]`).attr('selected', 'selected');
-                    $("#addEditTransaction").find('select[name="tType"]').children(`option[value="${data.transaction[0].tType}"]`).attr(
-                        'selected', 'selected');
-                    $("#addEditTransaction").find('input[name="tNum"]').val(data.transaction[0].tNum);
-                    $("#addEditTransaction").find('input[name="tDate"]').val(data.transaction[0].tDate);
-                    $("#addEditTransaction").find('textarea[name="tRemarks"]').val(data.transaction[0].tRemarks);
-                    data.transitems.forEach(item =>{
-                        $("#addItemBtn").trigger("click");
-                        $("#addEditTransaction").find(".inputContainer").last().attr("data-focus",true);
-                        $("#addEditTransaction").find("input[name='itemName[]']").last().val(item.tiName);
-                        $("#addEditTransaction").find("input[name='stID[]']").last().attr("data-id",item.stID);
-                        $("#addEditTransaction").find("input[name='stID[]']").last().val(item.stName);
-                        $("#addEditTransaction").find("input[name='actualQty[]']").last().val(item.tiQty);
-                        $("#addEditTransaction").find("input[name='actualQty[]']").last().val(item.tiActualQty);
-                        $("#addEditTransaction").find("select[name='itemUnit[]']").last().children(`option[value=${item.uomID}]`).attr("selected","selected");
-                        $("#addEditTransaction").find("input[name='itemPrice[]']").last().val(parseFloat(item.tiPrice).toFixed(2));
-                        $("#addEditTransaction").find("input[name='itemSubtotal[]']").last().val(parseFloat(item.tiSubtotal).toFixed(2));
-                        $("#addEditTransaction").find("select[name='itemStatus[]']").last().children(`option[value='${item.tiStatus}']`).attr("selected","selected");
-                        $("#addEditTransaction").find("select[name='actualUnit[]']").last().trigger("change");
-                        $("#addEditTransaction").find(".inputContainer").last().removeAttr("data-focus");
-                    });
-                }
+                // $("#addEditTransaction").find('input[name="tID"]').val();
+                // $("#addEditTransaction").find('select[name="spID"]').children(`option[name=${}]`).attr(
+                //     'selected', 'selected');
+                // $("#addEditTransaction").find('select[name="tType"]').children(`option[name="${}"]`).attr(
+                //     'selected', 'selected');
+                // $("#addEditTransaction").find('input[name="tNum"]').val();
+                // $("#addEditTransaction").find('input[name="tDate"]').val();
+                // $("#addEditTransaction").find('textarea[name="tRemarks"]').val();
             },
             error: function(response, setting, error) {
                 console.log(response.responseText);
@@ -681,116 +647,5 @@
             }
         });
     }
-    function setAddEditBtnHandlers(){
-        var previousVal;
-        $("#addPOBtn").prop("disabled",true);
-        $("#addDRBtn").prop("disabled",true);
-        $('#addEditTransaction').find("select[name='spID']").on("focus",function(){
-            previousVal = $(this).val();
-        }).change(function(){
-            if(!isNaN(parseInt(previousVal))){
-                $("#addEditTransaction").find(".inputContainerParent").children().remove();
-            }
-            previousVal = $(this).val();
-        });
-        $("#addEditTransaction").find("select[name='tType']").on("change",function(){
-            switch($(this).val()){
-                case "purchase order" : 
-                    $("#addPOBtn").prop("disabled",true);
-                    $("#addDRBtn").prop("disabled",true);
-                    break;
-                case "delivery receipt" :
-                    $("#addPOBtn").prop("disabled",false);
-                    $("#addDRBtn").prop("disabled",true);
-                    break;
-                case "official receipt" :
-                    $("#addPOBtn").prop("disabled",false);
-                    $("#addDRBtn").prop("disabled",false);
-                    break;
-                default:
-                    break;
-            }
-        });
-        getEnumVals(getEnumValsUrl);
-        $("#addMBtn").on("click",function(){
-            setMerchandiseBrochure(getSPMsUrl);
-        });
-        $("#addPOBtn").on("click",function(){
-            setTransactionBrochure(getPOsUrl);
-        });
-        $("#addDRBtn").on("click",function(){
-            setTransactionBrochure(getDRsandPOsUrl);
-        });
-    }
-    function setTransactionBrochure(url){
-        var spID = $("#addEditTransaction").find("select[name='spID']").val();
-        $.ajax({
-            method: "POST",
-            url: url,
-            data: {
-                supplier: spID
-            },
-            dataType: "JSON",
-            success: function(data){
-                // if(data.transactions.length )
-            },
-            error: function(response, setting, error) {
-                console.log(response.responseText);
-                console.log(error);
-            }
-        });
-    }
-    function setMerchandiseBrochure(url){
-        var spID = $("#addEditTransaction").find("select[name='spID']").val();
-        $.ajax({
-            method: "POST",
-            url: url,
-            data: {
-                supplier: spID
-            },
-            dataType: "JSON",
-            success: function(data){
-                if(!data.inputErr){
-                    $("#merchandiseBrochure").find(".inputContainerParent").append(data.merchandise.map(merchandise =>{
-                            return `<tr class="inputContainer">
-                                <td><input type="checkbox" name="merchandise" value="${merchandise.spmID}"/></td>
-                                <td>${merchandise.spmName}</td>
-                                <td>${merchandise.uomAbbreviation}</td>
-                                <td>${merchandise.spmPrice}</td>
-                                <td>${merchandise.stName}</td>
-                                <td>${merchandise.spmActualQty}</td>
-                            </tr>`;
-                        }).join(''));
-                    $("#merchandiseBrochure form").on("submit",function(event){
-                        event.preventDefault();
-                        var selectedMerch = [];
-                        $(this).find("input[name='merchandise']:checked").each(function(index){
-                            selectedMerch.push($(this).val());
-                        });
-                        selectedMerch = data.merchandise.filter(merchandise => selectedMerch.includes(merchandise.spmID));
-                        selectedMerch.forEach(merch => {
-                            $("#addItemBtn").trigger("click");
-                            $("#addEditTransaction").find(".inputContainer").last().attr("data-focus",true);
-                            $("#addEditTransaction").find("input[name='itemName[]']").last().val(merch.spmName);
-                            $("#addEditTransaction").find("input[name='stID[]']").last().attr("data-id",merch.stID);
-                            $("#addEditTransaction").find("input[name='stID[]']").last().val(merch.stName);
-                            $("#addEditTransaction").find("input[name='actualQty[]']").last().val(merch.spmActualQty);
-                            $("#addEditTransaction").find("select[name='itemUnit[]']").last().children(`option[value=${merch.uomID}]`).attr("selected","selected");
-                            $("#addEditTransaction").find("input[name='itemPrice[]']").last().val(merch.spmPrice);
-                            $("#addEditTransaction").find("select[name='actualUnit[]']").last().trigger("change");
-                            $("#addEditTransaction").find(".inputContainer").last().removeAttr("data-focus");
-                        });
-                        $("#merchandiseBrochure").modal("hide");
-                    });
-                }else{
-                    console.log(data);
-                }
-            },
-            error: function(response, setting, error) {
-                console.log(response.responseText);
-                console.log(error);
-            }
-        });
-    }
-</script>
+    </script>
 </body>

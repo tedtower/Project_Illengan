@@ -14,7 +14,6 @@ class Admindelete extends CI_Controller{
             $this->form_validation->set_rules('accountId', 'Account Id', 'trim|required');
             if($this->form_validation->run()){
                 $accountId = trim($this->input->post("accountId"));
-                $date_recorded=date("Y-m-d H:i:s");
                 $this->adminmodel->delete_account($accountId);
                
             }else{

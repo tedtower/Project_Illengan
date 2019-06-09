@@ -17,64 +17,63 @@ class Adminmodel extends CI_Model{
         $query = "INSERT into addons (aoName, aoPrice, aoCategory, aoStatus) values (?,?,?,?)";
         return $this->db->query($query,array($aoName, $aoPrice, $aoCategory, $aoStatus));
     }
-    function add_aospoil($date_recorded,$addons,$account_id){
+    function add_aospoil($date_recorded,$addons){
         $query = "insert into aospoil (aosID,aosDateRecorded) values (NULL,?)";
         if($this->db->query($query,array($date_recorded))){ 
-            $this->add_spoiledaddon($this->db->insert_id(),$addons,$date_recorded,$account_id);
+            $this->add_spoiledaddon($this->db->insert_id(),$addons);
             return true;
         }
     }
-    function add_spoiledaddon($aosID,$addons,$date_recorded,$account_id){
+    function add_spoiledaddon($aosID,$addons){
         $query = "insert into addonspoil (aosID,aoID,aosQty,aosDate,aosRemarks) values (?,?,?,?,?)";
         if(count($addons) > 0){
             for($in = 0; $in < count($addons) ; $in++){
                 $this->db->query($query, array($aosID, $addons[$in]['aoID'], $addons[$in]['aosQty'],
                 $addons[$in]['aosDate'],$addons[$in]['aosRemarks']));
-                $this->add_actlog($account_id,$date_recorded, "Admin added an addon spoilage.", "add", $addons[$in]['aosRemarks']);
             }    
         }
     }
-    function add_menuspoil($date_recorded,$menu,$account_id){
+    function add_menuspoil($date_recorded,$menu){
         $query = "insert into menuspoil (msID,msDateRecorded) values (NULL,?)";
         if($this->db->query($query,array($date_recorded))){ 
-            $this->add_spoiledmenu($this->db->insert_id(),$menu,$date_recorded,$account_id);
+            $this->add_spoiledmenu($this->db->insert_id(),$menu);
             return true;
         }
     }
-    function add_spoiledmenu($msID,$menus,$date_recorded,$account_id){
+    function add_spoiledmenu($msID,$menus){
         $query = "insert into spoiledmenu (msID,prID,msQty,msDate,msRemarks) values (?,?,?,?,?)";
         if(count($menus) > 0){
             for($in = 0; $in < count($menus) ; $in++){
                 $this->db->query($query, array($msID, $menus[$in]['prID'], $menus[$in]['msQty'],$menus[$in]['msDate'],$menus[$in]['msRemarks']));
-                $this->add_actlog($account_id,$date_recorded, "Admin added a menu spoilage.", "add", $menus[$in]['msRemarks']);
             }    
         }
     }
     function add_stockspoil($date_recorded,$stocks,$slType){
         $query = "insert into stockspoil (ssID,ssDateRecorded) values (NULL,?)";
         if($this->db->query($query,array($date_recorded))){ 
-            $this->add_varspoilitems($this->db->insert_id(),$date_recorded,$stocks,$slType);
+            $this->add_varspoilitems($this->db->insert_id(),$stocks,$date_recorded,$slType);
             return true;
         }
     }
-    function add_varspoilitems($ssID,$date_recorded,$stocks,$slType){ 
+    function add_varspoilitems($ssID,$stocks,$date_recorded,$slType){ 
+        $tID = NULL;
         $query = "insert into spoiledstock (ssID,stID,ssQty,ssDate,ssRemarks) values (?,?,?,?,?)";
             if(count($stocks) > 0){
                 for($in = 0; $in < count($stocks) ; $in++){
                    $this->db->query($query, array($ssID, $stocks[$in]['stID'], $stocks[$in]['ssQty'], $stocks[$in]['ssDate'],$stocks[$in]['ssRemarks']));  
-                   $this->destockvarItems($stocks[$in]['stID'],$stocks[$in]['curstQty'],$stocks[$in]['ssQty']);  
-                   $this->add_stockLog($stocks[$in]['stID'], NULL, $slType, $date_recorded, $stocks[$in]['ssDate'], $stocks[$in]['ssQty'], $stocks[$in]['ssRemarks']); 
-                   $this->add_actlog(1,$date_recorded, "Admin added a stockitem spoilage.", "add", $stocks[$in]['ssRemarks']);
+                   $this->destockvarItems($stocks[$in]['stID'],$tID,$stocks[$in]['curstQty'],$stocks[$in]['ssQty'], $slType, $date_recorded, $stocks[$in]['ssDate'], $stocks[$in]['ssRemarks'] );   
                 }    
             }
     }
-    function destockvarItems($stID,$curstQty,$ssQty){
+    function destockvarItems($stID,$tID,$curstQty,$ssQty,$slType,$date_recorded, $dateTime, $remarks){
         $query = "UPDATE stockitems 
         SET 
             stQty = ? - ?
         WHERE
             stID = ?;";
         return $this->db->query($query,array($curstQty,$ssQty,$stID));
+
+        $this->add_stockLog($stID, $tID, $slType, $date_recorded, $dateTime, $slQty, $slRemarks);
        
     }
     function add_menucategory($ctName){
@@ -225,7 +224,7 @@ class Adminmodel extends CI_Model{
                 }
               }
         }
-    }else {
+    }   else {
         return false;
     }
     }
@@ -234,7 +233,7 @@ class Adminmodel extends CI_Model{
           for($in = 0; $in < count($addons); $in++){
             if($olprID == $addons[$in]['prID']) {
             $this->db->query($query, array($addons[$in]['aoID'], $olID, $addons[$in]['aoQty'], 
-            $addons[$in]['aoTotal']));
+                  $addons[$in]['aoTotal']));
             }
     }
 
@@ -296,9 +295,7 @@ class Adminmodel extends CI_Model{
         if($this->db->query($query, array($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spID))){
             if(count($spMerch) > 0){
                 foreach($spMerch as $merch){
-                if($merch['del'] === 0){
-                    $this->delete_supplierMerchandise($merch['smpID']);
-                }else if($merch['spmID'] == NULL){
+                    if($merch['spmID'] == NULL){
                         $this->add_supplierMerchandise($merch, $spID);
                     }else{
                         $this->edit_supplierMerchandise($merch);
@@ -308,10 +305,6 @@ class Adminmodel extends CI_Model{
             return true;
         }
         return false;
-    }
-    function delete_supplier($spmID){
-        $query = "DELETE FROM suppliermerchandise WHERE spmID = ?";
-        return $this->db->query($query, array($smpID));
     }
     
     function edit_supplierMerchandise($merch){
@@ -352,7 +345,8 @@ class Adminmodel extends CI_Model{
             }else{
                 $this->update_poItems($poID, $merchandise);
             }
-        }
+        
+           }
     }
 }
     
@@ -385,7 +379,8 @@ class Adminmodel extends CI_Model{
     // UPDATE FUNCTIONS-------------------------------------------------------------
 
     
-    function edit_sales($osID, $tableCodes, $custName, $osTotal, $payStatus, $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons) {
+    function edit_sales($osID, $tableCodes, $custName, $osTotal, $payStatus, 
+    $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons) {
         $query = "UPDATE orderslips SET tableCode = ?, custName = ?, osTotal = ?, 
         osDateTime = ?, osPayDateTime = ? WHERE orderslips.osID = ?;";
         if($this->db->query($query, array($tableCodes, $custName, $osTotal, $osDateTime, $osPayDateTime, $osID))) {
@@ -405,7 +400,7 @@ class Adminmodel extends CI_Model{
                         'olRemarks' => $orderlists[$i]['olRemarks']
                     );
                     $this->edit_salesorders($orlist, $addons);
-                } else{
+                } else {
                     $orderlist = array();
                     $olist = array(
                         'prID' => $orderlists[$i]['prID'],
@@ -418,8 +413,7 @@ class Adminmodel extends CI_Model{
                     );
                     array_push($orderlist, $olist);
                     $this->add_salesList($osID, $orderlist, $addons);
-                } 
-            }   
+                } }   
         }
     }
 
@@ -439,7 +433,17 @@ class Adminmodel extends CI_Model{
             for($i = 0; $i < count($addons); $i++) {
                 if($addons[$i]['del'] === 0 ) {
                     $this->delete_salesAddons($addons[$i]['aoID'], $addons[$i]['olID']);
-                } else if($addons[$i]['olID'] === null){
+                } else if($addons[$i]['oldaoID'] != $addons[$i]['aoID']) {
+                    $this->update_changedAddon($addons[$i]['oldaoID'], $addons[$i]['aoID'], $addons[$i]['olID']);
+                } else if($addons[$i]['prID'] == $prID && $addons[$i]['olID'] != null) {
+                    $aolist = array(
+                        'aoID' => $addons[$i]['aoID'],
+                        'olID' => $addons[$i]['olID'],
+                        'aoQty' => $addons[$i]['aoQty'],
+                        'aoTotal' => $addons[$i]['aoTotal']
+                    );
+                    $this->edit_salesaddons($aolist);
+                } else if($addons[$i]['olID'] == null){
                     $addonsArr = array();
                     $aolist = array(
                         'prID' => $addons[$i]['prID'],
@@ -449,16 +453,6 @@ class Adminmodel extends CI_Model{
                     );
                     array_push($addonsArr, $aolist);
                     $this->add_salesAddons($olID, $prID, $addonsArr);
-                } else if(intval($addons[$i]['oldaoID']) != intval($addons[$i]['aoID'])) {
-                    $this->update_changedAddon($addons[$i]['aoID'], $addons[$i]['oldaoID'], $addons[$i]['olID']);
-                } else if($addons[$i]['prID'] == $prID && $addons[$i]['olID'] != null) {
-                    $aolist = array(
-                        'aoID' => $addons[$i]['aoID'],
-                        'olID' => $addons[$i]['olID'],
-                        'aoQty' => $addons[$i]['aoQty'],
-                        'aoTotal' => $addons[$i]['aoTotal']
-                    );
-                    $this->edit_salesaddons($aolist);
                 } 
             }
     }
@@ -822,8 +816,7 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_suppliermerch(){
-        $query = "SELECT stID, CONCAT( stName, IF( stSize IS NULL, '', CONCAT(' ', stSize) ) ) AS stName, suppliermerchandise.uomID, uomAbbreviation,uomName, spmID, spmName, spmPrice, spmActualQty, spID, spName FROM ( stockitems RIGHT JOIN( suppliermerchandise LEFT JOIN supplier USING(spID) ) USING(stID) ) LEFT JOIN uom on (suppliermerchandise.uomID = uom.uomID)
-        ";
+        $query = "SELECT *, CONCAT(spmName,' ',stName,' ',uomAbbreviation,' ','(',stSize,')') as merchandise, CONCAT(stName,' ',uomAbbreviation,' ','(',stSize,')') as stockvariant  from supplier natural join suppliermerchandise natural join stockitems left join uom using (uomID);";
         return $this->db->query($query)->result_array();
     }
     function get_suppMerchandise($spmID){
@@ -832,15 +825,15 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query, array($spmID))->result_array();
     }
     function get_spoilagesmenu(){
-        $query = "Select msID,prID, mName,msQty,DATE_FORMAT(msDate, '%b %d, %Y') AS msDate,DATE_FORMAT(msDateRecorded, '%b %d, %Y %r') AS msDateRecorded,msRemarks from menuspoil inner join spoiledmenu using (msID) inner join preferences using (prID) inner join menu using (mID) order by msDateRecorded DESC";
+        $query = "Select msID,prID, mName,msQty,DATE_FORMAT(msDate, '%b %d, %Y %r') AS msDate,DATE_FORMAT(msDateRecorded, '%b %d, %Y %r') AS msDateRecorded,msRemarks from menuspoil inner join spoiledmenu using (msID) inner join preferences using (prID) inner join menu using (mID)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesstock(){
-        $query = "Select ssID,stID,ssDate,stName,stLocation,ssQty,stQty,DATE_FORMAT(ssDate, '%b %d, %Y') AS ssDate,DATE_FORMAT(ssDateRecorded, '%b %d, %Y %r') AS ssDateRecorded,ssRemarks from stockspoil inner join spoiledstock using (ssID) inner join stockitems using (stID) order by ssDateRecorded DESC";
+        $query = "Select ssID,stID,stName,stLocation,ssQty,stQty,DATE_FORMAT(ssDate, '%b %d, %Y %r') AS ssDate,DATE_FORMAT(ssDateRecorded, '%b %d, %Y %r') AS ssDateRecorded,ssRemarks from stockspoil inner join spoiledstock using (ssID) inner join stockitems using (stID)";
         return  $this->db->query($query)->result_array();
     }
     function get_spoilagesaddons(){
-        $query = "Select aoID,aosID, aoName,aosQty, aoCategory,DATE_FORMAT(aosDate, '%b %d, %Y') AS aosDate, DATE_FORMAT(aosDateRecorded, '%b %d, %Y %r') AS aosDateRecorded, aosRemarks from addonspoil INNER JOIN aospoil using (aosID)INNER JOIN addons using (aoID) order by aosDateRecorded DESC";
+        $query = "Select aoID,aosID, aoName,aosQty, aoCategory,DATE_FORMAT(aosDate, '%b %d, %Y %r') AS aosDate, DATE_FORMAT(aosDateRecorded, '%b %d, %Y %r') AS aosDateRecorded, aosRemarks from addonspoil INNER JOIN aospoil using (aosID)INNER JOIN addons using (aoID)";
         return  $this->db->query($query)->result_array();
     }
     function get_tables(){
@@ -928,6 +921,23 @@ class Adminmodel extends CI_Model{
     // }
    
     // }
+    function edit_source($source_id, $source_name, $contact_num, $email,$status){
+        $query = "update sources set source_name = ?, contact_num = ?, email = ?, status = ?  where source_id = ?";
+        return $this->db->query($query,array($source_name, $contact_num, $email,$status,$source_id));
+    }
+    function delete_source($source_id){
+        $query = "Delete from sources where source_id = ?";
+        return $this->db->query($query, array($source_id));
+    }
+
+    function delete_menu($id){
+        $this->db->where("mID", $id);
+        $this->db->delete("menu");
+    }
+    function edit_menu($menu_id, $mName, $ctID, $menu_description, $menu_price, $menu_availability){
+        $query = "update menu set mName = ?, ctID = ?, menu_description = ?, menu_price = ?, menu_availability = ? where menu_id = ?";
+        return $this->db->query($query,array($mName, $ctID, $menu_description, $menu_price, $menu_availability, $menu_id));
+    }
     
     function edit_table($newTableCode, $previousTableCode){
         $query = "Update tables set table_code = ? where table_code = ?;";
@@ -1144,16 +1154,23 @@ class Adminmodel extends CI_Model{
             tID,
             tNum,
             tType,
-            tDate,
+            DATE_FORMAT(tDate, '%b %d, %Y %r') AS tDate,
+            DATE_FORMAT(dateRecorded, '%b %d, %Y %r') AS dateRecorded,
             spID,
             spName,
+            SUM(tiSubtotal) AS tTotal,
             tRemarks
         FROM
-            transactions
+            (
+                transactions
+            LEFT JOIN trans_items USING(tID)
+            )
         LEFT JOIN supplier USING(spID)
+        GROUP BY
+            tID
         WHERE 
             tID = ?;";
-        return $this->db->query($query, array($id))->result_array();
+        return $this->db->query($query, arrray($id))->result_array();
     }
     function get_transitems($id=null){
         if($id == null){
@@ -1181,31 +1198,28 @@ class Adminmodel extends CI_Model{
             return $this->db->query($query)->result_array();
         }else{
             $query = "SELECT
-                    tID, tiID, tiName, tiQty, tiActualQty, transitems.uomID,
-                    uomAbbreviation, tiPrice, tiDiscount, tiSubtotal, tiStatus, stID,
-                    CONCAT(
-                        stName,
-                        IF(
-                            stSize IS NULL,
-                            '',
-                            CONCAT(' ', stSize)
-                        )
-                    ) AS stName
-                FROM
+                tID,
+                tiID,
+                tiName,
+                tiQty,
+                tiActualQty,
+                uomID,
+                uomAbbreviation,
+                tiPrice,
+                tiDiscount,
+                tiSubtotal,
+                tiStatus
+            FROM
+                (
                     (
-                        (
-                            (
-                                transitems
-                            LEFT JOIN stockitems USING(stID)
-                            )
-                        LEFT JOIN uom ON
-                            (transitems.uomID = uom.uomID)
-                        )
-                    LEFT JOIN trans_items USING(tiID)
+                        transitems
+                    LEFT JOIN uom USING(uomID)
                     )
-                LEFT JOIN transactions USING(tID)
-                WHERE
-                    tID = ?;";
+                LEFT JOIN trans_items USING(tiID)
+                )
+            LEFT JOIN transactions USING(tID)
+            WHERE
+                tID = ?;";
             return $this->db->query($query,array($id))->result_array();
         }
     } 
@@ -1339,18 +1353,7 @@ class Adminmodel extends CI_Model{
             VALUES(?, ?, ?, ?, ?);", array($tiID, $tID, $tiQty, $tiSubtotal, $tiActualQty));
         }
     }
-    function add_actlog($aID, $alDate, $alDesc, $defaultType, $additinalRemarks){
-        $query = "INSERT INTO `activitylog`(
-            `alID`,
-            `aID`,
-            `alDate`, 
-            `alDesc`, 
-            `alType`, 
-            `additionalRemarks`
-            ) 
-            VALUES (NULL, ?, ?, ?, ?, ?)";
-            return $this->db->query($query, array($aID, $alDate, $alDesc, $defaultType, $additinalRemarks));
-    }
+
     function add_stockLog($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks){
         $query = "INSERT INTO `stocklog`(
                 `slID`,
@@ -1364,6 +1367,47 @@ class Adminmodel extends CI_Model{
             )
             VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
         return $this->db->query($query, array($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks));
+    }
+    function add_stockLog2($stID, $slType, $date_recorded, $slDateTime, $ssQty, $ssRemarks, $updateQtyh, $updateQtyl,$curSsQty,$ssQtyUpdate){
+        if ($curSsQty > $ssQtyUpdate){
+        $query = "INSERT INTO `stocklog`(
+                `slID`,
+                `stID`,
+                `slType`,
+                `slDateTime`,
+                `dateRecorded`,
+                `slQty`,
+                `slRemarks`
+            )
+            VALUES(NULL, ?, ?, ?, ?, ?, ?);";
+            return $this->db->query($query, array($stID, $slType, $date_recorded, $slDateTime, $updateQtyl, $ssRemarks));
+        }
+        if ($curSsQty < $ssQtyUpdate){
+            $query = "INSERT INTO `stocklog`(
+                `slID`,
+                `stID`,
+                `slType`,
+                `slDateTime`,
+                `dateRecorded`,
+                `slQty`,
+                `slRemarks`
+            )
+            VALUES(NULL, ?, ?, ?, ?, ?, ?);";
+            return $this->db->query($query, array($stID, $slType, $date_recorded, $slDateTime, $updateQtyh, $ssRemarks));
+            
+        }else{
+            $query = "INSERT INTO `stocklog`(
+                `slID`,
+                `stID`,
+                `slType`,
+                `slDateTime`,
+                `dateRecorded`,
+                `slQty`,
+                `slRemarks`
+            )
+            VALUES(NULL, ?, ?, ?, ?, ?, ?);";
+            return $this->db->query($query, array($stID, $slType, $date_recorded, $slDateTime, $ssQty, $ssRemarks));
+        }
     }
 
     function add_stockQty($stID, $stQty){
@@ -1415,76 +1459,33 @@ class Adminmodel extends CI_Model{
                     slType = 'beginning' AND stID = ?
             ;",array($stID))->result_array();
     }
-    function get_SPMs($spID){
-        $query = "SELECT
-            stID,
-            CONCAT(
-                stName,
-                IF(
-                    stSize IS NULL,
-                    '',
-                    CONCAT(' ', stSize)
-                )
-            ) AS stName,
-            suppliermerchandise.uomID,
-            uomAbbreviation,
-            spmID,
-            spmName,
-            spmPrice,
-            spmActualQty,
-            spID,
-            spName
-        FROM
-            (
-                stockitems
-            RIGHT JOIN(
-                    suppliermerchandise
-                LEFT JOIN supplier USING(spID)
-                ) USING(stID)
-            )
-        LEFT JOIN uom on (suppliermerchandise.uomID = uom.uomID) 
-        WHERE spID = ?";
-        return $this->db->query($query, array($spID))->result_array();
-    }
-    function get_transactionsBySupplier($spID, $tTypes){
-        $query = "SELECT
-                spID,
-                tID,
-                tNum,
-                DATE_FORMAT(tDate, '%b %d, %Y %r') AS tDate,
-                DATE_FORMAT(dateRecorded, '%b %d, %Y %r') AS dateRecorded,
-                tType
-            FROM
-                transactions
-            LEFT JOIN supplier USING(spID)
-            WHERE
-                spID = ? AND tType IN ?;";
-        return $this->db->query($query, array($spID, $tTypes))->result_array();
-    }
-    function get_transitemsBySupplier($spID, $tTypes){
-        $query = "SELECT
-            spID, tID, tiID, tiName, tiPrice, tiDiscount, tiStatus, tNum, tType,
-            stID, ti.uomID AS uomID, uomAbbreviation, tiQty, tiActualQty
-        FROM
-            (
-                (
-                    (
-                        (
-                            transitems AS ti
-                        LEFT JOIN uom ON
-                            (ti.uomID = uom.uomID)
-                        )
-                    LEFT JOIN trans_items USING(tiID)
-                    )
-                LEFT JOIN transactions USING(tID)
-                )
-            LEFT JOIN supplier USING(spID)
-            )
-        LEFT JOIN stockitems AS st USING(stID)
-        WHERE
-            spID = ? AND tType IN ?;";
-        return $this->db->query($query, array($spID, $tTypes))->result_array();
-    }
-    
+//     "SELECT
+//     stID,
+//     CONCAT(
+//         stName,
+//         IF(
+//             stSize IS NULL,
+//             '',
+//             CONCAT(' ', stSize)
+//         )
+//     ) AS stName,
+//     suppliermerchandise.uomID,
+//     uomAbbreviation,
+//     spmID,
+//     spmName,
+//     spmPrice,
+//     spmActualQty,
+//     spID,
+//     spName
+// FROM
+//     (
+//         stockitems
+//     RIGHT JOIN(
+//             suppliermerchandise
+//         LEFT JOIN supplier USING(spID)
+//         ) USING(stID)
+//     )
+// LEFT JOIN uom on (suppliermerchandise.uomID = uom.uomID)";
 }
+
 ?>
