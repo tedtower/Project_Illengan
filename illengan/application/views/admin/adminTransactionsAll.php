@@ -37,7 +37,7 @@
                                         <tr data-id="<?= $transaction['tID']?>">
                                             <td><a href="javascript:void(0)" class="ml-2 mr-4"><img class="accordionBtn"
                                                         src="/assets/media/admin/down-arrow%20(1).png"
-                                                        style="height:15px;width: 15px" /></a><?= $transaction['tNum']?>
+                                                        style="height:15px;width: 15px" /></a><?= $transaction['tNum'] == NULL ? "N/A" : $transaction['tNum'] ?>
                                             </td>
                                             <td><?= ucwords($transaction['spName'])?></td>
                                             <td><?= ucwords($transaction['tType'])?></td>
@@ -201,7 +201,7 @@
                                                     <br><br>
 
                                                     <!--div containing the different input fields in adding trans items -->
-                                                    <div class="inputContainerParent">
+                                                    <div class="ic-level-2">
                                                     </div>
                                                     <span>Total: &#8369;<span class="total">0</span></span>
                                                     <!--Total of the trans items-->
@@ -249,42 +249,8 @@
                                                         </select>
                                                     </div>
                                                     <br>
-                                                    <table class="table">
-                                                        <thead class="thead-light">
-                                                            <tr>
-                                                                <th style="width:2%"></th>
-                                                                <th>Receipt</th>
-                                                                <th>Item</th>
-                                                                <th>Unit</th>
-                                                                <th>Qty</th>
-                                                                <th>Price</th>
-                                                                <th>Subtotal</th>
-                                                                <th>Status</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody class="inputContainerParent">
-                                                            <tr class="inputContainer">
-                                                                <td><input type="checkbox" name="tiID[]" value="" data-tID=""></td>
-                                                                <td>12345</td>
-                                                                <td>Nestle Milk 500 ml</td>
-                                                                <td>cn</td>
-                                                                <td>12</td>
-                                                                <td>100</td>
-                                                                <td>1200</td>
-                                                                <td>pending</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td><input type="checkbox"></td>
-                                                                <td>Nestle Milk 500 ml</td>
-                                                                <td>cn</td>
-                                                                <td>12</td>
-                                                                <td>100</td>
-                                                                <td>1200</td>
-                                                                <td>pending</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                                    <div class="ic-level-4">
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-danger btn-sm"
@@ -352,7 +318,7 @@
                                                             <th>Stock</th>
                                                             <th>Qty/UOM</th>
                                                         </thead>
-                                                        <tbody class="inputContainerParent">
+                                                        <tbody class="ic-level-2">
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -417,7 +383,7 @@
     var getTransUrl = '<?= site_url('admin/transactions/getTransaction')?>';
     var loginUrl = '<?= site_url('login')?>';
     var getPOsUrl = '<?= site_url('admin/transactions/getPOs')?>';
-    var getDRsandPOsUrl = '<?= site_url('admin/transactions/getDRsandPOs')?>';
+    var getDRsUrl = '<?= site_url('admin/transactions/getDRs')?>';
     var getSPMsUrl = '<?= site_url('admin/transactions/getSPMs')?>';
     $(function() {
         $("#addBtn").on("click", function(){
@@ -430,11 +396,7 @@
             $("#addPOBtn").off('click');
             $("#addDRBtn").off('click');
             $("#addMBtn").off('click');
-            $("#addEditTransaction").find(".inputContainerParent").empty();
-        });
-        $("#merchandiseBrochure, #stockBrochure").on("hidden.bs.modal", function(){
-            $(this).find(".inputContainerParent").empty();
-            $(this).find("form")[0].reset();
+            $("#addEditTransaction").find(".ic-level-2").empty();
         });
         $(".accordionBtn").on('click', function() {
             if ($(this).closest('tr').next('.accordion').css('display') === 'none') {
@@ -459,8 +421,8 @@
             var date = $(this).find('input[name="tDate"]').val();
             var remarks = $(this).find('textarea[name="tRemarks"]').val();
             var transitems = [];
-            for(var x = 0; x < $(this).find('.inputContainer').length ; x++){
-                var tiID = $(this).find('.inputContainer').eq(x).attr("data-id");
+            for(var x = 0; x < $(this).find('.ic-level-1').length ; x++){
+                var tiID = $(this).find('.ic-level-1').eq(x).attr("data-id");
                 transitems.push({
                     tiID: isNaN(parseInt(tiID)) ? (undefined) : tiID,
                     tiName: $(this).find('input[name = "itemName[]"]').eq(x).val(),
@@ -500,11 +462,21 @@
         });
         $("#stockBrochure form").on('submit',function(event){
             event.preventDefault();
-            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='stID[]']").val($(this).find("input[name='stocks']:checked").attr("data-name"));
-            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='stID[]']").attr("data-id", $(this).find("input[name='stocks']:checked").val());
-            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("select[name='actualUnit[]']").trigger('change');
+            $("#addEditTransaction").find(".ic-level-1[data-focus='true']").find("input[name='stID[]']").val($(this).find("input[name='stocks']:checked").attr("data-name"));
+            $("#addEditTransaction").find(".ic-level-1[data-focus='true']").find("input[name='stID[]']").attr("data-id", $(this).find("input[name='stocks']:checked").val());
+            $("#addEditTransaction").find(".ic-level-1[data-focus='true']").find("select[name='actualUnit[]']").trigger('change');
             $(this)[0].reset();
             $("#stockBrochure").modal("hide");
+        });
+        $("#merchandiseBrochure, #stockBrochure").on("hidden.bs.modal", function(){
+            $(this).find(".ic-level-2").empty();
+            $(this).find("form")[0].reset();
+            $(this).find("form").off('submit');
+        });
+        $("#transactionBrochure").on("hidden.bs.modal", function(){
+            $(this).find(".ic-level-4").empty();
+            $(this).find("form")[0].reset();
+            $(this).find("form").off('submit');
         });
     });
 
@@ -514,7 +486,6 @@
             url: url,
             dataType: 'JSON',
             success: function(data) {
-                console.log(data);
                 var input;
                 $("#addEditTransaction").find('select[name="spID"]').children().first().siblings().remove();
                 $("#addEditTransaction").find('select[name="tType"]').children().first().siblings().remove();
@@ -525,8 +496,8 @@
                     return `<option value="${type}">${type.toUpperCase()}</option>`;
                 }).join(''));
                 $("#addItemBtn").on('click',function(){
-                    $("#addEditTransaction").find(".inputContainerParent").append(`
-                    <div class="container mb-3 inputContainer"
+                    $("#addEditTransaction").find(".ic-level-2").append(`
+                    <div class="container mb-3 ic-level-1"
                         style="overflow:auto;width:100%" data-id="">
                         <div style="float:left;width:95%;overflow:auto;">
 
@@ -577,7 +548,7 @@
                         </div>
                     </div>`);
                     $("#addEditTransaction").find(".exitBtn").last().on('click',function(){
-                        $(this).closest(".inputContainer").remove();
+                        $(this).closest(".ic-level-1").remove();
                     });
                     $("#addEditTransaction").find("select[name='itemUnit[]']").last().append(data.uoms.map(uom=>{
                         return `<option value="${uom.uomID}">${uom.uomAbbreviation}</option>`;
@@ -588,10 +559,10 @@
                     $("#addEditTransaction").find("select[name='itemStatus[]']").last().append(data.tiStatuses.map(status=>{
                         return `<option value="${status}">${status.toUpperCase()}</option>`;
                     }).join(''));
-                    $("#addEditTransaction").find(".inputContainer *").on("focus",function(){
-                        if(!$(this).closest(".inputContainer").attr("data-focus")){
-                            $("#addEditTransaction").find(".inputContainer").removeAttr("data-focus");
-                            $(this).closest(".inputContainer").attr("data-focus",true);
+                    $("#addEditTransaction").find(".ic-level-1 *").on("focus",function(){
+                        if(!$(this).closest(".ic-level-1").attr("data-focus")){
+                            $("#addEditTransaction").find(".ic-level-1").removeAttr("data-focus");
+                            $(this).closest(".ic-level-1").attr("data-focus",true);
                         }
                     });
                     $("#addEditTransaction").find("input[name='stID[]']").last().on('focus', function(){
@@ -605,7 +576,7 @@
                         $("#stockBrochure").modal('show');
                     });
                     $("#addEditTransaction").find("select[name='actualUnit[]']").last().on('change', function(event){
-                        var stID = $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='stID[]']").attr("data-id");
+                        var stID = $("#addEditTransaction").find(".ic-level-1[data-focus='true']").find("input[name='stID[]']").attr("data-id");
                         $(this).find(`option[value=${data.stocks.filter(stock=>stock.stID == stID)[0].uomID}]`).attr("selected","selected");
                     });
                     $("#addEditTransaction").find("input[name='itemPrice[]']").last().on('change', function(event){
@@ -626,19 +597,19 @@
         });
     }
     function computeICSubtotal(){
-        var qty = parseInt($("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='itemQty[]']").val());
-        var price = parseFloat($("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='itemPrice[]']").val());
+        var qty = parseInt($("#addEditTransaction").find(".ic-level-1[data-focus='true']").find("input[name='itemQty[]']").val());
+        var price = parseFloat($("#addEditTransaction").find(".ic-level-1[data-focus='true']").find("input[name='itemPrice[]']").val());
         var subtotal;
         if(isNaN(qty)){
-            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='itemQty[]']").val(0);
+            $("#addEditTransaction").find(".ic-level-1[data-focus='true']").find("input[name='itemQty[]']").val(0);
             qty = 0;
         }
         if(isNaN(price)){
-            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='itemPrice[]']").val(0);
+            $("#addEditTransaction").find(".ic-level-1[data-focus='true']").find("input[name='itemPrice[]']").val(0);
             price = 0;
         }
         subtotal = qty * price;
-        $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='itemSubtotal[]']").val(subtotal.toFixed(2));
+        $("#addEditTransaction").find(".ic-level-1[data-focus='true']").find("input[name='itemSubtotal[]']").val(subtotal.toFixed(2));
     }
     function populateModalForm(url, id) {
         $.ajax({
@@ -649,7 +620,6 @@
             },
             dataType: 'JSON',
             success: function(data) {
-                console.log(data);
                 if(!data.inputErr){
                     $("#addEditTransaction").find('input[name="tID"]').val(data.transaction[0].tID);
                     $("#addEditTransaction").find('select[name="spID"]').children(`option[value=${data.transaction[0].spID}]`).attr('selected', 'selected');
@@ -660,18 +630,19 @@
                     $("#addEditTransaction").find('textarea[name="tRemarks"]').val(data.transaction[0].tRemarks);
                     data.transitems.forEach(item =>{
                         $("#addItemBtn").trigger("click");
-                        $("#addEditTransaction").find(".inputContainer").last().attr("data-focus",true);
+                        $("#addEditTransaction").find(".ic-level-1").last().attr("data-id",item.tiID);
+                        $("#addEditTransaction").find(".ic-level-1").last().attr("data-focus",true);
                         $("#addEditTransaction").find("input[name='itemName[]']").last().val(item.tiName);
                         $("#addEditTransaction").find("input[name='stID[]']").last().attr("data-id",item.stID);
                         $("#addEditTransaction").find("input[name='stID[]']").last().val(item.stName);
-                        $("#addEditTransaction").find("input[name='actualQty[]']").last().val(item.tiQty);
+                        $("#addEditTransaction").find("input[name='itemQty[]']").last().val(item.tiQty);
                         $("#addEditTransaction").find("input[name='actualQty[]']").last().val(item.tiActualQty);
                         $("#addEditTransaction").find("select[name='itemUnit[]']").last().children(`option[value=${item.uomID}]`).attr("selected","selected");
                         $("#addEditTransaction").find("input[name='itemPrice[]']").last().val(parseFloat(item.tiPrice).toFixed(2));
                         $("#addEditTransaction").find("input[name='itemSubtotal[]']").last().val(parseFloat(item.tiSubtotal).toFixed(2));
                         $("#addEditTransaction").find("select[name='itemStatus[]']").last().children(`option[value='${item.tiStatus}']`).attr("selected","selected");
                         $("#addEditTransaction").find("select[name='actualUnit[]']").last().trigger("change");
-                        $("#addEditTransaction").find(".inputContainer").last().removeAttr("data-focus");
+                        $("#addEditTransaction").find(".ic-level-1").last().removeAttr("data-focus");
                     });
                 }
             },
@@ -689,7 +660,7 @@
             previousVal = $(this).val();
         }).change(function(){
             if(!isNaN(parseInt(previousVal))){
-                $("#addEditTransaction").find(".inputContainerParent").children().remove();
+                $("#addEditTransaction").find(".ic-level-2").children().remove();
             }
             previousVal = $(this).val();
         });
@@ -719,7 +690,7 @@
             setTransactionBrochure(getPOsUrl);
         });
         $("#addDRBtn").on("click",function(){
-            setTransactionBrochure(getDRsandPOsUrl);
+            setTransactionBrochure(getDRsUrl);
         });
     }
     function setTransactionBrochure(url){
@@ -732,7 +703,74 @@
             },
             dataType: "JSON",
             success: function(data){
-                // if(data.transactions.length )
+                if(!data.inputErr){
+                    if(!Array.isArray(data.transactions) && !(data.transactions.length > 0)){
+                        $("#transactionBrochure .ic-level-4").hide();
+                    }else{
+                        $("#transactionBrochure .ic-level-4").show();
+                        $("#transactionBrochure .ic-level-4").append(data.transactions.map(transaction=>{
+                            return `<div>
+                                    <input type="checkbox" name="transaction" value="${transaction.tID}"/>
+                                    <span>Receipt No.: </span><span>${transaction.tNum}</span>
+                                    <span>Transaction Date: </span><span>${transaction.tDate}</span>
+                                    <span>Date Recorded: </span><span>${transaction.dateRecorded}</span>
+                                </div>
+                                <table class="table ic-level-3">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th style="width:2%"></th>
+                                            <th>Item</th>
+                                            <th>Unit</th>
+                                            <th>Qty</th>
+                                            <th>Price</th>
+                                            <th>Subtotal</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="ic-level-2">
+                                        ${data.transitems.filter(item=> item.tID == transaction.tID).map(item=>{
+                                            return `<tr class="ic-level-1">
+                                                    <td><input type="checkbox" name="tiID[]" value="${item.tiID}" data-tID="${item.tID}"></td>
+                                                    <td>${item.tiName}</td>
+                                                    <td>${item.uomAbbreviation}</td>
+                                                    <td>${item.tiQty}</td>
+                                                    <td>${parseFloat(item.tiPrice).toFixed(2)}</td>
+                                                    <td>${parseFloat(item.tiSubtotal).toFixed(2)}</td>
+                                                    <td>${item.tiStatus}</td>
+                                                </tr>`;
+                                        }).join('')}
+                                    </tbody>
+                                </table>`;
+                        }).join(''));
+                        $("#transactionBrochure form").on("submit",function(event){
+                            event.preventDefault();
+                            var selectItems = [];
+                            $(this).find("input[name='tiID[]']:checked").each(function(index){
+                                selectItems.push($(this).val());
+                            });
+                            selectItems = data.transitems.filter(item=> selectItems.includes(item.tiID));
+                            selectItems.forEach(item =>{
+                                $("#addItemBtn").trigger("click");
+                                $("#addEditTransaction").find(".ic-level-1").last().attr("data-id",item.tiID);
+                                $("#addEditTransaction").find(".ic-level-1").last().attr("data-focus",true);
+                                $("#addEditTransaction").find("input[name='itemName[]']").last().val(item.tiName);
+                                $("#addEditTransaction").find("input[name='stID[]']").last().attr("data-id",item.stID);
+                                $("#addEditTransaction").find("input[name='stID[]']").last().val(item.stName);
+                                $("#addEditTransaction").find("input[name='itemQty[]']").last().val(item.tiQty);
+                                $("#addEditTransaction").find("input[name='actualQty[]']").last().val(item.tiActualQty);
+                                $("#addEditTransaction").find("select[name='itemUnit[]']").last().children(`option[value=${item.uomID}]`).attr("selected","selected");
+                                $("#addEditTransaction").find("input[name='itemPrice[]']").last().val(parseFloat(item.tiPrice).toFixed(2));
+                                $("#addEditTransaction").find("input[name='itemSubtotal[]']").last().val(parseFloat(item.tiSubtotal).toFixed(2));
+                                $("#addEditTransaction").find("select[name='itemStatus[]']").last().children(`option[value='${item.tiStatus}']`).attr("selected","selected");
+                                $("#addEditTransaction").find("select[name='actualUnit[]']").last().trigger("change");
+                                $("#addEditTransaction").find(".ic-level-1").last().removeAttr("data-focus");
+                            });
+                            $("#transactionBrochure").modal("hide");
+                        });
+                    }
+                }else{
+                    console.log(data);
+                }
             },
             error: function(response, setting, error) {
                 console.log(response.responseText);
@@ -751,8 +789,8 @@
             dataType: "JSON",
             success: function(data){
                 if(!data.inputErr){
-                    $("#merchandiseBrochure").find(".inputContainerParent").append(data.merchandise.map(merchandise =>{
-                            return `<tr class="inputContainer">
+                    $("#merchandiseBrochure").find(".ic-level-2").append(data.merchandise.map(merchandise =>{
+                            return `<tr class="ic-level-1">
                                 <td><input type="checkbox" name="merchandise" value="${merchandise.spmID}"/></td>
                                 <td>${merchandise.spmName}</td>
                                 <td>${merchandise.uomAbbreviation}</td>
@@ -770,7 +808,7 @@
                         selectedMerch = data.merchandise.filter(merchandise => selectedMerch.includes(merchandise.spmID));
                         selectedMerch.forEach(merch => {
                             $("#addItemBtn").trigger("click");
-                            $("#addEditTransaction").find(".inputContainer").last().attr("data-focus",true);
+                            $("#addEditTransaction").find(".ic-level-1").last().attr("data-focus",true);
                             $("#addEditTransaction").find("input[name='itemName[]']").last().val(merch.spmName);
                             $("#addEditTransaction").find("input[name='stID[]']").last().attr("data-id",merch.stID);
                             $("#addEditTransaction").find("input[name='stID[]']").last().val(merch.stName);
@@ -778,7 +816,7 @@
                             $("#addEditTransaction").find("select[name='itemUnit[]']").last().children(`option[value=${merch.uomID}]`).attr("selected","selected");
                             $("#addEditTransaction").find("input[name='itemPrice[]']").last().val(merch.spmPrice);
                             $("#addEditTransaction").find("select[name='actualUnit[]']").last().trigger("change");
-                            $("#addEditTransaction").find(".inputContainer").last().removeAttr("data-focus");
+                            $("#addEditTransaction").find(".ic-level-1").last().removeAttr("data-focus");
                         });
                         $("#merchandiseBrochure").modal("hide");
                     });

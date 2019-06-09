@@ -1136,7 +1136,7 @@ class Adminmodel extends CI_Model{
         LEFT JOIN supplier USING(spID)
         GROUP BY
             tID
-        ORDER BY tDate DESC;";
+        ORDER BY transactions.tDate DESC;";
         return $this->db->query($query)->result_array();
     }
     function get_transaction($id){
@@ -1453,18 +1453,23 @@ class Adminmodel extends CI_Model{
                 tNum,
                 DATE_FORMAT(tDate, '%b %d, %Y %r') AS tDate,
                 DATE_FORMAT(dateRecorded, '%b %d, %Y %r') AS dateRecorded,
-                tType
+                tType,
+                COUNT(tiID) as tCount
             FROM
-                transactions
-            LEFT JOIN supplier USING(spID)
+                (transactions
+            LEFT JOIN supplier USING(spID)) LEFT JOIN trans_items using(tID)
             WHERE
-                spID = ? AND tType IN ?;";
+                spID = ? AND tType IN ?
+            GROUP BY tID
+            HAVING 
+                COUNT(tiID) > 0;";
         return $this->db->query($query, array($spID, $tTypes))->result_array();
     }
     function get_transitemsBySupplier($spID, $tTypes){
         $query = "SELECT
             spID, tID, tiID, tiName, tiPrice, tiDiscount, tiStatus, tNum, tType,
-            stID, ti.uomID AS uomID, uomAbbreviation, tiQty, tiActualQty
+            stID, CONCAT(stName, IF(stSize IS NULL,'',CONCAT(' ',stSize))) as stName, 
+            ti.uomID AS uomID, uomAbbreviation, tiQty, tiActualQty, tiSubtotal
         FROM
             (
                 (
