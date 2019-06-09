@@ -90,7 +90,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $this->db->query($query)->result_array();
         }
 
-        function get_orderslips($osID){
+        function get_orderslipsDati($osID){
             $query = "select osID, tableCode, custName, osTotal, osDate, if(osPayDate is null, 'Unpaid', 'Paid') as payStatus , osPayDate from orderslips where osID = ?";
             return $this->db->query($query, array($order_id))->result_array();
         }
@@ -152,6 +152,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $this->db->query($query)->result_array();
         }
         //$query2 = "SELECT olID, aoName, aoPrice, olRemarks from orderlists inner join orderaddons using (olID) inner join addons using (aoID)";
+
+        function get_orderslips(){
+            $query = "select osID, custName, tableCode, payStatus from orderslips";
+            return $this->db->query($query)->result_array();
+        }
+        function get_olist(){
+            $query = "select * from orderlists inner join preferences on 
+            orderlists.prID = preferences.prID inner join menu on preferences.mID = menu.mID";
+            return $this->db->query($query)->result_array();
+        }
+        function get_addons(){
+            $query = "select * from orderaddons";
+            return $this->db->query($query)->result_array();
+        }
+        function updateStats($status, $id){
+            $query = "Update orderlists set olStatus = ? where olID = ?";
+            $this->db->query($query, array($status, $id));
+        }
     }
 
 ?>

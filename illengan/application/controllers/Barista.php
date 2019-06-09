@@ -28,9 +28,20 @@ class Barista extends CI_Controller{
        echo json_encode($data);
     }
     function vieworderslip(){
-        $this->load->view('barista/templates/navigation');
-        $this->load->view('barista/orderslip');
+        $data['orderlists'] = $this->baristamodel->get_olist();
+        $this->load->view('barista/orderslip', $data);
     }
+    //function ng cards
+    function getOrderslip(){
+        $data = array(
+            'orderslips' => $this->baristamodel->get_orderslips(),
+            'orderlists' => $this->baristamodel->get_olist(),
+            'addons' => $this->baristamodel->get_addons(),
+        );
+        header('Content-Type: application/json');
+            echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+    
     function viewOrderslipJS(){
         $data =$this->baristamodel->get_orderslip();
         echo json_encode($data);
@@ -160,18 +171,6 @@ class Barista extends CI_Controller{
                 $this->load->view("barista/orderCards", $data);
         }
 
-        function get_slipData(){
-            $this->load->helper->form();
-            $data = array(
-                $slip_id => $this->input->post('osID'),
-                'table_code' => $this->input->post('tableCode'),
-                'customerName' => $this->input->post('custName'),
-                'paymentStatus' => $this->input->post('payStatus'),
-            );
-            $this->load->view('barista/orderCards', $data);
-            //$this->load->view('barista/viewOrderslipJS', $data);
-        }
-
         function orderData(){
             $data= $this->baristamodel->get_ordersData();
             echo json_encode($data);
@@ -186,8 +185,12 @@ class Barista extends CI_Controller{
             $this->baristamodel->update_payment($status,$osID,$custName,$payDate, $date_recorded);
         }
 
-        // function slipCards(){
-        //     $this->load->view('barista/orderslipCards');
-        // }
+        function updateStatus(){
+            $stats = $this->input->post('status');
+            $id = $this->input->post('id');
+            $this->baristamodel->updateStats($stats, $id);
+        }
+
+        
     }
 ?>
