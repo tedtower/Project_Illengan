@@ -296,7 +296,9 @@ class Adminmodel extends CI_Model{
         if($this->db->query($query, array($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spID))){
             if(count($spMerch) > 0){
                 foreach($spMerch as $merch){
-                    if($merch['spmID'] == NULL){
+                if($merch['del'] === 0){
+                    $this->delete_supplierMerchandise($merch['smpID']);
+                }else if($merch['spmID'] == NULL){
                         $this->add_supplierMerchandise($merch, $spID);
                     }else{
                         $this->edit_supplierMerchandise($merch);
@@ -306,6 +308,10 @@ class Adminmodel extends CI_Model{
             return true;
         }
         return false;
+    }
+    function delete_supplier($spmID){
+        $query = "DELETE FROM suppliermerchandise WHERE spmID = ?";
+        return $this->db->query($query, array($smpID));
     }
     
     function edit_supplierMerchandise($merch){
@@ -346,8 +352,7 @@ class Adminmodel extends CI_Model{
             }else{
                 $this->update_poItems($poID, $merchandise);
             }
-        
-           }
+        }
     }
 }
     
@@ -380,8 +385,7 @@ class Adminmodel extends CI_Model{
     // UPDATE FUNCTIONS-------------------------------------------------------------
 
     
-    function edit_sales($osID, $tableCodes, $custName, $osTotal, $payStatus, 
-    $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons) {
+    function edit_sales($osID, $tableCodes, $custName, $osTotal, $payStatus, $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons) {
         $query = "UPDATE orderslips SET tableCode = ?, custName = ?, osTotal = ?, 
         osDateTime = ?, osPayDateTime = ? WHERE orderslips.osID = ?;";
         if($this->db->query($query, array($tableCodes, $custName, $osTotal, $osDateTime, $osPayDateTime, $osID))) {
@@ -401,7 +405,7 @@ class Adminmodel extends CI_Model{
                         'olRemarks' => $orderlists[$i]['olRemarks']
                     );
                     $this->edit_salesorders($orlist, $addons);
-                } else {
+                } else{
                     $orderlist = array();
                     $olist = array(
                         'prID' => $orderlists[$i]['prID'],
@@ -414,7 +418,8 @@ class Adminmodel extends CI_Model{
                     );
                     array_push($orderlist, $olist);
                     $this->add_salesList($osID, $orderlist, $addons);
-                } }   
+                } 
+            }   
         }
     }
 
@@ -923,23 +928,6 @@ class Adminmodel extends CI_Model{
     // }
    
     // }
-    function edit_source($source_id, $source_name, $contact_num, $email,$status){
-        $query = "update sources set source_name = ?, contact_num = ?, email = ?, status = ?  where source_id = ?";
-        return $this->db->query($query,array($source_name, $contact_num, $email,$status,$source_id));
-    }
-    function delete_source($source_id){
-        $query = "Delete from sources where source_id = ?";
-        return $this->db->query($query, array($source_id));
-    }
-
-    function delete_menu($id){
-        $this->db->where("mID", $id);
-        $this->db->delete("menu");
-    }
-    function edit_menu($menu_id, $mName, $ctID, $menu_description, $menu_price, $menu_availability){
-        $query = "update menu set mName = ?, ctID = ?, menu_description = ?, menu_price = ?, menu_availability = ? where menu_id = ?";
-        return $this->db->query($query,array($mName, $ctID, $menu_description, $menu_price, $menu_availability, $menu_id));
-    }
     
     function edit_table($newTableCode, $previousTableCode){
         $query = "Update tables set table_code = ? where table_code = ?;";
