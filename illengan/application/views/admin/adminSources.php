@@ -424,6 +424,8 @@
                 $("#editSupplier form")[0].reset();
                 $("#editSupplier .merchandisetable > tbody").empty();
                 var sourceID = $(this).closest("tr").attr("data-id");
+                console.log("suppplierrr");
+                console.log(supplier);
                 setEditModal($("#editSupplier"), supplier.sources.filter(item => item.spID === sourceID)[0], supplier.merchandises.filter(merchandise => merchandise.spID === sourceID));
             });
         } else {
@@ -456,6 +458,8 @@
     }
 
     function appendAccordion(merchandises) {
+        console.log("merchandises");
+        console.log(merchandises);
         var row = `
     <tr class="accordion" style="display:none;background: #f9f9f9">
         <td colspan="6">
@@ -526,9 +530,15 @@
             <td><img class="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
         </tr>
         `);
+            modal.find(".exitBtn").last().on('click', function() {
+            $(this).closest("tr").remove();
+            });
             modal.find("select[name='variance[]']").last().find(`option[value='${merchandise.stID}']`).attr("selected", "selected");
             modal.find("select[name='merchUnit[]']").last().find(`option[value='${merchandise.uomID}']`).attr("selected", "selected");
         });
+
     }
+
+
 </script>
 </body>

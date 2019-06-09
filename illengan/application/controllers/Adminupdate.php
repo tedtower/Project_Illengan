@@ -76,21 +76,25 @@ class Adminupdate extends CI_Controller{
             redirect('login');
         } 
     }
+    
     function editMenuCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $ctID = $this->input->post('ctID');
             $ctName = $this->input->post('new_name');
-            $this->adminmodel->edit_menucategory($ctID, $ctName);
+            $ctStatus = $this->input->post('new_status');
+            $this->adminmodel->edit_category($ctName, $ctStatus, $ctID);
             redirect('admin/menucategories');
         }else{
             redirect('login');
         }
     }
+
     function editStockCategory(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $ctID = $this->input->post('ctID');
             $ctName = $this->input->post('new_name');
-            $this->adminmodel->edit_stockcategory($ctID, $ctName);
+            $ctStatus = $this->input->post('new_status');
+            $this->adminmodel->edit_category($ctName, $ctStatus, $ctID);
             redirect('admin/stockcategories');
         }else{
             redirect('login');

@@ -177,6 +177,9 @@ $route['admin/inventory/getEnumVals'] = "adminview/getEnumValsForStock";
 $route['admin/inventory/getStockItem'] = "adminview/getStockItem";
 $route['admin/transactions/getEnumVals'] = "adminview/getEnumValsForTransaction";
 $route['admin/transactions/getTransaction'] = "adminview/getTransaction";
+$route['admin/transactions/getPOs'] = "adminview/getPOs";
+$route['admin/transactions/getDRsandPOs'] = "adminview/getDRsandPOs";
+$route['admin/transactions/getSPMs'] = "adminview/getSPMs";
 $route['admin/inventory/getStockItems'] = "adminview/getStockItems";
 $route['admin/inventory/restock'] = "adminadd/addRestockLog";
 //End Admin Json Routes ---------------------------------------
@@ -193,6 +196,7 @@ $route['customer/checkin'] = 'customer/checkIn';
 $route['customer/menu'] = "customer/view";
 $route['customer/json'] = "customer/json";
 $route['customer/menu/removeOrder'] = "customer/removeOrder";
+$route['customer/menu/editOrder'] = "customer/editOrder";
 
 // BARISTA ROUTES
 $route['barista/orders'] = "barista/pendingOrders";
