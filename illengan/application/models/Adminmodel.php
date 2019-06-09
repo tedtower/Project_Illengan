@@ -17,36 +17,36 @@ class Adminmodel extends CI_Model{
         $query = "INSERT into addons (aoName, aoPrice, aoCategory, aoStatus) values (?,?,?,?)";
         return $this->db->query($query,array($aoName, $aoPrice, $aoCategory, $aoStatus));
     }
-    function add_aospoil($date_recorded,$addons){
+    function add_aospoil($date_recorded,$addons,$account_id){
         $query = "insert into aospoil (aosID,aosDateRecorded) values (NULL,?)";
         if($this->db->query($query,array($date_recorded))){ 
-            $this->add_spoiledaddon($this->db->insert_id(),$addons,$date_recorded);
+            $this->add_spoiledaddon($this->db->insert_id(),$addons,$date_recorded,$account_id);
             return true;
         }
     }
-    function add_spoiledaddon($aosID,$addons,$date_recorded){
+    function add_spoiledaddon($aosID,$addons,$date_recorded,$account_id){
         $query = "insert into addonspoil (aosID,aoID,aosQty,aosDate,aosRemarks) values (?,?,?,?,?)";
         if(count($addons) > 0){
             for($in = 0; $in < count($addons) ; $in++){
                 $this->db->query($query, array($aosID, $addons[$in]['aoID'], $addons[$in]['aosQty'],
                 $addons[$in]['aosDate'],$addons[$in]['aosRemarks']));
-                $this->add_actlog(1,$date_recorded, "Admin added an addon spoilage.", "add", $addons[$in]['aosRemarks']);
+                $this->add_actlog($account_id,$date_recorded, "Admin added an addon spoilage.", "add", $addons[$in]['aosRemarks']);
             }    
         }
     }
-    function add_menuspoil($date_recorded,$menu){
+    function add_menuspoil($date_recorded,$menu,$account_id){
         $query = "insert into menuspoil (msID,msDateRecorded) values (NULL,?)";
         if($this->db->query($query,array($date_recorded))){ 
-            $this->add_spoiledmenu($this->db->insert_id(),$menu,$date_recorded);
+            $this->add_spoiledmenu($this->db->insert_id(),$menu,$date_recorded,$account_id);
             return true;
         }
     }
-    function add_spoiledmenu($msID,$menus,$date_recorded){
+    function add_spoiledmenu($msID,$menus,$date_recorded,$account_id){
         $query = "insert into spoiledmenu (msID,prID,msQty,msDate,msRemarks) values (?,?,?,?,?)";
         if(count($menus) > 0){
             for($in = 0; $in < count($menus) ; $in++){
                 $this->db->query($query, array($msID, $menus[$in]['prID'], $menus[$in]['msQty'],$menus[$in]['msDate'],$menus[$in]['msRemarks']));
-                $this->add_actlog(1,$date_recorded, "Admin added a menu spoilage.", "add", $menus[$in]['msRemarks']);
+                $this->add_actlog($account_id,$date_recorded, "Admin added a menu spoilage.", "add", $menus[$in]['msRemarks']);
             }    
         }
     }
@@ -1434,47 +1434,6 @@ class Adminmodel extends CI_Model{
             )
             VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
         return $this->db->query($query, array($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks));
-    }
-    function add_stockLog2($stID, $slType, $date_recorded, $slDateTime, $ssQty, $ssRemarks, $updateQtyh, $updateQtyl,$curSsQty,$ssQtyUpdate){
-        if ($curSsQty > $ssQtyUpdate){
-        $query = "INSERT INTO `stocklog`(
-                `slID`,
-                `stID`,
-                `slType`,
-                `slDateTime`,
-                `dateRecorded`,
-                `slQty`,
-                `slRemarks`
-            )
-            VALUES(NULL, ?, ?, ?, ?, ?, ?);";
-            return $this->db->query($query, array($stID, $slType, $date_recorded, $slDateTime, $updateQtyl, $ssRemarks));
-        }
-        if ($curSsQty < $ssQtyUpdate){
-            $query = "INSERT INTO `stocklog`(
-                `slID`,
-                `stID`,
-                `slType`,
-                `slDateTime`,
-                `dateRecorded`,
-                `slQty`,
-                `slRemarks`
-            )
-            VALUES(NULL, ?, ?, ?, ?, ?, ?);";
-            return $this->db->query($query, array($stID, $slType, $date_recorded, $slDateTime, $updateQtyh, $ssRemarks));
-            
-        }else{
-            $query = "INSERT INTO `stocklog`(
-                `slID`,
-                `stID`,
-                `slType`,
-                `slDateTime`,
-                `dateRecorded`,
-                `slQty`,
-                `slRemarks`
-            )
-            VALUES(NULL, ?, ?, ?, ?, ?, ?);";
-            return $this->db->query($query, array($stID, $slType, $date_recorded, $slDateTime, $ssQty, $ssRemarks));
-        }
     }
 
     function add_stockQty($stID, $stQty){

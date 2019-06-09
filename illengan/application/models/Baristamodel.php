@@ -101,21 +101,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $query = "Select stID,stName,stStatus,stQty from stockitems";
             return $this->db->query($query)->result_array();
         }
-        function restock($stocks){
+        function restock($stocks,$date_recorded,$account_id){
             $query = "Update stockitems set stQty = ? + ? where stID = ?";
             if(count($stocks) > 0){
                 for($in = 0; $in < count($stocks) ; $in++){
                     $this->db->query($query, array($stocks[$in]['curQty'], $stocks[$in]['stQty'], $stocks[$in]['stID'],  )); 
+                    $this->add_stockLog($stocks[$in]['stID'], NULL,"restock", $date_recorded, $stocks[$in]['restock_date'], $stocks[$in]['stQty'], NULL);
+                    $this->add_actlog($account_id,$date_recorded, "Barista performed a restocking of inventory.", "add", NULL);
                 }
             }
         }
-        function destock($stocks){
+        function destock($stocks,$date_recorded,$account_id){
             $query = "Update stockitems set stQty = ? - ? where stID = ?";
             if(count($stocks) > 0){
                 for($in = 0; $in < count($stocks) ; $in++){
-                    $this->db->query($query, array($stocks[$in]['curQty'], $stocks[$in]['stQty'], $stocks[$in]['stID'],  )); 
+                    $this->db->query($query, array($stocks[$in]['curQty'], $stocks[$in]['stQty'], $stocks[$in]['stID'])); 
+                    $this->add_stockLog($stocks[$in]['stID'], NULL,$stocks[$in]['destock_type'], $date_recorded, $stocks[$in]['destock_date'], $stocks[$in]['stQty'], NULL);
+                    $this->add_actlog($account_id,$date_recorded, "Barista performed a destocking  of inventory.", "add", NULL);
                 }
             }
+        }
+        function add_stockLog($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks){
+            $query = "INSERT INTO `stocklog`(
+                    `slID`,
+                    `stID`,
+                    `tID`,
+                    `slType`,
+                    `slDateTime`,
+                    `dateRecorded`,
+                    `slQty`,
+                    `slRemarks`
+                )
+                VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
+            return $this->db->query($query, array($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks));
+        }
+        function add_actlog($aID, $alDate, $alDesc, $defaultType, $additinalRemarks){
+            $query = "INSERT INTO `activitylog`(
+                `alID`,
+                `aID`,
+                `alDate`, 
+                `alDesc`, 
+                `alType`, 
+                `additionalRemarks`
+                ) 
+                VALUES (NULL, ?, ?, ?, ?, ?)";
+                return $this->db->query($query, array($aID, $alDate, $alDesc, $defaultType, $additinalRemarks));
         }
         function update_payment($status,$osID,$custName,$payDate, $date_recorded){
             $query = "Update orderslips set payStatus = ?, osPayDateTime = ?, osDateRecorded = ? where osID = ? AND custName = ?";
