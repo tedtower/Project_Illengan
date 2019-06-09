@@ -377,7 +377,7 @@
     var getTransUrl = '<?= site_url('admin/transactions/getTransaction')?>';
     var loginUrl = '<?= site_url('login')?>';
     var getPOs = '<?= site_url('admin/transactions/getPOs')?>';
-    var getDRs = '<?= site_url('admin/transactions/getDRs')?>';
+    var getDRsandPOs = '<?= site_url('admin/transactions/getDRsandPOs')?>';
     var getSPMs = '<?= site_url('admin/transactions/getSPMs')?>';
     $(function() {
         $("#addBtn").on('click', function(){

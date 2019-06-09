@@ -506,7 +506,7 @@
 
         merchandises.forEach(merchandise => {
             modal.find(".merchandisetable > tbody").append(`
-        <tr data-id="${merchandise.spmID}">
+        <tr data-id="${merchandise.spmID}" class="supplierElem">
             <td><input type="text" name="merchName[]" value="${merchandise.spmName}" class="form-control form-control-sm" required></td>
             <td>
                 <select class="form-control" name="merchUnit[]" required>
@@ -527,7 +527,7 @@
                     }).join('')}
             </select>
             </td>
-            <td><img class="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+            <td><img class="exitBtn" onclick="deleteItem(this)" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
         </tr>
         `);
             modal.find(".exitBtn").last().on('click', function() {
@@ -537,6 +537,11 @@
             modal.find("select[name='merchUnit[]']").last().find(`option[value='${merchandise.uomID}']`).attr("selected", "selected");
         });
 
+    }
+
+    function deleteItem(element){
+        var el = $(element).closest("tr");
+        
     }
 
 

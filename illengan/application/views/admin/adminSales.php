@@ -392,7 +392,7 @@ var sales = [];
             }
         });
 
-        $("#addMenuItem").on('click',function(){
+        $(".addMenuItem").on('click',function(){
             setBrochureContent(menuItems);
         });
         
@@ -689,7 +689,7 @@ $(document).ready(function() {
             addons.push({
                 prID: row.find("input[name='aoprID']").val(),
                 olID:  isNaN(parseInt(row.attr('data-id'))) ?  (null) : parseInt(row.attr('data-id')),
-                oldaoID: parseInt((row.find("input[name='oldaoID']").val()).trim()),
+                oldaoID: isNaN(parseInt(row.find("input[name='oldaoID']").val())) ?  (null): parseInt(row.find("input[name='oldaoID']").val()),
                 aoID :  parseInt((row.find("select[name='aoID']").val()).trim()),
                 aoQty: row.find("input[name='aoQty']").val(),
                 aoTotal: row.find("input[name='aoSubtotal']").val(),
