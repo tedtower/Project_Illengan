@@ -27,19 +27,9 @@ class Barista extends CI_Controller{
        $data= $this->baristamodel->get_servedOrders();
        echo json_encode($data);
     }
-    function vieworderslip(){
-        $data['orderlists'] = $this->baristamodel->get_olist();
-        $this->load->view('barista/orderslip', $data);
-    }
-    //function ng cards
-    function getOrderslip(){
-        $data = array(
-            'orderslips' => $this->baristamodel->get_orderslips(),
-            'orderlists' => $this->baristamodel->get_olist(),
-            'addons' => $this->baristamodel->get_addons(),
-        );
-        header('Content-Type: application/json');
-            echo json_encode($data, JSON_PRETTY_PRINT);
+    function vieworderslipi(){
+        $this->load->view('barista/templates/navigation');
+        $this->load->view('barista/orderslip');
     }
     
     function viewOrderslipJS(){
@@ -189,13 +179,25 @@ class Barista extends CI_Controller{
             $date_recorded = date("Y-m-d H:i:s");
             $this->baristamodel->update_payment($status,$osID,$custName,$payDate, $date_recorded);
         }
-
+        
+        //function ng cards
+        function vieworderslip(){
+            $data['orderlists'] = $this->baristamodel->get_olist();
+            $this->load->view('barista/orderslip', $data);
+        }
+        function getOrderslip(){
+            $data = array(
+                'orderslips' => $this->baristamodel->get_orderslips(),
+                'orderlists' => $this->baristamodel->get_olist(),
+                'addons' => $this->baristamodel->get_addons(),
+            );
+            header('Content-Type: application/json');
+                echo json_encode($data, JSON_PRETTY_PRINT);
+        }
         function updateStatus(){
             $stats = $this->input->post('status');
             $id = $this->input->post('id');
             $this->baristamodel->updateStats($stats, $id);
         }
-
-        
     }
 ?>
