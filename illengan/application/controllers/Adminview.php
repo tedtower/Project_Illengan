@@ -630,10 +630,16 @@ function viewSpoilagesStock(){
     function getTransaction(){
         if($this->checkIfLoggedIn()){
             $id = $this->input->post('id');
-            echo json_encode(array(
-                "transaction" => $this->adminmodel->get_transaction($id),
-                "transitems" => $this->adminmodel->get_transitems($id)
-            ));
+            if(is_numeric($id)){
+                echo json_encode(array(
+                    "transaction" => $this->adminmodel->get_transaction($id),
+                    "transitems" => $this->adminmodel->get_transitems($id)
+                ));
+            }else{
+                echo json_encode(array(
+                    "inputErr" => true
+                ));
+            }
         }else{
             echo json_encode(array(
                 "sessErr" => true
@@ -661,7 +667,7 @@ function viewSpoilagesStock(){
                 ));
             }else{
                 echo json_encode(array(
-                    "inErr" => true
+                    "inputErr" => true
                 ));
             }
         }else{
@@ -680,7 +686,7 @@ function viewSpoilagesStock(){
                 ));
             }else{
                 echo json_encode(array(
-                    "inErr" => true
+                    "inputErr" => true
                 ));
             }
         }else{
@@ -691,7 +697,16 @@ function viewSpoilagesStock(){
     }
     function getSPMs(){
         if($this->checkIfLoggedIn()){
-            echo json_encode($this->adminmodel->get_stocks());
+            $spID = $this->input->post('supplier');
+            if(is_numeric($spID)){
+                echo json_encode(array(
+                    "merchandise" => $this->adminmodel->get_SPMs($spID)
+                ));
+            }else{
+                echo json_encode(array(
+                    "inputErr" => true
+                ));
+            }
         }else{
             echo json_encode(array(
                 "sessErr" => true

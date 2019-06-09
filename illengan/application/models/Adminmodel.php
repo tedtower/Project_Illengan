@@ -1164,7 +1164,7 @@ class Adminmodel extends CI_Model{
         LEFT JOIN supplier USING(spID)
         WHERE 
             tID = ?;";
-        return $this->db->query($query, arrray($id))->result_array();
+        return $this->db->query($query, array($id))->result_array();
     }
     function get_transitems($id=null){
         if($id == null){
@@ -1192,28 +1192,31 @@ class Adminmodel extends CI_Model{
             return $this->db->query($query)->result_array();
         }else{
             $query = "SELECT
-                tID,
-                tiID,
-                tiName,
-                tiQty,
-                tiActualQty,
-                uomID,
-                uomAbbreviation,
-                tiPrice,
-                tiDiscount,
-                tiSubtotal,
-                tiStatus
-            FROM
-                (
+                    tID, tiID, tiName, tiQty, tiActualQty, transitems.uomID,
+                    uomAbbreviation, tiPrice, tiDiscount, tiSubtotal, tiStatus, stID,
+                    CONCAT(
+                        stName,
+                        IF(
+                            stSize IS NULL,
+                            '',
+                            CONCAT(' ', stSize)
+                        )
+                    ) AS stName
+                FROM
                     (
-                        transitems
-                    LEFT JOIN uom USING(uomID)
+                        (
+                            (
+                                transitems
+                            LEFT JOIN stockitems USING(stID)
+                            )
+                        LEFT JOIN uom ON
+                            (transitems.uomID = uom.uomID)
+                        )
+                    LEFT JOIN trans_items USING(tiID)
                     )
-                LEFT JOIN trans_items USING(tiID)
-                )
-            LEFT JOIN transactions USING(tID)
-            WHERE
-                tID = ?;";
+                LEFT JOIN transactions USING(tID)
+                WHERE
+                    tID = ?;";
             return $this->db->query($query,array($id))->result_array();
         }
     } 
@@ -1482,7 +1485,7 @@ class Adminmodel extends CI_Model{
             )
         LEFT JOIN uom on (suppliermerchandise.uomID = uom.uomID) 
         WHERE spID = ?";
-        return $this->db->query($query, array($spID));
+        return $this->db->query($query, array($spID))->result_array();
     }
     function get_transactionsBySupplier($spID, $tTypes){
         $query = "SELECT
