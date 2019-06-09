@@ -155,12 +155,17 @@ class Barista extends CI_Controller{
         function restockitem(){
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
-            $this->baristamodel->restock($stocks);
+            $date_recorded = date("Y-m-d H:i:s");
+            $account_id = $_SESSION["user_id"];
+            $this->baristamodel->restock($stocks,$date_recorded,$account_id);
         }
         function destockitem(){
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
-            $this->baristamodel->destock($stocks);
+            $date_recorded = date("Y-m-d H:i:s");
+            $account_id = $_SESSION["user_id"];
+            $this->baristamodel->destock($stocks,$date_recorded,$account_id);
+            
         }
 
         //barista functions for orderslips-cards

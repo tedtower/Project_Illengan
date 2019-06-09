@@ -17,7 +17,8 @@ class Adminadd extends CI_Controller{
             $password = password_hash($this->input->post("password"),PASSWORD_DEFAULT);
             $username = $this->input->post("aUsername");
             $aType = $this->input->post("aType");
-
+            $date_recorded = date("Y-m-d H:i:s");
+            $account_id = $_SESSION["user_id"];
         // if($this->form_validation->run()){
         //     $data = array(
         //         'aPassword'=>$password,
@@ -34,6 +35,8 @@ class Adminadd extends CI_Controller{
                 'aType'=>$aType
             );
             $this->adminmodel->add_accounts($data);
+            $this->adminmodel->add_actlog($account_id,$date_recorded, "Admin added account $username .", "add", NULL);
+
             redirect('admin/accounts');
         // }
     }
@@ -297,8 +300,10 @@ class Adminadd extends CI_Controller{
             $this->load->model('adminmodel');
             $date_recorded = date("Y-m-d H:i:s");
             $addons = json_decode($this->input->post('addons'), true);
+            $account_id = $_SESSION["user_id"];
+
             echo json_encode($addons, true);
-            $this->adminmodel->add_aospoil($date_recorded,$addons);
+            $this->adminmodel->add_aospoil($date_recorded,$addons,$account_id);
            
         }else{
             redirect('login');
@@ -309,8 +314,10 @@ class Adminadd extends CI_Controller{
             $this->load->model('adminmodel');
             $date_recorded = date("Y-m-d H:i:s");
             $menus = json_decode($this->input->post('menus'), true);
+            $account_id = $_SESSION["user_id"];
+
             echo json_encode($menus, true);
-            $this->adminmodel->add_menuspoil($date_recorded,$menus);
+            $this->adminmodel->add_menuspoil($date_recorded,$menus,$account_id);
            
         }else{
             redirect('login');
@@ -323,6 +330,7 @@ class Adminadd extends CI_Controller{
             $slType = "spoilage";
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
+            
             $this->adminmodel->add_stockspoil($date_recorded,$stocks,$slType);
             
         }else{
@@ -417,3 +425,35 @@ class Adminadd extends CI_Controller{
 
 }
 ?>
+
+var btn = el.find(".addAddons");
+    btn.attr("onclick", " ");
+
+   
+    if($(el).hasClass("salesElem")) {
+        $(el).attr("data-delete", "0");
+        $(el).attr("class", "deleted");
+        
+        console.log("Order Item");
+    } else if($(el).hasClass("addonsTable")) {
+        $(el).attr("data-delete", "0");
+        $(el).attr("class", "deleted");
+
+        console.log("Addons");
+
+    } else {
+        return false;
+    }
+
+    try {
+        if($(el).next(".addonsTable") != null) {
+            nextTr = $(el).nextAll(".salesElem");
+            addonEl = $(el).nextUntil(nextTr, "tr");
+            for(var i = 0; i <= addonEl.length-1; i++) {
+                addonEl[i].style.textDecoration = "line-through";
+                addonEl[i].style.opacity = "0.5";
+            }
+        }
+    } catch(error) {
+
+    }
