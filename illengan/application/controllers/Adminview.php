@@ -626,7 +626,6 @@ function viewSpoilagesStock(){
             ));
         }
     }
-
     function getTransaction(){
         if($this->checkIfLoggedIn()){
             $id = $this->input->post('id');
@@ -656,26 +655,6 @@ function viewSpoilagesStock(){
             ));
         }
     }
-
-    function getPOs(){
-        if($this->checkIfLoggedIn()){
-            $spID = $this->input->post('supplier');
-            if(is_numeric($spID)){
-                echo json_encode(array(
-                    "transactions" => $this->adminmodel->get_transactionsBySupplier($spID, array("purchase order")),
-                    "transitems" =>  $this->adminmodel->get_transitemsBySupplier($spID, array("purchase order"))
-                ));
-            }else{
-                echo json_encode(array(
-                    "inputErr" => true
-                ));
-            }
-        }else{
-            echo json_encode(array(
-                "sessErr" => true
-            ));
-        }
-    }
     function getDRs(){
         if($this->checkIfLoggedIn()){
             $spID = $this->input->post('supplier');
@@ -695,6 +674,26 @@ function viewSpoilagesStock(){
             ));
         }
     }
+    function getPOs(){
+        if($this->checkIfLoggedIn()){
+            $spID = $this->input->post('supplier');
+            if(is_numeric($spID)){
+                echo json_encode(array(
+                    "transactions" => $this->adminmodel->get_transactionsBySupplier($spID, array("purchase order")),
+                    "transitems" =>  $this->adminmodel->get_transitemsBySupplier($spID, array("purchase order"))
+                ));
+            }else{
+                echo json_encode(array(
+                    "inputErr" => true
+                ));
+            }
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
+
     function getSPMs(){
         if($this->checkIfLoggedIn()){
             $spID = $this->input->post('supplier');

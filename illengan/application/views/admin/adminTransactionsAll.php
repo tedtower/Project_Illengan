@@ -45,7 +45,7 @@
                                             <td>&#8369; <?=$transaction['tTotal']?></td>
                                             <td>
                                                 <button class="editBtn btn btn-sm btn-secondary" data-toggle="modal"
-                                                    data-target="#addEditTransaction">Edit</button>
+                                                    data-target="#editTransaction">Edit</button>
                                                 <button class="deleteBtn btn btn-sm btn-warning" data-toggle="modal"
                                                     data-target="#delete">Archived</button>
                                             </td>
@@ -188,9 +188,6 @@
                                                     <!--Transaction Items-->
                                                     <a id="addItemBtn" class="btn btn-primary btn-sm" data-original-title
                                                         style="margin:0;color:white;font-weight:600;background:#0073e6">Add Unknown Item</a>
-                                                    <a id="addMBtn" class="btn btn-primary btn-sm" data-toggle="modal"
-                                                        data-target="#merchandiseBrochure"  data-original-title
-                                                        style="margin:0;color:white;font-weight:600;background:#0073e6">Add Merchandise</a>
                                                     <!--Transaction PO Items-->
                                                     <a id="addPOBtn" class="btn btn-primary btn-sm" data-toggle="modal"
                                                         data-target="#transactionBrochure"
@@ -386,11 +383,41 @@
     var getDRsUrl = '<?= site_url('admin/transactions/getDRs')?>';
     var getSPMsUrl = '<?= site_url('admin/transactions/getSPMs')?>';
     $(function() {
-        $("#addBtn").on("click", function(){
-            setAddEditBtnHandlers();
+        $("#addBtn").on('click', function(){
+            var previousVal;
+            $("#addEditTransaction form")[0].reset();
+            $("#addPOBtn").prop("disabled",true);
+            $("#addDRBtn").prop("disabled",true);
+            $('#addEditTransaction').find("select[name='spID']").on("focus",function(){
+                previousVal = $(this).val();
+            }).change(function(){
+                if(!isNaN(parseInt(previousVal))){
+                    $("#addEditTransaction").find(".inputContainerParent").children().remove();
+                }
+                previousVal = $(this).val();
+            });
+            $("#addEditTransaction").find("select[name='tType']").on("change",function(){
+                switch($(this).val()){
+                    case "purchase order" : 
+                        $("#addPOBtn").prop("disabled",true);
+                        $("#addDRBtn").prop("disabled",true);
+                        break;
+                    case "delivery receipt" :
+                        $("#addPOBtn").prop("disabled",false);
+                        $("#addDRBtn").prop("disabled",true);
+                        break;
+                    case "official receipt" :
+                        $("#addPOBtn").prop("disabled",false);
+                        $("#addDRBtn").prop("disabled",false);
+                        break;
+                    default:
+                        break;
+                }
+            });
+            $("#addEditTransaction").find(".inputContainerParent").children().remove();
+            getEnumVals(getEnumValsUrl);
         });
         $('#addEditTransaction').on('hidden.bs.modal', function () {
-            $("#addEditTransaction form")[0].reset();
             $(this).find("select[name='spID']").off('change');
             $("#addItemBtn").off('click');
             $("#addPOBtn").off('click');
@@ -409,8 +436,18 @@
         });
         $(".editBtn").on('click', function() {
             var id = $(this).closest("tr").attr("data-id");
-            setAddEditBtnHandlers();
-            populateModalForm(getTransUrl, id);
+            $("#addEditTransaction form")[0].reset();
+            $("#inputContainerParent").children().remove();
+            $("#addItemBtn").unbind();
+            getEnumVals(getEnumValsUrl);
+        });
+        $("#stockBrochure form").on('submit',function(event){
+            event.preventDefault();
+            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='stID[]']").val($(this).find("input[name='stocks']:checked").attr("data-name"));
+            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("input[name='stID[]']").attr("data-id", $(this).find("input[name='stocks']:checked").val());
+            $("#addEditTransaction").find(".inputContainer[data-focus='true']").find("select[name='actualUnit[]']").trigger('change');
+            $(this)[0].reset();
+            $("#stockBrochure").modal("hide");
         });
         $("#addEditTransaction form").on('submit', function(event) {
             event.preventDefault();
@@ -830,5 +867,5 @@
             }
         });
     }
-</script>
+    </script>
 </body>

@@ -169,9 +169,16 @@
                                                         <input type="text" name="new_password" id="new_password" class="form-control form-control-sm" required>
                                                         <span class="text-danger"><?php echo form_error("new_password"); ?></span>
                                                     </div>
-                                                   
+                                                    <!-- Confirm Password
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                                Confirm Password</span>
+                                                        </div>
+                                                        <input type="text" name="new_confirm_password" id="new_confirm_password" class="form-control form-control-sm" required>
+                                                        <span class="text-danger"><?php echo form_error("new_confirm_password"); ?></span>
+                                                    </div> -->
                                                     <input name="accountId" hidden="hidden">
-                                                    <input name="username" hidden="hidden">
                                                     <!--Footer-->
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
@@ -288,7 +295,7 @@
         }
         accounts.forEach(table => {
             $("#accountsTable> tbody").append(`
-            <tr data-id="${table.aID}" data-aUsername ="${table.aUsername}">
+            <tr data-id="${table.aID}">
                 <td>${table.aID}</td>
                 <td>${table.aType}</td>
                 <td>${table.aUsername}</td>
@@ -313,15 +320,10 @@
             $(".updateBtn").last().on('click', function() {
                 $("#editAccount").find("input[name='accountId']").val($(this).closest("tr").attr(
                     "data-id"));
-                $("#editAccount").find("input[name='new_aUsername']").val($(this).closest("tr").attr(
-                    "data-aUsername"));
-
             });
             $(".updatePassBtn").last().on('click', function() {
                 $("#editPassword").find("input[name='accountId']").val($(this).closest("tr").attr(
                     "data-id"));
-                $("#editPassword").find("input[name='username']").val($(this).closest("tr").attr(
-                    "data-aUsername"));
             });
             $(".item_delete").last().on('click', function() {
                 $("#deleteAccountId").text(
@@ -335,8 +337,7 @@
     $(document).ready(function() {
     $("#editPassword form").on('submit', function(event) {
 		event.preventDefault();
-        var aID = $(this).find("input[name='accountId']").val();
-        var username = $(this).find("input[name='username']").val();
+		var aID = $(this).find("input[name='accountId']").val();
         var new_password = $(this).find("input[name='new_password']").val();
         $.ajax({
             url: "<?= site_url("admin/accounts/changepassword")?>",
@@ -344,7 +345,6 @@
             data: {
 				aID: aID,
                 new_password : new_password,
-                username : username
             },
             dataType: "json",
             success: function(data) {

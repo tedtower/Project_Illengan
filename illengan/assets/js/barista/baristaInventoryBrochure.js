@@ -38,7 +38,6 @@ function getRestockStocks() {
 var elements;
 function addRestockItems() {
     elements = document.getElementsByClassName('stockelem');
-    var restock_date = document.getElementById('restock_date').value;
     var stockItems = [];
     var stocks = [];
     var stID,stQty,curQty;
@@ -50,7 +49,6 @@ function addRestockItems() {
             'curQty': curQty,
             'stID': stID,
             'stQty': stQty,
-            'restock_date':restock_date,
         };
         stocks.push(stockItems);
     }
@@ -112,8 +110,6 @@ function getDestockStocks() {
 var elements2;
 function addDestockItems() {
     elements2 = document.getElementsByClassName('stockelem');
-    var destock_type = document.getElementById('destock_type').value;
-    var destock_date = document.getElementById('destock_date').value;
     var stockItems = [];
     var stocks = [];
     var stID,stQty,curQty;
@@ -121,16 +117,12 @@ function addDestockItems() {
         stID = document.getElementsByName('stID')[i].value;
         stQty = document.getElementsByName('stQty')[i].value;
         curQty = document.getElementsByName('curQty')[i].value;
-
         stockItems = {
             'stID': stID,
             'stQty': stQty,
             'curQty': curQty,
-            'destock_date':destock_date,
-            'destock_type': destock_type
         };
         stocks.push(stockItems);
-        console.log(stocks);
     }
     $.ajax({
         type: 'POST',
