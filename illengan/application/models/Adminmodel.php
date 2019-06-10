@@ -1364,7 +1364,6 @@ class Adminmodel extends CI_Model{
             VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
         return $this->db->query($query, array($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks));
     }
-
     function add_stockQty($stID, $stQty){
         $query = "UPDATE stockitems
         SET
