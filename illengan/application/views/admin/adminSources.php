@@ -173,6 +173,7 @@
                                                         <option value="">Choose</option>
                                                         <option value="active">Active</option>
                                                         <option value="inactive">Inactive</option>
+                                                        <option value="archived" hidden="hidden">Archive</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -215,7 +216,7 @@
                     <!--End of Edit Modal-->
 
                     <!--Start of Delete Modal-->
-                    <div class="modal fade" id="deleteSource" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" id="deleteSupplier" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -226,9 +227,9 @@
                                 </div>
                                 <form id="confirmDelete">
                                     <div class="modal-body">
-                                        <h6 id="deleteTableCode"></h6>
-                                        <p>Are you sure you want to delete this source?</p>
-                                        <input type="text" name="" hidden="hidden">
+                                        <h6 id="deleteSupplierItem"></h6>
+                                        <p>Are you sure you want to delete this supplier?</p>
+                                        <input type="text" name="supplierID" hidden="hidden">
                                         <div>
                                             Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm">
                                         </div>
@@ -362,7 +363,8 @@
                     merchUnit: row.find("select[name='merchUnit[]']").val(),
                     merchActualQty: row.find("input[name='merchActualQty[]']").val(),
                     merchPrice: parseFloat(row.find("input[name='merchPrice[]']").val()),
-                    stID: parseInt($(this).find("select[name='variance[]']").eq(index).val())
+                    stID: parseInt($(this).find("select[name='variance[]']").eq(index).val()),
+                    del: isNaN(parseInt(row.attr('data-delete'))) ?  (null) : parseInt(row.attr('data-delete'))
                 });
             }
 
@@ -424,10 +426,18 @@
                 $("#editSupplier form")[0].reset();
                 $("#editSupplier .merchandisetable > tbody").empty();
                 var sourceID = $(this).closest("tr").attr("data-id");
-                console.log("suppplierrr");
-                console.log(supplier);
                 setEditModal($("#editSupplier"), supplier.sources.filter(item => item.spID === sourceID)[0], supplier.merchandises.filter(merchandise => merchandise.spID === sourceID));
             });
+
+            $('.deleteBtn').on('click',function() {
+            var id = $(this).attr("id");
+            $("#deleteSupplierItem").text(`Supplier Name:  ${$(this).attr("data-name")}`);
+            // $("#deleteAddon").find("input[name='addonID']").val($(this).attr("data-id"));
+            $("#confirmDelete").on('submit', function(event) {
+                event.preventDefault();
+                window.location = "<?php echo base_url();?>/admin/source/delete/" + id;
+            });
+        });
         } else {
             $("#suppliertable > tbody").empty();
         }
@@ -445,8 +455,7 @@
         <td>
             <button class="editBtn btn btn-secondary btn-sm" data-toggle="modal"
                 data-target="#editSupplier">Edit</button>
-            <button class="deleteBtn btn btn-warning btn-sm" data-toggle="modal"
-                data-target="#deleteStock">Archive</button>
+            <button class="deleteBtn btn btn-warning btn-sm" data-toggle="modal" data-target="#deleteSupplier" id="${source.spID}" data-name="${source.spName}">Archive</button>
         </td>
     </tr>`}`;
         if (nullVal) {
@@ -458,8 +467,6 @@
     }
 
     function appendAccordion(merchandises) {
-        console.log("merchandises");
-        console.log(merchandises);
         var row = `
     <tr class="accordion" style="display:none;background: #f9f9f9">
         <td colspan="6">
@@ -506,7 +513,7 @@
 
         merchandises.forEach(merchandise => {
             modal.find(".merchandisetable > tbody").append(`
-        <tr data-id="${merchandise.spmID}" class="supplierElem">
+        <tr class="supplierElem" data-id="${merchandise.spmID}">
             <td><input type="text" name="merchName[]" value="${merchandise.spmName}" class="form-control form-control-sm" required></td>
             <td>
                 <select class="form-control" name="merchUnit[]" required>
@@ -527,23 +534,29 @@
                     }).join('')}
             </select>
             </td>
-            <td><img class="exitBtn" onclick="deleteItem(this)" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+            <td><img class="exitBtn delBtn" onclick="deleteItem(this)" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
         </tr>
         `);
-            modal.find(".exitBtn").last().on('click', function() {
-            $(this).closest("tr").remove();
-            });
             modal.find("select[name='variance[]']").last().find(`option[value='${merchandise.stID}']`).attr("selected", "selected");
             modal.find("select[name='merchUnit[]']").last().find(`option[value='${merchandise.uomID}']`).attr("selected", "selected");
         });
 
     }
 
-    function deleteItem(element){
+    function deleteItem(element) {
         var el = $(element).closest("tr");
-        
+        $(el).attr("data-delete", "0");
+        $(el).addClass("deleted");
+
+        $(".deleted").find("input").attr("disabled", "disabled");
+        $(".deleted").find("input").removeAttr("class");
+        $(".deleted").find("input").addClass("form-control form-control-sm");
+
+        var deleted = $(".deleted");
+        for(var i = 0; i <= deleted.length - 1; i++) {
+            deleted[i].style.textDecoration = "line-through";
+            deleted[i].style.opacity = "0.6";
+        }
     }
-
-
 </script>
 </body>

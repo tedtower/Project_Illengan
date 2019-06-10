@@ -35,6 +35,15 @@ class Admindelete extends CI_Controller{
             redirect('login');
         }    
     }
+    function deleteMenu($id){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+                $this->adminmodel->delete_menu($id);
+                redirect('admin/menu');
+            
+        }else{
+            redirect('login');
+        }    
+    }
     function deleteMenuCategory($id){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $this->adminmodel->delete_category($id);
@@ -117,10 +126,10 @@ class Admindelete extends CI_Controller{
             redirect('login');
         }
     }    
-    function deleteSource($source_id){
+    function deleteSource($id){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
-            if($this->adminmodel->delete_supplier($source_id)){
-                redirect('admin/sources');
+            if($this->adminmodel->delete_supplier($id)){
+                redirect('admin/supplier');
             }else{
                 echo "There was an error";
             }
