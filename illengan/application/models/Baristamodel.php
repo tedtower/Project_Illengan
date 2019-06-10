@@ -200,20 +200,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $query = "Update orderlists set olStatus = ? where olID = ?";
             $this->db->query($query, array($status, $id));
         }
-        function add_stockLog($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks){
-            $query = "INSERT INTO `stocklog`(
-                    `slID`,
-                    `stID`,
-                    `tID`,
-                    `slType`,
-                    `slDateTime`,
-                    `dateRecorded`,
-                    `slQty`,
-                    `slRemarks`
-                )
-                VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
-            return $this->db->query($query, array($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks));
-        }
         function add_actlog($aID, $alDate, $alDesc, $defaultType, $additinalRemarks){
             $query = "INSERT INTO `activitylog`(
                 `alID`,
