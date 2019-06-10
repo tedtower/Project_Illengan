@@ -1372,6 +1372,18 @@ class Adminmodel extends CI_Model{
             VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
         return $this->db->query($query, array($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks));
     }
+    function add_actlog($aID, $alDate, $alDesc, $defaultType, $additinalRemarks){
+        $query = "INSERT INTO `activitylog`(
+            `alID`,
+            `aID`,
+            `alDate`, 
+            `alDesc`, 
+            `alType`, 
+            `additionalRemarks`
+            ) 
+            VALUES (NULL, ?, ?, ?, ?, ?)";
+            return $this->db->query($query, array($aID, $alDate, $alDesc, $defaultType, $additinalRemarks));
+    }
     function add_stockQty($stID, $stQty){
         $query = "UPDATE stockitems
         SET
