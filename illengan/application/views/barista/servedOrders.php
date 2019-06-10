@@ -22,7 +22,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   </head>
 <body>
 <?php include_once('headernav.php') ?>
-  <br>
   <div class="container">
             <table  class="pendOrders dtr-inline collapsed table display" id="servedordersTable" >
                 <thead>
@@ -41,43 +40,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </tbody>
             </table>
     </div>
+    
         
 
-
-<!-- MODAL EDIT 
-<form>
-            <div class="modal fade" id="Modal_Edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Table Code</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                        <div class="form-group row">
-                            <label class="col-md-2 col-form-label">Order Id</label>
-                            <div class="col-md-10">
-                              <input type="text" name="order_id_edit" id="order_id_edit" class="form-control" placeholder="Order Id" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-2 col-form-label">New Table Code</label>
-                            <div class="col-md-10">
-                              <input type="text" name="table_code_edit" id="table_code_edit" class="form-control" placeholder="New Table Code">
-                            </div>
-                        </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" type="submit" id="btn_update" class="btn btn-primary">Update</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            </form>
-        END MODAL EDIT-->
 
         <!--MODAL DELETE
         <form>

@@ -27,10 +27,11 @@ class Barista extends CI_Controller{
        $data= $this->baristamodel->get_servedOrders();
        echo json_encode($data);
     }
-    function vieworderslip(){
+    function vieworderslipi(){
         $this->load->view('barista/templates/navigation');
         $this->load->view('barista/orderslip');
     }
+    
     function viewOrderslipJS(){
         $data =$this->baristamodel->get_orderslip();
         echo json_encode($data);
@@ -89,13 +90,12 @@ class Barista extends CI_Controller{
         $format = "%Y-%m-%d %h:%i %A";
         echo mdate($format);
     }
+
     function change_status() {
-        $item_status = $this->input->post('olStatus');
         $olID = $this->input->post('olID');
-        $osID = $this->input->post('osID');
+		$order_status = $this->input->post('olStatus');
+		$this->baristamodel->update_status( $order_status, $olID);
         
-        $this->baristamodel->update_status($osID, $olID, $item_status);
-        $this->get_orderlist();
     }
     function cancel(){
         $data=$this->baristamodel->cancelOrder();
@@ -161,16 +161,16 @@ class Barista extends CI_Controller{
         //barista functions for orderslips-cards
 
         function sample(){
-            $this->load->view('barista/orderCards');
+            $this->load->view('barista/templates/navigation'); 
+                $data["slip"] = $this->baristamodel->slipData();
+                $this->load->view("barista/orderCards", $data);
         }
 
-        function get_slipData(){
-            $slipID = $this->input->post('osID');
-            $customerName = $this->input->post('custName');
-            $table_code = $this->input->post('tableCode');
-            $status = $this->input->post('payStatus');
-            $this->load->baristamodel->get_slip_data();
+        function orderData(){
+            $data= $this->baristamodel->get_ordersData();
+            echo json_encode($data);
         }
+
         function updatePayment(){
             $status = "paid";
             $osID = $this->input->post('osID');
@@ -178,6 +178,26 @@ class Barista extends CI_Controller{
             $payDate = date("Y-m-d H:i:s");
             $date_recorded = date("Y-m-d H:i:s");
             $this->baristamodel->update_payment($status,$osID,$custName,$payDate, $date_recorded);
+        }
+        
+        //function ng cards
+        function vieworderslip(){
+            $data['orderlists'] = $this->baristamodel->get_olist();
+            $this->load->view('barista/orderslip', $data);
+        }
+        function getOrderslip(){
+            $data = array(
+                'orderslips' => $this->baristamodel->get_orderslips(),
+                'orderlists' => $this->baristamodel->get_olist(),
+                'addons' => $this->baristamodel->get_addons(),
+            );
+            header('Content-Type: application/json');
+                echo json_encode($data, JSON_PRETTY_PRINT);
+        }
+        function updateStatus(){
+            $stats = $this->input->post('status');
+            $id = $this->input->post('id');
+            $this->baristamodel->updateStats($stats, $id);
         }
     }
 ?>

@@ -626,14 +626,19 @@ function viewSpoilagesStock(){
             ));
         }
     }
-
     function getTransaction(){
         if($this->checkIfLoggedIn()){
             $id = $this->input->post('id');
-            echo json_encode(array(
-                "transaction" => $this->adminmodel->get_transaction($id),
-                "transitems" => $this->adminmodel->get_transitems($id)
-            ));
+            if(is_numeric($id)){
+                echo json_encode(array(
+                    "transaction" => $this->adminmodel->get_transaction($id),
+                    "transitems" => $this->adminmodel->get_transitems($id)
+                ));
+            }else{
+                echo json_encode(array(
+                    "inputErr" => true
+                ));
+            }
         }else{
             echo json_encode(array(
                 "sessErr" => true
@@ -650,7 +655,25 @@ function viewSpoilagesStock(){
             ));
         }
     }
-
+    function getDRs(){
+        if($this->checkIfLoggedIn()){
+            $spID = $this->input->post('supplier');
+            if(is_numeric($spID)){
+                echo json_encode(array(
+                    "transactions" => $this->adminmodel->get_transactionsBySupplier($spID, array("delivery receipt")),
+                    "transitems" =>  $this->adminmodel->get_transitemsBySupplier($spID, array("delivery receipt"))
+                ));
+            }else{
+                echo json_encode(array(
+                    "inputErr" => true
+                ));
+            }
+        }else{
+            echo json_encode(array(
+                "sessErr" => true
+            ));
+        }
+    }
     function getPOs(){
         if($this->checkIfLoggedIn()){
             $spID = $this->input->post('supplier');
@@ -661,7 +684,7 @@ function viewSpoilagesStock(){
                 ));
             }else{
                 echo json_encode(array(
-                    "inErr" => true
+                    "inputErr" => true
                 ));
             }
         }else{
@@ -670,28 +693,19 @@ function viewSpoilagesStock(){
             ));
         }
     }
-    function getDRsandPOs(){
+
+    function getSPMs(){
         if($this->checkIfLoggedIn()){
             $spID = $this->input->post('supplier');
             if(is_numeric($spID)){
                 echo json_encode(array(
-                    "transactions" => $this->adminmodel->get_transactionsBySupplier($spID, array("purchase order","delivery receipt")),
-                    "transitems" =>  $this->adminmodel->get_transitemsBySupplier($spID, array("purchase order","delivery receipt"))
+                    "merchandise" => $this->adminmodel->get_SPMs($spID)
                 ));
             }else{
                 echo json_encode(array(
-                    "inErr" => true
+                    "inputErr" => true
                 ));
             }
-        }else{
-            echo json_encode(array(
-                "sessErr" => true
-            ));
-        }
-    }
-    function getSPMs(){
-        if($this->checkIfLoggedIn()){
-            echo json_encode($this->adminmodel->get_stocks());
         }else{
             echo json_encode(array(
                 "sessErr" => true

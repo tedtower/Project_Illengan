@@ -55,25 +55,17 @@
         </div>
         <!--Modal Content-->
           <!--Table containing the different input fields in billings -->
-          <table class="salesTable table table-sm table-borderless">
+          <table class="orderitemsTable table table-sm table-borderless">
             <thead class="thead-light">
               <tr>
                 <th></th>
                 <th>Qty</th>
                 <th>Item Name</th>
                 <th>Price</th>
-                <th>Total</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              <th></th>
-                <!--Insert table content here-->
-                <th>2</th>
-                <th>Iced Americano</th>
-                <th>90</th>
-                <th>180</th>
-              <th></th>
             </tbody>
           </table>
           <!--End Table Content-->
@@ -86,8 +78,7 @@
                   style="width:140px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
                   Amount Payable</span>
               </div>
-              <input type="text" step="any" min="0" class="form-control" name="amount_payable" id="amount_payable"
-                value="" readonly>
+              <input type="text" step="any" min="0" class="form-control" name="amount_payable" id="amount_payable" readonly>
               <span class="text-danger"><?php echo form_error("amount_payable"); ?></span>
             </div>
             <div class="input-group mb-3">
@@ -108,6 +99,8 @@
               <input type="text" step="any" min="0" class="form-control" name="change" id="change" value="0.00" readonly>
               <span class="text-danger"><?php echo form_error("change"); ?></span>
             </div>
+            <input type="hidden" class="form-control" name="osID" id="osID" readonly>
+            <input type="hidden" class="form-control" name="custName" id="custName" readonly>
             <!--Footer-->
             <div class="modal-footer">
               <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
@@ -152,7 +145,7 @@
   <!--End MODAL for DELETE-->
   <?php include_once('templates/scripts.php') ?>
   <script>
-    //POPULATE TABLE
+    //-------------------------------POPULATE TABLE--------------------------
     var orderbills = [];
     $(function () {
       viewOrderbillsJS();
@@ -193,7 +186,7 @@
                                     <!--Action Buttons-->
                                     <div class="onoffswitch">
                                     <!--Pay Button-->
-                                    <button class="pay btn btn-sm btn-info" data-toggle="modal" data-target="#Modal_Pay">Pay</button>           
+                                    <button class="pay btn btn-sm btn-info" data-toggle="modal" data-target="#Modal_Pay" onclick="setOsID(${orders.osID})">Pay</button>           
                                     </div>
                     </td>
             </tr>`);
@@ -201,6 +194,10 @@
         $(".pay").last().on('click', function () {
             $("#Modal_Pay").find("input[name='amount_payable']").val($(this).closest("tr").attr(
                 "data-payable"));
+            $("#Modal_Pay").find("input[name='osID']").val($(this).closest("tr").attr(
+                    "data-osID"));
+            $("#Modal_Pay").find("input[name='custName']").val($(this).closest("tr").attr(
+					          "data-custName"));
             
         });
         $(".item_delete").last().on('click', function () {
@@ -214,6 +211,72 @@
     
 
     }
+//---------------------------------Populate OrderItems in Brochure--------------------------
+      function setOsID($osID) {
+            var value = $osID;
+            $.ajax({
+              type: 'POST',
+              url: 'http://www.illengan.com/barista/getOrderItems',
+              data: {
+                osID: value
+              },
+              dataType: 'json',
+              success: function (data) {
+                item = data;
+                setItemData(item);
+                console.log(item);
+                for (var i = 0; i <= item.length - 1; i++) {
+                  $("#Modal_Pay").find("input[name='amount_payable']").val(parseInt(data[i].osTotal));
+                }
+              },
+              failure: function () {
+                console.log('None');
+              },
+              error: function (response, setting, errorThrown) {
+                console.log(errorThrown);
+                console.log(response.responseText);
+              }
+            });
+          }
+          function setItemData(item) {
+            $(".orderitemsTable> tbody").empty();
+            $(".orderitemsTable> tbody").append(`${item.map(items =>{
+              return `<tr>
+                            <td></td>
+                            <td><input type="text" name="olQty" class="form-control form-control-sm"  value="${items.olQty}" required readonly></td>
+                            <td><input type="text" name="olDesc" class="form-control form-control-sm"  value="${items.olDesc}" required readonly></td>
+                            <td><input type="text" name="olSubtotal" class="form-control form-control-sm"  value=${items.olSubtotal} required readonly></td>
+                            <td></td>
+                            </tr>`
+            }).join('')}`);
+          }
+    //---------------------For Resolving Payment---------------------------
+        $(document).ready(function() {
+          $("#Modal_Pay form").on('submit', function(event) {
+          event.preventDefault();
+              var osID = $(this).find("input[name='osID']").val();
+              var custName = $(this).find("input[name='custName']").val();
+            
+              $.ajax({
+                  url: "<?= site_url("barista/updatePayment")?>",
+                  method: "post",
+                  data: {
+                      osID: osID,
+                      custName: custName
+                  },
+                  dataType: "json",
+                  // complete: function() {
+                  //     $("#Modal_Pay").modal("hide");
+                  //     location.reload();
+                  // },
+                  error: function(error) {
+                      console.log(error);
+                  }
+                  
+                  });
+              });
+          });
+
 //-----------------------For the Payment Modal-------------------------
     document.getElementById("updtbutton").disabled = true;
     $("#cash").on('change', function () {
