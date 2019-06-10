@@ -46,8 +46,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
              return $this->db->query($query,array($tableCode,$osID));
         }
         function cancelOrder(){
-            $osID=$this->input->post('osID');
-            $this->db->where('osID', $osID);
+            $olID=$this->input->post('olID');
+            $this->db->where('olID', $olID);
             $result=$this->db->delete('orderlists');
             return $result;
         }
@@ -63,25 +63,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          return $query->result_array();
       }*/
 
-        function update_status($order_id, $order_desc, $item_status) {
-            $data['item_status'] = $item_status;
-            $query = $this->db->query('UPDATE orderlists SET olStatus = ? WHERE olID = ? AND osID = ?');
-            $this->db->query($query, array($item_status, $order_item_id, $order_id));
-        }
-
-        //this function is for orderCards
-        function get_slip_data(){
-            $query = "select osID, custName, tableCode, payStatus from orderslips";
-            return $this->db->query($query)->result_array();
+        function update_status($order_status, $olID) {
+            $query = "UPDATE orderlists SET olStatus = ? WHERE olID = ?";
+            return $this->db->query($query, array($order_status, $olID));
         }
 
 
         function get_bills(){
-            $query = "select osID, tableCode, custName, osTotal, osDateTime,(CAST(osDateTime AS time)) as time, payStatus , osPayDateTime from orderslips where CAST(osDateTime AS date) = cast((now()) as date) ORDER BY `orderslips`.`osDateTime` DESC ";
+            $query = "SELECT
+            osID,
+            tableCode,
+            custName,
+            osTotal,
+            osDateTime,
+            (CAST(osDateTime AS TIME)) AS TIME,
+            payStatus,
+            osPayDateTime
+        FROM
+            orderslips
+        WHERE
+            CAST(osDateTime AS DATE) = CAST((NOW()) AS DATE)
+        ORDER BY
+            `orderslips`.`osDateTime`
+        DESC
+             ";
             return $this->db->query($query)->result_array();
         }
 
-        function get_orderslips($osID){
+        function get_orderslipsdati($osID){
             $query = "select osID, tableCode, custName, osTotal, osDate, if(osPayDate is null, 'Unpaid', 'Paid') as payStatus , osPayDate from orderslips where osID = ?";
             return $this->db->query($query, array($order_id))->result_array();
         }
@@ -122,7 +131,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $this->db->query($query, array($status,$payDate, $date_recorded, $osID, $custName));
         }
 
+        function slipData(){
+            $query = "SELECT osID, tableCode, custName, payStatus from orderslips";
+            return $this->db->query($query)->result_array();
+        } 
+
+        function get_ordersData(){
+            $query = "SELECT
+            olQty,
+            olDesc,
+            olSubtotal,
+            olRemarks,
+            aoName,
+            aoPrice
+        FROM
+            orderslips
+        LEFT JOIN orderlists ON orderslips.osID = orderlists.osID
+        LEFT JOIN orderaddons ON orderlists.olID = orderaddons.olID
+        LEFT JOIN addons ON orderaddons.aoID = addons.aoID "; //where osID = ?
+            return $this->db->query($query)->result_array();
+        }
+        //$query2 = "SELECT olID, aoName, aoPrice, olRemarks from orderlists inner join orderaddons using (olID) inner join addons using (aoID)";
+
+        function get_orderslips(){
+            $query = "select * from orderslips";
+            return $this->db->query($query)->result_array();
+        }
+        function get_olist(){
+            $query = "select * from orderlists inner join preferences on 
+            orderlists.prID = preferences.prID inner join menu on preferences.mID = menu.mID";
+            return $this->db->query($query)->result_array();
+        }
+        function get_addons(){
+            $query = "select * from orderaddons";
+            return $this->db->query($query)->result_array();
+        }
+        function updateStats($status, $id){
+            $query = "Update orderlists set olStatus = ? where olID = ?";
+            $this->db->query($query, array($status, $id));
+        }
     }
 
 ?>
-

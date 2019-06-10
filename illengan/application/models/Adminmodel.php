@@ -233,7 +233,7 @@ class Adminmodel extends CI_Model{
           for($in = 0; $in < count($addons); $in++){
             if($olprID == $addons[$in]['prID']) {
             $this->db->query($query, array($addons[$in]['aoID'], $olID, $addons[$in]['aoQty'], 
-            $addons[$in]['aoTotal']));
+                  $addons[$in]['aoTotal']));
             }
     }
 
@@ -433,7 +433,17 @@ class Adminmodel extends CI_Model{
             for($i = 0; $i < count($addons); $i++) {
                 if($addons[$i]['del'] === 0 ) {
                     $this->delete_salesAddons($addons[$i]['aoID'], $addons[$i]['olID']);
-                } else if($addons[$i]['olID'] === null){
+                } else if($addons[$i]['oldaoID'] != $addons[$i]['aoID']) {
+                    $this->update_changedAddon($addons[$i]['oldaoID'], $addons[$i]['aoID'], $addons[$i]['olID']);
+                } else if($addons[$i]['prID'] == $prID && $addons[$i]['olID'] != null) {
+                    $aolist = array(
+                        'aoID' => $addons[$i]['aoID'],
+                        'olID' => $addons[$i]['olID'],
+                        'aoQty' => $addons[$i]['aoQty'],
+                        'aoTotal' => $addons[$i]['aoTotal']
+                    );
+                    $this->edit_salesaddons($aolist);
+                } else if($addons[$i]['olID'] == null){
                     $addonsArr = array();
                     $aolist = array(
                         'prID' => $addons[$i]['prID'],
@@ -443,16 +453,6 @@ class Adminmodel extends CI_Model{
                     );
                     array_push($addonsArr, $aolist);
                     $this->add_salesAddons($olID, $prID, $addonsArr);
-                } else if(intval($addons[$i]['oldaoID']) != intval($addons[$i]['aoID'])) {
-                    $this->update_changedAddon($addons[$i]['aoID'], $addons[$i]['oldaoID'], $addons[$i]['olID']);
-                } else if($addons[$i]['prID'] == $prID && $addons[$i]['olID'] != null) {
-                    $aolist = array(
-                        'aoID' => $addons[$i]['aoID'],
-                        'olID' => $addons[$i]['olID'],
-                        'aoQty' => $addons[$i]['aoQty'],
-                        'aoTotal' => $addons[$i]['aoTotal']
-                    );
-                    $this->edit_salesaddons($aolist);
                 } 
             }
     }
@@ -816,8 +816,7 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_suppliermerch(){
-        $query = "SELECT stID, CONCAT( stName, IF( stSize IS NULL, '', CONCAT(' ', stSize) ) ) AS stName, suppliermerchandise.uomID, uomAbbreviation,uomName, spmID, spmName, spmPrice, spmActualQty, spID, spName FROM ( stockitems RIGHT JOIN( suppliermerchandise LEFT JOIN supplier USING(spID) ) USING(stID) ) LEFT JOIN uom on (suppliermerchandise.uomID = uom.uomID)
-        ";
+        $query = "SELECT *, CONCAT(spmName,' ',stName,' ',uomAbbreviation,' ','(',stSize,')') as merchandise, CONCAT(stName,' ',uomAbbreviation,' ','(',stSize,')') as stockvariant  from supplier natural join suppliermerchandise natural join stockitems left join uom using (uomID);";
         return $this->db->query($query)->result_array();
     }
     function get_suppMerchandise($spmID){
@@ -1147,7 +1146,7 @@ class Adminmodel extends CI_Model{
         LEFT JOIN supplier USING(spID)
         GROUP BY
             tID
-        ORDER BY tDate DESC;";
+        ORDER BY transactions.tDate DESC;";
         return $this->db->query($query)->result_array();
     }
     function get_transaction($id){
@@ -1181,17 +1180,19 @@ class Adminmodel extends CI_Model{
                 tiName,
                 tiQty,
                 tiActualQty,
-                uomID,
+                transitems.uomID,
                 uomAbbreviation,
                 tiPrice,
                 tiDiscount,
                 tiSubtotal,
-                tiStatus
+                tiStatus,
+                stID,
+                stName
             FROM
                 (
                     (
-                        transitems
-                    LEFT JOIN uom USING(uomID)
+                        (transitems left join stockitems using(stID))
+                    LEFT JOIN uom on (transitems.uomID = uom.uomID)
                     )
                 LEFT JOIN trans_items USING(tiID)
                 )
@@ -1210,11 +1211,13 @@ class Adminmodel extends CI_Model{
                 tiDiscount,
                 tiSubtotal,
                 tiStatus
+                stID,
+                stName
             FROM
                 (
                     (
-                        transitems
-                    LEFT JOIN uom USING(uomID)
+                        (transitems left join stockitems using(stID))
+                    LEFT JOIN uom on (transitems.uomID = uom.uomID)
                     )
                 LEFT JOIN trans_items USING(tiID)
                 )
@@ -1460,5 +1463,82 @@ class Adminmodel extends CI_Model{
                     slType = 'beginning' AND stID = ?
             ;",array($stID))->result_array();
     }
+    function get_SPMs($spID){
+        $query = "SELECT
+            stID,
+            CONCAT(
+                stName,
+                IF(
+                    stSize IS NULL,
+                    '',
+                    CONCAT(' ', stSize)
+                )
+            ) AS stName,
+            suppliermerchandise.uomID,
+            uomAbbreviation,
+            spmID,
+            spmName,
+            spmPrice,
+            spmActualQty,
+            spID,
+            spName
+        FROM
+            (
+                stockitems
+            RIGHT JOIN(
+                    suppliermerchandise
+                LEFT JOIN supplier USING(spID)
+                ) USING(stID)
+            )
+        LEFT JOIN uom on (suppliermerchandise.uomID = uom.uomID) 
+        WHERE spID = ?";
+        return $this->db->query($query, array($spID))->result_array();
+    }
+    function get_transactionsBySupplier($spID, $tTypes){
+        $query = "SELECT
+                spID,
+                tID,
+                tNum,
+                DATE_FORMAT(tDate, '%b %d, %Y %r') AS tDate,
+                DATE_FORMAT(dateRecorded, '%b %d, %Y %r') AS dateRecorded,
+                tType,
+                COUNT(tiID) as tCount
+            FROM
+                (transactions
+            LEFT JOIN supplier USING(spID)) LEFT JOIN trans_items using(tID)
+            WHERE
+                spID = ? AND tType IN ?
+            GROUP BY tID
+            HAVING 
+                COUNT(tiID) > 0;";
+        return $this->db->query($query, array($spID, $tTypes))->result_array();
+    }
+    function get_transitemsBySupplier($spID, $tTypes){
+        $query = "SELECT
+            spID, tID, tiID, tiName, tiPrice, tiDiscount, tiStatus, tNum, tType,
+            stID, CONCAT(stName, IF(stSize IS NULL,'',CONCAT(' ',stSize))) as stName, 
+            ti.uomID AS uomID, uomAbbreviation, tiQty, tiActualQty, tiSubtotal
+        FROM
+            (
+                (
+                    (
+                        (
+                            transitems AS ti
+                        LEFT JOIN uom ON
+                            (ti.uomID = uom.uomID)
+                        )
+                    LEFT JOIN trans_items USING(tiID)
+                    )
+                LEFT JOIN transactions USING(tID)
+                )
+            LEFT JOIN supplier USING(spID)
+            )
+        LEFT JOIN stockitems AS st USING(stID)
+        WHERE
+            spID = ? AND tType IN ?;";
+        return $this->db->query($query, array($spID, $tTypes))->result_array();
+    }
+    
 }
+
 ?>
