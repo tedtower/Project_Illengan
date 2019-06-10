@@ -145,8 +145,13 @@ class Adminupdate extends CI_Controller{
 
         // if($this->form_validation->run()){
             $aID = $this->input->post('aID');
+            $username = $this->input->post('username');
             $new_password = password_hash($this->input->post("new_password"),PASSWORD_DEFAULT);
+            $date_recorded = date("Y-m-d H:i:s");
+            $account_id = $_SESSION["user_id"];
+
              $this->adminmodel->change_aPassword($new_password,$aID);
+             $this->adminmodel->add_actlog($account_id,$date_recorded, "Admin updated the account password of $username .", "update", NULL);
               
         // }else{
             // echo "Form Validation is not working";
@@ -164,7 +169,11 @@ class Adminupdate extends CI_Controller{
             $aID = $this->input->post('accountId');
             $aType = $this->input->post('new_aType');
             $aUsername = $this->input->post('new_aUsername');
+            $date_recorded = date("Y-m-d H:i:s");
+            $account_id = $_SESSION["user_id"];
+
             $this->adminmodel->edit_accounts($aID,$aType,$aUsername);
+            $this->adminmodel->add_actlog($account_id,$date_recorded, "Admin updated the account information of $aUsername.", "update", NULL);
             redirect('admin/accounts');
             }else{
                 echo "Form Validation is not Working.";

@@ -43,7 +43,7 @@
             </div>
         <!--START "Remove Slip" MODAL-->
 
-            <!-- MODAL EDIT -->
+            <!-- MODAL EDIT TABLE CODE-->
             <div class="modal fade" id="editTable" tabindex="-1" role="dialog" aria-labelledby="editTableModal" aria-hidden="true">
               <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -73,7 +73,7 @@
                 </form>
               </div>
             </div>
-        <!--END MODAL EDIT-->
+        <!--END MODAL EDIT TABLE CODE-->
 
         <!--MODAL TO CANCEL AN ORDER -->
            <div class="modal fade" id="deleteOrder" tabindex="-1" role="dialog" aria-labelledby="deleteOrderModal" aria-hidden="true">
@@ -87,7 +87,7 @@
                 </div>
                 <form id="confirmDelete">
                     <div class="modal-body">
-                    <strong>Are you sure to remove this record?</strong>
+                    <strong>Are you sure to remove this order?</strong>
                     <input type="hidden" name="olID" id="olID" class="form-control">
                     </div>
                     <div class="modal-footer">
@@ -148,7 +148,7 @@
                                 <div><b>Customer: </b>${item.orderslips.custName}</div>
                             </div>
                             <div style="float:right;text-align:left;width:27%">
-                                <div><b> Table No: </b>${item.orderslips.tableCode} <img class="editBtn" src="/assets/media/barista/edit.png" style="width:15px;height:15px; float:right;" 
+                                <div><b> Table No: </b>${item.orderslips.tableCode} <img class="editBtn" src="/assets/media/barista/edit.png" style="width:15px;height:15px; float:right; cursor:pointer;" 
                                 data-toggle="modal" data-target="#editTable"></div>
                                 <div><b>Status: </b>${item.orderslips.payStatus}</div>
                             </div>
@@ -179,7 +179,7 @@
                                         class="btn btn-sm" id="item_status" data-id="${ol.olID}" value="${ol.olStatus}"/>
                                     </td>
                                     <td>
-                                        <img class="deleteBtn1" src="/assets/media/barista/error.png" style="width:18px;height:18px; float:right;" data-toggle="modal" data-target="#deleteOrder" >
+                                        <img class="deleteBtn1" src="/assets/media/barista/error.png" style="width:18px;height:18px; float:right; cursor:pointer;" data-toggle="modal" data-target="#deleteOrder" >
                                     </td>
                                 </tr>
                                 <tr id="addons">
@@ -202,6 +202,18 @@
                 </div>
             </div>
                         `;
+
+                        $(".updateBtn").last().on('click', function () {
+				      $("#editTableCode").text(
+                   `Edit table code ${$(this).closest("tr").attr("data-tID")}`);
+              $("#editTable").find("input[name='osID']").val($(this).closest("tr").attr(
+                    "data-osID"));
+            });
+
+            $(".deleteBtn1").last().on('click', function () {
+                          $("#deleteOrder").find("input[name='olID']").val($(this).closest("tr").attr(
+                                    "data-olID"));
+                      });
             // orderlists.forEach(function(item){
             //     ${item.addons.map(adds => {
             //         var addOn = `<tr>
@@ -233,13 +245,9 @@
                 }
                 //location.reload();
             });
-
-            $(".deleteBtn1").last().on('click', function () {
-                          $("#deleteOrder").find("input[name='olID']").val($(this).closest("tr").attr(
-                                    "data-olID"));
-                      });
             
         }
+        //function for updating orderlist status
         function updateStatus(stats, id){
             $.ajax({
                 url: "<?= site_url('barista/updateStatus') ?>",
@@ -254,34 +262,60 @@
             }
             });
     }
+            //function  to get available tables
+            $(function() {
+            $.ajax({
+                        url: '<?= site_url('barista/getTables') ?>',
+                        dataType: 'json',
+                        success: function (data) {
+                            var poLastIndex = 0;
+                            table = data;
+                            setTableData(table);
+                        },
+                        failure: function () {
+                            console.log('None');
+                        },
+                        error: function (response, setting, errorThrown) {
+                            console.log(errorThrown);
+                            console.log(response.responseText);
+                        }
+                    });
 
-        $("#editBtn form").on('submit', function(event) {
-		event.preventDefault();
-		var osID = $(this).find("input[name='osID']").val();
-        var tableCode = $(this).find("select[name='tableCode']").val();
-      
-        $.ajax({
-            url: "<?= site_url("barista/editTableNumber")?>",
-            method: "post",
-            data: {
-                osID: osID,
-                tableCode: tableCode
-            },
-            dataType: "json",
-            success: function(data) {
-                alert('Table Updated');
-				        console.log(data);
-            },
-            complete: function() {
-                $("#editTable").modal("hide");
-				        location.reload();
-            },
-            error: function(error) {
-                console.log(error);
+            });
+            function setTableData(table){
+                    $("#tableCode").empty();
+                    $("#tableCode").append(`${table.map(tables => {
+                        return `<option name= "tableCode" id ="tableCode" value="${tables.tableCode}">${tables.tableCode}</option>`
+                    }).join('')}`);
             }
-            
+            //function for updating table of slips
+            $("#editBtn form").on('submit', function(event) {
+            event.preventDefault();
+            var osID = $(this).find("input[name='osID']").val();
+            var tableCode = $(this).find("select[name='tableCode']").val();
+        
+            $.ajax({
+                url: "<?= site_url("barista/editTableNumber")?>",
+                method: "post",
+                data: {
+                    osID: osID,
+                    tableCode: tableCode
+                },
+                dataType: "json",
+                success: function(data) {
+                    alert('Table Updated');
+                            console.log(data);
+                },
+                complete: function() {
+                    $("#editTable").modal("hide");
+                            location.reload();
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+                
+            });
         });
-    });
 
     </script>
 </body>
