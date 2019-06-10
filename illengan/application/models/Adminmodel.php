@@ -1227,6 +1227,24 @@ class Adminmodel extends CI_Model{
             return $this->db->query($query,array($id))->result_array();
         }
     } 
+    /*
+    
+                    if($result[0]['tiStatus'] == "pending" || $result[0]['tiStatus'] == "partially delivered"){
+                        if($type == "delivery receipt"){
+                            if($result[0]['tiQty'] > $item['tiQty']){
+                                $qty = $result[0]['tiQty'] - $item['tiQty'];
+                                $item['tiStatus'] = "partially delivered";
+                            }else{
+                                $qty = $result[0]['tiQty'];
+                                $item['tiStatus'] = "delivered";
+                            }
+                        }else if($type == "official receipt"){
+                            $item['tiStatus'] = "paid";
+                        }
+                    }else if($result[0]['tiStatus'] == "delivered"){
+                        $item['tiStatus'] = "paid";
+                    }
+    */
 
     function add_transaction($id, $supplier, $receipt, $date, $type, $dateRecorded, $remarks, $transitems){
         $insertSuccess = false;
