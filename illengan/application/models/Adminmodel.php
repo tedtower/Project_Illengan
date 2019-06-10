@@ -1372,48 +1372,6 @@ class Adminmodel extends CI_Model{
             VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
         return $this->db->query($query, array($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks));
     }
-    function add_stockLog2($stID, $slType, $date_recorded, $slDateTime, $ssQty, $ssRemarks, $updateQtyh, $updateQtyl,$curSsQty,$ssQtyUpdate){
-        if ($curSsQty > $ssQtyUpdate){
-        $query = "INSERT INTO `stocklog`(
-                `slID`,
-                `stID`,
-                `slType`,
-                `slDateTime`,
-                `dateRecorded`,
-                `slQty`,
-                `slRemarks`
-            )
-            VALUES(NULL, ?, ?, ?, ?, ?, ?);";
-            return $this->db->query($query, array($stID, $slType, $date_recorded, $slDateTime, $updateQtyl, $ssRemarks));
-        }
-        if ($curSsQty < $ssQtyUpdate){
-            $query = "INSERT INTO `stocklog`(
-                `slID`,
-                `stID`,
-                `slType`,
-                `slDateTime`,
-                `dateRecorded`,
-                `slQty`,
-                `slRemarks`
-            )
-            VALUES(NULL, ?, ?, ?, ?, ?, ?);";
-            return $this->db->query($query, array($stID, $slType, $date_recorded, $slDateTime, $updateQtyh, $ssRemarks));
-            
-        }else{
-            $query = "INSERT INTO `stocklog`(
-                `slID`,
-                `stID`,
-                `slType`,
-                `slDateTime`,
-                `dateRecorded`,
-                `slQty`,
-                `slRemarks`
-            )
-            VALUES(NULL, ?, ?, ?, ?, ?, ?);";
-            return $this->db->query($query, array($stID, $slType, $date_recorded, $slDateTime, $ssQty, $ssRemarks));
-        }
-    }
-
     function add_stockQty($stID, $stQty){
         $query = "UPDATE stockitems
         SET
