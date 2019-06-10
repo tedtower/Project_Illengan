@@ -22,9 +22,23 @@ class Adminupdate extends CI_Controller{
             $date_recorded=date("Y-m-d H:i:s");
             $slType = "spoilage";
             $slDateTime = date('Y-m-d', strtotime($ssDate));
+            $account_id = $_SESSION["user_id"];
 
-            $this->adminmodel->edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$updateQtyh,$updateQtyl,$curSsQty,$stQty,$ssQtyUpdate,$date_recorded);
-            $this->adminmodel->add_stockLog2($stID, $slType, $date_recorded, $slDateTime, $ssQty, $ssRemarks, $updateQtyh, $updateQtyl,$curSsQty,$ssQtyUpdate);
+            if ($curSsQty > $ssQtyUpdate){
+                $this->adminmodel->edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$updateQtyh,$updateQtyl,$curSsQty,$stQty,$ssQtyUpdate,$date_recorded);
+                $this->adminmodel->add_stockLog($stID,NULL, $slType, $date_recorded, $slDateTime, $updateQtyl, $ssRemarks);
+                $this->adminmodel->add_actlog($account_id,$date_recorded, "Admin updated a stockitem spoilage.", "update", $ssRemarks);
+            }
+            if ($curSsQty < $ssQtyUpdate){
+                $this->adminmodel->edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$updateQtyh,$updateQtyl,$curSsQty,$stQty,$ssQtyUpdate,$date_recorded);
+                $this->adminmodel->add_stockLog($stID,NULL, $slType, $date_recorded, $slDateTime, $updateQtyh, $ssRemarks);
+                $this->adminmodel->add_actlog($account_id,$date_recorded, "Admin updated a stockitem spoilage.", "update", $ssRemarks);
+
+            }else{
+                $this->adminmodel->edit_stockspoilage($ssID,$stID,$ssDate,$ssRemarks,$updateQtyh,$updateQtyl,$curSsQty,$stQty,$ssQtyUpdate,$date_recorded);
+                $this->adminmodel->add_stockLog($stID,NULL, $slType, $date_recorded, $slDateTime, $ssQty, $ssRemarks);
+                $this->adminmodel->add_actlog($account_id,$date_recorded, "Admin updated a stockitem spoilage.", "update", $ssRemarks);
+            }
            
         }else{
             redirect('login');
@@ -38,8 +52,10 @@ class Adminupdate extends CI_Controller{
             $msDate = $this->input->post('msDate');
             $msRemarks = $this->input->post('msRemarks');
             $date_recorded = date("Y-m-d H:i:s");
+            $account_id = $_SESSION["user_id"];
 
             $this->adminmodel->edit_menuspoilage($msID,$prID,$msQty,$msDate,$msRemarks,$date_recorded);
+            $this->adminmodel->add_actlog($account_id,$date_recorded, "Admin updated a menu spoilage.", "update", $msRemarks);
         }else{
             redirect('login');
         } 
@@ -52,8 +68,10 @@ class Adminupdate extends CI_Controller{
             $aosDate = $this->input->post('aosDate');
             $aosRemarks = $this->input->post('aosRemarks');
             $date_recorded = date("Y-m-d H:i:s");
+            $account_id = $_SESSION["user_id"];
 
             $this->adminmodel->edit_aospoilage($aoID,$aosID,$aosQty,$aosDate,$aosRemarks,$date_recorded);
+            $this->adminmodel->add_actlog($account_id,$date_recorded, "Admin updated an addon spoilage.", "update", $aosRemarks);
         }else{
             redirect('login');
         } 
