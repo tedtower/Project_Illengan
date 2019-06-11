@@ -8,7 +8,8 @@
 
 <body style="background:#c7ccd1;">
     <?php include_once('templates/navigation.php') ?>
-    <button class="btn btn-link btn-sm" onClick="window.location.href = '<?php echo base_url();?>customer/processCheckIn';return false;">Add Order</button>
+    <button class="btn btn-success btn-sm" onClick="window.location.href = '<?php echo base_url();?>customer/checkin';return false;">
+    <img class="addBtn" src="/assets/media/barista/add image.png" style="width:20px;height:20px; float:left;"> Add Order</button>
     <!--End Top Nav-->
     <div class="container-fluid">
         <section class="lists-container">
@@ -203,12 +204,12 @@
             </div>
                         `;
 
-                        $(".updateBtn").last().on('click', function () {
-				      $("#editTableCode").text(
+                $(".updateBtn").last().on('click', function () {
+				$("#editTableCode").text(
                    `Edit table code ${$(this).closest("tr").attr("data-tID")}`);
-              $("#editTable").find("input[name='osID']").val($(this).closest("tr").attr(
+                $("#editTable").find("input[name='osID']").val($(this).closest("tr").attr(
                     "data-osID"));
-            });
+                });
 
             $(".deleteBtn1").last().on('click', function () {
                           $("#deleteOrder").find("input[name='olID']").val($(this).closest("tr").attr(
@@ -232,8 +233,8 @@
               $("input#item_status").on('click', function () {
                 var stats = $(this).val();
                 if( stats == 'served'){
-                    stats = 'pending';
-                    //$(this).attr('disabled', true);
+                    //stats = 'pending';
+                    (this).attr('disabled', true);
 
                 }else{
                  var id = $(this).attr('data-id');
