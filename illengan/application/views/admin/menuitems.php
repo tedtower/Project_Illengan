@@ -193,6 +193,7 @@
                                         <option value="" selected>Choose</option>
                                         <option value="available">Available</option>
                                         <option value="unavailable">Unvailable</option>
+                                        <option value="archived">Archived</option>
                                     </select>
                                     </div>
                                 </div>
@@ -272,6 +273,34 @@
                 </div>
             </div>
 <!--End of Modal "Add Image"-->
+        <!--Start of Delete Modal-->
+        <div class="modal fade" id="deleteMenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Delete Addon</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form id="confirmDelete">
+                            <div class="modal-body">
+                                <h6 id="deleteMenuItem"></h6>
+                                <p>Are you sure you want to delete this menu?</p>
+                                <input type="text" name="menuID" hidden="hidden">
+                                <!-- <div>
+                                    Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm">
+                                </div> -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <!--End of Delete Modal-->
 
 </div>
 </div>
@@ -336,7 +365,6 @@ $(document).ready(function() {
                     <option value="" selected disabled>Choose</option>
                     <option value="available">Available</option>
                     <option value="unavailable">Unvailable</option>
-                    <option value="deleted">Deleted</option>
                 </select>
             </td>
             <td><img class="exitBtn1" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
@@ -435,7 +463,8 @@ $(document).ready(function() {
                 prName: row.find("input[name='prName[]']").val(),
                 mTemp: row.find("select[name='mTemp[]']").val(),
                 prPrice: parseFloat(row.find("input[name='prPrice[]']").val()),
-                prStatus: row.find("select[name='prStatus[]']").val()
+                prStatus: row.find("select[name='prStatus[]']").val(),
+                del: isNaN(parseInt(row.attr('data-delete'))) ?  (null) : parseInt(row.attr('data-delete'))
             });
         }
         var addons = [];
@@ -443,8 +472,9 @@ $(document).ready(function() {
             var row = $(this).find(".addontable > tbody > tr").eq(index);
             console.log(row);
             addons.push({
-                oldaoID: parseInt(row.find("input[name='oldaoID']").val()),
-                aoID: parseInt(row.find("select[name='aoID[]']").val())
+                oldaoID: parseInt(row.find("input[name='oldaoID']").val()) || 0,
+                aoID: parseInt(row.find("select[name='aoID[]']").val()),
+                del: isNaN(parseInt(row.attr('data-delete'))) ?  (null) : parseInt(row.attr('data-delete'))
             });
         }
         console.log(id, name, description, category, status, preferences, addons);
@@ -465,7 +495,6 @@ $(document).ready(function() {
                 console.log(id, name, description, category, status, preferences, addons);
             },
             success: function() {
-                location.reload();
             },
             error: function(response, setting, error) {
                 console.log(error);
@@ -487,7 +516,7 @@ $(document).ready(function() {
                     <td class="text-center">${item.menu.mAvailability}</td>
                     <td>
                         <button class="editBtn btn btn-sm btn-secondary" data-toggle="modal" data-target="#editMenu" data-id="${item.menu.mID}">Edit</button>
-                        <button class="deleteBtn btn btn-sm btn-warning">Archived</button>
+                        <button class="deleteBtn btn btn-sm btn-warning" data-toggle="modal" data-target="#deleteMenu" id="${item.menu.mID}" data-name="${item.menu.mName}">Archive</button>
                     </td>
                 </tr>
             `;
@@ -602,6 +631,16 @@ $(document).ready(function() {
                     "data-id"));
         });
 
+        $('.deleteBtn').on('click',function() {
+            var id = $(this).attr("id");
+            $("#deleteMenuItem").text(`Menu Name:  ${$(this).attr("data-name")}`);
+            // $("#deleteAddon").find("input[name='addonID']").val($(this).attr("data-id"));
+            $("#confirmDelete").on('submit', function(event) {
+                event.preventDefault();
+                window.location = "<?php echo base_url();?>/admin/menu/delete/" + id;
+            });
+        });
+
     } 
 
     $('input[type="file"]').change(function(e){
@@ -613,13 +652,13 @@ $(document).ready(function() {
     function setEditModal(modal, menu, addon, preference) {
         modal.find("input[name='menuID']").val(menu.mID);
         modal.find("input[name='mName']").val(menu.mName);
-        modal.find("input[name='mDesc']").val(menu.mDesc);
+        modal.find("textarea[name='mDesc']").val(menu.mDesc);
         modal.find("select[name='ctName']").find(`option[value='${menu.ctID}']`).attr("selected", "selected");
         modal.find("select[name='mAvailability']").find(`option[value='${menu.mAvailability}']`).attr("selected", "selected");
         console.log(menu);
         preference.forEach(preference => {
             modal.find(".preferencetable > tbody").append(`
-            <tr data-id="${preference.prID}">
+            <tr class="menuElem" data-id="${preference.prID}">
                 <td><input type="text" name="prName[]" value="${preference.prName}" class="form-control form-control-sm"></td>
                 <td>
                     <select class="form-control" name="mTemp[]" value="${preference.mTemp}">
@@ -638,7 +677,7 @@ $(document).ready(function() {
                         <option value="deleted">Deleted</option>
                     </select>
                 </td>
-                <td><img class="exitBtn1" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
+                <td><img class="exitBtn1 delBtn" onclick="deleteItem(this)" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
             </tr>
         `);
         modal.find("select[name='prStatus[]']").last().find(`option[value='${preference.prStatus}']`).attr("selected", "selected");
@@ -658,11 +697,27 @@ $(document).ready(function() {
                             }).join('')}
                         </select>
                     </td>
-                    <td><img class="exitBtn2" src="/assets/media/admin/error.png" style="width:20px;height:20px;right:0"></td>
+                    <td><img class="exitBtn2 delBtn" onclick="deleteItem(this)" src="/assets/media/admin/error.png" style="width:20px;height:20px;right:0"></td>
                 </tr>
             `);
             modal.find("select[name='aoID[]']").last().find(`option[value='${addon.aoID}']`).attr("selected", "selected");
         })
+    }
+
+    function deleteItem(element) {
+        var el = $(element).closest("tr");
+        $(el).attr("data-delete", "0");
+        $(el).addClass("deleted");
+
+        $(".deleted").find("input").attr("disabled", "disabled");
+        $(".deleted").find("input").removeAttr("class");
+        $(".deleted").find("input").addClass("form-control form-control-sm");
+
+        var deleted = $(".deleted");
+        for(var i = 0; i <= deleted.length - 1; i++) {
+            deleted[i].style.textDecoration = "line-through";
+            deleted[i].style.opacity = "0.6";
+        }
     }
 </script>
 </body>

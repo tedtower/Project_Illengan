@@ -173,10 +173,19 @@ class Adminmodel extends CI_Model{
         $query = "INSERT into menu (mName, mDesc, ctID, mAvailability) values (?,?,?,?);";
         if($this->db->query($query,array($mName, $mDesc, $category, $status))){
             $mID = $this->db->insert_id();
-            $this->add_preference($mID, $preference);
-            $this->add_menuaddon($mID, $addon);
+            if(count($preference) > 0){
+                foreach($preference as $pref) {
+                    $this->add_preference($mID, $pref);
+                }
+            }
+            if(count($addon) > 0){
+                foreach($addon as $ao) {
+                    $this->add_menuaddon($mID, $ao);
+                }
+            }
             return true;
         }
+        return false;
     }
 
     function add_image($image, $mID){
@@ -184,34 +193,23 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query,array($image, $mID));
     }
 
-    function add_preference($mID, $preference){
+    function add_preference($mID, $pref){
        $query = "INSERT into preferences (mID, prName, mTemp, prPrice, prStatus) values (?,?,?,?,?)";
-       if(count($preference) > 0){
-           for($n = 0; $n < count($preference) ; $n++){
-               $this->db->query($query, array($mID, $preference[$n]['prName'], $preference[$n]['mTemp'], $preference[$n]['prPrice'], $preference[$n]['prStatus']));
-           }
-       } else{
-           return false;
-       }
+       $this->db->query($query, array($mID, $pref['prName'], $pref['mTemp'], $pref['prPrice'], $pref['prStatus']));
     }
 
-    function add_menuaddon($mID, $addon){
+    function add_menuaddon($mID, $ao){
         $query = "INSERT into menuaddons (mID, aoID) values (?,?)";
-        if(count($addon) > 0){
-            for($n = 0; $n < count($addon) ; $n++){
-                $this->db->query($query, array($mID, $addon[$n]['aoID']));
-            }
-        } else{
-            return false;
-        }
-     }
+        $this->db->query($query, array($mID, $ao['aoID']));
+    }
+
      function add_salesOrder($tableCode, $custName, $osTotal, $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons) {
         $query = "insert into orderslips (osID, tableCode, custName, osTotal, payStatus, 
         osDateTime, osPayDateTime, osDateRecorded) values (NULL,?,?,?,?,?,?,?);";
         if($this->db->query($query,array($tableCode, $custName, $osTotal, 'paid', $osDateTime, $osPayDateTime, $osDateRecorded))) {
             $this->add_salesList($this->db->insert_id(), $orderlists, $addons);
             }
-        }
+    }
 
     function add_salesList($osID, $orderlists, $addons) {
         $query = "insert into orderlists (olID, prID, osID, olDesc, olQty, 
@@ -283,6 +281,55 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query,array($vQty,$vID));
     }
 
+    function edit_menu($mName, $mDesc, $mCat, $mAvailability, $preference, $addon, $mID){
+        $query = "UPDATE menu SET mName = ?, mDesc = ?, ctID = ?, mAvailability = ? WHERE mID = ? ";
+        if($this->db->query($query, array($mName, $mDesc, $mCat, $mAvailability, $mID))){
+            if(count($preference) > 0){
+                foreach($preference as $pref){
+                    if($pref['del'] === 0) {
+                        $this->delete_preference($pref);
+                    }
+                    else if($pref['prID'] == NULL){
+                        $this->add_preference($mID, $pref);
+                    }else{
+                        $this->edit_preference($pref);
+                    }
+                }
+            }
+
+            if(count($addon) > 0){
+                foreach($addon as $ao){
+                    if($ao['del'] === 0) {
+                        $this->delete_menuaddon($mID, $ao);
+                    }
+                    else if($ao['oldaoID'] === 0){
+                        $this->add_menuaddon($mID, $ao);
+                    }else{
+                        $this->edit_menuaddon($ao, $mID);
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+    function delete_preference($pref){
+        $query = "DELETE FROM preferences WHERE prID = ?";
+        return $this->db->query($query, array($pref['prID']));
+    }
+    function delete_menuaddon($mID, $ao){
+        $query = "DELETE FROM menuaddons WHERE menuaddons.mID = ? AND menuaddons.aoID = ?";
+        return $this->db->query($query, array($mID, $ao['oldaoID']));
+    }
+    function edit_preference($pref){
+        $query = "UPDATE preferences SET prName = ?, mTemp = ?,	prPrice = ?, prStatus = ? where prID = ?";
+        $this->db->query($query,array($pref['prName'],$pref['mTemp'],$pref['prPrice'],$pref['prStatus'], $pref['prID']));
+    }
+
+    function edit_menuaddon($ao, $mID){
+        $query = "UPDATE menuaddons SET aoID = ? WHERE menuaddons.mID = ? AND menuaddons.aoID = ?";
+        $this->db->query($query,array($ao['aoID'],$mID, $ao['oldaoID']));
+    }
     function edit_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch, $spID){
         $query = "UPDATE supplier 
             SET 
@@ -297,7 +344,7 @@ class Adminmodel extends CI_Model{
             if(count($spMerch) > 0){
                 foreach($spMerch as $merch){
                 if($merch['del'] === 0){
-                    $this->delete_supplierMerchandise($merch['smpID']);
+                    $this->delete_supplierMerchandise($merch);
                 }else if($merch['spmID'] == NULL){
                         $this->add_supplierMerchandise($merch, $spID);
                     }else{
@@ -309,11 +356,14 @@ class Adminmodel extends CI_Model{
         }
         return false;
     }
-    function delete_supplier($spmID){
+    function delete_supplierMerchandise($merch){
         $query = "DELETE FROM suppliermerchandise WHERE spmID = ?";
-        return $this->db->query($query, array($smpID));
+        return $this->db->query($query, array($merch['spmID']));
     }
-    
+    function delete_supplier($id){
+        $query = "UPDATE supplier SET spStatus = 'archived' WHERE spID = ?";
+        return $this->db->query($query, array($id));
+    }
     function edit_supplierMerchandise($merch){
         $query = "UPDATE suppliermerchandise 
             SET 
@@ -474,7 +524,6 @@ class Adminmodel extends CI_Model{
         $this->db->query($query, array($aoID, $oldaoID, $olID));
 
     }
-
     function change_aPassword($new_password, $aID){
         $query = "Update accounts set aPassword = ?  where aID = ? ";
         return $this->db->query($query,array($new_password, $aID));  
@@ -881,6 +930,10 @@ class Adminmodel extends CI_Model{
     }
     function delete_addon($id){
         $query = "UPDATE addons set aoStatus = 'archived' where aoID = ?"; 
+        return $this->db->query($query, array($id));
+    }
+    function delete_menu($id){
+        $query = "UPDATE menu set mAvailability = 'archived' where mID = ?"; 
         return $this->db->query($query, array($id));
     }
     function delete_spoilages($ssID, $delRemarks){
