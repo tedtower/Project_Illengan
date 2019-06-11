@@ -14,16 +14,17 @@
     <div class="container-fluid">
         <section class="lists-container">
             <!-- Lists container -->
-    </div>
     </section>
+    </div>
     <!-- End of lists container -->
     <!--End Cards-->
-                <!--START "Remove Slip" MODAL-->
-            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteOrderModal" aria-hidden="true">
+
+        <!--START "Remove Slip" MODAL-->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteSlipModal" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Delete Addon</h5>
+                            <h5 class="modal-title" id="exampleModalLongTitle">Delete Slip</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -41,10 +42,72 @@
 
                 </div>
             </div>
-<?= include_once('templates/scripts.php')?>
+        <!--START "Remove Slip" MODAL-->
+
+            <!-- MODAL EDIT TABLE CODE-->
+            <div class="modal fade" id="editTable" tabindex="-1" role="dialog" aria-labelledby="editTableModal" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Table Code</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <form id="formEdit" accept-charset="utf-8" > 
+                  <div class="modal-body">
+                        <h6 id="editTableCode"></h6>
+                        <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="inputGroup-sizing-sm" style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                            Change Table</span>
+                        </div>
+                          <select name="tableCode" id="tableCode" class="form-control form-control-sm" required>
+                          </select>                    
+                        <input name="osID" id="osID" hidden="hidden">
+                  </div>
+                  <div class="modal-footer">
+                  <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                  <button class="btn btn-success btn-sm" type="submit">Update</button>
+                  </div>
+                </div>
+                </form>
+              </div>
+            </div>
+        <!--END MODAL EDIT TABLE CODE-->
+
+        <!--MODAL TO CANCEL AN ORDER -->
+           <div class="modal fade" id="deleteOrder" tabindex="-1" role="dialog" aria-labelledby="deleteOrderModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteOrderModal">Cancel Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="confirmDelete">
+                    <div class="modal-body">
+                    <strong>Are you sure to remove this order?</strong>
+                    <input type="hidden" name="olID" id="olID" class="form-control">
+                    </div>
+                    <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+        <!--END OF MODAL TO CANCEL AN ORDER -->
+
+
+
+<?php include_once('templates/scripts.php')?>
 <script>
       var orderslips = [];
       var orderlists = [];
+      var addons = [];
       $(function() {
         $.ajax({
             url: '<?= base_url("barista/getOrderslip") ?>',
@@ -86,7 +149,8 @@
                                 <div><b>Customer: </b>${item.orderslips.custName}</div>
                             </div>
                             <div style="float:right;text-align:left;width:27%">
-                                <div><b> Table No: </b>${item.orderslips.tableCode}</div>
+                                <div><b> Table No: </b>${item.orderslips.tableCode} <img class="editBtn" src="/assets/media/barista/edit.png" style="width:15px;height:15px; float:right; cursor:pointer;" 
+                                data-toggle="modal" data-target="#editTable"></div>
                                 <div><b>Status: </b>${item.orderslips.payStatus}</div>
                             </div>
                         </div>
@@ -108,18 +172,20 @@
                                     return `
                                     <tbody style="font-size:13px">
                                 <tr>
-                                <input type="hidden" id="menuitem" val="${ol.olID}">
                                     <td>${ol.olQty}</td>
                                     <td>${ol.mName}</td>
-                                    <td><span class="fs-24">₱</span>${ol.olPrice}</td>
+                                    <td><span class="fs-24">₱</span>${ol.olSubtotal}</td>
                                     <td>
-                                        <input type="button" style="width:100%;padding:6%;background:blue;color:white;border:0;border-radius:5px"
-                                       id="item_status" data-id="${ol.olID}" value="${ol.olStatus}"/>
+                                        <input type="button" style="width:100%;padding:6%;background:gray;color:white;border:0;border-radius:5px;"
+                                        class="btn btn-sm" id="item_status" data-id="${ol.olID}" value="${ol.olStatus}"/>
                                     </td>
                                     <td>
-                                        <img class="exitBtn1" src="/assets/media/admin/error.png" style="width:18px;height:18px; float:right;">
+                                        <img class="deleteBtn1" src="/assets/media/barista/error.png" style="width:18px;height:18px; float:right; cursor:pointer;" data-toggle="modal" data-target="#deleteOrder" >
                                     </td>
-                                </tr>`;
+                                </tr>
+                                <tr id="addons">
+                                </tr>
+                                    `;
                                 }).join('')}  
                                 
                             </tbody>
@@ -128,7 +194,7 @@
                     <!--Footer-->
                     <div class="card-footer text-muted">
                         <div style="overflow:auto;">
-                            <div style="text-align:left;float:left;width:73%; font-size:15px;"><b>Total:</b><span style="border-bottom:1px solid gray; padding:3px 15px">&#8369;${item.orderslips.osTotal}</span></div>
+                            <div style="text-align:left;float:left;width:73%; font-size:15px;"><b>Total: </b><span style="border-bottom:1px solid gray; padding:3px 15px">&#8369;1000</span></div>
                             <div style="float:right;width:25%;float:left;">
                                 <button class="btn btn-warning btn-sm" style="font-size:13px;margin:0" data-toggle="modal" data-target="#deleteModal">Remove Slip</button>
                             </div>
@@ -171,27 +237,25 @@
                     (this).attr('disabled', true);
 
                 }else{
-                var id = $(this).attr('data-id');
+                 var id = $(this).attr('data-id');
                 this.style.backgroundColor = "green";
                 this.value= "served";
                 stats = this.value;
                 console.log(stats, id);
                 updateStatus(stats, id);
                 }
+                //location.reload();
             });
             
         }
+        //function for updating orderlist status
         function updateStatus(stats, id){
-            console.log(stats, id);
             $.ajax({
                 url: "<?= site_url('barista/updateStatus') ?>",
                 method: "post",
-                data : { 
-                    'status' : stats,
-                    'id' : id
-                },
+                data : { 'status' : stats,
+                'id' : id},
                 success: function(data) {
-                    location.reload();
             },
             error: function(response, setting, errorThrown) {
                 console.log(response.responseText);
@@ -199,7 +263,61 @@
             }
             });
     }
-   
+            //function  to get available tables
+            $(function() {
+            $.ajax({
+                        url: '<?= site_url('barista/getTables') ?>',
+                        dataType: 'json',
+                        success: function (data) {
+                            var poLastIndex = 0;
+                            table = data;
+                            setTableData(table);
+                        },
+                        failure: function () {
+                            console.log('None');
+                        },
+                        error: function (response, setting, errorThrown) {
+                            console.log(errorThrown);
+                            console.log(response.responseText);
+                        }
+                    });
+
+            });
+            function setTableData(table){
+                    $("#tableCode").empty();
+                    $("#tableCode").append(`${table.map(tables => {
+                        return `<option name= "tableCode" id ="tableCode" value="${tables.tableCode}">${tables.tableCode}</option>`
+                    }).join('')}`);
+            }
+            //function for updating table of slips
+            $("#editBtn form").on('submit', function(event) {
+            event.preventDefault();
+            var osID = $(this).find("input[name='osID']").val();
+            var tableCode = $(this).find("select[name='tableCode']").val();
+        
+            $.ajax({
+                url: "<?= site_url("barista/editTableNumber")?>",
+                method: "post",
+                data: {
+                    osID: osID,
+                    tableCode: tableCode
+                },
+                dataType: "json",
+                success: function(data) {
+                    alert('Table Updated');
+                            console.log(data);
+                },
+                complete: function() {
+                    $("#editTable").modal("hide");
+                            location.reload();
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+                
+            });
+        });
+
     </script>
 </body>
 </htmL>
