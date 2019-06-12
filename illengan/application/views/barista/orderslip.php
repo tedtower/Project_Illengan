@@ -76,9 +76,34 @@
             </div>
         <!--END MODAL EDIT TABLE CODE-->
 
+         <!--START "Remove Slip" MODAL-->
+         <div class="modal fade" id="deleteOrder" tabindex="-1" role="dialog" aria-labelledby="deleteOrderModal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Delete order</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center py-2">
+                            <i class="fas fa-times fa-4x animated rotateIn text-danger"></i>
+                            <input hidden id="remID">
+                            <p class="delius">Are you sure you want to remove this orderslip?</p>
+                        </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                            </div>
+                    </div>
+
+                </div>
+            </div>
+        <!--START "Remove Slip" MODAL-->
+
         <!--MODAL TO CANCEL AN ORDER -->
-           <div class="modal fade" id="deleteOrder" tabindex="-1" role="dialog" aria-labelledby="deleteOrderModal" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+           <!-- <div class="modal fade" id="deleteOrder" tabindex="-1" role="dialog" aria-labelledby="deleteOrderModal" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteOrderModal">Cancel Order</h5>
@@ -98,7 +123,7 @@
                 </form>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!--END OF MODAL TO CANCEL AN ORDER -->
 
 
@@ -149,7 +174,7 @@
                                 <div><b>Customer: </b>${item.orderslips.custName}</div>
                             </div>
                             <div style="float:right;text-align:left;width:27%">
-                                <div><b> Table No: </b>${item.orderslips.tableCode} <img class="editBtn" src="/assets/media/barista/edit.png" style="width:15px;height:15px; float:right; cursor:pointer;" 
+                                <div><b> Table No: </b>${item.orderslips.tableCode} <img class="editBtn form" src="/assets/media/barista/edit.png" style="width:15px;height:15px; float:right; cursor:pointer;" 
                                 data-toggle="modal" data-target="#editTable"></div>
                                 <div><b>Status: </b>${item.orderslips.payStatus}</div>
                             </div>
@@ -180,7 +205,7 @@
                                         class="btn btn-sm" id="item_status" data-id="${ol.olID}" value="${ol.olStatus}"/>
                                     </td>
                                     <td>
-                                        <img class="deleteBtn1" src="/assets/media/barista/error.png" style="width:18px;height:18px; float:right; cursor:pointer;" data-toggle="modal" data-target="#deleteOrder" >
+                                        <img class="delete_order" src="/assets/media/barista/error.png" style="width:18px;height:18px; float:right; cursor:pointer;" data-toggle="modal" data-target="#deleteOrder" >
                                     </td>
                                 </tr>
                                 <tr id="addons">
@@ -194,7 +219,7 @@
                     <!--Footer-->
                     <div class="card-footer text-muted">
                         <div style="overflow:auto;">
-                            <div style="text-align:left;float:left;width:73%; font-size:15px;"><b>Total: </b><span style="border-bottom:1px solid gray; padding:3px 15px">&#8369;1000</span></div>
+                            <div style="text-align:left;float:left;width:73%; font-size:15px;"><b>Total: </b><span style="border-bottom:1px solid gray; padding:3px 15px">&#8369;${item.orderslips.osTotal}</span></div>
                             <div style="float:right;width:25%;float:left;">
                                 <button class="btn btn-warning btn-sm" style="font-size:13px;margin:0" data-toggle="modal" data-target="#deleteModal">Remove Slip</button>
                             </div>
@@ -211,7 +236,7 @@
                     "data-osID"));
                 });
 
-            $(".deleteBtn1").last().on('click', function () {
+            $(".delete_order").last().on('click', function () {
                           $("#deleteOrder").find("input[name='olID']").val($(this).closest("tr").attr(
                                     "data-olID"));
                       });
