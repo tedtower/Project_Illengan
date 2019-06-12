@@ -29,10 +29,15 @@ function getSelectedMenu() {
                                  class="olDesc form-control form-control-sm" value="` + data[0].mName + `` + prName + `" readonly="readonly"></td>
                          <td><input type="number" id="olQty" onchange="setSubtotal()" name="olQty"
                                  class="olQty form-control form-control-sm" value="1" required min="1"></td>
+<<<<<<< HEAD
                          <td><input type="number" id="prPrice" name="prPrice" data-orPrice="${data[0].prPrice}"
                                  class="prPrice form-control form-control-sm" onchange="setSubtotal()" value="` + data[0].prPrice + `" ></td>
                          <td> <select onchange="setSubtotal()" class="discount form-control" style="font-size: 14px;" 
                          onchange="" name="discount" id="discount${value}"></select></td>        
+=======
+                         <td><input type="number" id="prPrice" name="prPrice"
+                                 class="prPrice form-control form-control-sm" onchange="setSubtotal()" value="` + data[0].prPrice + `" ></td>
+>>>>>>> 64df4598961e41138372cb9f8b8ce9bf797a34cb
                          <td><input type="number" name="subtotal" class="subtotal form-control form-control-sm" value="" readonly="readonly"></td>
                         <td><a class="addAddons btn btn-default btn-sm" style="margin:0;" onclick="addAddons(this);" id="addAddons">Add Addons</a></td>
                         </td><td><img class="delBtn"
@@ -176,7 +181,7 @@ function setSubtotal() {
         try {
             if(elSubtotal.length != 0) {
             total = total + parseInt(aosubtotal);
-        }
+        }9
         } catch(err) {
             
         }
