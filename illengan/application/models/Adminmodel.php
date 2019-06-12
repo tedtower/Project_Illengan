@@ -203,10 +203,10 @@ class Adminmodel extends CI_Model{
         $this->db->query($query, array($mID, $ao['aoID']));
     }
 
-     function add_salesOrder($tableCode, $custName, $osTotal, $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons) {
+     function add_salesOrder($tableCode, $custName, $osTotal, $osDateTime, $osPayDateTime, $osDateRecorded, $osDiscount, $orderlists, $addons) {
         $query = "insert into orderslips (osID, tableCode, custName, osTotal, payStatus, 
-        osDateTime, osPayDateTime, osDateRecorded) values (NULL,?,?,?,?,?,?,?);";
-        if($this->db->query($query,array($tableCode, $custName, $osTotal, 'paid', $osDateTime, $osPayDateTime, $osDateRecorded))) {
+        osDateTime, osPayDateTime, osDateRecorded, osDiscount) values (NULL,?,?,?,?,?,?,?,?);";
+        if($this->db->query($query,array($tableCode, $custName, $osTotal, 'paid', $osDateTime, $osPayDateTime, $osDateRecorded, $osDiscount))) {
             $this->add_salesList($this->db->insert_id(), $orderlists, $addons);
             }
     }
@@ -436,10 +436,11 @@ class Adminmodel extends CI_Model{
     // UPDATE FUNCTIONS-------------------------------------------------------------
 
     
-    function edit_sales($osID, $tableCodes, $custName, $osTotal, $payStatus, $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons) {
+    function edit_sales($osID, $tableCodes, $custName, $osTotal, $payStatus, $osDateTime, $osPayDateTime, 
+    $osDateRecorded, $osDiscount, $orderlists, $addons) {
         $query = "UPDATE orderslips SET tableCode = ?, custName = ?, osTotal = ?, 
-        osDateTime = ?, osPayDateTime = ? WHERE orderslips.osID = ?;";
-        if($this->db->query($query, array($tableCodes, $custName, $osTotal, $osDateTime, $osPayDateTime, $osID))) {
+        osDateTime = ?, osPayDateTime = ?, osDiscount = ? WHERE orderslips.osID = ?;";
+        if($this->db->query($query, array($tableCodes, $custName, $osTotal, $osDateTime, $osPayDateTime, $osDiscount, $osID))) {
             for($i = 0; $i < count($orderlists); $i++) {
                 $orlist = array(
                     'olID' => $orderlists[$i]['olID'],
@@ -452,7 +453,6 @@ class Adminmodel extends CI_Model{
                     'olRemarks' => $orderlists[$i]['olRemarks'],
                     'olPrice' => $orderlists[$i]['olPrice'],
                     'olDiscount' => $orderlists[$i]['olDiscount']
-
                 );
 
                 if($orderlists[$i]['del'] === 0) {

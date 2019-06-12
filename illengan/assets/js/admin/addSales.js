@@ -29,15 +29,10 @@ function getSelectedMenu() {
                                  class="olDesc form-control form-control-sm" value="` + data[0].mName + `` + prName + `" readonly="readonly"></td>
                          <td><input type="number" id="olQty" onchange="setSubtotal()" name="olQty"
                                  class="olQty form-control form-control-sm" value="1" required min="1"></td>
-<<<<<<< HEAD
                          <td><input type="number" id="prPrice" name="prPrice" data-orPrice="${data[0].prPrice}"
                                  class="prPrice form-control form-control-sm" onchange="setSubtotal()" value="` + data[0].prPrice + `" ></td>
                          <td> <select onchange="setSubtotal()" class="discount form-control" style="font-size: 14px;" 
                          onchange="" name="discount" id="discount${value}"></select></td>        
-=======
-                         <td><input type="number" id="prPrice" name="prPrice"
-                                 class="prPrice form-control form-control-sm" onchange="setSubtotal()" value="` + data[0].prPrice + `" ></td>
->>>>>>> 64df4598961e41138372cb9f8b8ce9bf797a34cb
                          <td><input type="number" name="subtotal" class="subtotal form-control form-control-sm" value="" readonly="readonly"></td>
                         <td><a class="addAddons btn btn-default btn-sm" style="margin:0;" onclick="addAddons(this);" id="addAddons">Add Addons</a></td>
                         </td><td><img class="delBtn"
@@ -174,22 +169,45 @@ function setSubtotal() {
             
             olQty = parseInt(document.getElementsByClassName('olQty')[i].value);
             document.getElementsByClassName('subtotal')[i].value = olQty * prPrice;
-            var subtotal = parseInt(document.getElementsByClassName('subtotal')[i].value);
+            var subtotal = parseFloat(document.getElementsByClassName('subtotal')[i].value);
             total = total + subtotal;
         }
     
         try {
             if(elSubtotal.length != 0) {
-            total = total + parseInt(aosubtotal);
-        }9
+            total = total + parseFloat(aosubtotal);
+        }
         } catch(err) {
             
         }
       
+        var dcpercent, disc;
+        if ($('#addSales').is(':visible')) {
+            disc = parseFloat(document.getElementsByName('seniorDC')[0].value);
+        } else {
+            disc = parseFloat(document.getElementsByName('seniorDC')[1].value);
+        }
+        console.log(disc);
+
+        if(isNaN(disc) || disc === 0) {
+            disc = 0;
+        } else {
+            var percentage = parseFloat(disc) / 100;
+            discountAmt = parseFloat(total) * percentage; 
+        
+            total = total - discountAmt;
+
+            $('#dcpercent').remove();
+            dcpercent = `<span id="dcpercent" style="color: green;"> 
+            - ${disc}% Senior Citizen Discount</span>`;
+        }
+        
         if ($('#addSales').is(':visible')) {
             $('#total').text(total);
+            $('#total').after(dcpercent);
         } else {
             $('#total1').text(total);
+            $('#total1').after(dcpercent);
         }
 
     });
@@ -206,6 +224,7 @@ $(document).ready(function() {
     var osDateTime = $('#osDateTime').val();
     var custName = $('#custName').val();
     var tableCode = $('#tableCode').val();
+    var osDiscount = parseInt($('#seniorDC').val());
     var osTotal = parseInt($('#total').text());
     var elements = document.getElementsByClassName('salesElements');
     var addOnElems = document.getElementsByClassName('addonsTables');
@@ -260,6 +279,7 @@ $(document).ready(function() {
             osTotal: osTotal,
             osDateTime: osDateTime,
             osPayDateTime: osPayDateTime,
+            osDiscount: osDiscount,
             orderlists: JSON.stringify(orderlists),
             addons: JSON.stringify(addons)
         },

@@ -76,6 +76,16 @@
                                                 <input type="text" name="custName" id="custName"
                                                     class="form-control form-control-sm">
                                             </div>
+                                        
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Senior Citizen Discount %</span>
+                                                </div>
+                                                <input type="number" name="seniorDC" id="seniorDC" onchange="setSubtotal()"
+                                                    class="form-control form-control-sm">
+                                            </div>
 
                                                <!-- Table Code -->
                                         <div class="input-group mb-3 col">
@@ -176,6 +186,15 @@
                                                     class="form-control form-control-sm">
                                             </div>
 
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Senior Citizen Discount %</span>
+                                                </div>
+                                                <input type="number" name="seniorDC" id="seniorDC" onchange="setSubtotal()"
+                                                    class="form-control form-control-sm">
+                                            </div>
                                                <!-- Table Code -->
                                         <div class="input-group mb-3 col">
                                                 <div class="input-group-prepend">
@@ -420,6 +439,7 @@ var sales = [];
     }
     
     $('#addBtn').on('click', function() {
+        $('#dcpercent').remove();
         $("#editSales form")[0].reset();
         $(".editsalesTable > tbody").empty();
         $('.salesTable > tbody').empty();
@@ -513,6 +533,7 @@ var sales = [];
         });
 
         $(".editBtn").on("click", function() {
+        $('#dcpercent').remove();
         $('.salesTable > tbody').empty();
         $('#addSales form')[0].reset();
         $("#editSales form")[0].reset();
@@ -558,6 +579,7 @@ var sales = [];
     modal.find("input[name='osPayDateTime']").val(osPayDateTime);
     modal.find("input[name='osDateTime']").val(osDateTime);
     modal.find("input[name='custName']").val(saleslist.custName);
+    modal.find("input[name='seniorDC']").val(saleslist.osDiscount);
     modal.find("select[name='tableCodes']").find(`option[value=${saleslist.tableCode}]`).attr("selected","selected");
 
     ol.forEach(ol => {
@@ -693,6 +715,7 @@ $(document).ready(function() {
         var osDateTime = $(this).find("input[name='osDateTime']").val();
         var osTotal = $(this).find("span[id='total1']").text();
         var custName = $(this).find("input[name='custName']").val();
+        var osDiscount = $(this).find("input[name='seniorDC']").val();
         var tableCodes = $(this).find("select[name='tableCodes']").val();
        
         var ol = [];
