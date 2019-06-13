@@ -96,7 +96,7 @@
 											<span aria-hidden="true">&times;</span>
 										</button>
 									</div>
-									<form id="destockitem" method="post" accept-charset="utf-8">
+									<form id="restockitem" method="post" accept-charset="utf-8">
 										<div class="modal-body">
 											<div class="inputContainerParent" style="margin:1% 3%" id="list">
 											</div>
@@ -104,7 +104,7 @@
 										<!--Footer-->
 										<div class="modal-footer">
 											<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-											<button type="button" class="btn btn-success btn-sm" data-dismiss="modal" onclick="getDestockStocks()">Ok</button>
+											<button type="button" class="btn btn-success btn-sm" data-dismiss="modal" onclick="getRestockStocks()">Ok</button>
 										</div>
 									</form>
 								</div>
@@ -117,7 +117,7 @@
 							<div class="modal-dialog modal-lg" role="document" style="width:80%">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h5 class="modal-tite" id="exampleModalLabel">Destock Item</h5>
+										<h5 class="modal-title" id="exampleModalLabel">Destock Item</h5>
 										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 											<span aria-hidden="true">&times;</span>
 										</button>
@@ -150,6 +150,7 @@
 														<option value="spoilage">Spoilage</option>
 													</select>
 												</div>
+											</div>
 												<!--Start Table-->
 												<table class="destockTable table table-sm table-borderless inputTable">
 													<!--Table containing the different input fields in adding trans items -->
@@ -169,7 +170,6 @@
 													<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
 													<button class="btn btn-success btn-sm" onclick="addDestockItems()">Add</button>
 												</div>
-											</div>
 										</div>
 									</form>
 								</div>
