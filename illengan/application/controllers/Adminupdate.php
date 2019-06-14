@@ -108,6 +108,7 @@ class Adminupdate extends CI_Controller{
             $osTotal = $this->input->post('osTotal');
             $payStatus = $this->input->post('payStatus');
             $osDateTime = $this->input->post('osDateTime');
+            $osDiscount = $this->input->post('osDiscount');
             $osPayDateTime = $this->input->post('osPayDateTime');
             $osDateRecorded = date("Y-m-d H:i:s");
             $orderlists = json_decode($this->input->post('orderlists'), true);

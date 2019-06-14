@@ -197,29 +197,25 @@ class Adminmodel extends CI_Model{
 
     function add_menuaddon($mID, $addon){
         $query = "INSERT into menuaddons (mID, aoID) values (?,?)";
-        if(count($addon) > 0){
-            for($n = 0; $n < count($addon) ; $n++){
-                $this->db->query($query, array($mID, $addon[$n]['aoID']));
-            }
-        } else{
-            return false;
-        }
-     }
-     function add_salesOrder($tableCode, $custName, $osTotal, $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons) {
+        $this->db->query($query, array($mID, $ao['aoID']));
+    }
+
+     function add_salesOrder($tableCode, $custName, $osTotal, $osDateTime, $osPayDateTime, $osDateRecorded, $osDiscount, $orderlists, $addons) {
         $query = "insert into orderslips (osID, tableCode, custName, osTotal, payStatus, 
-        osDateTime, osPayDateTime, osDateRecorded) values (NULL,?,?,?,?,?,?,?);";
-        if($this->db->query($query,array($tableCode, $custName, $osTotal, 'paid', $osDateTime, $osPayDateTime, $osDateRecorded))) {
+        osDateTime, osPayDateTime, osDateRecorded, osDiscount) values (NULL,?,?,?,?,?,?,?,?);";
+        if($this->db->query($query,array($tableCode, $custName, $osTotal, 'paid', $osDateTime, $osPayDateTime, $osDateRecorded, $osDiscount))) {
             $this->add_salesList($this->db->insert_id(), $orderlists, $addons);
             }
         }
 
     function add_salesList($osID, $orderlists, $addons) {
         $query = "insert into orderlists (olID, prID, osID, olDesc, olQty, 
-        olSubtotal, olStatus, olRemarks) values (NULL,?,?,?,?,?,?,?);";
+        olSubtotal, olStatus, olRemarks, olPrice, olDiscount) values (NULL,?,?,?,?,?,?,?,?,?);";
         if(count($orderlists) > 0){
              for($in = 0; $in < count($orderlists) ; $in++){
               if($this->db->query($query, array($orderlists[$in]['prID'], $osID, $orderlists[$in]['olDesc'], 
-              $orderlists[$in]['olQty'], $orderlists[$in]['olSubtotal'],'served', ' '))) {
+              $orderlists[$in]['olQty'], $orderlists[$in]['olSubtotal'],'served', ' ', $orderlists[$in]['olPrice'], 
+              $orderlists[$in]['olDiscount']))) {
                 if(count($addons) > 0) {
                     $this->update_salesaddons($this->db->insert_id(), $orderlists[$in]['prID'], $addons);
                 }
@@ -385,38 +381,33 @@ class Adminmodel extends CI_Model{
     // UPDATE FUNCTIONS-------------------------------------------------------------
 
     
-    function edit_sales($osID, $tableCodes, $custName, $osTotal, $payStatus, $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons) {
+    function edit_sales($osID, $tableCodes, $custName, $osTotal, $payStatus, $osDateTime, $osPayDateTime, 
+    $osDateRecorded, $osDiscount, $orderlists, $addons) {
         $query = "UPDATE orderslips SET tableCode = ?, custName = ?, osTotal = ?, 
-        osDateTime = ?, osPayDateTime = ? WHERE orderslips.osID = ?;";
-        if($this->db->query($query, array($tableCodes, $custName, $osTotal, $osDateTime, $osPayDateTime, $osID))) {
+        osDateTime = ?, osPayDateTime = ?, osDiscount = ? WHERE orderslips.osID = ?;";
+        if($this->db->query($query, array($tableCodes, $custName, $osTotal, $osDateTime, $osPayDateTime, $osDiscount, $osID))) {
             for($i = 0; $i < count($orderlists); $i++) {
+                $orlist = array(
+                    'olID' => $orderlists[$i]['olID'],
+                    'prID' => $orderlists[$i]['prID'],
+                    'osID' => $orderlists[$i]['osID'],
+                    'olDesc' => $orderlists[$i]['olDesc'],
+                    'olQty' => $orderlists[$i]['olQty'],
+                    'olSubtotal' => $orderlists[$i]['olSubtotal'],
+                    'olStatus' => $orderlists[$i]['olStatus'],
+                    'olRemarks' => $orderlists[$i]['olRemarks'],
+                    'olPrice' => $orderlists[$i]['olPrice'],
+                    'olDiscount' => $orderlists[$i]['olDiscount']
+                );
+
                 if($orderlists[$i]['del'] === 0) {
                     $this->delete_salesOrderitem($orderlists[$i]['olID']);
                 }
                 else if($orderlists[$i]['olID'] != null) {
-                    $orlist = array(
-                        'olID' => $orderlists[$i]['olID'],
-                        'prID' => $orderlists[$i]['prID'],
-                        'osID' => $orderlists[$i]['osID'],
-                        'olDesc' => $orderlists[$i]['olDesc'],
-                        'olQty' => $orderlists[$i]['olQty'],
-                        'olSubtotal' => $orderlists[$i]['olSubtotal'],
-                        'olStatus' => $orderlists[$i]['olStatus'],
-                        'olRemarks' => $orderlists[$i]['olRemarks']
-                    );
                     $this->edit_salesorders($orlist, $addons);
                 } else{
                     $orderlist = array();
-                    $olist = array(
-                        'prID' => $orderlists[$i]['prID'],
-                        'osID' => $orderlists[$i]['osID'],
-                        'olDesc' => $orderlists[$i]['olDesc'],
-                        'olQty' => $orderlists[$i]['olQty'],
-                        'olSubtotal' => $orderlists[$i]['olSubtotal'],
-                        'olStatus' => $orderlists[$i]['olStatus'],
-                        'olRemarks' => $orderlists[$i]['olRemarks']
-                    );
-                    array_push($orderlist, $olist);
+                    array_push($orderlist, $orlist);
                     $this->add_salesList($osID, $orderlist, $addons);
                 } 
             }   
@@ -425,9 +416,10 @@ class Adminmodel extends CI_Model{
 
     function edit_salesorders($orlist, $addons) {
         $query = "UPDATE orderlists SET prID = ?, osID = ?, olDesc = ?, 
-        olQty = ?, olSubtotal = ? WHERE orderlists.olID = ?;";
+        olQty = ?, olSubtotal = ?, olPrice = ?, olDiscount = ? WHERE orderlists.olID = ?;";
         if($this->db->query($query, array($orlist['prID'], $orlist['osID'], $orlist['olDesc'], 
-        $orlist['olQty'], $orlist['olSubtotal'], $orlist['olID'])))  {
+        $orlist['olQty'], $orlist['olSubtotal'],  $orlist['olPrice'],  $orlist['olDiscount'],  
+        $orlist['olID'])))  {
             if(count($addons) > 0) {
               $this->update_salesaddons($orlist['olID'], $orlist['prID'], $addons);
             }
@@ -436,32 +428,32 @@ class Adminmodel extends CI_Model{
     }
 
     function update_salesaddons($olID, $prID, $addons) {
-            for($i = 0; $i < count($addons); $i++) {
-                if($addons[$i]['del'] === 0 ) {
-                    $this->delete_salesAddons($addons[$i]['aoID'], $addons[$i]['olID']);
-                } else if($addons[$i]['olID'] === null){
-                    $addonsArr = array();
-                    $aolist = array(
-                        'prID' => $addons[$i]['prID'],
-                        'aoID' => $addons[$i]['aoID'],
-                        'aoQty' => $addons[$i]['aoQty'],
-                        'aoTotal' => $addons[$i]['aoTotal']
-                    );
-                    array_push($addonsArr, $aolist);
-                    $this->add_salesAddons($olID, $prID, $addonsArr);
-                } else if(intval($addons[$i]['oldaoID']) != intval($addons[$i]['aoID'])) {
-                    $this->update_changedAddon($addons[$i]['aoID'], $addons[$i]['oldaoID'], $addons[$i]['olID']);
-                } else if($addons[$i]['prID'] == $prID && $addons[$i]['olID'] != null) {
-                    $aolist = array(
-                        'aoID' => $addons[$i]['aoID'],
-                        'olID' => $addons[$i]['olID'],
-                        'aoQty' => $addons[$i]['aoQty'],
-                        'aoTotal' => $addons[$i]['aoTotal']
-                    );
-                    $this->edit_salesaddons($aolist);
-                } 
-            }
-    }
+        for($i = 0; $i < count($addons); $i++) {
+            if($addons[$i]['del'] === 0 ) {
+                $this->delete_salesAddons($addons[$i]['aoID'], $addons[$i]['olID']);
+            } else if($addons[$i]['olID'] === null){
+                $addonsArr = array();
+                $aolist = array(
+                    'prID' => $addons[$i]['prID'],
+                    'aoID' => $addons[$i]['aoID'],
+                    'aoQty' => $addons[$i]['aoQty'],
+                    'aoTotal' => $addons[$i]['aoTotal']
+                );
+                array_push($addonsArr, $aolist);
+                $this->add_salesAddons($olID, $prID, $addonsArr);
+            } else if(intval($addons[$i]['oldaoID']) != intval($addons[$i]['aoID'])) {
+                $this->update_changedAddon($addons[$i]['aoID'], $addons[$i]['oldaoID'], $addons[$i]['olID']);
+            } else if($addons[$i]['prID'] == $prID && $addons[$i]['olID'] != null) {
+                $aolist = array(
+                    'aoID' => $addons[$i]['aoID'],
+                    'olID' => $addons[$i]['olID'],
+                    'aoQty' => $addons[$i]['aoQty'],
+                    'aoTotal' => $addons[$i]['aoTotal']
+                );
+                $this->edit_salesaddons($aolist);
+            } 
+        }
+}
 
     function edit_salesaddons($addon) {
         $query = "UPDATE orderaddons SET aoQty = ?, aoTotal = ? WHERE orderaddons.aoID = ?
@@ -742,7 +734,7 @@ class Adminmodel extends CI_Model{
     }
     function get_menuaddons($mID) {
         $query = "SELECT * FROM menu mn INNER JOIN menuaddons ma USING (mid) INNER JOIN addons ao USING (aoID) 
-        WHERE mn.mID = ? AND ao.aoStatus = 'available'";
+        WHERE mn.mID = ?";
          return $this->db->query($query, array($mID))->result_array();
     }
     function get_purchOrders() {
@@ -1413,6 +1405,11 @@ class Adminmodel extends CI_Model{
                     slType = 'beginning' AND stID = ?
             ;",array($stID))->result_array();
     }
+    function get_menudiscounts() {
+        $query = "SELECT * FROM menudiscount INNER JOIN discounts USING (pmID)";
+        return $this->db->query($query)->result_array();
+    }
+
     function get_SPMs($spID){
         $query = "SELECT
             stID,
