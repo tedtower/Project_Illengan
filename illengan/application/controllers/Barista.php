@@ -37,7 +37,7 @@ class Barista extends CI_Controller{
         echo json_encode($data);
     }
     function getTables(){
-        $data =$this->baristamodel->get_availableTables();
+        $data =$this->baristamodel->get_tables();
         echo json_encode($data);
     }
     function editTableNumber(){
@@ -97,11 +97,11 @@ class Barista extends CI_Controller{
 		$this->baristamodel->update_status( $order_status, $olID);
         
     }
-    function cancel(){
-        $data=$this->baristamodel->cancelOrder();
+    function cancel_orderlist(){
+        $data=$this->baristamodel->cancelOrder($olID);
         echo json_encode($data);
     }
-    function cancelslip(){
+    function deleteSlip(){
         $data=$this->baristamodel->cancel_slip();
         echo json_encode($data);
     }

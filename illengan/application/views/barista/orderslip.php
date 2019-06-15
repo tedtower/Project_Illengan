@@ -44,40 +44,8 @@
             </div>
         <!--START "Remove Slip" MODAL-->
 
-            <!-- MODAL EDIT TABLE CODE-->
-            <div class="modal fade" id="editTable" tabindex="-1" role="dialog" aria-labelledby="editTableModal" aria-hidden="true">
-              <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Table Code</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <form id="formEdit" accept-charset="utf-8" > 
-                  <div class="modal-body">
-                        <h6 id="editTableCode"></h6>
-                        <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text" id="inputGroup-sizing-sm" style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                            Change Table</span>
-                        </div>
-                          <select name="tableCode" id="tableCode" class="form-control form-control-sm" required>
-                          </select>                    
-                        <input name="osID" id="osID" hidden="hidden">
-                  </div>
-                  <div class="modal-footer">
-                  <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                  <button class="btn btn-success btn-sm" type="submit">Update</button>
-                  </div>
-                </div>
-                </form>
-              </div>
-            </div>
-        <!--END MODAL EDIT TABLE CODE-->
-
-        <!--MODAL TO CANCEL AN ORDER -->
-           <div class="modal fade" id="deleteOrder" tabindex="-1" role="dialog" aria-labelledby="deleteOrderModal" aria-hidden="true">
+                <!--MODAL TO CANCEL AN ORDER -->
+        <div class="modal fade" id="deleteOrder" tabindex="-1" role="dialog" aria-labelledby="deleteOrderModal" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -92,7 +60,7 @@
                     <input type="hidden" name="olID" id="olID" class="form-control">
                     </div>
                     <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    <button type="submit" class="btn btn-danger btn-sm" id="removeOrder">Delete</button>
                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -100,6 +68,45 @@
             </div>
         </div>
         <!--END OF MODAL TO CANCEL AN ORDER -->
+
+            <!-- MODAL EDIT TABLE CODE-->
+        <form id="formEdit" method="post" accept-charset="utf-8" > 
+            <div class="modal fade" id="editTable" tabindex="-1" role="dialog" aria-labelledby="editTableModal" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Table Code</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                        <h6 id="editTableCode"></h6>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Table</label>
+                            <div class="col-md-10">
+                              <input type="text" name="current_table" id="current_table" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="inputGroup-sizing-sm" style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                            Change Table</span>
+                        </div>
+                          <select name="tableCode" id="tableCode" class="form-control form-control-sm" required>
+                          </select>                    
+                        <input name="osID" id="osID" hidden="hidden">
+                  </div>
+                  <div class="modal-footer">
+                  <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-success btn-sm" >Update</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </form>
+
+        <!--END MODAL EDIT TABLE CODE-->
 
 
 
@@ -150,7 +157,7 @@
                             </div>
                             <div style="float:right;text-align:left;width:27%">
                                 <div><b> Table No: </b>${item.orderslips.tableCode} <img class="editBtn" src="/assets/media/barista/edit.png" style="width:15px;height:15px; float:right; cursor:pointer;" 
-                                data-toggle="modal" data-target="#editTable" onclick="update()"></div>
+                                data-toggle="modal" data-target="#editTable"></div>
                                 <div><b>Status: </b>${item.orderslips.payStatus}</div>
                             </div>
                         </div>
@@ -204,29 +211,24 @@
             </div>
                         `;
 
-                $(".updateBtn").last().on('click', function () {
-				$("#editTableCode").text(
-                   `Edit table code ${$(this).closest("tr").attr("data-tID")}`);
-                $("#editTable").find("input[name='osID']").val($(this).closest("tr").attr(
-                    "data-osID"));
-                });
-
-            $(".deleteBtn1").last().on('click', function () {
-                          $("#deleteOrder").find("input[name='olID']").val($(this).closest("tr").attr(
-                                    "data-olID"));
-                      });
-            // orderlists.forEach(function(item){
-            //     ${item.addons.map(adds => {
-            //         var addOn = `<tr>
-            //                      <td></td>
-            //                      <td>${adds.aoName}</td>
-            //                      <td>${adds.aoQty}</td>
-            //                      <td>${(parseFloat(adds.aoTotal)).toFixed(2)}</td>
-            //                      </tr>
-            //         `;
-            //     })}
-                
-             //});
+                // $(".updateBtn").last().on('click', function () {
+				// $("#editTableCode").text(
+                //    `Edit table code ${$(this).closest("tr").attr("data-tID")}`);
+                // $("#editTable").find("input[name='osID']").val($(this).closest("tr").attr(
+                //     "data-osID"));
+                // });
+                // orderlists.forEach(function(item){
+                //     ${item.addons.map(adds => {
+                //         var addOn = `<tr>
+                //                      <td></td>
+                //                      <td>${adds.aoName}</td>
+                //                      <td>${adds.aoQty}</td>
+                //                      <td>${(parseFloat(adds.aoTotal)).toFixed(2)}</td>
+                //                      </tr>
+                //         `;
+                //     })}
+                    
+                //});
             
                     $('.lists-container').append(header);
               });
@@ -247,7 +249,10 @@
                     console.log(stats, id);
                     updateStatus(stats, id);
                 }
-                location.reload();
+            });
+
+            $('#removeOrder').click(function(){
+                removeOrderItem(olID);
             });
             
         }
@@ -266,6 +271,29 @@
             }
             });
     }
+
+        //function for cancelling(to delete) order item
+        function removeOrderItem(olID){
+           
+            var orderId = $('#olID').val();
+            $.ajax({
+                method : "post",
+                url: "<?= site_url('barista/cancel_orderlist')?>",
+                data: {olID : orderId},
+                success: function(data){
+                    $('#deleteOrder').modal('hide');
+                    //$('#olID').val('');
+                    alert('Order Deleted!');
+                    console.log(data);
+                }
+        //         error: function(response,setting, errorThrown) {
+        //         console.log(response.responseText);
+        //         console.log(errorThrown);
+        // }
+            });
+
+        }
+
             //function  to get available tables
             $(function() {
             $.ajax({
@@ -293,8 +321,7 @@
                     }).join('')}`);
             }
             //function for updating table of slips
-            function update(){
-            $("#editBtn").on('submit', function(event) {
+            $('#formEdit').on('submit', function(event) {
             event.preventDefault();
             var osID = $(this).find("input[name='osID']").val();
             var tableCode = $(this).find("select[name='tableCode']").val();
@@ -308,6 +335,7 @@
                     tableCode: tableCode
                 },
                 success: function(data) {
+                    $('#tableCode').val("");
                     alert('Table Updated');
                             console.log(data);
                 },
@@ -321,7 +349,7 @@
                 
             });
         });
-            }
+            
 
     </script>
 </body>

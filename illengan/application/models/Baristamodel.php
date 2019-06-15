@@ -36,8 +36,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $this->db->query($query,array($osID))->result_array();
         }
 
-        function get_availableTables(){
-            $query = "SELECT t.tableCode FROM tables t LEFT JOIN orderslips os on t.tableCode = os.tableCode where os.tableCode IS NULL ";
+        // function get_availableTables(){
+        //     $query = "SELECT t.tableCode FROM tables t LEFT JOIN orderslips os on t.tableCode = os.tableCode where os.tableCode IS NULL ";
+        //     return $this->db->query($query)->result_array();
+        // }
+
+        function get_tables(){
+            $query = "SELECT tableCode from tables";
             return $this->db->query($query)->result_array();
         }
 
@@ -45,11 +50,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
              $query = "Update orderslips set tableCode = ? where osID=?";
              return $this->db->query($query,array($tableCode,$osID));
         }
-        function cancelOrder(){
-            $olID=$this->input->post('olID');
-            $this->db->where('olID', $olID);
-            $result=$this->db->delete('orderlists');
-            return $result;
+        function cancelOrder($olID){
+            $query = "DELETE from orderlists where olID = ? and olStatus = 'pending' ";
+            return $this->db->query($query, array($olID));
+            // $olID=$this->input->post('olID');
+            // $this->db->where('olID', $olID);
+            // $result=$this->db->delete('orderlists');
+            // return $result;
         }
         /*function search(){
             $query = $this->db
