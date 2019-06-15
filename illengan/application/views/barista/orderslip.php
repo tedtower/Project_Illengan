@@ -8,7 +8,8 @@
 
 <body style="background:#c7ccd1;">
     <?php include_once('templates/navigation.php') ?>
-    <button class="btn btn-link btn-sm" onClick="window.location.href = '<?php echo base_url();?>customer/processCheckIn';return false;">Add Order</button>
+    <button class="btn btn-success btn-sm" onClick="window.location.href = '<?php echo base_url();?>customer/checkin';return false;">
+    <img class="addBtn" src="/assets/media/barista/add image.png" style="width:20px;height:20px; float:left;"> Add Order</button>
     <!--End Top Nav-->
     <div class="container-fluid">
         <section class="lists-container">
@@ -77,7 +78,7 @@
 
         <!--MODAL TO CANCEL AN ORDER -->
            <div class="modal fade" id="deleteOrder" tabindex="-1" role="dialog" aria-labelledby="deleteOrderModal" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteOrderModal">Cancel Order</h5>
@@ -149,7 +150,7 @@
                             </div>
                             <div style="float:right;text-align:left;width:27%">
                                 <div><b> Table No: </b>${item.orderslips.tableCode} <img class="editBtn" src="/assets/media/barista/edit.png" style="width:15px;height:15px; float:right; cursor:pointer;" 
-                                data-toggle="modal" data-target="#editTable"></div>
+                                data-toggle="modal" data-target="#editTable" onclick="update()"></div>
                                 <div><b>Status: </b>${item.orderslips.payStatus}</div>
                             </div>
                         </div>
@@ -193,7 +194,7 @@
                     <!--Footer-->
                     <div class="card-footer text-muted">
                         <div style="overflow:auto;">
-                            <div style="text-align:left;float:left;width:73%; font-size:15px;"><b>Total: </b><span style="border-bottom:1px solid gray; padding:3px 15px">&#8369;1000</span></div>
+                            <div style="text-align:left;float:left;width:73%; font-size:15px;"><b>Total: </b><span style="border-bottom:1px solid gray; padding:3px 15px">&#8369;${item.orderslips.osTotal}</span></div>
                             <div style="float:right;width:25%;float:left;">
                                 <button class="btn btn-warning btn-sm" style="font-size:13px;margin:0" data-toggle="modal" data-target="#deleteModal">Remove Slip</button>
                             </div>
@@ -203,12 +204,12 @@
             </div>
                         `;
 
-                        $(".updateBtn").last().on('click', function () {
-				      $("#editTableCode").text(
+                $(".updateBtn").last().on('click', function () {
+				$("#editTableCode").text(
                    `Edit table code ${$(this).closest("tr").attr("data-tID")}`);
-              $("#editTable").find("input[name='osID']").val($(this).closest("tr").attr(
+                $("#editTable").find("input[name='osID']").val($(this).closest("tr").attr(
                     "data-osID"));
-            });
+                });
 
             $(".deleteBtn1").last().on('click', function () {
                           $("#deleteOrder").find("input[name='olID']").val($(this).closest("tr").attr(
@@ -225,25 +226,28 @@
             //         `;
             //     })}
                 
-            // });
+             //});
             
                     $('.lists-container').append(header);
               });
               $("input#item_status").on('click', function () {
+                var id = $(this).attr('data-id');
                 var stats = $(this).val();
                 if( stats == 'served'){
-                    stats = 'pending';
-                    //$(this).attr('disabled', true);
+                    this.style.backgroundColor = "gray";
+                    this.value= "pending";
+                    stats = this.value;
+                    console.log(stats, id);
+                    updateStatus(stats, id);
 
-                }else{
-                 var id = $(this).attr('data-id');
-                this.style.backgroundColor = "green";
-                this.value= "served";
-                stats = this.value;
-                console.log(stats, id);
-                updateStatus(stats, id);
+                }else if(stats == 'pending'){
+                    this.style.backgroundColor = "green";
+                    this.value= "served";
+                    stats = this.value;
+                    console.log(stats, id);
+                    updateStatus(stats, id);
                 }
-                //location.reload();
+                location.reload();
             });
             
         }
@@ -252,8 +256,8 @@
             $.ajax({
                 url: "<?= site_url('barista/updateStatus') ?>",
                 method: "post",
-                data : { 'status' : stats,
-                'id' : id},
+                data : { 'olStatus' : stats,
+                'osID' : id},
                 success: function(data) {
             },
             error: function(response, setting, errorThrown) {
@@ -289,7 +293,8 @@
                     }).join('')}`);
             }
             //function for updating table of slips
-            $("#editBtn form").on('submit', function(event) {
+            function update(){
+            $("#editBtn").on('submit', function(event) {
             event.preventDefault();
             var osID = $(this).find("input[name='osID']").val();
             var tableCode = $(this).find("select[name='tableCode']").val();
@@ -297,11 +302,11 @@
             $.ajax({
                 url: "<?= site_url("barista/editTableNumber")?>",
                 method: "post",
+                dataType: "json",
                 data: {
                     osID: osID,
                     tableCode: tableCode
                 },
-                dataType: "json",
                 success: function(data) {
                     alert('Table Updated');
                             console.log(data);
@@ -316,6 +321,7 @@
                 
             });
         });
+            }
 
     </script>
 </body>

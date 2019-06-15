@@ -59,12 +59,13 @@ class Adminadd extends CI_Controller{
             $osPayDateTime = trim($this->input->post('osPayDateTime'));
             $osDate = trim($this->input->post('osDate'));
             $osPayDate = trim($this->input->post('osPayDate'));
+            $osDiscount = trim($this->input->post('osDiscount'));
             $orderlists = json_decode($this->input->post('orderlists'), true);
             $osDateRecorded = date("Y-m-d H:i:s");
             $addons = json_decode($this->input->post('addons'), true);
            
             $this->adminmodel->add_salesOrder($tableCode, $custName, $osTotal, $osDateTime,
-            $osPayDateTime, $osDateRecorded, $orderlists, $addons);
+            $osPayDateTime, $osDateRecorded, $osDiscount, $orderlists, $addons);
 
         }else{
             redirect('login');
@@ -104,24 +105,17 @@ class Adminadd extends CI_Controller{
             $pmName = $this->input->post('pmName');
             $pmStartDate = $this->input->post('pmStartDate');
             $pmEndDate = $this->input->post('pmEndDate');
-            $fbName = $this->input->post('fbName');
-            $isElective = $this->input->post('isElective');
-            $prID = $this->input->post('prID');
-            $pcType = $this->input->post('pcType');
-            $pcQty = $this->input->post('pcQty');
-            $prIDfb = $this->input->post('prIDfb');
-            $fbQty = $this->input->post('fbQty');
+            $freebie = $this->input->post('freebie');
+            $discount = $this->input->post('discount');
+            $status = $this->input->post('status');
+            $pc = json_decode($this->input->post('pc'), true);
+            $fb = json_decode($this->input->post('fb'), true);
+            $dc = json_decode($this->input->post('dc'), true);
+            $mfb = json_decode($this->input->post('mfb'), true);
+            $mdc = json_decode($this->input->post('mdc'), true);
 
-            $this->adminmodel->add_promo($pmName, $pmStartDate, $pmEndDate, $fbName, $isElective, $prID, $pcType, $pcQty, $prIDfb, $fbQty);
-            // var pmName = $('#pmName').val();
-            // var pmStartDate = $('#pmStartDate').val();
-            // var pmEndDate = $('#pmEndDate').val();
-            // var elective = $('#isElective').val();
-            // var fbName = $('#fbName').val();
-            // var menuName = $('#menu_name').val();
-            // var pcQty = $('#pcQty').val();
-            // var menuFB = $('#fb_item').val();
-            // var fbQty = $('#fbQty').val();
+            $this->adminmodel->add_promo($pmName, $pmStartDate, $pmEndDate, $freebie,
+            $discount, $status, $pc, $fb, $dc, $mfb, $mdc);
         } else {
             redirect('login');
         }
