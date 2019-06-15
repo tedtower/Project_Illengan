@@ -52,7 +52,7 @@
                     <p id="note"></p>
                 <!--Start of Modal "Restock Item"-->
                     <div class="modal fade bd-example-modal-lg" id="restock" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow:auto !important">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -64,23 +64,32 @@
                                 <form action="<?php echo base_url('admin/inventory/add')?>" method="get"
                                     accept-charset="utf-8">
                                     <div class="modal-body">
-                                        <!--Add Stock Item-->
-                                        <a class="btn btn-primary btn-sm" style="color:blue;margin:0"
-                                            data-toggle="modal" data-target="#stockBrochure">Add Item</a>
-                                        <!--Button to add row in the table-->
-                                        <br><br>
+                                        <div class="form-row">
+                                            <div class="mb-3 col">
+                                                <a class="btn btn-primary btn-sm" style="color:blue;margin:0" data-toggle="modal" data-target="#stockBrochure">Add Item</a>
+                                            </div>
+
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                    style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                    Date</span>
+                                                </div>
+                                                <input type="date" name="restockDate" class="form-control form-control-sm">
+                                            </div>
+                                        </div>
                                         <table class="varianceTable table table-sm table-borderless inputTable">
                                             <!--Table containing the different input fields in adding trans items -->
                                             <thead style="border-bottom:2px solid #cecece">
                                                 <tr class="text-center">
-                                                    <th><b>Stock Name</b></th>
-                                                    <th><b>Current Qty</b></th>
-                                                    <th><b>Unit</b></th>
-                                                    <th><b>Restock Qty</b></th>
+                                                    <th width="30%"><b>Stock Name</b></th>
+                                                    <th class="text-left"><b>Current Qty</b></th>
+                                                    <th width="13%"><b>Restock Qty</b></th>
+                                                    <th><b>Remarks</b></th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
-                                            <tbody class="inputContainerParent">
+                                            <tbody class="ic-level-2">
                                             </tbody>
                                         </table>
                                         <div class="modal-footer">
@@ -109,7 +118,7 @@
                                 <form id="formAdd" method="post"
                                     accept-charset="utf-8">
                                     <div class="modal-body">
-                                        <div class="inputContainerParent" style="margin:1% 3%">
+                                        <div class="ic-level-2" style="margin:1% 3%">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -320,6 +329,20 @@ $(document).ready(function() {
         getEnumVals(enumValsUrl);
         $("#addEditStock").find("input[name='stockQty']").removeAttr("readonly");
     });
+    $("#restock").on("hidden.bs.modal",function(){
+        $(this).find("form")[0].reset();
+        $(this).find(".ic-level-1").remove();
+        $(this).find("form").off();
+    });
+    $("#stockBrochure").on("hidden.bs.modal",function(){
+        $(this).find("form")[0].reset();
+        $(this).find(".ic-level-1").remove();
+        $(this).find("form").off();
+    });
+    $("#addEditStock").on("hidden.bs.modal",function(){
+        $(this).find("form")[0].reset();
+        $(this).find(".ic-level-1").remove();
+    });
     $("#rBtn").on("click",function(){
         $.ajax({
             method: "POST",
@@ -327,9 +350,9 @@ $(document).ready(function() {
             dataType: "JSON",
             success: function(data){
                 var selectItems = [];
-                $("#restock").find(".inputContainerParent").empty();
-                $("#stockBrochure").find(".inputContainerParent").empty();
-                $("#stockBrochure").find(".inputContainerParent").append(data.map(item => {
+                $("#restock").find(".ic-level-2").empty();
+                $("#stockBrochure").find(".ic-level-2").empty();
+                $("#stockBrochure").find(".ic-level-2").append(data.map(item => {
                     return `<label style="width:96%">
                 <input name="stock" type="checkbox" class="mr-2" value="${item.stID}">${item.stName} - ${item.stQty} ${item.uomAbbreviation}</label>`;
                 }).join(''));
@@ -338,20 +361,20 @@ $(document).ready(function() {
                     $(this).find("input[name='stock']:checked").each(function(index,element){
                         selectItems.push(element.value);
                     });
-                    $("#stockBrochure").modal('hide');
-                    $(this)[0].reset();
-                    $("#restock").find(".inputContainerParent").append(data.filter(stock => selectItems.includes(stock.stID)).map(stock=>{
+                    $("#restock").find(".ic-level-2").append(data.filter(stock => selectItems.includes(stock.stID)).map(stock=>{
                         return `
-                            <tr data-id="${stock.stID}" class="inputContainer">
+                            <tr data-id="${stock.stID}" class="ic-level-1">
                                 <td>${stock.stName}</td>
-                                <td>${stock.stQty}</td>
-                                <td>${stock.uomAbbreviation}</td>
+                                <td>${stock.stQty} (${stock.uomAbbreviation})</td>
                                 <td><input type="number" name="restockQty[]"
                                         class="form-control form-control-sm"></td>
+                                <td><textarea name="remarks[]" class="form-control form-control-sm" rows="1">
+                                </textarea></td>
                                 <td><img class="exitBtn" src="/assets/media/admin/error.png"
                                     style="width:20px;height:20px"></td>
                             </tr>`;
                     }).join(''));
+                    $("#stockBrochure").modal('hide');
                 });
             },
             error: function(response, setting, error) {
@@ -363,11 +386,10 @@ $(document).ready(function() {
     $("#restock form").on("submit",function(event){
         event.preventDefault();
         var stockQtys = [];
-        for(var x = 0 ;x<$(this).find(".inputContainer").length;x++){
-            console.log($(this).find(".inputContainer").eq(x));
+        for(var x = 0 ;x<$(this).find(".ic-level-1").length;x++){
             stockQtys.push({
-                id: $(this).find(".inputContainer").eq(x).attr("data-id"),
-                qty: $(this).find(".inputContainer").eq(x).find("input[name='restockQty[]']").val()
+                id: $(this).find(".ic-level-1").eq(x).attr("data-id"),
+                qty: $(this).find(".ic-level-1").eq(x).find("input[name='restockQty[]']").val()
             });
         }
         $.ajax({
