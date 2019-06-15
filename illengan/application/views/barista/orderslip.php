@@ -150,14 +150,14 @@
                 var id = $(this).attr('data-id');
                 var stats = $(this).val();
                 if( stats == 'served'){
-                    stats = 'pending';
+                stats = 'pending';
                 this.style.backgroundColor = "gray";
                 this.value= "pending";
                 stats = this.value;
                 console.log(stats, id);
                 updateStatus(stats, id);
                 }else if (stats == 'pending'){
-                    stats='served';
+                stats='served';
                 this.style.backgroundColor = "green";
                 this.value= "served";
                 stats = this.value;
