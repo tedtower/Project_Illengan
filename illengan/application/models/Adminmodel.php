@@ -108,17 +108,7 @@ class Adminmodel extends CI_Model{
                 `stSize`
             )
             VALUES(
-                NULL,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?
+                NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
             );";
         if($this->db->query($query,array($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, $stockBqty, $stockLocation,$stockSize))){
             if($this->add_stockLog($this->db->insert_id(), NULL, 'beginning', date("Y-m-d H:i:s"), date("Y-m-d H:i:s"), $stockQty, "New item")){
@@ -325,62 +315,6 @@ class Adminmodel extends CI_Model{
             WHERE
                 spmID = ?;";
         $this->db->query($query,array($merch['stID'],$merch['merchUnit'],$merch['merchName'],$merch['merchActualQty'],$merch['merchPrice'], $merch['spmID']));
-    }
-
-    function add_poItem(){
-        $query = "insert into poitems (vID, poID, poiQTY, poiUnit, poiPrice, poiStatus) values (?,?,?,?,?,?);";
-        $this->db->query($query, array());
-    }
-
-    function edit_purchaseOrder($poDate, $edDate, $poTotal, $poDateRecorded, $poStatus, 
-    $poRemarks, $spID, $poID, $merchandise){
-        $query = "UPDATE purchaseorder po
-            SET 
-                spID = ?,
-                poDate = ?,
-                edDate = ?,
-                poTotal = ?,
-                poDateRecorded = ?,
-                poStatus = ?,
-                poRemarks = ?
-            WHERE
-                po.poID = ?;";
-       if($this->db->query($query,array($spID,$poDate, $edDate, $poTotal,$poDateRecorded,$poStatus, $poRemarks, $poID))) {
-        foreach($merchandise as $merch){
-            if($merch['poiID'] == NULL){
-                $this->add_poItems($poID, $merchandise);
-            }else{
-                $this->update_poItems($poID, $merchandise);
-            }
-        }
-    }
-}
-    
-
-    function update_poItems($poID, $merchandise) {
-        $query = $query = "UPDATE poitems
-        SET 
-            vID = ?,
-            poID = ?,
-            poiName = ?,
-            poiQty = ?,
-            poiUnit = ?,
-            poiPrice = ?,
-            poiStatus = ?
-        WHERE
-            poiID = ?;";
-        if(count($merchandise) > 0){
-        for($in = 0; $in < count($merchandise) ; $in++){
-            $this->db->query($query, array($merchandise[$in]['vID'], $poID, $merchandise[$in]['poiName'], $merchandise[$in]['poiQty'],
-            $merchandise[$in]['poiUnit'],$merchandise[$in]['poiPrice'], $merchandise[$in]['poiStatus'],$merchandise[$in]['poiID']));
-
-        }
-    } 
-   
-    }
-    function edit_poItem($spmID, $spID, $poItem){
-        $query = "";
-        $this->db->query($query, array());
     }
     // UPDATE FUNCTIONS-------------------------------------------------------------
 
@@ -768,25 +702,6 @@ class Adminmodel extends CI_Model{
             spID = ? AND NOT poStatus = 'delivered';";
         return $this->db->query($query, array($id))->result_array();
     }
-    function get_poItems($id){
-        $query = "SELECT 
-            *
-        FROM
-            poItems
-        WHERE
-            poID IN (SELECT 
-                    poID
-                FROM
-                    purchaseorder
-                WHERE
-                    spID = ? AND NOT poStatus = 'delivered');";
-        return $this->db->query($query, array($id))->result_array();
-    }
-    function get_poItemVariance() {
-        $query ="SELECT *, CONCAT(st.stName,' ',var.vUnit,' ',var.vSize) AS poItem, CONCAT(po.poiName,': ',st.stName) AS branditem FROM poitems po 
-        INNER JOIN variance var USING (vID) INNER JOIN stockitems st USING (stID)";
-        return $this->db->query($query)->result_array();
-    }
     function get_stockCategories(){
         $query = "Select ctID, ctName, ctType, ctStatus, COUNT(stID) as stockCount from categories left join stockitems using (ctID) where ctType = 'inventory' group by ctID order by ctName asc";
         return $this->db->query($query)->result_array();
@@ -892,7 +807,7 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query, array($stID));
     }
     function delete_table($tableCode){
-        $query = "Delete from tables where table_code= ?";
+        $query = "Delete from tables where tableCode= ?";
         return $this->db->query($query, array($tableCode));
     }
     function delete_transaction($trans_id){
@@ -915,134 +830,10 @@ class Adminmodel extends CI_Model{
     function add_source($data){
         $this->db->insert("sources", $data);
     }
-    // function add_poItems($poID, $merchandise) {
-    //     $query = "insert into poitems (poiID, vID, poID, poiName, poiQty, poiUnit, poiPrice, poiStatus) values
-    //     (NULL,?,?,?,?,?,?,?)";
-    //     if(count($merchandise) > 0){
-    //     for($in = 0; $in < count($merchandise) ; $in++){
-    //         $this->db->query($query, array($merchandise[$in]['vID'], $poID, $merchandise[$in]['poiName'], $merchandise[$in]['poiQty'],
-    //         $merchandise[$in]['poiUnit'],$merchandise[$in]['poiPrice'], $merchandise[$in]['poiStatus']));
-    //     }
-    // } else {
-    //     return false;
-    // }
-   
-    // }
     
     function edit_table($newTableCode, $previousTableCode){
-        $query = "Update tables set table_code = ? where table_code = ?;";
+        $query = "Update tables set tableCode = ? where tableCode = ?;";
         return $this->db->query($query, array($newTableCode, $previousTableCode));
-    }
-    //Return Function
-    function get_poD(){
-        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID inner join invoiceitems on invoice.iID=invoiceitems.iID
-        inner join variance on invoiceitems.vID=variance.vID inner join stockitems on variance.stID=stockitems.stID where invoice.iType !='return'";
-        return $this->db->query($query)->result_array();
-    }
-    function get_returns(){
-        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID inner join invoiceitems on invoice.iID=invoiceitems.iID
-        inner join variance on invoiceitems.vID=variance.vID inner join stockitems on variance.stID=stockitems.stID ";
-        return $this->db->query($query)->result_array();
-    }
-    function get_invoiceReturns(){
-        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID where invoice.iType='return'";
-        return $this->db->query($query)->result_array();
-    }
-    function get_invRetVar(){
-        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID inner join invoiceitems on invoice.iID=invoiceitems.iID
-        inner join variance on invoiceitems.vID=variance.vID where invoice.iType='return'";
-        return $this->db->query($query)->result_array();
-    }
-    function get_item($item){
-        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID inner join invoiceitems on invoice.iID=invoiceitems.iID
-        inner join variance on invoiceitems.vID=variance.vID inner join stockitems on variance.stID=stockitems.stID where invoiceitems.iID ='$item'";
-        return $this->db->query($query)->result_array();
-    }
-    function get_allInvoice(){
-        $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID where invoice.iType !='return' ORDER BY invoice.iDate DESC";
-        return $this->db->query($query)->result_array();
-    }
-    function add_returns($idate, $reQty, $reUnit, $supID, $dateRet, $receipt, $cost, $remarks,$reStat,  $stckName, $subtotal, $variance, $stckID){
-        $var= "Select vQty from variance where vID='$variance'";
-        $var = $this->db->query($var)->result_array();
-        foreach($var as $stck){
-            $var = $stck['vQty'];
-        }
-        $stck_qty = $var - $reQty;
-        $query2 = "Update variance set vQty = ? where vID = ?";
-        $this->db->query($query2, array($stck_qty, $variance));
-
-            $query1 = "Insert into invoice(iID, spID, iDate, iDateRecorded, iNumber, iTotal, iRemarks, iType, resolvedStatus) values (?,?,?,?,?,?,?,?,?)";
-            $this->db->query($query1, array(NULL, $supID, $dateRet, $idate,  $receipt, $subtotal, $remarks, 'return', $reStat));
-    
-            $invId= $this->db->insert_id();
-            $query3 = "Insert into invoiceitems(iItemID, vID, iID, iName, iQty, iPrice, iUnit, iSubTotal) values (?,?,?,?,?,?,?,?)";
-            return $this->db->query($query3, array(NULL, $variance, $invId, $stckName,  $reQty, $cost, $reUnit, $subtotal));
-        
-    }
-    function update_returns($eID, $eSpID, $eRNum, $eStat, $eRDate, $eDRec, $etotal, $eremarks, $defaultType, $eRetIt){
-        $query1 = "UPDATE invoice 
-            SET 
-                spID = ?,
-                iDate = ?,
-                iDateRecorded = ?,
-                iNumber = ?,
-                iTotal = ?,
-                iRemarks = ?,
-                iType = ?,
-                resolvedStatus = ?
-            WHERE
-                iID = ?;"
-                ;
-        $this->db->query($query1,array($eSpID,$eRDate, $eDRec, $eRNum, $etotal, $eremarks, $defaultType, $eStat, $eID));
-        $query2 = "UPDATE invoiceitems
-        SET 
-            vID = ?,
-            iID = ?,
-            iName = ?,
-            iQty = ?,
-            iPrice = ?,
-            iUnit = ?,
-            iSubTotal = ?
-        WHERE
-            iItemID = ?
-    ;";
-        if(count($eRetIt) > 0){
-            for($i = 0; $i < count($eRetIt) ; $i++){
-                $itemID = $eRetIt[$i]['itemID'];
-                $varID = $eRetIt[$i]['varId'];
-                $itQty = $eRetIt[$i]['itQty'];
-
-                    $retOldQty = "Select iQty from invoiceitems where iItemID = '$itemID'";
-                    $variance = $this->db->query($retOldQty)->result_array();
-                    foreach($variance as $num){
-                        $old = $num['iQty'];
-                    }
-                        if($old > $itQty){
-                            $newVarqty1 = $old - $itQty; 
-                            $quant = "Select vQty from variance where vID='$varID'";
-                            $iQuant = $this->db->query($quant)->result_array();
-                            foreach($iQuant as $num){
-                                $var = $num['vQty'];
-                            }
-                            $newQty =  $newVarqty1 + $var;
-                            $addVarQty = "Update variance set vQty = ? where vID = ?";
-                            $this->db->query($addVarQty, array($newQty, $varID));
-                        }else{
-                            $newVarqty2 = $itQty - $old;
-                            $quant = "Select vQty from variance where vID='$varID'";
-                            $var = $this->db->query($quant)->result_array();
-                            foreach($var as $num){
-                                $var = $num['vQty'];
-                            }
-                            $newQty = $var - $newVarqty2;
-                            $addVarQty = "Update variance set vQty = ? where vID = ?";
-                            $this->db->query($addVarQty, array($newQty, $varID));
-                       }
-                       return $this->db->query($query2, array($varID, $eID, $eRetIt[$i]['itName'], $itQty,
-                       $eRetIt[$i]['itPri'],$eRetIt[$i]['itUnit'], $eRetIt[$i]['itSub'],$itemID));
-                    }
-            }
     }
     function get_uom(){
         $query = "SELECT * from uom";
@@ -1188,103 +979,130 @@ class Adminmodel extends CI_Model{
                 tiName,
                 tiQty,
                 tiActualQty,
-                uomID,
+                transitems.uomID,
                 uomAbbreviation,
                 tiPrice,
                 tiDiscount,
                 tiSubtotal,
-                tiStatus
+                tiStatus,
                 stID,
                 stName
             FROM
-                (
-                    (
+                    ((
                         (transitems left join stockitems using(stID))
                     LEFT JOIN uom on (transitems.uomID = uom.uomID)
-                    )
+                    )left join trans_items using (tiID))
                 LEFT JOIN transactions USING(tID)
                 WHERE
                     tID = ?;";
             return $this->db->query($query,array($id))->result_array();
         }
-    } 
-    /*
-    
-                    if($result[0]['tiStatus'] == "pending" || $result[0]['tiStatus'] == "partially delivered"){
-                        if($type == "delivery receipt"){
-                            if($result[0]['tiQty'] > $item['tiQty']){
-                                $qty = $result[0]['tiQty'] - $item['tiQty'];
-                                $item['tiStatus'] = "partially delivered";
-                            }else{
-                                $qty = $result[0]['tiQty'];
-                                $item['tiStatus'] = "delivered";
-                            }
-                        }else if($type == "official receipt"){
-                            $item['tiStatus'] = "paid";
-                        }
-                    }else if($result[0]['tiStatus'] == "delivered"){
-                        $item['tiStatus'] = "paid";
-                    }
-    */
+    }
 
     function add_transaction($id, $supplier, $receipt, $date, $type, $dateRecorded, $remarks, $transitems){
         $insertSuccess = false;
         if($id == null){
-            $query = "INSERT INTO `transactions`(
-                    `tID`,
-                    `spID`,
-                    `tNum`,
-                    `tDate`,
-                    `tType`,
-                    `dateRecorded`,
-                    `tRemarks`
-                )
+            $query = "INSERT INTO `transactions`(`tID`, `spID`, `tNum`, `tDate`, `tType`, `dateRecorded`, `tRemarks`)
                 VALUES(NULL, ?, ?, ?, ?, ?, ?);";
             $insertSuccess = $this->db->query($query, array($supplier, $receipt, $date, $type, $dateRecorded, $remarks));
             $id = $this->db->insert_id();
         }else{
             $query = "UPDATE transactions 
-                SET 
-                    spID = ?,
-                    tNum = ?,
-                    tDate = ?,
-                    tType = ?,
-                    dateRecorded = ?,
-                    tRemarks = ?
-                WHERE
-                    tID = '?;";
-            $insertSuccess = $this->db->query($query, array($supplier, $receipt, $date, $type, $dateRecorded, $remarks, $id));
+                SET spID = ?, tNum = ?, tDate = ?, dateRecorded = ?, tRemarks = ?
+                WHERE tID = ?;";
+            $insertSuccess = $this->db->query($query, array($supplier, $receipt, $date, $dateRecorded, $remarks, $id));
         }
         if($insertSuccess){
             foreach($transitems as $item){
-                $tiID = $this->addEdit_transactionItem($item, $id, $type);
-                if(!is_numeric($tiID)){
-                    $tiID = $item['tiID'];
-                }
-                if($this->addEdit_trans_item($tiID, $id, $item['tiQty'], $item['tiSubtotal'], $item['stQty'])){
-                    switch($type){
-                        case "purchase order":
-                            break;
-                        case "delivery receipt":
-                            $qty = (int) $item['tiQty'] * (int) $item['stQty'];
-                            if($this->add_stockLog($item['stID'], $id, "restock", $date, $dateRecorded, $qty, NULL)){
-                                $this->add_stockQty($item['stID'], $qty);
-                            }
-                            break;
-                        case "official receipt":
-                            $result = $this->db->query("SELECT
-                                    tiID, tID
-                                FROM
-                                    (transitems LEFT JOIN trans_items USING(tiID)) LEFT JOIN transactions USING(tID)
-                                WHERE
-                                    tiID = ? AND tType = 'delivery receipt';", array($tiID));
-                            if($result->num_rows() !== 1){
-                                $qty = (int) $item['tiQty'] * (int) $item['stQty'];
-                                if($this->add_stockLog($item['stID'], $id, "restock", $date, $dateRecorded, $qty, NULL)){
-                                    $this->add_stockQty($item['stID'], $qty);
+                if(!isset($item['tiID'])){
+                    $tiID = $this->addEdit_transactionItem($item, $id, $type);
+                    $this->addEdit_trans_item($tiID, $id, $item['tiQty'], $item['tiSubtotal'], $item['stQty']);
+                    if($type != "purchase order"){
+                        $actualQty = (int) $item['tiQty'] * (int) $item['stQty'];
+                        if($this->add_stockLog($item['stID'], $id, "restock", $date, $dateRecorded, $actualQty, NULL)){
+                            $this->update_stockQty($item['stID'], $actualQty);
+                        }
+                    }
+                }else{
+                    $poItem = $this->db->query("SELECT tID, tiID, tiQty
+                        FROM (transitems LEFT JOIN trans_items USING(tiID))
+                        LEFT JOIN transactions USING(tID)
+                        WHERE tiID = ? AND tType = 'purchase order' AND tiStatus = 'pending';",
+                        array($item['tiID']))->result_array();
+                    $orItem = $this->db->query("SELECT tID, tiID, tiQty
+                        FROM (transitems LEFT JOIN trans_items USING(tiID))
+                        LEFT JOIN transactions USING(tID)
+                        WHERE tiID = ? AND tType = 'official receipt';",
+                        array($item['tiID']))->result_array();
+                    $prevItem = $this->db->query("SELECT tID, tiID, tType, tiQty, tiActualQty, tiStatus, stID FROM
+                        ((transactions LEFT JOIN trans_items USING(tID)) LEFT JOIN transitems USING(tiID)) LEFT JOIN stockitems USING(stID)
+                        WHERE tiID = ? AND tID = ?;", array($item['tiID'], $id))->result_array();
+                    $this->addEdit_transactionItem($item, $id, $type);
+                    if($this->addEdit_trans_item($item['tiID'], $id, $item['tiQty'], $item['tiSubtotal'], $item['stQty'])){
+                        $newQty = 0;
+                        $actualQty = 0; 
+                        $logType = "";
+                        $sign = 1;
+                        switch($type){
+                            case "purchase order":
+                                break;
+                            case "delivery receipt":
+                                $newQty = (int) $item['tiQty'] - (int) $prevItem[0]['tiQty'];
+                                if($newQty !== 0){
+                                    $actualQty = $newQty * $item['stQty'];
+                                    if($newQty > 0){
+                                        $logType = "restock";
+                                    }else{
+                                        $sign = -1;
+                                        $logType = "other";
+                                    }
+                                    $this->add_stockLog($item['stID'], $id, $logType, $date, $dateRecorded, $actualQty*$sign, NULL);
+                                    $this->update_stockQty($item['stID'], $actualQty);
                                 }
-                            }
-                            break;
+                                break;
+                            case "official receipt":
+                                $drQty = 0;
+                                $drItems = $this->db->query("SELECT tiID, tID, tiQty
+                                    FROM (transitems LEFT JOIN trans_items USING(tiID)) LEFT JOIN transactions USING(tID)
+                                    WHERE tiID = ? AND tType = 'delivery receipt';", array($tiID));
+                                if($drItems->num_rows() > 0){
+                                    $drItems  = $drItems->result_array();
+                                    foreach($drItems as $item){
+                                        $drQty += $item['tiQty'];
+                                    }
+                                    if($prevItem[0]['tiQty'] > $drQty){
+                                        $newQty = $item['tiQty'] - $prevItem[0]['tiQty'];
+                                    }else{
+                                        $newQty = $item['tiQty'] - $drQty;
+                                    }
+                                    if($newQty !== 0 && $drQty < $item['tiQty']){
+                                        $actualQty = $newQty * $item['stQty'];
+                                        if($newQty > 0){
+                                            $logType = "restock";
+                                        }else{
+                                            $sign = -1;
+                                            $logType = "other";
+                                        }
+                                        $this->add_stockLog($item['stID'], $id, $logType, $date, $dateRecorded, $actualQty*$sign, NULL);
+                                        $this->update_stockQty($item['stID'], $actualQty);
+                                    }
+                                }
+                                break;
+                            case "return receipt":
+                                $newQty = (int)$item['tiQty'] - (int) $prevItem[0]['tiQty'];
+                                if($newQty !== 0){
+                                    $actualQty = $newQty * $item['stQty'];
+                                    if($newQty > 0){
+                                        $sign = -1;
+                                        $logType = "return";
+                                    }else{
+                                        $logType = "restock";
+                                    }
+                                    $this->add_stockLog($item['stID'], $id, $logType, $date, $dateRecorded, $actualQty*$sign, NULL);
+                                    $this->update_stockQty($item['stID'], $actualQty);
+                                }
+                                break;
+                        }
                     }
                 }
             }
@@ -1292,6 +1110,27 @@ class Adminmodel extends CI_Model{
         }
         return false;
     }
+//     SELECT tID, tiID, tiQty
+// FROM (transitems LEFT JOIN trans_items USING(tiID))
+// LEFT JOIN transactions USING(tID)
+// WHERE tiID = 1 AND tID = 1 AND tType = 'purchase order' AND tiStatus = 'pending';
+    /*
+     * if(epmty($prevItem)){
+     *      switch($tType){
+     *          case "delivery receipt":
+     *              
+     *              if()
+     *          break;
+     *          case "official receipt":
+     *          break;
+     *          case "return receipt":
+     *          break;
+     *      }
+     * }else{
+     * }
+     * 
+     *
+     */
     function addEdit_transactionItem($item, $id, $type){
         if(!isset($item['tiID'])){
             $query = "INSERT INTO `transitems`(
@@ -1335,16 +1174,12 @@ class Adminmodel extends CI_Model{
                 LEFT JOIN transitems USING(tiID)
                 WHERE
                     tiID = ? AND tID = ?;', array($tiID, $tID));
+        echo json_encode($result->result_array());
         if($result->num_rows() === 1){
             $result = $result->result_array();
-            $qty = $result[0]['tiQty'] < $item['tiQty'] ? $item['tiQty'] - $result[0]['tiQty'] : $result[0]['tiQty'] - $item['tiQty'];
             return $this->db->query('UPDATE trans_items
-                SET
-                    tiQty = ?,
-                    tiSubtotal = ?,
-                    tiActualQty = ?
-                WHERE
-                    tiID = ? and tID = ?',array($item['tiID'], $id));
+                SET tiQty = ?, tiSubtotal = ?, tiActualQty = ?
+                WHERE tiID = ? and tID = ?', array($tiQty, $tiSubtotal, $tiActualQty, $tiID, $tID));
         }else{
             return $this->db->query("INSERT INTO trans_items (
                 tiID,
@@ -1382,7 +1217,7 @@ class Adminmodel extends CI_Model{
             VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
         return $this->db->query($query, array($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks));
     }
-    function add_stockQty($stID, $stQty){
+    function update_stockQty($stID, $stQty){
         $query = "UPDATE stockitems
         SET
             stQty = stQty + ?
@@ -1417,14 +1252,14 @@ class Adminmodel extends CI_Model{
                     stocklog
                 WHERE
                     slType = 'beginning' AND stID = ?
-            );";
+            )
+            group by slDateTime, slType;";
         return $this->db->query($query,array($stID,$stID))->result_array();
     }
     
     function get_invPeriodStart($stID){
         return $this->db->query("SELECT
-                    DATE_FORMAT(MAX(slDateTime), '%b %d, %Y %r') AS maxDate,
-                    slQty
+                    DATE_FORMAT(MAX(slDateTime), '%b %d, %Y %r') AS maxDate, slQty
                 FROM
                     stocklog
                 WHERE
@@ -1436,11 +1271,7 @@ class Adminmodel extends CI_Model{
             stID,
             CONCAT(
                 stName,
-                IF(
-                    stSize IS NULL,
-                    '',
-                    CONCAT(' ', stSize)
-                )
+                IF(stSize IS NULL, '', CONCAT(' ', stSize))
             ) AS stName,
             suppliermerchandise.uomID,
             uomAbbreviation,
@@ -1478,7 +1309,8 @@ class Adminmodel extends CI_Model{
                 spID = ? AND tType IN ?
             GROUP BY tID
             HAVING 
-                COUNT(tiID) > 0;";
+                COUNT(tiID) > 0
+            ORDER BY transaction.tDate ASC;";
         return $this->db->query($query, array($spID, $tTypes))->result_array();
     }
     function get_transitemsBySupplier($spID, $tTypes){
