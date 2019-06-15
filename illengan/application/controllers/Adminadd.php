@@ -49,7 +49,31 @@ class Adminadd extends CI_Controller{
             redirect('login');
         }
     }
-    
+    function addUOM(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $uomName = trim($this->input->post('uomName'));
+            $uomAbbreviation = trim($this->input->post('uomAbbreviation'));
+            $uomVariant = trim($this->input->post('uomVariant'));
+            $uomStore = trim($this->input->post('uomStore'));
+            $this->adminmodel->add_uom($uomName, $uomAbbreviation, $uomVariant, $uomStore);
+            redirect('admin/measurements');
+        }else{
+            redirect('login');
+        }
+    }
+    function addInventoryReport(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $stID = $this->input->post('stID');
+            $sDate = $this->input->post('sDate');
+            $eDate = $this->input->post('eDate');
+            $this->adminmodel->get_inventoryReport($stID, $sDate, $eDate);
+            $data['report'] = $this->adminmodel->get_inventoryReport($stID, $sDate, $eDate);
+            $this->load->view('admin/reportInventory',$data);
+            // redirect('admin/stocklog/report');
+        }else{
+            redirect('login');
+        }
+    }
     function addSales() {
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $tableCode = trim($this->input->post('tableCode'));
@@ -419,3 +443,35 @@ class Adminadd extends CI_Controller{
 
 }
 ?>
+
+<!-- var btn = el.find(".addAddons");
+    btn.attr("onclick", " ");
+
+   
+    if($(el).hasClass("salesElem")) {
+        $(el).attr("data-delete", "0");
+        $(el).attr("class", "deleted");
+        
+        console.log("Order Item");
+    } else if($(el).hasClass("addonsTable")) {
+        $(el).attr("data-delete", "0");
+        $(el).attr("class", "deleted");
+
+        console.log("Addons");
+
+    } else {
+        return false;
+    }
+
+    try {
+        if($(el).next(".addonsTable") != null) {
+            nextTr = $(el).nextAll(".salesElem");
+            addonEl = $(el).nextUntil(nextTr, "tr");
+            for(var i = 0; i <= addonEl.length-1; i++) {
+                addonEl[i].style.textDecoration = "line-through";
+                addonEl[i].style.opacity = "0.5";
+            }
+        }
+    } catch(error) {
+
+    } -->

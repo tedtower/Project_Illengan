@@ -31,7 +31,7 @@
                                     </thead>
                                     <tbody>
                                         <!--Start of Table row-->
-                                        <?php if($transactions[0] != null){
+                                        <?php if(isset($transactions[0])){
                                         foreach($transactions as $transaction){
                                     ?>
                                         <tr data-id="<?= $transaction['tID']?>">

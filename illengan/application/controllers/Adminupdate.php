@@ -272,6 +272,21 @@ class Adminupdate extends CI_Controller{
             redirect('login');
         }
     }
+
+    function editMeasurement(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $uomID = $this->input->post('uomID');
+            $uomName = $this->input->post('uomName');
+            $uomAbbreviation = $this->input->post('uomAbbreviation');
+            $uomVariant = $this->input->post('uomVariant');
+            $uomStore = $this->input->post('uomStore');
+            $this->adminmodel->edit_uom($uomName, $uomAbbreviation, $uomVariant, $uomStore, $uomID);
+            redirect('admin/measurements');
+        }else{
+            redirect('login');
+        }
+    }
+
     function edit_image(){
         $data['image'] = $this->adminmodel->edit_image();
         $this->load->view('admin_module/edit_menuimage', $data);

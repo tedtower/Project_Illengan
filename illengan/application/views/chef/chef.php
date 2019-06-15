@@ -7,32 +7,26 @@
 <body>
 <?php include_once('navigation.php') ?>
 <div class="content">
-    <div class="container-fluid" style="margin-top:70px">
-        <br>
+    <div class="container-fluid" style="margin-top:60px">
         <p style="text-align:right; font-weight: regular; font-size: 16px">
             <!-- Real Time Date & Time -->
             <?php echo date("M j, Y - l"); ?>
         </p>
-        <div class="content">
-            <div class="container-fluid">
                 <!--Table-->
                     
-                    <table id="orders" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                        <thead>
+                    <table id="orders" class="table table-bordered" cellspacing="0" width="100%">
+                        <thead class="thead-light">
                             <tr>
-                                <th width="10%"><b class="pull-left">Order No.</b></th>
-                                <th><b class="pull-left">Order</b></th>
-                                <th width="10%"><b class="pull-left">Quantity</b></th>
-                                <th><b class="pull-left">Date & Time</b></th>
-                                <th width="10%"><b class="pull-left">Table No.</b></th>
-                                <th><b class="pull-left">Customer</b></th>
+                                <th width="10%">No.</th>
+                                <th>Order</th>
+                                <th>Qty</th>
+                                <th>Table</th>
+                                <th>Customer</th>
                             </tr>
                         </thead>
                         <tbody>
                         </tbody>
                     </table>
-                    </div>
-                    </div>
                     </div>
                     </div>
 
@@ -71,51 +65,38 @@ var orders = [];
        orders.forEach(function (item) {
             var tableRow = `
                 <tr class="table_row" data-id="${item.orders.osID}">   <!-- table row ng table -->
-                    <td style="text-align: center;">
+                    <td>
                     <img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" 
-                    style="height:15px;width: 15px; margin-right: 5px;"/> 
+                    style="height:13px;width:13px;margin-right:5px;margin-left:0"/> 
                     ${item.orders.olID}</td>
                     <td><b>${item.orders.olDesc}</b></td>
                     <td><b>${item.orders.olQty}</b></td>
-                    <td>${item.orders.osDateTime}</td>
                     <td>${item.orders.tableCode}</td>
                     <td>${item.orders.custName}</td>
                 </tr>
             `;
             var addonsDiv = `
-            <div class="preferences" style="float:left;margin-right:3%" > <!-- Preferences table container-->
-                ${parseInt(item.addons.length) === 0 && item.orders.olRemarks === null ? "No orders" : 
-                `<caption><b>Add Ons</b></caption>
+            <div class="addons" > <!-- Preferences table container-->
+                ${parseInt(item.addons.length) === 0 && item.orders.olRemarks === null ? "No addons and remarks" : 
+                `<caption><b>Addons:</b></caption>
                 <br>
-                <table id="addons" class=" table table-bordered">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col">Add On</th>
-                            <th scope="col">Quantity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
                     ${item.addons.map(ao => {
                         return `
-                        <tr>
-                            <td>${ao.aoName}</td>
-                            <td>${ao.aoQty}</td>
-                        </tr>
+                        <div>
+                            <div style="margin-left:5%">> (${ao.aoQty}) ${ao.aoName}</div>
+                            <div style="margin-left:5%">> (${ao.aoQty}) ${ao.aoName}</div>
+                        </div>
                         `;
                     }).join('')}
-                    </tbody>
-                </table>
                 `}
             </div>
             `;
             var accordion = `
             <tr class="accordion" style="display:none">
-                <td colspan="10"> <!-- table row ng accordion -->
+                <td colspan="5"> <!-- table row ng accordion -->
                     <div style="overflow:auto;display:none"> <!-- container ng accordion -->
-                        
-                        <div style="width:100%;overflow:auto;padding-left: 5%"> <!-- description, preferences, and addons container -->
-                            
-                            <div class="AOaccordion" style="overflow:auto;margin-top:1%"> <!-- Preferences and addons container-->
+                        <div style="width:100%;overflow:auto;margin-left:9%;"> <!-- description, preferences, and addons container -->
+                            <div class="AOaccordion" style="overflow:auto;"> <!-- Preferences and addons container-->
                                 
                             </div>
                         </div>
@@ -125,22 +106,13 @@ var orders = [];
             `;
 
             var remarks = `
-            <div class="addons" style="float:left;margin-right:3%" > <!-- Preferences table container-->
+            <div class="remarks"> <!-- Preferences table container-->
                 ${item.orders.olRemarks === null || item.orders.olRemarks === "" ? " " : 
-                `<caption><b>Order Remarks</b></caption>
+                `<caption><b>Remarks:</b></caption>
                 <br>
-                <table class="table table-bordered"> <!-- Preferences table-->
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col">Remarks</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>${item.orders.olRemarks}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div>
+                    <div style="margin-left:5%">${item.orders.olRemarks}</div>
+                </div>
                 `}
             </div>
             `;
@@ -163,4 +135,4 @@ var orders = [];
     }
 </script>
 
-</html>,
+</html>

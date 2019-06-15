@@ -17,6 +17,10 @@ class Adminmodel extends CI_Model{
         $query = "INSERT into addons (aoName, aoPrice, aoCategory, aoStatus) values (?,?,?,?)";
         return $this->db->query($query,array($aoName, $aoPrice, $aoCategory, $aoStatus));
     }
+    function add_uom($uomName, $uomAbbreviation, $uomVariant, $uomStore){
+        $query = "INSERT into uom (uomName, uomAbbreviation, uomVariant, uomStore) values (?,?,?,?)";
+        return $this->db->query($query,array($uomName, $uomAbbreviation, $uomVariant, $uomStore));
+    }
     function add_aospoil($date_recorded,$addons,$account_id){
         $query = "insert into aospoil (aosID,aosDateRecorded) values (NULL,?)";
         if($this->db->query($query,array($date_recorded))){ 
@@ -24,6 +28,7 @@ class Adminmodel extends CI_Model{
             return true;
         }
     }
+    
     function add_spoiledaddon($aosID,$addons,$date_recorded,$account_id){
         $query = "insert into addonspoil (aosID,aoID,aosQty,aosDate,aosRemarks) values (?,?,?,?,?)";
         if(count($addons) > 0){
@@ -265,6 +270,7 @@ class Adminmodel extends CI_Model{
             return true;
         }
     }
+    
     function add_poItems($poID, $merchandise) {
         $query = "insert into poitems (poiID, vID, poID, poiName, poiQty, poiUnit, poiPrice, poiStatus) values
         (NULL,?,?,?,?,?,?,?)";
@@ -277,6 +283,55 @@ class Adminmodel extends CI_Model{
             return false;
         }
    
+    }
+    
+    function edit_uom($uomName, $uomAbbreviation, $uomVariant, $uomStore, $uomID){
+        $query = "UPDATE uom SET uomName = ?, uomAbbreviation = ?, uomVariant = ?, uomStore = ? WHERE uomID = ?";
+        return $this->db->query($query,array($uomName, $uomAbbreviation, $uomVariant, $uomStore, $uomID));
+    }
+    function edit_menu($mName, $mDesc, $mCat, $mAvailability, $preference, $addon, $mID){
+        $query = "UPDATE menu SET mName = ?, mDesc = ?, ctID = ?, mAvailability = ? WHERE mID = ? ";
+        if($this->db->query($query, array($mName, $mDesc, $mCat, $mAvailability, $mID))){
+            if(count($preference) > 0){
+                foreach($preference as $pref){
+                    if($pref['del'] === 0) {
+                        $this->delete_preference($pref);
+                    }
+                    else if($pref['prID'] == NULL){
+                        $this->add_preference($mID, $pref);
+                    }else{
+                        $this->edit_preference($pref);
+                    }
+                }
+            }
+
+            if(count($addon) > 0){
+                foreach($addon as $ao){
+                    if($ao['del'] === 0) {
+                        $this->delete_menuaddon($mID, $ao);
+                    }
+                    else if($ao['oldaoID'] === 0){
+                        $this->add_menuaddon($mID, $ao);
+                    }else{
+                        $this->edit_menuaddon($ao, $mID);
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+    function delete_preference($pref){
+        $query = "DELETE FROM preferences WHERE prID = ?";
+        return $this->db->query($query, array($pref['prID']));
+    }
+    function delete_menuaddon($mID, $ao){
+        $query = "DELETE FROM menuaddons WHERE menuaddons.mID = ? AND menuaddons.aoID = ?";
+        return $this->db->query($query, array($mID, $ao['oldaoID']));
+    }
+    function edit_preference($pref){
+        $query = "UPDATE preferences SET prName = ?, mTemp = ?,	prPrice = ?, prStatus = ? where prID = ?";
+        $this->db->query($query,array($pref['prName'],$pref['mTemp'],$pref['prPrice'],$pref['prStatus'], $pref['prID']));
     }
 
     function edit_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch, $spID){
@@ -816,6 +871,14 @@ class Adminmodel extends CI_Model{
         $query = "UPDATE addons set aoStatus = 'archived' where aoID = ?"; 
         return $this->db->query($query, array($id));
     }
+    function delete_uom($id){
+        $query = "DELETE FROM uom where uomID = ?"; 
+        return $this->db->query($query, array($id));
+    }
+    function delete_menu($id){
+        $query = "UPDATE menu set mAvailability = 'archived' where mID = ?"; 
+        return $this->db->query($query, array($id));
+    }
     function delete_spoilages($ssID, $delRemarks){
         $query ="Delete from stockspoil where ssID = ?";
         return $this->db->query(query, array($ssID));
@@ -856,6 +919,10 @@ class Adminmodel extends CI_Model{
     function get_uom(){
         $query = "SELECT * from uom";
         return $this->db->query($query)->result_array();
+    }
+    function get_inventoryReport($stID, $sDate, $eDate){
+        $query = "SELECT * FROM stocklog inner join stockitems using (stID) WHERE stID = ? and slDateTime BETWEEN ? and ?";
+        return $this->db->query($query, array($stID, $sDate, $eDate))->result_array();
     }
     function get_enumVals($table,$column){
         $query = "SELECT 

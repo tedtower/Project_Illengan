@@ -16,6 +16,7 @@ $route['admin/menu/promos'] = "adminview/menuPromos";
 $route['admin/sales'] = "adminview/viewSales";
 $route['admin/dashboard'] = "adminview/viewdashboard";
 $route['admin/tables'] = "adminview/viewtables";
+$route['admin/measurements'] = "adminview/viewUOM";
 $route['admin/tables/getTables'] = "adminview/getTables";
 $route['admin/menucategories'] = "adminview/viewmenucategories";
 $route['admin/stockcategories'] = "adminview/viewstockcategories";
@@ -39,6 +40,7 @@ $route['admin/transactions/delivery'] = "adminview/viewDeliveryTransactions";
 $route['admin/transactions/purchase'] = "adminview/viewpurchasetransactions";
 $route['admin/transactions/return'] = "adminview/viewreturntransactions";
 $route['admin/transactions/getReturns'] = "adminview/getReturns";
+$route['admin/stocklog/report'] = "adminview/getInventoryReport";
 
 //End Viewing Routes
 
@@ -51,6 +53,8 @@ $route['admin/transactions/add'] = "adminadd/addtransaction";
 $route['admin/purchaseorder/add'] = "adminadd/addPurchaseOrder";
 $route['admin/inventory/addEdit'] = "adminadd/addstockitem";
 $route['admin/menu/add'] = "adminadd/addMenu";
+$route['admin/measurement/add'] = "adminadd/addUOM";
+$route['admin/menu/image/add'] = "adminadd/addImage";
 $route['admin/addon/add'] = "adminadd/addAddon";
 $route['admin/stockcategories/add'] = "adminadd/addstockcategory";
 $route['admin/menucategories/add'] = "adminadd/addmenucategory";
@@ -66,6 +70,7 @@ $route['admin/supplier/add'] = "adminadd/addSupplierMerchandise";
 $route['admin/returns/add'] = "adminadd/addReturnTransactions";
 $route['admin/promos/add'] = "adminadd/addPromo";
 $route['admin/consumption/add'] = "adminadd/addConsumption";
+$route['admin/stocklog/report/add'] = "adminadd/addInventoryReport";
 
 //End Admin Add Routes ------------------------------------------
 
@@ -74,6 +79,7 @@ $route['admin/menucategories/edit'] = "adminupdate/editmenucategory/";
 $route['admin/stockcategories/edit'] = "adminupdate/editstockcategory/";
 $route['admin/menu/edit'] = "adminupdate/editmenu";
 $route['admin/addon/edit'] = "adminupdate/editAddon";
+$route['admin/measurement/edit'] = "adminupdate/editMeasurement";
 $route['admin/menu/edit_image'] = "adminupdate/edit_image";
 $route['admin/inventory/edit'] = "adminupdate/editstockitem";
 $route['admin/purchaseorder/edit'] = "adminupdate/editPurchaseOrder";
@@ -96,12 +102,14 @@ $route['admin/addons/delete/(:num)'] = "admindelete/deleteaddon/$1";
 $route['admin/menucategories/delete/(:num)'] = "admindelete/deletemenucategory/$1";
 $route['admin/stockcategories/delete/(:num)'] = "admindelete/deletestockcategory/$1";
 $route['admin/inventory/delete/(:num)'] = "admindelete/deletestockitem/$1";
+$route['admin/measurement/delete/(:num)'] = "admindelete/deleteMeasurement/$1";
 $route['admin/transactions/delete'] = "admindelete/deletetransactions";
 $route['admin/sources/delete/(:num)'] = "admindelete/deletesource/$1";
 $route['admin/stock/spoilage/delete'] ="admindelete/deletestockspoilages";
 $route['admin/menu/spoilage/delete/(:num)'] ="admindelete/deletemenuspoilages/$1";
 $route['admin/addons/spoilage/delete/(:num)'] ="admindelete/deleteaddonsspoilages/$1";
 $route['admin/accounts/delete'] ="admindelete/deleteAccount";
+
 //End Admin Delete Routes ---------------------------------------
 
 //Admin Json Routes ------------------------------------------- 
