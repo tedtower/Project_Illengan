@@ -458,9 +458,7 @@ function viewSpoilagesStock(){
     function viewConsumptions(){
         if($this->checkIfLoggedIn()){
             $data['title'] = "Stock Consumption";
-            $data['consumptions'] = $this->adminmodel->get_consumption();
-            $data['conitems'] = $this->adminmodel->get_consumptionItems();
-            $data['variance'] = $this->adminmodel->get_poItemVariance();
+            $data['consumptions'] = $this->adminmodel->get_consumptions();
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminDestock');

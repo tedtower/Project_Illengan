@@ -195,8 +195,8 @@ class Barista extends CI_Controller{
                 echo json_encode($data, JSON_PRETTY_PRINT);
         }
         function updateStatus(){
-            $stats = $this->input->post('status');
-            $id = $this->input->post('id');
+            $stats = $this->input->post('olStatus');
+            $id = $this->input->post('osID');
             $this->baristamodel->updateStats($stats, $id);
         }
     }
