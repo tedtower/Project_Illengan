@@ -20,7 +20,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </head>
 <body>
+    <div class = "nav na-tabs">
+    <ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item">
+    <a href="<?php echo site_url('barista/orders') ?>" class="nav-link active" href="#pendingTab" role="tab" data-toggle="tab">Pending Orders</a>
+  </li>
+  <li class="nav-item">
+    <a href ="<?php echo site_url('barista/servedOrderlist') ?>" class="nav-link" href="#servedTab" role="tab" data-toggle="tab">Served Orders</a>
+  </li></ul>
+
+    </div>
   <br>
+  <div class="tab-content" id="pendingTab">
   <div class="container"><br>
   <button class="btn btn-link btn-sm" onClick="window.location.href = '<?php echo base_url();?>customer/processCheckIn';return false;">Add Order</button>
   <br>
@@ -123,7 +134,7 @@ var table = $('#pendingordersTable');
                 <td>${table.tableCode}</td>
                 <td>${table.olDesc}</td>
                 <td>${table.olQty}</td>
-                <td><button><input type="button" onclick = "change()"/></button></td>
+                <td>${table.olStatus}</td>
                 <td>
                         <!--Action Buttons-->
                         <div class="onoffswitch">

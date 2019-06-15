@@ -147,6 +147,7 @@ $(document).ready(function(){
         var table_no = $("input#table_no").val();
         var cust_name = $("input#cust_name").val();
         var total = $("input#total").val();
+        console.log(table_no, cust_name, total)
 
         $.ajax({
             method: "post",
@@ -255,7 +256,7 @@ function setModalContents(item_id){
                 $("#addonSelectBtn").removeAttr('disabled');
                 $('#addonable').show(); 
             } else {
-                console.log("Fucking Addons");
+                console.log("Addons");
             }
             break;
         }
@@ -410,7 +411,7 @@ function setOrderlist(ol){
         var row2 = `<tr>
                         <td colspan="3"><h3 class="gab">Total Quantity: `+total_qty+`</h3></td>
                         <td colspan="3"><h3 class="gab">Total Price: `+total+` php</h3></td>
-                        <input type="hidden" name="total" value="`+total+`"/>
+                        <input type="hidden" name="total" id="total" value="`+total+`"/>
                     </tr>`;
         $('#orderlists').append(row2);
         var row3 = `<div class="text-center">

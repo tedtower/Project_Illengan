@@ -45,12 +45,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
              $query = "Update orderslips set tableCode = ? where osID=?";
              return $this->db->query($query,array($tableCode,$osID));
         }
-        function cancelOrder(){
-            $olID=$this->input->post('olID');
-            $this->db->where('olID', $olID);
-            $result=$this->db->delete('orderlists');
-            return $result;
-        }
+       
         /*function search(){
             $query = $this->db
             ->select('*')
@@ -74,7 +69,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $this->db->query($query)->result_array();
         }
 
-        function get_orderslips($osID){
+        function get_orderslipsi($osID){
             $query = "select osID, tableCode, custName, osTotal, osDate, if(osPayDate is null, 'Unpaid', 'Paid') as payStatus , osPayDate from orderslips where osID = ?";
             return $this->db->query($query, array($order_id))->result_array();
         }
@@ -137,7 +132,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $this->db->query($query)->result_array();
         }
         //$query2 = "SELECT olID, aoName, aoPrice, olRemarks from orderlists inner join orderaddons using (olID) inner join addons using (aoID)";
+        function get_orderslips(){
+            $query = "select * from orderslips inner join orderlists on orderslips.osID = orderlists.osID where orderlists.olStatus = 'pending'";
+            return $this->db->query($query)->result_array();
+        }
+        function get_olist(){
+            $query = "Select * from orderlists inner join preferences on 
+            orderlists.prID = preferences.prID inner join menu on preferences.mID = menu.mID; ";
+            return $this->db->query($query)->result_array();
+        }
+        function get_addons(){
+            $query = "select * from orderaddons inner join addons on orderaddons.aoID=addons.aoID";
+            return $this->db->query($query)->result_array();
+        }
+        function updateStats($status, $id){
+            $query = "Update orderlists set olStatus = ? where olID = ?";
+            $this->db->query($query, array($status, $id));
+        }
+        function cancelOrder($id){
+            $list = "Select olPrice, osID from orderlists where olID='$id'";
+            $ol= $this->db->query($list)->result_array();
+            foreach($ol as $o){
+                $price = $o['olPrice'];
+                $osid = $o['osID'];
+            }
+            $slip = "Select osTotal from orderslips where osID = '$osid'";
+            $sl = $this->db->query($slip)->result_array();
+            foreach($sl as $s){
+                $stotal = $s['osTotal'];
+            }
+            $total = $stotal - $price;
+            $query= "Update orderslips set osTotal = ? where osID = ?";
+            $this->db->query($query, array($total, $osid));
 
+            $this->db->where('olID', $id);
+            $result=$this->db->delete('orderlists');
+            return $result;
+        }
     }
 
 ?>

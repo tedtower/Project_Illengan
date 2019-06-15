@@ -195,7 +195,9 @@ $route['customer/json'] = "customer/json";
 $route['customer/menu/removeOrder'] = "customer/removeOrder";
 
 // BARISTA ROUTES
+$route['barista/orderslip'] = "barista/vieworderslip";
 $route['barista/orders'] = "barista/pendingOrders";
+$route['barista/servedOrderlist'] = "barista/servedOrders";
 $route['barista/billings'] = "barista/getOrderBills";
 $route['barista/getBillDetails'] = "barista/getBillDetails";
 $route['barista/billings/setStatus'] = "barista/setbillstatus";
@@ -203,10 +205,11 @@ $route['barista/inventory'] = "barista/viewinventory";
 $route['barista/inventoryJS'] = "barista/inventoryJS";
 $route['barista/restock'] = "barista/restockitem";
 $route['barista/destock'] = "barista/destockitem";
+$route['barista/updateStatus'] = "barista/updateStatus";
 
 
 //BARISTA JS ROUTES
-// $route['barista/orderslipJS'] = "barista/viewOrderslipJS";
+//$route['barista/orderslipJS'] = "barista/viewOrderslipJS";
 // $route['barista/pendingOrdersJS'] ="barista/pendingOrdersJS";
 
 // CHEF ROUTES

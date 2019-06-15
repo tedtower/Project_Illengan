@@ -27,10 +27,7 @@ class Barista extends CI_Controller{
        $data= $this->baristamodel->get_servedOrders();
        echo json_encode($data);
     }
-    function vieworderslip(){
-        $this->load->view('barista/templates/navigation');
-        $this->load->view('barista/orderslip');
-    }
+    
     function viewOrderslipJS(){
         $data =$this->baristamodel->get_orderslip();
         echo json_encode($data);
@@ -155,7 +152,7 @@ class Barista extends CI_Controller{
         //barista functions for orderslips-cards
 
         function sample(){
-            $this->load->view('barista/navigation'); 
+            $this->load->view('barista/templates/navigation'); 
                 $data["slip"] = $this->baristamodel->slipData();
                 $this->load->view("barista/orderCards", $data);
         }
@@ -184,6 +181,29 @@ class Barista extends CI_Controller{
             $payDate = date("Y-m-d H:i:s");
             $date_recorded = date("Y-m-d H:i:s");
             $this->baristamodel->update_payment($status,$osID,$custName,$payDate, $date_recorded);
+        }
+        function updateStatus(){
+            $stats = $this->input->post('status');
+            $id = $this->input->post('id');
+            $this->baristamodel->updateStats($stats, $id);
+        }
+        function deleteOrderItem(){
+            $id = $this->input->post('id');
+            $this->baristamodel->cancelOrder($id);
+        }
+        function vieworderslip(){
+            $data['orderlists'] = $this->baristamodel->get_olist();
+            $data['orderslips'] = $this->baristamodel->get_orderslips();
+            $this->load->view('barista/orderslip', $data);
+        }
+        function getOrderslip(){
+            $data = array(
+                'orderslips' => $this->baristamodel->get_orderslips(),
+                'orderlists' => $this->baristamodel->get_olist(),
+                'addons' => $this->baristamodel->get_addons()
+            );
+            header('Content-Type: application/json');
+                echo json_encode($data, JSON_PRETTY_PRINT);
         }
     }
 ?>
