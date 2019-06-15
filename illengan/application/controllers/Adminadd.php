@@ -17,7 +17,8 @@ class Adminadd extends CI_Controller{
             $password = password_hash($this->input->post("password"),PASSWORD_DEFAULT);
             $username = $this->input->post("aUsername");
             $aType = $this->input->post("aType");
-
+            $date_recorded = date("Y-m-d H:i:s");
+            $account_id = $_SESSION["user_id"];
         // if($this->form_validation->run()){
         //     $data = array(
         //         'aPassword'=>$password,
@@ -34,6 +35,8 @@ class Adminadd extends CI_Controller{
                 'aType'=>$aType
             );
             $this->adminmodel->add_accounts($data);
+            $this->adminmodel->add_actlog($account_id,$date_recorded, "Admin added account $username .", "add", NULL);
+
             redirect('admin/accounts');
         // }
     }
@@ -46,7 +49,31 @@ class Adminadd extends CI_Controller{
             redirect('login');
         }
     }
-    
+    function addUOM(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $uomName = trim($this->input->post('uomName'));
+            $uomAbbreviation = trim($this->input->post('uomAbbreviation'));
+            $uomVariant = trim($this->input->post('uomVariant'));
+            $uomStore = trim($this->input->post('uomStore'));
+            $this->adminmodel->add_uom($uomName, $uomAbbreviation, $uomVariant, $uomStore);
+            redirect('admin/measurements');
+        }else{
+            redirect('login');
+        }
+    }
+    function addInventoryReport(){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+            $stID = $this->input->post('stID');
+            $sDate = $this->input->post('sDate');
+            $eDate = $this->input->post('eDate');
+            $this->adminmodel->get_inventoryReport($stID, $sDate, $eDate);
+            $data['report'] = $this->adminmodel->get_inventoryReport($stID, $sDate, $eDate);
+            $this->load->view('admin/reportInventory',$data);
+            // redirect('admin/stocklog/report');
+        }else{
+            redirect('login');
+        }
+    }
     function addSales() {
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $tableCode = trim($this->input->post('tableCode'));
@@ -56,12 +83,13 @@ class Adminadd extends CI_Controller{
             $osPayDateTime = trim($this->input->post('osPayDateTime'));
             $osDate = trim($this->input->post('osDate'));
             $osPayDate = trim($this->input->post('osPayDate'));
+            $osDiscount = trim($this->input->post('osDiscount'));
             $orderlists = json_decode($this->input->post('orderlists'), true);
             $osDateRecorded = date("Y-m-d H:i:s");
             $addons = json_decode($this->input->post('addons'), true);
            
             $this->adminmodel->add_salesOrder($tableCode, $custName, $osTotal, $osDateTime,
-            $osPayDateTime, $osDateRecorded, $orderlists, $addons);
+            $osPayDateTime, $osDateRecorded, $osDiscount, $orderlists, $addons);
 
         }else{
             redirect('login');
@@ -101,24 +129,17 @@ class Adminadd extends CI_Controller{
             $pmName = $this->input->post('pmName');
             $pmStartDate = $this->input->post('pmStartDate');
             $pmEndDate = $this->input->post('pmEndDate');
-            $fbName = $this->input->post('fbName');
-            $isElective = $this->input->post('isElective');
-            $prID = $this->input->post('prID');
-            $pcType = $this->input->post('pcType');
-            $pcQty = $this->input->post('pcQty');
-            $prIDfb = $this->input->post('prIDfb');
-            $fbQty = $this->input->post('fbQty');
+            $freebie = $this->input->post('freebie');
+            $discount = $this->input->post('discount');
+            $status = $this->input->post('status');
+            $pc = json_decode($this->input->post('pc'), true);
+            $fb = json_decode($this->input->post('fb'), true);
+            $dc = json_decode($this->input->post('dc'), true);
+            $mfb = json_decode($this->input->post('mfb'), true);
+            $mdc = json_decode($this->input->post('mdc'), true);
 
-            $this->adminmodel->add_promo($pmName, $pmStartDate, $pmEndDate, $fbName, $isElective, $prID, $pcType, $pcQty, $prIDfb, $fbQty);
-            // var pmName = $('#pmName').val();
-            // var pmStartDate = $('#pmStartDate').val();
-            // var pmEndDate = $('#pmEndDate').val();
-            // var elective = $('#isElective').val();
-            // var fbName = $('#fbName').val();
-            // var menuName = $('#menu_name').val();
-            // var pcQty = $('#pcQty').val();
-            // var menuFB = $('#fb_item').val();
-            // var fbQty = $('#fbQty').val();
+            $this->adminmodel->add_promo($pmName, $pmStartDate, $pmEndDate, $freebie,
+            $discount, $status, $pc, $fb, $dc, $mfb, $mdc);
         } else {
             redirect('login');
         }
@@ -297,8 +318,10 @@ class Adminadd extends CI_Controller{
             $this->load->model('adminmodel');
             $date_recorded = date("Y-m-d H:i:s");
             $addons = json_decode($this->input->post('addons'), true);
+            $account_id = $_SESSION["user_id"];
+
             echo json_encode($addons, true);
-            $this->adminmodel->add_aospoil($date_recorded,$addons);
+            $this->adminmodel->add_aospoil($date_recorded,$addons,$account_id);
            
         }else{
             redirect('login');
@@ -309,8 +332,10 @@ class Adminadd extends CI_Controller{
             $this->load->model('adminmodel');
             $date_recorded = date("Y-m-d H:i:s");
             $menus = json_decode($this->input->post('menus'), true);
+            $account_id = $_SESSION["user_id"];
+
             echo json_encode($menus, true);
-            $this->adminmodel->add_menuspoil($date_recorded,$menus);
+            $this->adminmodel->add_menuspoil($date_recorded,$menus,$account_id);
            
         }else{
             redirect('login');
@@ -323,6 +348,7 @@ class Adminadd extends CI_Controller{
             $slType = "spoilage";
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
+            
             $this->adminmodel->add_stockspoil($date_recorded,$stocks,$slType);
             
         }else{
@@ -417,3 +443,35 @@ class Adminadd extends CI_Controller{
 
 }
 ?>
+
+<!-- var btn = el.find(".addAddons");
+    btn.attr("onclick", " ");
+
+   
+    if($(el).hasClass("salesElem")) {
+        $(el).attr("data-delete", "0");
+        $(el).attr("class", "deleted");
+        
+        console.log("Order Item");
+    } else if($(el).hasClass("addonsTable")) {
+        $(el).attr("data-delete", "0");
+        $(el).attr("class", "deleted");
+
+        console.log("Addons");
+
+    } else {
+        return false;
+    }
+
+    try {
+        if($(el).next(".addonsTable") != null) {
+            nextTr = $(el).nextAll(".salesElem");
+            addonEl = $(el).nextUntil(nextTr, "tr");
+            for(var i = 0; i <= addonEl.length-1; i++) {
+                addonEl[i].style.textDecoration = "line-through";
+                addonEl[i].style.opacity = "0.5";
+            }
+        }
+    } catch(error) {
+
+    } -->

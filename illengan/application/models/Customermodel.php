@@ -6,22 +6,22 @@
     }
     function fetch_promos(){
         $query = $this->db->query('SELECT * FROM menu left join preferences using (mID)
-        left join promo_cons using (prID)
-        left join promo using (pmID)
+        left join promoconstraint using (prID)
+        left join promos using (pmID)
         left join discounts AS d using (pmID) 
-        left join freebie AS f using (pmID) 
-        left join menu_discount AS md USING (pmID)
-        left join menu_freebie AS mf USING (pmID)');
+        left join freebies AS f using (pmID) 
+        left join menudiscount AS md USING (pmID)
+        left join menufreebie AS mf USING (pmID)');
         return $query->result();
     }
 
     function fetch_freebies($pref_id){
         $query = $this->db->query("SELECT *, mn.mName AS fb_menuname FROM ((((((menu 
         INNER JOIN preferences pref USING (mID)) 
-        INNER JOIN promo_cons USING (prID)) 
-        INNER JOIN promo USING (pmID)) 
-        INNER JOIN freebie USING (pmID)) 
-        inner join menu_freebie AS mf USING (pmID)) 
+        INNER JOIN promoconstraint USING (prID)) 
+        INNER JOIN promos USING (pmID)) 
+        INNER JOIN freebies USING (pmID)) 
+        inner join menufreebie AS mf USING (pmID)) 
         inner join preferences fb_pref ON mf.prID = fb_pref.prID)
         inner join menu mn ON fb_pref.mID = mn.mID
         WHERE pref.prID = ".$pref_id.";");
@@ -30,14 +30,11 @@
 
     function fetch_discounts($pref_id){
         $query = $this->db->query('SELECT *, mn.mName AS dc_menuname FROM ((((((menu 
-        INNER JOIN preferences pref USING (mID)) 
-        INNER JOIN promo_cons USING (prID)) 
-        INNER JOIN promo USING (pmID)) 
-        INNER JOIN discounts USING (pmID)) 
-        inner join menu_discount AS mf USING (pmID)) 
-        inner join preferences fb_pref ON mf.prID = fb_pref.prID)
-        inner join menu mn ON fb_pref.mID = mn.mID
-        WHERE pref.prID = '.$pref_id.';');
+        INNER JOIN preferences pref USING (mID)) INNER JOIN promoconstraint USING (prID)) 
+        INNER JOIN promos USING (pmID)) INNER JOIN discounts USING (pmID)) 
+        inner join menudiscount AS mf USING (pmID)) 
+        inner join preferences fb_pref ON mf.prID = fb_pref.prID) 
+        inner join menu mn ON fb_pref.mID = mn.mID WHERE pref.prID = '.$pref_id.';');
          return $query->result();
     }
 
@@ -147,7 +144,7 @@
                         mID,
                         prPrice,
                         CONCAT(mName,
-                                IF(prName = 'Normal',
+                                IF(prName = 'normal' OR prName = 'Normal',
                                     '',
                                     CONCAT(' - ', prName)),
                                 IF(mTemp IS NULL,

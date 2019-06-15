@@ -10,6 +10,11 @@ class Barista extends CI_Controller{
         // code for getting current date : date("Y-m-d")
         // code for getting current date and time : date("Y-m-d H:i:s")
     }
+    function viewSlip() {
+        $data=$this->adminmodel->get_stocks();
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
 
     //BARISTA ORDER FUNCTIONS
     function pendingOrders(){
@@ -183,8 +188,8 @@ class Barista extends CI_Controller{
             $this->baristamodel->update_payment($status,$osID,$custName,$payDate, $date_recorded);
         }
         function updateStatus(){
-            $stats = $this->input->post('status');
-            $id = $this->input->post('id');
+            $stats = $this->input->post('olStatus');
+            $id = $this->input->post('osID');
             $this->baristamodel->updateStats($stats, $id);
         }
         function deleteOrderItem(){
