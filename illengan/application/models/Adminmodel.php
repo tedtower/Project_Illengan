@@ -115,9 +115,9 @@ class Adminmodel extends CI_Model{
         values (NULL,?,?,?,?,?,?)";
         if($this->db->query($query,array($pmName, $pmStartDate, $pmEndDate, $freebie, $discount, $status))) {
             $pmID = $this->db->insert_id();
-            $this->add_promoconstraint($pmID, $pc, $mfb, $mdc);
             $this->add_freebies($pmID, $fb);
             $this->add_discounts($pmID, $dc);
+            $this->add_promoconstraint($pmID, $pc, $mfb, $mdc);
         }
     }
     function add_freebies($pmID, $fb) {
@@ -585,6 +585,28 @@ class Adminmodel extends CI_Model{
         INNER JOIN menu mn USING (mID) 
         INNER JOIN discounts USING (pmID) 
         INNER JOIN menudiscount USING (pmID)";
+        return $this->db->query($query)->result_array(); 
+    }
+    function get_promoconstraint() {
+        $query = "SELECT pmID, pc.prID, pc.pcQty, 
+        CONCAT(mn.mName,' ',pref.prName) AS menu_item
+        FROM promoconstraint pc 
+        INNER JOIN preferences pref USING (prID) 
+        INNER JOIN menu mn USING (mID)";
+        return $this->db->query($query)->result_array(); 
+    }
+    function get_fb() {
+        $query = "SELECT * FROM freebies";
+        return $this->db->query($query)->result_array(); 
+    }
+    function get_menudc() {
+        $query = "SELECT pmID, CONCAT(mn.mName,' ',pref.prName) AS menu_item, md.dcAmount FROM 
+        menudiscount md INNER JOIN preferences pref 
+        USING (prID) INNER JOIN menu mn USING (mID)";
+        return $this->db->query($query)->result_array(); 
+    }
+    function get_dc() {
+        $query = "SELECT * FROM discounts";
         return $this->db->query($query)->result_array(); 
     }
     function get_freebies() {
