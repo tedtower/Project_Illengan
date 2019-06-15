@@ -11,7 +11,7 @@
             <div class="container-fluid">
                 <!--Table-->
                 <div class="card-content">
-                    <button id="addPromo" class="btn btn-primary btn-sm" onclick="removeOptions()"
+                    <button id="addPromo" class="btn btn-primary btn-sm"
                         data-toggle="modal" data-target="#addPromosModal" data-original-title style="margin:0">Add Promo</button>
                     <br>
                     <br>
@@ -99,7 +99,7 @@
                                         <!--Button to add row in the table-->
                                         <br><br>
 
-                                        <div id="fbTable"></div>
+                                        <div class="fbTableDiv"></div>
 
                                         <!--Menu Items-->
                                         <a class="addDiscounts btn btn-warning btn-sm" style="color:orange">Add Menu Discounts</a>
@@ -118,7 +118,97 @@
                             </div>
                         </div>
                     </div>
-                    <!--End of Modal "Add Transaction"-->
+                    <!--End of Modal "Promos"-->
+
+                    <!--Start of Modal "Edit Promos "-->
+                    <div id="editPromosModal" class="modal fade bd-example-modal-lg" aria-labelledby="exampleModalLabel" aria-hidden="true" 
+                        tabindex="-1" role="dialog" style="overflow: auto !important;">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit Promo</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="<?php echo base_url()?>admin/promos/edit" method="get"
+                                    accept-charset="utf-8">
+                                    <div class="modal-body">
+                                        <!--Menu Name-->
+                                        <div class="form-row">
+                                        <div class="input-group mb-3 col">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                    style="width:105px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                    Promo Name</span>
+                                            </div>
+                                            <input type="text" name="pmName" id="pmName"
+                                                class="form-control form-control-sm">
+                                        </div>
+
+                                        <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Status</span>
+                                                </div>
+                                                <select class="form-control" name="status" id="status">
+                                                <option value="enabled">enabled</option>
+                                                <option value="disabled">disabled</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--Description-->
+                                        <div class="form-row">
+                                            <!--Pay date-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Start Date</span>
+                                                </div>
+                                                <input type="date" name="pmStartDate" id="pmStartDate"
+                                                    class="form-control form-control-sm" required>
+                                            </div>
+
+                                            <!--Order date-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        End Date</span>
+                                                </div>
+                                                <input type="date" name="pmEndDate" id="pmEndDate"
+                                                    class="form-control form-control-sm" required>
+                                            </div>
+                                        </div>
+ 
+                                        <!--Menu Items-->
+                                        <a id="addFreebie1" class="btn btn-primary btn-sm" style="color:blue">Add
+                                            Menu Freebies</a>
+                                        <!--Button to add row in the table-->
+                                        <br><br>
+
+                                        <div class="fbTableDiv"></div>
+
+                                        <!--Menu Items-->
+                                        <a class="addDiscounts btn btn-warning btn-sm" style="color:orange">Add Menu Discounts</a>
+                                        <!--Button to add row in the table-->
+                                        <br><br>
+                                        <div class="discountsDiv"></div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                data-dismiss="modal">Cancel</button>
+                                            <button id="submitPromo"
+                                                class="btn btn-success btn-sm" type="submit">Insert</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End of Modal "Edit Promos"-->
 
                        <!--Start of Menu Items Modal"-->
                        <div class="modal fade bd-example-modal" id="menuItems" tabindex="-1" role="dialog"
@@ -169,6 +259,7 @@
 <script>
 var menuItems = [];
 var promos = [];
+var menupromos = [];
     $(function(){
         $.ajax({
             url: '<?= base_url("admin/jsonPromos")?>',
@@ -185,6 +276,7 @@ var promos = [];
                     promos[index].discounts = data.discounts.filter(disc =>  disc.pmID==  item.pmID);
 
                 });
+                menupromos = data;
                 console.log(data);
                 menuItems = data.menuitems;
                 showTable();
@@ -196,7 +288,9 @@ var promos = [];
         });
 
         $('#addPromo').on("click",function() {
-            $('#fbTable').empty();
+            $('#addPromosModal form')[0].reset();
+            $('#editPromosModal form')[0].reset();
+            $('.fbTableDiv').empty();
             $('.discountsDiv').empty();
         });
     });
@@ -212,7 +306,7 @@ function setBrochureContent(menuitems){
 function showTable(){
         promos.forEach(function(item){
             var tableRow = `                
-                <tr class="table_row" data-promoId="${item.promos.pmID}">   <!-- table row ng table -->
+                <tr class="table_row" data-id="${item.promos.pmID}">   <!-- table row ng table -->
                     <td><a href="javascript:void(0)" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${item.promos.pmName}</td>
                     <td>${item.promos.freebie != null ? "Freebie" : ""}
                     ${item.promos.discount != null ? "Discount" : ""}</td>
@@ -220,7 +314,7 @@ function showTable(){
                     <td>${item.promos.pmEndDate}</td>
                     <td>${item.promos.status}</td>
                     <td>
-                        <button class="editBtn btn btn-sm btn-secondary">Edit</button>
+                        <button class="editBtn btn btn-sm btn-secondary" data-toggle="modal" data-target="#editPromosModal">Edit</button>
                         <button class="deleteBtn btn btn-sm btn-warning">Archived</button>
                     </td>
                 </tr>
@@ -231,7 +325,7 @@ function showTable(){
                 ${item.freebies.length === 0 ? "No freebies are set for this promo." : 
                 `
                  <!-- label-->
-                <table class="table table-bordered"> <!-- Freebies table-->
+              . <table class="table table-bordered"> <!-- Freebies table-->
                     <thead class="thead-light">
                         <tr>
                             <th scope="col">Freebie Name</th>
@@ -340,10 +434,17 @@ function showTable(){
                 $(this).closest("tr").next(".accordion").hide("slow");
             }
         });
-        $(".editBtn").on("click",function(){
-            var menuID = $(this).closest("tr").attr("data-menuID");
-            //set Modal contents;
-        });
+        $(".editBtn").on("click", function() {
+        $('#addPromosModal form')[0].reset();
+        $('#editPromosModal form')[0].reset();
+        $('.fbTableDiv').empty();
+        $('.discountsDiv').empty();
+        var pmID = $(this).closest("tr").attr("data-id");
+        setEditModal($("#editPromosModal"), promos.filter(item => item.promos.pmID === pmID)[0],
+        menupromos.fb.filter(item => item.pmID === pmID), menupromos.dc.filter(item => item.pmID === pmID),
+        menupromos.menudiscounts.filter(item => item.pmID === pmID));
+        console.log(menupromos.fb.filter(item => item.pmID === pmID));
+    });
 
     }  
 
@@ -365,13 +466,14 @@ function getSelectedMenu() {
                             <td><input type="text" id="prID" name="prID" data-id="${value}" class="prID form-control 
                             form-control-sm" value="${menupromo[0].menu_item}" readonly="readonly"></td>
                             <td><input type="number" id="pcQty" name="pcQty" class="pcQty form-control form-control-sm"
-                                    value="" min="1"></td>
+                                    value="1" min="1" required></td>
                             <td><a class="addFreebie3 btn btn-primary btn-sm" data-toggle="modal"
                                     data-target="#menuItems" data-original-title style="margin:0"
                                     style="color:blue">Freebies</a></td>
                         </tr>`;
-   
-            $(".freebies").last().append(freebieDiv);
+                
+            console.log( $(".freebies"));
+            $('#addPromosModal').find(".freebies").last().append(freebieDiv);
             }
         }
 
@@ -408,8 +510,8 @@ function getSelectedFreebies() {
                         form-control-sm" value="${menupromo[0].menu_item}" readonly="readonly">
                     </div>
                 </td>
-                <td><input type="number" id="fbQty" name="fbQty" class="pcQty form-control form-control-sm" value=""
-                        min="1"></td>
+                <td><input type="number" id="fbQty" name="fbQty" class="pcQty form-control form-control-sm" value="1"
+                        min="1" required></td>
                 <td style="text-align:center;"></td>
             </tr>`;
                 
@@ -435,7 +537,7 @@ $(document).ready(function() {
             </thead>
             <tbody>
                 <tr class="freebiesmain">
-                    <td><input type="text" name="fbName" id="fbName" placeholder="(e.g. Buy One Take One)" class="form-control form-control-sm"></td>
+                    <td><input type="text" name="fbName" id="fbName" placeholder="(e.g. Buy One Take One)" class="form-control form-control-sm" required></td>
                     <td><select class="isElective form-control" name="isElective" id="isElective">
                             <option value="0" selected>Self Freebie</option>
                             <option value="1">Freebie Selection</option>
@@ -463,7 +565,7 @@ $(document).ready(function() {
             </tbody>
         </table>`;
 
-        $('#fbTable').append(fbTable);
+        $('.fbTableDiv').append(fbTable);
 
         $(".addFreebie2").on('click',function(){
             setBrochureContent(menuItems);
@@ -490,7 +592,7 @@ $(document).ready(function() {
             <tbody>
                 <tr class="discounts">
                     <td><input type="text" name="dcName" id="dcName"
-                            class="dcName form-control form-control-sm" placeholder="(e.g. 20)"></td>
+                            class="dcName form-control form-control-sm" placeholder="(e.g. 20)" required></td>
                     <td><a class="addDiscountItems btn btn-primary btn-sm" data-toggle="modal" data-target="#menuItems"
                     data-original-title style="margin:0" style="color:blue">Add Items</a></td>
                     <td><img class="delBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"
@@ -604,6 +706,10 @@ function getDiscountItems() {
 
     }); 
 }
+function removeItem(remove) {
+    $(remove).closest("tr").remove();
+   
+}
 // ------------------------------- ADDING PROMOS -------------------------------------
 $(document).ready(function() {
     $("#addPromosModal form").on('submit', function(event) {
@@ -714,6 +820,164 @@ $(document).ready(function() {
         });
     });
 });
+// ---------------------------- END OF ADDING PROMOS ---------------------------------
+
+// ---------------------------- START OF EDIT PROMOS ---------------------------------
+function setEditModal(modal, promos, freebies, discounts, mdc) {
+    // Conversion of Date to Datetime-local format
+    modal.find("input[name='pmName']").val(promos.promos.pmName);
+    modal.find("input[name='pmStartDate']").val(promos.promos.pmStartDate);
+    modal.find("input[name='pmEndDate']").val(promos.promos.pmEndDate);
+    modal.find("select[name='status']").find(`option[value=${promos.promos.status}]`).attr("selected","selected");
+
+    freebies.forEach(pf => {
+        modal.find(".fbTableDiv").append(`
+        <table class="table table-lg table-borderless fbTable pmTab">
+            <thead class="thead-light">
+                <tr>
+                    <th>Freebie Name</th>
+                    <th>Freebie Type</th>
+                    <th>Add Freebie</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="freebiesmain">
+                    <td><input type="text" name="fbName" id="fbName" value="${pf.fbName}" placeholder="(e.g. Buy One Take One)" class="form-control form-control-sm" required></td>
+                    <td><select class="isElective form-control" name="isElective" id="isElective">
+                            <option value="0" selected>Self Freebie</option>
+                            <option value="1">Freebie Selection</option>
+                        </select></td>
+                    <td><a class="addFreebie2 btn btn-primary btn-sm" data-toggle="modal" data-target="#menuItems"
+                            data-original-title style="margin:0" style="color:blue">Add Items</a></td>
+                    <td><img class="delBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"
+                            onclick="removeItem(this)"></td>
+                </tr>
+                <tr class="accordion" style="display:table-row">
+                        <!-- table row ng accordion -->
+                        <div class="preferences"></div>
+                        <table class="freebies table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Menu Item</th>
+                                    <th width="25%" scope="col">Qty Req.</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                </tr>
+            </tbody>
+        </table>
+        `);
+      modal.find("select[name='isElective']").find(`option[value=${pf.isElective}]`).attr("selected","selected");
+    });
+   
+    // Items with freebies
+    promos.freebies.forEach(pf => {
+        modal.find(".freebies > tbody").append(`<tr class="promoconstraint" data-promotype="f">
+                            <td><input type="text" id="prID" name="prID" data-id="${pf.prID}" class="prID form-control 
+                            form-control-sm" value="${pf.menu_item}" readonly="readonly"></td>
+                            <td><input type="number" id="pcQty" name="pcQty" class="pcQty form-control form-control-sm"
+                                    value="1" min="1" required></td>
+                            <td><a class="addFreebie3 btn btn-primary btn-sm" data-toggle="modal"
+                                    data-target="#menuItems" data-original-title style="margin:0"
+                                    style="color:blue">Freebies</a></td>
+                        </tr>`);
+
+        // Menu freebies
+        
+    });
+    promos.menufreebies.forEach(fb => {
+            modal.find(".freebies > tbody").append(`<tr class="menufreebies">
+                    <td>
+                        <div class="input-group col">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"
+                                    style="background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                    Freebie</span>
+                            </div>
+                            <input type="text" id="prID" name="prID" data-id="${fb.prID}" class="prID form-control 
+                            form-control-sm" value="${fb.menu_freebie}" readonly="readonly">
+                        </div>
+                    </td>
+                    <td><input type="number" id="fbQty" name="fbQty" class="pcQty form-control form-control-sm" value="1"
+                            min="1" required></td>
+                    <td style="text-align:center;"></td>
+                </tr>`);
+        });
+
+    discounts.forEach(pd => {
+        modal.find(".discountsDiv").append(`<table class="discTable table table-sm table-borderless">
+            <!--Table containing the different input fields in adding trans items -->
+            <thead class="thead-light">
+                <tr>
+                    <th>Discount Percentage</th>
+                    <th>Add Items</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="discounts">
+                    <td><input type="text" name="dcName" id="dcName" value="${pd.dcName}"
+                            class="dcName form-control form-control-sm" placeholder="(e.g. 20)" required></td>
+                    <td><a class="addDiscountItems btn btn-primary btn-sm" data-toggle="modal" data-target="#menuItems"
+                    data-original-title style="margin:0" style="color:blue">Add Items</a></td>
+                    <td><img class="delBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px"
+                            onclick="removeItem(this)"></td>
+                </tr>
+        </table>
+
+        <table class="discountsTB table table-sm table-borderless">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Menu Item</th>
+                        <th>Quantity Constraint</th>
+                        <th scope="col">Action</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody></table>`);
+
+    });
+
+    promos.discounts.forEach(dc => {
+        modal.find(".discountsTB > tbody").append(` <tr class="promoconstraint" data-promotype="d">
+                        <td><input type="text" name="prID" min="0" id="prID" data-id="${dc.prID}" value="${dc.menu_item}" 
+                        class="form-control form-control-sm"  readonly="readonly"></td>
+                        <td><input type="number" name="pcQty" min="0" id="pcQty" value="1" min="1" 
+                        class="form-control form-control-sm" >
+                        </td>
+                        <td><a class="addDiscounts2 btn btn-primary btn-sm" data-toggle="modal" data-target="#menuItems"
+                            data-original-title style="margin:0" style="color:blue">Items</a></td>
+                    </tr> `);
+
+    });
+
+    mdc.forEach(mdc => {
+        modal.find(".discountsTB > tbody").append(`<tr class="menudiscounts">
+                        <td>
+                            <div class="input-group col">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                        style="background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                        Discounted Item</span>
+                                </div>
+                                <input type="text" id="prID" name="prID" data-id="${mdc.prID}" class="prID form-control 
+                                form-control-sm" value="${mdc.menu_item}" readonly="readonly">
+                            </div>
+                        </td>
+                        <td><input type="number" id="dcAmount" name="dcAmount" class="dcAmount form-control form-control-sm" value="${mdc.dcAmount}"
+                                min="1"></td>
+                        <td style="text-align:center;"></td>
+                    </tr>`);
+
+    });
+
+  
+}
 
 
 </script>

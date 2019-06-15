@@ -484,7 +484,10 @@ function viewSpoilagesStock(){
             "promos" => $this->adminmodel->get_promos(),
             "discounts" => $this->adminmodel->get_discounts(),
             "freebies" => $this->adminmodel->get_freebies(),
+            "fb"  => $this->adminmodel->get_fb(),
+            "dc" => $this->adminmodel->get_dc(),
             "menufreebies" => $this->adminmodel->get_menufreebies(),
+            "menudiscounts" => $this->adminmodel->get_menudc(),
             "menuitems" => $this->adminmodel->get_menuItems()
         );
 

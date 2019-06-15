@@ -115,7 +115,7 @@ class Adminupdate extends CI_Controller{
             $addons = json_decode($this->input->post('addons'), true);
                
             $this->adminmodel->edit_sales($osID, $tableCodes, $custName, $osTotal, $payStatus, 
-            $osDateTime, $osPayDateTime, $osDateRecorded, $orderlists, $addons);
+            $osDateTime, $osPayDateTime, $osDateRecorded, $osDiscount, $orderlists, $addons);
         }else{
             redirect('login');
         }
