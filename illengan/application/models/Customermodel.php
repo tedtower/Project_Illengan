@@ -100,7 +100,7 @@
 			$bool = false;
 	foreach($orderlist as $items){
 		$query2 = "Insert into orderlists (olID, osID, prID, olDesc, olQty, olSubtotal, olStatus, olRemarks, olPrice, olDiscount) values (?,?,?,?,?,?,?,?,?,?)";
-                 $this->db->query($query2, array(NULL,$order_id, $items['id'],$items['orderDesc'],$items['qty'], $total, 'pending', $items['remarks'], $items['subtotal'], ''));
+                 $this->db->query($query2, array(NULL,$order_id, $items['id'],'',$items['qty'], $total, 'pending', $items['remarks'], $items['subtotal'], ''));
                 $olID = $this->db->insert_id(); 
 
                 $addOns = $items['addons'];
