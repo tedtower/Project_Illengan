@@ -184,7 +184,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         //$query2 = "SELECT olID, aoName, aoPrice, olRemarks from orderlists inner join orderaddons using (olID) inner join addons using (aoID)";
 
         function get_orderslips(){
-            $query = "select osID, custName, tableCode, payStatus from orderslips";
+            $query = "select osID, custName, tableCode, payStatus, osTotal from orderslips";
             return $this->db->query($query)->result_array();
         }
         function get_olist(){
