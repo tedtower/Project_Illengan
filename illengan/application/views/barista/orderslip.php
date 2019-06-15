@@ -121,15 +121,6 @@
                 </div>
             </div>
             `;
-            // menuaddons.forEach(ma => 
-            //     $('.addons'+ma.olID).append(`
-            //     <ul>
-            //     <li>${ma.aoName}</li></ul>
-            //     `);
-            //     console.log('WITH ADDONS');
-            // console.log($('.addons'+ma.olID));
-            // console.log()
-            // });
             var modal = `<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteOrderModal" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -156,11 +147,17 @@
           
             }); 
               $("input#item_status").on('click', function () {
+                var id = $(this).attr('data-id');
                 var stats = $(this).val();
                 if( stats == 'served'){
-                    $(this).prop('disabled', true);
-                }else{
-                var id = $(this).attr('data-id');
+                    stats = 'pending';
+                this.style.backgroundColor = "gray";
+                this.value= "pending";
+                stats = this.value;
+                console.log(stats, id);
+                updateStatus(stats, id);
+                }else if (stats == 'pending'){
+                    stats='served';
                 this.style.backgroundColor = "green";
                 this.value= "served";
                 stats = this.value;
