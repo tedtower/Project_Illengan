@@ -66,7 +66,7 @@
                                     <div class="modal-body">
                                         <div class="form-row">
                                             <div class="mb-3 col">
-                                                <a class="btn btn-primary btn-sm" style="color:blue;margin:0" data-toggle="modal" data-target="#stockBrochure">Add Item</a>
+                                                <a id="addRestockItem"class="btn btn-primary btn-sm" style="color:blue;margin:0" data-toggle="modal" data-target="#stockBrochure">Add Item</a>
                                             </div>
 
                                             <div class="input-group mb-3 col">
@@ -332,12 +332,12 @@ $(document).ready(function() {
     $("#restock").on("hidden.bs.modal",function(){
         $(this).find("form")[0].reset();
         $(this).find(".ic-level-1").remove();
-        $(this).find("form").off();
+        $(this).find("form").off("submit");
     });
     $("#stockBrochure").on("hidden.bs.modal",function(){
         $(this).find("form")[0].reset();
         $(this).find(".ic-level-1").remove();
-        $(this).find("form").off();
+        $(this).find("form").off("submit");
     });
     $("#addEditStock").on("hidden.bs.modal",function(){
         $(this).find("form")[0].reset();
@@ -351,31 +351,32 @@ $(document).ready(function() {
             success: function(data){
                 var selectItems = [];
                 $("#restock").find(".ic-level-2").empty();
-                $("#stockBrochure").find(".ic-level-2").empty();
-                $("#stockBrochure").find(".ic-level-2").append(data.map(item => {
-                    return `<label style="width:96%">
-                <input name="stock" type="checkbox" class="mr-2" value="${item.stID}">${item.stName} - ${item.stQty} ${item.uomAbbreviation}</label>`;
-                }).join(''));
-                $("#stockBrochure form").on('submit',function(event){
-                    event.preventDefault();
-                    $(this).find("input[name='stock']:checked").each(function(index,element){
-                        selectItems.push(element.value);
-                    });
-                    $("#restock").find(".ic-level-2").append(data.filter(stock => selectItems.includes(stock.stID)).map(stock=>{
-                        return `
-                            <tr data-id="${stock.stID}" class="ic-level-1">
-                                <td>${stock.stName}</td>
-                                <td>${stock.stQty} (${stock.uomAbbreviation})</td>
-                                <td><input type="number" name="restockQty[]"
-                                        class="form-control form-control-sm"></td>
-                                <td><textarea name="remarks[]" class="form-control form-control-sm" rows="1">
-                                </textarea></td>
-                                <td><img class="exitBtn" src="/assets/media/admin/error.png"
-                                    style="width:20px;height:20px"></td>
-                            </tr>`;
+                $("#addRestockItem").on("click",function(){
+                    $("#stockBrochure").find(".ic-level-2").append(data.map(item => {
+                        return `<label style="width:96%">
+                    <input name="stock" type="checkbox" class="mr-2" value="${item.stID}">${item.stName} - ${item.stQty} ${item.uomAbbreviation}</label>`;
                     }).join(''));
-                    $("#stockBrochure").modal('hide');
+                    $("#stockBrochure form").on('submit',function(event){
+                        event.preventDefault();
+                        $(this).find("input[name='stock']:checked").each(function(index,element){
+                            selectItems.push(element.value);
+                        });
+                        $("#restock").find(".ic-level-2").append(data.filter(stock => selectItems.includes(stock.stID)).map(stock=>{
+                            return `<tr data-id="${stock.stID}" class="ic-level-1">
+                                    <td>${stock.stName}</td>
+                                    <td>${stock.stQty} (${stock.uomAbbreviation})</td>
+                                    <td><input type="number" name="restockQty[]"
+                                            class="form-control form-control-sm"></td>
+                                    <td><textarea name="remarks[]" class="form-control form-control-sm" rows="1">
+                                    </textarea></td>
+                                    <td><img class="exitBtn" src="/assets/media/admin/error.png"
+                                        style="width:20px;height:20px"></td>
+                                </tr>`;
+                        }).join(''));
+                        $("#stockBrochure").modal('hide');
+                    });
                 });
+                
             },
             error: function(response, setting, error) {
                 console.log(response.responseText);
