@@ -1,4 +1,3 @@
-
 <body style="background: white">
 <div class="content">
     <div class="container-fluid">
@@ -52,7 +51,7 @@
                     <p id="note"></p>
                 <!--Start of Modal "Restock Item"-->
                     <div class="modal fade bd-example-modal-lg" id="restock" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow:auto !important">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -65,18 +64,26 @@
                                     accept-charset="utf-8">
                                     <div class="modal-body">
                                         <!--Add Stock Item-->
-                                        <a class="btn btn-primary btn-sm" style="color:blue;margin:0"
-                                            data-toggle="modal" data-target="#stockBrochure">Add Item</a>
-                                        <!--Button to add row in the table-->
-                                        <br><br>
-                                        <table class="varianceTable table table-sm table-borderless inputTable">
+                                    <div class="form-row">
+                                        <div class="mb-3 col">
+                                            <a class="btn btn-primary btn-sm" style="color:blue;margin:0" data-toggle="modal" data-target="#stockBrochure">Add Item</a>
+                                        </div>
+                                            <!--Stock size-->
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" style="width:100px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">Date</span>
+                                                </div>
+                                                <input type="date" name="restockDate" class="form-control form-control-sm">
+                                            </div>
+                                        </div>
+                                        <table class="varianceTable table table-sm table-borderless inputTable" >
                                             <!--Table containing the different input fields in adding trans items -->
                                             <thead style="border-bottom:2px solid #cecece">
                                                 <tr class="text-center">
-                                                    <th><b>Stock Name</b></th>
-                                                    <th><b>Current Qty</b></th>
-                                                    <th><b>Unit</b></th>
-                                                    <th><b>Restock Qty</b></th>
+                                                    <th width="30%"><b>Stock Name</b></th>
+                                                    <th class="text-left"><b>Current Qty</b></th>
+                                                    <th width="13%"><b>Restock Qty</b></th>
+                                                    <th><b>Remarks</b></th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -342,12 +349,14 @@ $(document).ready(function() {
                     $(this)[0].reset();
                     $("#restock").find(".inputContainerParent").append(data.filter(stock => selectItems.includes(stock.stID)).map(stock=>{
                         return `
-                            <tr data-id="${stock.stID}" class="inputContainer">
-                                <td>${stock.stName}</td>
+                            <tr data-id="${stock.stID}" class="inputContainer" style="border-bottom:1px solid #c6c6c6">
+                                <td>${stock.stName} (${stock.uomAbbreviation})</td>
                                 <td>${stock.stQty}</td>
-                                <td>${stock.uomAbbreviation}</td>
                                 <td><input type="number" name="restockQty[]"
                                         class="form-control form-control-sm"></td>
+                                <td><textarea name="remarks[]"
+                                        class="form-control form-control-sm" rows="1"></textarea>
+                                </td>
                                 <td><img class="exitBtn" src="/assets/media/admin/error.png"
                                     style="width:20px;height:20px"></td>
                             </tr>`;

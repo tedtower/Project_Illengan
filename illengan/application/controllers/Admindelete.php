@@ -35,6 +35,15 @@ class Admindelete extends CI_Controller{
             redirect('login');
         }    
     }
+    function deleteMeasurement($id){
+        if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+                $this->adminmodel->delete_uom($id);
+                redirect('admin/measurements');
+            
+        }else{
+            redirect('login');
+        }    
+    }
     function deleteMenu($id){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
                 $this->adminmodel->delete_menu($id);

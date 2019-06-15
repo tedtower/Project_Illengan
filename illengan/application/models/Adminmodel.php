@@ -17,6 +17,10 @@ class Adminmodel extends CI_Model{
         $query = "INSERT into addons (aoName, aoPrice, aoCategory, aoStatus) values (?,?,?,?)";
         return $this->db->query($query,array($aoName, $aoPrice, $aoCategory, $aoStatus));
     }
+    function add_uom($uomName, $uomAbbreviation, $uomVariant, $uomStore){
+        $query = "INSERT into uom (uomName, uomAbbreviation, uomVariant, uomStore) values (?,?,?,?)";
+        return $this->db->query($query,array($uomName, $uomAbbreviation, $uomVariant, $uomStore));
+    }
     function add_aospoil($date_recorded,$addons,$account_id){
         $query = "insert into aospoil (aosID,aosDateRecorded) values (NULL,?)";
         if($this->db->query($query,array($date_recorded))){ 
@@ -24,6 +28,7 @@ class Adminmodel extends CI_Model{
             return true;
         }
     }
+    
     function add_spoiledaddon($aosID,$addons,$date_recorded,$account_id){
         $query = "insert into addonspoil (aosID,aoID,aosQty,aosDate,aosRemarks) values (?,?,?,?,?)";
         if(count($addons) > 0){
@@ -245,6 +250,7 @@ class Adminmodel extends CI_Model{
             return true;
         }
     }
+    
     function add_poItems($poID, $merchandise) {
         $query = "insert into poitems (poiID, vID, poID, poiName, poiQty, poiUnit, poiPrice, poiStatus) values
         (NULL,?,?,?,?,?,?,?)";
@@ -281,6 +287,10 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query,array($vQty,$vID));
     }
 
+    function edit_uom($uomName, $uomAbbreviation, $uomVariant, $uomStore, $uomID){
+        $query = "UPDATE uom SET uomName = ?, uomAbbreviation = ?, uomVariant = ?, uomStore = ? WHERE uomID = ?";
+        return $this->db->query($query,array($uomName, $uomAbbreviation, $uomVariant, $uomStore, $uomID));
+    }
     function edit_menu($mName, $mDesc, $mCat, $mAvailability, $preference, $addon, $mID){
         $query = "UPDATE menu SET mName = ?, mDesc = ?, ctID = ?, mAvailability = ? WHERE mID = ? ";
         if($this->db->query($query, array($mName, $mDesc, $mCat, $mAvailability, $mID))){
@@ -911,7 +921,7 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_consumption(){
-       $query = "SELECT cnID, cnDate, cnDateRecorded, COUNT(stID) countItem FROM varconsumptionitems NATURAL JOIN consumption NATURAL JOIN variance NATURAL JOIN stockitems GROUP BY cnDate ORDER BY cnDate DESC";
+       $query = "SELECT cnID, cnDate, cnDat                                                                                                     eRecorded, COUNT(stID) countItem FROM varconsumptionitems NATURAL JOIN consumption NATURAL JOIN variance NATURAL JOIN stockitems GROUP BY cnDate ORDER BY cnDate DESC";
        return $this->db->query($query)->result_array();
     }
     function get_consumptionItems(){
@@ -930,6 +940,10 @@ class Adminmodel extends CI_Model{
     }
     function delete_addon($id){
         $query = "UPDATE addons set aoStatus = 'archived' where aoID = ?"; 
+        return $this->db->query($query, array($id));
+    }
+    function delete_uom($id){
+        $query = "DELETE FROM uom where uomID = ?"; 
         return $this->db->query($query, array($id));
     }
     function delete_menu($id){
@@ -1010,6 +1024,10 @@ class Adminmodel extends CI_Model{
         $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID inner join invoiceitems on invoice.iID=invoiceitems.iID
         inner join variance on invoiceitems.vID=variance.vID inner join stockitems on variance.stID=stockitems.stID where invoiceitems.iID ='$item'";
         return $this->db->query($query)->result_array();
+    }
+    function get_inventoryReport($stID, $sDate, $eDate){
+        $query = "SELECT * FROM stocklog inner join stockitems using (stID) WHERE stID = ? and slDateTime BETWEEN ? and ?";
+        return $this->db->query($query, array($stID, $sDate, $eDate))->result_array();
     }
     function get_allInvoice(){
         $query = "SELECT * FROM supplier inner join invoice on supplier.spID=invoice.spID where invoice.iType !='return' ORDER BY invoice.iDate DESC";

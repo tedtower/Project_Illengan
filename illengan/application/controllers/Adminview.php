@@ -72,7 +72,16 @@ class Adminview extends CI_Controller{
             redirect('login');
         }
     }
-
+    // function getInventoryReport(){
+    //     if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
+    //         $head['title'] = "Admin - Report";
+    //         $this->load->view('admin/templates/head', $head);
+    //         $data['report'] = $this->adminmodel->get_inventoryReport($stID, $sDate, $eDate);
+    //         $this->load->view('admin/reportInventory',$data);
+    //     }else{
+    //         redirect('login');
+    //     }
+    // }
     function viewSupplier(){
         if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'admin'){
             $data['title'] = "Sources";
@@ -165,6 +174,18 @@ class Adminview extends CI_Controller{
             $data['category'] = $this->adminmodel->get_menucategories();
             $data['maincategory'] = $this->adminmodel->get_maincat();
             $this->load->view('admin/menucategories',$data);
+        }else{
+            redirect('login');
+        }
+    }
+
+    function viewUOM(){
+        if($this->checkIfLoggedIn()){
+            $data['title'] = "Inventory - Measurements";
+            $this->load->view('admin/templates/head',$data);
+            $this->load->view('admin/templates/sideNav');
+            $data['measurement'] = $this->adminmodel->get_uom();
+            $this->load->view('admin/UOM',$data);
         }else{
             redirect('login');
         }
