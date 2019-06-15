@@ -693,7 +693,7 @@ function setDiscount() {
         $(tr).find('select').empty();
         var prmID = $('.discount').eq(i).closest('tr').find('#prID').val();
         var discount = discounts.filter(item => item.prID === prmID);
-        
+        console.log(discount);
         if(parseInt(discount.length) === 0) {
             $(tr).find('select').append(`<option value="0" selected>None</option>`);
         } else {

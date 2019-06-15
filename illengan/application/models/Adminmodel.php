@@ -94,32 +94,8 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query,array($ctName,$supcatID));
     }
     function add_stockItem($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, $stockBqty, $stockLocation,$stockSize){
-        $query = "INSERT INTO `stockitems`(
-                `stID`,
-                `ctID`,
-                `uomID`,
-                `stName`,
-                `stQty`,
-                `stMin`,
-                `stType`,
-                `stStatus`,
-                `stBqty`,
-                `stLocation`,
-                `stSize`
-            )
-            VALUES(
-                NULL,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?,
-                ?
-            );";
+        $query = "INSERT INTO `stockitems`( `stID`,`ctID`,`uomID`,`stName`,`stQty`,`stMin`,`stType`,`stStatus`,`stBqty`,`stLocation`,`stSize` )
+                    VALUES( NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? );";
         if($this->db->query($query,array($stockCategory, $stockUom, $stockName, $stockQty, $stockMin, $stockType, $stockStatus, $stockBqty, $stockLocation,$stockSize))){
             if($this->add_stockLog($this->db->insert_id(), NULL, 'beginning', date("Y-m-d H:i:s"), date("Y-m-d H:i:s"), $stockQty, "New item")){
                 return true;
@@ -132,23 +108,69 @@ class Adminmodel extends CI_Model{
         VALUES(?);";
         return $this->db->query($query, array($tableCode));
     }
-    function add_promo($pmName, $pmStartDate, $pmEndDate, $fbName, $isElective, $prID, $pcType, $pcQty, $prIDfb, $fbQty){
-        $query = "insert into promos (pmID, pmName, pmStartDate, pmEndDate) values (NULL,?,?,?)";
-        if($this->db->query($query,array($pmName, $pmStartDate, $pmEndDate))) {
-            $query = "insert into freebies (pmID, fbName, isElective) values (?,?,?)";
-            $poID = $this->db->insert_id();
-            if($this->db->query($query,array($this->db->insert_id(), $fbName, $isElective))) {
-                $query = "insert into promoconstraint (pmID, prID, pcType, pcQty) values (?,?,?,?)";
-                if($this->db->query($query,array($poID, $prID, $pcType, $pcQty))) {
-                    $query1 = "select pmID from promos where pmName = ? ";
-                    $pmID2 = $this->db->query($query1,array($pmName));
-                    $query = "insert into menufreebie (pmID, prID, fbQty) values (?,?,?)";
-                    return $this->db->query($query,array($pmID2, $prIDfb, $fbQty));
-                }
-            }
+
+    // Adding Promos
+    function add_promo($pmName, $pmStartDate, $pmEndDate, $freebie, $discount, $status, $pc, $fb, $dc, $mfb, $mdc){
+        $query = "insert into promos (pmID, pmName, pmStartDate, pmEndDate, freebie, discount, status) 
+        values (NULL,?,?,?,?,?,?)";
+        if($this->db->query($query,array($pmName, $pmStartDate, $pmEndDate, $freebie, $discount, $status))) {
+            $pmID = $this->db->insert_id();
+            $this->add_promoconstraint($pmID, $pc, $mfb, $mdc);
+            $this->add_freebies($pmID, $fb);
+            $this->add_discounts($pmID, $dc);
         }
     }
-    
+    function add_freebies($pmID, $fb) {
+        if(count($fb) > 0) {
+            $query = "insert into freebies (pmID, fbName, isElective) values (?,?,?)";
+        for($in = 0; $in < count($fb) ; $in++){
+            $this->db->query($query, array($pmID, $fb[$in]['fbName'], intval($fb[$in]['isElective'])));
+          } 
+        }
+    }
+    function add_discounts($pmID, $dc) {
+        if(count($dc) > 0) {
+            $query = "insert into discounts (pmID, dcName) values (?,?)";
+        for($in = 0; $in < count($dc) ; $in++){
+            $this->db->query($query, array($pmID, $dc[$in]['dcName']));
+          } 
+        }
+    }
+    function add_promoconstraint($pmID, $pc, $mfb, $mdc) {
+        if(count($pc) > 0) {
+            $query = "insert into promoconstraint (pmID, prID, pcType, pcQty) values (?,?,?,?)";
+            for($in = 0; $in < count($pc) ; $in++){
+            if($this->db->query($query, array($pmID, $pc[$in]['prID'], $pc[$in]['pcType'], intval($pc[$in]['pcQty'])))) {
+                $this->add_menufreebie($pmID, $mfb);
+                $this->add_menudiscount($pmID, $mdc);
+             }
+          } 
+        }
+    }
+
+    function add_menufreebie($pmID, $mfb) {
+        if(count($mfb) > 0) {
+            $query = "insert into menufreebie (pmID, prID, fbQty) values (?,?,?)";
+            for($in = 0; $in < count($mfb); $in++){
+                $this->db->query($query, array($pmID, $mfb[$in]['prID'], intval($mfb[$in]['fbQty'])));
+              } 
+        } else {
+            return false;
+        }
+    }
+
+    function add_menudiscount($pmID, $mdc) {
+        if(count($mdc) > 0) {
+            $query = "insert into menudiscount (pmID, prID, dcAmount) values (?,?,?)";
+            for($in = 0; $in < count($mdc); $in++){
+                $this->db->query($query, array($pmID, $mdc[$in]['prID'], floatval($mdc[$in]['dcAmount'])));
+              } 
+        }
+        else {
+            return false;
+        }
+    }
+    // End of Adding Promos
     function add_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch){
         $query = "insert into supplier (spName, spContactNum, spEmail, spStatus, spAddress) values (?,?,?,?,?);";
         if($this->db->query($query,array($spName, $spContactNum, $spEmail, $spStatus, $spAddress))){
@@ -255,28 +277,6 @@ class Adminmodel extends CI_Model{
             return false;
         }
    
-    }
-    
-    function add_consumption($id,$cd,$rDate,$cnd){
-        $query = "insert into consumption (cnID, cnDate, cnDateRecorded) values (?,?,?)";
-        $this->db->query($query,array($id[0]['nextID'],$cd,$rDate));
-        $cnID = $this->db->insert_id();
-        foreach ($cnd as $ci) {
-            $this->add_consumptionItems($id[0]['nextID'],$ci['varConsumed'],$ci['consumedQty'],$ci['remainingQty']);
-            $this->destockVariance($ci['varConsumed'],$ci['remainingQty']);
-        }
-    }
-    function add_consumptionItems($cnID,$vID,$cnQty,$rQty){
-        $query = "insert into varconsumptionitems (cnID, vID, cnQty, remainingQty) values (?,?,?,?)";
-        $this->db->query($query,array($cnID,$vID,$cnQty,$rQty));
-    }
-    function destockVariance($vID,$vQty){
-        $query = "UPDATE variance 
-            SET 
-                vQty = ?
-            WHERE
-                vID = ?;";
-        return $this->db->query($query,array($vQty,$vID));
     }
 
     function edit_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch, $spID){
@@ -575,10 +575,6 @@ class Adminmodel extends CI_Model{
     }
 
     //SELECT FUNCTIONS------------------------------------------------------------------
-    function get_nextIDConsumption(){
-        $query = "SELECT COUNT(cnID)+1 nextID FROM consumption;";
-        return $this->db->query($query)->result_array();
-    }
     function get_accounts(){
         $query = "Select * from accounts";
         return $this->db->query($query)->result_array();
@@ -592,14 +588,17 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query)->result_array(); 
     }
     function get_freebies() {
-        $query = "SELECT *, CONCAT(mn.mName,' ',pref.prName) AS menu_item, CONCAT(me.mName,' ',pr.prName) AS menu_freebie 
+        $query = "SELECT pmID, pc.prID, pc.pcQty, freebies.fbName, 
+        CONCAT(mn.mName,' ',pref.prName) AS menu_item
         FROM promoconstraint pc 
         INNER JOIN preferences pref USING (prID) 
         INNER JOIN menu mn USING (mID) 
-        INNER JOIN freebies USING (pmID) 
-        INNER JOIN menufreebie mf USING (pmID) 
-        INNER JOIN preferences pr ON mf.prID = pr.prID 
-        INNER JOIN menu me ON pr.mID = me.mID";
+        INNER JOIN freebies USING (pmID) ";
+        return $this->db->query($query)->result_array(); 
+    }
+    function get_menufreebies() {
+        $query = "SELECT pmID, CONCAT(mn.mName,' ',pr.prName) as menu_freebie, fb.fbQty FROM 
+        menufreebie fb INNER JOIN preferences pr USING (prID) INNER JOIN menu mn USING (mID); ";
         return $this->db->query($query)->result_array(); 
     }
     function get_menu_items() {
@@ -609,16 +608,17 @@ class Adminmodel extends CI_Model{
         return $this->db->query($query)->result_array();
     }
     function get_menuItems() {
-        $query = "SELECT pr.prID, CONCAT(mn.mName,' ',pr.prName) AS menu_item 
-        FROM preferences pr INNER JOIN menu mn USING (mID)";
+        $query = "SELECT pr.prID, CONCAT(mn.mName,' ',pr.prName) AS menu_item, pr.prPrice
+        FROM preferences pr INNER JOIN menu mn USING (mID) ORDER BY 2";
         return $this->db->query($query)->result_array(); 
     }
+    
     function get_promos() {
         $query = "SELECT * FROM promos";
         return $this->db->query($query)->result_array(); 
     }
     function get_promoconst() {
-        $query = "SELECT pc.pmID, pc.pc_type, pc.pcQty, pref.prID, mn.mName, pref.prName,
+        $query = "SELECT pc.pmID, pc.pcType, pc.pcQty, pref.prID, mn.mName, pref.prName,
         CONCAT(mn.mName,' ',pref.prName) AS menu_item
         FROM promoconstraint pc INNER JOIN preferences pref USING (prID) INNER JOIN menu mn USING (mID)";
         return $this->db->query($query)->result_array(); 
@@ -843,24 +843,18 @@ class Adminmodel extends CI_Model{
         $query = "SELECT * FROM stockitems INNER JOIN categories USING (ctID);";
         return $this->db->query($query)->result_array();
     }
-
     function get_samplemethod($id){
         $query = "Select trans_id, item_name, item_qty, item_unit, item_price, item_qty*item_price as total_price from transitems where trans_id=?";
         return $this->db->query($query, array($id))->result_array();
     }
-
     function get_actlogs() {
         $query = "select * FROM activity_logs al INNER JOIN accounts ac USING (aID)";
         return $this->db->query($query)->result_array();
     }
-    function get_consumption(){
-       $query = "SELECT cnID, cnDate, cnDateRecorded, COUNT(stID) countItem FROM varconsumptionitems NATURAL JOIN consumption NATURAL JOIN variance NATURAL JOIN stockitems GROUP BY cnDate ORDER BY cnDate DESC";
-       return $this->db->query($query)->result_array();
-    }
-    function get_consumptionItems(){
-        $query = "SELECT stID, cnID, cnQty, remainingQty, stName, vUnit, vSize  FROM varconsumptionitems NATURAL JOIN consumption NATURAL JOIN variance NATURAL JOIN stockitems";
+    function get_consumptions() {
+        $query = "SELECT slID, stID, CONCAT(stName,' (',stSize,')') as stDesc ,slDateTime, stocklog.dateRecorded, slQty, uomAbbreviation, slBalance, slRemarks FROM uom NATURAL JOIN stockitems NATURAL JOIN stocklog WHERE slType = 'consumed'";
         return $this->db->query($query)->result_array();
-    }   
+    }
 
 //DELETE FUNCTIONS---------------------------------------------------------------------------
     function delete_account($accountId){
