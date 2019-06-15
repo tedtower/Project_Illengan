@@ -147,7 +147,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $this->db->query($query)->result_array();
         }
         function get_addons(){
-            $query = "select * from orderaddons";
+            $query = "select * from orderaddons inner join addons on orderaddons.aoID = addons.aoID";
             return $this->db->query($query)->result_array();
         }
         function updateStats($status, $id){

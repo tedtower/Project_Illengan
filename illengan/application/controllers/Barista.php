@@ -183,8 +183,8 @@ class Barista extends CI_Controller{
             $this->baristamodel->update_payment($status,$osID,$custName,$payDate, $date_recorded);
         }
         function updateStatus(){
-            $stats = $this->input->post('status');
-            $id = $this->input->post('id');
+            $stats = $this->input->post('olStatus');
+            $id = $this->input->post('osID');
             $this->baristamodel->updateStats($stats, $id);
         }
         function deleteOrderItem(){

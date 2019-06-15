@@ -91,7 +91,7 @@
                                     <td>${ol.mName}</td>
                                     <td><span class="fs-24">₱</span>${ol.olPrice}</td>
                                     <td>
-                                        <input type="button" style="width:100%;padding:6%;background:blue;color:white;border:0;border-radius:5px"
+                                        <input type="button" style="width:100%;padding:6%;color:white;border:0;border-radius:5px" class="btn btn-secondary btn-sm"
                                        id="item_status" data-id="${ol.olID}" value="${ol.olStatus}"/>
                                     </td>
                                     <td>
@@ -242,6 +242,7 @@
                 data : { 'olStatus' : stats,
                 'osID' : id},
                 success: function(data) {
+                    location.reload();
             },
             error: function(response, setting, errorThrown) {
                 console.log(response.responseText);
