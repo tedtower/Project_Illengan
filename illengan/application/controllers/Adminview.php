@@ -485,7 +485,9 @@ function viewSpoilagesStock(){
         $promo = array(
             "promos" => $this->adminmodel->get_promos(),
             "discounts" => $this->adminmodel->get_discounts(),
-            "freebies" => $this->adminmodel->get_freebies()
+            "freebies" => $this->adminmodel->get_freebies(),
+            "menufreebies" => $this->adminmodel->get_menufreebies(),
+            "menuitems" => $this->adminmodel->get_menuItems()
         );
 
         header('Content-Type: application/json');
