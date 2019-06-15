@@ -5,6 +5,7 @@
             <!-- Modal Body -->
             <div class="modal-body text-center py-2">
                 <i class="fas fa-times fa-4x animated rotateIn text-danger"></i>
+                <input hidden id="remID">
                 <p class="delius">Are you sure you want to remove <span class="text-danger" id="remName"></span> from your orderlist?</p>
             </div>
             <div class="modal-footer justify-content-center py-1">
