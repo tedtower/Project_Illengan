@@ -185,6 +185,7 @@ class Adminview extends CI_Controller{
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $data['mnaddons'] = $this->adminmodel->get_mnAddons();
+            $data['discounts'] = $this->adminmodel->get_menudiscounts();
             // $data['sales'] = $this->adminmodel->get_sales();
             $this->load->view('admin/adminSales', $data);
         }else{
@@ -457,9 +458,7 @@ function viewSpoilagesStock(){
     function viewConsumptions(){
         if($this->checkIfLoggedIn()){
             $data['title'] = "Stock Consumption";
-            $data['consumptions'] = $this->adminmodel->get_consumption();
-            $data['conitems'] = $this->adminmodel->get_consumptionItems();
-            $data['variance'] = $this->adminmodel->get_poItemVariance();
+            $data['consumptions'] = $this->adminmodel->get_consumptions();
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminDestock');
@@ -484,7 +483,9 @@ function viewSpoilagesStock(){
         $promo = array(
             "promos" => $this->adminmodel->get_promos(),
             "discounts" => $this->adminmodel->get_discounts(),
-            "freebies" => $this->adminmodel->get_freebies()
+            "freebies" => $this->adminmodel->get_freebies(),
+            "menufreebies" => $this->adminmodel->get_menufreebies(),
+            "menuitems" => $this->adminmodel->get_menuItems()
         );
 
         header('Content-Type: application/json');
