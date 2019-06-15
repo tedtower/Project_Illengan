@@ -76,6 +76,16 @@
                                                 <input type="text" name="custName" id="custName"
                                                     class="form-control form-control-sm">
                                             </div>
+                                        
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Senior Citizen Discount %</span>
+                                                </div>
+                                                <input type="number" name="seniorDC" id="seniorDC" onchange="setSubtotal()"
+                                                    class="form-control form-control-sm">
+                                            </div>
 
                                                <!-- Table Code -->
                                         <div class="input-group mb-3 col">
@@ -99,6 +109,7 @@
                                                     <th>Item Name</th>
                                                     <th width="10%">Qty</th>
                                                     <th width="15%">Price</th>
+                                                    <th width="15%">Discount</th>
                                                     <th width="15%">Subtotal</th>
                                                     <th width="15%">Actions</th>
                                                     <th></th>
@@ -175,6 +186,15 @@
                                                     class="form-control form-control-sm">
                                             </div>
 
+                                            <div class="input-group mb-3 col">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm"
+                                                        style="background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
+                                                        Senior Citizen Discount %</span>
+                                                </div>
+                                                <input type="number" name="seniorDC" id="seniorDC" onchange="setSubtotal()"
+                                                    class="form-control form-control-sm">
+                                            </div>
                                                <!-- Table Code -->
                                         <div class="input-group mb-3 col">
                                                 <div class="input-group-prepend">
@@ -197,6 +217,7 @@
                                                     <th>Item Name</th>
                                                     <th width="10%">Qty</th>
                                                     <th width="15%">Price</th>
+                                                    <th width="15%">Discount</th>
                                                     <th width="15%">Subtotal</th>
                                                     <th width="15%">Actions</th>
                                                     <th></th>
@@ -245,7 +266,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger btn-sm"
                                             data-dismiss="modal">Cancel</button>
-                                        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal" onclick="getSelectedMenu()">Ok</button>
+                                        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal" onclick="getSelectedMenu();">Ok</button>
                                     </div>
                                 </form> 
                             </div>
@@ -358,6 +379,7 @@ var orderlists = [];
 var orderslips = [];
 var menuItems = [];
 var tables = [];
+var discounts = <?= json_encode($discounts) ?>;
 var addons = [];
 var mnaddons = <?= json_encode($mnaddons) ?>;
 var sales = [];
@@ -417,6 +439,7 @@ var sales = [];
     }
     
     $('#addBtn').on('click', function() {
+        $('#dcpercent').remove();
         $("#editSales form")[0].reset();
         $(".editsalesTable > tbody").empty();
         $('.salesTable > tbody').empty();
@@ -510,6 +533,7 @@ var sales = [];
         });
 
         $(".editBtn").on("click", function() {
+        $('#dcpercent').remove();
         $('.salesTable > tbody').empty();
         $('#addSales form')[0].reset();
         $("#editSales form")[0].reset();
@@ -555,6 +579,7 @@ var sales = [];
     modal.find("input[name='osPayDateTime']").val(osPayDateTime);
     modal.find("input[name='osDateTime']").val(osDateTime);
     modal.find("input[name='custName']").val(saleslist.custName);
+    modal.find("input[name='seniorDC']").val(saleslist.osDiscount);
     modal.find("select[name='tableCodes']").find(`option[value=${saleslist.tableCode}]`).attr("selected","selected");
 
     ol.forEach(ol => {
@@ -567,8 +592,10 @@ var sales = [];
                   class="olDesc form-control form-control-sm" value="${ol.olDesc}" readonly="readonly"></td>
                 <td><input type="number" id="olQty" onchange="setSubtotal()" name="olQty"
                   class="olQty form-control form-control-sm" value="${ol.olQty}" required min="1"></td>
-                <td><input type="number" id="prPrice" name="prPrice"
-                  class="prPrice form-control form-control-sm" onchange="setSubtotal()" value="${ol.prPrice}" ></td>
+                <td><input type="number" id="prPrice" name="prPrice" data-orPrice="${ol.prPrice}"
+                  class="prPrice form-control form-control-sm" onchange="setSubtotal()" value="${ol.olPrice}" ></td>
+                <td> <select onchange="setSubtotal()" class="discount form-control" style="font-size: 14px;" 
+                onchange="" name="discount" id="discount${ol.prID}"></select></td> 
                 <td><input type="number" name="subtotal" class="subtotal form-control form-control-sm" value="${ol.olSubtotal}" readonly="readonly"></td>
                 <td><a class="addAddons btn btn-default btn-sm" style="margin:0;" onclick="addAddons(this);" id="addAddons">Add Addons</a></td>
                 </td><td><img class="delBtn" onclick="deleteItem(this)" src="/assets/media/admin/error.png" style="width:20px;height:20px"></td>
@@ -592,6 +619,7 @@ var sales = [];
             <td>
                 <input type="number" name="aoPrice" id="aoPrice" value="${oa.aoPrice}" class="aoPrice form-control form-control-sm" readonly>
             </td>
+            <td style="text-align:center"> <b> --- </b></td>
             <td>
                 <input type="number" name="aoSubtotal" id="aoSubtotal" value="${oa.aoTotal}" class="aoSubtotal form-control form-control-sm" readonly>
             </td>
@@ -601,18 +629,20 @@ var sales = [];
             setAddonOptions(modal, mID, oa.olID, oa.aoID);
 
         });
-        
+        setDiscount();
+        modal.find("select[name='discount']").find(`option[value=${ol.olDiscount}]`).attr("selected","selected");
+
     });
    
     if(olAddons.length > 0) {
         setAddonTotal();
     }
     setSubtotal();
-
+  
 }
 function setAddonOptions(modal, mID, olID, aoID) {
     mnaddon = mnaddons.filter(item => item.mID === mID);
-
+    console.log(mnaddon);
     mnaddon.forEach(ma => {
                 modal.find("#ao"+olID+aoID).append(`
                 <option value="${ma.aoID}">${ma.aoName}</option>`);
@@ -656,6 +686,26 @@ function onchangeAddonQuantity(quantity) {
     setAddonTotal();
    
 }
+function setDiscount() {
+    
+    for(var i = 0; i <= $('.discount').length - 1;i++) {
+        var tr = $('.discount').eq(i).closest('tr');
+        $(tr).find('select').empty();
+        var prmID = $('.discount').eq(i).closest('tr').find('#prID').val();
+        var discount = discounts.filter(item => item.prID === prmID);
+        console.log(discount);
+        if(parseInt(discount.length) === 0) {
+            $(tr).find('select').append(`<option value="0" selected>None</option>`);
+        } else {
+            $(tr).find('select').append(`<option value="0" selected>None</option>`);
+            discount.forEach(dc => {
+            $(tr).find("#discount"+prmID).append(`
+                <option value="${dc.dcAmount}">${dc.dcName}</option>`);
+        });
+        }
+       
+    }
+}
 // --------------------- Editing sales ---------------------------------
 $(document).ready(function() {
     $("#editSales form").on('submit', function(event) {
@@ -665,6 +715,7 @@ $(document).ready(function() {
         var osDateTime = $(this).find("input[name='osDateTime']").val();
         var osTotal = $(this).find("span[id='total1']").text();
         var custName = $(this).find("input[name='custName']").val();
+        var osDiscount = $(this).find("input[name='seniorDC']").val();
         var tableCodes = $(this).find("select[name='tableCodes']").val();
        
         var ol = [];
@@ -679,6 +730,8 @@ $(document).ready(function() {
                 olSubtotal: row.find("input[name='subtotal']").val(),
                 olStatus: 'served',
                 olRemarks: ' ',
+                olPrice: row.find("input[name='prPrice']").val(),
+                olDiscount: parseFloat((row.find("select[name='discount']").val()).trim()),
                 del: isNaN(parseInt(row.attr('data-delete'))) ?  (null) : parseInt(row.attr('data-delete'))
             });
         }
@@ -716,7 +769,7 @@ $(document).ready(function() {
                 //location.reload();
             },
             error: function (response, setting, errorThrown) {
-                alert("There are add on duplicates on an item");
+                //alert("There are add on duplicates on an item");
                 console.log(errorThrown);
                 console.log(response.responseText);
             }

@@ -10,6 +10,7 @@
   <!--End Top Nav-->
   <div class="content">
     <div class="container-fluid">
+      <br>
       <p style="text-align:right; font-weight: regular; font-size: 16px">
         <!-- Real Time Date & Time -->
         <?php echo date("M j, Y - l"); ?>
@@ -18,13 +19,9 @@
         <div class="conteiner-fluid">
           <!--Start Table-->
           <div class="card-content">
-            <!-- BUTTON FOR MULTIPLE PAYMENT -->
-            <button id="multiplePay" class="pay btn btn-sm btn-info" onclick="getSelectedSlips()" style="margin:5px">Pay Multiple Slips</button>
-           
             <table id="ordersTable" class="table table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
               <thead class="thead-dark">
                 <tr>
-                  <th></th>
                   <th class="pull-left">SLIP NO.</th>
                   <th class="pull-left">CUSTOMER</th>
                   <th class="pull-left">TABLE CODE</th>
@@ -116,39 +113,7 @@
   </div>
 
   <!--End MODAL for BILL COMPUTATION-->
- 
 
-  <!-- Multiple Orderslip Modal -->
-  <!-- <div class="modal fade" id="Modal_Pay2" name="Modal_Pay2" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow: auto !important;">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLable">Payment</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-         
-         <form id="formEdit2" accept-charset="utf-8">
-          <div class="modal-body">
-           
-            <p>Pay multiple orderslips?</p>
-          
-            <input type="hidden" name="osID[]" id="osID[]" class="choiceOsID mr-2" >
-            <input type="hidden" name="custName" id="custName" class="choiceCustName mr-2"> 
-           
-            <div class="modal-footer">
-												<button type="button" class="btn btn-danger btn-sm"
-													data-dismiss="modal">Cancel</button>
-												<button type="button" class="btn btn-success btn-sm" data-dismiss="modal" onclick="getSelectedSlips()">Ok</button>
-           </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>  -->
-  <!-- End of Multiple Orderslip Modal -->
   <!--Start MODAL for DELETE-->
   <div class="modal fade" id="Modal_Remove" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
     aria-hidden="true">
@@ -179,10 +144,8 @@
   </div>
   <!--End MODAL for DELETE-->
   <?php include_once('templates/scripts.php') ?>
-  <script src="<?= barista _js().'baristaOrderBills.js'?>"></script>
   <script>
-    //-------------------------------POPULATE TABLE--------------------------\
-    var payItems = [];
+    //-------------------------------POPULATE TABLE--------------------------
     var orderbills = [];
     $(function () {
       viewOrderbillsJS();
@@ -212,8 +175,7 @@
       }
       orderbills.forEach(orders => {
         $("#ordersTable> tbody").append(`
-        <tr data-osID="${orders.osID}" data-payable="${orders.osTotal}" data-custName="${orders.custName}">
-                    <td><div id="myDiv"><input type="checkbox" name="payItems[]" class="choiceItems mr-2" value="${orders.osID}" data-custName="${orders.custName}"></div></td>
+            <tr data-osID="${orders.osID}" data-payable="${orders.osTotal}" data-custName="${orders.custName}">
                     <td>${orders.osID}</td>
                     <td>${orders.custName}</td>
                     <td>${orders.tableCode}</td>
@@ -226,28 +188,9 @@
                                     <!--Pay Button-->
                                     <button class="pay btn btn-sm btn-info" data-toggle="modal" data-target="#Modal_Pay" onclick="setOsID(${orders.osID})">Pay</button>           
                                     </div>
-
                     </td>
             </tr>`);
-          
-            // $('#myDiv').change(function() {
-            //   var values = [];{
-            //     $('#myDiv :checked').each(function() {
-            //       values.push($(this).val());
-            //     });
-            //     console.log(values);
-            //   }
-            // });
 
-        $(".choiceItems").last().on('click', function () {
-          $("#Modal_Pay2").find("input[name='osID[]']").val($(this).closest("tr").attr(
-                "data-osID"));
-          $("#Modal_Pay2").find("input[name='custName']").val($(this).closest("tr").attr(
-                "data-custName"));
-          $("#CustName").text(
-                    `Proceed payment for customer: ${$(this).closest("tr").attr("data-custName")}`);
-            
-        });  
         $(".pay").last().on('click', function () {
             $("#Modal_Pay").find("input[name='amount_payable']").val($(this).closest("tr").attr(
                 "data-payable"));
@@ -268,7 +211,6 @@
     
 
     }
-  
 //---------------------------------Populate OrderItems in Brochure--------------------------
       function setOsID($osID) {
             var value = $osID;
