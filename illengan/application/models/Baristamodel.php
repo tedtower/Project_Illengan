@@ -70,27 +70,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
         function get_bills(){
-            $query = "SELECT
-            osID,
-            tableCode,
-            custName,
-            osTotal,
-            osDateTime,
-            (CAST(osDateTime AS TIME)) AS TIME,
-            payStatus,
-            osPayDateTime
-        FROM
-            orderslips
-        WHERE
-            CAST(osDateTime AS DATE) = CAST((NOW()) AS DATE)
-        ORDER BY
-            `orderslips`.`osDateTime`
-        DESC
-             ";
+            $query = "select osID, tableCode, custName, osTotal, osDateTime,(CAST(osDateTime AS time)) as time, payStatus , osPayDateTime from orderslips where CAST(osDateTime AS date) = cast((now()) as date) ORDER BY `orderslips`.`osDateTime` DESC ";
             return $this->db->query($query)->result_array();
         }
 
-        function get_orderslipsDati($osID){
+        function get_orderslipsi($osID){
             $query = "select osID, tableCode, custName, osTotal, osDate, if(osPayDate is null, 'Unpaid', 'Paid') as payStatus , osPayDate from orderslips where osID = ?";
             return $this->db->query($query, array($order_id))->result_array();
         }
@@ -110,51 +94,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $query = "Select stID,stName,stStatus,stQty from stockitems";
             return $this->db->query($query)->result_array();
         }
-        function restock($stocks,$date_recorded,$account_id){
+        function restock($stocks){
             $query = "Update stockitems set stQty = ? + ? where stID = ?";
             if(count($stocks) > 0){
                 for($in = 0; $in < count($stocks) ; $in++){
                     $this->db->query($query, array($stocks[$in]['curQty'], $stocks[$in]['stQty'], $stocks[$in]['stID'],  )); 
-                    $this->add_stockLog($stocks[$in]['stID'], NULL,"restock", $date_recorded, $stocks[$in]['restock_date'], $stocks[$in]['stQty'], NULL);
-                    $this->add_actlog($account_id,$date_recorded, "Barista performed a restocking of inventory.", "add", NULL);
                 }
             }
         }
-        function destock($stocks,$date_recorded,$account_id){
+        function destock($stocks){
             $query = "Update stockitems set stQty = ? - ? where stID = ?";
             if(count($stocks) > 0){
                 for($in = 0; $in < count($stocks) ; $in++){
-                    $this->db->query($query, array($stocks[$in]['curQty'], $stocks[$in]['stQty'], $stocks[$in]['stID'])); 
-                    $this->add_stockLog($stocks[$in]['stID'], NULL,$stocks[$in]['destock_type'], $date_recorded, $stocks[$in]['destock_date'], $stocks[$in]['stQty'], NULL);
-                    $this->add_actlog($account_id,$date_recorded, "Barista performed a destocking  of inventory.", "add", NULL);
+                    $this->db->query($query, array($stocks[$in]['curQty'], $stocks[$in]['stQty'], $stocks[$in]['stID'],  )); 
                 }
             }
-        }
-        function add_stockLog($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks){
-            $query = "INSERT INTO `stocklog`(
-                    `slID`,
-                    `stID`,
-                    `tID`,
-                    `slType`,
-                    `slDateTime`,
-                    `dateRecorded`,
-                    `slQty`,
-                    `slRemarks`
-                )
-                VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
-            return $this->db->query($query, array($stID, $tID, $slType, $slDateTime, $dateRecorded, $slQty, $slRemarks));
-        }
-        function add_actlog($aID, $alDate, $alDesc, $defaultType, $additinalRemarks){
-            $query = "INSERT INTO `activitylog`(
-                `alID`,
-                `aID`,
-                `alDate`, 
-                `alDesc`, 
-                `alType`, 
-                `additionalRemarks`
-                ) 
-                VALUES (NULL, ?, ?, ?, ?, ?)";
-                return $this->db->query($query, array($aID, $alDate, $alDesc, $defaultType, $additinalRemarks));
         }
         function update_payment($status,$osID,$custName,$payDate, $date_recorded){
             $query = "Update orderslips set payStatus = ?, osPayDateTime = ?, osDateRecorded = ? where osID = ? AND custName = ?";
@@ -168,6 +122,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         function get_ordersData(){
             $query = "SELECT
+            orderlists.olID,
             olQty,
             olDesc,
             olSubtotal,
@@ -182,9 +137,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $this->db->query($query)->result_array();
         }
         //$query2 = "SELECT olID, aoName, aoPrice, olRemarks from orderlists inner join orderaddons using (olID) inner join addons using (aoID)";
-
         function get_orderslips(){
-            $query = "select osID, custName, tableCode, payStatus, osTotal from orderslips";
+            $query = "select * from orderslips";
             return $this->db->query($query)->result_array();
         }
         function get_olist(){
@@ -193,12 +147,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $this->db->query($query)->result_array();
         }
         function get_addons(){
-            $query = "select * from orderaddons";
+            $query = "select * from orderaddons inner join addons on orderaddons.aoID = addons.aoID";
             return $this->db->query($query)->result_array();
         }
         function updateStats($status, $id){
             $query = "Update orderlists set olStatus = ? where olID = ?";
             $this->db->query($query, array($status, $id));
+        }
+        function add_actlog($aID, $alDate, $alDesc, $defaultType, $additinalRemarks){
+            $query = "INSERT INTO `activitylog`(
+                `alID`,
+                `aID`,
+                `alDate`, 
+                `alDesc`, 
+                `alType`, 
+                `additionalRemarks`
+                ) 
+                VALUES (NULL, ?, ?, ?, ?, ?)";
+                return $this->db->query($query, array($aID, $alDate, $alDesc, $defaultType, $additinalRemarks));
         }
     }
 

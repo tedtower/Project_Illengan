@@ -10,6 +10,11 @@ class Barista extends CI_Controller{
         // code for getting current date : date("Y-m-d")
         // code for getting current date and time : date("Y-m-d H:i:s")
     }
+    function viewSlip() {
+        $data=$this->adminmodel->get_stocks();
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
 
     //BARISTA ORDER FUNCTIONS
     function pendingOrders(){
@@ -26,10 +31,6 @@ class Barista extends CI_Controller{
     function servedOrdersJS(){
        $data= $this->baristamodel->get_servedOrders();
        echo json_encode($data);
-    }
-    function vieworderslipi(){
-        $this->load->view('barista/templates/navigation');
-        $this->load->view('barista/orderslip');
     }
     
     function viewOrderslipJS(){
@@ -145,17 +146,12 @@ class Barista extends CI_Controller{
         function restockitem(){
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
-            $date_recorded = date("Y-m-d H:i:s");
-            $account_id = $_SESSION["user_id"];
-            $this->baristamodel->restock($stocks,$date_recorded,$account_id);
+            $this->baristamodel->restock($stocks);
         }
         function destockitem(){
             $stocks = json_decode($this->input->post('stocks'), true);
             echo json_encode($stocks, true);
-            $date_recorded = date("Y-m-d H:i:s");
-            $account_id = $_SESSION["user_id"];
-            $this->baristamodel->destock($stocks,$date_recorded,$account_id);
-            
+            $this->baristamodel->destock($stocks);
         }
 
         //barista functions for orderslips-cards
@@ -164,6 +160,18 @@ class Barista extends CI_Controller{
             $this->load->view('barista/templates/navigation'); 
                 $data["slip"] = $this->baristamodel->slipData();
                 $this->load->view("barista/orderCards", $data);
+        }
+
+        function get_slipData(){
+            $this->load->helper->form();
+            $data = array(
+                $slip_id => $this->input->post('osID'),
+                'table_code' => $this->input->post('tableCode'),
+                'customerName' => $this->input->post('custName'),
+                'paymentStatus' => $this->input->post('payStatus'),
+            );
+            $this->load->view('barista/orderCards', $data);
+            //$this->load->view('barista/viewOrderslipJS', $data);
         }
 
         function orderData(){
@@ -179,25 +187,28 @@ class Barista extends CI_Controller{
             $date_recorded = date("Y-m-d H:i:s");
             $this->baristamodel->update_payment($status,$osID,$custName,$payDate, $date_recorded);
         }
-        
-        //function ng cards
+        function updateStatus(){
+            $stats = $this->input->post('olStatus');
+            $id = $this->input->post('osID');
+            $this->baristamodel->updateStats($stats, $id);
+        }
+        function deleteOrderItem(){
+            $id = $this->input->post('id');
+            $this->baristamodel->cancelOrder($id);
+        }
         function vieworderslip(){
             $data['orderlists'] = $this->baristamodel->get_olist();
+            $data['orderslips'] = $this->baristamodel->get_orderslips();
             $this->load->view('barista/orderslip', $data);
         }
         function getOrderslip(){
             $data = array(
                 'orderslips' => $this->baristamodel->get_orderslips(),
                 'orderlists' => $this->baristamodel->get_olist(),
-                'addons' => $this->baristamodel->get_addons(),
+                'addons' => $this->baristamodel->get_addons()
             );
             header('Content-Type: application/json');
                 echo json_encode($data, JSON_PRETTY_PRINT);
-        }
-        function updateStatus(){
-            $stats = $this->input->post('olStatus');
-            $id = $this->input->post('osID');
-            $this->baristamodel->updateStats($stats, $id);
         }
     }
 ?>

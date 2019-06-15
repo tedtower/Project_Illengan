@@ -769,7 +769,7 @@ $(document).ready(function() {
                 //location.reload();
             },
             error: function (response, setting, errorThrown) {
-                alert("There are add on duplicates on an item");
+                //alert("There are add on duplicates on an item");
                 console.log(errorThrown);
                 console.log(response.responseText);
             }

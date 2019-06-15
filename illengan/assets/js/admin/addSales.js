@@ -189,8 +189,11 @@ function setSubtotal() {
         }
         console.log(disc);
 
-        if(isNaN(disc) || disc === 0) {
+        if(isNaN(disc) || disc === 0 || disc === "") {
             disc = 0;
+            $('#dcpercent').remove();
+            $('#dcpercent').empty();
+            dcpercent = "";
         } else {
             var percentage = parseFloat(disc) / 100;
             discountAmt = parseFloat(total) * percentage; 
