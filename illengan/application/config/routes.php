@@ -1,6 +1,54 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/*
+| -------------------------------------------------------------------------
+| URI ROUTING
+| -------------------------------------------------------------------------
+| This file lets you re-map URI requests to specific controller functions.
+|
+| Typically there is a one-to-one relationship between a URL string
+| and its corresponding controller class/method. The segments in a
+| URL normally follow this pattern:
+|
+|	example.com/class/method/id/
+|
+| In some instances, however, you may want to remap this relationship
+| so that a different class/function is called than the one
+| corresponding to the URL.
+|
+| Please see the user guide for complete details:
+|
+|	https://codeigniter.com/user_guide/general/routing.html
+|
+| -------------------------------------------------------------------------
+| RESERVED ROUTES
+| -------------------------------------------------------------------------
+|
+| There are three reserved routes:
+|
+|	$route['default_controller'] = 'welcome';
+|
+| This route indicates which controller class should be loaded if the
+| URI contains no data. In the above example, the "welcome" class
+| would be loaded.
+|
+|	$route['404_override'] = 'errors/page_missing';
+|
+| This route will tell the Router which controller/method to use if those
+| provided in the URL cannot be matched to a valid route.
+|
+|	$route['translate_uri_dashes'] = FALSE;
+|
+| This is not exactly a route, but allows you to automatically route
+| controller and method names that contain dashes. '-' isn't a valid
+| class or method name character, so it requires translation.
+| When you set this option to TRUE, it will replace ALL dashes in the
+| controller and method URI segments.
+|
+| Examples:	my-controller/index	-> my_controller/index
+|		my-controller/my-method	-> my_controller/my_method
+*/
 $route['default_controller'] = 'login/viewlogin';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
@@ -16,7 +64,6 @@ $route['admin/menu/promos'] = "adminview/menuPromos";
 $route['admin/sales'] = "adminview/viewSales";
 $route['admin/dashboard'] = "adminview/viewdashboard";
 $route['admin/tables'] = "adminview/viewtables";
-$route['admin/measurements'] = "adminview/viewUOM";
 $route['admin/tables/getTables'] = "adminview/getTables";
 $route['admin/menucategories'] = "adminview/viewmenucategories";
 $route['admin/stockcategories'] = "adminview/viewstockcategories";
@@ -40,7 +87,6 @@ $route['admin/transactions/delivery'] = "adminview/viewDeliveryTransactions";
 $route['admin/transactions/purchase'] = "adminview/viewpurchasetransactions";
 $route['admin/transactions/return'] = "adminview/viewreturntransactions";
 $route['admin/transactions/getReturns'] = "adminview/getReturns";
-$route['admin/stocklog/report'] = "adminview/getInventoryReport";
 
 //End Viewing Routes
 
@@ -53,8 +99,6 @@ $route['admin/transactions/add'] = "adminadd/addtransaction";
 $route['admin/purchaseorder/add'] = "adminadd/addPurchaseOrder";
 $route['admin/inventory/addEdit'] = "adminadd/addstockitem";
 $route['admin/menu/add'] = "adminadd/addMenu";
-$route['admin/measurement/add'] = "adminadd/addUOM";
-$route['admin/menu/image/add'] = "adminadd/addImage";
 $route['admin/addon/add'] = "adminadd/addAddon";
 $route['admin/stockcategories/add'] = "adminadd/addstockcategory";
 $route['admin/menucategories/add'] = "adminadd/addmenucategory";
@@ -70,7 +114,6 @@ $route['admin/supplier/add'] = "adminadd/addSupplierMerchandise";
 $route['admin/returns/add'] = "adminadd/addReturnTransactions";
 $route['admin/promos/add'] = "adminadd/addPromo";
 $route['admin/consumption/add'] = "adminadd/addConsumption";
-$route['admin/stocklog/report/add'] = "adminadd/addInventoryReport";
 
 //End Admin Add Routes ------------------------------------------
 
@@ -79,7 +122,6 @@ $route['admin/menucategories/edit'] = "adminupdate/editmenucategory/";
 $route['admin/stockcategories/edit'] = "adminupdate/editstockcategory/";
 $route['admin/menu/edit'] = "adminupdate/editmenu";
 $route['admin/addon/edit'] = "adminupdate/editAddon";
-$route['admin/measurement/edit'] = "adminupdate/editMeasurement";
 $route['admin/menu/edit_image'] = "adminupdate/edit_image";
 $route['admin/inventory/edit'] = "adminupdate/editstockitem";
 $route['admin/purchaseorder/edit'] = "adminupdate/editPurchaseOrder";
@@ -102,14 +144,12 @@ $route['admin/addons/delete/(:num)'] = "admindelete/deleteaddon/$1";
 $route['admin/menucategories/delete/(:num)'] = "admindelete/deletemenucategory/$1";
 $route['admin/stockcategories/delete/(:num)'] = "admindelete/deletestockcategory/$1";
 $route['admin/inventory/delete/(:num)'] = "admindelete/deletestockitem/$1";
-$route['admin/measurement/delete/(:num)'] = "admindelete/deleteMeasurement/$1";
 $route['admin/transactions/delete'] = "admindelete/deletetransactions";
 $route['admin/sources/delete/(:num)'] = "admindelete/deletesource/$1";
 $route['admin/stock/spoilage/delete'] ="admindelete/deletestockspoilages";
 $route['admin/menu/spoilage/delete/(:num)'] ="admindelete/deletemenuspoilages/$1";
 $route['admin/addons/spoilage/delete/(:num)'] ="admindelete/deleteaddonsspoilages/$1";
 $route['admin/accounts/delete'] ="admindelete/deleteAccount";
-
 //End Admin Delete Routes ---------------------------------------
 
 //Admin Json Routes ------------------------------------------- 
@@ -137,9 +177,6 @@ $route['admin/inventory/getEnumVals'] = "adminview/getEnumValsForStock";
 $route['admin/inventory/getStockItem'] = "adminview/getStockItem";
 $route['admin/transactions/getEnumVals'] = "adminview/getEnumValsForTransaction";
 $route['admin/transactions/getTransaction'] = "adminview/getTransaction";
-$route['admin/transactions/getPOs'] = "adminview/getPOs";
-$route['admin/transactions/getDRs'] = "adminview/getDRs";
-$route['admin/transactions/getSPMs'] = "adminview/getSPMs";
 $route['admin/inventory/getStockItems'] = "adminview/getStockItems";
 $route['admin/inventory/restock'] = "adminadd/addRestockLog";
 //End Admin Json Routes ---------------------------------------
@@ -156,10 +193,10 @@ $route['customer/checkin'] = 'customer/checkIn';
 $route['customer/menu'] = "customer/view";
 $route['customer/json'] = "customer/json";
 $route['customer/menu/removeOrder'] = "customer/removeOrder";
-$route['customer/menu/editOrder'] = "customer/editOrder";
 
 // BARISTA ROUTES
-$route['barista/orders'] = "barista/vieworderslip";
+$route['barista/orderslip'] = "barista/vieworderslip";
+$route['barista/orders'] = "barista/pendingOrders";
 $route['barista/servedOrderlist'] = "barista/servedOrders";
 $route['barista/billings'] = "barista/getOrderBills";
 $route['barista/getBillDetails'] = "barista/getBillDetails";

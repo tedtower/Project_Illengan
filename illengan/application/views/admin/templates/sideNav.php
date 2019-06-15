@@ -16,7 +16,6 @@
                 <li><a href="<?php echo base_url('admin/transactions')?>"><i class="far fa-truck-loading"></i> Transactions</a></li>
                 <li><a href="<?= base_url('admin/consumption'); ?>"><i class="far fa-calendar-minus"></i> Consumption</a></li>
                 <li><a href="<?php echo base_url('admin/stock/spoilages')?>"><i class="far fa-trash"></i> Spoilages</a></li>
-                <li><a href="<?php echo base_url('admin/measurements')?>"><i class="far fa-trash"></i> Measurements</a></li>
             </ul>
         </li>
         <!--Menu-->
