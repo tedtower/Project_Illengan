@@ -121,15 +121,6 @@
                 </div>
             </div>
             `;
-            // menuaddons.forEach(ma => 
-            //     $('.addons'+ma.olID).append(`
-            //     <ul>
-            //     <li>${ma.aoName}</li></ul>
-            //     `);
-            //     console.log('WITH ADDONS');
-            // console.log($('.addons'+ma.olID));
-            // console.log()
-            // });
             var modal = `<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteOrderModal" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -155,22 +146,23 @@
             $('.lists-container').append(modal);
           
             }); 
-            $("input#item_status").on('click', function () {
+              $("input#item_status").on('click', function () {
                 var id = $(this).attr('data-id');
                 var stats = $(this).val();
                 if( stats == 'served'){
-                    this.style.backgroundColor = "gray";
-                    this.value= "pending";
-                    stats = this.value;
-                    console.log(stats, id);
-                    updateStatus(stats, id);
-
-                }else if(stats == 'pending'){
-                    this.style.backgroundColor = "green";
-                    this.value= "served";
-                    stats = this.value;
-                    console.log(stats, id);
-                    updateStatus(stats, id);
+                stats = 'pending';
+                this.style.backgroundColor = "gray";
+                this.value= "pending";
+                stats = this.value;
+                console.log(stats, id);
+                updateStatus(stats, id);
+                }else if (stats == 'pending'){
+                stats='served';
+                this.style.backgroundColor = "green";
+                this.value= "served";
+                stats = this.value;
+                console.log(stats, id);
+                updateStatus(stats, id);
                 }
             });
             var btn;
@@ -235,13 +227,17 @@
             });
             }
 
-            function updateStatus(stats, id){
+        function updateStatus(stats, id){
+            console.log(stats, id);
             $.ajax({
                 url: "<?= site_url('barista/updateStatus') ?>",
                 method: "post",
-                data : { 'olStatus' : stats,
-                'osID' : id},
+                data : { 
+                    'status' : stats,
+                    'id' : id
+                },
                 success: function(data) {
+                    location.reload();
             },
             error: function(response, setting, errorThrown) {
                 console.log(response.responseText);

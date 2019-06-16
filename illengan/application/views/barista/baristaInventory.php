@@ -167,6 +167,7 @@
 									onclick="addDestockItems()">Add</button>
 							</div>
 						</div>
+
 					</form>
 				</div>
 			</div>

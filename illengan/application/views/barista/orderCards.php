@@ -17,12 +17,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/barista/style.css'?>">
     </head>
     <body>
-    <button class="btn btn-link btn-sm" onClick="window.location.href = '<?php echo base_url();?>customer/processCheckIn';return false;">Add Order</button>
-    
-    <?php  if(isset($slip)){
-                          foreach($slip as $slips): 
-                            
-                            ?> 
     <div class="container">
     <div class="row" style="overflow-x: auto;">
     <div class="card" style="display: inline-block;">
@@ -41,12 +35,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </table>
             </div>
             <div class="card-body" style="width: auto; height: auto;">
+                <br>
+                <button class="btn btn-link btn-sm" onClick="window.location.href = '<?php echo base_url();?>customer/processCheckIn';return false;">Add Order</button>
+                <br>
                 <table class="pendOrders dtr-inline collapsed table display table-sm" id="pendingordersTable" style="width: auto; height: auto;">
                   <thead>
                       <tr>
                           <!-- <th>Slip No.</th>
                           <th>Order Item No.</th> 
                          <th>Customer Name</th> -->
+                          <th>Order Id</th>
                           <th>Qty</th>
                           <th>Order</th>
                           <th>Subtotal</th>
@@ -68,11 +66,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
      </div>
     </div>
     <br>
-    <?php 
-      endforeach;
-
-}            
-?>
 
            <!--MODAL TO CANCEL/(DELETE) AN ORDER -->
 
@@ -148,6 +141,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   penOrders.forEach(table => {
                       $("#pendingordersTable> tbody").append(`
                       <tr data-olID="${table.olID}" >
+                          <td>${table.olID}</td>
                           <td>${table.olQty}</td>
                           <td>${table.olDesc}</td>
                           <td>${table.olSubtotal}</td>

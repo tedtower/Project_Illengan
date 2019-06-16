@@ -30,11 +30,14 @@
 
     function fetch_discounts($pref_id){
         $query = $this->db->query('SELECT *, mn.mName AS dc_menuname FROM ((((((menu 
-        INNER JOIN preferences pref USING (mID)) INNER JOIN promoconstraint USING (prID)) 
-        INNER JOIN promos USING (pmID)) INNER JOIN discounts USING (pmID)) 
+        INNER JOIN preferences pref USING (mID)) 
+        INNER JOIN promoconstraint USING (prID)) 
+        INNER JOIN promos USING (pmID)) 
+        INNER JOIN discounts USING (pmID)) 
         inner join menudiscount AS mf USING (pmID)) 
-        inner join preferences fb_pref ON mf.prID = fb_pref.prID) 
-        inner join menu mn ON fb_pref.mID = mn.mID WHERE pref.prID = '.$pref_id.';');
+        inner join preferences fb_pref ON mf.prID = fb_pref.prID)
+        inner join menu mn ON fb_pref.mID = mn.mID
+        WHERE pref.prID = '.$pref_id.';');
          return $query->result();
     }
 
@@ -144,7 +147,7 @@
                         mID,
                         prPrice,
                         CONCAT(mName,
-                                IF(prName = 'normal' OR prName = 'Normal',
+                                IF(prName = 'Normal',
                                     '',
                                     CONCAT(' - ', prName)),
                                 IF(mTemp IS NULL,

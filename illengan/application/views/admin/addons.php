@@ -165,7 +165,7 @@
                                         <option value="" selected>Choose</option>
                                         <option value="available">Available</option>
                                         <option value="unavailable">Unavailable</option>
-                                        <option value="archived" hidden="hidden">Archived</option>
+                                        <option value="archived">Archived</option>
                                     </select>
                                 </div>
         
@@ -180,9 +180,9 @@
                     </div>
                 </div>
             </div>
-        <!--End of Modal "Add Transaction"-->
+<!--End of Modal "Add Transaction"-->
 
-        <!--Start of Delete Modal-->
+            <!--Start of Delete Modal-->
             <div class="modal fade" id="deleteAddon" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -209,8 +209,7 @@
                     </div>
                 </div>
             </div>
-        <!--End of Delete Modal-->
-
+            <!--End of Delete Modal-->
     </div>
     </div>
     </div>
@@ -250,5 +249,11 @@
             document.getElementById('aoID').value = event.target.getAttribute('data-id');
         }
 
+        // $(".deleteBtn").last().on('click', function() {
+        //     $("#deleteAddonItem").text(
+        //         `Delete addon ${$(this).closest("tr").attr("data-id")}`);
+        //     $("#deleteAddon").find("input[name='addonID']").val($(this).closest("tr").attr(
+        //         "data-id"));
+        // });
     </script>
     </body>
