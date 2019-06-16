@@ -295,19 +295,45 @@ var menupromos = [];
         });
     });
 
-function setBrochureContent(menuitems){
+function setBrochureContent(menuitems, button){
         $("#list").empty();
         $("#list").append(`${menuitems.map(menu => {
             return `<label style="width:96%"><input type="checkbox" id="prID${menu.prID}" class="menuitems mr-2" 
             value="${menu.prID}"> ${menu.menu_item}</label>`
         }).join('')}`);
+        disableSelected(button);
+    }
+    
+    function disableSelected(button) {
+        var trElements = $(button).closest('table').find('tr');
+        var addedItems;
+
+        console.log($(button).hasClass("addFreebie2"));
+        if($(button).hasClass("addFreebie2")) {
+            addedItems = $(button).closest("table").next(".freebies").find('tr.promoconstraint').find('#prID');
+        } else if($(button).hasClass("addFreebie3")) {
+            addedItems = $(button).closest("tr.promoconstraint").nextUntil("tr.promoconstraint").find('#prID');
+        } else if($(button).hasClass("addDiscountItems")) {
+            addedItems = $(button).closest("table").next(".discountsTB").find('tr.promoconstraint').find('#prID');
+        } else if($(button).hasClass("addDiscounts2")) {
+            addedItems = $(button).closest("tr.promoconstraint").nextUntil("tr.promoconstraint").find('#prID');
+        }
+
+        if(addedItems != 0 || addedItems != null) {
+            for(var i = 0; i <= addedItems.length-1; i++) {
+            var id = $(addedItems).eq(i).data("id");
+            $('#prID'+id).attr("disabled","disabled");
+            console.log(id);
+            }
+        }
     }
 
 function showTable(){
         promos.forEach(function(item){
             var tableRow = `                
                 <tr class="table_row" data-id="${item.promos.pmID}">   <!-- table row ng table -->
-                    <td><a href="javascript:void(0)" class="ml-2 mr-4"><img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${item.promos.pmName}</td>
+                    <td><a href="javascript:void(0)" class="ml-2 mr-4">
+                    <img class="accordionBtn" src="/assets/media/admin/down-arrow%20(1).png" style="height:15px;width: 15px"/></a>${item.promos.pmName}</td>
                     <td>${item.promos.freebie != null ? "Freebie" : ""}
                     ${item.promos.discount != null ? "Discount" : ""}</td>
                     <td>${item.promos.pmStartDate}</td>
@@ -320,9 +346,9 @@ function showTable(){
                 </tr>
             `;
             var freebies = `
-            <div class="preferences" style="float:left;margin-right:3%" > <!-- Preferences table container-->
-            <span><b>Items with Freebies</b></span><br>
-                ${item.freebies.length === 0 ? "No freebies are set for this promo." : 
+            <div class="freebies col-sm" style="float:left;margin-right:3%" >
+            <span><b>Items with Freebies</b></span>
+                ${item.freebies.length === 0 ? "<br>No freebies are set for this promo." : 
                 `
                  <!-- label-->
               . <table class="table table-bordered"> <!-- Freebies table-->
@@ -330,7 +356,7 @@ function showTable(){
                         <tr>
                             <th scope="col">Freebie Name</th>
                             <th scope="col">Menu Item</th>
-                            <th scope="col">Quantity Req.</th>
+                            <th scope="col">Qty Req.</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -349,7 +375,7 @@ function showTable(){
             </div>
             `;
             var menufbDiv = `
-            <div class="menufreebies" style="float:left;margin-right:3%" >
+            <div class="menufreebies col-sm">
             <span><b>Freebie Items</b></span><br>
                 ${item.menufreebies.length === 0 ? "No freebies are set for this promo." : 
                 `
@@ -380,9 +406,12 @@ function showTable(){
                 <td colspan="6"> <!-- table row ng accordion -->
                     <div style="overflow:auto;display:none"> <!-- container ng accordion -->
                         
-                        <div style="width:68%;overflow:auto"> <!-- description, preferences, and addons container -->
+                        <div style="overflow:auto"> <!-- description, preferences, and addons container -->
                             
-                            <div class="aoAndPreferences" style="overflow:auto;margin-top:1%"> <!-- Preferences and addons container-->
+                            <div class="freebieItems row" style="overflow:auto;margin-top:1%;padding: 5px;"> <!-- Preferences and addons container-->
+                                
+                            </div>
+                            <div class="discountItems row" style="overflow:auto;margin-top:1%;padding: 5px;"> <!-- Preferences and addons container-->
                                 
                             </div>
                         </div>
@@ -391,7 +420,7 @@ function showTable(){
             </tr>
             `;
             var discountsDiv = `
-            <div class=" addons" > <!-- Discounts table container--><br><span><b>Discounts</b></span><br>
+            <div class="discounts col-sm"> <!-- Discounts table container--><span><b>Discounts</b></span><br>
                 ${item.discounts.length === 0 ? "No discounts are set for this promo." : 
                     `<!-- label-->
                     <table class="table table-bordered">
@@ -421,9 +450,9 @@ function showTable(){
             
             $("#menuTable > tbody").append(tableRow);
             $("#menuTable > tbody").append(accordion);
-            $(".aoAndPreferences").last().append(freebies);
-            $(".aoAndPreferences").last().append(menufbDiv);
-            $(".aoAndPreferences").last().append(discountsDiv);
+            $(".freebieItems").last().append(freebies);
+            $(".freebieItems").last().append(menufbDiv);
+            $(".discountItems").last().append(discountsDiv);
         });
         $(".accordionBtn").on('click', function(){
             if($(this).closest("tr").next(".accordion").css("display") == 'none'){
@@ -471,15 +500,19 @@ function getSelectedMenu() {
                                     data-target="#menuItems" data-original-title style="margin:0"
                                     style="color:blue">Freebies</a></td>
                         </tr>`;
-                
-            console.log( $(".freebies"));
-            $('#addPromosModal').find(".freebies").last().append(freebieDiv);
+           
+            if ($('#addPromosModal').is(':visible')) {
+                $('#addPromosModal').find(".freebies").last().append(freebieDiv);
+            } else {
+                $('#editPromosModal').find(".freebies").last().append(freebieDiv);
+            }
+
             }
         }
 
         $(".addFreebie3").on('click',function(){
             btn = $(this);
-            setBrochureContent(menuItems);
+            setBrochureContent(menuItems, $(this));
             $('#addMenuItems').attr("onclick","getSelectedFreebies()");
         });
     }); 
@@ -564,11 +597,16 @@ $(document).ready(function() {
                 </tr>
             </tbody>
         </table>`;
-
-        $('.fbTableDiv').append(fbTable);
+        
+            if ($('#addPromosModal').is(':visible')) {
+                $('#addPromosModal').find('.fbTableDiv').append(fbTable);
+            } else {
+                $('#editPromosModal').find('.fbTableDiv').append(fbTable);
+            }
+       
 
         $(".addFreebie2").on('click',function(){
-            setBrochureContent(menuItems);
+            setBrochureContent(menuItems, $(this));
             $('#addMenuItems').attr("onclick","getSelectedMenu()");
 
         });
@@ -612,18 +650,21 @@ $(document).ready(function() {
                 <tbody>
                 </tbody></table>
 `;
-
-        $('.discountsDiv').append(discountsHTML);
+        if ($('#addPromosModal').is(':visible')) {
+                $('#addPromosModal').find('.discountsDiv').append(discountsHTML);
+            } else {
+                $('#editPromosModal').find('.discountsDiv').append(discountsHTML);
+            }
 
         $('.addDiscountItems').on("click", function() {
             var dcName = parseFloat($(this).closest('tr').find('input.dcName').val());
-            console.log(dcName);
+ 
             if(dcName === "" || dcName === 0 || dcName === null || isNaN(dcName) ) {
                 alert('Please enter discount value first');
                 $(this).attr("data-target","");
             } else {
                 $(this).attr("data-target","#menuItems");
-                setBrochureContent(menuItems);
+                setBrochureContent(menuItems,  $(this));
                 $('#addMenuItems').attr("onclick","getSelectedDiscount()");
             }
         
@@ -654,13 +695,19 @@ function getSelectedDiscount() {
                         <td><a class="addDiscounts2 btn btn-primary btn-sm" data-toggle="modal" data-target="#menuItems"
                             data-original-title style="margin:0" style="color:blue">Items</a></td>
                     </tr> `;
-            $('.discountsTB > tbody').append(discDiv);
+
+            if ($('#addPromosModal').is(':visible')) {
+                $('#addPromosModal').find('.discountsTB > tbody').append(discDiv);
+            } else {
+                $('#editPromosModal').find('.discountsTB > tbody').append(discDiv);
+            }
+
             }
         }
 
         $('.addDiscounts2').on("click", function() {
         btnDC = $(this);
-        setBrochureContent(menuItems);
+        setBrochureContent(menuItems, $(this));
         $('#addMenuItems').attr("onclick","getDiscountItems()");
     });
     }); 

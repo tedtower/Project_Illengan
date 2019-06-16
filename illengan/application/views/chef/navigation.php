@@ -10,6 +10,9 @@
           <li class="nav-item">
             <a class="nav-link" href="<?php echo base_url().'index.php/chef/index'?>"><i class="fal fa-tasks"></i> Orders</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo base_url().'chef/inventory'?>"><i class="fal fa-tasks"></i> Inventory</a>
+          </li>
       </ul>
       <ul class="navbar-nav ml-auto delius">
           <li class="nav-item">

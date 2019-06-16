@@ -16,18 +16,26 @@
             return $this->db->query($query)->result_array();
 
         }
-        function update_status($item_status, $order_item_id) {
-            $this->load->database();
-            $query = "UPDATE orderlists SET
-            olStatus = ? 
-            WHERE olID = ?";
-
-            $this->db->query($query, array($item_status, $order_item_id));
-            // $this->db->set('olStatus', $item_status);
-            // $this->db->where('olID', $order_item_id);
-            // $this->db->update('orderlists');
-            /* $query = $this->db->query('UPDATE orderlist SET item_status = ? WHERE order_id = ? AND menu_id = ?');
-            $this->db->query($query, array($item_status, $order_id, $menu_id)); */
+        function get_inventory(){
+            $query = "Select * from stockitems left join variance using (stID)";
+            $query = "Select stID,stName,stStatus,stQty from stockitems";
+            return $this->db->query($query)->result_array();
+        }
+        function restock($stocks){
+            $query = "Update stockitems set stQty = ? + ? where stID = ?";
+            if(count($stocks) > 0){
+                for($in = 0; $in < count($stocks) ; $in++){
+                    $this->db->query($query, array($stocks[$in]['curQty'], $stocks[$in]['stQty'], $stocks[$in]['stID'],  )); 
+                }
+            }
+        }
+        function destock($stocks){
+            $query = "Update stockitems set stQty = ? - ? where stID = ?";
+            if(count($stocks) > 0){
+                for($in = 0; $in < count($stocks) ; $in++){
+                    $this->db->query($query, array($stocks[$in]['curQty'], $stocks[$in]['stQty'], $stocks[$in]['stID'],  )); 
+                }
+            }
         }
 
     

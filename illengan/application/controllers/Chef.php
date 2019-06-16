@@ -41,16 +41,23 @@ class Chef extends CI_Controller {
 		
 	}
 	
-
-
-	function change_status() {
-		if($this->session->userdata('user_id') && $this->session->userdata('user_type') === 'Chef'){
-		$order_item_id = $this->input->post('order_item_id');
-		$item_status = $this->input->post('item_status');
-		$this->Chefmodel->update_status( $item_status, $order_item_id);
-		} else {
-			redirect('login');
-		}
+	  //BARISTA INVENTORY FUNCTIONS
+	function viewinventory(){
+		$this->load->view('chef/navigation');
+		$this->load->view('chef/chefInventory'); 
+	}
+	function inventoryJS(){
+		echo json_encode($this->baristamodel->get_inventory());
+	}
+	function restockitem(){
+		$stocks = json_decode($this->input->post('stocks'), true);
+		echo json_encode($stocks, true);
+		$this->baristamodel->restock($stocks);
+	}
+	function destockitem(){
+		$stocks = json_decode($this->input->post('stocks'), true);
+		echo json_encode($stocks, true);
+		$this->baristamodel->destock($stocks);
 	}
 
 }

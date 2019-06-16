@@ -168,4 +168,5 @@ $route['barista/destock'] = "barista/destockitem";
 
 // CHEF ROUTES
 $route['chef/orders'] = "chef/get_orderlist";
+$route['chef/inventory'] = "chef/viewInventory";
 $route['chef/change_status'] = "chef/change_status";
