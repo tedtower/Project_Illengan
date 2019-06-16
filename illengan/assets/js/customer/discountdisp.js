@@ -27,8 +27,8 @@ function promos() {
                 $('.indicate_promo').hide();
 
                 for(i = 0; i < data.length ; i++) {
-                    if(data[i].promo_id != null) {
-                    d_menu_id = data[i].menu_id; // Ito yung menu id na galing sa database
+                    if(data[i].pmID != null) {
+                    d_menu_id = data[i].mID; // Ito yung menu id na galing sa database
                     menu_id = document.getElementById(d_menu_id); // kinuha ko yung div na yon gamit yung value ng id
                     $('.' + d_menu_id).show();
                     }     
@@ -68,25 +68,25 @@ function freebies_discounts() {
              var freeBQty, freebieDrop;
 
             if(data.freebies.length != 0 && data.freebies[0].elective == 0) {
-                $('#promo_description').text('This item is available for a freebie! BUY '+data.freebies[0].pc_qty+
-                ' '+$('#menu_name').text()+' then GET '+data.freebies[0].fb_qty+' '+$('#menu_name').text());
+                $('#promo_description').text('This item is available for a freebie! BUY '+data.freebies[0].pcQty+
+                ' '+$('#menu_name').text()+' then GET '+data.freebies[0].fbQty+' '+$('#menu_name').text());
             } else if(data.freebies.length != 0 && data.freebies[0].elective == 1) {
-                $('#promo_description').text('This item is available for a freebie! BUY '+data.freebies[0].pc_qty+
-                ' '+$('#menu_name').text()+' then GET '+data.freebies[0].fb_qty+' any of the choices!');
+                $('#promo_description').text('This item is available for a freebie! BUY '+data.freebies[0].pcQty+
+                ' '+$('#menu_name').text()+' then GET '+data.freebies[0].fbQty+' any of the choices!');
             } else if(data.discounts.length != 0) {
-                $('#promo_description').text('Buying '+data.discounts[0].pc_qty+' will give you a '+data.discounts[0].dc_name+
+                $('#promo_description').text('Buying '+data.discounts[0].pcQty+' will give you a '+data.discounts[0].dcName+
                 ' discount!');
             }
 
             // FREEBIES AND DISCOUNTS PROCESSES
 
             if(data.freebies.length != 0) {
-                var elective = parseInt(data.freebies[0].elective);
-                var pcQty = parseInt(data.freebies[0].pc_qty);
+                var elective = parseInt(data.freebies[0].isElective);
+                var pcQty = parseInt(data.freebies[0].pcQty);
 
                 // For freebie promos which have different freebie offers
                 if(v_quantity >= pcQty && elective == 1){
-                    freeBQty = data.freebies[0].fb_qty * parseInt(v_quantity / pcQty);
+                    freeBQty = data.freebies[0].fbQty * parseInt(v_quantity / pcQty);
                     $('.please').show();
                     var appendDivs = []; 
 
@@ -105,7 +105,7 @@ function freebies_discounts() {
                 
                 try {
                 for(var i = 0; i <= data.freebies.length; i++) {
-                    optionsFB = '<option value="'+data.freebies[i].pref_id+'">'+data.freebies[i].fb_menuname+'</option>';
+                    optionsFB = '<option value="'+data.freebies[i].prId+'">'+data.freebies[i].fbName+'</option>';
                     $('.freeBOpt').append(optionsFB);
                 }
                 } catch(err) {
@@ -118,20 +118,20 @@ function freebies_discounts() {
                else if(v_quantity >= pcQty && elective === 0) {
                 hide_freebies();
             
-                freeBQty = data.freebies[0].fb_qty * parseInt(v_quantity / pcQty);
-                $('#freebie').append('<p class="freebieQty">You have <b id="fbQty">'+freeBQty+'</b> <b id="fbName">'+data.freebies[0].menu_name+'</b> for a freebie!</p>');
+                freeBQty = data.freebies[0].fbQty * parseInt(v_quantity / pcQty);
+                $('#freebie').append('<p class="freebieQty">You have <b id="fbQty">'+freeBQty+'</b> <b id="fbName">'+data.freebies[0].mName+'</b> for a freebie!</p>');
                }
 
                else if(v_quantity < pcQty) {
                 hide_freebies();
             }
             } else if(data.discounts.length != 0) {
-                if(v_quantity >= data.discounts[0].pc_qty){
+                if(v_quantity >= data.discounts[0].pcQty){
                 hide_freebies();
-                var dc_price = data.discounts[0].pref_price - data.discounts[0].dc_amt;
-                var dc_qty = parseInt(v_quantity - (v_quantity % data.discounts[0].pc_qty));
-                var sub_total = (dc_qty * dc_price) + ((dc_qty - v_quantity) * data.discounts[0].pref_price);
-                var org_price = v_quantity * data.discounts[0].pref_price;
+                var dc_price = data.discounts[0].prPrice - data.discounts[0].dcAmount;
+                var dc_qty = parseInt(v_quantity - (v_quantity % data.discounts[0].pcQty));
+                var sub_total = (dc_qty * dc_price) + ((dc_qty - v_quantity) * data.discounts[0].prPrice);
+                var org_price = v_quantity * data.discounts[0].prPrice;
                 $('#freebie').append('<input type="text" id="dc_subtotal" class="dc_subtotal" value="'+sub_total+'" hidden="hidden">'+
                 '<p class="freebieQty" >A discounted price of '+sub_total+' PHP from a price of '+org_price+' PHP!</p>');
                 $("#menuSubtotal").text(sub_total);
