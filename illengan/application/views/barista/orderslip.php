@@ -83,7 +83,7 @@
                                 </tr>
                             </thead>
                     ${item.orderlists.map(ol => {
-                        olID = ol.olID;
+                        //olID = ol.olID;
                                     return `
                                     <tbody style="font-size:13px">
                                 <tr data-id="${ol.olID}">
@@ -100,9 +100,13 @@
                                 </tr>
                                 <tr>
                                     <td>Remarks:</td>
-                                    <td>${ol.olRemarks}</td>
+                                    <td colspan="4">${ol.olRemarks}</td>
                                 </tr>
-                                <tr class="thisAddons${ol.olID}">
+                                <tr>
+                                <td>Addons:</td>
+                                <td class="aDoQty${ol.olID}"></td>
+                                <td colspan="2" class="aDoName${ol.olID}"></td>
+                                <td class="aDoPrice${ol.olID}"></td>
                                 </tr>
                                 `
                                 }).join('')} 
@@ -165,6 +169,7 @@
                 updateStatus(stats, id);
                 }
             });
+
             var btn;
             $("button.deleteOS").on("click", function() {
                  btn = $(this);
@@ -175,7 +180,12 @@
 
             $("img.cancelBtn").on("click", function() {
                 var cancelID = $(this).attr('data-id');
-                cancelOrder(cancelID);
+                var chckStats = $(this).attr('data-status');
+                if(chckStats == 'served'){
+                    alert('Can not cancel!Already Served');
+                }else{
+                    cancelOrder(cancelID);
+                }
             });
 
             addAddons();
@@ -237,7 +247,8 @@
                     'id' : id
                 },
                 success: function(data) {
-                    location.reload();
+                    console.log(data);
+                   // location.reload();
             },
             error: function(response, setting, errorThrown) {
                 console.log(response.responseText);
@@ -247,14 +258,19 @@
     }
 
     function addAddons() {
-        addons.forEach(ao => {
-            if($(".thisAddons"+ao.olID) != ''){
-                $(".thisAddons"+ao.olID).append(`<td>Addons:</td>`);
-                $(".thisAddons"+ao.olID).append(`<td>${ao.aoQty}&nbsp;${ao.aoName}&nbsp;<span class="fs-24">₱</span>${ao.aoTotal}</td>`)
-            }     
-    });
+       // addons.forEach(ao => {
+           for(var i=0; i < addons.length; i++){
+            if($(".thisAddons"+addons[i].olID) != ''){
+                for(var i=0; i < addons.length; i++){
+                    $(".aDoQty"+addons[i].olID).append(`${addons[i].aoQty}<br>`);
+                    $(".aDoName"+addons[i].olID).append(`${addons[i].aoName}<br>`);
+                    $(".aDoPrice"+addons[i].olID).append(`${addons[i].aoTotal}<br>`);
+                
+           }     
+            }
+  //  });
     }
-        
+}
     </script>
 </body>
 </htmL>

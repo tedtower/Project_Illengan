@@ -17,9 +17,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $this->db->query($query,array($status))->result_array();
         }
         function get_servedOrders(){
-            $status ="served";
-            $query = "SELECT * FROM orderslips left JOIN orderlists using (osID) where olStatus = ?;";
-            return $this->db->query($query,array($status))->result_array();
+            $query = "SELECT * FROM orderslips inner JOIN orderlists on orderslips.osID= orderlists.osID where olStatus = 'served';";
+            return $this->db->query($query)->result_array();
         }
         // function get_orderslip(){
         //     $this->load->database();
@@ -145,9 +144,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $query = "select * from orderaddons inner join addons on orderaddons.aoID=addons.aoID";
             return $this->db->query($query)->result_array();
         }
-        function updateStats($status, $id){
+        function updateStats($stats, $id){
             $query = "Update orderlists set olStatus = ? where olID = ?";
-            $this->db->query($query, array($status, $id));
+            return $this->db->query($query, array($stats, $id));
         }
         function cancelOrder($id){
             $list = "Select olPrice, osID from orderlists where olID='$id'";
@@ -165,6 +164,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $query= "Update orderslips set osTotal = ? where osID = ?";
             $this->db->query($query, array($total, $osid));
 
+            $this->db->where('olID', $id);
+            $this->db->delete('orderaddons');
+            
             $this->db->where('olID', $id);
             $result=$this->db->delete('orderlists');
             return $result;
