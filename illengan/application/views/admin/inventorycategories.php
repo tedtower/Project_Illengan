@@ -21,7 +21,6 @@
                                     <thead class="thead-dark">
                                         <th><b class="pull-left">Category Name</b></th>
                                         <th><b class="pull-left">Number of Items</b></th>
-                                        <th><b class="pull-left">Status</b></th>
                                         <th><b class="pull-left">Actions</b></th>
                                     </thead>
                                     <tbody>
@@ -29,13 +28,12 @@
                                         if(isset($category)){
                                             foreach($category as $category){
                                         ?>
-                                        <tr data-id="<?= $category['ctID'];?>">
+                                        <tr>
                                             <td><?php echo $category['ctName']?></td>
                                             <td><?php echo $category['stockCount']?></td>
-                                            <td><?php echo $category['ctStatus']?></td>
                                             <td>
                                                 <button class="btn btn-secondary btn-sm" name="editCategory" data-toggle="modal" data-target="#editCategory" data-id="<?php echo $category['ctID']?>">Edit</button>
-                                                <button class="deleteBtn btn btn-warning btn-sm" data-toggle="modal" data-target="#deleteCategory" id="<?php echo $category['ctID'];?>" data-name="<?php echo $category['ctName'];?>">Archive</button>
+                                                <a class="btn btn-warning btn-sm" href="<?php echo site_url('admin/stockcategories/delete/'.$category['ctID'])?>">Archived</a>
                                             </td>
                                         </tr>
                                     <?php }} ?>
@@ -137,26 +135,16 @@
                                                             </div>
                                                             <input type="text" name="new_name" id="new_name"class="form-control form-control-sm">
                                                         </div>
-                                                        <div class="input-group mb-3">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="inputGroup-sizing-sm" style="width:130px;background:rgb(242, 242, 242);color:rgba(48, 46, 46, 0.9);font-size:14px;">
-                                                                    Status</span>
-                                                            </div>
-                                                            <select  name="new_status" id="new_status" class="form-control form-control-sm">
-                                                                <option value="" selected>Choose</option>
-                                                                <option value="active">Active</option>
-                                                                <option value="archived" hidden="hidden">Archived</option>
-                                                            </select>
-                                                        </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                                            <button class="btn btn-success btn-sm" type="submit">Update</button>
+                                                            <button class="btn btn-success btn-sm" type="submit">Add</button>
                                                         </div>
                                                     </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
+
                                 <!--Start of Delete Modal-->
                                 <div class="modal fade" id="deleteCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -169,9 +157,9 @@
                                             </div>
                                             <form id="confirmDelete">
                                                 <div class="modal-body">
-                                                    <h6 id="deleteCategoryItem"></h6>
+                                                    <h6 id="deleteTableCode"></h6>
                                                     <p>Are you sure you want to delete this category?</p>
-                                                    <input type="text" name="categoryID" hidden="hidden">
+                                                    <input type="text" name="" hidden="hidden">
                                                     <div>
                                                         Remarks:<input type="text" name="deleteRemarks" id="deleteRemarks" class="form-control form-control-sm">
                                                     </div>
@@ -196,17 +184,6 @@
     </div>
     <?php include_once('templates/scripts.php') ?>
     <script>
-    $(document).ready(function() {
-        $('.deleteBtn').click(function() {
-            var id = $(this).attr("id");
-            $("#deleteCategoryItem").text(`delete ${$(this).attr("data-name")}`);
-            // $("#deleteAddon").find("input[name='addonID']").val($(this).attr("data-id"));
-            $("#confirmDelete").on('submit', function(event) {
-                event.preventDefault();
-                window.location = "<?php echo base_url();?>/admin/stockcategories/delete/" + id;
-            });
-        });   
-    });
         var tuples = ((document.getElementById('categTable')).getElementsByTagName('tbody'))[0].getElementsByTagName('tr');
         var tupleNo = tuples.length;
         var editButtons = document.getElementsByName('editCategory');
@@ -218,8 +195,19 @@
         function showEditModal(event) {
             var row = event.target.parentElement.parentElement;
             document.getElementById('new_name').value = row.firstElementChild.innerHTML;
-            document.getElementById('new_status').value = row.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
             document.getElementById('ctID').value = event.target.getAttribute('data-id');
         }
+        $(".addsupcat").on('click',function(){
+        var row=`
+        <div data-id="" style="overflow:auto;margin:2% 1%">
+            <input type="text" name="ctName[]" class="form-control form-control-sm" style="float:left;width:93%" required>
+            <img class="exitBtn" src="/assets/media/admin/error.png" style="width:20px;height:20px;margin:10px 3px;float:right">
+        </div>
+        `;
+        $(this).closest(".modal").find(".supcat").append(row);
+        $(this).closest(".modal").find(".exitBtn").last().on('click',function(){
+            $(this).closest("div").remove();
+        });
+    });
     </script>
     </body>

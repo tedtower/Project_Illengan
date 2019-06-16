@@ -15,8 +15,11 @@
                     $date = date('F d, Y');
                     $now = date('Y-m-d');
                     echo form_hidden('date', $now);
+                    
                     echo form_hidden('table_no', $table_no);
+                    echo '<input type="hidden" id="table_no" value="'.$table_no['table_code'].'">';
                     echo form_hidden('cust_name', $cust_name);
+                    echo '<input type="hidden" id="cust_name" value="'.$cust_name.'">';
                     if(empty($cust_name)){
                         echo '<div class="mb-3"><strong>Table Code: </strong>'.$table_no['table_code'].'<br><b>Date:&nbsp;</b>'.$date.'<br></div>';
                     }else{

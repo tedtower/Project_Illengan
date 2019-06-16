@@ -25,6 +25,7 @@
 									<th>DATE SPOILED</th>
 									<th>DATE RECORDED</th>
 									<th>OPERATION</th>
+									
 								</thead>
 								<tbody id="addon_data">
 								</tbody>

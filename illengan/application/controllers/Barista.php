@@ -10,11 +10,6 @@ class Barista extends CI_Controller{
         // code for getting current date : date("Y-m-d")
         // code for getting current date and time : date("Y-m-d H:i:s")
     }
-    function viewSlip() {
-        $data=$this->adminmodel->get_stocks();
-        header('Content-Type: application/json');
-        echo json_encode($data, JSON_PRETTY_PRINT);
-    }
 
     //BARISTA ORDER FUNCTIONS
     function pendingOrders(){

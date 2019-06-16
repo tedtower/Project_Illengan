@@ -185,7 +185,6 @@ class Adminview extends CI_Controller{
             $this->load->view('admin/templates/head', $data);
             $this->load->view('admin/templates/sideNav');
             $data['mnaddons'] = $this->adminmodel->get_mnAddons();
-            $data['discounts'] = $this->adminmodel->get_menudiscounts();
             // $data['sales'] = $this->adminmodel->get_sales();
             $this->load->view('admin/adminSales', $data);
         }else{
@@ -458,7 +457,9 @@ function viewSpoilagesStock(){
     function viewConsumptions(){
         if($this->checkIfLoggedIn()){
             $data['title'] = "Stock Consumption";
-            $data['consumptions'] = $this->adminmodel->get_consumptions();
+            $data['consumptions'] = $this->adminmodel->get_consumption();
+            $data['conitems'] = $this->adminmodel->get_consumptionItems();
+            $data['variance'] = $this->adminmodel->get_poItemVariance();
             $this->load->view('admin/templates/head',$data);
             $this->load->view('admin/templates/sideNav');
             $this->load->view('admin/adminDestock');
@@ -483,12 +484,7 @@ function viewSpoilagesStock(){
         $promo = array(
             "promos" => $this->adminmodel->get_promos(),
             "discounts" => $this->adminmodel->get_discounts(),
-            "freebies" => $this->adminmodel->get_freebies(),
-            "fb"  => $this->adminmodel->get_fb(),
-            "dc" => $this->adminmodel->get_dc(),
-            "menufreebies" => $this->adminmodel->get_menufreebies(),
-            "menudiscounts" => $this->adminmodel->get_menudc(),
-            "menuitems" => $this->adminmodel->get_menuItems()
+            "freebies" => $this->adminmodel->get_freebies()
         );
 
         header('Content-Type: application/json');
@@ -630,19 +626,14 @@ function viewSpoilagesStock(){
             ));
         }
     }
+
     function getTransaction(){
         if($this->checkIfLoggedIn()){
             $id = $this->input->post('id');
-            if(is_numeric($id)){
-                echo json_encode(array(
-                    "transaction" => $this->adminmodel->get_transaction($id),
-                    "transitems" => $this->adminmodel->get_transitems($id)
-                ));
-            }else{
-                echo json_encode(array(
-                    "inputErr" => true
-                ));
-            }
+            echo json_encode(array(
+                "transaction" => $this->adminmodel->get_transaction($id),
+                "transitems" => $this->adminmodel->get_transitems($id)
+            ));
         }else{
             echo json_encode(array(
                 "sessErr" => true
@@ -659,63 +650,7 @@ function viewSpoilagesStock(){
             ));
         }
     }
-    function getDRs(){
-        if($this->checkIfLoggedIn()){
-            $spID = $this->input->post('supplier');
-            if(is_numeric($spID)){
-                echo json_encode(array(
-                    "transactions" => $this->adminmodel->get_transactionsBySupplier($spID, array("delivery receipt")),
-                    "transitems" =>  $this->adminmodel->get_transitemsBySupplier($spID, array("delivery receipt"))
-                ));
-            }else{
-                echo json_encode(array(
-                    "inputErr" => true
-                ));
-            }
-        }else{
-            echo json_encode(array(
-                "sessErr" => true
-            ));
-        }
-    }
-    function getPOs(){
-        if($this->checkIfLoggedIn()){
-            $spID = $this->input->post('supplier');
-            if(is_numeric($spID)){
-                echo json_encode(array(
-                    "transactions" => $this->adminmodel->get_transactionsBySupplier($spID, array("purchase order")),
-                    "transitems" =>  $this->adminmodel->get_transitemsBySupplier($spID, array("purchase order"))
-                ));
-            }else{
-                echo json_encode(array(
-                    "inputErr" => true
-                ));
-            }
-        }else{
-            echo json_encode(array(
-                "sessErr" => true
-            ));
-        }
-    }
 
-    function getSPMs(){
-        if($this->checkIfLoggedIn()){
-            $spID = $this->input->post('supplier');
-            if(is_numeric($spID)){
-                echo json_encode(array(
-                    "merchandise" => $this->adminmodel->get_SPMs($spID)
-                ));
-            }else{
-                echo json_encode(array(
-                    "inputErr" => true
-                ));
-            }
-        }else{
-            echo json_encode(array(
-                "sessErr" => true
-            ));
-        }
-    }
 }
 
 ?>
