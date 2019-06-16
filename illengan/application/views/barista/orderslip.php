@@ -247,8 +247,7 @@
                     'id' : id
                 },
                 success: function(data) {
-                    console.log(data);
-                   // location.reload();
+                    location.reload();
             },
             error: function(response, setting, errorThrown) {
                 console.log(response.responseText);
