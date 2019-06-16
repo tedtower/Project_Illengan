@@ -259,28 +259,6 @@ class Adminmodel extends CI_Model{
         }
    
     }
-    
-    function add_consumption($id,$cd,$rDate,$cnd){
-        $query = "insert into consumption (cnID, cnDate, cnDateRecorded) values (?,?,?)";
-        $this->db->query($query,array($id[0]['nextID'],$cd,$rDate));
-        $cnID = $this->db->insert_id();
-        foreach ($cnd as $ci) {
-            $this->add_consumptionItems($id[0]['nextID'],$ci['varConsumed'],$ci['consumedQty'],$ci['remainingQty']);
-            $this->destockVariance($ci['varConsumed'],$ci['remainingQty']);
-        }
-    }
-    function add_consumptionItems($cnID,$vID,$cnQty,$rQty){
-        $query = "insert into varconsumptionitems (cnID, vID, cnQty, remainingQty) values (?,?,?,?)";
-        $this->db->query($query,array($cnID,$vID,$cnQty,$rQty));
-    }
-    function destockVariance($vID,$vQty){
-        $query = "UPDATE variance 
-            SET 
-                vQty = ?
-            WHERE
-                vID = ?;";
-        return $this->db->query($query,array($vQty,$vID));
-    }
 
     function edit_supplier($spName, $spContactNum, $spEmail, $spStatus, $spAddress, $spMerch, $spID){
         $query = "UPDATE supplier 
@@ -579,10 +557,6 @@ class Adminmodel extends CI_Model{
 
 
     //SELECT FUNCTIONS------------------------------------------------------------------
-    function get_nextIDConsumption(){
-        $query = "SELECT COUNT(cnID)+1 nextID FROM consumption;";
-        return $this->db->query($query)->result_array();
-    }
     function get_accounts(){
         $query = "Select * from accounts";
         return $this->db->query($query)->result_array();
@@ -852,12 +826,8 @@ class Adminmodel extends CI_Model{
         $query = "select * FROM activity_logs al INNER JOIN accounts ac USING (aID)";
         return $this->db->query($query)->result_array();
     }
-    function get_consumption(){
-       $query = "SELECT cnID, cnDate, cnDateRecorded, COUNT(stID) countItem FROM varconsumptionitems NATURAL JOIN consumption NATURAL JOIN variance NATURAL JOIN stockitems GROUP BY cnDate ORDER BY cnDate DESC";
-       return $this->db->query($query)->result_array();
-    }
-    function get_consumptionItems(){
-        $query = "SELECT stID, cnID, cnQty, remainingQty, stName, vUnit, vSize  FROM varconsumptionitems NATURAL JOIN consumption NATURAL JOIN variance NATURAL JOIN stockitems";
+    function get_consumption() {
+        $query = "SELECT slID, stID, CONCAT(stName,' (',stSize,')') as stDesc ,slDateTime, stocklog.dateRecorded, slQty, uomAbbreviation, slBalance, slRemarks FROM uom NATURAL JOIN stockitems NATURAL JOIN stocklog WHERE slType = 'consumed'";
         return $this->db->query($query)->result_array();
     }   
 

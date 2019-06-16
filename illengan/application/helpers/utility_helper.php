@@ -38,4 +38,7 @@ function admin_css(){
 function admin_js(){
    return base_url().'assets/js/admin/';
 }
+function admedia_url(){
+   return base_url().'assets/media/admin/';
+}
 ?>
