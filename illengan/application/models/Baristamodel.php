@@ -148,7 +148,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $query = "Update orderlists set olStatus = ? where olID = ?";
             return $this->db->query($query, array($stats, $id));
         }
-        function cancelOrder($id){
+       function cancelOrder($id){
             $list = "Select olPrice, osID from orderlists where olID='$id'";
             $ol= $this->db->query($list)->result_array();
             foreach($ol as $o){
